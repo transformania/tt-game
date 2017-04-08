@@ -629,12 +629,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public virtual ActionResult PlayerStatsLeaders()
-        {
-            List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
-            return View(output);
-        }
-
         public virtual ActionResult PlayerStatsTopOfType(string type)
         {
             IEnumerable<PlayerAchievementViewModel> output = StatsProcedures.GetLeaderPlayersInStat(type);

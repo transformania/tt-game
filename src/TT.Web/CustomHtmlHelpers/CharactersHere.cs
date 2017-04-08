@@ -411,7 +411,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString GetCovenantInfoShort(Player player)
         {
-            if (player.Covenant <= 0)
+            if (player.Covenant == null)
             {
                 return new MvcHtmlString("");
             }

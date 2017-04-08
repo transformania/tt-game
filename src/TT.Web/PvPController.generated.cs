@@ -205,30 +205,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult OldLeadboards()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult OldLeadboards_Achievements()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_Achievements);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult OldLeadboards_Item()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_Item);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult OldLeadboards_XP()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_XP);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ShoutSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShoutSend);
@@ -294,9 +270,6 @@ namespace TT.Web.Controllers
             public readonly string AddFriend = ("AddFriend").ToLowerInvariant();
             public readonly string RespondToFriendRequest = ("RespondToFriendRequest").ToLowerInvariant();
             public readonly string WorldMap = ("WorldMap").ToLowerInvariant();
-            public readonly string Leaderboard = ("Leaderboard").ToLowerInvariant();
-            public readonly string PvPLeaderboard = ("PvPLeaderboard").ToLowerInvariant();
-            public readonly string ItemLeaderboard = ("ItemLeaderboard").ToLowerInvariant();
             public readonly string Chat = ("Chat").ToLowerInvariant();
             public readonly string PrivateChat = ("PrivateChat").ToLowerInvariant();
             public readonly string ChatLog = ("ChatLog").ToLowerInvariant();
@@ -310,10 +283,6 @@ namespace TT.Web.Controllers
             public readonly string CurseTransformOwner = ("CurseTransformOwner").ToLowerInvariant();
             public readonly string EscapeFromOwner = ("EscapeFromOwner").ToLowerInvariant();
             public readonly string ReserveName = ("ReserveName").ToLowerInvariant();
-            public readonly string OldLeadboards = ("OldLeadboards").ToLowerInvariant();
-            public readonly string OldLeadboards_Achievements = ("OldLeadboards_Achievements").ToLowerInvariant();
-            public readonly string OldLeadboards_Item = ("OldLeadboards_Item").ToLowerInvariant();
-            public readonly string OldLeadboards_XP = ("OldLeadboards_XP").ToLowerInvariant();
             public readonly string Shout = ("Shout").ToLowerInvariant();
             public readonly string ShoutSend = ("ShoutSend").ToLowerInvariant();
             public readonly string FlagForSuspiciousActivity = ("FlagForSuspiciousActivity").ToLowerInvariant();
@@ -520,38 +489,6 @@ namespace TT.Web.Controllers
         {
             public readonly string to = ("to").ToLowerInvariant();
         }
-        static readonly ActionParamsClass_OldLeadboards s_params_OldLeadboards = new ActionParamsClass_OldLeadboards();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_OldLeadboards OldLeadboardsParams { get { return s_params_OldLeadboards; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_OldLeadboards
-        {
-            public readonly string round = ("round").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_OldLeadboards_Achievements s_params_OldLeadboards_Achievements = new ActionParamsClass_OldLeadboards_Achievements();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_OldLeadboards_Achievements OldLeadboards_AchievementsParams { get { return s_params_OldLeadboards_Achievements; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_OldLeadboards_Achievements
-        {
-            public readonly string round = ("round").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_OldLeadboards_Item s_params_OldLeadboards_Item = new ActionParamsClass_OldLeadboards_Item();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_OldLeadboards_Item OldLeadboards_ItemParams { get { return s_params_OldLeadboards_Item; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_OldLeadboards_Item
-        {
-            public readonly string round = ("round").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_OldLeadboards_XP s_params_OldLeadboards_XP = new ActionParamsClass_OldLeadboards_XP();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_OldLeadboards_XP OldLeadboards_XPParams { get { return s_params_OldLeadboards_XP; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_OldLeadboards_XP
-        {
-            public readonly string round = ("round").ToLowerInvariant();
-        }
         static readonly ActionParamsClass_ShoutSend s_params_ShoutSend = new ActionParamsClass_ShoutSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ShoutSend ShoutSendParams { get { return s_params_ShoutSend; } }
@@ -589,8 +526,6 @@ namespace TT.Web.Controllers
                 public readonly string Bus = "Bus";
                 public readonly string Game = "Game";
                 public readonly string Inventory = "Inventory";
-                public readonly string ItemLeaderboard = "ItemLeaderboard";
-                public readonly string Leaderboard = "Leaderboard";
                 public readonly string LevelupPerk = "LevelupPerk";
                 public readonly string LoginRequired = "LoginRequired";
                 public readonly string LookAtPlayer = "LookAtPlayer";
@@ -611,7 +546,6 @@ namespace TT.Web.Controllers
                 public readonly string Play_Inanimate = "Play_Inanimate";
                 public readonly string Player_Partial = "Player_Partial";
                 public readonly string PlayerLookup = "PlayerLookup";
-                public readonly string PvPLeaderboard = "PvPLeaderboard";
                 public readonly string Shout = "Shout";
                 public readonly string TeleportMap = "TeleportMap";
                 public readonly string ViewEffects = "ViewEffects";
@@ -621,8 +555,6 @@ namespace TT.Web.Controllers
             public readonly string Bus = "~/Views/PvP/Bus.cshtml";
             public readonly string Game = "~/Views/PvP/Game.cshtml";
             public readonly string Inventory = "~/Views/PvP/Inventory.cshtml";
-            public readonly string ItemLeaderboard = "~/Views/PvP/ItemLeaderboard.cshtml";
-            public readonly string Leaderboard = "~/Views/PvP/Leaderboard.cshtml";
             public readonly string LevelupPerk = "~/Views/PvP/LevelupPerk.cshtml";
             public readonly string LoginRequired = "~/Views/PvP/LoginRequired.cshtml";
             public readonly string LookAtPlayer = "~/Views/PvP/LookAtPlayer.cshtml";
@@ -643,7 +575,6 @@ namespace TT.Web.Controllers
             public readonly string Play_Inanimate = "~/Views/PvP/Play_Inanimate.cshtml";
             public readonly string Player_Partial = "~/Views/PvP/Player_Partial.cshtml";
             public readonly string PlayerLookup = "~/Views/PvP/PlayerLookup.cshtml";
-            public readonly string PvPLeaderboard = "~/Views/PvP/PvPLeaderboard.cshtml";
             public readonly string Shout = "~/Views/PvP/Shout.cshtml";
             public readonly string TeleportMap = "~/Views/PvP/TeleportMap.cshtml";
             public readonly string ViewEffects = "~/Views/PvP/ViewEffects.cshtml";
@@ -694,300 +625,6 @@ namespace TT.Web.Controllers
                 public readonly string partial_perkBonus = "~/Views/PvP/partial/partial_perkBonus.cshtml";
                 public readonly string partial_recentActivity = "~/Views/PvP/partial/partial_recentActivity.cshtml";
                 public readonly string RoundStatus = "~/Views/PvP/partial/RoundStatus.cshtml";
-            }
-            static readonly _RoundLeaderboardsClass s_RoundLeaderboards = new _RoundLeaderboardsClass();
-            public _RoundLeaderboardsClass RoundLeaderboards { get { return s_RoundLeaderboards; } }
-            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-            public partial class _RoundLeaderboardsClass
-            {
-                static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-                public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-                public class _ViewNamesClass
-                {
-                    public readonly string Alpha_1 = "Alpha_1";
-                    public readonly string Alpha_10 = "Alpha_10";
-                    public readonly string Alpha_11 = "Alpha_11";
-                    public readonly string Alpha_12 = "Alpha_12";
-                    public readonly string Alpha_13 = "Alpha_13";
-                    public readonly string Alpha_14 = "Alpha_14";
-                    public readonly string Alpha_15 = "Alpha_15";
-                    public readonly string Alpha_18 = "Alpha_18";
-                    public readonly string Alpha_19 = "Alpha_19";
-                    public readonly string Alpha_2 = "Alpha_2";
-                    public readonly string Alpha_23 = "Alpha_23";
-                    public readonly string Alpha_24 = "Alpha_24";
-                    public readonly string Alpha_25 = "Alpha_25";
-                    public readonly string Alpha_26 = "Alpha_26";
-                    public readonly string Alpha_27 = "Alpha_27";
-                    public readonly string Alpha_28 = "Alpha_28";
-                    public readonly string Alpha_29 = "Alpha_29";
-                    public readonly string Alpha_3 = "Alpha_3";
-                    public readonly string Alpha_30 = "Alpha_30";
-                    public readonly string Alpha_31 = "Alpha_31";
-                    public readonly string Alpha_32 = "Alpha_32";
-                    public readonly string Alpha_33 = "Alpha_33";
-                    public readonly string Alpha_34 = "Alpha_34";
-                    public readonly string Alpha_35 = "Alpha_35";
-                    public readonly string Alpha_36 = "Alpha_36";
-                    public readonly string Alpha_37 = "Alpha_37";
-                    public readonly string Alpha_38 = "Alpha_38";
-                    public readonly string Alpha_39 = "Alpha_39";
-                    public readonly string Alpha_4 = "Alpha_4";
-                    public readonly string Alpha_40 = "Alpha_40";
-                    public readonly string Alpha_41 = "Alpha_41";
-                    public readonly string Alpha_42 = "Alpha_42";
-                    public readonly string Alpha_5 = "Alpha_5";
-                    public readonly string Alpha_6 = "Alpha_6";
-                    public readonly string Alpha_7 = "Alpha_7";
-                    public readonly string Alpha_8 = "Alpha_8";
-                    public readonly string Alpha_9 = "Alpha_9";
-                }
-                public readonly string Alpha_1 = "~/Views/PvP/RoundLeaderboards/Alpha_1.cshtml";
-                public readonly string Alpha_10 = "~/Views/PvP/RoundLeaderboards/Alpha_10.cshtml";
-                public readonly string Alpha_11 = "~/Views/PvP/RoundLeaderboards/Alpha_11.cshtml";
-                public readonly string Alpha_12 = "~/Views/PvP/RoundLeaderboards/Alpha_12.cshtml";
-                public readonly string Alpha_13 = "~/Views/PvP/RoundLeaderboards/Alpha_13.cshtml";
-                public readonly string Alpha_14 = "~/Views/PvP/RoundLeaderboards/Alpha_14.cshtml";
-                public readonly string Alpha_15 = "~/Views/PvP/RoundLeaderboards/Alpha_15.cshtml";
-                public readonly string Alpha_18 = "~/Views/PvP/RoundLeaderboards/Alpha_18.cshtml";
-                public readonly string Alpha_19 = "~/Views/PvP/RoundLeaderboards/Alpha_19.cshtml";
-                public readonly string Alpha_2 = "~/Views/PvP/RoundLeaderboards/Alpha_2.cshtml";
-                public readonly string Alpha_23 = "~/Views/PvP/RoundLeaderboards/Alpha_23.cshtml";
-                public readonly string Alpha_24 = "~/Views/PvP/RoundLeaderboards/Alpha_24.cshtml";
-                public readonly string Alpha_25 = "~/Views/PvP/RoundLeaderboards/Alpha_25.cshtml";
-                public readonly string Alpha_26 = "~/Views/PvP/RoundLeaderboards/Alpha_26.cshtml";
-                public readonly string Alpha_27 = "~/Views/PvP/RoundLeaderboards/Alpha_27.cshtml";
-                public readonly string Alpha_28 = "~/Views/PvP/RoundLeaderboards/Alpha_28.cshtml";
-                public readonly string Alpha_29 = "~/Views/PvP/RoundLeaderboards/Alpha_29.cshtml";
-                public readonly string Alpha_3 = "~/Views/PvP/RoundLeaderboards/Alpha_3.cshtml";
-                public readonly string Alpha_30 = "~/Views/PvP/RoundLeaderboards/Alpha_30.cshtml";
-                public readonly string Alpha_31 = "~/Views/PvP/RoundLeaderboards/Alpha_31.cshtml";
-                public readonly string Alpha_32 = "~/Views/PvP/RoundLeaderboards/Alpha_32.cshtml";
-                public readonly string Alpha_33 = "~/Views/PvP/RoundLeaderboards/Alpha_33.cshtml";
-                public readonly string Alpha_34 = "~/Views/PvP/RoundLeaderboards/Alpha_34.cshtml";
-                public readonly string Alpha_35 = "~/Views/PvP/RoundLeaderboards/Alpha_35.cshtml";
-                public readonly string Alpha_36 = "~/Views/PvP/RoundLeaderboards/Alpha_36.cshtml";
-                public readonly string Alpha_37 = "~/Views/PvP/RoundLeaderboards/Alpha_37.cshtml";
-                public readonly string Alpha_38 = "~/Views/PvP/RoundLeaderboards/Alpha_38.cshtml";
-                public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/Alpha_39.cshtml";
-                public readonly string Alpha_4 = "~/Views/PvP/RoundLeaderboards/Alpha_4.cshtml";
-                public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Alpha_40.cshtml";
-                public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Alpha_41.cshtml";
-                public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Alpha_42.cshtml";
-                public readonly string Alpha_5 = "~/Views/PvP/RoundLeaderboards/Alpha_5.cshtml";
-                public readonly string Alpha_6 = "~/Views/PvP/RoundLeaderboards/Alpha_6.cshtml";
-                public readonly string Alpha_7 = "~/Views/PvP/RoundLeaderboards/Alpha_7.cshtml";
-                public readonly string Alpha_8 = "~/Views/PvP/RoundLeaderboards/Alpha_8.cshtml";
-                public readonly string Alpha_9 = "~/Views/PvP/RoundLeaderboards/Alpha_9.cshtml";
-                static readonly _ItemsClass s_Items = new _ItemsClass();
-                public _ItemsClass Items { get { return s_Items; } }
-                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                public partial class _ItemsClass
-                {
-                    static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-                    public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-                    public class _ViewNamesClass
-                    {
-                        public readonly string Alpha_12 = "Alpha_12";
-                        public readonly string Alpha_13 = "Alpha_13";
-                        public readonly string Alpha_14 = "Alpha_14";
-                        public readonly string Alpha_15 = "Alpha_15";
-                        public readonly string Alpha_16 = "Alpha_16";
-                        public readonly string Alpha_17 = "Alpha_17";
-                        public readonly string Alpha_18 = "Alpha_18";
-                        public readonly string Alpha_19 = "Alpha_19";
-                        public readonly string Alpha_20 = "Alpha_20";
-                        public readonly string Alpha_21 = "Alpha_21";
-                        public readonly string Alpha_22 = "Alpha_22";
-                        public readonly string Alpha_23 = "Alpha_23";
-                        public readonly string Alpha_24 = "Alpha_24";
-                        public readonly string Alpha_25 = "Alpha_25";
-                        public readonly string Alpha_26 = "Alpha_26";
-                        public readonly string Alpha_27 = "Alpha_27";
-                        public readonly string Alpha_28 = "Alpha_28";
-                        public readonly string Alpha_29 = "Alpha_29";
-                        public readonly string Alpha_30 = "Alpha_30";
-                        public readonly string Alpha_31 = "Alpha_31";
-                        public readonly string Alpha_32 = "Alpha_32";
-                        public readonly string Alpha_33 = "Alpha_33";
-                        public readonly string Alpha_34 = "Alpha_34";
-                        public readonly string Alpha_35 = "Alpha_35";
-                        public readonly string Alpha_36 = "Alpha_36";
-                        public readonly string Alpha_37 = "Alpha_37";
-                        public readonly string Alpha_38 = "Alpha_38";
-                        public readonly string Alpha_39 = "Alpha_39";
-                        public readonly string Alpha_40 = "Alpha_40";
-                        public readonly string Alpha_41 = "Alpha_41";
-                        public readonly string Alpha_42 = "Alpha_42";
-                    }
-                    public readonly string Alpha_12 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_12.cshtml";
-                    public readonly string Alpha_13 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_13.cshtml";
-                    public readonly string Alpha_14 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_14.cshtml";
-                    public readonly string Alpha_15 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_15.cshtml";
-                    public readonly string Alpha_16 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_16.cshtml";
-                    public readonly string Alpha_17 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_17.cshtml";
-                    public readonly string Alpha_18 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_18.cshtml";
-                    public readonly string Alpha_19 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_19.cshtml";
-                    public readonly string Alpha_20 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_20.cshtml";
-                    public readonly string Alpha_21 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_21.cshtml";
-                    public readonly string Alpha_22 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_22.cshtml";
-                    public readonly string Alpha_23 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_23.cshtml";
-                    public readonly string Alpha_24 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_24.cshtml";
-                    public readonly string Alpha_25 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_25.cshtml";
-                    public readonly string Alpha_26 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_26.cshtml";
-                    public readonly string Alpha_27 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_27.cshtml";
-                    public readonly string Alpha_28 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_28.cshtml";
-                    public readonly string Alpha_29 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_29.cshtml";
-                    public readonly string Alpha_30 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_30.cshtml";
-                    public readonly string Alpha_31 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_31.cshtml";
-                    public readonly string Alpha_32 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_32.cshtml";
-                    public readonly string Alpha_33 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_33.cshtml";
-                    public readonly string Alpha_34 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_34.cshtml";
-                    public readonly string Alpha_35 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_35.cshtml";
-                    public readonly string Alpha_36 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_36.cshtml";
-                    public readonly string Alpha_37 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_37.cshtml";
-                    public readonly string Alpha_38 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_38.cshtml";
-                    public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_39.cshtml";
-                    public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_40.cshtml";
-                    public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_41.cshtml";
-                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_42.cshtml";
-                }
-                static readonly _StatisticsClass s_Statistics = new _StatisticsClass();
-                public _StatisticsClass Statistics { get { return s_Statistics; } }
-                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                public partial class _StatisticsClass
-                {
-                    static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-                    public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-                    public class _ViewNamesClass
-                    {
-                        public readonly string Alpha_17 = "Alpha_17";
-                        public readonly string Alpha_18 = "Alpha_18";
-                        public readonly string Alpha_19 = "Alpha_19";
-                        public readonly string Alpha_20 = "Alpha_20";
-                        public readonly string Alpha_21 = "Alpha_21";
-                        public readonly string Alpha_22 = "Alpha_22";
-                        public readonly string Alpha_23 = "Alpha_23";
-                        public readonly string Alpha_24 = "Alpha_24";
-                        public readonly string Alpha_25 = "Alpha_25";
-                        public readonly string Alpha_26 = "Alpha_26";
-                        public readonly string Alpha_27 = "Alpha_27";
-                        public readonly string Alpha_28 = "Alpha_28";
-                        public readonly string Alpha_29 = "Alpha_29";
-                        public readonly string Alpha_30 = "Alpha_30";
-                        public readonly string Alpha_31 = "Alpha_31";
-                        public readonly string Alpha_32 = "Alpha_32";
-                        public readonly string Alpha_33 = "Alpha_33";
-                        public readonly string Alpha_34 = "Alpha_34";
-                        public readonly string Alpha_35 = "Alpha_35";
-                        public readonly string Alpha_36 = "Alpha_36";
-                        public readonly string Alpha_37 = "Alpha_37";
-                        public readonly string Alpha_38 = "Alpha_38";
-                        public readonly string Alpha_39 = "Alpha_39";
-                        public readonly string Alpha_40 = "Alpha_40";
-                        public readonly string Alpha_41 = "Alpha_41";
-                        public readonly string Alpha_42 = "Alpha_42";
-                    }
-                    public readonly string Alpha_17 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_17.cshtml";
-                    public readonly string Alpha_18 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_18.cshtml";
-                    public readonly string Alpha_19 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_19.cshtml";
-                    public readonly string Alpha_20 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_20.cshtml";
-                    public readonly string Alpha_21 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_21.cshtml";
-                    public readonly string Alpha_22 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_22.cshtml";
-                    public readonly string Alpha_23 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_23.cshtml";
-                    public readonly string Alpha_24 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_24.cshtml";
-                    public readonly string Alpha_25 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_25.cshtml";
-                    public readonly string Alpha_26 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_26.cshtml";
-                    public readonly string Alpha_27 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_27.cshtml";
-                    public readonly string Alpha_28 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_28.cshtml";
-                    public readonly string Alpha_29 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_29.cshtml";
-                    public readonly string Alpha_30 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_30.cshtml";
-                    public readonly string Alpha_31 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_31.cshtml";
-                    public readonly string Alpha_32 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_32.cshtml";
-                    public readonly string Alpha_33 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_33.cshtml";
-                    public readonly string Alpha_34 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_34.cshtml";
-                    public readonly string Alpha_35 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_35.cshtml";
-                    public readonly string Alpha_36 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_36.cshtml";
-                    public readonly string Alpha_37 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_37.cshtml";
-                    public readonly string Alpha_38 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_38.cshtml";
-                    public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_39.cshtml";
-                    public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_40.cshtml";
-                    public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_41.cshtml";
-                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_42.cshtml";
-                }
-                static readonly _XPClass s_XP = new _XPClass();
-                public _XPClass XP { get { return s_XP; } }
-                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                public partial class _XPClass
-                {
-                    static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-                    public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-                    public class _ViewNamesClass
-                    {
-                        public readonly string Alpha_12 = "Alpha_12";
-                        public readonly string Alpha_13 = "Alpha_13";
-                        public readonly string Alpha_14 = "Alpha_14";
-                        public readonly string Alpha_15 = "Alpha_15";
-                        public readonly string Alpha_16 = "Alpha_16";
-                        public readonly string Alpha_17 = "Alpha_17";
-                        public readonly string Alpha_18 = "Alpha_18";
-                        public readonly string Alpha_19 = "Alpha_19";
-                        public readonly string Alpha_20 = "Alpha_20";
-                        public readonly string Alpha_21 = "Alpha_21";
-                        public readonly string Alpha_22 = "Alpha_22";
-                        public readonly string Alpha_23 = "Alpha_23";
-                        public readonly string Alpha_24 = "Alpha_24";
-                        public readonly string Alpha_25 = "Alpha_25";
-                        public readonly string Alpha_26 = "Alpha_26";
-                        public readonly string Alpha_27 = "Alpha_27";
-                        public readonly string Alpha_28 = "Alpha_28";
-                        public readonly string Alpha_29 = "Alpha_29";
-                        public readonly string Alpha_30 = "Alpha_30";
-                        public readonly string Alpha_31 = "Alpha_31";
-                        public readonly string Alpha_32 = "Alpha_32";
-                        public readonly string Alpha_33 = "Alpha_33";
-                        public readonly string Alpha_34 = "Alpha_34";
-                        public readonly string Alpha_35 = "Alpha_35";
-                        public readonly string Alpha_36 = "Alpha_36";
-                        public readonly string Alpha_37 = "Alpha_37";
-                        public readonly string Alpha_38 = "Alpha_38";
-                        public readonly string Alpha_39 = "Alpha_39";
-                        public readonly string Alpha_40 = "Alpha_40";
-                        public readonly string Alpha_41 = "Alpha_41";
-                        public readonly string Alpha_42 = "Alpha_42";
-                    }
-                    public readonly string Alpha_12 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_12.cshtml";
-                    public readonly string Alpha_13 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_13.cshtml";
-                    public readonly string Alpha_14 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_14.cshtml";
-                    public readonly string Alpha_15 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_15.cshtml";
-                    public readonly string Alpha_16 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_16.cshtml";
-                    public readonly string Alpha_17 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_17.cshtml";
-                    public readonly string Alpha_18 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_18.cshtml";
-                    public readonly string Alpha_19 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_19.cshtml";
-                    public readonly string Alpha_20 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_20.cshtml";
-                    public readonly string Alpha_21 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_21.cshtml";
-                    public readonly string Alpha_22 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_22.cshtml";
-                    public readonly string Alpha_23 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_23.cshtml";
-                    public readonly string Alpha_24 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_24.cshtml";
-                    public readonly string Alpha_25 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_25.cshtml";
-                    public readonly string Alpha_26 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_26.cshtml";
-                    public readonly string Alpha_27 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_27.cshtml";
-                    public readonly string Alpha_28 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_28.cshtml";
-                    public readonly string Alpha_29 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_29.cshtml";
-                    public readonly string Alpha_30 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_30.cshtml";
-                    public readonly string Alpha_31 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_31.cshtml";
-                    public readonly string Alpha_32 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_32.cshtml";
-                    public readonly string Alpha_33 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_33.cshtml";
-                    public readonly string Alpha_34 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_34.cshtml";
-                    public readonly string Alpha_35 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_35.cshtml";
-                    public readonly string Alpha_36 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_36.cshtml";
-                    public readonly string Alpha_37 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_37.cshtml";
-                    public readonly string Alpha_38 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_38.cshtml";
-                    public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_39.cshtml";
-                    public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_40.cshtml";
-                    public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_41.cshtml";
-                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_42.cshtml";
-                }
             }
         }
     }
@@ -1384,39 +1021,6 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void LeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Leaderboard()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Leaderboard);
-            LeaderboardOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void PvPLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult PvPLeaderboard()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PvPLeaderboard);
-            PvPLeaderboardOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ItemLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ItemLeaderboard()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ItemLeaderboard);
-            ItemLeaderboardOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
         partial void ChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room);
 
         [NonAction]
@@ -1562,54 +1166,6 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ReserveName);
             ReserveNameOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void OldLeadboardsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeadboards(string round)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
-            OldLeadboardsOverride(callInfo, round);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void OldLeadboards_AchievementsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeadboards_Achievements(string round)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_Achievements);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
-            OldLeadboards_AchievementsOverride(callInfo, round);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void OldLeadboards_ItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeadboards_Item(string round)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_Item);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
-            OldLeadboards_ItemOverride(callInfo, round);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void OldLeadboards_XPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeadboards_XP(string round)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeadboards_XP);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
-            OldLeadboards_XPOverride(callInfo, round);
             return callInfo;
         }
 

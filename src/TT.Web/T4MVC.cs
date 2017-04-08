@@ -37,6 +37,7 @@ public static partial class MVC
     public static TT.Web.Controllers.DuelController Duel = new TT.Web.Controllers.T4MVC_DuelController();
     public static TT.Web.Controllers.InfoController Info = new TT.Web.Controllers.T4MVC_InfoController();
     public static TT.Web.Controllers.ItemController Item = new TT.Web.Controllers.T4MVC_ItemController();
+    public static TT.Web.Controllers.LeaderboardController Leaderboard = new TT.Web.Controllers.T4MVC_LeaderboardController();
     public static TT.Web.Controllers.MessagesController Messages = new TT.Web.Controllers.T4MVC_MessagesController();
     public static TT.Web.Controllers.ModeratorController Moderator = new TT.Web.Controllers.T4MVC_ModeratorController();
     public static TT.Web.Controllers.NPCController NPC = new TT.Web.Controllers.T4MVC_NPCController();

@@ -2812,54 +2812,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public virtual ActionResult Leaderboard()
-        {
-            var myMembershipId = User.Identity.GetUserId();
-            if (myMembershipId.IsNullOrEmpty())
-            {
-                ViewBag.MyName = "";
-            }
-            else
-            {
-                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-                ViewBag.MyName = me == null ? "" : me.GetFullName();
-            }
-            return View(MVC.PvP.Views.Leaderboard, PlayerProcedures.GetLeadingPlayers__XP(100));
-        }
-
-        public virtual ActionResult PvPLeaderboard()
-        {
-            var myMembershipId = User.Identity.GetUserId();
-            if (myMembershipId.IsNullOrEmpty())
-            {
-                ViewBag.MyName = "";
-            }
-            else
-            {
-                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-                ViewBag.MyName = me == null ? "" : me.GetFullName();
-            }
-            return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
-        }
-
-        public virtual ActionResult ItemLeaderboard()
-        {
-            var myMembershipId = User.Identity.GetUserId();
-            if (myMembershipId.IsNullOrEmpty())
-            {
-                ViewBag.MyName = "";
-            }
-            else
-            {
-                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-                ViewBag.MyName = me == null ? "" : me.GetFullName();
-            }
-
-            var output = DomainRegistry.Repository.Find(new GetHighestLevelPlayerItems { Limit = 100 });
-
-            return View(output);
-        }
-
         public virtual ActionResult Chat(string room)
         {
             return RedirectToAction(MVC.Chat.Index(room));
@@ -3264,30 +3216,6 @@ namespace TT.Web.Controllers
             TempData["Result"] = "Your name has been reserved.";
             return RedirectToAction(MVC.PvP.Play());
 
-        }
-
-        public virtual ActionResult OldLeadboards(string round)
-        {
-            // TODO: T4ize
-            return View("~/Views/PvP/RoundLeaderboards/Alpha_" + round + ".cshtml");
-        }
-
-        public virtual ActionResult OldLeadboards_Achievements(string round)
-        {
-            // TODO: T4ize
-            return View("~/Views/PvP/RoundLeaderboards/Statistics/Alpha_" + round + ".cshtml");
-        }
-
-        public virtual ActionResult OldLeadboards_Item(string round)
-        {
-            // TODO: T4ize
-            return View("~/Views/PvP/RoundLeaderboards/Items/Alpha_" + round + ".cshtml");
-        }
-
-        public virtual ActionResult OldLeadboards_XP(string round)
-        {
-            // TODO: T4ize
-            return View("~/Views/PvP/RoundLeaderboards/XP/Alpha_" + round + ".cshtml");
         }
 
         public virtual ActionResult Shout()

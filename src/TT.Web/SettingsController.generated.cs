@@ -257,7 +257,6 @@ namespace TT.Web.Controllers
             public readonly string ArchiveSpell = ("ArchiveSpell").ToLowerInvariant();
             public readonly string ArchiveAllMySpells = ("ArchiveAllMySpells").ToLowerInvariant();
             public readonly string PlayerStats = ("PlayerStats").ToLowerInvariant();
-            public readonly string PlayerStatsLeaders = ("PlayerStatsLeaders").ToLowerInvariant();
             public readonly string PlayerStatsTopOfType = ("PlayerStatsTopOfType").ToLowerInvariant();
             public readonly string SetFriendNickname = ("SetFriendNickname").ToLowerInvariant();
             public readonly string SetFriendNicknameSend = ("SetFriendNicknameSend").ToLowerInvariant();
@@ -505,7 +504,6 @@ namespace TT.Web.Controllers
                 public readonly string MyBlacklistEntries = "MyBlacklistEntries";
                 public readonly string MyRPClassifiedAds = "MyRPClassifiedAds";
                 public readonly string PlayerStats = "PlayerStats";
-                public readonly string PlayerStatsLeaders = "PlayerStatsLeaders";
                 public readonly string SetBio = "SetBio";
                 public readonly string SetFriendNickname = "SetFriendNickname";
                 public readonly string SetNickname = "SetNickname";
@@ -520,7 +518,6 @@ namespace TT.Web.Controllers
             public readonly string MyBlacklistEntries = "~/Views/Settings/MyBlacklistEntries.cshtml";
             public readonly string MyRPClassifiedAds = "~/Views/Settings/MyRPClassifiedAds.cshtml";
             public readonly string PlayerStats = "~/Views/Settings/PlayerStats.cshtml";
-            public readonly string PlayerStatsLeaders = "~/Views/Settings/PlayerStatsLeaders.cshtml";
             public readonly string SetBio = "~/Views/Settings/SetBio.cshtml";
             public readonly string SetFriendNickname = "~/Views/Settings/SetFriendNickname.cshtml";
             public readonly string SetNickname = "~/Views/Settings/SetNickname.cshtml";
@@ -924,17 +921,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerStats);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             PlayerStatsOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void PlayerStatsLeadersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult PlayerStatsLeaders()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerStatsLeaders);
-            PlayerStatsLeadersOverride(callInfo);
             return callInfo;
         }
 

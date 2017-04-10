@@ -30,7 +30,7 @@ function renderButtons() {
     if (round.pvp === true) {
         $("#pvp").show();
         $("#pvp").click(function () {
-            window.location.href = "/PvP/OldLeadboards?round=" + round.number;
+            window.location.href = "/Leaderboard/OldLeaderboards?round=" + round.number;
         });
     } else {
         $("#pvp").hide();
@@ -39,7 +39,7 @@ function renderButtons() {
     if (round.xp === true) {
         $("#xp").show();
         $("#xp").click(function () {
-            window.location.href = "/PvP/OldLeadboards_XP?round=" + round.number;
+            window.location.href = "/Leaderboard/OldLeaderboards_XP?round=" + round.number;
         });
     } else {
         $("#xp").hide();
@@ -48,7 +48,7 @@ function renderButtons() {
     if (round.item === true) {
         $("#item").show();
         $("#item").click(function () {
-            window.location.href = "/PvP/OldLeadboards_Item?round=" + round.number;
+            window.location.href = "/Leaderboard/OldLeaderboards_Item?round=" + round.number;
         });
     } else {
         $("#item").hide();
@@ -57,7 +57,7 @@ function renderButtons() {
     if (round.achievement === true) {
         $("#achievements").show();
         $("#achievements").click(function () {
-            window.location.href = "/PvP/OldLeadboards_Achievements?round=" + round.number;
+            window.location.href = "/Leaderboard/OldLeaderboards_Achievements?round=" + round.number;
         });
     } else {
         $("#achievements").hide();

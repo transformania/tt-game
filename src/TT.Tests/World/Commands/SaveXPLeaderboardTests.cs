@@ -80,7 +80,7 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
 
-            DomainRegistry.Repository.Execute(new SaveXPLeaderboards { RoundNumber = 13 });
+            DomainRegistry.Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
 
             var leaders = DataContext.AsQueryable<TT.Domain.World.Entities.XpLeaderboardEntry>();
 
@@ -119,7 +119,7 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, false)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXPLeaderboards { RoundNumber = 13 });
+            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
             action.ShouldThrowExactly<DomainException>().WithMessage("Unable to save XP leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
         }
 
@@ -133,7 +133,7 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXPLeaderboards { RoundNumber = 13 });
+            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
             action.ShouldThrowExactly<DomainException>().WithMessage("Unable to save XP leaderboards at this time.  The game is currently in chaos mode.");
         }
 
@@ -152,21 +152,21 @@ namespace TT.Tests.World.Commands
                 .With(e => e.RoundNumber, 13)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXPLeaderboards { RoundNumber = 13 });
+            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
             action.ShouldThrowExactly<DomainException>().WithMessage("There are already existing XP leaderboard entries for round 13.");
         }
 
         [Test]
         public void should_throw_error_if_round_number_not_set()
         {
-            Action action = () => Repository.Execute(new SaveXPLeaderboards());
+            Action action = () => Repository.Execute(new SaveXpLeaderboards());
             action.ShouldThrowExactly<DomainException>().WithMessage("Round Number must be set!");
         }
 
         [Test]
         public void should_throw_error_if_no_world_data_found()
         {
-            Action action = () => Repository.Execute(new SaveXPLeaderboards { RoundNumber = 13 });
+            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
             action.ShouldThrowExactly<DomainException>().WithMessage("No world data found.");
         }
     }

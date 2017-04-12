@@ -153,8 +153,11 @@
     <Compile Include="Effects\Commands\CreateEffect.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
+    <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
+    <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />
+    <Compile Include="ViewModels\World\OldPvPLeaderboardViewModel.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboards.cs" />
-    <Compile Include="World\Commands\SaveXPLeaderboards.cs" />
+    <Compile Include="World\Commands\SaveXpLeaderboards.cs" />
     <Compile Include="World\Commands\SavePvPLeaderboards.cs" />
     <Compile Include="World\Commands\UpdateRoundNumber.cs" />
     <Compile Include="Identity\Commands\AddStrike.cs" />
@@ -252,6 +255,7 @@
     <Compile Include="Chat\DTOs\ChatLogDetail.cs" />
     <Compile Include="Forms\DTOs\FormNameDetail.cs" />
     <Compile Include="Forms\DTOs\TFMessageDetail.cs" />
+    <Compile Include="World\DTOs\PvPLeaderboardEntryDetail.cs" />
     <Compile Include="World\DTOs\WorldDetail.cs" />
     <Compile Include="Identity\DTOs\ArtistBioDetail.cs" />
     <Compile Include="Identity\DTOs\StatDetail.cs" />
@@ -272,6 +276,8 @@
     <Compile Include="Combat\DTOs\TFEnergyDetail.cs" />
     <Compile Include="Chat\Entities\ChatLog.cs" />
     <Compile Include="Forms\Entities\TFMessage.cs" />
+    <Compile Include="World\DTOs\ItemLeaderboardEntryDetail.cs" />
+    <Compile Include="World\DTOs\XpLeaderboardEntryDetail.cs" />
     <Compile Include="World\Entities\ItemLeaderboards.cs" />
     <Compile Include="World\Entities\XpLeaderboardEntry.cs" />
     <Compile Include="World\Entities\PvPLeaderboardEntry.cs" />
@@ -470,6 +476,9 @@
     <Compile Include="Chat\Queries\GetChatLogs.cs" />
     <Compile Include="Chat\Queries\GetChatRooms.cs" />
     <Compile Include="Chat\Queries\GetRoll.cs" />
+    <Compile Include="World\Queries\GetOldItemLeaderboardEntries.cs" />
+    <Compile Include="World\Queries\GetOldXpLeaderboardEntries.cs" />
+    <Compile Include="World\Queries\GetOldPvPLeaderboardEntries.cs" />
     <Compile Include="World\Queries\GetPvPWorldStats.cs" />
     <Compile Include="Identity\Queries\GetArtistBios.cs" />
     <Compile Include="Identity\Queries\GetCaptchaEntry.cs" />

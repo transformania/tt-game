@@ -481,6 +481,9 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Items\Alpha_43.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_43.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\XP\Alpha_43.cshtml" />
+    <Content Include="Views\Leaderboard\OldPvPLeaderboard.cshtml" />
+    <Content Include="Views\Leaderboard\OldXpLeaderboard.cshtml" />
+    <Content Include="Views\Leaderboard\OldItemLeaderboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

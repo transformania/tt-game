@@ -36,7 +36,7 @@ function bindSuggestedLengths() {
         note.addClass(classToUse);
 
         if (currentLength>0) {
-            note.html(currentLength + "/" + desiredLength + " of minimum suggested length");
+            note.html(currentLength + "/" + desiredLength + " of minimum requested length");
         }
     }
 

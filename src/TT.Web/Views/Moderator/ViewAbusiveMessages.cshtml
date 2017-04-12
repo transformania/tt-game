@@ -1,5 +1,4 @@
-﻿@using TT.Web.CustomHtmlHelpers
-@model IEnumerable<TT.Domain.Messages.DTOs.MessageDetail>
+﻿@model IEnumerable<TT.Domain.Messages.DTOs.MessageDetail>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -40,30 +39,44 @@
 
     <table id="abusiveMessages" class="table table-hover dt-responsive messageTable">
         <thead>
-        <th style="color: red;">Sender</th>
-        <th style="color: green;">Receiver</th>
-        <th>Message</th>
-        <th>Timestamp</th>
+        <tr>
+            <th style="color: red;">Sender</th>
+            <th style="color: green;">Receiver</th>
+            <th>Message</th>
+            <th>Timestamp</th>
+        </tr>
         </thead>
         <tbody>
-            @{
-                foreach (var m in Model)
-                {
-                    <tr>
-                        <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(m.Sender.Id))">@m.Sender.GetFullName()</a></td>
-                        <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(m.Receiver.Id))">@m.Receiver.GetFullName()</a></td>
-                        <td>@m.MessageText</td>
-                        <td class="timeago">@CharactersHere.DatetimeToTimeago(m.Timestamp)</td>
-                    </tr>
-                }
-            }
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(m.Sender.Id))">@m.Sender.GetFullName()</a>
+                </td>
+                <td>
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(m.Receiver.Id))">@m.Receiver.GetFullName()</a>
+                </td>
+                <td>@m.MessageText</td>
+                <td class="timeago">@m.Timestamp.ToString("u")</td>
+            </tr>
+        }
         </tbody>
     </table>
 
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#abusiveMessages').dataTable();
+    $(document).ready(function() {
+        $('#abusiveMessages').dataTable({
+            "columnDefs": [
+                {
+                    "targets": 3,
+                    "render": function(data, type, full, meta) {
+                        if (type === "display") return moment(data).fromNow();
+                        return data;
+                    }
+                }
+            ]
+        });
     });
 </script>

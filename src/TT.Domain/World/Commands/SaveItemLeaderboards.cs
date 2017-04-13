@@ -40,6 +40,7 @@ namespace TT.Domain.World.Commands
                 var topItems = ctx.AsQueryable<Item>()
                     .Include(p => p.FormerPlayer)
                     .Include(p => p.FormerPlayer.Covenant)
+                    .Include(p => p.FormerPlayer.ItemXP)
                     .Include(p => p.ItemSource)
                     .Where(p => p.FormerPlayer != null &&
                         p.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)

@@ -83,6 +83,24 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeaderboards_XP);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult OldPvPLeaderboard()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldPvPLeaderboard);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult OldXpLeaderboard()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldXpLeaderboard);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult OldItemLeaderboard()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldItemLeaderboard);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public LeaderboardController Actions { get { return MVC.Leaderboard; } }
@@ -107,6 +125,9 @@ namespace TT.Web.Controllers
             public readonly string OldLeaderboards_Achievements = ("OldLeaderboards_Achievements").ToLowerInvariant();
             public readonly string OldLeaderboards_Item = ("OldLeaderboards_Item").ToLowerInvariant();
             public readonly string OldLeaderboards_XP = ("OldLeaderboards_XP").ToLowerInvariant();
+            public readonly string OldPvPLeaderboard = ("OldPvPLeaderboard").ToLowerInvariant();
+            public readonly string OldXpLeaderboard = ("OldXpLeaderboard").ToLowerInvariant();
+            public readonly string OldItemLeaderboard = ("OldItemLeaderboard").ToLowerInvariant();
         }
 
 
@@ -142,6 +163,30 @@ namespace TT.Web.Controllers
         {
             public readonly string round = ("round").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_OldPvPLeaderboard s_params_OldPvPLeaderboard = new ActionParamsClass_OldPvPLeaderboard();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_OldPvPLeaderboard OldPvPLeaderboardParams { get { return s_params_OldPvPLeaderboard; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_OldPvPLeaderboard
+        {
+            public readonly string round = ("round").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_OldXpLeaderboard s_params_OldXpLeaderboard = new ActionParamsClass_OldXpLeaderboard();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_OldXpLeaderboard OldXpLeaderboardParams { get { return s_params_OldXpLeaderboard; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_OldXpLeaderboard
+        {
+            public readonly string round = ("round").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_OldItemLeaderboard s_params_OldItemLeaderboard = new ActionParamsClass_OldItemLeaderboard();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_OldItemLeaderboard OldItemLeaderboardParams { get { return s_params_OldItemLeaderboard; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_OldItemLeaderboard
+        {
+            public readonly string round = ("round").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -154,11 +199,17 @@ namespace TT.Web.Controllers
             {
                 public readonly string ItemLeaderboard = "ItemLeaderboard";
                 public readonly string Leaderboard = "Leaderboard";
+                public readonly string OldItemLeaderboard = "OldItemLeaderboard";
+                public readonly string OldPvPLeaderboard = "OldPvPLeaderboard";
+                public readonly string OldXpLeaderboard = "OldXpLeaderboard";
                 public readonly string PlayerStatsLeaders = "PlayerStatsLeaders";
                 public readonly string PvPLeaderboard = "PvPLeaderboard";
             }
             public readonly string ItemLeaderboard = "~/Views/Leaderboard/ItemLeaderboard.cshtml";
             public readonly string Leaderboard = "~/Views/Leaderboard/Leaderboard.cshtml";
+            public readonly string OldItemLeaderboard = "~/Views/Leaderboard/OldItemLeaderboard.cshtml";
+            public readonly string OldPvPLeaderboard = "~/Views/Leaderboard/OldPvPLeaderboard.cshtml";
+            public readonly string OldXpLeaderboard = "~/Views/Leaderboard/OldXpLeaderboard.cshtml";
             public readonly string PlayerStatsLeaders = "~/Views/Leaderboard/PlayerStatsLeaders.cshtml";
             public readonly string PvPLeaderboard = "~/Views/Leaderboard/PvPLeaderboard.cshtml";
             static readonly _RoundLeaderboardsClass s_RoundLeaderboards = new _RoundLeaderboardsClass();
@@ -516,10 +567,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void OldLeaderboardsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
+        partial void OldLeaderboardsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeaderboards(string round)
+        public override System.Web.Mvc.ActionResult OldLeaderboards(int round)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeaderboards);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
@@ -540,10 +591,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void OldLeaderboards_ItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
+        partial void OldLeaderboards_ItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeaderboards_Item(string round)
+        public override System.Web.Mvc.ActionResult OldLeaderboards_Item(int round)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeaderboards_Item);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
@@ -552,14 +603,50 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void OldLeaderboards_XPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string round);
+        partial void OldLeaderboards_XPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult OldLeaderboards_XP(string round)
+        public override System.Web.Mvc.ActionResult OldLeaderboards_XP(int round)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldLeaderboards_XP);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
             OldLeaderboards_XPOverride(callInfo, round);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void OldPvPLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult OldPvPLeaderboard(int round)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldPvPLeaderboard);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
+            OldPvPLeaderboardOverride(callInfo, round);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void OldXpLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult OldXpLeaderboard(int round)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldXpLeaderboard);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
+            OldXpLeaderboardOverride(callInfo, round);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void OldItemLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int round);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult OldItemLeaderboard(int round)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldItemLeaderboard);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "round", round);
+            OldItemLeaderboardOverride(callInfo, round);
             return callInfo;
         }
 

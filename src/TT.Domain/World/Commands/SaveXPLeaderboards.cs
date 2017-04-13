@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
@@ -8,7 +7,7 @@ using TT.Domain.World.Entities;
 
 namespace TT.Domain.World.Commands
 {
-    public class SaveXPLeaderboards : DomainCommand
+    public class SaveXpLeaderboards : DomainCommand
     {
         public int RoundNumber { get; set; }
 

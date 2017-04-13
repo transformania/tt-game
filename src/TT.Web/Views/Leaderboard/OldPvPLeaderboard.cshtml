@@ -1,0 +1,63 @@
+﻿@using TT.Web.CustomHtmlHelpers
+@model TT.Domain.ViewModels.World.OldPvPLeaderboardViewModel
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="specialBox specialBox2">
+    @Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)
+</div>
+
+<div class="specialBox">
+    <b>PvP / Dungeon Leaderboard -- Alpha Round @Model.Round</b><br>
+</div>
+
+<div class="containerInner">
+    <table class="table table-hover messageTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Covenant</th>
+                <th>Form</th>
+                <th>Mobility</th>
+                <th>Level</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var entry in Model.Entries)
+            {
+                <tr>
+                    <td>@entry.Rank</td>
+                    <td><b>@entry.PlayerName</b> @CharactersHere.PrintGenderIcon(entry.Sex)</td>
+                    <td>@entry.CovenantName</td>
+                    <td>@entry.FormName</td>
+                    <td>@entry.Mobility</td>
+                    <td>@entry.Level</td>
+                    <td>@entry.DungeonPoints</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

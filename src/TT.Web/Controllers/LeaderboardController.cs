@@ -7,12 +7,15 @@ using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels;
+using TT.Domain.ViewModels.World;
+using TT.Domain.World.Queries;
 
 namespace TT.Web.Controllers
 {
     [Authorize]
     public partial class LeaderboardController : Controller
     {
+        private const int LastRoundWithDatabaseLeaderboardData = 43;
 
         public virtual ActionResult Leaderboard()
         {
@@ -68,9 +71,12 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public virtual ActionResult OldLeaderboards(string round)
+        public virtual ActionResult OldLeaderboards(int round)
         {
-            // TODO: T4ize
+            if (round >= LastRoundWithDatabaseLeaderboardData)
+            {
+                return RedirectToAction(MVC.Leaderboard.OldPvPLeaderboard(round));
+            }
             return View("~/Views/Leaderboard/RoundLeaderboards/Alpha_" + round + ".cshtml");
         }
 
@@ -80,16 +86,54 @@ namespace TT.Web.Controllers
             return View("~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_" + round + ".cshtml");
         }
 
-        public virtual ActionResult OldLeaderboards_Item(string round)
+        public virtual ActionResult OldLeaderboards_Item(int round)
         {
+            if (round >= LastRoundWithDatabaseLeaderboardData)
+            {
+                return RedirectToAction(MVC.Leaderboard.OldItemLeaderboard(round));
+            }
             // TODO: T4ize
             return View("~/Views/Leaderboard/RoundLeaderboards/Items/Alpha_" + round + ".cshtml");
         }
 
-        public virtual ActionResult OldLeaderboards_XP(string round)
+        public virtual ActionResult OldLeaderboards_XP(int round)
         {
+            if (round >= LastRoundWithDatabaseLeaderboardData)
+            {
+                return RedirectToAction(MVC.Leaderboard.OldXpLeaderboard(round));
+            }
             // TODO: T4ize
             return View("~/Views/Leaderboard/RoundLeaderboards/XP/Alpha_" + round + ".cshtml");
+        }
+
+        public virtual ActionResult OldPvPLeaderboard(int round)
+        {
+            var output = new OldPvPLeaderboardViewModel
+            {
+                Entries = DomainRegistry.Repository.Find(new GetOldPvPLeaderboardEntries { Round = round }),
+                Round = round
+            };
+            return View(output);
+        }
+
+        public virtual ActionResult OldXpLeaderboard(int round)
+        {
+            var output = new OldXpLeaderboardViewModel
+            {
+                Entries = DomainRegistry.Repository.Find(new GetOldXpLeaderboardEntries { Round = round }),
+                Round = round
+            };
+            return View(output);
+        }
+
+        public virtual ActionResult OldItemLeaderboard(int round)
+        {
+            var output = new OldItemLeaderboardViewModel
+            {
+                Entries = DomainRegistry.Repository.Find(new GetOldItemLeaderboardEntries { Round = round }),
+                Round = round
+            };
+            return View(output);
         }
 
     }

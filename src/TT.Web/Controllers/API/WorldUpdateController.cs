@@ -44,7 +44,7 @@ namespace TT.Web.Controllers.API
 
                 try
                 {
-                    DomainRegistry.Repository.Execute(new SaveXPLeaderboards { RoundNumber = round });
+                    DomainRegistry.Repository.Execute(new SaveXpLeaderboards { RoundNumber = round });
                 }
                 catch (DomainException)
                 {

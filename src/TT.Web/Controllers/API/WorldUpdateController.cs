@@ -64,6 +64,9 @@ namespace TT.Web.Controllers.API
                 {
                     return InternalServerError();
                 }
+
+                // TODO: Set the turn number to 0 and enable chaos mode once we are confident that leaderboards are saving properly, including achievements and badges
+                return Ok();
             }
 
             // Don't do a turn update if the round is over or we're still in an update

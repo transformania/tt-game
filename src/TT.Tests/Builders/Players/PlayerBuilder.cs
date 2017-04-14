@@ -32,6 +32,7 @@ namespace TT.Tests.Builders.Players
             With(p => p.Gender, PvPStatics.GenderMale);
             With(p => p.OnlineActivityTimestamp, DateTime.Now);
             With(p => p.TFEnergies, new List<TFEnergy>());
+            With(p => p.TFEnergiesCast, new List<TFEnergy>());
             With(p => p.PlayerLogs, new List<PlayerLog>());
             With(p => p.Items, new List<TT.Domain.Items.Entities.Item>());
             With(p => p.ShoutsRemaining, 1);

@@ -160,6 +160,7 @@
     <Compile Include="Effects\Commands\CreateEffectTests.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
+    <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
     <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />
     <Compile Include="World\Commands\SavePvPLeaderboardTests.cs" />

@@ -55,7 +55,7 @@ namespace TT.Domain.Players.Commands
 
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
-        public int Covenant { get; set; }
+        public int? Covenant { get; set; }
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
@@ -111,7 +111,7 @@ namespace TT.Domain.Players.Commands
 
                 var form = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == FormSourceId);
 
-                var covenant = ctx.AsQueryable<Covenant>().SingleOrDefault(t => t.Id == Covenant);
+                var covenant = Covenant == null ? null : ctx.AsQueryable<Covenant>().SingleOrDefault(t => t.Id == Covenant);
 
                 var player = Player.Create(user, npc, form, this, covenant);
 

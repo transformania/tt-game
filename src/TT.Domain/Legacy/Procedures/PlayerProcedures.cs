@@ -609,7 +609,7 @@ namespace TT.Domain.Procedures
                 // remove the old player's effects
                 EffectProcedures.DeleteAllPlayerEffects(oldplayer.Id);
 
-                oldCovId = (int)oldplayer.Covenant;
+                oldCovId = oldplayer.Covenant;
                 oldplayer.Covenant = null;
                 playerRepo.SavePlayer(oldplayer);
 
@@ -652,7 +652,7 @@ namespace TT.Domain.Procedures
 
             if (oldplayer != null)
             {
-                cmd.Covenant = (int)oldCovId;
+                cmd.Covenant = oldCovId;
                 cmd.Level = oldplayer.Level - 3;
                 if (cmd.Level < 1)
                 {
@@ -694,7 +694,7 @@ namespace TT.Domain.Procedures
             }
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader
-            if (oldCovId > 0)
+            if (oldCovId != null && oldCovId > 0)
             {
                 ICovenantRepository covRepo = new EFCovenantRepository();
                 Covenant oldCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);

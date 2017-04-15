@@ -28,10 +28,11 @@ namespace TT.Domain.Items.Mappings
 
         }
 
-        protected override void Configure()
+        public ItemMappings()
         {
             CreateMap<Item, ItemDetail>();
             CreateMap<Item, ItemListingDetail>();
+            CreateMap<Item, ItemFormerPlayerDetail>();
         }
     }
 }

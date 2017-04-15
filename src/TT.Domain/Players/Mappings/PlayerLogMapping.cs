@@ -21,7 +21,7 @@ namespace TT.Domain.Players.Mappings
 
         }
 
-        protected override void Configure()
+        public PlayerLogMapping()
         {
             CreateMap<PlayerLog, PlayerLogDetail>();
         }

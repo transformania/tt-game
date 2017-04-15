@@ -14,7 +14,7 @@ namespace TT.Domain.World.Mappings
                 .HasKey(u => u.Id);
         }
 
-        protected override void Configure()
+        public DonatorMappings()
         {
             CreateMap<Entities.World, WorldDetail>();
         }

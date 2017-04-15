@@ -15,7 +15,7 @@ namespace TT.Domain.AI.Mappings
                 .HasKey(u => u.Id);
         }
 
-        protected override void Configure()
+        public NPCMappings()
         {
             CreateMap<NPC, NPCDetail>();
         }

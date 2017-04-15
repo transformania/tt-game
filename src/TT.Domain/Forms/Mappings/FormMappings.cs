@@ -1,8 +1,6 @@
 ﻿using System.Data.Entity;
 using AutoMapper;
 using Highway.Data;
-using TT.Domain.Combat.DTOs;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Forms.DTOs;
 using TT.Domain.Forms.Entities;
 
@@ -34,10 +32,10 @@ namespace TT.Domain.Forms.Mappings
 
         }
 
-        protected override void Configure()
+        public FormMappings()
         {
             CreateMap<FormSource, FormSourceDetail>();
-            CreateMap<TFEnergy, TFEnergyDetail>();
+            CreateMap<FormSource, BaseFormDetail>();
             CreateMap<TFMessage, TFMessageDetail>();
         }
     }

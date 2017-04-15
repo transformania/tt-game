@@ -31,9 +31,10 @@ namespace TT.Domain.Skills.Mappings
                 .WithMany().Map(m => m.MapKey("ExclusiveToItemSourceId"));
         }
 
-        protected override void Configure()
+        public SkillSourceMappings()
         {
             CreateMap<SkillSource, SkillSourceDetail>();
+            CreateMap<SkillSource, LearnableSkillsDetail>();
         }
     }
 }

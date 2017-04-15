@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
@@ -106,6 +106,7 @@
     <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandler.cs" />
     <Compile Include="Identity\RequestValidators\ResetSecurityStampValidator.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItems.cs" />
+    <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
     <Compile Include="Legacy\Abstract\IAchievementBadgeRepository.cs" />
     <Compile Include="Legacy\Abstract\IAchievementRepository.cs" />
     <Compile Include="Legacy\Abstract\IAIDirective.cs" />

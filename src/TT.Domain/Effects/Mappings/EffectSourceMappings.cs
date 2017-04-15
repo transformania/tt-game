@@ -15,7 +15,7 @@ namespace TT.Domain.Effects.Mappings
                 .HasKey(e => e.Id);
         }
 
-        protected override void Configure()
+        public EffectSourceMappings()
         {
             CreateMap<EffectSource, EffectSourceDetail>();
         }

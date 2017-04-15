@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using AutoMapper;
 using Highway.Data;
+using TT.Domain.Chat.DTOs;
 using TT.Domain.Chat.Entities;
 
 namespace TT.Domain.Chat.Mappings
@@ -15,9 +16,9 @@ namespace TT.Domain.Chat.Mappings
 
         }
 
-        protected override void Configure()
+        public ChatLogMappings()
         {
-
+            CreateMap<ChatLog, ChatLogDetail>();
         }
     }
 }

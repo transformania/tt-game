@@ -6,7 +6,7 @@ using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Identity.Mappings
 {
-    public class ArtistBIoMappings : Profile, IMappingConfiguration
+    public class ArtistBioMappings : Profile, IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -15,7 +15,7 @@ namespace TT.Domain.Identity.Mappings
                 .HasKey(u => u.Id);
         }
 
-        protected override void Configure()
+        public ArtistBioMappings()
         {
             CreateMap<ArtistBio, ArtistBioDetail>();
         }

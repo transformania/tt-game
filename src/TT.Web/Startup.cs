@@ -49,6 +49,7 @@ namespace TT.Web
 
             var httpConfig = new HttpConfiguration();
             WebApiConfig.Register(httpConfig);
+            ContainerConfig.ConfigureContainer(httpConfig);
 
             app.UseWebApi(httpConfig);
 

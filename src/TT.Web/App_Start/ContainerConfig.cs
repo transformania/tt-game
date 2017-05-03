@@ -18,7 +18,7 @@ namespace TT.Web
 {
     public class ContainerConfig
     {
-        public static void ConfigureContainer()
+        public static void ConfigureContainer(HttpConfiguration httpConfig)
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
@@ -32,12 +32,12 @@ namespace TT.Web
                 : HttpContext.Current.GetOwinContext().Authentication, Lifestyle.Scoped);
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-            container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+            container.RegisterWebApiControllers(httpConfig);
 
             container.Verify();
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-            GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
+            httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
         }
     }
 }

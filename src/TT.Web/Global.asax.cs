@@ -14,7 +14,6 @@ namespace TT.Web
         protected void Application_Start()
         {
             new FeatureSetBuilder().Build();
-            ContainerConfig.ConfigureContainer();
 
             AreaRegistration.RegisterAllAreas();
 

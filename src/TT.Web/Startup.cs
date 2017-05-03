@@ -48,7 +48,7 @@ namespace TT.Web
             app.MapSignalR();
 
             var httpConfig = new HttpConfiguration();
-            httpConfig.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional});
+            WebApiConfig.Register(httpConfig);
 
             app.UseWebApi(httpConfig);
 

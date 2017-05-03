@@ -13,17 +13,29 @@ using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 using SimpleInjector.Integration.WebApi;
 using TT.Web.Models;
+using Owin;
+using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace TT.Web
 {
     public class ContainerConfig
     {
-        public static void ConfigureContainer(HttpConfiguration httpConfig)
+        public static void ConfigureContainer(HttpConfiguration httpConfig, IAppBuilder app)
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            container.Register(() => new ApplicationUserManager(new UserStore<User>(new ApplicationDbContext())), Lifestyle.Scoped);
+            container.Register(() =>
+            {
+                var applicationDbContext = new ApplicationDbContext();
+                var userStore = new UserStore<User>(applicationDbContext);
+                var dataProtector = app.GetDataProtectionProvider().Create("ASP.NET Identity");
+                var dataProtectorTokenProvider = new DataProtectorTokenProvider<User>(dataProtector);
+
+                return new ApplicationUserManager(userStore, dataProtectorTokenProvider);
+            }, Lifestyle.Scoped);
+
             container.Register<ApplicationSignInManager>(Lifestyle.Scoped);
 
             container.Register(

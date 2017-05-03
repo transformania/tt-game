@@ -24,11 +24,6 @@ namespace TT.Web
     {
         public void Configuration(IAppBuilder app)
         {           
-            // Configure the db context, user manager and role manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
-
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
@@ -49,7 +44,7 @@ namespace TT.Web
 
             var httpConfig = new HttpConfiguration();
             WebApiConfig.Register(httpConfig);
-            ContainerConfig.ConfigureContainer(httpConfig);
+            ContainerConfig.ConfigureContainer(httpConfig, app);
 
             app.UseWebApi(httpConfig);
 

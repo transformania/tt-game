@@ -34,10 +34,5 @@ namespace TT.Web.Models
         {
             Database.SetInitializer(new NullDatabaseInitializer<ApplicationDbContext>());
         }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
     }
 }

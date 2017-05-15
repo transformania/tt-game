@@ -1,14 +1,14 @@
-
+UPDATE [Stats].[dbo].[Players] SET Covenant = NULL
 DELETE FROM [Stats].[dbo].[Effects]
 DELETE FROM [Stats].[dbo].[InanimateXPs]
 DELETE FROM [Stats].[dbo].[Items]
 DELETE FROM [Stats].[dbo].[LocationLogs]
-DELETE FROM [Stats].[dbo].[Messages]
-DELETE FROM [Stats].[dbo].[Players]
 DELETE FROM [Stats].[dbo].[PlayerLogs]
+DELETE FROM [Stats].[dbo].[Messages]
 DELETE FROM [Stats].[dbo].[Skills]
 DELETE FROM [Stats].[dbo].[TFEnergies]
 DELETE FROM [Stats].[dbo].[Covenants]
+DELETE FROM [Stats].[dbo].[Players]
 DELETE FROM [Stats].[dbo].[CovenantLogs]
 DELETE FROM [Stats].[dbo].[CovenantApplications]
 DELETE FROM [Stats].[dbo].[ServerLogs]
@@ -23,25 +23,11 @@ DELETE FROM [Stats].[dbo].[Achievements]
 DELETE FROM [Stats].[dbo].[ItemTransferLogs]
 DELETE FROM [Stats].[dbo].[BossDamages]
 DELETE FROM [Stats].[dbo].[Rerolls]
-DELETE FROM [Stats].[dbo].[Duels]
 DELETE FROM [Stats].[dbo].[DuelCombatants]
+DELETE FROM [Stats].[dbo].[Duels]
 DELETE FROM [Stats].[dbo].[DuelRules]
-DELETE FROM [Stats].[dbo].[PlayerQuests]
 DELETE FROM [Stats].[dbo].[QuestPlayerStatus]
 DELETE FROM [Stats].[dbo].[QuestPlayerVariables]
-
-UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [Boss_Faeboss] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
-
-
------------
-
-Don't forget to change the round number!
-
---------------
-
-Optionally:  Execute the code below to clear out columns and set the Identity value back to 0:
-
-
 TRUNCATE TABLE [Stats].[dbo].[Effects]
 TRUNCATE TABLE [Stats].[dbo].[InanimateXPs]
 TRUNCATE TABLE [Stats].[dbo].[Items]
@@ -50,7 +36,6 @@ TRUNCATE TABLE [Stats].[dbo].[Messages]
 TRUNCATE TABLE [Stats].[dbo].[PlayerLogs]
 TRUNCATE TABLE [Stats].[dbo].[Skills]
 TRUNCATE TABLE [Stats].[dbo].[TFEnergies]
-TRUNCATE TABLE [Stats].[dbo].[Covenants]
 TRUNCATE TABLE [Stats].[dbo].[CovenantLogs]
 TRUNCATE TABLE [Stats].[dbo].[CovenantApplications]
 TRUNCATE TABLE [Stats].[dbo].[ServerLogs]
@@ -65,9 +50,18 @@ TRUNCATE TABLE [Stats].[dbo].[Achievements]
 TRUNCATE TABLE [Stats].[dbo].[ItemTransferLogs]
 TRUNCATE TABLE [Stats].[dbo].[BossDamages]
 TRUNCATE TABLE [Stats].[dbo].[Rerolls]
-TRUNCATE TABLE [Stats].[dbo].[Duels]
 TRUNCATE TABLE [Stats].[dbo].[DuelCombatants]
-TRUNCATE TABLE [Stats].[dbo].[DuelRules]
-TRUNCATE TABLE [Stats].[dbo].[PlayerQuests]
+--TRUNCATE TABLE [Stats].[dbo].[DuelRules]
+--TRUNCATE TABLE [Stats].[dbo].[Duels]
 TRUNCATE TABLE [Stats].[dbo].[QuestPlayerStatus]
 TRUNCATE TABLE [Stats].[dbo].[QuestPlayerVariables]
+-- TRUNCATE TABLE [Stats].[dbo].[Players]
+-- TRUNCATE TABLE [Stats].[dbo].[Covenants]
+UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [Boss_Faeboss] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
+
+
+-----------
+
+Don't forget to change the round number!
+
+--------------

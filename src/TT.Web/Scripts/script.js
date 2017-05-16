@@ -1130,7 +1130,7 @@ function showHelp() {
 
 function loadAllCharactersWithAjax() {
     $.ajax({
-        url: "../Characters/All Characters (25).txt",
+        url: "../Characters/All Characters (34).txt",
         dataType: "text",
         success: function (data) {
             sorter.loadData(data);

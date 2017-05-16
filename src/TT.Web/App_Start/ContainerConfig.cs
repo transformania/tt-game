@@ -16,6 +16,10 @@ using TT.Web.Models;
 using Owin;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.AspNet.Identity.Owin;
+using MediatR;
+using TT.Domain;
+using FluentValidation;
+using TT.Domain.Validation;
 
 namespace TT.Web
 {
@@ -24,6 +28,9 @@ namespace TT.Web
         public static void ConfigureContainer(HttpConfiguration httpConfig, IAppBuilder app)
         {
             var container = new Container();
+            var webAssembly = typeof(ContainerConfig).Assembly;
+            var domainAssembly = typeof(DomainContext).Assembly;
+
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             container.Register(() =>
@@ -43,8 +50,23 @@ namespace TT.Web
                 ? new OwinContext(new Dictionary<string, object>()).Authentication
                 : HttpContext.Current.GetOwinContext().Authentication, Lifestyle.Scoped);
 
-            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+            container.RegisterMvcControllers(webAssembly);
             container.RegisterWebApiControllers(httpConfig);
+
+            // Mediator
+            container.RegisterSingleton<IMediator, Mediator>();
+            container.RegisterSingleton(new SingleInstanceFactory(container.GetInstance));
+            container.RegisterSingleton(new MultiInstanceFactory(container.GetAllInstances));
+
+            // Request Handler
+            container.Register(typeof(IRequestHandler<,>), new []{ domainAssembly });
+            container.Register(typeof(IRequestHandler<>), new []{ domainAssembly });
+
+            // Pipeline
+            container.RegisterCollection(typeof(IPipelineBehavior<,>), domainAssembly);
+
+            // Validator
+            container.RegisterCollection(typeof(IValidator<>), domainAssembly);
 
             container.Verify();
 

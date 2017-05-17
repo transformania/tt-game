@@ -20,6 +20,8 @@ using MediatR;
 using TT.Domain;
 using FluentValidation;
 using TT.Domain.Validation;
+using System;
+using Highway.Data;
 
 namespace TT.Web
 {
@@ -46,9 +48,11 @@ namespace TT.Web
             container.Register<ApplicationSignInManager>(Lifestyle.Scoped);
 
             container.Register(
-                () => container.IsVerifying() 
+                () => container.IsVerifying()
                 ? new OwinContext(new Dictionary<string, object>()).Authentication
                 : HttpContext.Current.GetOwinContext().Authentication, Lifestyle.Scoped);
+
+            container.Register<IDataContext, DomainContext>(Lifestyle.Scoped);
 
             container.RegisterMvcControllers(webAssembly);
             container.RegisterWebApiControllers(httpConfig);
@@ -58,20 +62,48 @@ namespace TT.Web
             container.RegisterSingleton(new SingleInstanceFactory(container.GetInstance));
             container.RegisterSingleton(new MultiInstanceFactory(container.GetAllInstances));
 
-            // Request Handler
-            container.Register(typeof(IRequestHandler<,>), new []{ domainAssembly });
-            container.Register(typeof(IRequestHandler<>), new []{ domainAssembly });
+            // Request Handlers
+            var requestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<,>), domainAssembly);
+            var voidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<>), domainAssembly);
 
-            // Pipeline
-            container.RegisterCollection(typeof(IPipelineBehavior<,>), domainAssembly);
+            foreach (var types in requestHandlerTypesToRegister)
+            {
+                container.Register(typeof(IRequestHandler<,>), types);
+            }
 
-            // Validator
+            foreach (var types in voidRequestHandlerTypesToRegister)
+            {
+                container.Register(typeof(IRequestHandler<>), types);
+            }
+
+            // PipelineBehaviors
+            var pipelineBehaviorTypesToRegister = GetAllGenericImplementations(container, typeof(IPipelineBehavior<,>), domainAssembly);
+
+            container.RegisterCollection(typeof(IPipelineBehavior<,>), pipelineBehaviorTypesToRegister);
+
+            // Validators
             container.RegisterCollection(typeof(IValidator<>), domainAssembly);
 
             container.Verify();
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
             httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
+        }
+
+        private static IEnumerable<Type> GetAllGenericImplementations<T>(Container container, params Assembly[] assemblies)
+        {
+            return GetAllGenericImplementations(container, typeof(T), assemblies);
+        }
+
+        private static IEnumerable<Type> GetAllGenericImplementations(Container container, Type serviceType, params Assembly[] assemblies)
+        {
+            return container.GetTypesToRegister(
+                serviceType,
+                assemblies,
+                new TypesToRegisterOptions
+                {
+                    IncludeGenericTypeDefinitions = true
+                });
         }
     }
 }

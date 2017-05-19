@@ -490,6 +490,7 @@
     <Content Include="Views\Leaderboard\OldPvPLeaderboard.cshtml" />
     <Content Include="Views\Leaderboard\OldXpLeaderboard.cshtml" />
     <Content Include="Views\Leaderboard\OldItemLeaderboard.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_44.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

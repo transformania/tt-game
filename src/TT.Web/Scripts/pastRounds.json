@@ -343,6 +343,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 44,
+      "name": "Alpha R44 (Era of Kasey Westler)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

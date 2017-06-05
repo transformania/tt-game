@@ -15,6 +15,52 @@ namespace TT.Domain.Procedures
     public static class AIProcedures
     {
 
+        private const string Psycho1MName = "botform_psychopathic_spellslinger_male";
+        private const string Psycho1FName = "botform_psychopathic_spellslinger_female";
+        private const string Psycho3MName = "botform_psychopathic_spellslinger_male_3";
+        private const string Psycho3FName = "botform_psychopathic_spellslinger_female_3";
+        private const string Psycho5MName = "botform_psychopathic_spellslinger_male_5";
+        private const string Psycho5FName = "botform_psychopathic_spellslinger_female_5";
+        private const string Psycho7MName = "botform_psychopathic_spellslinger_male_7";
+        private const string Psycho7FName = "botform_psychopathic_spellslinger_male_7";
+        private const string Psycho9MName = "botform_psychopathic_spellslinger_male_9";
+        private const string Psycho9FName = "botform_psychopathic_spellslinger_male_9";
+
+        private const int Psycho1MId = 13;
+        private const int Psycho1FId = 14;
+        private const int Psycho3MId = 837;
+        private const int Psycho3FId = 838;
+        private const int Psycho5MId = 839;
+        private const int Psycho5FId = 840;
+        private const int Psycho7MId = 841;
+        private const int Psycho7FId = 842;
+        private const int Psycho9MId = 843;
+        private const int Psycho9FId = 844;
+
+        private static Tuple<int,string> GetPsychoFormFromLevelAndSex(int level, string sex)
+        {
+            if (level == 1)
+            {
+                return sex == PvPStatics.GenderMale ? new Tuple<int, string>(Psycho1MId, Psycho1MName) : new Tuple<int, string>(Psycho1FId, Psycho1FName);
+            }
+            else if (level == 3)
+            {
+                return sex == PvPStatics.GenderMale ? new Tuple<int, string>(Psycho3MId, Psycho3MName) : new Tuple<int, string>(Psycho3FId, Psycho3FName);
+            }
+            else if (level == 5)
+            {
+                return sex == PvPStatics.GenderMale ? new Tuple<int, string>(Psycho5MId, Psycho5MName) : new Tuple<int, string>(Psycho5FId, Psycho5FName);
+            }
+            else if (level == 7)
+            {
+                return sex == PvPStatics.GenderMale ? new Tuple<int, string>(Psycho7MId, Psycho7MName) : new Tuple<int, string>(Psycho7FId, Psycho7FName);
+            }
+            else
+            {
+                return sex == PvPStatics.GenderMale ? new Tuple<int, string>(Psycho9MId, Psycho9MName) : new Tuple<int, string>(Psycho9FId, Psycho9FName);
+            }
+        }
+
         public static void SpawnAIPsychopaths(int count)
         {
 
@@ -51,20 +97,7 @@ namespace TT.Domain.Procedures
                 int randLastNameIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * lastNameMax));
 
                 cmd.LastName = lastNames.ElementAt(randLastNameIndex);
-
-                if (i % 2 == 1)
-                {
-                    cmd.Form = "botform_psychopathic_spellslinger_male";
-                    cmd.FormSourceId = AIStatics.MalePsychoFormId;
-                    cmd.Gender = PvPStatics.GenderMale;
-                }
-                else
-                {
-                    cmd.Form = "botform_psychopathic_spellslinger_female";
-                    cmd.FormSourceId = AIStatics.FemalePsychoFormId;
-                    cmd.Gender = PvPStatics.GenderFemale;
-                }
-
+                cmd.Gender = i % 2 == 1 ? PvPStatics.GenderMale : PvPStatics.GenderFemale;
                 cmd.OriginalForm = cmd.Form;
 
                 int strength = GetPsychopathLevel(turnNumber);
@@ -93,6 +126,10 @@ namespace TT.Domain.Procedures
                     cmd.FirstName = "Soulless " + cmd.FirstName;
                     cmd.Level = 9;
                 }
+
+                var idAndFormName = GetPsychoFormFromLevelAndSex(cmd.Level, cmd.Gender);
+                cmd.FormSourceId = idAndFormName.Item1;
+                cmd.Form = idAndFormName.Item2;
 
                 var id = 0;
 
@@ -314,10 +351,6 @@ namespace TT.Domain.Procedures
 
 
         }
-
-       
-
-        
 
         public static void CounterAttack(Player personAttackin, Player bot)
         {

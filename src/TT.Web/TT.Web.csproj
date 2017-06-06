@@ -313,9 +313,12 @@
     <Compile Include="RestockItemController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\CallContextOwinContextAccessor.cs" />
+    <Compile Include="Services\CallContextPrincipalAccessor.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
     <Compile Include="Services\ChatPersistenceService.cs" />
     <Compile Include="Services\IChatPersistanceService.cs" />
+    <Compile Include="Services\IOwinContextAccesor.cs" />
     <Compile Include="Services\NoticeService.cs" />
     <Compile Include="SettingsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>

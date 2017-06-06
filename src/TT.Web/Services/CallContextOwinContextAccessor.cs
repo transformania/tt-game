@@ -8,9 +8,5 @@ namespace TT.Web.Services
         public IOwinContext CurrentContext { get; set; }
 
         IOwinContext IOwinContextAccessor.CurrentContext => CurrentContext ?? new OwinContext(new Dictionary<string, object>());
-
-        public CallContextOwinContextAccessor()
-        {
-        }
     }
 }

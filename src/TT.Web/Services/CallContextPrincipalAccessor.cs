@@ -8,7 +8,7 @@ namespace TT.Web.Services
 {
     public class CallContextPrincipalAccessor : IPrincipalAccessor
     {
-        public IOwinContextAccessor _owinContextAccessor { get; }
+        private IOwinContextAccessor _owinContextAccessor { get; }
 
         public IPrincipal RequestPrincipal => _owinContextAccessor.CurrentContext.Request.User;
 

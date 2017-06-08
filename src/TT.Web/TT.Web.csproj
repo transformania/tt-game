@@ -336,7 +336,6 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\SetNicknameViewModel.cs" />
-    <Content Include="Characters\All Characters %2823%29.txt" />
     <Content Include="Characters\All Characters %2825%29.txt" />
     <Content Include="Characters\Brianne Smith.txt" />
     <Content Include="Characters\Carrie McCarthy.txt" />

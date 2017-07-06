@@ -598,8 +598,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ApproveContribution(int id)
         {
             // assert only admin can view this
-            // assert only admins can view this
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_SpellApprover))
             {
                 return RedirectToAction(MVC.PvP.Play());
             }

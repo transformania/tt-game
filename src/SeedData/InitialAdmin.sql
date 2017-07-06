@@ -12,3 +12,4 @@ INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'b1ace310-62e3-4cdf
 INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'b1ace310-62e3-4cdf-9c59-e8a17d43744a', N'8')
 INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'b1ace310-62e3-4cdf-9c59-e8a17d43744a', N'9')
 INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'b1ace310-62e3-4cdf-9c59-e8a17d43744a', N'11')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'b1ace310-62e3-4cdf-9c59-e8a17d43744a', N'13')

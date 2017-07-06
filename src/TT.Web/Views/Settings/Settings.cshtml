@@ -116,6 +116,11 @@
             <p class="good">You are on the contribution previewer list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br /></p>
         }
 
+        if (User.IsInRole(PvPStatics.Permissions_SpellApprover))
+        {
+            <p class="good">You are on the spell approvers list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br /></p>
+        }
+
         if (User.IsInRole(PvPStatics.Permissions_Artist))
         {
             <p class="good">

@@ -161,6 +161,11 @@
 
     function onNewMessage(model) {
         var output = ChatMessageModule.formatMessage(model);
+
+        // if the poster of this message is ignored, do nothing
+        if (!output) { 
+            return;
+        }
         $('#discussion').append($(output));
 
         if (ConfigModule.chat.autoScrollEnabled)

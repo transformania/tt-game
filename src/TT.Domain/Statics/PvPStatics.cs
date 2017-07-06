@@ -68,6 +68,7 @@ namespace TT.Domain.Statics
         public const string Permissions_Killswitcher = "killswitch";
         public const string Permissions_QuestWriter = "questwriter";
         public const string Permissions_Chaoslord = "chaoslord";
+        public const string Permissions_SpellApprover = "spellapprover";
 
         public const int MaxStrikesPerRound = 3;
 

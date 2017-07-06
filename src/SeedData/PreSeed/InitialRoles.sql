@@ -99,3 +99,5 @@ INSERT [dbo].[AspNetRoles] ([Id], [Name]) VALUES (N'9', N'publisher')
 GO
 INSERT [dbo].[AspNetRoles] ([Id], [Name]) VALUES (N'11', N'chaoslord')
 GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name]) VALUES (N'13', N'spellapprover')
+GO

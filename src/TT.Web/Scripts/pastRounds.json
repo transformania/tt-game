@@ -351,6 +351,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 45,
+      "name": "Alpha R45 (Era of Pepe Maus)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

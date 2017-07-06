@@ -4,15 +4,7 @@ Here is what to do when ending the round:
 
 1.  Assign end-of-the-round badges.  Admins can go to this link to run this automatically:  https://www.transformaniatime.com/PvPAdmin/AssignLeadersBadges .  Note that this will only work when the game is on the very last turn of the round (at the time of writing this, turn 5000/5000) and NOT in chaos mode.  Please make sure to only run this once.
 
-2.  Save the leaderboards.  To save the leaderboard I go into the page's source and copy all information between the opening and closing <table> tags on the page, run the text through an online HTML minifier, and save to a new .cshtml file under the Views/PvP/RoundLeaderboards area.  There are three leaderboards to save:
-
-a) PvP leaderboard, https://www.transformaniatime.com/PvP/PvPLeaderboard .  The files for this around found straight under the Views/PvP/RoundLeaderboards path.
-
-b) Item leaderboard, https://www.transformaniatime.com/PvP/ItemLeaderboard .  The files for this around found in Views/PvP/RoundLeaderboards/Items .
-
-c) XP leaderboard, https://www.transformaniatime.com/PvP/Leaderboard .  The files for this around found in Views/PvP/RoundLeaderboards/XP .
-
-***Note that the leaderboard will attempt to highlight your own name in pink if you have a position on one of these leaderboards.  Removing the styling for your row.  You can do this easy by searching the page source for 'background-color:'
+2.  The PvP, XP, and Item leaderboard now all autosave on the last turn of the round and there is no need to do anything with them anymore.
 
 3.  Update the JSON file Scripts/pastRounds.json with the latest round information.  The winner of the era is the first-place winner of a certain achievement which differs each round.  Use the winner's full name including nickname and generation title, ie "Bob 'I Won!' Smith IV".
 

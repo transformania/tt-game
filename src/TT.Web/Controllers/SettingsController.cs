@@ -605,7 +605,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (archive == "True")
+            if (archive == "true")
             {
                 SkillProcedures.ArchiveAllSpells(me.Id, true);
                 TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";

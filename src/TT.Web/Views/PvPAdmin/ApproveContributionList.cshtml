@@ -29,7 +29,7 @@
 
 
                         @{
-                            if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin))
+                            if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_SpellApprover))
                             {
                                 <td><a href="@Url.Action(MVC.PvPAdmin.ApproveContribution(c.Id))">Approve</a></td>
                                 <td><a href="@Url.Action(MVC.PvPAdmin.RejectContribution(c.Id))">Reject</a></td>

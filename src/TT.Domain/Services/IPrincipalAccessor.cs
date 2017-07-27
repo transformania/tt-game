@@ -27,7 +27,7 @@ namespace TT.Domain.Services
         IEnumerable<string> Roles { get; }
 
         /// <summary>
-        /// Returns the claims that the principal.
+        /// Returns the claims that the principal has.
         /// </summary>
         IEnumerable<Claim> Claims { get; }
     }

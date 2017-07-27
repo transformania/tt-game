@@ -24,8 +24,8 @@ namespace TT.Web
 {
     public static class ContainerConfig
     {
-        private readonly static Assembly webAssembly = typeof(ContainerConfig).Assembly;
-        private readonly static Assembly domainAssembly = typeof(DomainContext).Assembly;
+        private static readonly Assembly webAssembly = typeof(ContainerConfig).Assembly;
+        private static readonly Assembly domainAssembly = typeof(DomainContext).Assembly;
 
         public static void RegisterContainer(this Container container, HttpConfiguration httpConfig, Func<IDataProtectionProvider> dataProtectionProviderFactory)
         {

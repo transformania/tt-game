@@ -1,45 +1,59 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+﻿using FluentValidation;
+using Highway.Data;
+using MediatR;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 using SimpleInjector;
-using SimpleInjector.Advanced;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 using SimpleInjector.Integration.WebApi;
-using TT.Web.Models;
-using Owin;
-using Microsoft.Owin.Security.DataProtection;
-using Microsoft.AspNet.Identity.Owin;
-using MediatR;
-using TT.Domain;
-using FluentValidation;
-using TT.Domain.Validation;
+using SimpleInjector.Lifestyles;
 using System;
-using Highway.Data;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
+using TT.Domain;
+using TT.Domain.Services;
+using TT.Web.Models;
+using TT.Web.Services;
 
 namespace TT.Web
 {
-    public class ContainerConfig
+    public static class ContainerConfig
     {
-        public static void ConfigureContainer(HttpConfiguration httpConfig, IAppBuilder app)
-        {
-            var container = new Container();
-            var webAssembly = typeof(ContainerConfig).Assembly;
-            var domainAssembly = typeof(DomainContext).Assembly;
+        private static readonly Assembly webAssembly = typeof(ContainerConfig).Assembly;
+        private static readonly Assembly domainAssembly = typeof(DomainContext).Assembly;
 
-            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+        public static void RegisterContainer(this Container container, HttpConfiguration httpConfig, Func<IDataProtectionProvider> dataProtectionProviderFactory)
+        {
+            // use AsyncScopedLifestyle when web api requests a dependency,
+            // otherwise use WebRequestLifestyle when MVC requests a dependency.
+            container.Options.DefaultScopedLifestyle = Lifestyle.CreateHybrid(
+                defaultLifestyle: new AsyncScopedLifestyle(),
+                fallbackLifestyle: new WebRequestLifestyle());
+
+            // MVC
+            container.RegisterMvcControllers(webAssembly);
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // WebApi
+            container.RegisterWebApiControllers(httpConfig);
+            WebApiConfig.Register(httpConfig);
+            httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
+
+            // Owin
+            container.Register<IOwinContextAccessor, CallContextOwinContextAccessor>(Lifestyle.Scoped);
+            container.Register<IPrincipalAccessor, CallContextPrincipalAccessor>(Lifestyle.Scoped);
 
             container.Register(() =>
             {
                 var applicationDbContext = new ApplicationDbContext();
                 var userStore = new UserStore<User>(applicationDbContext);
-                var dataProtector = app.GetDataProtectionProvider().Create("ASP.NET Identity");
+                var dataProtector = dataProtectionProviderFactory().Create("ASP.NET Identity");
                 var dataProtectorTokenProvider = new DataProtectorTokenProvider<User>(dataProtector);
 
                 return new ApplicationUserManager(userStore, dataProtectorTokenProvider);
@@ -47,15 +61,9 @@ namespace TT.Web
 
             container.Register<ApplicationSignInManager>(Lifestyle.Scoped);
 
-            container.Register(
-                () => container.IsVerifying()
-                ? new OwinContext(new Dictionary<string, object>()).Authentication
-                : HttpContext.Current.GetOwinContext().Authentication, Lifestyle.Scoped);
+            container.Register(() => container.GetInstance<IOwinContextAccessor>().CurrentContext.Authentication, Lifestyle.Scoped);
 
             container.Register<IDataContext, DomainContext>(Lifestyle.Scoped);
-
-            container.RegisterMvcControllers(webAssembly);
-            container.RegisterWebApiControllers(httpConfig);
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();
@@ -85,9 +93,6 @@ namespace TT.Web
             container.RegisterCollection(typeof(IValidator<>), domainAssembly);
 
             container.Verify();
-
-            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-            httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
         }
 
         private static IEnumerable<Type> GetAllGenericImplementations<T>(Container container, params Assembly[] assemblies)

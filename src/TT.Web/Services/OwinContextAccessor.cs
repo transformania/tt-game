@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TT.Web.Services
 {
-    public class CallContextOwinContextAccessor : IOwinContextAccessor
+    public class OwinContextAccessor : IOwinContextAccessor
     {
         public IOwinContext CurrentContext { get; set; }
 

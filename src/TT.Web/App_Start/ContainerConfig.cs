@@ -3,6 +3,7 @@ using Highway.Data;
 using MediatR;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Owin.Security.DataProtection;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
@@ -27,6 +28,8 @@ namespace TT.Web
         private static readonly Assembly webAssembly = typeof(ContainerConfig).Assembly;
         private static readonly Assembly domainAssembly = typeof(DomainContext).Assembly;
 
+        public static bool ContainerVerified { get; private set; }
+
         public static void RegisterContainer(this Container container, HttpConfiguration httpConfig, Func<IDataProtectionProvider> dataProtectionProviderFactory)
         {
             // use AsyncScopedLifestyle when web api requests a dependency,
@@ -45,9 +48,22 @@ namespace TT.Web
             WebApiConfig.Register(httpConfig);
             httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 
+            // SignalR
+            // batch registration for IHub
+            var IHubImplementationTypes = GetAllGenericImplementations<IHub>(container, webAssembly);
+
+            foreach (var hubType in IHubImplementationTypes)
+            {
+                container.Register(hubType, hubType, Lifestyle.Scoped);
+            }
+
+            container.Register<IHubConnectionIdAccessor, HubConnectionIdAccessor>(Lifestyle.Scoped);
+
+            container.Register<IHubRequestAccessor, HubRequestAccessor>(Lifestyle.Scoped);
+
             // Owin
-            container.Register<IOwinContextAccessor, CallContextOwinContextAccessor>(Lifestyle.Scoped);
-            container.Register<IPrincipalAccessor, CallContextPrincipalAccessor>(Lifestyle.Scoped);
+            container.Register<IOwinContextAccessor, OwinContextAccessor>(Lifestyle.Scoped);
+            container.Register<IPrincipalAccessor, PrincipalAccessor>(Lifestyle.Scoped);
 
             container.Register(() =>
             {
@@ -93,6 +109,7 @@ namespace TT.Web
             container.RegisterCollection(typeof(IValidator<>), domainAssembly);
 
             container.Verify();
+            ContainerVerified = true;
         }
 
         private static IEnumerable<Type> GetAllGenericImplementations<T>(Container container, params Assembly[] assemblies)

@@ -18,6 +18,8 @@ using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.World.Queries;
 using TT.Web;
+using TT.Web.DependencyResolvers;
+using TT.Web.HubDispatchers;
 using TT.Web.Models;
 using TT.Web.Services;
 
@@ -31,6 +33,7 @@ namespace TT.Web
         {
             var container = new Container();
             var httpConfig = new HttpConfiguration();
+            var signalrResolver = new SimpleInjectorSignalRDependencyResolver(container);
 
             container.RegisterContainer(httpConfig, app.GetDataProtectionProvider);
 
@@ -51,7 +54,24 @@ namespace TT.Web
                 }
             });
 
-            app.MapSignalR();
+            app.MapScopableHubConnection(async (request, connectionId, next) =>
+            {
+                using (AsyncScopedLifestyle.BeginScope(container))
+                {
+                    if (container.GetInstance<IHubRequestAccessor>() is HubRequestAccessor hubRequestAccessor)
+                    {
+                        hubRequestAccessor.Request = request;
+                    }
+
+                    if (container.GetInstance<IHubConnectionIdAccessor>() is HubConnectionIdAccessor hubConnectionIdAccessor)
+                    {
+                        hubConnectionIdAccessor.ConnectionId = connectionId;
+                    }
+
+                    await next();
+                }
+            },
+            resolver: signalrResolver);
 
             app.Use(async (context, next) =>
             {
@@ -60,7 +80,7 @@ namespace TT.Web
                 {
                     // capture the owin context for any service dependant on it and store it in the async scoped container
                     // this will use WebRequestLifestyle's cache
-                    if (container.GetInstance<IOwinContextAccessor>() is CallContextOwinContextAccessor webrequestCallContextOwinContextAccessor)
+                    if (container.GetInstance<IOwinContextAccessor>() is OwinContextAccessor webrequestCallContextOwinContextAccessor)
                     {
                         webrequestCallContextOwinContextAccessor.CurrentContext = context;
                     }
@@ -70,7 +90,7 @@ namespace TT.Web
                 {
                     // capture the owin context for any service dependant on it and store it in the async scoped container
                     // this will use AsyncScopedLifestyle's cache
-                    if (container.GetInstance<IOwinContextAccessor>() is CallContextOwinContextAccessor asyncCallContextOwinContextAccessor)
+                    if (container.GetInstance<IOwinContextAccessor>() is OwinContextAccessor asyncCallContextOwinContextAccessor)
                     {
                         asyncCallContextOwinContextAccessor.CurrentContext = context;
                     }

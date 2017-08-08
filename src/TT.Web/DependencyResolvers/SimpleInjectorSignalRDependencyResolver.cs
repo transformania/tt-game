@@ -17,33 +17,15 @@ namespace TT.Web.DependencyResolvers
 
         public override object GetService(Type serviceType)
         {
-            // if Simple Injector is still being configured but SignalR needs a dependency, use the default resolver. If Simple Injector returns null, use the default resolver.
-            // this is done because GetService locks the container.
-            if (!ContainerConfig.ContainerVerified)
-            {
-                return base.GetService(serviceType);
-            }
-            else
-            {
-                return _container.GetService(serviceType) ?? base.GetService(serviceType);
-            }
+            return _container.GetService(serviceType) ?? base.GetService(serviceType);
         }
 
         public override IEnumerable<object> GetServices(Type serviceType)
         {
             Type collectionType = typeof(IEnumerable<>).MakeGenericType(serviceType);
-            IEnumerable<object> simpleInjectorServices;
+            IEnumerable<object> simpleInjectorServices = (IEnumerable<object>)_container.GetService(collectionType) ?? Enumerable.Empty<object>();
 
-            if (!ContainerConfig.ContainerVerified)
-            {
-                return base.GetServices(serviceType);
-            }
-            else
-            {
-                simpleInjectorServices = (IEnumerable<object>)_container.GetService(collectionType) ?? Enumerable.Empty<object>();
-
-                return base.GetServices(serviceType).Concat(simpleInjectorServices);
-            }            
+            return base.GetServices(serviceType).Concat(simpleInjectorServices);
         }
     }
 }

@@ -316,6 +316,8 @@
     <Compile Include="RestockItemController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\HubContextAccessor.cs" />
+    <Compile Include="Services\IHubContextAccessor.cs" />
     <Compile Include="Services\OwinContextAccessor.cs" />
     <Compile Include="Services\PrincipalAccessor.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />

@@ -28,8 +28,6 @@ namespace TT.Web
         private static readonly Assembly webAssembly = typeof(ContainerConfig).Assembly;
         private static readonly Assembly domainAssembly = typeof(DomainContext).Assembly;
 
-        public static bool ContainerVerified { get; private set; }
-
         public static void RegisterContainer(this Container container, HttpConfiguration httpConfig, Func<IDataProtectionProvider> dataProtectionProviderFactory)
         {
             // use AsyncScopedLifestyle when web api requests a dependency,
@@ -60,6 +58,8 @@ namespace TT.Web
             container.Register<IHubConnectionIdAccessor, HubConnectionIdAccessor>(Lifestyle.Scoped);
 
             container.Register<IHubRequestAccessor, HubRequestAccessor>(Lifestyle.Scoped);
+
+            container.Register(typeof(IHubContextAccessor<>), typeof(HubContextAccessor<>), Lifestyle.Singleton);
 
             // Owin
             container.Register<IOwinContextAccessor, OwinContextAccessor>(Lifestyle.Scoped);
@@ -109,7 +109,6 @@ namespace TT.Web
             container.RegisterCollection(typeof(IValidator<>), domainAssembly);
 
             container.Verify();
-            ContainerVerified = true;
         }
 
         private static IEnumerable<Type> GetAllGenericImplementations<T>(Container container, params Assembly[] assemblies)

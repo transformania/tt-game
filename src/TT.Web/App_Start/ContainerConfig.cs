@@ -3,6 +3,7 @@ using Highway.Data;
 using MediatR;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Owin.Security.DataProtection;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
@@ -45,9 +46,24 @@ namespace TT.Web
             WebApiConfig.Register(httpConfig);
             httpConfig.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 
+            // SignalR
+            // batch registration for IHub
+            var IHubImplementationTypes = GetAllGenericImplementations<IHub>(container, webAssembly);
+
+            foreach (var hubType in IHubImplementationTypes)
+            {
+                container.Register(hubType, hubType, Lifestyle.Scoped);
+            }
+
+            container.Register<IHubConnectionIdAccessor, HubConnectionIdAccessor>(Lifestyle.Scoped);
+
+            container.Register<IHubRequestAccessor, HubRequestAccessor>(Lifestyle.Scoped);
+
+            container.Register(typeof(IHubContextAccessor<>), typeof(HubContextAccessor<>), Lifestyle.Singleton);
+
             // Owin
-            container.Register<IOwinContextAccessor, CallContextOwinContextAccessor>(Lifestyle.Scoped);
-            container.Register<IPrincipalAccessor, CallContextPrincipalAccessor>(Lifestyle.Scoped);
+            container.Register<IOwinContextAccessor, OwinContextAccessor>(Lifestyle.Scoped);
+            container.Register<IPrincipalAccessor, PrincipalAccessor>(Lifestyle.Scoped);
 
             container.Register(() =>
             {

@@ -268,6 +268,7 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="DependencyResolvers\SimpleInjectorSignalRDependencyResolver.cs" />
     <Compile Include="DonatorController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -276,6 +277,8 @@
     </Compile>
     <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="HubDispatchers\ScopableHubDispatcher.cs" />
+    <Compile Include="HubDispatchers\ScopableHubDispatcherExtensions.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Hubs\DuelHub.cs" />
     <Compile Include="Hubs\NoticeHub.cs" />
@@ -313,11 +316,17 @@
     <Compile Include="RestockItemController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\CallContextOwinContextAccessor.cs" />
-    <Compile Include="Services\CallContextPrincipalAccessor.cs" />
+    <Compile Include="Services\HubContextAccessor.cs" />
+    <Compile Include="Services\IHubContextAccessor.cs" />
+    <Compile Include="Services\OwinContextAccessor.cs" />
+    <Compile Include="Services\PrincipalAccessor.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
     <Compile Include="Services\ChatPersistenceService.cs" />
+    <Compile Include="Services\HubConnectionIdAccessor.cs" />
+    <Compile Include="Services\HubRequestAccessor.cs" />
     <Compile Include="Services\IChatPersistanceService.cs" />
+    <Compile Include="Services\IHubConnectionIdAccessor.cs" />
+    <Compile Include="Services\IHubRequestAccessor.cs" />
     <Compile Include="Services\IOwinContextAccesor.cs" />
     <Compile Include="Services\NoticeService.cs" />
     <Compile Include="SettingsController.generated.cs">

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
 using System.Web.Security;
 using TT.Domain.Services;
 
 namespace TT.Web.Services
 {
-    public class CallContextPrincipalAccessor : IPrincipalAccessor
+    public class PrincipalAccessor : IPrincipalAccessor
     {
         /// <summary>
-        /// Returns the user for this owin request.
+        /// Returns the user for this owin or hub request.
         /// </summary>
-        public IPrincipal RequestPrincipal => _owinContextAccessor.CurrentContext.Request.User;
+        /// <remarks>The user will be retrieved from Owin first. If null, the user will be retrieved from a hub request.</remarks>
+        public IPrincipal RequestPrincipal => _owinContextAccessor.CurrentContext?.Request.User ?? _hubRequestAccessor.Request?.User ?? Thread.CurrentPrincipal;
 
         /// <summary>
         /// Returns the user name ID claim that the request user has.
@@ -35,11 +37,13 @@ namespace TT.Web.Services
         /// </summary>
         public IEnumerable<string> Roles => Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
 
-        private IOwinContextAccessor _owinContextAccessor { get; }
+        private IOwinContextAccessor _owinContextAccessor;
+        private readonly IHubRequestAccessor _hubRequestAccessor;
 
-        public CallContextPrincipalAccessor(IOwinContextAccessor owinContextAccessor)
+        public PrincipalAccessor(IOwinContextAccessor owinContextAccessor, IHubRequestAccessor hubRequestAccessor)
         {
             _owinContextAccessor = owinContextAccessor;
+            _hubRequestAccessor = hubRequestAccessor;
         }
     }
 }

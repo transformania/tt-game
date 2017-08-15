@@ -291,6 +291,8 @@
     <Compile Include="LeaderboardController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="LifestyleSelectionBehaviors\AttributeBasedLifestyleSelectionBehavior.cs" />
+    <Compile Include="LifestyleSelectionBehaviors\CreationPolicyExtensions.cs" />
     <Compile Include="MessagesController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

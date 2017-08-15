@@ -17,7 +17,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using TT.Domain;
+using TT.Domain.CreationPolices;
 using TT.Domain.Services;
+using TT.Web.LifestyleSelectionBehaviors;
 using TT.Web.Models;
 using TT.Web.Services;
 
@@ -35,6 +37,13 @@ namespace TT.Web
             container.Options.DefaultScopedLifestyle = Lifestyle.CreateHybrid(
                 defaultLifestyle: new AsyncScopedLifestyle(),
                 fallbackLifestyle: new WebRequestLifestyle());
+
+            container.Options.LifestyleSelectionBehavior 
+                = new AttributeBasedLifestyleSelectionBehavior(
+                    new Dictionary<IEnumerable<Type>, CreationPolicy>
+                    {
+                        { container.GetTypesToRegister(typeof(IValidator<>), new []{ domainAssembly }), CreationPolicy.Singleton }
+                    });
 
             // MVC
             container.RegisterMvcControllers(webAssembly);

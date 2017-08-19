@@ -489,6 +489,7 @@
     </None>
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_46.cshtml" />
     <Content Include="XMLs\validChatColors.txt" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_42.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Items\Alpha_42.cshtml" />

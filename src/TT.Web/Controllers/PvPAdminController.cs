@@ -597,7 +597,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ApproveContribution(int id)
         {
-            // assert only admin can view this
+            // assert only admins or spell approvers can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_SpellApprover))
             {
                 return RedirectToAction(MVC.PvP.Play());
@@ -778,8 +778,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult RejectContribution(int id)
         {
-            // assert only admins can view this
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            // assert only admins or spell approvers can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_SpellApprover))
             {
                 return RedirectToAction(MVC.PvP.Play());
             }

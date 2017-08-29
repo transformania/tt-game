@@ -46,13 +46,13 @@ namespace TT.Web.Controllers
 
 
 
-            return View(output);
+            return View(MVC.Covenant.Views.MyCovenant, output);
         }
 
         public virtual ActionResult CovenantList()
         {
             IEnumerable<CovenantListItemViewModel> output = CovenantProcedures.GetCovenantsList();
-            return View(output);
+            return View(MVC.Covenant.Views.CovenantList, output);
         }
 
         public virtual ActionResult ApplyToCovenant(int id)
@@ -111,7 +111,7 @@ namespace TT.Web.Controllers
             // validations are okay:  return the application list
             IEnumerable<CovenantApplicationViewModel> output = CovenantProcedures.GetCovenantApplications(myCov);
 
-            return View(output);
+            return View(MVC.Covenant.Views.ReviewMyCovenantApplications, output);
         }
 
         public virtual ActionResult ApplicationResponse(int id, string response)
@@ -231,7 +231,7 @@ namespace TT.Web.Controllers
 
             ViewBag.FlagURLS = flagURLs;
 
-            return View(myCov);
+            return View(MVC.Covenant.Views.ChangeCovenantDescription, myCov);
         }
 
         public virtual ActionResult ChangeCovenantDescriptionSubmit(Covenant input)
@@ -296,7 +296,7 @@ namespace TT.Web.Controllers
             }
 
             Covenant output = new Covenant();
-            return View(output);
+            return View(MVC.Covenant.Views.StartNewCovenant, output);
         }
 
         public virtual ActionResult StartNewCovenantSubmit(Covenant input)
@@ -343,7 +343,7 @@ namespace TT.Web.Controllers
         {
             CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(id);
             ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
-            return View(output);
+            return View(MVC.Covenant.Views.LookAtCovenant, output);
         }
 
         public virtual ActionResult WithdrawApplication()
@@ -385,7 +385,7 @@ namespace TT.Web.Controllers
             }
 
 
-            return View();
+            return View(MVC.Covenant.Views.CovenantLeaderAdmin);
         }
 
         public virtual ActionResult KickList()
@@ -410,7 +410,7 @@ namespace TT.Web.Controllers
             // remove the player's own name from the list
             output.Members = output.Members.Where(p => p.Player.Id != me.Id);
 
-            return View(output);
+            return View(MVC.Covenant.Views.KickList, output);
 
         }
 
@@ -596,7 +596,7 @@ namespace TT.Web.Controllers
             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
             ViewBag.CovenantMoney = myCov.Money;
 
-            return View();
+            return View(MVC.Covenant.Views.ClaimLocation);
 
         }
 
@@ -775,7 +775,7 @@ namespace TT.Web.Controllers
 
             ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(myCov, me);
 
-            return View(output);
+            return View(MVC.Covenant.Views.ViewAvailableFurniture, output);
         }
 
         public virtual ActionResult PurchaseFurniture(int id)
@@ -883,7 +883,7 @@ namespace TT.Web.Controllers
 
             ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
 
-            return View(output);
+            return View(MVC.Covenant.Views.MyCovenantFurniture, output);
 
         }
 
@@ -966,7 +966,7 @@ namespace TT.Web.Controllers
 
             IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs((int)me.Covenant);
 
-            return View(output);
+            return View(MVC.Covenant.Views.MyCovenantLog, output);
         }
 
         public virtual ActionResult InviteCaptainList()
@@ -993,7 +993,7 @@ namespace TT.Web.Controllers
 
             ViewBag.CurrentCaptains = myCov.Captains;
 
-            return View(output);
+            return View(MVC.Covenant.Views.InviteCaptainList, output);
         }
 
         public virtual ActionResult InviteCaptainSend(int id)
@@ -1060,7 +1060,7 @@ namespace TT.Web.Controllers
             }
 
             CovenantViewModel output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
-            return View(output);
+            return View(MVC.Covenant.Views.InviteLeaderList, output);
         }
 
 

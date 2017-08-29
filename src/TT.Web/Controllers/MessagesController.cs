@@ -112,7 +112,7 @@ namespace TT.Web.Controllers
 
             DomainRegistry.Repository.Execute(new MarkAsRead { MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id });
 
-            return View(message);
+            return View(MVC.Messages.Views.ReadMessage, message);
         }
 
         public virtual ActionResult ReadConversation(int messageId)
@@ -308,7 +308,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            return View();
+            return View(MVC.Messages.Views.CovenantWideMessage);
         }
 
         // POST: /Messages/SendCovenantWideMessage

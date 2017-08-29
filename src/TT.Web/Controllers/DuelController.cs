@@ -17,7 +17,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Duel()
         {
-            return View();
+            return View(MVC.Duel.Views.Duel);
         }
 
         public virtual ActionResult IssueChallenge(int id)
@@ -281,7 +281,7 @@ namespace TT.Web.Controllers
             ViewBag.CurrentTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             ViewBag.TurnsRemaining = PvPStatics.MaximumDuelTurnLength - (ViewBag.CurrentTurn - duel.StartTurn);
 
-            return View(output);
+            return View(MVC.Duel.Views.DuelDetail, output);
         }
 
         public virtual ActionResult AdvanceTurn()

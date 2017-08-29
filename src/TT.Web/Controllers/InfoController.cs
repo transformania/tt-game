@@ -21,23 +21,23 @@ namespace TT.Web.Controllers
     {
         public virtual ActionResult FAQ()
         {
-            return View();
+            return View(MVC.Info.Views.FAQ);
         }
 
         public virtual ActionResult HowToPlay()
         {
-            return View();
+            return View(MVC.Info.Views.HowToPlay);
         }
 
         public virtual ActionResult Rules()
         {
-            return View();
+            return View(MVC.Info.Views.Rules);
         }
 
 
         public virtual ActionResult GameNews_PlannedFeatures()
         {
-            return View();
+            return View(MVC.Info.Views.GameNews_PlannedFeatures);
         }
 
         public virtual ActionResult GameNews()
@@ -50,39 +50,39 @@ namespace TT.Web.Controllers
                 NewsPosts = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp) // 1 == Live
             };
 
-            return View(output);
+            return View(MVC.Info.Views.GameNews, output);
         }
 
         public virtual ActionResult GameNews_Archive()
         {
             INewsPostRepository repo = new EFNewsPostRepository();
             var output = repo.NewsPosts.Where(n => n.ViewState == 2).OrderByDescending(n => n.Timestamp); ; // 2 == Archived
-            return View(output);
+            return View(MVC.Info.Views.GameNews_Archive, output);
         }
 
         public virtual ActionResult RecentRPClassifieds()
         {
             var output = DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = TimeSpan.FromDays(3) });
-            return View(output);
+            return View(MVC.Info.Views.RecentRPClassifieds, output);
         }
 
         public virtual ActionResult AllLocations()
         {
             List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => s.Region!="dungeon").ToList();
-            return PartialView(output);
+            return PartialView(MVC.Info.Views.AllLocations, output);
         }
 
         public virtual ActionResult AllForms()
         {
             List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
-            return PartialView(output);
+            return PartialView(MVC.Info.Views.AllForms, output);
         }
 
         public virtual ActionResult AllItems()
         {
             var cmd = new GetItemSources();
             var output = DomainRegistry.Repository.Find(cmd);
-            return PartialView(output);
+            return PartialView(MVC.Info.Views.AllItems, output);
         }
 
         public virtual ActionResult ServerPopulation()
@@ -94,7 +94,7 @@ namespace TT.Web.Controllers
 
             IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
 
-            return View(output);
+            return View(MVC.Info.Views.ServerPopulation, output);
         }
 
         public virtual JsonResult ServerPopulationJson()
@@ -106,7 +106,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult GearTool()
         {
-            return View();
+            return View(MVC.Info.Views.GearTool);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Donate()
         {
-            return View();
+            return View(MVC.Info.Views.Donate);
         }
 
     }

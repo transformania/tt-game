@@ -17,7 +17,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Index()
         {
-            return View();
+            return View(MVC.Moderator.Views.Index);
         }
 
         public virtual ActionResult ViewAbusiveMessages()
@@ -27,7 +27,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
             var output = DomainRegistry.Repository.Find(new GetMessagesReportedAbusive());
-            return View(output);
+            return View(MVC.Moderator.Views.ViewAbusiveMessages, output);
         }
 
         public virtual ActionResult ViewStrikes(string id)
@@ -37,7 +37,7 @@ namespace TT.Web.Controllers
                 UserId = id,
                 PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = id })
             };
-            return View(output);
+            return View(MVC.Moderator.Views.ViewStrikes, output);
         }
 
         [ValidateAntiForgeryToken]

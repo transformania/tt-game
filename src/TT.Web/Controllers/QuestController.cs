@@ -114,7 +114,7 @@ namespace TT.Web.Controllers
                 AvailableQuests = QuestProcedures.GetAvailableQuestsAtLocation(me, PvPWorldStatProcedures.GetWorldTurnNumber()),
             };
 
-            return View(output);
+            return View(MVC.Quest.Views.QuestsAvailableHere, output);
         }
 
         public virtual ActionResult Questing()
@@ -123,7 +123,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             QuestStart questStart = QuestProcedures.GetQuest(me.InQuest);
-            return View(questStart);
+            return View(MVC.Quest.Views.Questing, questStart);
         }
 
         public virtual ActionResult Quest()
@@ -148,7 +148,7 @@ namespace TT.Web.Controllers
 
             output.SetConnectionText((string)TempData["ConnectionText"]);
 
-            return PartialView(output);
+            return PartialView(MVC.Quest.Views.Quest, output);
         }
 
         public virtual ActionResult Choice(int Id)
@@ -247,7 +247,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            return PartialView();
+            return PartialView(MVC.Quest.Views.Abandon);
         }
 
         public virtual ActionResult AbandonConfirm()

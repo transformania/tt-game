@@ -38,7 +38,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(MVC.Account.Views.Login);
         }
 
         //
@@ -56,7 +56,7 @@ namespace TT.Web.Controllers
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     ModelState.AddModelError("", "Captcha answer cannot be empty.");
-                    return View(model);
+                    return View(MVC.Account.Views.Login, model);
                 }
                 RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
@@ -80,7 +80,7 @@ namespace TT.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(MVC.Account.Views.Login, model);
         }
 
         //
@@ -101,7 +101,7 @@ namespace TT.Web.Controllers
         [AllowAnonymous]
         public virtual ActionResult Register()
         {
-            return View();
+            return View(MVC.Account.Views.Register);
         }
 
         //
@@ -119,7 +119,7 @@ namespace TT.Web.Controllers
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     ModelState.AddModelError("", "Captcha answer cannot be empty.");
-                    return View(model);
+                    return View(MVC.Account.Views.Register, model);
                 }
                 RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
@@ -145,7 +145,7 @@ namespace TT.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(MVC.Account.Views.Register, model);
         }
 
         //
@@ -185,7 +185,7 @@ namespace TT.Web.Controllers
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action(MVC.Account.Manage());
-            return View();
+            return View(MVC.Account.Views.Manage);
         }
 
         //
@@ -197,7 +197,7 @@ namespace TT.Web.Controllers
             {
                 Email = GetUser().Email
             };
-            return View(Email);
+            return View(MVC.Account.Views.ChangeEmail, Email);
         }
 
         //
@@ -234,13 +234,13 @@ namespace TT.Web.Controllers
                 }
             }
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(MVC.Account.Views.ChangeEmail, model);
         }
 
         [AllowAnonymous]
         public virtual ActionResult TermsOfService()
         {
-            return View();
+            return View(MVC.Account.Views.TermsOfService);
         }
 
         //
@@ -299,7 +299,7 @@ namespace TT.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(MVC.Account.Views.Manage, model);
         }
 
         [HttpPost]

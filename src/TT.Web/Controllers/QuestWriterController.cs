@@ -23,7 +23,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.QuestWriter.Views.Index, output);
         }
 
         public virtual ActionResult QuestStart(int Id)
@@ -53,7 +53,7 @@ namespace TT.Web.Controllers
             QuestState firstState = repo.QuestStates.FirstOrDefault(f => f.Id == questStart.StartState);
             ViewBag.firstState = firstState;
 
-            return PartialView(questStart);
+            return PartialView(MVC.QuestWriter.Views.QuestStart, questStart);
         }
 
         public virtual ActionResult QuestStartSend(QuestStart input)
@@ -105,10 +105,6 @@ namespace TT.Web.Controllers
                     PinToDiagram = true
                 };
             }
-            else
-            {
-
-            }
 
             QuestStateFormViewModel output = new QuestStateFormViewModel();
             output.QuestState = questState;
@@ -117,7 +113,7 @@ namespace TT.Web.Controllers
 
             output.QuestConnectionsFrom = repo.QuestConnections.Where(q => q.QuestStateFromId == output.QuestState.Id && q.QuestStateFromId > 0);
 
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.QuestState, output);
         }
 
         public virtual ActionResult QuestStateSend(QuestStateFormViewModel input)
@@ -182,7 +178,7 @@ namespace TT.Web.Controllers
                 output.FailToQuestState = QuestProcedures.GetQuestState(questConnection.QuestStateFailToId);
             }
 
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.QuestConnection, output);
         }
 
         public virtual ActionResult QuestConnectionSend(QuestConnectionFormViewModel input)
@@ -230,7 +226,7 @@ namespace TT.Web.Controllers
             output.QuestConnectionRequirement = QuestConnectionRequirement;
             output.QuestConnection = connection;
 
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.QuestConnectionRequirement, output);
         }
 
         public virtual ActionResult QuestConnectionRequirementSend(QuestConnectionRequirementFormViewModel input)
@@ -287,7 +283,7 @@ namespace TT.Web.Controllers
             output.QuestStatePreaction = questStatePreaction;
             output.ParentQuestState = state;
 
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.QuestStatePreaction, output);
         }
 
         public virtual ActionResult QuestStatePreactionSend(QuestStatePreactionFormViewModel input)
@@ -344,7 +340,7 @@ namespace TT.Web.Controllers
             output.QuestEnd = questEnd;
             output.ParentQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == QuestStateId);
 
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.QuestEnd, output);
         }
 
         public virtual ActionResult QuestEndSend(QuestEndFormViewModel input)
@@ -376,7 +372,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Help()
         {
-            return PartialView();
+            return PartialView(MVC.QuestWriter.Views.Help);
         }
 
         public virtual ActionResult Diagram(int Id)
@@ -384,7 +380,7 @@ namespace TT.Web.Controllers
 
             ViewBag.QuestId = Id;
 
-            return PartialView();
+            return PartialView(MVC.QuestWriter.Views.Diagram);
         }
 
         public virtual JsonResult DiagramStatesJSON(int Id)
@@ -468,19 +464,19 @@ namespace TT.Web.Controllers
         public virtual ActionResult ShowAllQuestStarts()
         {
             IEnumerable<QuestStart> output = QuestProcedures.GetAllQuestStarts();
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.ShowAllQuestStarts, output);
         }
 
         public virtual ActionResult ShowAllQuestStates(int Id)
         {
             IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.ShowAllQuestStates, output);
         }
 
         public virtual ActionResult ShowAllQuestConnections(int Id)
         {
             IEnumerable<QuestConnection> output = QuestWriterProcedures.GetAllQuestsConnectionsInQuest(Id);
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.ShowAllQuestConnections, output);
         }
 
         public virtual JsonResult ShowAllUsedQuestVariables(int Id)
@@ -511,7 +507,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ShowQuestWriterLogs(int Id)
         {
             IEnumerable<QuestWriterLog> output = QuestWriterProcedures.GetAllQuestWriterLogs(Id);
-            return PartialView(output);
+            return PartialView(MVC.QuestWriter.Views.ShowQuestWriterLogs, output);
         }
 
     }

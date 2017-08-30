@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +8,9 @@ namespace TT.Domain.Validation
 {
     public class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly IValidator<TRequest>[] validators;
+        private readonly IEnumerable<IValidator<TRequest>> validators;
 
-        public ValidationPipelineBehavior(IValidator<TRequest>[] validators)
+        public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
         {
             this.validators = validators;
         }

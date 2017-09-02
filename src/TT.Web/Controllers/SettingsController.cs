@@ -40,7 +40,7 @@ namespace TT.Web.Controllers
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId })
             };
 
-            return View(output);
+            return View(MVC.Settings.Views.Settings, output);
         }
 
         public virtual ActionResult ChangeGameMode(int mode)
@@ -101,7 +101,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View(output);
+            return View(MVC.Settings.Views.SetBio, output);
         }
 
         public virtual ActionResult SetBioSend(SetBioViewModel input)
@@ -202,7 +202,7 @@ namespace TT.Web.Controllers
             ViewBag.MyContributions = mySpells.ToList();
             ViewBag.MyEffectContributions = myEffects.ToList();
 
-            return View(output);
+            return View(MVC.Settings.Views.ViewBio, output);
         }
 
         public virtual ActionResult DumpWillpower(string amount)
@@ -288,7 +288,7 @@ namespace TT.Web.Controllers
                 Nickname = me.Nickname
             };
 
-            return View(output);
+            return View(MVC.Settings.Views.SetNickname, output);
         }
 
         [HttpPost]
@@ -358,7 +358,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             IEnumerable<BlacklistEntryViewModel> output = BlacklistProcedures.GetMyBlacklistEntries(me);
 
-            return View(output);
+            return View(MVC.Settings.Views.MyBlacklistEntries, output);
         }
 
         public virtual ActionResult ChangeBlacklistType(int id, int playerId, string type)
@@ -393,7 +393,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ViewPolls()
         {
-            return View();
+            return View(MVC.Settings.Views.ViewPolls);
         }
 
         public virtual ActionResult ViewPoll(int id)
@@ -464,7 +464,7 @@ namespace TT.Web.Controllers
             }
 
             AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(myMembershipId);
-            return View(output);
+            return View(MVC.Settings.Views.WriteAuthorArtistBio, output);
         }
 
 
@@ -519,7 +519,7 @@ namespace TT.Web.Controllers
                 output.Text = output.Text.Replace("[br]", "<br>").Replace("[p]", "<p>").Replace("[/p]", "</p>").Replace("[h1]", "<h1>").Replace("[/h1]", "</h1>").Replace("[h2]", "<h2>").Replace("[/h2]", "</h2>").Replace("[h3]", "<h3>").Replace("[/h3]", "</h3>");
             }
 
-            return View(output);
+            return View(MVC.Settings.Views.AuthorArtistBio, output);
         }
 
         /// <summary>
@@ -626,7 +626,7 @@ namespace TT.Web.Controllers
             ViewBag.Name = player.GetFullName();
             ViewBag.PlayerId = player.Id;
             var output = DomainRegistry.Repository.Find(new GetPlayerStats { OwnerId = player.MembershipId });
-            return View(output);
+            return View(MVC.Settings.Views.PlayerStats, output);
         }
 
         public virtual ActionResult PlayerStatsTopOfType(string type)
@@ -668,7 +668,7 @@ namespace TT.Web.Controllers
                 FriendshipId = friend.Id,
             };
 
-            return View(output);
+            return View(MVC.Settings.Views.SetFriendNickname, output);
         }
 
         [HttpPost]
@@ -740,7 +740,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.Settings.Views.MyRPClassifiedAds, output);
         }
 
         public virtual ActionResult CreateRPClassifiedAd()

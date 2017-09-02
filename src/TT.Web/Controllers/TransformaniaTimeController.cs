@@ -8,7 +8,7 @@ namespace TT.Web.Controllers
     {
         public virtual ActionResult Play()
         {
-            return View();
+            return View(MVC.TransformaniaTime.Views.Play);
         }
 
         public void PostStat(string message)

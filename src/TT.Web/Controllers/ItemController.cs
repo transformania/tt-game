@@ -45,7 +45,7 @@ namespace TT.Web.Controllers
 
             var output = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull);
 
-            return View(output);
+            return View(MVC.Item.Views.SelfCast, output);
         }
 
         public virtual ActionResult SelfCastSend(string spell)
@@ -150,7 +150,7 @@ namespace TT.Web.Controllers
             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToList();
             ViewBag.itemToUseId = itemToUse.dbItem.Id;
 
-            return View(output);
+            return View(MVC.Item.Views.RemoveCurse, output);
         }
 
         public virtual ActionResult RemoveCurseSend(string curse, int id)
@@ -274,7 +274,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ShowStatsTable()
         {
-            return View();
+            return View(MVC.Item.Views.ShowStatsTable);
         }
 
 

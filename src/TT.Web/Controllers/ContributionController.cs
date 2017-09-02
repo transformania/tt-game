@@ -177,7 +177,7 @@ namespace TT.Web.Controllers
             }
             #endregion
 
-            return View(contribution);
+            return View(MVC.Contribution.Views.Contribute, contribution);
         }
 
         [Authorize]
@@ -737,7 +737,7 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
 
 
-            return View(output);
+            return View(MVC.Contribution.Views.ContributeEffect, output);
         }
 
         public virtual ActionResult SendEffectContribution(EffectContribution input)
@@ -1578,7 +1578,7 @@ namespace TT.Web.Controllers
         {
             IDMRollRepository repo = new EFDMRollRepository();
             string myMembershipId = User.Identity.GetUserId();
-            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == myMembershipId));
+            return View(MVC.Contribution.Views.MyDMRolls, repo.DMRolls.Where(r => r.MembershipOwnerId == myMembershipId));
         }
 
         [Authorize]
@@ -1599,7 +1599,7 @@ namespace TT.Web.Controllers
                 }
             }
 
-            return View(output);
+            return View(MVC.Contribution.Views.DMRoll, output);
         }
 
         [Authorize]
@@ -1656,7 +1656,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
             IDMRollRepository repo = new EFDMRollRepository();
-            return View(repo.DMRolls.Where(r => !r.IsLive));
+            return View(MVC.Contribution.Views.ReviewDMRolls, repo.DMRolls.Where(r => !r.IsLive));
         }
 
         [Authorize]
@@ -1726,7 +1726,7 @@ namespace TT.Web.Controllers
                 output.Add(addme);
             }
 
-            return View(output);
+            return View(MVC.Contribution.Views.GetContributionTable, output);
         }
 
 

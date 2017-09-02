@@ -382,7 +382,7 @@ namespace TT.Web.Controllers
                 ViewBag.QuestName = quest.Name;
             }
 
-            return View(output);
+            return View(MVC.PvP.Views.Play, output);
         }
 
         public virtual ActionResult ShowOffline()
@@ -2809,7 +2809,7 @@ namespace TT.Web.Controllers
 
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
-            return View(output);
+            return View(MVC.PvP.Views.WorldMap, output);
         }
 
         public virtual ActionResult Chat(string room)
@@ -2858,7 +2858,7 @@ namespace TT.Web.Controllers
             else
             {
                 IEnumerable<DbStaticEffect> output = EffectProcedures.GetAvailableLevelupPerks(me);
-                return View(output);
+                return View(MVC.PvP.Views.LevelupPerk, output);
             }
 
 
@@ -2890,7 +2890,7 @@ namespace TT.Web.Controllers
 
             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id);
 
-            return View(output);
+            return View(MVC.PvP.Views.MyPerks, output);
         }
 
         public virtual ActionResult ViewEffects(int id)
@@ -2899,7 +2899,7 @@ namespace TT.Web.Controllers
             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(player.Id);
             ViewBag.PlayerName = player.GetFullName();
 
-            return View(output);
+            return View(MVC.PvP.Views.ViewEffects, output);
         }
 
         public virtual ActionResult Teleport(string to)
@@ -3238,7 +3238,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View();
+            return View(MVC.PvP.Views.Shout);
         }
 
         public virtual ActionResult ShoutSend(PublicBroadcastViewModel input)
@@ -3297,7 +3297,7 @@ namespace TT.Web.Controllers
                 Player = DomainRegistry.Repository.FindSingle(new GetPlayerBusDetail { playerId = me.Id })
             };
 
-            return View(output);
+            return View(MVC.PvP.Views.Bus, output);
         }
 
         public virtual ActionResult TakeBus(string destination)

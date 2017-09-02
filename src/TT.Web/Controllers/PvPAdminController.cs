@@ -35,7 +35,7 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Message = TempData["Message"];
-            return View();
+            return View(MVC.PvPAdmin.Views.Index);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace TT.Web.Controllers
 
             PvPWorldStat output = repo.PvPWorldStats.First();
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.ChangeWorldStats, output);
 
         }
 
@@ -151,7 +151,7 @@ namespace TT.Web.Controllers
 
             var game = DomainRegistry.Repository.FindSingle(new GetWorld());
 
-            return View(game);
+            return View(MVC.PvPAdmin.Views.ChangeRoundText, game);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace TT.Web.Controllers
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
             IEnumerable<EffectContribution> output = effectConRepo.EffectContributions.Where(c => !c.IsLive && c.ReadyForReview && !c.ApprovedByAdmin && !c.ProofreadingCopy);
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.ApproveEffectContributionList, output);
         }
 
         public virtual ActionResult ApproveEffectContribution(int id)
@@ -337,7 +337,7 @@ namespace TT.Web.Controllers
             else
             {
                 PublicBroadcastViewModel output = new PublicBroadcastViewModel();
-                return View(output);
+                return View(MVC.PvPAdmin.Views.PublicBroadcast, output);
             }
         }
 
@@ -400,7 +400,7 @@ namespace TT.Web.Controllers
                     output.Message = stats.GameNewsDate;
                 }
 
-                return View(output);
+                return View(MVC.PvPAdmin.Views.ChangeGameDate, output);
             }
         }
 
@@ -591,7 +591,7 @@ namespace TT.Web.Controllers
             IContributionRepository contRepo = new EFContributionRepository();
 
             IEnumerable<Contribution> output = contRepo.Contributions.Where(c => !c.IsLive && c.IsReadyForReview && !c.AdminApproved && !c.ProofreadingCopy);
-            return View(output);
+            return View(MVC.PvPAdmin.Views.ApproveContributionList, output);
 
         }
 
@@ -908,13 +908,13 @@ namespace TT.Web.Controllers
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(t => t.TurnNumber == turn);
-            return View(log);
+            return View(MVC.PvPAdmin.Views.ViewServerLog, log);
         }
 
         public virtual ActionResult ViewUpdateLogs()
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
-            return View(serverLogRepo.ServerLogs);
+            return View(MVC.PvPAdmin.Views.ViewUpdateLogs, serverLogRepo.ServerLogs);
         }
 
         public virtual ActionResult FaeList()
@@ -929,7 +929,7 @@ namespace TT.Web.Controllers
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
             var encounters = repo.JewdewfaeEncounters.ToList();
 
-            return View(encounters);
+            return View(MVC.PvPAdmin.Views.FaeList, encounters);
 
         }
 
@@ -997,7 +997,7 @@ namespace TT.Web.Controllers
                 ViewBag.FormExists = "<span class='good'>FORM " + encounter.RequiredForm + " EXISTs.</span>";
             }
 
-            return View(encounter);
+            return View(MVC.PvPAdmin.Views.WriteFae, encounter);
         }
 
         [Authorize]
@@ -1064,7 +1064,7 @@ namespace TT.Web.Controllers
             }
 
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.WriteFaeEncounter, output);
         }
 
         public virtual ActionResult LoadSpecificEncounter(string filename)
@@ -1175,7 +1175,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Scratchpad()
         {
-            return View();
+            return View(MVC.PvPAdmin.Views.Scratchpad);
         }
 
         public virtual ActionResult AuditDonators()
@@ -1268,7 +1268,7 @@ namespace TT.Web.Controllers
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View();
+                return View(MVC.PvPAdmin.Views.FindMissingThumbnails);
             }
             else
             {
@@ -1284,7 +1284,7 @@ namespace TT.Web.Controllers
             {
                 ViewBag.playeritems = ItemProcedures.GetAllPlayerItems(id).OrderByDescending(i => i.dbItem.Level);
                 ViewBag.player = PlayerProcedures.GetPlayerFormViewModel(id);
-                return View();
+                return View(MVC.PvPAdmin.Views.ViewPlayerItems);
             }
             else
             {
@@ -1300,7 +1300,7 @@ namespace TT.Web.Controllers
             {
                 ViewBag.item = ItemProcedures.GetItemViewModel(id);
                 ViewBag.transferlog = ItemTransferLogProcedures.GetItemTransferLog(id);
-                return View();
+                return View(MVC.PvPAdmin.Views.ViewItemTransferLog);
             }
             else
             {
@@ -1335,7 +1335,7 @@ namespace TT.Web.Controllers
                     output.Money = pm.Player.Money;
                 }
 
-                return View(output);
+                return View(MVC.PvPAdmin.Views.RenamePlayer, output);
             }
             else
             {
@@ -1720,7 +1720,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.ListCustomForms, output);
         }
 
         [Authorize]
@@ -1739,7 +1739,7 @@ namespace TT.Web.Controllers
                 output = new ContributorCustomForm { Id = 0, OwnerMembershipId = "" };
             }
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.EditCustomForm, output);
         }
 
         [Authorize]
@@ -1819,7 +1819,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.ListNewsPosts, output);
         }
 
         /// <summary>
@@ -1843,7 +1843,7 @@ namespace TT.Web.Controllers
                 output = new NewsPost();
             }
 
-            return View(output);
+            return View(MVC.PvPAdmin.Views.EditNewsPost, output);
 
         }
 

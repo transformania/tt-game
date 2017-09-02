@@ -120,11 +120,11 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
             if (me.GameMode == GameModeStatics.PvP)
             {
-                return (View(output.Where(i => i.dbItem.PvPEnabled == 2 || i.dbItem.PvPEnabled == -1)));
+                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.dbItem.PvPEnabled == 2 || i.dbItem.PvPEnabled == -1));
             }
             else
             {
-                return (View(output.Where(i => i.dbItem.PvPEnabled == 1 || i.dbItem.PvPEnabled == -1)));
+                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.dbItem.PvPEnabled == 1 || i.dbItem.PvPEnabled == -1));
             }
         }
 
@@ -253,7 +253,7 @@ namespace TT.Web.Controllers
 
             // show the permanent and consumable items the player is carrying
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == "consumable"));
-            return View(output);
+            return View(MVC.NPC.Views.SellList, output);
         }
 
         public virtual ActionResult Sell(int id)
@@ -400,7 +400,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.NPC.Views.TradeWithPetMerchant, output);
         }
 
         public virtual ActionResult PurchasePet(int id)
@@ -527,7 +527,7 @@ namespace TT.Web.Controllers
 
             // show the permanent and consumable items the player is carrying
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped && i.dbItem.IsPermanent);
-            return View(output);
+            return View(MVC.NPC.Views.SellPetList, output);
         }
 
         public virtual ActionResult SellPet(int id)
@@ -626,7 +626,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.NPC.Views.MindControlList, output);
         }
 
         public virtual ActionResult MoveVictim(int id)
@@ -650,12 +650,12 @@ namespace TT.Web.Controllers
             if (victim.IsInDungeon())
             {
                 IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
-                return View(output);
+                return View(MVC.NPC.Views.MoveVictim, output);
             }
             else
             {
                 IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
-                return View(output);
+                return View(MVC.NPC.Views.MoveVictim, output);
             }
         }
 
@@ -990,7 +990,7 @@ namespace TT.Web.Controllers
 
             }
 
-            return View();
+            return View(MVC.NPC.Views.TalkToBartender);
         }
 
         public virtual ActionResult TalkWithJewdewfae()
@@ -1039,7 +1039,7 @@ namespace TT.Web.Controllers
                 output.HadRecentInteraction = true;
             }
 
-            return View(output);
+            return View(MVC.NPC.Views.TalkWithJewdewfae, output);
         }
 
         public virtual ActionResult PlayWithJewdewfae()
@@ -1162,7 +1162,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View();
+            return View(MVC.NPC.Views.TalkToCandice);
 
         }
 
@@ -1193,7 +1193,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View();
+            return View(MVC.NPC.Views.TalkToAdrianna);
 
         }
 
@@ -1224,7 +1224,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View();
+            return View(MVC.NPC.Views.TalkToLorekeeper);
 
         }
 
@@ -1256,7 +1256,7 @@ namespace TT.Web.Controllers
 
             ViewBag.Lorekeeper = true; // has to stay Viewbag to give access to partial view
 
-            return View(output);
+            return View(MVC.NPC.Views.LorekeeperPurchaseBook, output);
 
         }
 
@@ -1338,7 +1338,7 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View(output);
+            return View(MVC.NPC.Views.LorekeeperLearnSpell, output);
         }
 
         public virtual ActionResult LorekeeperLearnSpellSend(string spell)

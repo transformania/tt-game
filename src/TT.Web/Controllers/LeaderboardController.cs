@@ -44,7 +44,7 @@ namespace TT.Web.Controllers
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
             }
-            return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
+            return View(MVC.Leaderboard.Views.PvPLeaderboard, PlayerProcedures.GetLeadingPlayers__PvP(100));
         }
 
         public virtual ActionResult ItemLeaderboard()
@@ -62,13 +62,13 @@ namespace TT.Web.Controllers
 
             var output = DomainRegistry.Repository.Find(new GetHighestLevelPlayerItems { Limit = 100 });
 
-            return View(output);
+            return View(MVC.Leaderboard.Views.ItemLeaderboard, output);
         }
 
         public virtual ActionResult PlayerStatsLeaders()
         {
             List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
-            return View(output);
+            return View(MVC.Leaderboard.Views.PlayerStatsLeaders, output);
         }
 
         public virtual ActionResult OldLeaderboards(int round)
@@ -113,7 +113,7 @@ namespace TT.Web.Controllers
                 Entries = DomainRegistry.Repository.Find(new GetOldPvPLeaderboardEntries { Round = round }),
                 Round = round
             };
-            return View(output);
+            return View(MVC.Leaderboard.Views.OldPvPLeaderboard, output);
         }
 
         public virtual ActionResult OldXpLeaderboard(int round)
@@ -123,7 +123,7 @@ namespace TT.Web.Controllers
                 Entries = DomainRegistry.Repository.Find(new GetOldXpLeaderboardEntries { Round = round }),
                 Round = round
             };
-            return View(output);
+            return View(MVC.Leaderboard.Views.OldXpLeaderboard, output);
         }
 
         public virtual ActionResult OldItemLeaderboard(int round)
@@ -133,7 +133,7 @@ namespace TT.Web.Controllers
                 Entries = DomainRegistry.Repository.Find(new GetOldItemLeaderboardEntries { Round = round }),
                 Round = round
             };
-            return View(output);
+            return View(MVC.Leaderboard.Views.OldItemLeaderboard, output);
         }
 
     }

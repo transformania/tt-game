@@ -55,8 +55,8 @@
     <Reference Include="FeatureSwitch, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FeatureSwitch.1.4.0\lib\net40\FeatureSwitch.dll</HintPath>
     </Reference>
-    <Reference Include="FluentValidation, Version=6.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.6.4.1\lib\Net45\FluentValidation.dll</HintPath>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.1.1\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Highway.Data, Version=6.0.4.2, Culture=neutral, PublicKeyToken=fe803c9600455796, processorArchitecture=MSIL">
       <HintPath>..\packages\Highway.Data.6.0.4.2\lib\net45\Highway.Data.dll</HintPath>
@@ -625,7 +625,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\Queries\" />

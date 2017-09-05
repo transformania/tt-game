@@ -128,7 +128,12 @@ namespace TT.Web
             container.RegisterCollection(typeof(IPipelineBehavior<,>), pipelineBehaviorTypesToRegister);
 
             // Validators
-            container.RegisterCollection(typeof(IValidator<>), domainAssembly);
+            var validatorTypes = GetAllGenericImplementations(container, typeof(IValidator<>), domainAssembly);
+
+            foreach (var type in validatorTypes)
+            {
+                container.Register(typeof(IValidator<>), type);
+            }
 
             container.Verify();
         }

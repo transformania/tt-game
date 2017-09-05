@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +9,22 @@ namespace TT.Domain.Validation
 {
     public class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly IEnumerable<IValidator<TRequest>> validators;
+        private readonly IValidator<TRequest> validator;
 
-        public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
+        public ValidationPipelineBehavior(IValidator<TRequest> validator)
         {
-            this.validators = validators;
+            this.validator = validator;
         }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next)
         {
             var validationContext = new ValidationContext<TRequest>(request);
 
-            var failures = validators.Select(validator => validator.Validate(validationContext))
-                .SelectMany(r => r.Errors)
-                .Where(f => f != null)
-                .ToList();
+            ValidationResult result = await validator.ValidateAsync(validationContext);
 
-            if (failures.Any())
+            if (result.IsValid)
             {
-                throw new ValidationException(failures);
+                throw new ValidationException(result.Errors);
             }
 
             return await next();

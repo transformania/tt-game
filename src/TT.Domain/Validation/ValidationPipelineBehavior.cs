@@ -4,6 +4,8 @@ using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Threading;
 
 namespace TT.Domain.Validation
 {
@@ -22,7 +24,7 @@ namespace TT.Domain.Validation
 
             ValidationResult result = await validator.ValidateAsync(validationContext);
 
-            if (result.IsValid)
+            if (!result.IsValid)
             {
                 throw new ValidationException(result.Errors);
             }

@@ -92,12 +92,15 @@ namespace TT.Web
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();
-            container.RegisterSingleton(new SingleInstanceFactory(container.GetInstance));
+            container.RegisterSingleton(new SingleInstanceFactory(((IServiceProvider)container).GetService));
             container.RegisterSingleton(new MultiInstanceFactory(container.GetAllInstances));
 
             // Request Handlers
             var requestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<,>), domainAssembly);
             var voidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<>), domainAssembly);
+
+            var asyncRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IAsyncRequestHandler<,>), domainAssembly);
+            var asyncVoidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IAsyncRequestHandler<>), domainAssembly);
 
             foreach (var types in requestHandlerTypesToRegister)
             {
@@ -107,6 +110,16 @@ namespace TT.Web
             foreach (var types in voidRequestHandlerTypesToRegister)
             {
                 container.Register(typeof(IRequestHandler<>), types);
+            }
+
+            foreach (var types in asyncRequestHandlerTypesToRegister)
+            {
+                container.Register(typeof(IAsyncRequestHandler<,>), types);
+            }
+
+            foreach (var types in asyncVoidRequestHandlerTypesToRegister)
+            {
+                container.Register(typeof(IAsyncRequestHandler<>), types);
             }
 
             // PipelineBehaviors

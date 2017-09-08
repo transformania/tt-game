@@ -159,14 +159,9 @@ namespace TT.Domain.Players.Entities
 
         public string GetFullName()
         {
-            if (DonatorLevel >= 2)
-            {
-                return FirstName + " '" + Nickname + "' " + LastName;
-            }
-            else
-            {
-                return FirstName + " " + LastName;
-            }
+            return DonatorLevel < 2 || Nickname.IsNullOrEmpty()
+                ? $"{FirstName} {LastName}"
+                : $"{FirstName} \'{Nickname}\' {LastName}";
         }
 
         public void AddHealth(decimal amount)

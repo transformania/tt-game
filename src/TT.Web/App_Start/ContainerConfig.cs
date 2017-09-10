@@ -12,6 +12,7 @@ using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -19,6 +20,7 @@ using System.Web.Routing;
 using TT.Domain;
 using TT.Domain.CreationPolices;
 using TT.Domain.Services;
+using TT.Domain.Validation;
 using TT.Web.LifestyleSelectionBehaviors;
 using TT.Web.Models;
 using TT.Web.Services;
@@ -128,12 +130,50 @@ namespace TT.Web
             container.RegisterCollection(typeof(IPipelineBehavior<,>), pipelineBehaviorTypesToRegister);
 
             // Validators
-            var validatorTypes = GetAllGenericImplementations(container, typeof(IValidator<>), domainAssembly);
+            var validatorTypes = GetAllGenericImplementations(container, typeof(IValidator<>), domainAssembly)
+                .Where(t => !(t.IsGenericType && t.GetGenericTypeDefinition() == typeof(NullValidatorWithResponse<>)))
+                .Where(t => t != typeof(NullValidator));
 
             foreach (var type in validatorTypes)
             {
-                container.Register(typeof(IValidator<>), type);
+                Type typeGenericArgs = type.GetClosedTypeOf(typeof(IValidator<>)).GenericTypeArguments.First();
+
+                if (!(typeof(IRequest).IsAssignableFrom(typeGenericArgs) || typeGenericArgs.IsClosedTypeOf(typeof(IRequest<>))))
+                {
+                    continue;
+                }
+
+                var boundGenericValidator = typeof(IValidator<>).MakeGenericType(typeGenericArgs);
+
+                container.Register(boundGenericValidator, type);
             }
+
+            container.Register(typeof(NullValidatorWithResponse<>), typeof(NullValidatorWithResponse<>));
+            container.Register(typeof(NullValidator), typeof(NullValidator));
+
+            container.ResolveUnregisteredType += (sender, e) =>
+            {
+                if (e.UnregisteredServiceType.IsGenericType && e.UnregisteredServiceType.GetGenericTypeDefinition() == typeof(IValidator<>))
+                {
+                    var typeGenericArgs = e.UnregisteredServiceType.GenericTypeArguments.Single();
+
+                    if (typeof(IRequest).IsAssignableFrom(typeGenericArgs))
+                    {
+                        e.Register(() => container.GetInstance(typeof(NullValidator)));
+                    }
+                    else                     
+                    {
+                        var closedRequestTypes = typeGenericArgs.GetClosedTypesOf(typeof(IRequest<>));
+
+                        if (closedRequestTypes.Length == 1)
+                        {
+                            var responseType = closedRequestTypes.Single().GenericTypeArguments.Single();
+
+                            e.Register(() => container.GetInstance(typeof(NullValidatorWithResponse<>).MakeGenericType(responseType)));
+                        }
+                    }
+                }
+            };
 
             container.Verify();
         }

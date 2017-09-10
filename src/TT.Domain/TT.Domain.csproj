@@ -163,6 +163,7 @@
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
     <Compile Include="Services\IPrincipalAccessor.cs" />
+    <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />

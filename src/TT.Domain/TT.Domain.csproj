@@ -162,7 +162,11 @@
     <Compile Include="Effects\Commands\CreateEffect.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
+    <Compile Include="RequestInterfaces\IRequestWithRuleSet.cs" />
+    <Compile Include="RequestInterfaces\IRequestWithUserNameId.cs" />
     <Compile Include="Services\IPrincipalAccessor.cs" />
+    <Compile Include="Validation\RuleSets.cs" />
+    <Compile Include="ValidatorSelectors\IntersectRulesetValidatorSelector.cs" />
     <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />

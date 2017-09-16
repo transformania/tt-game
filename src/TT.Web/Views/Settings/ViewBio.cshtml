@@ -89,12 +89,12 @@
 
     <div class="row">
         @{
-            foreach (AchievementBadge a in Model.Badges)
+            foreach (var a in Model.Badges)
             {
                 <div class="col-md-4 stats-leader" style="height: auto;">
-                    <img src="~/Images/PvP/Icons/@StatsProcedures.StatTypesMap[a.AchievementType].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:left;" />
+                    <img src="~/Images/PvP/achievements/@StatsProcedures.StatTypesMap[a.AchievementType].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:left;" />
                     <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[a.AchievementType].FriendlyName</h3><h4> <i>@a.Round</i></h4>
-                    <p><i>@StatsProcedures.StatTypesMap[a.AchievementType].Description:</i> <b>@String.Format("{0:n0}", a.Amount)</b></p>
+                    <p><i>@StatsProcedures.StatTypesMap[a.AchievementType].Description:</i> <b>@($"{a.Amount:n0}")</b></p>
                 </div>
             }
         }

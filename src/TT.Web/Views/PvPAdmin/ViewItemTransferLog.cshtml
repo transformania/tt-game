@@ -43,7 +43,7 @@
             else
             {
                 @("Transferred to ")
-                <a href="@Url.Action(MVC.PvP.LookAtPlayer(itemlog.ItemLog.OwnerId))">itemlog.OwnerName</a>
+                <a href="@Url.Action(MVC.PvP.LookAtPlayer(itemlog.ItemLog.OwnerId))">@itemlog.OwnerName</a>
             }
             if (itemlog.OwnerIP != "-1")
             {

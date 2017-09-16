@@ -171,6 +171,7 @@ namespace TT.Domain.Statics
 
         public const int PaginationPageSize = 100;
 
+        public const int FriendNicknameMaxLength = 100;
     }
 
     public static class BonusStatics

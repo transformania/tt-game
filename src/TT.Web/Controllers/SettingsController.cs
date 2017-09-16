@@ -637,35 +637,19 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetFriendNickname(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Friend friend = FriendProcedures.GetFriend(id);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var friend = FriendProcedures.GetFriend(id);
 
-            Player pFriend;
-
-            if (friend.OwnerMembershipId == me.MembershipId)
-            {
-                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.FriendMembershipId);
-            }
-            else
-            {
-                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.OwnerMembershipId);
-            }
-
-            if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
+            if (friend.OwnerMembershipId != me.MembershipId && friend.FriendMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "This player is not a friend with you.";
                 return RedirectToAction(MVC.PvP.MyFriends());
             }
 
-            SetFriendNicknameViewModel output = new SetFriendNicknameViewModel
+            var output = new SetFriendNicknameViewModel
             {
-                Owner = me,
-                OwnerMembershipId = me.MembershipId,
-                Friend = pFriend,
-                FriendMembershipId = pFriend.MembershipId,
-                Nickname = "[SET NICKNAME]",
-                FriendshipId = friend.Id,
+                Nickname = friend.OwnerMembershipId == me.MembershipId ? friend.OwnerNicknameForFriend : friend.FriendNicknameForOwner,
+                FriendshipId = friend.Id
             };
 
             return View(MVC.Settings.Views.SetFriendNickname, output);
@@ -675,7 +659,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (input.Nickname == null)
             {
                 input.Nickname = "";
@@ -685,48 +669,32 @@ namespace TT.Web.Controllers
             // asset the nickname falls within an appropriate range
             if (input.Nickname.Length == 0)
             {
-                TempData["Error"] = "You must provide a nickname.";
+                input.Nickname = "[UNASSIGNED]";
+            }
+            else if (input.Nickname.Length > PvPStatics.FriendNicknameMaxLength)
+            {
+                TempData["Error"] = $"Friend nicknames must be {PvPStatics.FriendNicknameMaxLength} characters or less.";
                 return RedirectToAction(MVC.PvP.MyFriends());
             }
-            else if (input.Nickname.Length > 20)
-            {
-                TempData["Error"] = "Friend nicknames must be under 20 characters.";
-                return RedirectToAction(MVC.PvP.MyFriends());
-            }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Friend friend = FriendProcedures.GetFriend(input.FriendshipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var friend = FriendProcedures.GetFriend(input.FriendshipId);
 
-            Player pFriend;
-
-            // this player is the owner of the friendship
-            if (friend.OwnerMembershipId == me.MembershipId)
-            {
-                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.FriendMembershipId);
-            }
-
-            // this player is the receiver of the friendship
-            else
-            {
-                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.OwnerMembershipId);
-            }
-
-            if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
+            if (friend.OwnerMembershipId != me.MembershipId && friend.FriendMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "This player is not a friend with you.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // set the nickname based on whether the current player is the owner or the friend
-            else if (friend.OwnerMembershipId == me.MembershipId)
+            if (friend.OwnerMembershipId == me.MembershipId)
             {
                 TempData["Result"] = FriendProcedures.OwnerSetNicknameOfFriend(friend.Id, input.Nickname);
             }
-            else if (friend.OwnerMembershipId == pFriend.MembershipId)
+            else if (friend.FriendMembershipId == me.MembershipId)
             {
                 TempData["Result"] = FriendProcedures.FriendSetNicknameOfOwner(friend.Id, input.Nickname);
             }
-
 
             return RedirectToAction(MVC.PvP.MyFriends());
         }

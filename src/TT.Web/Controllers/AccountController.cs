@@ -73,10 +73,10 @@ namespace TT.Web.Controllers
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+                ModelState.AddModelError("",
+                    result == SignInStatus.LockedOut
+                        ? $"Account disabled until {signInManager.UserManager.FindByName(model.UserName).LockoutEndDateUtc} UTC."
+                        : "Invalid username or password.");
             }
 
             // If we got this far, something failed, redisplay form

@@ -370,7 +370,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string CurseTransformOwner(Player player, Player owner, Item playerItem, DbStaticItem playerItemPlus)
+        public static string CurseTransformOwner(Player player, Player owner, Item playerItem, DbStaticItem playerItemPlus, bool isWhitelist)
         {
             Random rand = new Random();
             double roll = rand.NextDouble() * 100;
@@ -462,48 +462,9 @@ namespace TT.Domain.Procedures
                 playerMessage = "Unfortunately your subtle transformation curse fails to transform your owner.";
                 PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
             }
-
             
-           // else
-           // {
-
-                double timeBonus = gameTurn - xp.LastActionTurnstamp;
-                if (timeBonus > InanimateXPStatics.ItemMaxTurnsBuildup)
-                {
-                    timeBonus = InanimateXPStatics.ItemMaxTurnsBuildup;
-                }
-                else if (timeBonus < 0)
-                {
-                    timeBonus = 0;
-                }
-
-
-                decimal xpGain = Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
-
-                xp.Amount += xpGain;
-
-                // lock the player into their fate if their inanimate XP gets too high
-                if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160)
-                {
-                    playerMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
-                }
-
-                if (xp.TimesStruggled <= -160 && !playerItem.IsPermanent)
-                {
-
-                    IItemRepository itemRepo = new EFItemRepository();
-                    Item dbItemPlayer = itemRepo.Items.FirstOrDefault(i => i.Id == playerItem.Id);
-                    dbItemPlayer.IsPermanent = true;
-                    itemRepo.SaveItem(dbItemPlayer);
-                    playerMessage += "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
-                }
-
-
-                PlayerProcedures.AddAttackCount(player);
-
-            return playerMessage;
+            PlayerProcedures.AddAttackCount(player);
+            return playerMessage + GiveInanimateXP(player.MembershipId, isWhitelist);
         }
-
-
     }
 }

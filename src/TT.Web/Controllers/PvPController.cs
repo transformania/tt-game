@@ -3076,7 +3076,7 @@ namespace TT.Web.Controllers
             }
 
             // all checks pass
-            TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus);
+            TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
 
             return RedirectToAction(MVC.PvP.Play());

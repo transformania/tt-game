@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Covenants.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Entities.RPClassifiedAds;
+using TT.Domain.Identity.CommandRequests;
 using TT.Domain.Identity.Commands;
 
 namespace TT.Domain.Identity.Entities
@@ -11,10 +13,14 @@ namespace TT.Domain.Identity.Entities
     {
         public string UserName { get; private set; }
         public string Email { get; private set; }
+
+        public UserSecurityStamp SecurityStamp { get; private set; }
+
         public ICollection<RPClassifiedAd> RPClassifiedAds { get; private set; } = new List<RPClassifiedAd>();
         public ICollection<Stat> Stats { get; private set; } = new List<Stat>();
         public ICollection<Strike> Strikes { get; private set; } = new List<Strike>();
         public ICollection<Strike> StrikesGiven { get; private set; } = new List<Strike>();
+        public ICollection<Role> Roles { get; private set; } = new List<Role>();
         public Donator Donator { get; protected set; }
         public Covenant CovenantFounded { get; protected set; }
 
@@ -44,6 +50,17 @@ namespace TT.Domain.Identity.Entities
                 stat.AddAmount(amount);
             }
         }
+    }
 
+    public class UserSecurityStamp : Entity<string>
+    {
+        public string SecurityStamp { get; private set; }
+
+        public User User { get; private set; }
+
+        public void ResetSecurityStamp(ResetSecurityStamp cmd)
+        {
+            SecurityStamp = Guid.NewGuid().ToString();
+        }
     }
 }

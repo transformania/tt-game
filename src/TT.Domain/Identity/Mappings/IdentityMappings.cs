@@ -14,6 +14,12 @@ namespace TT.Domain.Identity.Mappings
                 .ToTable("AspNetUsers")
                 .HasKey(u => u.Id);
 
+            modelBuilder.Entity<UserSecurityStamp>()
+                .ToTable("AspNetUsers")
+                .HasKey(u => u.Id)
+                .HasRequired(uss => uss.User)
+                .WithRequiredPrincipal(u => u.SecurityStamp);
+
             modelBuilder.Entity<User>()
                 .HasOptional(p => p.Donator)
                 .WithRequired(d => d.Owner)
@@ -49,6 +55,18 @@ namespace TT.Domain.Identity.Mappings
                .HasRequired(cr => cr.FromModerator)
                .WithMany(s => s.StrikesGiven).Map(m => m.MapKey("FromModerator"));
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Roles)
+                .WithMany(ur => ur.Users)
+                .Map(m => {
+                    m.MapLeftKey("UserId");
+                    m.MapRightKey("RoleId");
+                    m.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity<Role>()
+                .ToTable("AspNetRoles")
+                .HasKey(r => r.Id);
         }
 
         protected override void Configure()

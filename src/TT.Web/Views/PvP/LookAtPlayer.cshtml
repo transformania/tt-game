@@ -3,6 +3,8 @@
 @using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
+    <p id="resultContainer" class="infoMessage result"></p>
+    <p id="errorContainer" class="infoMessage error"></p>
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -134,49 +136,64 @@
 
 </div>
 @{
-        if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
-        {
-            <nav class="navbar navbar-default outsideContainer navbarTT2">
-                <div class="container-fluid">
-                 <!-- Brand and toggle get grouped for better mobile display -->
-                 <div class="navbar-header">
-                       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                          <span class="sr-only">Toggle navigation</span>
-                           <span class="icon-bar"></span>
-                           <span class="icon-bar"></span>
-                           <span class="icon-bar"></span>
-                      </button>
-                    </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                      <ul class="nav navbar-nav" style="width:100%;">
-
-                          @{
-
-                            if (!Model.PlayerForm.Player.FlaggedForAbuse)
-                           {
-                           <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
-                           }
-                          else
-                          {
-                              <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
-                          }
-                          
-                          }
-                          
-                         <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
-                         <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
-                         <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
-                         <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
-                         <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
-                      </ul>
-                 </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
-        }
+    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
+    {
+        <nav class="navbar navbar-default outsideContainer navbarTT2">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+            
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav" style="width:100%;">
+                        @if (!Model.PlayerForm.Player.FlaggedForAbuse)
+                        {
+                            <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
+                        }
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
+                        <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
+                        @if (User.IsInRole(PvPStatics.Permissions_Admin))
+                        {
+                            <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
+                        }
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    }
 }
 <script>
+    @functions{
+        public string TokenHeaderValue()
+        {
+            AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
+            return cookieToken + ":" + formToken;
+        }
+
+        public string GetUserId()
+        {
+            return Model.PlayerForm.Player.MembershipId;
+        }
+
+        public string GetApiUrl()
+        {
+            return "/api";
+        }
+    }
 
     function detail_success() {
         //$('#itemDetailModal').modal('show');
@@ -189,6 +206,60 @@
     function detail_wait() {
         $("#fullDetails").html("Loading details...");
     }
+
+    $(document).ready(function () {
+        // get current url that the page is on
+        var currentUrl = new URL(window.location);
+
+        $("#ForceUserLogout").on("click", function () {
+            $.ajax({
+                url: '@GetApiUrl()@Url.Action("Post", "AdminSignOut")',
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    TargetUserNameId: '@GetUserId()'
+                }),
+                dataType: "json",
+                headers: {
+                    RequestVerificationToken: '@TokenHeaderValue()'
+                },
+                complete: function (response, textStatus) {
+                    var redirectError = response.getResponseHeader("X-Responded-JSON");
+
+                    if (redirectError)
+                    {
+                        redirectErrorJson = JSON.parse(redirectError);
+
+                        if (redirectErrorJson.status == 401)
+                        {
+                            // get the url that asp wants to redirect the page to after a login
+                            var redirectUrl = new URL(redirectErrorJson.headers.location);
+
+                            // set the query string that the login page will have to be the query string that the current page has because of silly "helpful" things
+                            redirectUrl.search = currentUrl.search;
+
+                            // append the ReturnUrl to be everything to the right of the hostname
+                            redirectUrl.searchParams.append("ReturnUrl", currentUrl.pathname + currentUrl.search + currentUrl.hash);
+
+                            window.location.href = redirectUrl;
+
+                            return;
+                        }
+                    }
+
+                    var resultContainer = $("#resultContainer");
+                    var errorContainer = $("#errorContainer");
+
+                    resultContainer.text(response.responseJSON.Result);
+                    errorContainer.text(response.responseJSON.Error);
+
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 500);
+                }
+            });
+        });
+    });
 
 </script>
 

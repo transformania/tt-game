@@ -238,6 +238,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\ValidateWebApiAntiForgeryTokenAttribute.cs" />
     <Compile Include="ChatController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -246,6 +247,7 @@
     </Compile>
     <Compile Include="Controllers\Admin\DonatorController.cs" />
     <Compile Include="Controllers\Admin\RestockItemController.cs" />
+    <Compile Include="Controllers\API\Admin\AdminSignOutController.cs" />
     <Compile Include="Controllers\API\ApiControllerBase.cs" />
     <Compile Include="Controllers\API\WorldUpdateController.cs" />
     <Compile Include="Controllers\API\ChatRoomController.cs" />

@@ -842,7 +842,7 @@ namespace TT.Domain.Procedures
                 name = owner.GetFullName();
             }
 
-            #region single use consumeables
+            #region single use consumables
 
             if (itemPlus.Item.ItemType == "consumable")
             {
@@ -1051,7 +1051,7 @@ namespace TT.Domain.Procedures
 
                 #endregion
 
-            #region reuseable consumeables
+            #region reuseable consumables
 
             else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
             {

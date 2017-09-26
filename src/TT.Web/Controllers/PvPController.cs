@@ -1845,7 +1845,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert the item is not a consumeable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
+            // assert the item is not a consumable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
             if ((pickup.PvPEnabled == 2 && me.GameMode != GameModeStatics.PvP) || (pickup.PvPEnabled == 1 && me.GameMode == GameModeStatics.PvP))
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
@@ -2130,8 +2130,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.MyInventory());
             }
 
-            // assert that this item is of a consumeable type (consumable or consumable-reusable)
-            if (item.Item.ItemType.Contains("consumeable"))
+            // assert that this item is of a consumable type (consumable or consumable-reusable)
+            if (!item.Item.ItemType.Contains("consumable"))
             {
                 TempData["Error"] = "You can't use that type of item.";
                 return RedirectToAction(MVC.PvP.Play());

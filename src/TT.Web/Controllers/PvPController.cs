@@ -2131,7 +2131,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this item is of a consumable type (consumable or consumable-reusable)
-            if (!item.Item.ItemType.Contains("consumable"))
+            if (item.Item.ItemType != PvPStatics.ItemType_Consumable && item.Item.ItemType != PvPStatics.ItemType_Consumable_Reuseable)
             {
                 TempData["Error"] = "You can't use that type of item.";
                 return RedirectToAction(MVC.PvP.Play());

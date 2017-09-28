@@ -844,7 +844,7 @@ namespace TT.Domain.Procedures
 
             #region single use consumables
 
-            if (itemPlus.Item.ItemType == "consumable")
+            if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
 
                 // if this is the grenade type, redirect to attack procedure
@@ -1261,7 +1261,7 @@ namespace TT.Domain.Procedures
         {
             Random rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != "consumable" && !i.IsUnique);
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != PvPStatics.ItemType_Consumable && !i.IsUnique);
             return item.ElementAt(rand.Next(0, item.Count()));
         }
 
@@ -1306,7 +1306,7 @@ namespace TT.Domain.Procedures
         public static decimal GetCostOfItem(ItemViewModel item, string buyOrSell)
         {
 
-            if (item.Item.ItemType == "consumable")
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
                 if (buyOrSell == "buy")
                 {
@@ -1344,7 +1344,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // item has custom sell value set and is consumable, use its sell override amount
-                if (item.Item.ItemType == "consumable" && item.Item.MoneyValueSell > 0)
+                if (item.Item.ItemType == PvPStatics.ItemType_Consumable && item.Item.MoneyValueSell > 0)
                 {
                     price = item.Item.MoneyValueSell;
                 }
@@ -1411,14 +1411,14 @@ namespace TT.Domain.Procedures
 
 
             // consumable types first
-            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == "consumable").OrderBy(i => i.Item.FriendlyName))
+            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable).OrderBy(i => i.Item.FriendlyName))
             {
                 output.Add(i);
                 inputList.Remove(i);
             }
 
             // reusable consumable types second
-            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == "consumable_reuseable").OrderBy(i => i.Item.FriendlyName))
+            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable).OrderBy(i => i.Item.FriendlyName))
             {
                 output.Add(i);
                 inputList.Remove(i);

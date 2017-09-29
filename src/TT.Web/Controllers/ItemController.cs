@@ -201,7 +201,7 @@ namespace TT.Web.Controllers
             }
 
             // if the item is a consumable type, delete it.  Otherwise reset its cooldown
-            if (itemToUse.Item.ItemType == "consumable")
+            if (itemToUse.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
                 ItemProcedures.DeleteItem(itemToUse.dbItem.Id);
             }

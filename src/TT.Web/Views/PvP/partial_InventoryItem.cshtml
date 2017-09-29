@@ -34,7 +34,7 @@
 
 
                 @{
-            if (Model.Item.ItemType != "consumable" && Model.Item.ItemType != "consumable_reuseable" && Model.Item.ItemType != PvPStatics.ItemType_Pet)
+            if (Model.Item.ItemType != PvPStatics.ItemType_Consumable && Model.Item.ItemType != PvPStatics.ItemType_Consumable_Reuseable && Model.Item.ItemType != PvPStatics.ItemType_Pet)
             {
 
                 if (!Model.dbItem.IsEquipped)
@@ -53,12 +53,12 @@
             {
                 <a href="@Url.Action(MVC.PvP.Drop(Model.dbItem.Id))" class="attackLink">Release</a>
             }
-            else if (Model.Item.ItemType == "consumable")
+            else if (Model.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
                 <a href="@Url.Action(MVC.PvP.Use(Model.dbItem.Id))" class="attackLink">Use</a>
                 <a href="@Url.Action(MVC.PvP.Drop(Model.dbItem.Id))" class="attackLink">Drop</a>
             }
-            else if (Model.Item.ItemType == "consumable_reuseable")
+            else if (Model.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
             {
 
                 if (Model.dbItem.TurnsUntilUse > 0)

@@ -112,7 +112,7 @@ namespace TT.Web.Controllers
             }
             else if (filter == "consumables")
             {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == "consumable");
+                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable);
             }
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -252,7 +252,7 @@ namespace TT.Web.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == "consumable"));
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == PvPStatics.ItemType_Consumable));
             return View(MVC.NPC.Views.SellList, output);
         }
 
@@ -316,7 +316,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is either permanent or consumable
-            if (!itemBeingSold.dbItem.IsPermanent && itemBeingSold.Item.ItemType != "consumable")
+            if (!itemBeingSold.dbItem.IsPermanent && itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumable)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction(MVC.PvP.Play());

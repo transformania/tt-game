@@ -211,7 +211,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output;
 
-            if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
+            if (item.dbItem.Level > 1 && item.Item.ItemType != PvPStatics.ItemType_Consumable)
             {
                 output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level-1) * PvPStatics.Item_LevelBonusModifier*amount) + amount) + ")</b></span>";
             } else {
@@ -226,7 +226,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output;
 
-            if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
+            if (item.dbItem.Level > 1 && item.Item.ItemType != PvPStatics.ItemType_Consumable)
             {
                 output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
             }

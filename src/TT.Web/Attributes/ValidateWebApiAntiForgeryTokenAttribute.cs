@@ -34,7 +34,7 @@ namespace TT.Web.Attributes
 
                 AntiForgery.Validate(cookieToken, formToken);
             }
-            catch (System.Web.Mvc.HttpAntiForgeryException ex)
+            catch (System.Web.Mvc.HttpAntiForgeryException)
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, new { Error = "Invalid security token." });
 

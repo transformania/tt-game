@@ -172,7 +172,6 @@ namespace Links
         public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
         public static readonly string custom_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/custom.min.css") ? Url("custom.min.css") : Url("custom.css");
         public static readonly string custom_min_css = Url("custom.min.css");
-        public static readonly string custom_css_map = Url("custom.css.map");
         public static readonly string custom_scss = Url("custom.scss");
         public static readonly string mystyle_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/mystyle.min.css") ? Url("mystyle.min.css") : Url("mystyle.css");
         public static readonly string ng_animation_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/ng-animation.min.css") ? Url("ng-animation.min.css") : Url("ng-animation.css");

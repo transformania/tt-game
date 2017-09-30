@@ -1,6 +1,9 @@
 ﻿[
   {
     "outputFile": "Content/custom.css",
-    "inputFile": "Content/custom.scss"
+    "inputFile": "Content/custom.scss",
+    "options":{
+        "sourceMap": true
+    }
   }
 ]

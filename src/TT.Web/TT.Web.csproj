@@ -909,7 +909,6 @@
     <Content Include="Views\Admin\RestockItems\List.cshtml" />
     <Content Include="Views\Admin\RestockItems\Create.cshtml" />
     <Content Include="Views\Admin\RestockItems\Edit.cshtml" />
-    <Content Include="test\web.config" />
     <Content Include="Sounds\pop.ogg" />
     <Content Include="Sounds\pop2.ogg" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_33.cshtml" />

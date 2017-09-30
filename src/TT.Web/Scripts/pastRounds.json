@@ -367,6 +367,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 47,
+      "name": "Alpha R47 (Era of Elle Sawyer)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

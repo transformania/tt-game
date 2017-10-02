@@ -207,7 +207,7 @@
 </div>
 
 <div class="onlinePlayersWrapperBG" style="clear:both; border-bottom:4px solid #A16969;">
-    <div class="row">
+    <div class="row boxContainer">
         @{
             foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => !TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)))
     {
@@ -236,7 +236,7 @@
 @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
 {
     <div class="offlinePlayersWrapperBG">
-        <div class="row">
+        <div class="row boxContainer">
 
             @{
     foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))

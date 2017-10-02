@@ -40,7 +40,7 @@
             <p style="margin: 0px 0px 20px 0px; text-align: center;"><a href="@Url.Action(MVC.Settings.CreateRPClassifiedAd())">New Ad</a></p>
         }
 
-      <div class="row">
+      <div class="row boxContainer">
             @{
                 foreach (RPClassifiedAdDetail ad in Model.OrderByDescending(m => m.RefreshTimestamp))
                 {

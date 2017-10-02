@@ -33,7 +33,7 @@
     <h1>Recent RP Classified Ads</h1>
     <p style="margin: 20px 0px; text-align: center;">Looking for an RP partner?  On this page you will find all recent RP Classified Ad postings that have been updated within the past 3 days.</p>
 
-    <div class="row">
+    <div class="row boxContainer">
         @foreach (var ad in Model.OrderByDescending(m => m.RPClassifiedAd.RefreshTimestamp))
         {
             var player = ad.Players.FirstOrDefault();

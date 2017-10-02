@@ -244,7 +244,7 @@
 
 <div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="hidePlayers()">Hide online players</a></div>
 <div class="onlinePlayersWrapperBG">
-    <div class="row">
+    <div class="row boxContainer">
         @*all players who are online*@
         @{
             foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
@@ -315,7 +315,7 @@
 @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
 {
     <div class="offlinePlayersWrapperBG">
-        <div class="row">
+        <div class="row boxContainer">
 
             @{
     foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
@@ -339,7 +339,7 @@
 
 }
 <div class="floorItemsWrapperBG">
-    <div class="row">
+    <div class="row boxContainer">
         @{
 
             foreach (ItemListingDetail item in Model.LocationItems)

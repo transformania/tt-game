@@ -2,8 +2,6 @@
     overflow-y: scroll;
 }
 
-
-
 #location {
     width: 300px;
     height: 20px;
@@ -35,8 +33,6 @@
     font-size: 20px;
 }
 
-
-
 .tiny {
     font-size: 10px;
     font-weight: bold;
@@ -55,8 +51,6 @@ a {
     text-align: justify;
 }
 
-
-
 .newlinkgreen a {
     background-color: lightgreen !important;
 }
@@ -65,8 +59,7 @@ a {
     background-color: yellow !important;
 }
 
-
-locationDescription {
+.locationDescription {
     font-style: italic;
 }
 
@@ -82,18 +75,15 @@ locationDescription {
     color: darkolivegreen;
 }
 
-
-
-.goodEffectGroup{
-    background-color:lightgreen;
+.goodEffectGroup {
+    background-color: lightgreen;
     border: 1px solid green;
 }
 
-.badEffectGroup{
-    background-color:pink;
+.badEffectGroup {
+    background-color: pink;
     border: 1px solid red;
 }
-
 
 .mainPageWorldStats {
     border: 1px solid black;
@@ -117,7 +107,7 @@ locationDescription {
 .covHeader {
     color: darkviolet;
     font-size: 20px;
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: -10px;
 }
 
@@ -133,7 +123,6 @@ a.talkLink {
     background-color: white;
 }
 
-
 .subportrait {
     width: 100px;
     height: 100px;
@@ -142,7 +131,6 @@ a.talkLink {
     border: 2px solid violet;
     float: left;
 }
-
 
 .portrait-large {
     height: 200px;
@@ -165,8 +153,6 @@ a.talkLink {
     margin-right: auto;
 }
 
-
-
 .floorItemLevel {
     text-align: left;
     text-shadow: 1px 1px #FFF;
@@ -180,8 +166,6 @@ a.talkLink {
     width: 400px;
     margin: 15px;
 }
-
-
 
 .onlineCharWrapper {
     width: 302px;
@@ -200,7 +184,6 @@ a.talkLink {
     display: inline-block;
 }
 
-
 .charwrapper {
     border: 1px solid lightgray;
     height: 100px;
@@ -212,17 +195,17 @@ a.talkLink {
     /*background-color: #FFFFEC;*/
 }
 
-    .charwrapper.bot {
-        border: 1px solid pink;
-        background-color: mistyrose;
-        height: 100px;
-        width: 302px;
-        margin-right: 8px;
-        margin-bottom: 10px;
-        display: block;
-        float: left;
-        /*background-color: #FFFFEC;*/
-    }
+.charwrapper.bot {
+    border: 1px solid pink;
+    background-color: mistyrose;
+    height: 100px;
+    width: 302px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    display: block;
+    float: left;
+    /*background-color: #FFFFEC;*/
+}
 
 .commandWrapper {
     width: 300px;
@@ -249,40 +232,40 @@ a.talkLink {
     margin-bottom: 4px;
 }
 
-    .form__panel textarea {
-        width: 98%;
-        height: 150px;
-    }
+.form__panel textarea {
+    width: 98%;
+    height: 150px;
+}
 
-    .form__panel input {
-        width: 98%;
-    }
+.form__panel input {
+    width: 98%;
+}
 
-        .form__panel input[type="checkbox"] {
-            width: 20px;
-        }
+.form__panel input[type="checkbox"] {
+    width: 20px;
+}
 
-    .form__panel.group {
-        width: 100%;
-        height: auto;
-        border: 1px solid darkblue;
-        border-radius: 3px;
-        padding: 4px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        background-color: lightblue;
-    }
+.form__panel.group {
+    width: 100%;
+    height: auto;
+    border: 1px solid darkblue;
+    border-radius: 3px;
+    padding: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    background-color: lightblue;
+}
 
-    .form__panel.externalMessage {
-        font-size: 15px;
-        font-style: italic;
-        font-weight: 600;
-        border: 1px solid darkblue;
-    }
+.form__panel.externalMessage {
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 600;
+    border: 1px solid darkblue;
+}
 
-    .form__panel select {
-        width: 300px;
-    }
+.form__panel select {
+    width: 300px;
+}
 
 #showOfflinePlayersButton {
     font-size: 15px;
@@ -297,12 +280,12 @@ a.talkLink {
     margin-bottom: 5px;
 }
 
-    #showOfflinePlayersButton:hover {
-        border: 1px solid darkred;
-        color: darkred;
-        background-color: lightpink;
-        cursor: pointer;
-    }
+#showOfflinePlayersButton:hover {
+    border: 1px solid darkred;
+    color: darkred;
+    background-color: lightpink;
+    cursor: pointer;
+}
 
 .healthWrapper {
     height: 10px;
@@ -349,9 +332,9 @@ a.talkLink {
     display: inline-block;
 }
 
-    .icon-clock:hover {
-        background-color: lightblue;
-    }
+.icon-clock:hover {
+    background-color: lightblue;
+}
 
 .good {
     color: green;
@@ -387,13 +370,12 @@ a.talkLink {
     width: 100%;
     height: 100%;
     z-index: 800;
-    background-color: rgba(1,0,0,0.75);
+    background-color: rgba(1, 0, 0, 0.75);
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     display: none;
 }
-
 
 .talkLink {
     color: green;
@@ -405,60 +387,59 @@ a.talkLink {
     padding-right: 3px;
 }
 
-    .talkLink:hover {
-        color: darkviolet;
-        cursor: pointer;
-        border: 2px solid darkviolet;
-    }
-
+.talkLink:hover {
+    color: darkviolet;
+    cursor: pointer;
+    border: 2px solid darkviolet;
+}
 
 a.full {
     background-color: lightgreen;
 }
 
-    a.full:hover {
-        background-color: white;
-    }
+a.full:hover {
+    background-color: white;
+}
 
 a.inanimate {
     background-color: #B8DBFF;
 }
 
-    a.inanimate:hover {
-        background-color: white;
-    }
+a.inanimate:hover {
+    background-color: white;
+}
 
 a.animal {
     background-color: #FFFF66;
 }
 
-    a.animal:hover {
-        background-color: white;
-    }
+a.animal:hover {
+    background-color: white;
+}
 
 a.mindcontrol {
     background-color: violet;
 }
 
-    a.mindcontrol:hover {
-        background-color: white;
-    }
+a.mindcontrol:hover {
+    background-color: white;
+}
 
 a.weaken {
     background-color: #FFAD5C;
 }
 
-    a.weaken:hover {
-        background-color: white;
-    }
+a.weaken:hover {
+    background-color: white;
+}
 
 a.curse {
     background-color: #DEBDFF;
 }
 
-    a.curse:hover {
-        background-color: white;
-    }
+a.curse:hover {
+    background-color: white;
+}
 
 .perkBox {
     border: 2px solid #808080;
@@ -511,8 +492,6 @@ a.curse {
     font-size: 10px;
 }
 
-
-
 .inbetweenRoundNotice {
     width: 100%;
     height: auto;
@@ -525,7 +504,6 @@ a.curse {
     font-weight: 600;
     border-radius: 5px;
 }
-
 
 .testServerNotice {
     width: 100%;
@@ -554,7 +532,6 @@ a.curse {
     color: black;
 }
 
-
 /*attack modal stuff*/
 
 #expand, #toggle_all, #toggle_animates, #toggle_inanimates, #toggle_animal, #toggle_mindcontrol, #toggle_other {
@@ -565,9 +542,9 @@ a.curse {
     border-radius: 5px;
 }
 
-    #expand:hover {
-        background-color: white;
-    }
+#expand:hover {
+    background-color: white;
+}
 
 #duel_challenge {
     cursor: pointer;
@@ -577,9 +554,9 @@ a.curse {
     border-radius: 5px;
 }
 
-    #duel_challenge:hover {
-        background-color: white;
-    }
+#duel_challenge:hover {
+    background-color: white;
+}
 
 #youAreAttacking {
     color: black;
@@ -596,13 +573,11 @@ a.curse {
     border-radius: 5px;
 }
 
-    #attackClose:hover {
-        color: black;
-        background-color: lightcyan;
-        border: 2px solid black;
-    }
-
-
+#attackClose:hover {
+    color: black;
+    background-color: lightcyan;
+    border: 2px solid black;
+}
 
 #playerActionBox {
     text-align: center;
@@ -622,18 +597,18 @@ a.curse {
     text-decoration: none;
 }
 
-    .returnButton:hover {
-        background: #F0FFF0;
-        border-bottom: 2px black solid;
-        line-height: 38px;
-        padding-top: 2px;
-    }
+.returnButton:hover {
+    background: #F0FFF0;
+    border-bottom: 2px black solid;
+    line-height: 38px;
+    padding-top: 2px;
+}
 
 .bioTitle {
     font-size: 24px;
     line-height: 48px;
     font-weight: bold;
-    margin: 10px auto 0px auto !important;
+    margin: 10px auto 0 auto !important;
     border: 2px solid black;
     background: lightgray;
     width: 600px;
@@ -641,7 +616,7 @@ a.curse {
 
 .bioDesc {
     font-size: 18px;
-    margin: 0px auto 10px auto !important;
+    margin: 0 auto 10px auto !important;
     border: 2px solid black;
     border-top: none !important;
     background: #e2e2e2;
@@ -653,13 +628,13 @@ a.curse {
     padding: 10px;
 }
 
-    .bioDescImg:first-child {
-        padding-top: 20px;
-    }
+.bioDescImg:first-child {
+    padding-top: 20px;
+}
 
-    .bioDescImg:last-child {
-        padding-bottom: 15px;
-    }
+.bioDescImg:last-child {
+    padding-bottom: 15px;
+}
 
 @media (max-width: 768px) {
     .bioTitle {
@@ -695,10 +670,10 @@ a.curse {
     text-align: center;
 }
 
-    .textBio p {
-        margin: 0;
-        padding: 0px 20px 0px 20px;
-    }
+.textBio p {
+    margin: 0;
+    padding: 0 20px 0 20px;
+}
 
 #timerBox {
     color: white;
@@ -717,13 +692,11 @@ a.curse {
 }
 
 .listdots li {
-    list-style-type:circle;
-    list-style-position: outside;
-    list-style-image: none;
+    list-style: circle outside none;
     /*display: block;*/
     border-radius: 5px;
     text-align: left;
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 .listdots hr {
@@ -735,10 +708,10 @@ a.curse {
 }
 
 .copyable {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .copyable:hover {
-  cursor: pointer;
-  color: blue;
+    cursor: pointer;
+    color: blue;
 }

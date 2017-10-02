@@ -28,1293 +28,1414 @@ $fontSmall: 13px;
 $defaultMargin: 0px;
 
 body {
-    background: $bodyColor;
-    font-size: $fontSmall;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  background: $bodyColor;
+  font-size: $fontSmall;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 // fix for margins of headers
 h1, h2, h3 {
-    margin-top: 10px !important;
+  margin-top: 10px !important;
 }
 
 h1 {
-    text-align: center;
-    border-bottom: 1px $navbarDark dashed;
-    width: 50%;
-    margin: 10px auto 10px auto;
-    font-size: $fontHuge;
-    padding-bottom:4px;
+  text-align: center;
+  border-bottom: 1px $navbarDark dashed;
+  width: 50%;
+  margin: 10px auto 10px auto;
+  font-size: $fontHuge;
+  padding-bottom: 4px;
 }
 
 @media (max-width: 768px) {
-h1{
+  h1 {
     width: 80%;
     font-size: $fontBig;
-}
+  }
 }
 
 @media (max-width: 480px) {
-h1{
+  h1 {
     width: 100%;
-}
+  }
 }
 
 p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-    color: black !important;
-    font-weight: bold;
+  color: black !important;
+  font-weight: bold;
 }
 
 a, a:hover, a:active, a:focus {
-    outline: 0;
-    text-decoration: none;
+  outline: 0;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #4E0404 !important;
+  color: #4E0404 !important;
 }
 
-
-
 li {
-    list-style: none;
+  list-style: none;
 }
 
 .inboxNew {
-    background: $darkPink !important;
+  background: $darkPink !important;
 }
 
 .levelUp {
-    background: $notificationBoxColor !important;
+  background: $notificationBoxColor !important;
 }
 
 .outsideContainer a {
-    color: white !important;
-    font-weight: normal;
+  color: white !important;
+  font-weight: normal;
 }
 
 .outsideContainer a:hover {
-    color: $containerColor !important;
-    font-weight: normal;
+  color: $containerColor !important;
+  font-weight: normal;
 }
 
 .outsideContainer {
-    border-radius: 0;
-    border: none;
-    margin-bottom: 0;
-    text-align: center;
-    background: $navbarDark;
+  border-radius: 0;
+  border: none;
+  margin-bottom: 0;
+  text-align: center;
+  background: $navbarDark;
 }
 
 .navbarTT1 {
-    background: $navbarDark;
-    border-bottom: $border !important;
-    font-size: $fontMedium;
-    margin-bottom: $defaultMargin;
+  background: $navbarDark;
+  border-bottom: $border !important;
+  font-size: $fontMedium;
+  margin-bottom: $defaultMargin;
 }
 
 .navbarTT2 {
-    background: $navbarLight !important;
-    border-bottom: $border !important;
-    font-size: $fontSmall;
-    margin-bottom: $defaultMargin;
+  background: $navbarLight !important;
+  border-bottom: $border !important;
+  font-size: $fontSmall;
+  margin-bottom: $defaultMargin;
 }
 
 .footerTT {
-    font-size: $fontSmall;
-    line-height: 36px;
-    border-top: $border !important;
-    color: white;
+  font-size: $fontSmall;
+  line-height: 36px;
+  border-top: $border !important;
+  color: white;
 }
 
 .container {
-    padding: $defaultMargin;
-    border-left: $border;
-    border-right: $border;
-    background: $containerColor;
+  padding: $defaultMargin;
+  border-left: $border;
+  border-right: $border;
+  background: $containerColor;
 }
 
 .containerInner {
-    padding: 20px;
+  padding: 20px;
 }
 
 .outsideContainer a {
-    background: none;
+  background: none;
 }
 
 .nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a {
-    background: none;
+  background: none;
 }
 
 .center-block {
-    text-align: center;
+  text-align: center;
 }
 
 .specialBox {
-    background: $darkFillColor;
-    border-bottom: $border;
-    font-size: $fontMedium;
-    text-align: center;
-    margin-bottom: $defaultMargin;
-    padding: 10px;
-    color: black;
+  background: $darkFillColor;
+  border-bottom: $border;
+  font-size: $fontMedium;
+  text-align: center;
+  margin-bottom: $defaultMargin;
+  padding: 10px;
+  color: black;
 }
 
 .specialBox2 {
-    background: $lightFillColor;
+  background: $lightFillColor;
 }
 
 .turnNumber {
-    float: left;
-    margin-right: $defaultMargin;
-    font-weight: bold;
+  float: left;
+  margin-right: $defaultMargin;
+  font-weight: bold;
 }
 
 .logout {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 @media (max-width: 752px) {
-    .logout {
-        position: relative;
-        top: 0;
-        right: 0;
-    }
+  .logout {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
 }
 
 #notificationBox {
-    background: $notificationBoxColor;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    height: 100px;
-    resize: vertical;
-    padding: 10px;
-    list-style: none;
-    text-align: justify;
-    margin-bottom: 0;
+  background: $notificationBoxColor;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 100px;
+  resize: vertical;
+  padding: 10px;
+  list-style: none;
+  text-align: justify;
+  margin-bottom: 0;
 }
 
 #dismissNotficationBox a {
-    margin-left: 10px;
-    margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #dismissNotficationBox {
-    background: $darkPink;
-    font-size: $fontSmall;
-    text-align: center;
-    border-bottom: $border;
+  background: $darkPink;
+  font-size: $fontSmall;
+  text-align: center;
+  border-bottom: $border;
 }
 
 #dismissNotficationBox a, #offlinePlayersButton a {
-    color: $containerColor !important;
-    font-weight: normal !important;
+  color: $containerColor !important;
+  font-weight: normal !important;
 }
 
 #dismissNotficationBox a:hover, #offlinePlayersButton a:hover {
-    color: white !important;
-    font-weight: normal !important;
+  color: white !important;
+  font-weight: normal !important;
 }
 
 .infoMessage {
-    font-size: $fontMedium;
-    border-bottom: $border;
-    padding: 4px 10px;
-    text-align: center;
-    background: $darkBackground;
+  font-size: $fontMedium;
+  border-bottom: $border;
+  padding: 4px 10px;
+  text-align: center;
+  background: $darkBackground;
 }
 
 .infoMessage:empty {
-    display: none;
+  display: none;
 }
 
 .result {
-    color: $good;
+  color: $good;
 }
 
-
 .error {
-    color: $error;
+  color: $error;
 }
 
 .suberror {
-    color: white;
-    font-size: $fontSmall;
+  color: white;
+  font-size: $fontSmall;
 }
 
 .covenDescription {
-    padding-left: 40px;
-    padding-right: 40px;
-    text-align: justify;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: justify;
 }
 
 #RecentActivityLog {
-    clear: both;
-    background: $notificationBoxColor;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    height: 200px;
-    resize: vertical;
-    padding: 10px;
-    list-style: none;
-    text-align: justify;
-    margin-bottom: 0;
+  clear: both;
+  background: $notificationBoxColor;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 200px;
+  resize: vertical;
+  padding: 10px;
+  list-style: none;
+  text-align: justify;
+  margin-bottom: 0;
 }
 
 .boxContainer {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .charaBox {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .itemBox {
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .charaBoxInner {
-    padding: 10px;
+  padding: 10px;
 }
 
 .charaBoxCommand {
-    text-align: center;
+  text-align: center;
 }
 
 .portrait {
-    height: 100px;
-    width: 100px;
-    background-size: 100% 100%;
-    margin-left: auto;
-    margin-right: auto;
+  height: 100px;
+  width: 100px;
+  background-size: 100% 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .charInfoWrapper {
-    text-align: center;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .offlinePlayersWrapperBG {
-    background: $offlinePlayerBG;
-    border-bottom: $border;
+  background: $offlinePlayerBG;
+  border-bottom: $border;
 }
 
 .floorItemsWrapperBG {
-    background: $containerColor;
-    border-bottom: $border;
-    clear: both;
+  background: $containerColor;
+  border-bottom: $border;
+  clear: both;
 }
 
 .floorItemsWrapperBG:empty {
-    display: none;
+  display: none;
 }
 
 .onlinePlayersWrapperBG {
-    background: $onlinePlayerBG;
-    border-top: $border;
+  background: $onlinePlayerBG;
+  border-top: $border;
 }
 
 #offlinePlayersButton {
-    background: #7B6461;
-    font-size: $fontSmall;
-    text-align: center;
-    border-bottom: $border;
+  background: #7B6461;
+  font-size: $fontSmall;
+  text-align: center;
+  border-bottom: $border;
 }
 
 .icon {
-    width: 15px;
-    height: 15px;
-    background-size: 100% 100%;
-    display: inline-block;
-    position: relative;
+  width: 15px;
+  height: 15px;
+  background-size: 100% 100%;
+  display: inline-block;
+  position: relative;
 }
 
 .icon-level {
-    width: 25px;
-    height: 16px;
-    text-align: center;
-    /* text-shadow: 1px 1px #FFF;*/
-    padding-bottom: 5px;
-    background: rgba(255, 255, 255, 0.7);
-    border-right: 1px solid #D3D3D3;
-    border-bottom: 1px solid #D3D3D3;
-    border-bottom-right-radius: 10px;
-    top: -2px;
-    left: 0;
+  width: 25px;
+  height: 16px;
+  text-align: center;
+  /* text-shadow: 1px 1px #FFF;*/
+  padding-bottom: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  border-right: 1px solid #D3D3D3;
+  border-bottom: 1px solid #D3D3D3;
+  border-bottom-right-radius: 10px;
+  top: -2px;
+  left: 0;
 }
 
-.icon-female {background-image: url("../Images/PvP/Icons/female.png");}
-.icon-male {background-image: url("../Images/PvP/Icons/male.png");}
-.icon-detail {background-image: url("../Images/PvP/Icons/details.png");}
-.icon-mc {width: 25px; height: 25px; background-image: url("../Images/PvP/Icons/mc_swirl.gif");}
-.icon-online {background-image: url("../Images/PvP/Icons/online.png");}
-.icon-offline {background-image: url("../Images/PvP/Icons/offline.png");}
-.icon-permanent {background-image: url("../Images/PvP/Icons/icon-permanent.png");}
-.icon-souled0 {background-image: url("../Images/PvP/Icons/icon-souled0.png"); }
-.icon-souled1 {background-image: url("../Images/PvP/Icons/icon-souled1.png"); }
-.icon-souled2 {background-image: url("../Images/PvP/Icons/icon-souled2.png"); }
-.icon-duel {background-image: url("../Images/PvP/Icons/icon-duel.png"); }
-.icon-quest { background-image: url("../Images/PvP/Icons/icon-quest.png"); }
-.icon-turn {width: auto;height: 17px;background-color: yellow;border: 1px solid red;}
-.icon-consumable {background-image: url("../Images/PvP/Icons/consumable.png");}
-.icon-shirt {background-image: url("../Images/PvP/Icons/shirt.png");}
-.icon-undershirt {background-image: url("../Images/PvP/Icons/undershirt.png");}
-.icon-pants {background-image: url("../Images/PvP/Icons/pants.png");}
-.icon-underpants {background-image: url("../Images/PvP/Icons/underpants.png");}
-.icon-shoes {background-image: url("../Images/PvP/Icons/shoes.png");}
-.icon-pet {background-image: url("../Images/PvP/Icons/pet.png");}
-.icon-accessory {background-image: url("../Images/PvP/Icons/accessory.png");}
-.icon-hat {background-image: url("../Images/PvP/Icons/hat.png");}
-.icon-pvp {width: 16px;height: 16px;background-image: url("../Images/PvP/Icons/PVP.png");}
-.icon-protection {width: 16px;height: 16px;background-image: url("../Images/PvP/Icons/icon-protection.png");}
-.icon-superprotection {width: 16px;height: 16px;background-image: url("../Images/PvP/Icons/icon-superprotection.png");}
-.icon-rp {width: 16px;height: 16px;background-image: url("../Images/PvP/Icons/RP.png");}
-.icon-donate {width: 16px;height: 16px;background-image: url("../Images/PvP/Icons/donator_1.gif");}
+.icon-female {
+  background-image: url("../Images/PvP/Icons/female.png");
+}
+
+.icon-male {
+  background-image: url("../Images/PvP/Icons/male.png");
+}
+
+.icon-detail {
+  background-image: url("../Images/PvP/Icons/details.png");
+}
+
+.icon-mc {
+  width: 25px;
+  height: 25px;
+  background-image: url("../Images/PvP/Icons/mc_swirl.gif");
+}
+
+.icon-online {
+  background-image: url("../Images/PvP/Icons/online.png");
+}
+
+.icon-offline {
+  background-image: url("../Images/PvP/Icons/offline.png");
+}
+
+.icon-permanent {
+  background-image: url("../Images/PvP/Icons/icon-permanent.png");
+}
+
+.icon-souled0 {
+  background-image: url("../Images/PvP/Icons/icon-souled0.png");
+}
+
+.icon-souled1 {
+  background-image: url("../Images/PvP/Icons/icon-souled1.png");
+}
+
+.icon-souled2 {
+  background-image: url("../Images/PvP/Icons/icon-souled2.png");
+}
+
+.icon-duel {
+  background-image: url("../Images/PvP/Icons/icon-duel.png");
+}
+
+.icon-quest {
+  background-image: url("../Images/PvP/Icons/icon-quest.png");
+}
+
+.icon-turn {
+  width: auto;
+  height: 17px;
+  background-color: yellow;
+  border: 1px solid red;
+}
+
+.icon-consumable {
+  background-image: url("../Images/PvP/Icons/consumable.png");
+}
+
+.icon-shirt {
+  background-image: url("../Images/PvP/Icons/shirt.png");
+}
+
+.icon-undershirt {
+  background-image: url("../Images/PvP/Icons/undershirt.png");
+}
+
+.icon-pants {
+  background-image: url("../Images/PvP/Icons/pants.png");
+}
+
+.icon-underpants {
+  background-image: url("../Images/PvP/Icons/underpants.png");
+}
+
+.icon-shoes {
+  background-image: url("../Images/PvP/Icons/shoes.png");
+}
+
+.icon-pet {
+  background-image: url("../Images/PvP/Icons/pet.png");
+}
+
+.icon-accessory {
+  background-image: url("../Images/PvP/Icons/accessory.png");
+}
+
+.icon-hat {
+  background-image: url("../Images/PvP/Icons/hat.png");
+}
+
+.icon-pvp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/PVP.png");
+}
+
+.icon-protection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-protection.png");
+}
+
+.icon-superprotection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-superprotection.png");
+}
+
+.icon-rp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/RP.png");
+}
+
+.icon-donate {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/donator_1.gif");
+}
 
 .portraitIconRP {
-    position: relative;
-    left: 10px;
-    top: 80px;
-    text-align: right;
-    float: right;
+  position: relative;
+  left: 10px;
+  top: 80px;
+  text-align: right;
+  float: right;
 }
 
-.icon-timesattacking {width: 20px;height: 20px;text-align: center;text-shadow: 1px 1px #ffffff; background-image: url("../Images/PvP/Icons/target.png");}
+.icon-timesattacking {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/target.png");
+}
 
 .icon-cleansemeditate {
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
-    background-image: url("../Images/PvP/Icons/cleansemeditate.png");
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/cleansemeditate.png");
 }
 
 .icon-health_recovery {
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
-    background-image: url("../Images/PvP/Icons/icon-health_recovery.png");
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-health_recovery.png");
 }
 
 .icon-mana_recovery {
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
-    background-image: url("../Images/PvP/Icons/icon-mana_recovery.png");
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-mana_recovery.png");
 }
 
 .icon-defense {
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
-    background-image: url("../Images/PvP/Icons/icon-defense.png");
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-defense.png");
 }
 
 .icon-money {
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
-    background-image: url("../Images/PvP/Icons/money.png");
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/money.png");
 }
 
 .icon-sleep {
-    background-image: url("../Images/PvP/Icons/icon-sleep.png");
+  background-image: url("../Images/PvP/Icons/icon-sleep.png");
 }
 
 .covBox:empty {
-    display: none;
+  display: none;
 }
 
 .floorItemWrapper {
-    width: 150px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    text-align: center;
+  width: 150px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .actionButton {
-    border: none;
-    padding: 10px;
-    margin: 10px;
-    font-size: $fontMedium;
-    display: inline-block;
-    font-weight: normal;
-    color: white !important;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  font-size: $fontMedium;
+  display: inline-block;
+  font-weight: normal;
+  color: white !important;
 }
 
 @media (max-width: 768px) {
-.actionButton {
+  .actionButton {
     padding: 5px;
     margin: 5px;
-    }
+  }
 }
 
 .actionButton:hover {
-    color: #E4E0D4 !important;
+  color: #E4E0D4 !important;
 }
 
 #actionMeditate {
-    background: #00008B;
+  background: #00008B;
 }
 
 #actionCleanse {
-    background: #8B0000;
+  background: #8B0000;
 }
 
 #actionSearch {
-    background: #FF8C00;
+  background: #FF8C00;
 }
 
 .formerly a {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .formerly {
-    font-size: $fontSmall;
-    color: darkred;
-    background-color: #FFCCFF;
+  font-size: $fontSmall;
+  color: darkred;
+  background-color: #FFCCFF;
 }
 
 .action_attack {
-    font-size: $fontMedium;
-    line-height: 30px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 5px;
-    display: inline-block;
-    border: $border;
+  font-size: $fontMedium;
+  line-height: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  display: inline-block;
+  border: $border;
 }
 
 .col-md-1 {
-    min-height: 0 !important;
+  min-height: 0 !important;
 }
 
-#MessageText, #Message, #WebsiteURL, #Text, .text-container{
-    width: 100%;
-    resize: vertical;
-    border: 1px solid #808080;
-    padding: 10px;
+#MessageText, #Message, #WebsiteURL, #Text, .text-container {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #808080;
+  padding: 10px;
 }
 
 .petActionBad {
-    color: #9E0E0E;
+  color: #9E0E0E;
 }
 
 .petActionGood {
-    color: #19199F;
+  color: #19199F;
 }
 
 .playerAttackNotification {
-    color: $willpowerRed;
+  color: $willpowerRed;
 }
 
 .playerSearchingNotification {
-    color: #A7641A;
+  color: #A7641A;
 }
 
 .playerCleansingNotification {
-    color: #9822BC;
+  color: #9822BC;
 }
 
 .playerMediatingNotification {
-    color: #2234BC;
+  color: #2234BC;
 }
 
 .frontPageNotification {
-    padding-bottom: 7px;
+  padding-bottom: 7px;
 }
 
 .frontPageNotification:last-child {
-    padding-bottom: 7px;
+  padding-bottom: 7px;
 }
 
 .timeago {
-    color: #6F5151 !important;
+  color: #6F5151 !important;
 }
 
 .place {
-    font-size: $fontBig;
-    color: $darkBackground;
-    text-align: center;
-    clear: both;
-    display: block;
+  font-size: $fontBig;
+  color: $darkBackground;
+  text-align: center;
+  clear: both;
+  display: block;
 }
 
 .covSafeground {
-    font-size: $fontMedium;
-    color: $darkPink;
-    text-align: center;
-    clear: both;
-    display: block;
+  font-size: $fontMedium;
+  color: $darkPink;
+  text-align: center;
+  clear: both;
+  display: block;
 }
 
 .tableLines {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .tableLines td {
-    border: 1px solid $darkPink;
-    text-align: center;
-    padding: 3px;
-    background: $darkPink;
-    color: white;
+  border: 1px solid $darkPink;
+  text-align: center;
+  padding: 3px;
+  background: $darkPink;
+  color: white;
 }
 
 .tableLines td a {
-    color: $onlinePlayerBG !important;
-    font-weight: normal;
+  color: $onlinePlayerBG !important;
+  font-weight: normal;
 }
 
 .tableLines td a:hover {
-    color: white !important;
+  color: white !important;
 }
 
 .tableLines td:empty {
-    background: $bodyColor;
+  background: $bodyColor;
 }
 
 .attackLink {
-    border: 1px solid #7B6461;
-    margin-top: 4px;
-    display: block;
-    width: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    background: $containerColor;
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  background: $containerColor;
 }
 
 .petActionLink {
-    border: 1px solid #7B6461;
-    margin-top: 4px;
-    display: block;
-    width: 150px;
-    margin-left: auto;
-    margin-right: auto;
-    background: $containerColor;
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  background: $containerColor;
 }
 
-.petActionLink:hover, .attackLink:hover{
-    color: $navbarDark !important;
-    border: 1px solid $darkBackground !important;
-    background: $offlinePlayerBG !important;
+.petActionLink:hover, .attackLink:hover {
+  color: $navbarDark !important;
+  border: 1px solid $darkBackground !important;
+  background: $offlinePlayerBG !important;
 }
 
 .inanimateAction {
-    border: 1px solid #7B6461;
-    margin: 4px auto 8px auto;
-    display: block;
-    max-width: 300px;
-    background: $containerColor;
-    text-align: center;
+  border: 1px solid #7B6461;
+  margin: 4px auto 8px auto;
+  display: block;
+  max-width: 300px;
+  background: $containerColor;
+  text-align: center;
 }
 
 .inanimateActionList {
-    list-style: none;
-    padding-left: 0;
+  list-style: none;
+  padding-left: 0;
 }
 
 .disabled {
-    background-color: $onlinePlayerBG;
-    text-decoration: line-through;
+  background-color: $onlinePlayerBG;
+  text-decoration: line-through;
 }
 
 .onlinePlayersButton {
-    border: none !important;
+  border: none !important;
 }
 
 .avatarText, .avatarBars {
-    text-align: center;
-    display: table-cell;
-    vertical-align: middle;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .avatarName {
-    font-size: $fontHuge;
+  font-size: $fontHuge;
 }
 
 .avatarFormName {
-    font-size: $fontMedium;
+  font-size: $fontMedium;
 }
 
 .avatarCoven {
-    font-size: $fontSmall;
-    color: purple;
+  font-size: $fontSmall;
+  color: purple;
 }
 
 .portraitFront {
-    width: 200px;
-    height: 200px;
-    margin-left: auto;
-    margin-right: auto;
-    background-size: contain;
-    border: 4px solid #A16969;
-    position:relative;
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: contain;
+  border: 4px solid #A16969;
+  position: relative;
 }
 
 .barWrapper {
-    height: 30px;
-    width: 280px;
-    background-color: $notificationBoxColor;
-    margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
+  height: 30px;
+  width: 280px;
+  background-color: $notificationBoxColor;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .avatarXPWrapper {
-    height: 15px !important;
-    width: 280px !important;
-    margin-bottom: 10px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  height: 15px !important;
+  width: 280px !important;
+  margin-bottom: 10px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .barData {
-    height: 30px;
-    overflow: hidden;
+  height: 30px;
+  overflow: hidden;
 }
 
 .barWP {
-    background-color: darkred;
+  background-color: darkred;
 }
 
 .barMP {
-    background-color: darkblue;
+  background-color: darkblue;
 }
 
 .barAP {
-    background-color: darkorange;
+  background-color: darkorange;
 }
 
 .barEXP, .avatarXPAmt {
-    background-color: purple;
+  background-color: purple;
 }
 
 .barText {
-    text-align: center;
-    color: white;
-    font-size: $fontMedium;
-    line-height: 30px;
-    width: 280px;
-    position: absolute;
+  text-align: center;
+  color: white;
+  font-size: $fontMedium;
+  line-height: 30px;
+  width: 280px;
+  position: absolute;
 }
 
 .frontOuter {
-    height: 200px;
-    width: 100%;
-    max-width: 350px;
-    border: $border;
-    display: table;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+  height: 200px;
+  width: 100%;
+  max-width: 350px;
+  border: $border;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
 
 #frontOuterAvatar {
-    border: none !important;
+  border: none !important;
 }
 
 .tldr {
-    text-transform: uppercase;
-    color: #9822BC;
+  text-transform: uppercase;
+  color: #9822BC;
 }
 
 .covListing {
-    width: 100%;
-    height: auto;
-    float: left;
-    position: relative;
-    border: 1px solid lightgray;
-    padding: 10px;
+  width: 100%;
+  height: auto;
+  float: left;
+  position: relative;
+  border: 1px solid lightgray;
+  padding: 10px;
 }
 
 .covBigName {
-    font-size: 20px;
-    font-weight: 700;
-    color: darkviolet;
+  font-size: 20px;
+  font-weight: 700;
+  color: darkviolet;
 }
 
 .covMemberCount {
-    font-size: 12px;
-    color: darkblue;
-    margin-left: 10px;
-    font-style: italic;
+  font-size: 12px;
+  color: darkblue;
+  margin-left: 10px;
+  font-style: italic;
 }
 
 .covFlag {
-    width: 100px;
-    height: 100px;
-    float: left;
-    position: relative;
-    margin-right: 10px;
-    background-size: 100% 100%;
+  width: 100px;
+  height: 100px;
+  float: left;
+  position: relative;
+  margin-right: 10px;
+  background-size: 100% 100%;
 }
 
 .contributionsBox {
-    height: 250px;
-    resize: vertical;
-    overflow-y: scroll;
-    border: $border;
-    padding: 5px;
+  height: 250px;
+  resize: vertical;
+  overflow-y: scroll;
+  border: $border;
+  padding: 5px;
 }
 
 .playPageInventoryItem {
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    position: relative;
-    float: left;
-    border: 1px solid black;
-    color: black;
-    font-weight: 900;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
-    margin: 5px;
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  position: relative;
+  float: left;
+  border: 1px solid black;
+  color: black;
+  font-weight: 900;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  margin: 5px;
 }
 
 .openInventory {
-    letter-spacing: 1px;
-    transition: all 0.5s ease;
+  letter-spacing: 1px;
+  transition: all 0.5s ease;
 }
 
 .openInventory:hover {
-    border: 1px solid red;
-    cursor: pointer;
+  border: 1px solid red;
+  cursor: pointer;
 }
 
 .frontHeader {
-    font-size: $fontHuge;
-    font-weight: bold;
+  font-size: $fontHuge;
+  font-weight: bold;
 }
 
 .frontForm {
-    width: 200px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
 
 .chatInput {
-    border: 1px solid black;
-    width: 100%;
-    display: block;
-    padding: 6px;
-    resize: both;
-    margin: 5px auto 10px;
+  border: 1px solid black;
+  width: 100%;
+  display: block;
+  padding: 6px;
+  resize: both;
+  margin: 5px auto 10px;
 }
 
 #discussion {
-    max-width: 100%;
-    height: 300px;
-    overflow-y: scroll;
-    text-wrap: normal;
-    padding: 0;
-    background-color: #E1E1E1;
-    margin-top: 5px;
-    resize: vertical;
-    border: $border;
-    word-break: break-all;
-    margin-bottom: 0;
+  max-width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+  text-wrap: normal;
+  padding: 0;
+  background-color: #E1E1E1;
+  margin-top: 5px;
+  resize: vertical;
+  border: $border;
+  word-break: break-all;
+  margin-bottom: 0;
 }
 
 .btn,
 .btn-chat {
-    color: white;
-    background-color: $bodyColor;
-    border: $navbarDark 1px solid;
-    border-radius: 0;
+  color: white;
+  background-color: $bodyColor;
+  border: $navbarDark 1px solid;
+  border-radius: 0;
 }
 
 .btn:hover,
 .btn-chat:hover {
-    color: white;
-    background-color: $navbarDark;
-    border: $bodyColor 1px solid;
+  color: white;
+  background-color: $navbarDark;
+  border: $bodyColor 1px solid;
 }
 
 .btn:focus,
-.btn-chat:focus
-{
-    color: white;
+.btn-chat:focus {
+  color: white;
 }
 
 .btn-chat {
-    width: 100%;
+  width: 100%;
 }
 
 #ignoreDiv {
-    border: $border;
-    width: 100%;
-    padding: 15px;
+  border: $border;
+  width: 100%;
+  padding: 15px;
 }
 
 #ignore {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 #discussion li {
-    padding: 4px;
+  padding: 4px;
 }
 
 #discussion li:nth-child(odd) {
-    background-color: #D2CFCE;
+  background-color: #D2CFCE;
 }
 
 #discussion li:nth-child(even) {
-    background-color: #E1E1E1;
+  background-color: #E1E1E1;
 }
 
 .adminFont {
-    color: darkred;
+  color: darkred;
 }
 
 .youFont {
-    color: darkblue;
+  color: darkblue;
 }
 
 .dm {
-    color: darkgreen;
-    font-weight: 800;
+  color: darkgreen;
+  font-weight: 800;
 }
 
 .me {
-    font-style: italic;
-    font-weight: 900;
+  font-style: italic;
+  font-weight: 900;
 }
 
 strong {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .enterMsg {
-    color: black;
-    font-weight: 800;
+  color: black;
+  font-weight: 800;
 }
 
 .roomName {
-    background: none repeat scroll 0 0 #A16969;
-    font-size: $fontSmall;
-    text-align: center;
-    border: $border;
-    border-top: none !important;
-    color: white;
+  background: none repeat scroll 0 0 #A16969;
+  font-size: $fontSmall;
+  text-align: center;
+  border: $border;
+  border-top: none !important;
+  color: white;
 }
 
 #autoScrollToggle {
-    width: 100px;
-    float: right;
-    cursor: pointer;
+  width: 100px;
+  float: right;
+  cursor: pointer;
 }
 
 .pollTextArea {
-    width: 100%;
-    height: 100px;
-    resize: vertical;
-    overflow-y: scroll;
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  overflow-y: scroll;
 }
 
 .bad {
-    color: #9E0E0E !important;
+  color: #9E0E0E !important;
 }
 
 .modal-content {
-    border: $border !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    background: $containerColor;
+  border: $border !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: $containerColor;
 }
 
 .textSpaced p {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-.detailLink{
-    background-color: rgba(255, 255, 255, 0.5);
-    position: absolute;
-    top: 70px;
-    left: 50px;
-    padding: 4px;
+.detailLink {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 70px;
+  left: 50px;
+  padding: 4px;
 }
 
-#fullDetails{
-    height: auto !important;
-    resize: vertical;
-    background: $containerColor;
-    z-index: 999;
-    width: 1120px;
-    border: $border;
-    position: fixed;
-    overflow-y: auto;
-    top: 20px;
-    padding: 10px;
+#fullDetails {
+  height: auto !important;
+  resize: vertical;
+  background: $containerColor;
+  z-index: 999;
+  width: 1120px;
+  border: $border;
+  position: fixed;
+  overflow-y: auto;
+  top: 20px;
+  padding: 10px;
 }
 
 #fullDetails .portrait {
-    margin-right: 10px;
-    padding-left: 0;
+  margin-right: 10px;
+  padding-left: 0;
 }
 
 #fullDetails .bonuses {
-    margin-top: 10px;
-    color: $navbarDark;
+  margin-top: 10px;
+  color: $navbarDark;
 }
 
 @media (max-width: 1199px) {
-    #fullDetails{
+  #fullDetails {
     width: 922px;
-    }
+  }
 }
 
 @media (max-width: 991px) {
-    #fullDetails{
+  #fullDetails {
     width: 702px;
-    }
+  }
 }
 
 @media (max-width: 752px) {
-    #fullDetails{
+  #fullDetails {
     width: 90%;
-    }
+  }
 }
 
 .petItemPortrait {
-    width: 450px;
-    height: 450px;
-    background-size: cover;
-    background-position: center center;
-    margin-left: auto;
-    margin-right: auto;
+  width: 450px;
+  height: 450px;
+  background-size: cover;
+  background-position: center center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .rpTag {
-    border: 1px black solid;
-    cursor: pointer;
-    padding: 4px;
-    line-height: 2.5em;
+  border: 1px black solid;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 2.5em;
 }
 
 .buttonSetBio {
-    display: block;
-    line-height: 30px;
-    margin: 10px auto;
+  display: block;
+  line-height: 30px;
+  margin: 10px auto;
 }
 
-.on {background-color: lightgreen;}
-.on:hover {background-color: #FF6B6B;}
-.off {background-color: pink;}
-.off:hover {background-color: #25C325;}
+.on {
+  background-color: lightgreen;
+}
 
-.neg2 {background-color: #FF6B6B;}
-.neg1 {background-color: pink;}
-.pos1 {background-color: lightgreen;}
-.pos2 {background-color: #25C325;}
+.on:hover {
+  background-color: #FF6B6B;
+}
+
+.off {
+  background-color: pink;
+}
+
+.off:hover {
+  background-color: #25C325;
+}
+
+.neg2 {
+  background-color: #FF6B6B;
+}
+
+.neg1 {
+  background-color: pink;
+}
+
+.pos1 {
+  background-color: lightgreen;
+}
+
+.pos2 {
+  background-color: #25C325;
+}
 
 .donateButton {
-    background-color: white;
-    border: $border;
-    padding: 15px;
+  background-color: white;
+  border: $border;
+  padding: 15px;
 }
 
 .portraitMobile {
-    height: 140px;
-    width: 140px;
-    background-size: 100%;
-    border: $border;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+  height: 140px;
+  width: 140px;
+  background-size: 100%;
+  border: $border;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
 
 .messageTextContainer {
-    border: 1px solid gray;
-    height: auto;
-    margin-top: auto;
-    margin-bottom: 10px;
-    padding: 10px;
-    text-align: justify;
-    word-wrap: break-word;
+  border: 1px solid gray;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: justify;
+  word-wrap: break-word;
 }
 
-.messageInfoContainer{
-    background-color: $navbarDark;
-    color: white;
-    padding-left: 10px;
-    padding-right: 10px;
+.messageInfoContainer {
+  background-color: $navbarDark;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.messageNicknameContainer{
-    font-weight: bold;
-    text-align: left;
+.messageNicknameContainer {
+  font-weight: bold;
+  text-align: left;
 }
 
-.messageTimeContainer{
-    text-align: right;
-    float: right;
+.messageTimeContainer {
+  text-align: right;
+  float: right;
 }
 
-.messageTable{
-    text-align: center;
-    border: 1px solid #808080;
-    margin-bottom: 0 !important;
+.messageTable {
+  text-align: center;
+  border: 1px solid #808080;
+  margin-bottom: 0 !important;
 }
 
-.messageTable td  {
-    vertical-align: middle !important;
-    border-top:  1px solid #808080;
-    border-bottom: 1px solid #808080;
+.messageTable td {
+  vertical-align: middle !important;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080;
 }
 
-.messageTable th  {
-    text-align: center;
-    border-bottom: 1px solid #808080 !important;
-    color: white;
-    background-color: #734752;
+.messageTable th {
+  text-align: center;
+  border-bottom: 1px solid #808080 !important;
+  color: white;
+  background-color: #734752;
 }
 
-.messageTable tr:nth-child(2n)  {
-    background-color: gainsboro;
+.messageTable tr:nth-child(2n) {
+  background-color: gainsboro;
 }
 
 .messageTable td.newlink {
-    background-color: rgba(120, 186, 181, 0.5) !important;
+  background-color: rgba(120, 186, 181, 0.5) !important;
 }
 
 .newlink a {
-    background-color: rgba(120, 186, 181, 0.5) !important;
+  background-color: rgba(120, 186, 181, 0.5) !important;
 }
 
-
 .charCounter {
-    font-size: 10px;
-    color: white;
-    float: right;
-    text-align: right;
-line-height: 18px;
+  font-size: 10px;
+  color: white;
+  float: right;
+  text-align: right;
+  line-height: 18px;
 }
 
 .contributionsBox a {
-    line-height: 25px;
+  line-height: 25px;
 }
 
 .specialHeader {
-    background-color:#EDAF6B !important;
+  background-color: #EDAF6B !important;
 }
 
- .noticeOn{
-        color: green;
-    }
-    .noticeOff{
-        color: red;
-    }
+.noticeOn {
+  color: green;
+}
+
+.noticeOff {
+  color: red;
+}
 
 .topBorder {
-  border-top: 4px solid #A16969; }
+  border-top: 4px solid #A16969;
+}
 
 .warningText {
   color: #734752;
   text-align: center;
-  margin-top: 20px; }
+  margin-top: 20px;
+}
 
-.rp-ad{
-    text-align: center;
-    margin: 0 48px 20px;
-    padding: 15px;
-    border: 2px $navbarDark dashed;
-    border-top: 2px $navbarDark solid;
-    background: #DFCBBF;
-    overflow: hidden;
+.rp-ad {
+  text-align: center;
+  margin: 0 48px 20px;
+  padding: 15px;
+  border: 2px $navbarDark dashed;
+  border-top: 2px $navbarDark solid;
+  background: #DFCBBF;
+  overflow: hidden;
 }
 
 @media (max-width: 1199px) {
-    .rp-ad{
-        margin: 0 39px 20px;
-    }
+  .rp-ad {
+    margin: 0 39px 20px;
+  }
 }
 
 @media (max-width: 991px) {
-    .rp-ad{
-        margin: 0 0 20px;
-    }
+  .rp-ad {
+    margin: 0 0 20px;
+  }
 }
 
 .pvpAdmin {
-    text-align: center;
-    font-size: $fontBig;
-    line-height: 50px;
+  text-align: center;
+  font-size: $fontBig;
+  line-height: 50px;
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .dropdown-menu {
-    background-color: #A16969;
+  background-color: #A16969;
 }
 
 .dropdown-menu {
-        text-align: center;
+  text-align: center;
 }
 
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-    background-color: #CF8C81;
+  background-color: #CF8C81;
 }
 
 .shout {
-    display: block;
-    width: 60px;
-    margin: 5px auto;
-    position: relative;
-    top: -203px;
-    left: 75px;
-    color: white !important;
+  display: block;
+  width: 60px;
+  margin: 5px auto;
+  position: relative;
+  top: -203px;
+  left: 75px;
+  color: white !important;
 }
 
 .bus {
-    display: block;
-    width: 60px;
-    margin: 5px auto;
-    position: relative;
-    top: -226px;
-    left: -80px;
-    color: white !important;
+  display: block;
+  width: 60px;
+  margin: 5px auto;
+  position: relative;
+  top: -226px;
+  left: -80px;
+  color: white !important;
 }
 
 .checkbox {
-    display:inline !important;
-    line-height:50px !important;
+  display: inline !important;
+  line-height: 50px !important;
 }
 
-#RememberMe{
-    position: relative;
-    top: 1px;
-    left: 7px;
+#RememberMe {
+  position: relative;
+  top: 1px;
+  left: 7px;
 }
 
 #lastAttack {
-    background-color: #734752 !important;
-    border: 1px solid #000;
-    display: block;
-    margin-left: 1px;
-    color: white;
-    padding-left: 2px;
-    margin-bottom: 2px;
-    text-align: center;
+  background-color: #734752 !important;
+  border: 1px solid #000;
+  display: block;
+  margin-left: 1px;
+  color: white;
+  padding-left: 2px;
+  margin-bottom: 2px;
+  text-align: center;
 }
 
-.userlist-chat{
-    max-width: 100%;
-    height: 300px;
-    overflow-y: scroll;
-    padding: 0;
-    background-color: #E1E1E1;
-    margin-top: 5px;
-    resize: vertical;
-    border: 4px solid #A16969;
-    word-break: break-all;
-    margin-bottom: 0;
-    border-left: none;
-}
-
-.userlistRow{
-    cursor: pointer;
-}
-
-.chat-container .good{
-    color: #734752 !important;
-}
-
-.chat-container .bad{
-    color: #CF8C81 !important;
-}
-
-#discussion .chatlink {
-    text-decoration: underline;
-    color: blue;
-    cursor: pointer;
-}
-
-#discussion li img {
-    width: 32px;
-    height: 32px;
-    transition: 0.1s all linear;
-    margin-right: 5px;
-}
-
-
-#discussion li img:hover {
-    width: 64px;
-    height: 64px;
-}
-
-.chat-container{}
-
-.chat-container .col-md-10 {
-    padding-right: 0 !important;
-}
-
-.chat-container .col-md-2 {
-    padding-left: 0 !important;
+.userlist-chat {
+  max-width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+  padding: 0;
+  background-color: #E1E1E1;
+  margin-top: 5px;
+  resize: vertical;
+  border: 4px solid #A16969;
+  word-break: break-all;
+  margin-bottom: 0;
+  border-left: none;
 }
 
 .userlistRow {
-    background: #D2CFCE !important;
-    width:100%;
-    display:inline-block;
-    border-bottom:1px solid #A16969;
-    padding-left: 3px;
+  cursor: pointer;
+}
+
+.chat-container .good {
+  color: #734752 !important;
+}
+
+.chat-container .bad {
+  color: #CF8C81 !important;
+}
+
+#discussion .chatlink {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+#discussion li img {
+  width: 32px;
+  height: 32px;
+  transition: 0.1s all linear;
+  margin-right: 5px;
+}
+
+#discussion li img:hover {
+  width: 64px;
+  height: 64px;
+}
+
+.chat-container {
+}
+
+.chat-container .col-md-10 {
+  padding-right: 0 !important;
+}
+
+.chat-container .col-md-2 {
+  padding-left: 0 !important;
+}
+
+.userlistRow {
+  background: #D2CFCE !important;
+  width: 100%;
+  display: inline-block;
+  border-bottom: 1px solid #A16969;
+  padding-left: 3px;
 }
 
 .userlistRow:hover {
-    color: black !important;
+  color: black !important;
 }
 
 .stats-leader {
-    text-align: center;
-    height: 250px;
-    padding: 15px;
-    border: 2px $navbarDark dashed;
-    border-top: 2px $navbarDark solid;
-    background: #DFCBBF;
-    overflow: hidden;
+  text-align: center;
+  height: 250px;
+  padding: 15px;
+  border: 2px $navbarDark dashed;
+  border-top: 2px $navbarDark solid;
+  background: #DFCBBF;
+  overflow: hidden;
 }
 
 #statsBox, #playerBox {
-    text-align: center;
+  text-align: center;
 }
 
-#playerBox .portrait{
-    margin-bottom: 10px;
+#playerBox .portrait {
+  margin-bottom: 10px;
 }
 
 #quest hr {
-    border-top: 3px dotted #A16969;
+  border-top: 3px dotted #A16969;
 }
 
 #quest p {
-    text-align: center;
+  text-align: center;
 }
 
 #textBody {
-    text-align: justify;
-    font-size: 14px;
+  text-align: justify;
+  font-size: 14px;
 }
 
-#quest .infoMessage, #quest .specialBox  {
-    border: 4px solid rgb(161, 105, 105);
+#quest .infoMessage, #quest .specialBox {
+  border: 4px solid rgb(161, 105, 105);
 }
 
 #listChatRoomsModal .chatRoomList {
@@ -1332,48 +1453,49 @@ line-height: 18px;
 }
 
 #listChatRoomsModal .chatRoomList li:nth-child(odd) {
-    /*background-color: #D2CFCE;*/
+  /*background-color: #D2CFCE;*/
 }
 
 #listChatRoomsModal .chatRoomList li:nth-child(even) {
-    background-color: #DCDCDC;
+  background-color: #DCDCDC;
 }
 
 #listChatRoomsModal .chatRoomList li span {
-    float: right;
-    font-weight: bold;
-    height: 20px;
-    line-height: 20px;
+  float: right;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px;
 }
 
 .tableCellDescription {
-    color: purple;
-    padding: 10px 5px;
-    text-align: justify;
+  color: purple;
+  padding: 10px 5px;
+  text-align: justify;
 }
 
 .selectable {
-    width: 100px;
-    height: 100px;
-    border: 1px solid black;
-    cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
 .selectable:hover {
-    border: 1px solid red;
+  border: 1px solid red;
 }
+
 .loginCenter .g-recaptcha div {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .specialNoticeBox {
-    background-color: orange;
+  background-color: orange;
 }
 
 .specialNoticeBox.short {
-    height: 22px;
-    font-size: 15px;
-    padding: 1px;
-    background-color: palevioletred;
+  height: 22px;
+  font-size: 15px;
+  padding: 1px;
+  background-color: palevioletred;
 }

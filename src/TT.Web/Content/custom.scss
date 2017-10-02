@@ -61,8 +61,8 @@ h1{
 }
 
 p {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -104,9 +104,9 @@ li {
 }
 
 .outsideContainer {
-    border-radius: 0px;
+    border-radius: 0;
     border: none;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     text-align: center;
     background: $navbarDark;
 }
@@ -184,8 +184,8 @@ li {
 @media (max-width: 752px) {
     .logout {
         position: relative;
-        top: 0px;
-        right: 0px;
+        top: 0;
+        right: 0;
     }
 }
 
@@ -198,7 +198,7 @@ li {
     padding: 10px;
     list-style: none;
     text-align: justify;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #dismissNotficationBox a {
@@ -265,7 +265,7 @@ li {
     padding: 10px;
     list-style: none;
     text-align: justify;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .boxContainer {
@@ -352,7 +352,7 @@ li {
     border-bottom: 1px solid #D3D3D3;
     border-bottom-right-radius: 10px;
     top: -2px;
-    left: 0px;
+    left: 0;
 }
 
 .icon-female {background-image: url("../Images/PvP/Icons/female.png");}
@@ -502,7 +502,7 @@ li {
 }
 
 .col-md-1 {
-    min-height: 0px !important;
+    min-height: 0 !important;
 }
 
 #MessageText, #Message, #WebsiteURL, #Text, .text-container{
@@ -627,7 +627,7 @@ li {
 
 .inanimateActionList {
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .disabled {
@@ -814,14 +814,11 @@ li {
 
 .chatInput {
     border: 1px solid black;
-    margin: 5px 0px 0px 0px;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
     display: block;
     padding: 6px;
     resize: both;
-    margin-bottom: 10px;
+    margin: 5px auto 10px;
 }
 
 #discussion {
@@ -829,13 +826,13 @@ li {
     height: 300px;
     overflow-y: scroll;
     text-wrap: normal;
-    padding: 0px;
+    padding: 0;
     background-color: #E1E1E1;
     margin-top: 5px;
     resize: vertical;
     border: $border;
     word-break: break-all;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .btn,
@@ -843,7 +840,7 @@ li {
     color: white;
     background-color: $bodyColor;
     border: $navbarDark 1px solid;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .btn:hover,
@@ -913,7 +910,7 @@ strong {
 }
 
 .roomName {
-    background: none repeat scroll 0% 0% #A16969;
+    background: none repeat scroll 0 0 #A16969;
     font-size: $fontSmall;
     text-align: center;
     border: $border;
@@ -941,7 +938,7 @@ strong {
 .modal-content {
     border: $border !important;
     box-shadow: none !important;
-    border-radius: 0px !important;
+    border-radius: 0 !important;
     background: $containerColor;
 }
 
@@ -963,17 +960,16 @@ strong {
     background: $containerColor;
     z-index: 999;
     width: 1120px;
-    overflow-y: hidden;
     border: $border;
     position: fixed;
-	overflow-y: scroll;
+    overflow-y: auto;
     top: 20px;
     padding: 10px;
 }
 
 #fullDetails .portrait {
     margin-right: 10px;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 #fullDetails .bonuses {
@@ -1016,12 +1012,9 @@ strong {
 }
 
 .buttonSetBio {
-    margin-left: auto;
-    margin-right: auto;
     display: block;
     line-height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px auto;
 }
 
 .on {background-color: lightgreen;}
@@ -1080,7 +1073,7 @@ strong {
 .messageTable{
     text-align: center;
     border: 1px solid #808080;
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 .messageTable td  {
@@ -1142,7 +1135,7 @@ line-height: 18px;
 
 .rp-ad{
     text-align: center;
-    margin: 0px 48px 20px;
+    margin: 0 48px 20px;
     padding: 15px;
     border: 2px $navbarDark dashed;
     border-top: 2px $navbarDark solid;
@@ -1152,13 +1145,13 @@ line-height: 18px;
 
 @media (max-width: 1199px) {
     .rp-ad{
-        margin: 0px 39px 20px;
+        margin: 0 39px 20px;
     }
 }
 
 @media (max-width: 991px) {
     .rp-ad{
-        margin: 0px 0px 20px;
+        margin: 0 0 20px;
     }
 }
 
@@ -1226,13 +1219,13 @@ line-height: 18px;
     max-width: 100%;
     height: 300px;
     overflow-y: scroll;
-    padding: 0px;
+    padding: 0;
     background-color: #E1E1E1;
     margin-top: 5px;
     resize: vertical;
     border: 4px solid #A16969;
     word-break: break-all;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-left: none;
 }
 
@@ -1270,11 +1263,11 @@ line-height: 18px;
 .chat-container{}
 
 .chat-container .col-md-10 {
-    padding-right: 0px !important;
+    padding-right: 0 !important;
 }
 
 .chat-container .col-md-2 {
-    padding-left: 0px !important;
+    padding-left: 0 !important;
 }
 
 .userlistRow {

@@ -1,13 +1,8 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using TT.Domain.RequestInterfaces;
 using TT.Domain.Services;
@@ -31,26 +26,28 @@ namespace TT.Tests.Pipeline
         public void TestFixtureSetup()
         {
             principalAccessorMock = Substitute.For<IPrincipalAccessor>();
-
             idValidatorMock = Substitute.ForPartsOf<AbstractValidator<IRequestWithUserNameId>>();
 
             requestMock = Substitute.For<IRequestTest>();
+            nextMock = Substitute.For<RequestHandlerDelegate<int>>();
+
+            principalAccessorMock.UserNameId.Returns(userNameId);
         }
 
         public override void SetUp()
         {
             base.SetUp();
 
-            nextMock = Substitute.For<RequestHandlerDelegate<int>>();
             validatorMock = Substitute.ForPartsOf<AbstractValidator<IRequestTest>>();
             validationPipelineBehavior = new ValidationPipelineBehavior<IRequestTest, int>(principalAccessorMock, validatorMock);
-            principalAccessorMock.UserNameId.Returns(userNameId);
         }
 
         [TearDown]
         public void TearDown()
         {
-            requestMock.RuleSets.Returns(RuleSets.None);
+            idValidatorMock.ClearSubstitute(ClearOptions.All);
+            nextMock.ClearSubstitute(ClearOptions.All);
+            requestMock.ClearSubstitute(ClearOptions.All);
         }
 
         [Test]
@@ -68,7 +65,7 @@ namespace TT.Tests.Pipeline
             });
 
             await validationPipelineBehavior.Handle(requestMock, nextMock);
-            Assert.IsTrue(rulesetRan);
+            Assert.That(rulesetRan, Is.True);
         }
 
         [Test]
@@ -83,7 +80,7 @@ namespace TT.Tests.Pipeline
             validatorMock.Include(idValidatorMock);
 
             await validationPipelineBehavior.Handle(requestMock, nextMock);
-            Assert.AreEqual(this.userNameId, userNameId);
+            Assert.That(this.userNameId, Is.EqualTo(userNameId));
         }
 
         [Test]
@@ -94,7 +91,12 @@ namespace TT.Tests.Pipeline
                 context.AddFailure("Property", "Error");
             });
 
-            Assert.ThrowsAsync<ValidationException>(() => validationPipelineBehavior.Handle(requestMock, nextMock));
+            async Task Delegate()
+            {
+                await validationPipelineBehavior.Handle(requestMock, nextMock);
+            };
+
+            Assert.That(Delegate, Throws.TypeOf<ValidationException>());
         }
 
         [Test]

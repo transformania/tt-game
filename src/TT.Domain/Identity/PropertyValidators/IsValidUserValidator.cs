@@ -28,12 +28,7 @@ namespace TT.Domain.Identity.PropertyValidators
 
         protected override async Task<bool> IsValidAsync(PropertyValidatorContext context, CancellationToken cancellation)
         {
-            if (context.PropertyValue is string userNameId)
-            {
-                return await mediator.Send(new IsValidUserRequest { UserNameId = userNameId }, cancellation);
-            }
-
-            return false;
+            return await mediator.Send(new IsValidUserRequest { UserNameId = context.PropertyValue as string }, cancellation);
         }
     }
 

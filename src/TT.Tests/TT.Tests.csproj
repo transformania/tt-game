@@ -115,6 +115,7 @@
     <Compile Include="Builders\Form\TFMessageBuilder.cs" />
     <Compile Include="Builders\Game\WorldBuilder.cs" />
     <Compile Include="Builders\Identity\ArtistBioBuilder.cs" />
+    <Compile Include="Builders\Identity\RoleBuilder.cs" />
     <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
@@ -153,6 +154,11 @@
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
     <Compile Include="Identity\Commands\ResetSecurityStampTest.cs" />
+    <Compile Include="Identity\PropertyValidators\IsValidUserValidatorTests.cs" />
+    <Compile Include="Identity\PropertyValidators\UserHasCorrectValidatorTests.cs" />
+    <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandlerTests.cs" />
+    <Compile Include="Identity\QueryRequestHandlers\UserHasRoleRequestHandlerTests.cs" />
+    <Compile Include="Identity\RequestValidators\ResetSecurityStampValidatorTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />

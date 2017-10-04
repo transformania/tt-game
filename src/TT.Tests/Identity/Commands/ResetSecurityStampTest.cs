@@ -1,10 +1,5 @@
-﻿using MediatR;
-using NSubstitute;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TT.Domain.Identity.CommandHandlers;
 using TT.Domain.Identity.CommandRequests;
@@ -29,7 +24,7 @@ namespace TT.Tests.Identity.Commands
             var UserStampBuilder = new UserSecurityStampBuilder();
             var UserBuilder = new UserBuilder();
 
-            UserStampBuilder.AssignToUser(UserBuilder);
+            UserStampBuilder.AssignToUser(UserBuilder.Build());
 
             testUser = UserBuilder.BuildAndSave();
             testUserSecurityStamp = UserStampBuilder.BuildAndSave();
@@ -45,7 +40,7 @@ namespace TT.Tests.Identity.Commands
             await handler.Handle(resetSecurityStamp);
             var currentStampValue = DataContext.AsQueryable<UserSecurityStamp>().First().SecurityStamp;
 
-            Assert.AreNotEqual(previousStampValue, currentStampValue);
+            Assert.That(previousStampValue, Is.Not.EqualTo(currentStampValue));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TT.Domain.Identity.Entities;
 
 namespace TT.Tests.Builders.Identity
@@ -11,6 +12,7 @@ namespace TT.Tests.Builders.Identity
             With(u => u.Id, Guid.NewGuid().ToString());
             With(u => u.UserName, "Test User");
             With(u => u.Email, "test@email.com");
+            With(u => u.Roles, new List<Role>());
         }
     }
 }

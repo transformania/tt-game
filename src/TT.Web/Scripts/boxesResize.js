@@ -1,5 +1,3 @@
-﻿$("#fullDetails").hide();
-
 $("#fullDetails").on('click', function () {
     $("#fullDetails").hide();
 });

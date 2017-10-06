@@ -33,13 +33,13 @@ namespace TT.Domain.Models
         [Display(Name = "Description of this spell")]
         public string Skill_Description { get; set; }
 
-        [Display(Name = "Mana cost")]
+        [Display(Name = "Mana cost (this should always be set to 7")]
         public decimal Skill_ManaCost { get; set; }
 
-        [Display(Name = "Transformation points added by a successful casting of this spell (should be close to 8)")]
+        [Display(Name = "Transformation points added by a successful casting of this spell (this should always be set to 10)")]
         public decimal Skill_TFPointsAmount { get; set; }
 
-        [Display(Name = "Target's willpower decrease when hit by this spell (should be close to 3 or 4)")]
+        [Display(Name = "Target's willpower decrease when hit by this spell (this should always be set to 4.5)")]
         public decimal Skill_HealthDamageAmount { get; set; }
 
          [Display(Name = "Is this spell learned at a region or specific location?")]
@@ -65,7 +65,7 @@ namespace TT.Domain.Models
         [Display(Name = "Description of what this form looks and acts like.  If the form is inanimate, write about how it feels for the transformed person to be that new item.  !!! If the form is animate, please do not describe what he or she is wearing, or else keep it to a minimum--focus more on how this person feels and acts. !!!")]
         public string Form_Description { get; set; }
 
-        [Display(Name = "How many transformation energy points are needed to fully transform a target into this form (should be near 70)")]
+        [Display(Name = "How many transformation energy points are needed to fully transform a target into this form (must be set to 100)")]
         public decimal Form_TFEnergyRequired { get; set; }
 
          [Display(Name = "Gender of this form.  If the form is inanimate, use the gender of whoever is most likely to own or wear it.")]

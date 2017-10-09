@@ -33,7 +33,7 @@ namespace TT.Tests.Identity.QueryRequestHandlers
         }
 
         [Test]
-        public async Task AssertRequestHandlerReturnsTrueWhenUserSharesCommonRoll()
+        public async Task AssertRequestHandlerReturnsTrueWhenUserSharesCommonRole()
         {
             request.UserNameId = user.Id;
             request.Role = new[] { PvPStatics.Permissions_Artist, PvPStatics.Permissions_Chaoslord, PvPStatics.Permissions_Admin };

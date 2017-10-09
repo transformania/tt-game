@@ -71,16 +71,16 @@ namespace TT.Tests.Pipeline
         [Test]
         public async Task AssertIdIsPassed()
         {
-            string userNameId = null;
+            string capturedUserNameId = null;
 
             idValidatorMock.RuleFor(m => m.UserNameId).Custom((property, context) =>
             {
-                userNameId = property;
+                capturedUserNameId = property;
             });
             validatorMock.Include(idValidatorMock);
 
             await validationPipelineBehavior.Handle(requestMock, nextMock);
-            Assert.That(this.userNameId, Is.EqualTo(userNameId));
+            Assert.That(userNameId, Is.EqualTo(capturedUserNameId));
         }
 
         [Test]

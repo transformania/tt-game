@@ -44,10 +44,10 @@ namespace TT.Tests.Identity.RequestValidators
                 where TRequest : IRequest<bool>
                 where TRequestHandler : IAsyncRequestHandler<TRequest, bool>
             {
-                if (call.Args().Length > 0 && call.Args()[0] is TRequest request)
+                if (call.Args().Length > 0 && call.Args()[0] is TRequest sentRequest)
                 {
                     var handler = (TRequestHandler) System.Activator.CreateInstance(typeof(TRequestHandler), DataContext);
-                    return handler.Handle(request);
+                    return handler.Handle(sentRequest);
                 }
                 return Task.FromResult(false);
             }
@@ -129,7 +129,7 @@ namespace TT.Tests.Identity.RequestValidators
         }
 
         [Test]
-        public async Task AssertValidatorDoesNOTCheckIfTargetUserIsValidWhenRoleIsNotAdmin()
+        public async Task AssertValidatorDoesNotCheckIfTargetUserIsValidWhenRoleIsNotAdmin()
         {
             request.UserNameId = normalUser.Id;
             var results = await validator.ValidateAsync(request);

@@ -1,3 +1,6 @@
+# How to reset world
+
+```SQL
 UPDATE [Stats].[dbo].[Players] SET Covenant = NULL
 DELETE FROM [Stats].[dbo].[Effects]
 DELETE FROM [Stats].[dbo].[InanimateXPs]
@@ -58,10 +61,6 @@ TRUNCATE TABLE [Stats].[dbo].[QuestPlayerVariables]
 -- TRUNCATE TABLE [Stats].[dbo].[Players]
 -- TRUNCATE TABLE [Stats].[dbo].[Covenants]
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [Boss_Faeboss] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
+```
 
-
------------
-
-Don't forget to change the round number!
-
---------------
+## Don't forget to change the round number

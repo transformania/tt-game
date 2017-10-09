@@ -58,6 +58,8 @@ namespace TT.Domain.Identity.Entities
 
         public User User { get; private set; }
 
+        private UserSecurityStamp() { }
+
         public void ResetSecurityStamp(ResetSecurityStamp cmd)
         {
             SecurityStamp = Guid.NewGuid().ToString();

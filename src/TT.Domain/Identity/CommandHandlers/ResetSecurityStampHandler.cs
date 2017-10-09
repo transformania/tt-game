@@ -2,6 +2,7 @@
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace TT.Domain.Identity.CommandHandlers
                        where user.Id == message.TargetUserNameId
                        select user;
 
-            var userEntity = userQuery.First();
+            var userEntity = await userQuery.FirstAsync();
 
             userEntity.ResetSecurityStamp(message);
 

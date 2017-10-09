@@ -2,6 +2,12 @@
 using Highway.Data.Contexts;
 using TT.Domain.Entities;
 using TT.Tests.Utilities;
+using System.Collections.Generic;
+using NSubstitute;
+using System.Data.Entity.Infrastructure;
+using System;
+using System.Collections;
+using System.Linq.Expressions;
 
 namespace TT.Tests
 {
@@ -43,6 +49,11 @@ namespace TT.Tests
         private Entity<TKey> GetEntity<TKey, T>(T item)
         {
             return item as Entity<TKey>;
+        }
+
+        public override IQueryable<T> AsQueryable<T>()
+        {
+            return new AsyncQueryable<T>(base.AsQueryable<T>());
         }
     }
 }

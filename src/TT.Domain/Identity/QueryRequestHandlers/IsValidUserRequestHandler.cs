@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Identity.QueryRequests;
 
-namespace TT.Domain.Identity.RequestHandlers
+namespace TT.Domain.Identity.QueryRequestHandlers
 {
     public class IsValidUserRequestHandler : IAsyncRequestHandler<IsValidUserRequest, bool>
     {

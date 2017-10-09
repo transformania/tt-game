@@ -54,6 +54,9 @@
     <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.1.1\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Highway.Data, Version=6.0.4.2, Culture=neutral, PublicKeyToken=fe803c9600455796, processorArchitecture=MSIL">
       <HintPath>..\packages\Highway.Data.6.0.4.2\lib\net45\Highway.Data.dll</HintPath>
     </Reference>
@@ -62,6 +65,9 @@
     </Reference>
     <Reference Include="Highway.Pavement, Version=0.3.0.0, Culture=neutral, PublicKeyToken=fe803c9600455796, processorArchitecture=MSIL">
       <HintPath>..\packages\Highway.Pavement.0.3.0.0\lib\net40\Highway.Pavement.dll</HintPath>
+    </Reference>
+    <Reference Include="MediatR, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.3.0.1\lib\net45\MediatR.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -109,10 +115,12 @@
     <Compile Include="Builders\Form\TFMessageBuilder.cs" />
     <Compile Include="Builders\Game\WorldBuilder.cs" />
     <Compile Include="Builders\Identity\ArtistBioBuilder.cs" />
+    <Compile Include="Builders\Identity\RoleBuilder.cs" />
     <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
     <Compile Include="Builders\Identity\StrikeBuilder.cs" />
+    <Compile Include="Builders\Identity\UserSecurityStampBuilder.cs" />
     <Compile Include="Builders\Item\InanimateXPBuilder.cs" />
     <Compile Include="Builders\MindControl\VictimMindControlBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
@@ -141,10 +149,18 @@
     <Compile Include="Builders\World\PvPLeaderboardEntryBuilder.cs" />
     <Compile Include="Chat\Commands\CreateChatLogTests.cs" />
     <Compile Include="Chat\Commands\CreateChatRoomTests.cs" />
+    <Compile Include="DbAsyncQueryProvider.cs" />
     <Compile Include="Effects\Commands\CreateEffectTests.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
+    <Compile Include="Identity\Commands\ResetSecurityStampTest.cs" />
+    <Compile Include="Identity\PropertyValidators\IsValidUserValidatorTests.cs" />
+    <Compile Include="Identity\PropertyValidators\UserHasCorrectValidatorTests.cs" />
+    <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandlerTests.cs" />
+    <Compile Include="Identity\QueryRequestHandlers\UserHasRoleRequestHandlerTests.cs" />
+    <Compile Include="Identity\RequestValidators\ResetSecurityStampValidatorTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
+    <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
     <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />
     <Compile Include="World\Commands\SavePvPLeaderboardTests.cs" />

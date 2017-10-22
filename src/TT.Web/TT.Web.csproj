@@ -365,7 +365,6 @@
     <Content Include="Characters\Morgan Faye.txt" />
     <Content Include="Characters\Nigel Whitfeld.txt" />
     <Content Include="Characters\Portia Mason.txt" />
-    <Content Include="Content\AdminStyle.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.min.css">
@@ -670,7 +669,6 @@
     <Content Include="Views\Contribution\ContributeGraphicsNeeded.cshtml" />
     <Content Include="Views\Contribution\ContributeSetGraphicStatus.cshtml" />
     <Content Include="Views\Info\GameNews_PlannedFeatures.cshtml" />
-    <Content Include="Views\PvPAdmin\Play.cshtml" />
     <Content Include="Views\Contribution\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
     <Content Include="Views\PvP\MyPerks.cshtml" />

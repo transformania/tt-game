@@ -1136,7 +1136,7 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
             }
 
-            return View(MVC.PvPAdmin.Views.Play);
+            return View(MVC.PvPAdmin.Views.Index);
 
         }
 

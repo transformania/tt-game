@@ -168,7 +168,6 @@ namespace Links
         public const string UrlPath = "~/Content";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-        public static readonly string AdminStyle_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/AdminStyle.min.css") ? Url("AdminStyle.min.css") : Url("AdminStyle.css");
         public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
         public static readonly string custom_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/custom.min.css") ? Url("custom.min.css") : Url("custom.css");
         public static readonly string custom_min_css = Url("custom.min.css");
@@ -407,7 +406,6 @@ namespace Links
             }
             public static class Assets
             {
-                public const string AdminStyle_css = "~/Content/AdminStyle.css";
                 public const string bootstrap_min_css = "~/Content/bootstrap.min.css";
                 public const string custom_css = "~/Content/custom.css";
                 public const string mystyle_css = "~/Content/mystyle.css";

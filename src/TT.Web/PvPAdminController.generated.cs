@@ -512,7 +512,6 @@ namespace TT.Web.Controllers
                 public readonly string Index = "Index";
                 public readonly string ListCustomForms = "ListCustomForms";
                 public readonly string ListNewsPosts = "ListNewsPosts";
-                public readonly string Play = "Play";
                 public readonly string PublicBroadcast = "PublicBroadcast";
                 public readonly string RenamePlayer = "RenamePlayer";
                 public readonly string Scratchpad = "Scratchpad";
@@ -538,7 +537,6 @@ namespace TT.Web.Controllers
             public readonly string Index = "~/Views/PvPAdmin/Index.cshtml";
             public readonly string ListCustomForms = "~/Views/PvPAdmin/ListCustomForms.cshtml";
             public readonly string ListNewsPosts = "~/Views/PvPAdmin/ListNewsPosts.cshtml";
-            public readonly string Play = "~/Views/PvPAdmin/Play.cshtml";
             public readonly string PublicBroadcast = "~/Views/PvPAdmin/PublicBroadcast.cshtml";
             public readonly string RenamePlayer = "~/Views/PvPAdmin/RenamePlayer.cshtml";
             public readonly string Scratchpad = "~/Views/PvPAdmin/Scratchpad.cshtml";

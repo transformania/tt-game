@@ -134,11 +134,6 @@ namespace Links
         public static readonly string jquery_signalR_2_0_3_min_js = Url("jquery.signalR-2.0.3.min.js");
         public static readonly string jquery_unobtrusive_ajax_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.unobtrusive-ajax.min.js") ? Url("jquery.unobtrusive-ajax.min.js") : Url("jquery.unobtrusive-ajax.js");
         public static readonly string jquery_unobtrusive_ajax_min_js = Url("jquery.unobtrusive-ajax.min.js");
-        public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
-        public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
-        public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
-        public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
-        public static readonly string jquery_validate_unobtrusive_min_js = Url("jquery.validate.unobtrusive.min.js");
         public static readonly string jQueryRotate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryRotate.min.js") ? Url("jQueryRotate.min.js") : Url("jQueryRotate.js");
         public static readonly string jQueryRotateCompressed_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryRotateCompressed.min.js") ? Url("jQueryRotateCompressed.min.js") : Url("jQueryRotateCompressed.js");
         public static readonly string knockout_3_0_0_debug_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/knockout-3.0.0.debug.min.js") ? Url("knockout-3.0.0.debug.min.js") : Url("knockout-3.0.0.debug.js");
@@ -311,10 +306,6 @@ namespace Links
                 public const string jquery_signalR_2_0_3_min_js = "~/Scripts/jquery.signalR-2.0.3.min.js"; 
                 public const string jquery_unobtrusive_ajax_js = "~/Scripts/jquery.unobtrusive-ajax.js"; 
                 public const string jquery_unobtrusive_ajax_min_js = "~/Scripts/jquery.unobtrusive-ajax.min.js"; 
-                public const string jquery_validate_js = "~/Scripts/jquery.validate.js"; 
-                public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
-                public const string jquery_validate_unobtrusive_js = "~/Scripts/jquery.validate.unobtrusive.js"; 
-                public const string jquery_validate_unobtrusive_min_js = "~/Scripts/jquery.validate.unobtrusive.min.js"; 
                 public const string jQueryRotate_js = "~/Scripts/jQueryRotate.js"; 
                 public const string jQueryRotateCompressed_js = "~/Scripts/jQueryRotateCompressed.js"; 
                 public const string knockout_3_0_0_debug_js = "~/Scripts/knockout-3.0.0.debug.js"; 

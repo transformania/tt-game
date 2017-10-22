@@ -38,7 +38,7 @@
     <div id="fullDetails">
 
     </div>
-    <div id="row boxContainer">
+    <div class="row boxContainer">
 
         @{
             foreach (ItemViewModel i in Model.Items.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))

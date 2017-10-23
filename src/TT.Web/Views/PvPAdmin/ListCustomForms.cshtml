@@ -1,16 +1,12 @@
 ﻿@model IEnumerable<TT.Domain.Models.ContributorCustomForm>
     @using TT.Domain.Models
 
-<div>
-    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
-    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
-</div>
-
 <h2>List Custom Forms</h2>
 
-<td><a href="@Url.Action(MVC.PvPAdmin.Index())">Back</a></td>
-
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Back</a></li>
+}
 <table id="customForms">
     <thead>
         <tr>

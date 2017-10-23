@@ -5,30 +5,14 @@
     ViewBag.Title = "Settings";
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-                <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
-                <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
-                <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve name</a></li>
-                <li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+    <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+    <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve name</a></li>
+    <li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li>
+}
 
 <div class="containerInner center-block">
     <h2>Offline Timer</h2>

@@ -1,46 +1,40 @@
 ﻿@using FeatureSwitch
 @using TT.Domain
-@using TT.Domain.ViewModels
-@using TT.Web
 
-<!-- Collect the nav links, forms, and other content for toggling -->
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-    <ul class="nav navbar-nav">
-        @if(FeatureContext.IsEnabled<ChatV2>())
-        {
-            <li><a data-toggle="modal" data-target="#createChatRoomModal">Create Room</a></li>
-            <li><a data-toggle="modal" data-target="#listChatRoomsModal">Room List</a></li>
-        }
-        else {
-        <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-        <li>
-            <a href="@Url.Action(MVC.Chat.Index("global"))">Global</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="@Url.Action(MVC.Chat.Index("rp1"))">RP Room 1</a></li>
-                <li><a href="@Url.Action(MVC.Chat.Index("rp2"))">RP Room 2</a></li>
-                <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
-        </li>
-        <li>
-            <a href="@Url.Action(MVC.PvP.ChatLog("global", "lasth"))" target="_blank">Chat Log</a>
-        </li>
-        <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
-        <li><a href="#" id="showIgnore">Ignore</a></li>
-        <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight: bold;">Toggle Images</a></li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Audio Settings <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li class="audioConfig" data-audio-mode="all"><a>All Sounds</a></li>
-                <li class="audioConfig" data-audio-mode="some"><a>Some Sounds</a></li>
-                <li class="audioConfig" data-audio-mode="none"><a>No Sounds</a></li>
-            </ul>
-        </li>
-        }
-    </ul>
-</div><!-- /.navbar-collapse -->
+@if (FeatureContext.IsEnabled<ChatV2>())
+{
+    <li><a data-toggle="modal" data-target="#createChatRoomModal">Create Room</a></li>
+    <li><a data-toggle="modal" data-target="#listChatRoomsModal">Room List</a></li>
+}
+else
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li>
+        <a href="@Url.Action(MVC.Chat.Index("global"))">Global</a>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.Chat.Index("rp1"))">RP Room 1</a></li>
+            <li><a href="@Url.Action(MVC.Chat.Index("rp2"))">RP Room 2</a></li>
+            <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.ChatLog("global", "lasth"))" target="_blank">Chat Log</a>
+    </li>
+    <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
+    <li><a href="#" id="showIgnore">Ignore</a></li>
+    <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight: bold;">Toggle Images</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Audio Settings <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li class="audioConfig" data-audio-mode="all"><a>All Sounds</a></li>
+            <li class="audioConfig" data-audio-mode="some"><a>Some Sounds</a></li>
+            <li class="audioConfig" data-audio-mode="none"><a>No Sounds</a></li>
+        </ul>
+    </li>
+}

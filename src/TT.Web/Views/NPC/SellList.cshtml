@@ -5,10 +5,12 @@
     ViewBag.Title = "Sell Item";
 }
 
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Back to Purchase List</a></li>
+}
 <p>You can sell your items to Lindella here.</p>
-
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
-<p><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Back to Purchase List</a></p>
 
 <hr />
 
@@ -33,6 +35,3 @@
         <hr />
     }
 }
-
-<p><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Back to Purchase List</a></p>
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>

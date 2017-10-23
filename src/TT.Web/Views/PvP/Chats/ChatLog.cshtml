@@ -4,74 +4,42 @@
     ViewBag.Title = $"Chat Log - {Model.Room}";
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li>
+        <a href="@Url.Action(MVC.Chat.Index("global"))">Global</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.Chat.Index("rp1"))">RP Room 1</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.Chat.Index("rp2"))">RP Room 2</a>
+    </li>
+    <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
+    </li>
+    <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
+}
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-                <li>
-                    <a href="@Url.Action(MVC.Chat.Index("global"))">Global</a>
-                </li>
-                <li>
-                    <a href="@Url.Action(MVC.Chat.Index("rp1"))">RP Room 1</a>
-                </li>
-                <li>
-                    <a href="@Url.Action(MVC.Chat.Index("rp2"))">RP Room 2</a>
-                </li>
-                <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
-                <li>
-                    <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
-                </li>
-                <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "lasth"))">Last Hour</a></li>
-                <li>
-                    <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last4h"))">Last 4 Hours</a>
-                </li>
-                <li>
-                    <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last12h"))">Last 12 Hours</a>
-                </li>
-                <li>
-                    <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last24h"))">Last Day</a>
-                </li>
-                <li>
-                    <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last48h"))">Last 2 Days</a>
-                </li>
-                <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last72h"))">Last 3 Days</a></li>
-</ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+@section menubottom
+{
+    <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "lasth"))">Last Hour</a></li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last4h"))">Last 4 Hours</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last12h"))">Last 12 Hours</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last24h"))">Last Day</a>
+    </li>
+    <li>
+        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last48h"))">Last 2 Days</a>
+    </li>
+    <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last72h"))">Last 3 Days</a></li>
+}
 
 <div class="containerInner">
     <h2>Chat Log for Room '@Model.Room'</h2>

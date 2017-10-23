@@ -14,115 +14,93 @@
     ViewBag.Title = "Play";
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
+@section menu
+{
+    <li>
+        <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+        <span id="turn_countdown">-:--</span>
+    </li>
+    <li><a href="@Url.Action(MVC.PvP.WorldMap("false"))">Map</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions (@Model.PlayerLog.Count())</a></li>
+            <li><a href="@Url.Action(MVC.PvP.MySkills())">Spells</a></li>
+            <li><a href="@Url.Action(MVC.PvP.MyPerks())">My Effects</a></li>
+            <li><a href="@Url.Action(MVC.NPC.MindControlList())">Mind Control</a></li>
+            <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Player.Id))">Look at Yourself</a></li>
+            <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.You.Player.MembershipId))">My Statistics</a></li>
+            <li><a href="@Url.Action(MVC.PvP.SelfRestore())">Self Restore (3 AP, 10 Mana)</a></li>
+        </ul>
+    </li>
+    <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
+    <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
+    <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-                <li>
-                    <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
-                    <span id="turn_countdown">-:--</span>
-                </li>
-                <li><a href="@Url.Action(MVC.PvP.WorldMap("false"))">Map</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions (@Model.PlayerLog.Count())</a></li>
-                        <li><a href="@Url.Action(MVC.PvP.MySkills())">Spells</a></li>
-                        <li><a href="@Url.Action(MVC.PvP.MyPerks())">My Effects</a></li>
-                        <li><a href="@Url.Action(MVC.NPC.MindControlList())">Mind Control</a></li>
-                        <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Player.Id))">Look at Yourself</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.You.Player.MembershipId))">My Statistics</a></li>
-                        <li><a href="@Url.Action(MVC.PvP.SelfRestore())">Self Restore (3 AP, 10 Mana)</a></li>
-                    </ul>
-                </li>
-                <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
-                <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
-                <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
-                
 
-                 <li><a href="@Url.Action(MVC.Quest.QuestsAvailableHere())">Quest</a></li>
-                
+    <li><a href="@Url.Action(MVC.Quest.QuestsAvailableHere())">Quest</a></li>
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell/Form/Item/Pet</a></li>
-                        <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Blessing/Curse</a></li>
-                        @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
-                        {
-                            <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
-                        }
-                    </ul>
-                </li>
 
-                @{
-                    if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell/Form/Item/Pet</a></li>
+            <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Blessing/Curse</a></li>
+            @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
+            {
+                <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
+            }
+        </ul>
+    </li>
+
+    @{
+        if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
+        {
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Staff <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    @if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Staff <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                @if (User.IsInRole(PvPStatics.Permissions_Admin))
-                                {
-                                    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Admin</a></li>
-                                }
-                                @if (User.IsInRole(PvPStatics.Permissions_Moderator))
-                                {
-                                    <li><a href="@Url.Action(MVC.Moderator.Index())">Moderator</a></li>
-                                }
-                            </ul>
-                        </li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Admin</a></li>
                     }
-                }
-
-                <li class="visible-xs-inline"><a href="@Url.Action(MVC.PvP.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize </a></li>
-                @{
-                    if (Model.You.Player.UnusedLevelUpPerks > 0)
+                    @if (User.IsInRole(PvPStatics.Permissions_Moderator))
                     {
-                        <li><a href="@Url.Action(MVC.PvP.LevelupPerk())" class="levelUp">Level Up!</a></li> }
-                }
-
-                @{
-                    if (Model.UnreadMessageCount > 0)
-                    {
-                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.UnreadMessageCount)</a></li>
+                        <li><a href="@Url.Action(MVC.Moderator.Index())">Moderator</a></li>
                     }
-                    else
-                    {
-                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
-                    }
-                }
-                
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
-                        <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
-                    </ul>
-                </li>
+                </ul>
+            </li>
+        }
+    }
 
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+    <li class="visible-xs-inline"><a href="@Url.Action(MVC.PvP.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize </a></li>
+    @{
+        if (Model.You.Player.UnusedLevelUpPerks > 0)
+        {
+            <li><a href="@Url.Action(MVC.PvP.LevelupPerk())" class="levelUp">Level Up!</a></li>
+        }
+    }
 
-<div>
-    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
-    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
-</div>
+    @{
+        if (Model.UnreadMessageCount > 0)
+        {
+            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.UnreadMessageCount)</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
+        }
+    }
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
+            <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+            <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+            <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
+        </ul>
+    </li>
+}
 
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)
 

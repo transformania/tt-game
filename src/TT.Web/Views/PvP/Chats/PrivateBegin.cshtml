@@ -2,7 +2,10 @@
     ViewBag.Title = "Private Chat";
 }
 
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
 
 <h1>Private Chat</h1>
 
@@ -13,8 +16,6 @@
     <input type="text" id="roomName">
     <button name="subject" type="button" id="beginButton" disabled="disabled">Begin</button>
 </form> 
-
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <script>
     $("#beginButton").click(function () {

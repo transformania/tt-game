@@ -11,7 +11,10 @@
     }
 }
 
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
 
 <h1>Your DM Encounter Contributions</h1>
 
@@ -32,7 +35,4 @@
 
     <a href="@Url.Action(MVC.Contribution.DMRoll(roll.Id))">roll.Message</a>
     <hr />
-  
 }
-
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>

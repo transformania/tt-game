@@ -1,7 +1,10 @@
 ﻿@model TT.Domain.Models.DMRoll
 
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
-<p><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Back to my encounter list</a></p>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Back to my encounter list</a></li>
+}
 
 <h1>DM Encounter Contribution</h1>
 
@@ -77,15 +80,6 @@
     <b>highschool</b>:  The hallways of a high school with its students, teachers, and mid-late adolescent drama.<br />
     <b>bimbocalypse</b>:  City streets filled with victims of the bimbo plague, aka the "Bimbocalypse" where anyone infected turns into a sex driven but highly intelligent and predatorial bimbo seeking to spread the infection.<br />
     </p>
-
-<hr />
-
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
-<p><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Back to my encounter list</a></p>
-
-<script>
-
-</script>
 
 <style>
     .wide {

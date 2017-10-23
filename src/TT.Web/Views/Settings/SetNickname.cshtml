@@ -1,4 +1,7 @@
 ﻿@model TT.Web.ViewModels.SetNicknameViewModel
+@{
+    ViewBag.Title = "Set Nickname";
+}
 
 @using (Html.BeginForm(MVC.Settings.SetNicknameSend(), FormMethod.Post))
 {

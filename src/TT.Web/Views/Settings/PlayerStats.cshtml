@@ -1,6 +1,9 @@
 ﻿@using TT.Domain.Procedures
 
 @model IEnumerable<TT.Domain.Identity.DTOs.StatDetail>
+@{
+    ViewBag.Title = $"{ViewBag.Name}'s {TT.Domain.Statics.PvPStatics.AlphaRound} Statistics";
+}
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">

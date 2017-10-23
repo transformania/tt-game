@@ -1,6 +1,9 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
+@{
+    ViewBag.Title = Model.PlayerForm.Player.GetFullName();
+}
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <p id="resultContainer" class="infoMessage result"></p>

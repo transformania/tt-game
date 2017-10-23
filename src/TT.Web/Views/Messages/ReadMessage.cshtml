@@ -1,5 +1,8 @@
 ﻿@model TT.Domain.Messages.DTOs.MessageDetail
 @using TT.Web.CustomHtmlHelpers
+@{
+    ViewBag.Title = "Read Message";
+}
 
 <!--used for ajax in AddAntiForgeryToken()-->
 <form id="__AjaxAntiForgeryForm" action="#" method="post">@Html.AntiForgeryToken()</form>

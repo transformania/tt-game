@@ -1,5 +1,8 @@
 ﻿@model TT.Domain.ViewModels.ChatLogViewModel
 @using TT.Web.CustomHtmlHelpers
+@{
+    ViewBag.Title = $"Chat Log - {Model.Room}";
+}
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">

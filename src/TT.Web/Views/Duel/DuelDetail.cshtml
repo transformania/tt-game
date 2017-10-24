@@ -16,7 +16,7 @@
                 @{
                     foreach (PlayerFormViewModel p in Model.Combatants)
                     {
-                        <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Player.Id))">p.Player.GetFullName()</a></li>
+                        <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Player.Id))">@p.Player.GetFullName()</a></li>
                     }
                 }
             </ul>

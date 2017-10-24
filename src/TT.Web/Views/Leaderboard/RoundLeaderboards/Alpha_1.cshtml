@@ -1,4 +1,7 @@
-﻿<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
+﻿@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
 
 @Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)
 
@@ -2223,8 +2226,6 @@
     </tbody>
 
 </table>
-
-<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <style>
     table {

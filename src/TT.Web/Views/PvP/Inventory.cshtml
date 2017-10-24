@@ -5,26 +5,10 @@
     ViewBag.Title = "Inventory";
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
 
 @{
 
@@ -55,12 +39,6 @@
     <p>You are carrying <b>@Model.Items.Count(i => !i.dbItem.IsEquipped) / @TT.Domain.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses)</b> items.</p>
     
     <p>You have used <b>@ViewBag.ItemsUsedThisTurn/1</b> consumable type items this turn.</p>
-</div>
-
-<div>
-    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
-    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
 <div class="containerInner">

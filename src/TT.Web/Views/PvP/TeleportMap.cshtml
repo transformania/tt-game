@@ -4,7 +4,10 @@
     ViewBag.Title = "Teleport";
 }
 
-<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
+@section menu
+{
+    <a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
+}
 
 <p>Choose which destination you would like to teleport to.  You will be transported there instantly without any action points being used.</p>
 
@@ -17,4 +20,3 @@
 }
 
 <p>
-    <a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>

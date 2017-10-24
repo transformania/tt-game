@@ -3,21 +3,10 @@
     ViewBag.Title = Model.RoomName;
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        
-        @Html.Partial(MVC.Chat.Views._ChatMenu)
-    </div>
-</nav>
+@section menu
+{
+    @Html.Partial(MVC.Chat.Views._ChatMenu)
+}
 
 <p class="infoMessage error" id="connectionStatus" style="display: none;">
     Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.

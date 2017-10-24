@@ -3,8 +3,11 @@
 @{
     ViewBag.Title = "Author / Artist Biography";
 }
+@section menu
+{
+    <a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
+}
 
-<a href="@Url.Action(MVC.PvP.Play())" class="returnButton">Back to game</a>
 <div class="textBio">
     <p class="bioTitle">Author / Artist Biography</p>
     <p class="bioDesc">@ViewBag.IngameCharacter <br>

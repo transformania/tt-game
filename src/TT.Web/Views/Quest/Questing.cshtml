@@ -4,43 +4,18 @@
     ViewBag.Title = "Questing";
 }
 
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions {UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting"}, new {@class = ""})</li>
+    <li><a href="@Url.Action(MVC.Messages.Index())" id="newMessagesLink">Inbox</a></li>
+    <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-                <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
-                <li><a href="@Url.Action(MVC.Messages.Index())" id="newMessagesLink">Inbox</a></li>
-                <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
-
-                @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
-                {
-                <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
-                }
-
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-
-<div>
-    <p class="infoMessage result"></p>
-    <p class="infoMessage error"></p>
-    <p class="infoMessage suberror"></p>
-</div>
-
-
+    @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
+    {
+        <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
+    }
+}
 
 <div class="containerInner" id="quest">
 

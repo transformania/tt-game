@@ -2,31 +2,15 @@
 @{
     ItemViewModel item = ViewBag.item;
 }
-<nav class="navbar navbar-default outsideContainer navbarTT2">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav" style="width:100%;">
-                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-                @{
-                    if (item.dbItem.OwnerId != null && item.dbItem.OwnerId != -1)
-                    {
-                        <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems((int)item.dbItem.OwnerId))">View owner's other items</a></li>
-                    }
-                }
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    @if (item.dbItem.OwnerId != null && item.dbItem.OwnerId != -1)
+    {
+        <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems((int) item.dbItem.OwnerId))">View owner's other items</a></li>
+    }
+}
 
 <h1>Item transfer log for @item.Item.FriendlyName</h1>
 <ul>

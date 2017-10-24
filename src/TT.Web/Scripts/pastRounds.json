@@ -375,6 +375,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 48,
+      "name": "Alpha R48 (Era of Cali Ziegler)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

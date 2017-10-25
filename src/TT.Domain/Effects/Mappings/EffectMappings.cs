@@ -23,7 +23,7 @@ namespace TT.Domain.Effects.Mappings
                 .WithMany(e => e.Effects).Map(m => m.MapKey("OwnerId"));
         }
 
-        protected override void Configure()
+        public EffectMappings()
         {
             CreateMap<Effect, EffectDetail>();
         }

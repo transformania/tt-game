@@ -16,7 +16,7 @@ namespace TT.Domain.Identity.Mappings
 
         }
 
-        protected override void Configure()
+        public CaptchaEntryMappings()
         {
             CreateMap<CaptchaEntry, CaptchaEntryDetail>();
         }

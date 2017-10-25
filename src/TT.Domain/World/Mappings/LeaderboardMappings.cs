@@ -2,6 +2,7 @@
 using AutoMapper;
 using Highway.Data;
 using TT.Domain.World.DTOs;
+using TT.Domain.World.Entities;
 
 namespace TT.Domain.World.Mappings
 {
@@ -34,9 +35,11 @@ namespace TT.Domain.World.Mappings
                .WithMany().Map(p => p.MapKey("ItemSourceId"));
         }
 
-        protected override void Configure()
+        public LeaderboardMappings()
         {
-            CreateMap<Entities.World, WorldDetail>();
+            CreateMap<PvPLeaderboardEntry, PvPLeaderboardEntryDetail>();
+            CreateMap<ItemLeaderboardEntry, ItemLeaderboardEntryDetail>();
+            CreateMap<XpLeaderboardEntry, XpLeaderboardEntryDetail>();
         }
     }
 }

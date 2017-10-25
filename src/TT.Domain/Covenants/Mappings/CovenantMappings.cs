@@ -27,7 +27,7 @@ namespace TT.Domain.Covenants.Mappings
 
         }
 
-        protected override void Configure()
+        public CovenantMappings()
         {
 
         }

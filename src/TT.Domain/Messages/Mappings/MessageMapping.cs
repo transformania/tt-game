@@ -21,7 +21,7 @@ namespace TT.Domain.Messages.Mappings
                 .WithMany().Map(m => m.MapKey("ReceiverId"));
         }
 
-        protected override void Configure()
+        public MessageMappings()
         {
             CreateMap<Message, MessageDetail>();
         }

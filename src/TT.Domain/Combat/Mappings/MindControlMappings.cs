@@ -21,7 +21,7 @@ namespace TT.Domain.Combat.Mappings
 
         }
 
-        protected override void Configure()
+        public MindControlMappings()
         {
             CreateMap<VictimMindControl, VictimMindControlDetail>();
         }

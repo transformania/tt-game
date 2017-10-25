@@ -24,10 +24,9 @@ namespace TT.Domain.Skills.Mappings
 
         }
 
-        protected override void Configure()
+        public SkillMappings()
         {
             CreateMap<Skill, SkillDetail>();
-            CreateMap<SkillSource, SkillSourceDetail>();
         }
     }
 }

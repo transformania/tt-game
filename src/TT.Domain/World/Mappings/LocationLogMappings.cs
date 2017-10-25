@@ -16,7 +16,7 @@ namespace TT.Domain.World.Mappings
 
         }
 
-        protected override void Configure()
+        public LocationLogMappings()
         {
             CreateMap<LocationLog, LocationLogDetail>();
         }

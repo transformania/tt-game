@@ -15,7 +15,7 @@ namespace TT.Domain.Items.Mappings
                 .HasKey(cr => cr.Id);
         }
 
-        protected override void Configure()
+        public ItemSourceMappings()
         {
             CreateMap<ItemSource, ItemSourceDetail>();
             CreateMap<ItemSource, ItemSourceListingDetail>();

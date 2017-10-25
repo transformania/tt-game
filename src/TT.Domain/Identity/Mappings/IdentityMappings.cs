@@ -69,11 +69,12 @@ namespace TT.Domain.Identity.Mappings
                 .HasKey(r => r.Id);
         }
 
-        protected override void Configure()
+        public IdentityMappings()
         {
             CreateMap<User, UserDetail>();
             CreateMap<User, UserDonatorDetail>();
             CreateMap<Stat, StatDetail>();
+            CreateMap<Strike, StrikeDetail>();
         }
     }
 }

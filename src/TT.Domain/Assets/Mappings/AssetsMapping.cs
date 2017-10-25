@@ -16,7 +16,7 @@ namespace TT.Domain.Assets.Mappings
                 .HasRequired(cr => cr.BaseItem).WithMany();
         }
 
-        protected override void Configure()
+        public AssetsMappings()
         {
             CreateMap<Tome, TomeDetail>();
         }

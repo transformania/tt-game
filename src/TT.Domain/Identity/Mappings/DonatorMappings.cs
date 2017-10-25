@@ -15,7 +15,7 @@ namespace TT.Domain.Identity.Mappings
                 .HasKey(u => u.Id);
         }
 
-        protected override void Configure()
+        public DonatorMappings()
         {
             CreateMap<Donator, DonatorDetail>();
         }

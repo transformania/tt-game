@@ -17,7 +17,7 @@ namespace TT.Domain.Assets.Mappings
 
         }
 
-        protected override void Configure()
+        public RestockItemMappings()
         {
             CreateMap<RestockItem, RestockItemDetail>();
         }

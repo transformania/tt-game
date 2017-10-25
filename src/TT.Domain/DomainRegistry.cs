@@ -71,13 +71,7 @@ namespace TT.Domain
         {
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                var pType = typeof(Profile);
-                var mappings = typeof(DomainRegistry).Assembly.GetTypes().Where(t => pType.IsAssignableFrom(t));
-
-                foreach (var mapping in mappings)
-                    cfg.AddProfile((Profile)Activator.CreateInstance(mapping));
-
-                cfg.CreateMissingTypeMaps = true; // allows anonymous types to be mapped
+                cfg.AddProfiles(typeof(DomainRegistry).Assembly);
             });
 
             _mapper = mapperConfiguration.CreateMapper();

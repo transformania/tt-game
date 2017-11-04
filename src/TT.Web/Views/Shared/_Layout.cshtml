@@ -76,9 +76,9 @@
     </nav>
 }
 <div>
-    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
-    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+    <p id="resultContainer" class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p id="errorContainer" class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p id="suberrorContainer" class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
     @RenderBody()
 @if (IsSectionDefined("menubottom"))

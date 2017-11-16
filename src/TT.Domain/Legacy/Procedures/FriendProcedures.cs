@@ -10,26 +10,31 @@ namespace TT.Domain.Procedures
 {
     public static class FriendProcedures
     {
-        public static void AddFriend(Player player, string membershipId)
+        public static bool AddFriend(Player player, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == membershipId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == membershipId && f.OwnerMembershipId == player.MembershipId));
+            var friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == membershipId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == membershipId && f.OwnerMembershipId == player.MembershipId));
 
-            // if friend is null, add a new unnaccepted friend binding
-            if (friend == null)
+            if (friend != null)
             {
-                friend = new Friend();
-                friend.OwnerMembershipId = membershipId;
-                friend.FriendMembershipId = player.MembershipId;
-                friend.IsAccepted = false;
-                friend.FriendsSince = DateTime.UtcNow;
-                friend.FriendNicknameForOwner = "[UNASSIGNED]";
-                friend.OwnerNicknameForFriend = "[UNASSIGNED]";
-
-                friendRepo.SaveFriend(friend);
+                // We're already friends, abort!
+                return false;
             }
 
+            // We're not friends, let's add a friendship request
+            friend = new Friend
+            {
+                OwnerMembershipId = membershipId,
+                FriendMembershipId = player.MembershipId,
+                IsAccepted = false,
+                FriendsSince = DateTime.UtcNow,
+                FriendNicknameForOwner = "[UNASSIGNED]",
+                OwnerNicknameForFriend = "[UNASSIGNED]"
+            };
+
+            friendRepo.SaveFriend(friend);
+            return true;
         }
 
         public static Friend GetFriend(int friendId)

@@ -25,6 +25,9 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string NerdSpell = "skill_The_Brain_Elynsynos";
         public const string NerdSpellForm = "form_Nerdy_Mousegirl_Elynsynos";
 
+        public const string MakeupKitSpell = "skill_Nerd_Away_Circine/Lexam";
+        public const string MicroscopeSpell = "skill_Bimbo-B-Gone_Lexam";
+
         private const int NerdBossFormId = 317;
         private const int BimboBossFormId = 522;
 
@@ -133,25 +136,31 @@ namespace TT.Domain.Procedures.BossProcedures
 
             AIProcedures.DealBossDamage(bossTarget, attacker, true, 1);
 
+            string spell = ChooseSpell(bossTarget);
+
             // nerd counters with nerd spell unless she has changed form
-            if (bossTarget.FirstName == NerdBossFirstName && bossTarget.Form == NerdBossForm)
+            if (bossTarget.FirstName == NerdBossFirstName && bossTarget.Form == NerdBossForm || bossTarget.FirstName == BimboBossFirstName && bossTarget.Form == BimboBossForm)
             {
-                AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
-                AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
-                AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
-                AIProcedures.DealBossDamage(bossTarget, attacker, false, 3);
-            }
-           
-
-            // bimbo counters with bimbo spell unless she has changed form
-            else if (bossTarget.FirstName == BimboBossFirstName && bossTarget.Form == BimboBossForm)
-            {
-                AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
-                AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
-                AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
+                AttackProcedures.Attack(bossTarget, attacker, spell);
+                AttackProcedures.Attack(bossTarget, attacker, spell);
+                AttackProcedures.Attack(bossTarget, attacker, spell);
                 AIProcedures.DealBossDamage(bossTarget, attacker, false, 3);
             }
 
+        }
+
+        private static string ChooseSpell(Player sister)
+        {
+            if (sister.FirstName == BimboBossFirstName)
+            {
+                return IsAtThreeQuartersHealthOrLower(sister) ? MakeupKitSpell : BimboSpell;
+            }
+            return IsAtThreeQuartersHealthOrLower(sister) ? MicroscopeSpell : NerdSpell;
+        }
+
+        private static bool IsAtThreeQuartersHealthOrLower(Player player)
+        {
+            return player.Health < (player.Health / 4) * 3;
         }
 
         public static void RunSistersAction()

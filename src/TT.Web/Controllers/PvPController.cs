@@ -2572,15 +2572,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            FriendProcedures.AddFriend(friend, myMembershipId);
-
-            string message = me.GetFullName() + " has sent you a friend request.";
-
-            if (!PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message))
+            if (FriendProcedures.AddFriend(friend, myMembershipId))
             {
-                PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
-            }
+                var message = me.GetFullName() + " has sent you a friend request.";
 
+                if (!PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message))
+                {
+                    PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
+                }
+            }
+            else
+            {
+                TempData["Error"] = "This player is already a friend.";
+                TempData["SubError"] = "You cannot request friendship with an existing friend.";
+            }
 
             return RedirectToAction(MVC.PvP.Play());
         }

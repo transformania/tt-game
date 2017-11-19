@@ -1348,7 +1348,8 @@ namespace TT.Web.Controllers
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
-
+                string myMembershipId = User.Identity.GetUserId();
+                Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
@@ -1361,25 +1362,36 @@ namespace TT.Web.Controllers
 
                 string origFirstName = player.FirstName;
                 string origLastName = player.LastName;
+                string changed_name = null;
+                string changed_level = null;
+                string changed_money = null;
+                string changed_form = null;
 
                 if (input.NewFirstName != null && input.NewFirstName.Length > 0)
                 {
                     player.FirstName = input.NewFirstName;
+                    changed_name = " name,";
                 }
 
                 if (input.NewLastName != null && input.NewLastName.Length > 0)
                 {
                     player.LastName = input.NewLastName;
+                    if (changed_name == null)
+                    {
+                        changed_name = " name,";
+                    }
                 }
 
                 if (input.Level > 0)
                 {
                     player.Level = input.Level;
+                    changed_level = " level,";
                 }
 
                 if (input.Money > 0)
                 {
                     player.Money = input.Money;
+                    changed_money = " money,";
                 }
 
                 if (input.NewForm != null && input.NewForm.Length > 0)
@@ -1407,6 +1419,8 @@ namespace TT.Web.Controllers
                         player.Mobility = PvPStatics.MobilityFull;
                         itemRepo.DeleteItem(item.Id);
                     }
+
+                    changed_form = " form,";
 
                 }
 
@@ -1455,8 +1469,14 @@ namespace TT.Web.Controllers
                 }
 
                 // mouse sisters have no unique spells yet.
+                string cm = changed_name + changed_form + changed_level + changed_money;
+                cm = cm.TrimEnd(cm[cm.Length - 1]);
 
-
+                // if chaoslord changes themself, they won't get a notification that they changed themself.
+                if (player.Id != me.Id)
+                {
+                    PlayerLogProcedures.AddPlayerLog(player.Id, $"Player <b>\"{me.GetFullName()}\"</b> has changed your{cm}.", false);
+                }
             }
             else
             {

@@ -271,14 +271,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
 
             // every 5 turns heal the boss based on how many infected bots there are
-            if (turnNumber % 5 == 0)
+            if (ShouldHeal(bimboBoss, turnNumber))
             {
                 
                 var activeCurses = effectRepo.Effects.Count(eff => eff.dbName == KissEffectdbName)*3;
-                if (activeCurses > 75)
-                {
-                    activeCurses = 100;
-                }
+                activeCurses = activeCurses > 75 ? 75 : activeCurses;
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);
                 string message = "<b>" + bimboBoss.GetFullName() + " draws energy from her bimbo horde, regenerating her own willpower by " + activeCurses + ".</b>";
@@ -409,6 +406,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
             }
 
+        }
+
+        private static bool ShouldHeal(Player lovebringer, int turnNumber)
+        {
+            return turnNumber % 5 == 0 && lovebringer.Health < lovebringer.MaxHealth / 6;
         }
 
     }

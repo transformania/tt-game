@@ -160,7 +160,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private static bool IsAtThreeQuartersHealthOrLower(Player player)
         {
-            return player.Health < (player.Health / 4) * 3;
+            return player.Health < (player.MaxHealth / 4) * 3;
         }
 
         public static void RunSistersAction()

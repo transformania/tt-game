@@ -9,7 +9,7 @@
 
     if (Model.TurnNumber >= PvPStatics.RoundDuration)
     {
-        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  Check back soon to start again on a fresh round. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  <a href="@Url.Action(MVC.Info.HowToPlay())#chaosMode">Chaos mode</a> will start soon when an admin can save the round leaderboards. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.InbetweenRoundsNonChaos)

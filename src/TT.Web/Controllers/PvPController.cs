@@ -3038,6 +3038,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player has submitted their captcha recently
+            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+                DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "Please complete this captcha on the page.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
             DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
 

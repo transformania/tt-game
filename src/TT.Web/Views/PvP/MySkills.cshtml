@@ -1,6 +1,5 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.MySkillsViewModel>
-@using TT.Domain.ViewModels
-@using TT.Web.CustomHtmlHelpers
+﻿@model TT.Web.ViewModels.MySkillsViewModel
+@using TT.Domain.Skills.DTOs
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "My Spells";
@@ -11,7 +10,7 @@
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Settings.ArchiveAllMySpells("true"))">Archive All My Spells</a></li>
     <li><a href="@Url.Action(MVC.Settings.ArchiveAllMySpells("false"))">Restore All My Spells</a></li>
-    <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Count(c => c.Skill_Name != PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == PvPStatics.MobilityFull || c.Skill_MobilityType == PvPStatics.MobilityInanimate || c.Skill_MobilityType == PvPStatics.MobilityPet || c.Skill_MobilityType == PvPStatics.MobilityMindControl)) / @ViewBag.TotalLearnableSkills)</a></li>
+    <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.skills.Count() / @ViewBag.TotalLearnableSkills)</a></li>
 }
 
 <div class="containerInner">
@@ -21,9 +20,9 @@
             <tr>
                 <th>Spell Name</th>
                 <th>Form Name</th>
+                <th>Graphic</th>
                 <th>Form Type</th>
                 <th>Description</th>
-               
                 <th>Effect</th>
                 <th>Archive</th>
             </tr>
@@ -34,35 +33,48 @@
         </thead>
         <tbody>
             @{
-                foreach (MySkillsViewModel skill in Model.OrderBy(s => s.Skill_FriendlyName))
+                foreach (SkillSourceFormSourceDetail skill in Model.skills.OrderBy(s => s.SkillSource.FriendlyName))
                 {
                     <tr>
-                        <td class="skillname">
-                            @skill.Skill_FriendlyName
-                            @if (skill.Skill_IsArchived)
+                        <td class="playerMediatingNotification">
+                            <b>@skill.SkillSource.FriendlyName</b>
+                            @if (skill.IsArchived)
                             {
-                                <b id="@skill.Skill_Id">(ARCHIVED)</b>
+                                <b id="@skill.Id">(ARCHIVED)</b>
                             }
                             else
                             {
-                                <b id="@skill.Skill_Id"></b>
+                                <b id="@skill.Id"></b>
                             }
                         </td>
-                        <td class="formname">@skill.Form_FriendlyName</td>
+                        <td class="formname">
+                            @if (skill.SkillSource.FormSource != null)
+                            {
+                                <b>@skill.SkillSource.FormSource.FriendlyName</b>
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (Model.ShouldDisplayGraphic(skill))
+                                {
+                                    <img src="@Model.GetGraphic(skill)"/>
+                                }
+                            }
+                        </td>
                         <td class="mobilityClass">
-                            @if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == PvPStatics.MobilityInanimate)
+                            @if (skill.SkillSource.MobilityType != null && skill.SkillSource.MobilityType == PvPStatics.MobilityInanimate)
                             {
                                 <text>Inanimate</text>
                             }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == PvPStatics.MobilityPet)
+                            else if (skill.SkillSource.MobilityType != null && skill.SkillSource.MobilityType == PvPStatics.MobilityPet)
                             {
                                 <text>Animal/Familiar</text>
                             }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "curse")
+                            else if (skill.SkillSource.MobilityType != null && skill.SkillSource.MobilityType == "curse")
                             {
                                 <text>Temporary curse</text>
                             }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == PvPStatics.MobilityMindControl)
+                            else if (skill.SkillSource.MobilityType != null && skill.SkillSource.MobilityType == PvPStatics.MobilityMindControl)
                             {
                                 <text>Temporary mind control</text>
                             }
@@ -71,19 +83,18 @@
                                 <text>Animate</text>
                             }
                         </td>
-                        <td class="tableCellDescription">@skill.Skill_Description</td>
-                        
+                        <td class="tableCellDescription">@skill.SkillSource.Description</td>
                         @{
-                    if (@skill.Skill_GivesEffect != null)
+                    if (@skill.SkillSource.GivesEffectSource != null)
                     {
-                        <td class="effect">@CharactersHere.GetEffectFriendlyName(skill.Skill_GivesEffect)</td>
+                        <td class="effect">@skill.SkillSource.GivesEffectSource.FriendlyName</td>
                     }
                     else
                     {
                         <td>N/A</td>
                     }
                 }
-                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.Skill_Name), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
+                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.SkillSource.dbName), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
                 </tr>
                         }
         }
@@ -123,7 +134,7 @@
         $('#MySkills').dataTable({
             "orderCellsTop": true,
             "initComplete": function () {
-                this.api().column(2).every(function () {
+                this.api().column(3).every(function () {
                     var column = this;
                     $("#filtermobility").on('change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(

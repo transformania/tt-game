@@ -24,35 +24,6 @@ namespace TT.Domain.Procedures
             return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.Skill).ToList();
         }
 
-        public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)
-        {
-            ISkillRepository skillRepo = new EFSkillRepository();
-
-            IEnumerable<MySkillsViewModel> output = from ds in skillRepo.Skills
-                                                  where ds.OwnerId == playerId
-                                                  join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
-                                                  join sf in skillRepo.DbStaticForms on ss.FormdbName equals sf.dbName
-
-                                                  select new MySkillsViewModel
-                                                  {
-                                                      Skill_Charge = ds.Charge,
-                                                      Skill_Duration = ds.Duration,
-                                                      Skill_IsArchived = ds.IsArchived,
-                                                      Skill_Name = ds.Name,
-                                                      Skill_Id = ds.Id,
-
-                                                      Skill_MobilityType = ss.MobilityType,
-                                                      Skill_FriendlyName = ss.FriendlyName,
-                                                      Skill_Description = ss.Description,
-                                                      Skill_ManaCost = ss.ManaCost,
-                                                      Skill_HealthDamageAmount = ss.HealthDamageAmount,
-                                                      Skill_GivesEffect = ss.GivesEffect,
-                                                      Skill_TFPointsAmount = ss.TFPointsAmount,
-                                                      Form_FriendlyName = sf.FriendlyName
-                                                  };
-            return output;
-        }
-
         public static IEnumerable<SkillViewModel> GetSkillViewModelsOwnedByPlayer(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

@@ -26,9 +26,11 @@ using TT.Domain.Items.Queries;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
+using TT.Domain.Skills.Queries;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
 using TT.Web.Extensions;
+using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
 {
@@ -1620,10 +1622,9 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
             ViewBag.TotalLearnableSkills = SkillProcedures.GetCountOfLearnableSpells();
-
-            return View(MVC.PvP.Views.MySkills, SkillProcedures.GetMySkillsViewModel(me.Id));
+            var mySkills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer {playerId = me.Id});
+            return View(MVC.PvP.Views.MySkills, new MySkillsViewModel(mySkills));
         }
 
         public virtual ActionResult Search()

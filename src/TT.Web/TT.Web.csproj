@@ -352,6 +352,7 @@
     <Compile Include="TransformaniaTimeController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MySkillsViewModel.cs" />
     <Compile Include="ViewModels\SetNicknameViewModel.cs" />
     <Content Include="Characters\All Characters %2825%29.txt" />
     <Content Include="Characters\Brianne Smith.txt" />

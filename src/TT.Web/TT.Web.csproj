@@ -354,7 +354,6 @@
     </Compile>
     <Compile Include="ViewModels\MySkillsViewModel.cs" />
     <Compile Include="ViewModels\SetNicknameViewModel.cs" />
-    <Content Include="Characters\All Characters %2825%29.txt" />
     <Content Include="Characters\Brianne Smith.txt" />
     <Content Include="Characters\Carrie McCarthy.txt" />
     <Content Include="Characters\Chandler Jacobson.txt" />

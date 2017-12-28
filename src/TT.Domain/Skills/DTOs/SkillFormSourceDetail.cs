@@ -1,11 +1,12 @@
-﻿using TT.Domain.Forms.DTOs;
+﻿using TT.Domain.Effects.DTOs;
+using TT.Domain.Forms.DTOs;
 
 namespace TT.Domain.Skills.DTOs
 {
     public class SkillSourceFormSourceDetail
     {
         public int Id { get; set; }
-
+        public bool IsArchived { get; set; }
         public FormSourceNameDetail SkillSource { get; set; }
     }
 
@@ -14,6 +15,8 @@ namespace TT.Domain.Skills.DTOs
         public int Id { get; set; }
         public string dbName { get; set; }
         public string FriendlyName { get; set; }
+        public string Description { get; set; }
+        public EffectSourceDetail GivesEffectSource { get; set; }
         public FormNameDescriptionDetail FormSource { get; set; }
         public string MobilityType { get; set; }
     }

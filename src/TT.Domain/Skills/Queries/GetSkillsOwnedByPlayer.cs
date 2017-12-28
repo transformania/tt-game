@@ -17,6 +17,9 @@ namespace TT.Domain.Skills.Queries
             {
                 return ctx.AsQueryable<Skill>()
                             .Include(s => s.SkillSource)
+                            .Include(s => s.SkillSource.FormSource)
+                            .Include(s  => s.SkillSource.FormSource.ItemSource)
+                            .Include(s => s.SkillSource.GivesEffectSource)
                            .Where(s => s.Owner.Id == playerId)
                            .ProjectToQueryable<SkillSourceFormSourceDetail>();
             };

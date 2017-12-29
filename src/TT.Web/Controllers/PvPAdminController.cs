@@ -1367,35 +1367,36 @@ namespace TT.Web.Controllers
                 string changed_money = null;
                 string changed_form = null;
 
-                if (input.NewFirstName != null && input.NewFirstName.Length > 0)
+                if (!string.IsNullOrEmpty(input.NewFirstName) && input.NewFirstName != player.FirstName)
                 {
-                    player.FirstName = input.NewFirstName;
                     changed_name = " name,";
+                    player.FirstName = input.NewFirstName;
                 }
 
-                if (input.NewLastName != null && input.NewLastName.Length > 0)
+                if (!string.IsNullOrEmpty(input.NewLastName) && input.NewLastName != player.LastName)
                 {
-                    player.LastName = input.NewLastName;
                     if (changed_name == null)
                     {
                         changed_name = " name,";
                     }
+                    player.LastName = input.NewLastName;
                 }
 
-                if (input.Level > 0)
+                if (input.Level > 0 && input.Level != player.Level)
                 {
-                    player.Level = input.Level;
                     changed_level = " level,";
+                    player.Level = input.Level;
                 }
 
-                if (input.Money > 0)
+                if (input.Money > 0 && input.Money != player.Money)
                 {
-                    player.Money = input.Money;
                     changed_money = " money,";
+                    player.Money = input.Money;
                 }
 
-                if (input.NewForm != null && input.NewForm.Length > 0)
+                if (!string.IsNullOrEmpty(input.NewForm) && input.NewForm != player.Form)
                 {
+                    changed_form = " form,";
                     IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
                     DbStaticForm form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
 
@@ -1419,9 +1420,6 @@ namespace TT.Web.Controllers
                         player.Mobility = PvPStatics.MobilityFull;
                         itemRepo.DeleteItem(item.Id);
                     }
-
-                    changed_form = " form,";
-
                 }
 
                 playerRepo.SavePlayer(player);
@@ -1468,7 +1466,17 @@ namespace TT.Web.Controllers
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellDbName);
                 }
 
-                // mouse sisters have no unique spells yet.
+                // if it's mouse sisters, then give them spells as well
+                else if (player.Form == BossProcedures_Sisters.BimboBossForm)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MakeupKitSpell);
+                }
+
+                else if (player.Form == BossProcedures_Sisters.NerdBossForm)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpell);
+                }
+
                 string cm = changed_name + changed_form + changed_level + changed_money;
                 cm = cm.TrimEnd(cm[cm.Length - 1]);
 

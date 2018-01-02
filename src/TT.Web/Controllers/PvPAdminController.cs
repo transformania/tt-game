@@ -341,9 +341,10 @@ namespace TT.Web.Controllers
             }
         }
 
+        [ValidateInput(false)]
         public virtual ActionResult SendPublicBroadcast(PublicBroadcastViewModel input)
         {
-            // assert only admins can view this
+            // assert only admins can perform this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());

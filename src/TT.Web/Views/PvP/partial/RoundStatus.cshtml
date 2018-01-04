@@ -24,7 +24,7 @@
 
     if (Model.RoundStartsAt != null && Model.RoundStartsAt.Value.CompareTo(DateTime.UtcNow) > 0)
     {
-        <div class="specialBox specialBox2 roundStartNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The next round is scheduled to start in approximately <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalDays)</b> days, <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalHours % 24)</b> hours, and <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalMinutes % 60)</b> minutes.<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2 roundStartNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The next round is scheduled to start in approximately <span id="nextRound">@Model.RoundStartsAt</span> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (ViewBag.UpdateInProgress)

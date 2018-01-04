@@ -1,7 +1,11 @@
 ﻿var attackPulse = 0;
+var nextRoundCountdownInitialValue;
 
 
 $(document).ready(function () {
+
+    nextRoundCountdownInitialValue = $("#nextRound").html();
+    updateRoundCountdownTimer();
 
     var tabTitle = $('title');
 
@@ -136,6 +140,9 @@ $(document).ready(function () {
         }
 
         $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
+
+        updateRoundCountdownTimer();
+
 
     }, 1000);
 
@@ -319,4 +326,15 @@ function closeAttackModal() {
 function hidePlayers() {
     document.getElementsByClassName('onlinePlayersWrapperBG')[0].style.display = 'none';
     document.getElementsByClassName('onlinePlayersButton')[0].style.display = 'none';
+}
+
+function updateRoundCountdownTimer() {
+    if ($("#nextRound").length) {
+        var timestampLocal = new Date(nextRoundCountdownInitialValue);
+        var timestampUtc = timestampLocal.getTime() - timestampLocal.getTimezoneOffset() * 60 * 1000;
+        var now = Date.now();
+        var timeAwayInSeconds = Math.floor((timestampUtc - now) / 1000);
+        var displayTime = `<b>${Math.floor(timeAwayInSeconds / 86400)}</b> days, <b>${Math.floor(timeAwayInSeconds / 3600) % 24}</b> hours, and <b>${Math.floor(timeAwayInSeconds / 60) % 60}</b> minutes`;
+        $("#nextRound").html(displayTime);
+    }
 }

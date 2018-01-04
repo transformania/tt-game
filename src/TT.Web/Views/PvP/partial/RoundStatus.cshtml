@@ -22,6 +22,11 @@
         <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
+    if (Model.RoundStartsAt != null && Model.RoundStartsAt.Value.CompareTo(DateTime.UtcNow) > 0)
+    {
+        <div class="specialBox specialBox2 roundStartNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The next round is scheduled to start in approximately <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalDays)</b> days, <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalHours % 24)</b> hours, and <b>@Math.Floor(Model.RoundStartsAt.Value.Subtract(DateTime.UtcNow).TotalMinutes % 60)</b> minutes.<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+    }
+
     if (ViewBag.UpdateInProgress)
     {
         <p class="infoMessage error">TURN UPDATE IN PROGRESS</p>

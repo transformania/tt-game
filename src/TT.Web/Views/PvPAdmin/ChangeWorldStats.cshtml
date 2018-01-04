@@ -30,7 +30,12 @@
         <label>Chaos Mode?</label>
         @Html.CheckBoxFor(m => m.ChaosMode)
 
-        <br /><br />
+    <br /><br />
+
+          <label>Next Round Start Timestamp (Ex: 1/5/2018 11:00:00 PM)</label>
+    @Html.TextBoxFor(m => m.RoundStartsAt)
+
+    <br /><br />
 
 
         <input type="submit" value="Save" />

@@ -24,6 +24,7 @@ namespace TT.Domain.World.DTOs
         public int RoundDuration { get;  set; }
         public bool InbetweenRoundsNonChaos { get;  set; }
         public string RoundNumber { get; set; }
+        public DateTime? RoundStartsAt { get; protected set; }
 
         /// <summary>
         /// Returns true if any of the NPC bosses are currently active

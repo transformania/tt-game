@@ -204,6 +204,7 @@ namespace TT.Web.Controllers
             data.RoundDuration = input.RoundDuration;
             data.ChaosMode = input.ChaosMode;
             data.TestServer = input.TestServer;
+            data.RoundStartsAt = input.RoundStartsAt;
 
             repo.SavePvPWorldStat(data);
 
@@ -341,7 +342,6 @@ namespace TT.Web.Controllers
             }
         }
 
-        [ValidateInput(false)]
         public virtual ActionResult SendPublicBroadcast(PublicBroadcastViewModel input)
         {
             // assert only admins can perform this

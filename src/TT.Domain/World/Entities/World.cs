@@ -22,6 +22,7 @@ namespace TT.Domain.World.Entities
         public int RoundDuration { get; protected set; }
         public bool InbetweenRoundsNonChaos { get; protected set; }
         public string RoundNumber { get; protected set; }
+        public DateTime? RoundStartsAt { get; protected set; }
 
         protected World() { }
 

@@ -23,6 +23,7 @@ namespace TT.Domain.Models
         public bool ChaosMode { get; set; }
         public int RoundDuration { get; set; }
         public bool InbetweenRoundsNonChaos { get; set; }
+        public DateTime? RoundStartsAt { get; set; }
 
         /// <summary>
         /// Returns true if any of the NPC bosses are currently active

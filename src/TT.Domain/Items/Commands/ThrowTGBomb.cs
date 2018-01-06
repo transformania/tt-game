@@ -8,6 +8,7 @@ using TT.Domain.Forms.Entities;
 using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.Entities.LocationLogs;
 
 namespace TT.Domain.Items.Commands
 {
@@ -102,7 +103,8 @@ namespace TT.Domain.Items.Commands
                 {
                     result = "You throw your TG Splash Orb, but unfortunately nobody is affected in this location.";
                 }
-
+                var locationLog = LocationLog.Create(player.Location, $"{player.GetFullName()} threw a TG splash orb, affecting {affectedPlayers.Count()} mages.", 0);
+                ctx.Add(locationLog);
                 ctx.Update(player);
                 ctx.Remove(item);
 

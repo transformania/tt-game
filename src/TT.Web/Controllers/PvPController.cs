@@ -522,26 +522,6 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // assert that this player is mobile
-            if (!PlayerCanPerformAction(me, "move"))
-            {
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
-            {
-                TempData["Error"] = "You must finish your duel before you can move again.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a quest
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must finish your quest before you can move again.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive)
             {
@@ -557,140 +537,22 @@ namespace TT.Web.Controllers
                 else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
                 {
                     // turn off mind control is the player has no more MC effects on them
-                    bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
+                    MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
                     me.MindControlIsActive = false;
                 }
             }
 
-            Location currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
-            Location nextLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locname);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me.Id);
 
-            // assert this location does have a connection to the next one
-            if (currentLocation.Name_North != locname && currentLocation.Name_East != locname && currentLocation.Name_South != locname && currentLocation.Name_West != locname)
+            try
             {
-                TempData["Error"] = "You can't go there from here.";
-                return RedirectToAction(MVC.PvP.Play());
+                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, Buffs = buffs, destination = locname });
             }
-
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
-
-            if (buffs.MoveActionPointDiscount() < -120)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You can't move since you have been immobilized!";
-                TempData["SubError"] = "Your current form or a curse on you is temporarily keeping you here.";
-                return RedirectToAction(MVC.PvP.Play());
+                TempData["Error"] = e.Message;
             }
-
-            // assert that this player has sufficient action points for this move
-            if (me.ActionPoints < PvPStatics.LocationMoveCost - buffs.MoveActionPointDiscount())
-            {
-
-                TempData["Error"] = "You don't have enough action points to move.";
-                TempData["SubError"] = "Wait a while; you will receive more action points every five minutes.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not carrying too much
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 1, buffs))
-            {
-                TempData["Error"] = "You are carrying too much to move.";
-                TempData["SubError"] = "Reduce the amount of items you are carrying to be able to move again.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that the player has not attacked too recently to move
-            double lastAttackTimeAgo = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
-            {
-                TempData["Error"] = "You are resting from a recent attack.";
-                TempData["SubError"] = "You must wait " + (PvPStatics.NoMovingAfterAttackSeconds - lastAttackTimeAgo) + " more seconds before moving.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            if (me.Mobility == PvPStatics.MobilityPet)
-            {
-                ItemProcedures.MoveAnimalItem(me, nextLocation.dbName);
-
-                TempData["Result"] = "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.GetFullName() + " (feral) left toward " + nextLocation.Name;
-                string enteringMessage = me.GetFullName() + " (feral) entered from " + currentLocation.Name;
-                LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
-                LocationLogProcedures.AddLocationLog(locname, enteringMessage);
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            decimal sneakChance = buffs.SneakPercent();
-
-            if (sneakChance > 75)
-            {
-                sneakChance = 75;
-            }
-
-            decimal stumbleChance = -1 * buffs.EvasionPercent();
-            decimal moveAPdiscount = buffs.MoveActionPointDiscount();
-
-            Random die = new Random();
-            double sneakroll = die.NextDouble() * 100;
-
-
-            string msg = "";
-
-            // if the attacker's evasion negation is too low, add in a chance of the spell totally missing.
-            if (stumbleChance > 0)
-            {
-                Random rand = new Random();
-                double roll = rand.NextDouble() * 200;
-                if (roll < (double)stumbleChance)
-                {
-                    msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
-                    PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
-                }
-
-            }
-
-            // calculate concealment level
-            int sneakLevel = (int)buffs.SneakPercent();
-
-            if (sneakLevel < 0)
-            {
-                sneakLevel = -999;
-            }
-            else
-            {
-                // decrease by random amount up to 75
-                sneakLevel -= (int)(die.NextDouble() * 75);
-            }
-
-            string resultMsg = msg + "You move to " + nextLocation.Name + ".";
-            if (sneakLevel > 0)
-            {
-                resultMsg += "  (Concealment lvl " + sneakLevel + ")";
-            }
-            TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
-            string leavingMessageAnimate = me.GetFullName() + " left toward " + nextLocation.Name;
-            string enteringMessageAnimate = me.GetFullName() + " entered from " + currentLocation.Name;
-            LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessageAnimate, sneakLevel);
-            LocationLogProcedures.AddLocationLog(locname, enteringMessageAnimate, sneakLevel);
-
-
-            PlayerProcedures.MovePlayer(me.Id, locname, moveAPdiscount);
-
-
-            string playerLogMessage = "You moved from <b>" + currentLocation.Name + "</b> to <b>" + nextLocation.Name + "</b>.";
-            PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
-
-            // record into statistics
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
-            ).Start();
-
-            if (me.IsInDungeon())
-            {
-                new Thread(() =>
-               StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonMovements, 1)
-           ).Start();
-            }
-
+            
             return RedirectToAction(MVC.PvP.Play());
         }
 

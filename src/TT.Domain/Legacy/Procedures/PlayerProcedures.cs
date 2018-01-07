@@ -799,44 +799,12 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
-        public static string MovePlayer(int playerId, string destinationDbName, decimal actionPointDiscount)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            dbPlayer.dbLocationName = destinationDbName;
-
-            decimal totalMoveCost = PvPStatics.LocationMoveCost - actionPointDiscount;
-
-            // TEMP
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(dbPlayer);
-
-            dbPlayer = ReadjustMaxes(dbPlayer, mybuffs);
-
-            if (totalMoveCost < .1M)
-            {
-                totalMoveCost = .1M;
-            }
-
-            dbPlayer.ActionPoints -= totalMoveCost;
-            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
-
-            playerRepo.SavePlayer(dbPlayer);
-
-            return "";
-        }
-
         public static void MovePlayer_InstantNoLog(int playerId, string newLocation)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.dbLocationName = newLocation;
             playerRepo.SavePlayer(player);
-        }
-
-        public static string MovePlayer(string destinationDbName, decimal actionPointDiscount, string membershipId)
-        {
-            return MovePlayer(GetPlayerFromMembership(membershipId).Id, destinationDbName, actionPointDiscount);
         }
 
         public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)

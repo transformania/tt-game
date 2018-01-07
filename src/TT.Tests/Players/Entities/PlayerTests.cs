@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Entities.TFEnergies;
+using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
 using TT.Tests.Builders.TFEnergies;
@@ -231,6 +235,273 @@ namespace TT.Tests.Players.Entities
             player.Items.ElementAt(1).dbLocationName.Should().Be("");
             player.Items.ElementAt(2).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
             player.Items.ElementAt(2).dbLocationName.Should().Be("");
+        }
+
+        [Test]
+        public void getMaxInventorySize_returns_number_of_items_a_player_can_carry_when_they_have_no_items()
+        {
+            var player = new PlayerBuilder()
+                .With(i => i.Items, new List<Item>())
+                .BuildAndSave();
+
+            BuffBox buffs = new BuffBox();
+
+            player.GetMaxInventorySize(buffs).Should().Be(6);
+        }
+
+        [Test]
+        public void getMaxInventorySize_returns_number_of_items_a_player_can_carry_when_they_have_some_buffs()
+        {
+
+            var items = new List<Item>();
+
+            var item1 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var item2 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            items.Add(item1);
+            items.Add(item2);
+
+            var player = new PlayerBuilder()
+                .With(i => i.Items, items)
+                .BuildAndSave();
+
+            BuffBox buffs = new BuffBox();
+            buffs.FromForm_ExtraInventorySpace = 2;
+
+            player.GetMaxInventorySize(buffs).Should().Be(8);
+        }
+
+        [Test]
+        public void IsCarryingTooMuchToMove_should_return_false_when_player_has_okay_item_count()
+        {
+            var items = new List<Item>();
+
+            var item1 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var item2 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            items.Add(item1);
+            items.Add(item2);
+
+            var player = new PlayerBuilder()
+                .With(i => i.Items, items)
+                .BuildAndSave();
+
+            BuffBox buffs = new BuffBox();
+
+            player.IsCarryingTooMuchToMove(buffs).Should().Be(false);
+        }
+
+        [Test]
+        public void IsCarryingTooMuchToMove_should_return_true_when_player_has_too_high_item_count()
+        {
+            var items = new List<Item>();
+
+            var item1 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var item2 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            items.Add(item1);
+            items.Add(item2);
+
+            var player = new PlayerBuilder()
+                .With(i => i.Items, items)
+                .BuildAndSave();
+
+            BuffBox buffs = new BuffBox();
+            buffs.FromForm_ExtraInventorySpace = -5;
+
+            player.IsCarryingTooMuchToMove(buffs).Should().Be(true);
+        }
+
+        [Test]
+        public void IsCarryingTooMuchToMove_should_return_false_when_player_has_maxed_out_item_count()
+        {
+            var items = new List<Item>();
+
+            var item1 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var item2 = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            items.Add(item1);
+            items.Add(item2);
+
+            var player = new PlayerBuilder()
+                .With(i => i.Items, items)
+                .BuildAndSave();
+
+            BuffBox buffs = new BuffBox();
+            buffs.FromForm_ExtraInventorySpace = -4;
+
+            player.IsCarryingTooMuchToMove(buffs).Should().Be(false);
+        }
+
+        [Test]
+        public void IsInDungeon_returns_true_when_player_in_dungeon()
+        {
+
+            var player = new PlayerBuilder()
+                .With(i => i.Location, "dungeon_place")
+                .BuildAndSave();
+
+            player.IsInDungeon().Should().Be(true);
+        }
+
+        [Test]
+        public void IsInDungeon_returns_false_when_player_not_in_dungeon()
+        {
+
+            var player = new PlayerBuilder()
+                .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
+                .BuildAndSave();
+
+            player.IsInDungeon().Should().Be(false);
+        }
+
+        [Test]
+        public void CanMoveAsAnimal()
+        {
+
+            var stats = new List<Stat>()
+            {
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
+            };
+
+            var player = new PlayerBuilder()
+                .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Stats, stats)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            var destinationLogs = player.MoveToAsAnimal("coffee_shop_patio");
+
+            destinationLogs.SourceLocationLog.Should().Be("John Doe (feral) left toward Carolyne's Coffee Shop (Patio)");
+            destinationLogs.DestinationLocationLog.Should().Be("John Doe (feral) entered from Street: 200 Sunnyglade Drive");
+
+            player.PlayerLogs.ElementAt(0).Message.Should().Be("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
+            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+
+            player.Location.Should().Be("coffee_shop_patio");
+
+            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
+                .Be(4);
+        }
+
+        [Test]
+        public void CanMoveAsPlayer_NoSneak()
+        {
+
+            var stats = new List<Stat>()
+            {
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
+            };
+
+            var player = new PlayerBuilder()
+                .With(i => i.ActionPoints, 10)
+                .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
+                .With(i => i.LastActionTimestamp, DateTime.UtcNow.AddHours(-2))
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Stats, stats)
+                    .With(u => u.Id, "bob")
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            var item1 = new ItemBuilder()
+                .With(i => i.Id, 1)
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.IsEquipped, true)
+                .With(i => i.dbLocationName, player.Location)
+                .BuildAndSave();
+
+            var item2 = new ItemBuilder()
+                .With(i => i.Id, 2)
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.IsEquipped, false)
+                .With(i => i.dbLocationName, player.Location)
+                .BuildAndSave();
+
+            player.Items.Add(item1);
+            player.Items.Add(item2);
+
+            var buffs = new BuffBox();
+            buffs.FromForm_MoveActionPointDiscount = .5M;
+
+            var destinationLogs = player.MoveTo("coffee_shop_patio", buffs);
+
+            destinationLogs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
+            destinationLogs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");
+
+            player.PlayerLogs.ElementAt(0).Message.Should().Be("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
+            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+
+            player.Location.Should().Be("coffee_shop_patio");
+            player.ActionPoints.Should().Be(9.5M);
+
+            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
+                .Be(4);
+
+            player.Items.ElementAt(0).dbLocationName.Should().Be(String.Empty);
+            player.Items.ElementAt(1).dbLocationName.Should().Be(String.Empty);
+
+            player.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+        }
+
+        [Test]
+        public void CanMoveAsPlayer_WithSneak()
+        {
+
+            var stats = new List<Stat>()
+            {
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 8).BuildAndSave()
+            };
+
+            var player = new PlayerBuilder()
+                .With(i => i.ActionPoints, 10)
+                .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Stats, stats)
+                    .With(u => u.Id, "bob")
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            var buffs = new BuffBox();
+            buffs.FromForm_SneakPercent = 100;
+
+            var logs = player.MoveTo("coffee_shop_patio", buffs);
+
+            logs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
+            logs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");
+            logs.ConcealmentLevel.Should().BeGreaterThan(0);
+
+            player.PlayerLogs.ElementAt(0).Message.Should().Contain("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>. (Concealment lvl <b>");
+            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+
+            player.Location.Should().Be("coffee_shop_patio");
+            player.ActionPoints.Should().Be(9);
+
+            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
+                .Be(9);
+
+            player.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+
         }
 
     }

@@ -804,24 +804,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string PlayerIsItemAtLocation(Player player)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-         
-            string victimName = player.FirstName + " " + player.LastName;
-            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
-
-            Location place = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == item.dbLocationName);
-       
-            if (place==null) {
-                return null;
-            } else {
-                return place.Name;
-            }
-            
-
-        }
-
         public static string UseItem(int itemId, string membershipId)
         {
             IItemRepository itemRepo = new EFItemRepository();

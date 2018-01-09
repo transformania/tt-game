@@ -119,7 +119,7 @@
 
             <p>@Model.Form.Description</p>
             @{
-                if (Model.AtLocation != null)
+                if (Model.Item.Owner == null)
                 {
                     <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
                 }

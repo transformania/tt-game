@@ -145,39 +145,39 @@ namespace TT.Web.Controllers
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
-                InanimatePlayPageViewModel inanimateOutput = new InanimatePlayPageViewModel();
-                inanimateOutput.RenderCaptcha = renderCaptcha;
+                var inanimateOutput = new InanimatePlayPageViewModel
+                {
+                    RenderCaptcha = renderCaptcha,
+                    LastUpdateTimestamp = world.LastUpdateTimestamp,
+                    WorldStats = PlayerProcedures.GetWorldPlayerStats(),
+                    World = world,
+                    Player = me,
+                    Form = FormStatics.GetForm(me.Form),
+                    Item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName
+                    {
+                        FirstName = me.FirstName,
+                        LastName = me.LastName
+                    }),
+                    IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent,
+                    NewMessageCount =
+                        DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer {OwnerId = me.Id}),
+                    PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse(),
+                    StruggleChance = InanimateXPProcedures.GetStruggleChance(me)
+                };
 
-
-                inanimateOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
-
-                inanimateOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
-                inanimateOutput.World = world;
-
-                inanimateOutput.Player = me;
-                inanimateOutput.Form = FormStatics.GetForm(me.Form);
-
-                inanimateOutput.Item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
-
-                inanimateOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
-
-                inanimateOutput.AtLocation = ItemProcedures.PlayerIsItemAtLocation(me);
-                inanimateOutput.NewMessageCount =
-                    DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
-
-                inanimateOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
 
-                if (inanimateOutput.AtLocation == null)
+                if (inanimateOutput.Item.Owner == null)
                 {
-                    inanimateOutput.WornBy = ItemProcedures.BeingWornBy(me);
+                    // Not owned
+                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == inanimateOutput.Item.dbLocationName)?.Name ?? "Unknown";
+                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = inanimateOutput.Item.dbLocationName, ConcealmentLevel = 0 });
+                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.Item.dbLocationName, myMembershipId);
                 }
-
-                inanimateOutput.StruggleChance = InanimateXPProcedures.GetStruggleChance(me);
-
-                if (inanimateOutput.WornBy != null) // being worn
+                else
                 {
-
+                    // Owned
+                    inanimateOutput.WornBy = ItemProcedures.BeingWornBy(me);
                     var actionsHere = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = inanimateOutput.WornBy.Player.dbLocationName, ConcealmentLevel = 0 });
 
                     var validActionsHere = new List<LocationLogDetail>();
@@ -188,14 +188,11 @@ namespace TT.Web.Controllers
                             validActionsHere.Add(log);
                         }
                     }
+
+                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == inanimateOutput.WornBy.Player.dbLocationName)?.Name ?? "Unknown";
                     inanimateOutput.LocationLog = validActionsHere;
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, myMembershipId);
 
-                }
-                else
-                {
-                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = me.dbLocationName, ConcealmentLevel = 0 });
-                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId);
                 }
 
                 List<PlayerFormViewModel> playersHere = new List<PlayerFormViewModel>();

@@ -508,6 +508,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_47.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_48.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_49.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_50.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

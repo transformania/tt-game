@@ -1,5 +1,6 @@
 #addin "nuget:?package=Cake.SqlServer"
 #addin Cake.FluentMigrator
+#tool "nuget:?package=FluentMigrator.Tools"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
@@ -82,7 +83,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() => {
-    DotNetBuild("./src/TT.sln", settings =>
+    MSBuild("./src/TT.sln", settings =>
         settings.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal));
     }

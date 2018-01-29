@@ -106,7 +106,12 @@
     <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandler.cs" />
     <Compile Include="Identity\RequestValidators\ResetSecurityStampValidator.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItems.cs" />
+    <Compile Include="Items\Commands\EmbedRune.cs" />
+    <Compile Include="Items\Commands\UnembedAllRunes.cs" />
+    <Compile Include="Items\DTOs\ItemRuneDetail.cs" />
     <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
+    <Compile Include="Items\Queries\GetItemRune.cs" />
+    <Compile Include="Items\Queries\GetItemsThatCanGetRunes.cs" />
     <Compile Include="Legacy\Abstract\IAchievementBadgeRepository.cs" />
     <Compile Include="Legacy\Abstract\IAchievementRepository.cs" />
     <Compile Include="Legacy\Abstract\IAIDirective.cs" />
@@ -177,10 +182,12 @@
     <Compile Include="RequestInterfaces\IRequestWithRuleSet.cs" />
     <Compile Include="RequestInterfaces\IRequestWithUserNameId.cs" />
     <Compile Include="Services\IPrincipalAccessor.cs" />
+    <Compile Include="Statics\PortraitHelper.cs" />
     <Compile Include="Validation\RuleSets.cs" />
     <Compile Include="ValidatorSelectors\IntersectRulesetValidatorSelector.cs" />
     <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
+    <Compile Include="ViewModels\AttachRuneListViewModel.cs" />
     <Compile Include="ViewModels\MoveLogBox.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />

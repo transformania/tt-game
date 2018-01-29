@@ -26,6 +26,10 @@ namespace TT.Domain.Items.Mappings
                 .HasOptional(i => i.FormerPlayer)
                 .WithOptionalDependent(p => p.Item).Map(m => m.MapKey("FormerPlayerId"));
 
+            modelBuilder.Entity<Item>()
+                .HasOptional(i => i.EmbeddedOnItem)
+                .WithMany(i => i.Runes).Map(m => m.MapKey("EmbeddedOnItemId"));
+
         }
 
         public ItemMappings()
@@ -33,6 +37,7 @@ namespace TT.Domain.Items.Mappings
             CreateMap<Item, ItemDetail>();
             CreateMap<Item, ItemListingDetail>();
             CreateMap<Item, ItemFormerPlayerDetail>();
+            CreateMap<Item, ItemRuneDetail>();
         }
     }
 }

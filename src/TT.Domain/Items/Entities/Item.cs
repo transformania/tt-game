@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TT.Domain.Entities;
 using TT.Domain.Items.Commands;
 using TT.Domain.Players.Entities;
@@ -24,10 +25,12 @@ namespace TT.Domain.Items.Entities
         public string Nickname { get; protected set; }
         public DateTime LastSouledTimestamp { get; protected set; }
         public DateTime LastSold { get; protected set; }
+        public Item EmbeddedOnItem { get; protected set; }
+        public ICollection<Item> Runes { get; protected set; }
 
         private Item()
         {
-
+            Runes = new List<Item>();
         }
 
         public static Item Create(Player owner, Player formerPlayer, ItemSource itemSource, CreateItem cmd)
@@ -118,6 +121,80 @@ namespace TT.Domain.Items.Entities
         public void ChangeGameMode(int newGameMode)
         {
             PvPEnabled = newGameMode;
+        }
+
+        /// <summary>
+        /// Returns whether or not this item is a valid type to have runes attached
+        /// </summary>
+        /// <returns></returns>
+        public bool CanAttachRunesToThisItemType()
+        {
+
+            var validTypes = new List<string>();
+            validTypes.Add(PvPStatics.ItemType_Pants);
+            validTypes.Add(PvPStatics.ItemType_Shirt);
+            validTypes.Add(PvPStatics.ItemType_Hat);
+            validTypes.Add(PvPStatics.ItemType_Shoes);
+            validTypes.Add(PvPStatics.ItemType_Accessory);
+            validTypes.Add(PvPStatics.ItemType_Pet);
+            validTypes.Add(PvPStatics.ItemType_Underpants);
+            validTypes.Add(PvPStatics.ItemType_Undershirt);
+
+            if (!validTypes.Contains(this.ItemSource.ItemType))
+            {
+                return false;
+            }
+
+            
+
+            return true;
+        }
+
+        public bool HasRoomForRunes()
+        {
+            if (this.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            {
+                if (this.Runes.Count >= 2)
+                {
+                    return false;
+
+                }
+            }
+            else
+            {
+                if (this.Runes.Count >= 1)
+                {
+                    return false;
+
+                }
+            }
+            return true;
+        }
+
+        public bool IsOfHighEnoughLevelForRune(Item rune)
+        {
+            return this.Level >= rune.ItemSource.RuneLevel;
+        }
+
+        /// <summary>
+        /// Attach a rune on to this item
+        /// </summary>
+        /// <param name="rune"></param>
+        public void AttachRune(Item rune)
+        {
+            this.Runes.Add(rune);
+            rune.EmbeddedOnItem = this;
+            rune.IsEquipped = true;
+        }
+
+        public void RemoveRunes()
+        {
+            foreach (var rune in this.Runes)
+            {
+                rune.EmbeddedOnItem = null;
+                rune.IsEquipped = false;
+            }
+            this.Runes.Clear();
         }
 
         public void SetLocation(string location)

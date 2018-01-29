@@ -19,6 +19,7 @@ namespace TT.Domain.Models
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
         public DateTime LastSold { get; set; }
+        public int? EmbeddedOnItemId { get; set; }
 
         public Item()
         {
@@ -59,6 +60,7 @@ namespace TT.Domain.Models
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
         public DateTime LastSold { get; set; }
+        public int? EmbeddedOnItemId { get; set; }
 
         public Item_VM()
         {

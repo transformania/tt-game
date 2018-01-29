@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.ViewModels.InventoryBonusesViewModel
-           @using TT.Domain.ViewModels
-            @using TT.Domain.Statics
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
 @{
     ViewBag.Title = "Inventory";
 }
@@ -8,6 +8,7 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Item.UnembedRunes())">Unembed Runes</a></li>
 }
 
 @{
@@ -36,8 +37,8 @@
         <div style="padding-right: 20px;"></div>
     </div>
 
-    <p>You are carrying <b>@Model.Items.Count(i => !i.dbItem.IsEquipped) / @TT.Domain.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses)</b> items.</p>
-    
+    <p>You are carrying <b>@Model.Items.Count(i => !i.IsEquipped) / @TT.Domain.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses)</b> items.</p>
+
     <p>You have used <b>@ViewBag.ItemsUsedThisTurn/1</b> consumable type items this turn.</p>
 </div>
 
@@ -48,24 +49,24 @@
     @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
 
     <br /><br />
- 
+
     <div class="row boxContainer">
         @{
 
-            foreach (TT.Domain.ViewModels.ItemViewModel item in Model.Items)
+            foreach (var item in Model.Items)
             {
                 @Html.Partial(MVC.PvP.Views.partial_InventoryItem, item)
-                
+
             }
 
         }
-        </div>
+    </div>
 
     <p>
         <a href="@Url.Action(MVC.Item.ShowStatsTable())">View statistics breakdown</a>
     </p>
 
-@Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)    
+    @Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)
 </div>
 <div class="modal fade" id="itemDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -75,7 +76,7 @@
                 <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
             </div>
             <div class="modal-body">
-                
+
             </div>
         </div>
     </div>
@@ -101,18 +102,18 @@
 
 
 
-    <style>
-        .itemName {
-            font-size: 20px;
-        }
+<style>
+    .itemName {
+        font-size: 20px;
+    }
 
-        .WasPerson {
-            font-size: 15px;
-            color: chocolate;
-            font-style: italic;
-        }
+    .WasPerson {
+        font-size: 15px;
+        color: chocolate;
+        font-style: italic;
+    }
 
-        .avatarBars {
-            display: -moz-box !important;
-        }
-    </style>
+    .avatarBars {
+        display: -moz-box !important;
+    }
+</style>

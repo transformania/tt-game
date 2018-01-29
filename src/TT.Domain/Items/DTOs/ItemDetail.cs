@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using TT.Domain.Players.DTOs;
 
 namespace TT.Domain.Items.DTOs
@@ -22,6 +24,8 @@ namespace TT.Domain.Items.DTOs
         public string Nickname { get;  set; }
         public DateTime LastSouledTimestamp { get;  set; }
         public DateTime LastSold { get;  set; }
+        public ICollection<ItemRuneDetail> Runes { get; set; }
+        public ItemRuneDetail EmbeddedOnItem { get; set; }
 
         public string GetFullName()
         {

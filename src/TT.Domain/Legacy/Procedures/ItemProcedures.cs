@@ -10,6 +10,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.Threading;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Players.Commands;
 
@@ -42,6 +43,7 @@ namespace TT.Domain.Procedures
                                                              VictimName = i.VictimName,
                                                              Nickname = i.Nickname,
                                                              LastSouledTimestamp = i.LastSouledTimestamp,
+                                                             EmbeddedOnItemId = i.EmbeddedOnItemId
                                                           },
 
 
@@ -1285,6 +1287,7 @@ namespace TT.Domain.Procedures
 
         }
 
+        // TODO:  de-duplicate this method and the one below
         public static decimal GetCostOfItem(ItemViewModel item, string buyOrSell)
         {
 
@@ -1335,6 +1338,59 @@ namespace TT.Domain.Procedures
 
             }
             
+        }
+
+        // TODO:  de-duplicate this method and the one above
+        public static decimal GetCostOfItem(ItemDetail item, string buyOrSell)
+        {
+
+            if (item.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
+            {
+                if (buyOrSell == "buy")
+                {
+                    return item.ItemSource.MoneyValue;
+                }
+                else
+                {
+                    return item.ItemSource.MoneyValue * .5M;
+                }
+            }
+
+            if (buyOrSell == "buy")
+            {
+                decimal price = 50 + 50 * item.Level;
+
+                // item is not permanent, charge less
+                if (!item.IsPermanent)
+                {
+                    price *= .85M;
+                }
+
+
+                return Math.Ceiling(price);
+            }
+
+            // selling, pay less money
+            else
+            {
+                decimal price = 50 + (30 * item.Level * .75M);
+
+                // item is not permanent, charge less
+                if (!item.IsPermanent)
+                {
+                    price *= .5M;
+                }
+
+                // item has custom sell value set and is consumable, use its sell override amount
+                if (item.ItemSource.ItemType == PvPStatics.ItemType_Consumable && item.ItemSource.MoneyValueSell > 0)
+                {
+                    price = item.ItemSource.MoneyValueSell;
+                }
+
+                return Math.Ceiling(price);
+
+            }
+
         }
 
         public static void LockItem(Player player)

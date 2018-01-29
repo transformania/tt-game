@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TT.Domain.Items.DTOs;
 
 namespace TT.Domain.ViewModels
 {
@@ -15,7 +12,7 @@ namespace TT.Domain.ViewModels
         /// <summary>
         /// All of the pets Wuffie currently owns
         /// </summary>
-        public IEnumerable<ItemViewModel> Pets { get; set; }
+        public IEnumerable<ItemDetail> Pets { get; set; }
 
         /// <summary>
         /// Stores pagination data

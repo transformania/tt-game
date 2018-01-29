@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using TT.Domain.Items.DTOs;
 
 namespace TT.Domain.ViewModels
 {
     public class InventoryBonusesViewModel
     {
-        public IEnumerable<ItemViewModel> Items { get; set; }
+        public IEnumerable<ItemDetail> Items { get; set; }
         public BuffBox Bonuses { get; set; }
         public decimal Health { get; set; }
         public decimal MaxHealth { get; set; }

@@ -1608,7 +1608,7 @@ namespace TT.Web.Controllers
 
             InventoryBonusesViewModel output = new InventoryBonusesViewModel
             {
-                Items = ItemProcedures.GetAllPlayerItems(me.Id),
+                Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer{ OwnerId = me.Id}).Where(i => i.EmbeddedOnItem == null),
                 Bonuses = ItemProcedures.GetPlayerBuffs(me),
                 Health = me.Health,
                 MaxHealth = me.MaxHealth,
@@ -1617,7 +1617,7 @@ namespace TT.Web.Controllers
 
             };
 
-            output.Items = ItemProcedures.SortByItemType(output.Items);
+            //output.Items = ItemProcedures.SortByItemType(output.Items);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -1710,6 +1710,13 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
                 TempData["SubError"] = "You are not allowed to pick up items that are not in PvP if you are not in PvP and the same for non-PvP.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert the item is not a rune
+            if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Rune)
+            {
+                TempData["Error"] = "You cannot equip runes.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -2213,7 +2220,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.PlayerLookup, results);
         }
 
-        
         public virtual ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();

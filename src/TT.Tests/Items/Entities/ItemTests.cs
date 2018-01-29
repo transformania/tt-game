@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Commands;
@@ -47,5 +48,7 @@ namespace TT.Tests.Items.Entities
 
             timeDifference.Should().BeLessThan(1);
         }
+
+        
     }
 }

@@ -57,5 +57,7 @@
         public decimal InstantManaRestore { get; set; }
         public decimal ReuseableHealthRestore { get; set; }
         public decimal ReuseableManaRestore { get; set; }
+
+        public int? RuneLevel { get; set; }
     }
 }

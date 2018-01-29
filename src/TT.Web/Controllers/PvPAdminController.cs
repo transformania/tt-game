@@ -439,6 +439,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+           // var me = PlayerProcedures.GetPlayerFromMembership()
+
+            DomainRegistry.Repository.Execute(new EmbedRune
+            {
+                //PlayerId = player.Id,
+                ItemId = 178
+            });
+
             return RedirectToAction(MVC.PvPAdmin.Index());
         }
 

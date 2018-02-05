@@ -31,6 +31,7 @@ namespace TT.Domain.Items.Entities
         public decimal EvasionPercent { get; protected set; }
         public decimal EvasionNegationPercent { get; protected set; }
         public decimal MeditationExtraMana { get; protected set; }
+
         public decimal CleanseExtraHealth { get; protected set; }
         public decimal MoveActionPointDiscount { get; protected set; }
         public decimal SpellExtraTFEnergyPercent { get; protected set; }
@@ -60,6 +61,8 @@ namespace TT.Domain.Items.Entities
         public decimal InstantManaRestore { get; protected set; }
         public decimal ReuseableHealthRestore { get; protected set; }
         public decimal ReuseableManaRestore { get; protected set; }
+
+        public int? RuneLevel { get; protected set; }
 
         private ItemSource() { }
 

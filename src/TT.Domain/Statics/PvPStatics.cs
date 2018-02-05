@@ -142,6 +142,7 @@ namespace TT.Domain.Statics
         public const string ItemType_Hat = "hat";
         public const string ItemType_Shoes = "shoes";
         public const string ItemType_Pet = "pet";
+        public const string ItemType_Rune = "rune";
 
         public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
         public const int ItemType_DungeonArtifact_Id = 218;

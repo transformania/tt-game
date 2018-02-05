@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
+using TT.Domain.Items.DTOs;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
@@ -20,8 +23,6 @@ namespace TT.Web.Controllers
     {
 
         // This controller should handle all interactions with NPC characters, ie Lindella, Wuffie, and Jewdewfae, and any others
-
-        public const int MovementControlLimit = 2;
 
         public virtual ActionResult TradeWithMerchant(string filter)
         {
@@ -77,42 +78,10 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableLinks = "true";
 
-            IEnumerable<ItemViewModel> output = null;
-            if (filter == "hat")
+            IEnumerable<ItemDetail> output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id });
+            if (!String.IsNullOrWhiteSpace(filter))
             {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Hat);
-            }
-            else if (filter == "shirt")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Shirt);
-            }
-            else if (filter == "undershirt")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Undershirt);
-            }
-            else if (filter == "pants")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pants);
-            }
-            else if (filter == "underpants")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Underpants);
-            }
-            else if (filter == "shoes")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Shoes);
-            }
-            else if (filter == "accessory")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Accessory);
-            }
-            else if (filter == "consumable_reusable")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable);
-            }
-            else if (filter == "consumables")
-            {
-                output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable);
+                output = output.Where(i => i.ItemSource.ItemType == filter);
             }
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -120,11 +89,11 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
             if (me.GameMode == GameModeStatics.PvP)
             {
-                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.dbItem.PvPEnabled == 2 || i.dbItem.PvPEnabled == -1));
+                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.PvPEnabled == 2 || i.PvPEnabled == -1));
             }
             else
             {
-                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.dbItem.PvPEnabled == 1 || i.dbItem.PvPEnabled == -1));
+                return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.PvPEnabled == 1 || i.PvPEnabled == -1));
             }
         }
 
@@ -374,7 +343,7 @@ namespace TT.Web.Controllers
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
 
-            IEnumerable<ItemViewModel> pets = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet);
+            IEnumerable<ItemDetail> pets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id }).Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet);
 
             WuffieTradeViewModel output = new WuffieTradeViewModel
             {
@@ -1250,7 +1219,7 @@ namespace TT.Web.Controllers
 
             var output = new LorekeeperBookListViewModel
             {
-                Items = ItemProcedures.GetAllPlayerItems(loremaster.Id),
+                Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = loremaster.Id }),
                 MyMoney = Math.Floor(me.Money)
             };
 

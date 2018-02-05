@@ -83,6 +83,18 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowItemDetails);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachRuneList()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachRuneList);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachRune()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachRune);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ItemController Actions { get { return MVC.Item; } }
@@ -106,6 +118,9 @@ namespace TT.Web.Controllers
             public readonly string ReadSkillBook = ("ReadSkillBook").ToLowerInvariant();
             public readonly string ShowItemDetails = ("ShowItemDetails").ToLowerInvariant();
             public readonly string ShowStatsTable = ("ShowStatsTable").ToLowerInvariant();
+            public readonly string AttachRuneList = ("AttachRuneList").ToLowerInvariant();
+            public readonly string AttachRune = ("AttachRune").ToLowerInvariant();
+            public readonly string UnembedRunes = ("UnembedRunes").ToLowerInvariant();
         }
 
 
@@ -142,6 +157,23 @@ namespace TT.Web.Controllers
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_AttachRuneList s_params_AttachRuneList = new ActionParamsClass_AttachRuneList();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachRuneList AttachRuneListParams { get { return s_params_AttachRuneList; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachRuneList
+        {
+            public readonly string runeId = ("runeId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_AttachRune s_params_AttachRune = new ActionParamsClass_AttachRune();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachRune AttachRuneParams { get { return s_params_AttachRune; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachRune
+        {
+            public readonly string runeId = ("runeId").ToLowerInvariant();
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -152,11 +184,13 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string AttachRuneList = "AttachRuneList";
                 public readonly string RemoveCurse = "RemoveCurse";
                 public readonly string SelfCast = "SelfCast";
                 public readonly string ShowStatsTable = "ShowStatsTable";
                 public readonly string SkillBook = "SkillBook";
             }
+            public readonly string AttachRuneList = "~/Views/Item/AttachRuneList.cshtml";
             public readonly string RemoveCurse = "~/Views/Item/RemoveCurse.cshtml";
             public readonly string SelfCast = "~/Views/Item/SelfCast.cshtml";
             public readonly string ShowStatsTable = "~/Views/Item/ShowStatsTable.cshtml";
@@ -171,8 +205,10 @@ namespace TT.Web.Controllers
                 public class _ViewNamesClass
                 {
                     public readonly string ItemDetails = "ItemDetails";
+                    public readonly string RuneDetails = "RuneDetails";
                 }
                 public readonly string ItemDetails = "~/Views/Item/partial/ItemDetails.cshtml";
+                public readonly string RuneDetails = "~/Views/Item/partial/RuneDetails.cshtml";
             }
         }
     }
@@ -261,6 +297,42 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowStatsTable);
             ShowStatsTableOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachRuneListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int runeId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachRuneList(int runeId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachRuneList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "runeId", runeId);
+            AttachRuneListOverride(callInfo, runeId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachRuneOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int runeId, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachRune(int runeId, int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachRune);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "runeId", runeId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            AttachRuneOverride(callInfo, runeId, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UnembedRunesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UnembedRunes()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnembedRunes);
+            UnembedRunesOverride(callInfo);
             return callInfo;
         }
 

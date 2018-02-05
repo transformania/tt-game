@@ -20,7 +20,6 @@
 
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }
-        public decimal SpellResistancePercent { get; set; }
         public decimal ExtraSkillCriticalPercent { get; set; }
         public decimal HealthRecoveryPerUpdate { get; set; }
         public decimal ManaRecoveryPerUpdate { get; set; }

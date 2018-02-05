@@ -1,41 +1,41 @@
-﻿@model TT.Domain.ViewModels.ItemViewModel
+﻿@model TT.Domain.Items.DTOs.ItemDetail
            @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
-    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model, true));">
+    <div class="portrait" style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true));">
         @{
-            if (Model.dbItem.Level > 0 && Model.Item.ItemType != PvPStatics.ItemType_Consumable)
+            if (Model.Level > 0 && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
             {
-                <span class="icon icon-level"><b>@Model.dbItem.Level</b></span>
+                <span class="icon icon-level"><b>@Model.Level</b></span>
          
             }
 
 
-            @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+            @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
         }
-        @CharactersHere.PrintItemTypeIcon(Model.Item)
+        @CharactersHere.PrintItemTypeIcon(Model.ItemSource.ItemType)
         @CharactersHere.PrintSouledIcon(Model)
     </div>
 
     @{
             <div style="text-align: center;">
-                <p>@Model.Item.FriendlyName</p>
+                <p>@Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)</p>
 
-                @CharactersHere.PrintPvPIcon(Model.dbItem)
+                @CharactersHere.PrintPvPIcon(Model)
                 <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
 
                 @{
                     if (ViewBag.Wuffie != null && ViewBag.Wuffie)
                     {
-                        <a href="@Url.Action(MVC.NPC.PurchasePet(Model.dbItem.Id))" class="attackLink">Purchase</a>
+                        <a href="@Url.Action(MVC.NPC.PurchasePet(Model.Id))" class="attackLink">Purchase</a>
                     }
                     else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper)
                     {
-                        <a href="@Url.Action(MVC.NPC.LorekeeperPurchaseBookSend(Model.dbItem.Id))" class="attackLink">Purchase</a>
+                        <a href="@Url.Action(MVC.NPC.LorekeeperPurchaseBookSend(Model.Id))" class="attackLink">Purchase</a>
                     } else
                     {
-                        <a href="@Url.Action(MVC.NPC.Purchase(Model.dbItem.Id))" class="attackLink">Purchase</a>
+                        <a href="@Url.Action(MVC.NPC.Purchase(Model.Id))" class="attackLink">Purchase</a>
                     }
                 }
 

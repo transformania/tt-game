@@ -4,6 +4,10 @@ using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Exceptions;
+using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Skills.Queries;
@@ -268,13 +272,55 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ShowItemDetails(int id)
         {
-            ItemViewModel output = ItemProcedures.GetItemViewModel(id);
+            ItemDetail output = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
             return PartialView(MVC.Item.Views.partial.ItemDetails, output);
         }
 
         public virtual ActionResult ShowStatsTable()
         {
             return View(MVC.Item.Views.ShowStatsTable);
+        }
+
+        public virtual ActionResult AttachRuneList(int runeId)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var output = new AttachRuneListViewModel();
+            output.items = DomainRegistry.Repository.Find(new GetItemsThatCanGetRunes { OwnerId = me.Id });
+            output.rune = DomainRegistry.Repository.FindSingle(new GetItemRune { ItemId = runeId});
+
+            return View(MVC.Item.Views.AttachRuneList, output);
+        }
+
+        public virtual ActionResult AttachRune(int runeId, int itemId)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new EmbedRune { ItemId = itemId, PlayerId = me.Id, RuneId = runeId });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult UnembedRunes()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new UnembedAllRunes { PlayerId = me.Id});
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
+            return RedirectToAction(MVC.PvP.MyInventory());
         }
 
 

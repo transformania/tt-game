@@ -40,7 +40,7 @@
     </div> 
     <div class="row boxContainer">
         @{
-            foreach (ItemViewModel i in Model.Pets.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            foreach (var i in Model.Pets.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
             {
                 @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
             }

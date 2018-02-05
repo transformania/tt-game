@@ -509,6 +509,8 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_48.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_49.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_50.cshtml" />
+    <Content Include="Views\Item\AttachRuneList.cshtml" />
+    <Content Include="Views\Item\partial\RuneDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

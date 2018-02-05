@@ -15,13 +15,6 @@ namespace TT.Web.CustomHtmlHelpers
     public static class CharactersHere
     {
 
-        public static MvcHtmlString PrintPlayerHTML(this HtmlHelper html, Player player)
-        {
-            var output = "<div class='name'>" + player.FirstName + " " + player.LastName + "</div>";
-            
-            return new MvcHtmlString(output);
-        }
-
         public static MvcHtmlString PrintMCIcon(Player player)
         {
             var output = "";
@@ -96,11 +89,6 @@ namespace TT.Web.CustomHtmlHelpers
             return item.PvPEnabled == 1 ? new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>") : new MvcHtmlString("");
         }
 
-        public static MvcHtmlString PrintPvPIcon(Covenant covenant)
-        {
-            return covenant.IsPvP ? new MvcHtmlString("<span class='icon icon-pvp' title='This covenant is in PvP mode.'></span>") : new MvcHtmlString("");
-        }
-
         public static MvcHtmlString PrintRPIcon(Player player)
         {
             return player.InRP ? new MvcHtmlString("<span class='icon icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>") : new MvcHtmlString("");
@@ -115,22 +103,12 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString PrintItemTypeIcon(DbStaticItem item)
-        {
-            return PrintItemTypeIcon(item.ItemType);
-        }
-
         public static MvcHtmlString PrintItemTypeIcon(ItemListingDetail item)
         {
             return PrintItemTypeIcon(item.ItemSource.ItemType);
         }
 
         public static MvcHtmlString PrintItemTypeIcon(ItemSourceDetail item)
-        {
-            return PrintItemTypeIcon(item.ItemType);
-        }
-
-        public static MvcHtmlString PrintItemTypeIcon(StaticItem item)
         {
             return PrintItemTypeIcon(item.ItemType);
         }
@@ -145,7 +123,6 @@ namespace TT.Web.CustomHtmlHelpers
 
             return new MvcHtmlString(output + "...");
         }
-
 
         public static MvcHtmlString DatetimeToTimeago(DateTime then)
         {
@@ -207,13 +184,13 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetBuffedStat(ItemViewModel item, decimal amount)
+        public static MvcHtmlString GetBuffedStat(ItemDetail item, decimal amount)
         {
             string output;
 
-            if (item.dbItem.Level > 1 && item.Item.ItemType != PvPStatics.ItemType_Consumable)
+            if (item.Level > 1 && item.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
             {
-                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level-1) * PvPStatics.Item_LevelBonusModifier*amount) + amount) + ")</b></span>";
+                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.Level-1) * PvPStatics.Item_LevelBonusModifier*amount) + amount) + ")</b></span>";
             } else {
                 output = "<b>" + amount + "</b>";
             }
@@ -222,13 +199,13 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetBuffedStat(ItemViewModel item, float amount)
+        public static MvcHtmlString GetBuffedStat(ItemDetail item, float amount)
         {
             string output;
 
-            if (item.dbItem.Level > 1 && item.Item.ItemType != PvPStatics.ItemType_Consumable)
+            if (item.Level > 1 && item.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
             {
-                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
+                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
             }
             else
             {
@@ -431,15 +408,10 @@ namespace TT.Web.CustomHtmlHelpers
             return isPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
         }
 
-        public static MvcHtmlString PrintPermanencyIcon(Item item)
+        public static MvcHtmlString PrintSouledIcon(ItemDetail item)
         {
-            return item.IsPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
-        }
-
-        public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
-        {
-            if (item.dbItem.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
-            var timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            if (item.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
+            var timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
             {
@@ -509,11 +481,6 @@ namespace TT.Web.CustomHtmlHelpers
             output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";
 
             return new MvcHtmlString(output);
-        }
-
-        public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
-        {
-            return new MvcHtmlString("red");
         }
 
         public static MvcHtmlString PrintStatDescriptionPopup(string statName)

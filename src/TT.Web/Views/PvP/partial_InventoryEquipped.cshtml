@@ -1,26 +1,27 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
+﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+@using TT.Domain.Items.DTOs
 @using TT.Domain.ViewModels
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
 @{
-    ItemViewModel hat = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Hat && i.dbItem.IsEquipped);
-    ItemViewModel shirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shirt && i.dbItem.IsEquipped);
+    ItemDetail hat = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Hat && i.IsEquipped);
+    ItemDetail shirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shirt && i.IsEquipped);
 
-    ItemViewModel undershirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Undershirt && i.dbItem.IsEquipped);
-    ItemViewModel pants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pants && i.dbItem.IsEquipped);
-    ItemViewModel underpants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Underpants && i.dbItem.IsEquipped);
-    ItemViewModel shoes = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shoes && i.dbItem.IsEquipped);
+    ItemDetail undershirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Undershirt && i.IsEquipped);
+    ItemDetail pants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pants && i.IsEquipped);
+    ItemDetail underpants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Underpants && i.IsEquipped);
+    ItemDetail shoes = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shoes && i.IsEquipped);
 
-    ItemViewModel pet = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped);
+    ItemDetail pet = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet && i.IsEquipped);
 
 
-    ItemViewModel lhand = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped);
+    ItemDetail lhand = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped);
 
-    ItemViewModel rhand;
+    ItemDetail rhand;
     try
     {
-        rhand = Model.Where(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped).Skip(1).Single();
+        rhand = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped).Skip(1).Single();
     }
     catch
     {
@@ -40,11 +41,11 @@
 
         if (hat != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(hat, true));" title="@hat.Item.FriendlyName--@hat.Item.Description">
-                <span class="icon icon-level"><b>@hat.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(hat.ItemSource.ItemType, hat.ItemSource.PortraitUrl, true));" title="@hat.ItemSource.FriendlyName--@hat.ItemSource.Description">
+                <span class="icon icon-level"><b>@hat.Level</b></span>
                 <p class="slotName">Hat
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(hat.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(hat.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
 
@@ -59,11 +60,11 @@
 
         if (shirt != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shirt, true));" title="@shirt.Item.FriendlyName--@shirt.Item.Description">
-                <span class="icon icon-level"><b>@shirt.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(shirt.ItemSource.ItemType, shirt.ItemSource.PortraitUrl, true));" title="@shirt.ItemSource.FriendlyName--@shirt.ItemSource.Description">
+                <span class="icon icon-level"><b>@shirt.Level</b></span>
                 <p class="slotName">Shirt
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shirt.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shirt.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -75,11 +76,11 @@
 
         if (undershirt != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(undershirt, true)); " title="@undershirt.Item.FriendlyName--@undershirt.Item.Description">
-                <span class="icon icon-level"><b>@undershirt.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(undershirt.ItemSource.ItemType, undershirt.ItemSource.PortraitUrl, true)); " title="@undershirt.ItemSource.FriendlyName--@undershirt.ItemSource.Description">
+                <span class="icon icon-level"><b>@undershirt.Level</b></span>
                 <p class="slotName">Undershirt
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(undershirt.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(undershirt.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -91,11 +92,11 @@
 
         if (pants != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pants, true)); " title="@pants.Item.FriendlyName--@pants.Item.Description">
-                <span class="icon icon-level"><b>@pants.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(pants.ItemSource.ItemType, pants.ItemSource.PortraitUrl, true)); " title="@pants.ItemSource.FriendlyName--@pants.ItemSource.Description">
+                <span class="icon icon-level"><b>@pants.Level</b></span>
                 <p class="slotName">Pants
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pants.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pants.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -109,11 +110,11 @@
 
         if (underpants != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(underpants, true)); " title="@underpants.Item.FriendlyName--@underpants.Item.Description">
-                <span class="icon icon-level"><b>@underpants.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(underpants.ItemSource.ItemType, underpants.ItemSource.PortraitUrl, true)); " title="@underpants.ItemSource.FriendlyName--@underpants.ItemSource.Description">
+                <span class="icon icon-level"><b>@underpants.Level</b></span>
                 <p class="slotName slotUnderpants">Underpants
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(underpants.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(underpants.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -125,11 +126,11 @@
 
         if (shoes != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shoes, true)); " title="@shoes.Item.FriendlyName--@shoes.Item.Description">
-                <span class="icon icon-level"><b>@shoes.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(shoes.ItemSource.ItemType, shoes.ItemSource.PortraitUrl, true)); " title="@shoes.ItemSource.FriendlyName--@shoes.ItemSource.Description">
+                <span class="icon icon-level"><b>@shoes.Level</b></span>
                 <p class="slotName">Shoes
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shoes.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shoes.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -141,11 +142,11 @@
 
         if (lhand != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(lhand, true)); " title="@lhand.Item.FriendlyName--@lhand.Item.Description">
-                <span class="icon icon-level"><b>@lhand.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url((@PortraitHelper.GetGraphicByItemType(lhand.ItemSource.ItemType, lhand.ItemSource.PortraitUrl, true)); " title="@lhand.ItemSource.FriendlyName--@lhand.ItemSource.Description">
+                <span class="icon icon-level"><b>@lhand.Level</b></span>
                 <p class="slotName">Acc 1
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(lhand.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(lhand.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -157,11 +158,11 @@
 
         if (rhand != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(rhand, true)); " title="@rhand.Item.FriendlyName--@rhand.Item.Description">
-                <span class="icon icon-level"><b>@rhand.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(rhand.ItemSource.ItemType, rhand.ItemSource.PortraitUrl, true)); " title="@rhand.ItemSource.FriendlyName--@rhand.ItemSource.Description">
+                <span class="icon icon-level"><b>@rhand.Level</b></span>
                 <p class="slotName">Acc 2
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(rhand.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(rhand.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -172,11 +173,11 @@
         }
         if (pet != null)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pet, true)); " title="@pet.Item.FriendlyName--@pet.Item.Description">
-                <span class="icon icon-level"><b>@pet.dbItem.Level</b></span>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(pet.ItemSource.ItemType, pet.ItemSource.PortraitUrl, true)); " title="@pet.ItemSource.FriendlyName--@pet.ItemSource.Description">
+                <span class="icon icon-level"><b>@pet.Level</b></span>
                 <p class="slotName">Pet
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pet.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pet.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>

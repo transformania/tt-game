@@ -12,7 +12,6 @@ namespace TT.Tests.Items.Queries
     public class GetItemsOwnedByPlayerOfTypeTests : TestBase
     {
         [Test]
-        [Ignore("NOT WORKING -- WHY?")]
         public void get_all_items_owned_by_player_of_type()
         {
 
@@ -55,9 +54,9 @@ namespace TT.Tests.Items.Queries
 
             var cmd = new GetItemsOwnedByPlayerOfType { OwnerId = 99, ItemType = "fish"};
 
-            var items = DomainRegistry.Repository.Find(cmd);
+            var items = DomainRegistry.Repository.Find(cmd).ToList();
 
-            items.Count().Should().Be(2);
+            items.Count.Should().Be(2);
             items.ElementAt(0).Id.Should().Be(99);
             items.ElementAt(1).Id.Should().Be(100);
         }

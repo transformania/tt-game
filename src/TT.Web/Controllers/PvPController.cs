@@ -2126,7 +2126,7 @@ namespace TT.Web.Controllers
             {
                 PlayerForm = playerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
-                Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped),
+                Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer{OwnerId = playerLookedAt.Player.Id}).Where(i => i.IsEquipped == true),
                 Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer())
             };
 

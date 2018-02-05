@@ -1249,18 +1249,6 @@ namespace TT.Domain.Procedures
             return item.ElementAt(rand.Next(0, item.Count()));
         }
 
-        public static void MoveAnimalItem(Player player, string destination)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            Item animalItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == (player.FirstName + " " + player.LastName));
-            animalItem.dbLocationName = destination;
-            itemRepo.SaveItem(animalItem);
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player me = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            me.dbLocationName = destination;
-            playerRepo.SavePlayer(me);
-        }
-
         public static int PlayerHasNumberOfThisItem(Player player, string itemdbname)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -1440,37 +1428,6 @@ namespace TT.Domain.Procedures
                 repo.SaveBookReading(newReading);
             }
             
-        }
-
-        public static IEnumerable<ItemViewModel> SortByItemType(IEnumerable<ItemViewModel> input)
-        {
-            List<ItemViewModel> inputList = input.ToList();
-            List<ItemViewModel> output = new List<ItemViewModel>();
-
-
-            // consumable types first
-            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable).OrderBy(i => i.Item.FriendlyName))
-            {
-                output.Add(i);
-                inputList.Remove(i);
-            }
-
-            // reusable consumable types second
-            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable).OrderBy(i => i.Item.FriendlyName))
-            {
-                output.Add(i);
-                inputList.Remove(i);
-            }
-
-
-            // then all the rest
-            foreach (ItemViewModel i in inputList.OrderBy(i => i.Item.FriendlyName))
-            {
-                output.Add(i);
-                inputList.Remove(i);
-            }
-
-            return output;
         }
 
         public static void SetNickname(Player player, string nickname)

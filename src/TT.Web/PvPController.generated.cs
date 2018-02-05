@@ -254,7 +254,6 @@ namespace TT.Web.Controllers
             public readonly string ClearLog = ("ClearLog").ToLowerInvariant();
             public readonly string DismissNotifications_Ajax = ("DismissNotifications_Ajax").ToLowerInvariant();
             public readonly string ViewLog = ("ViewLog").ToLowerInvariant();
-            public readonly string MyInventory = ("MyInventory").ToLowerInvariant();
             public readonly string Take = ("Take").ToLowerInvariant();
             public readonly string Drop = ("Drop").ToLowerInvariant();
             public readonly string Equip = ("Equip").ToLowerInvariant();
@@ -824,17 +823,6 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewLog);
             ViewLogOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void MyInventoryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult MyInventory()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MyInventory);
-            MyInventoryOverride(callInfo);
             return callInfo;
         }
 

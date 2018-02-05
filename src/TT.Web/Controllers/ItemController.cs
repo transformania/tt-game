@@ -20,6 +20,43 @@ namespace TT.Web.Controllers
     public partial class ItemController : Controller
     {
 
+        public virtual ActionResult MyInventory()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (me.MembershipId == myMembershipId)
+            {
+                ViewBag.BelongsToPlayer = "block";
+            }
+            else
+            {
+                ViewBag.BelongsToPlayer = "none";
+            }
+
+
+            InventoryBonusesViewModel output = new InventoryBonusesViewModel
+            {
+                Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id }).Where(i => i.EmbeddedOnItem == null),
+                Bonuses = ItemProcedures.GetPlayerBuffs(me),
+                Health = me.Health,
+                MaxHealth = me.MaxHealth,
+                Mana = me.Mana,
+                MaxMana = me.MaxMana,
+
+            };
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            ViewBag.ShowDetailLinks = true;
+            ViewBag.ItemsUsedThisTurn = me.ItemsUsedThisTurn;
+
+
+            return View(MVC.PvP.Views.Inventory, output);
+        }
+
         public virtual ActionResult SelfCast()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -83,7 +120,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type item next turn.";
-                return RedirectToAction(MVC.PvP.MyInventory());
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert player owns at least one of the type of item needed
@@ -320,7 +357,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = e.Message;
             }
 
-            return RedirectToAction(MVC.PvP.MyInventory());
+            return RedirectToAction(MVC.Item.MyInventory());
         }
 
 

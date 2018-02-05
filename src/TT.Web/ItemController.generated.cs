@@ -111,6 +111,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string MyInventory = ("MyInventory").ToLowerInvariant();
             public readonly string SelfCast = ("SelfCast").ToLowerInvariant();
             public readonly string SelfCastSend = ("SelfCastSend").ToLowerInvariant();
             public readonly string RemoveCurse = ("RemoveCurse").ToLowerInvariant();
@@ -217,6 +218,17 @@ namespace TT.Web.Controllers
     public partial class T4MVC_ItemController : TT.Web.Controllers.ItemController
     {
         public T4MVC_ItemController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void MyInventoryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult MyInventory()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MyInventory);
+            MyInventoryOverride(callInfo);
+            return callInfo;
+        }
 
         [NonAction]
         partial void SelfCastOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);

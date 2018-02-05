@@ -13,11 +13,13 @@ using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Commands;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Players.Entities
 {
+
     public class Player : Entity<int>
     {
         public User User { get; protected set; }
@@ -103,7 +105,7 @@ namespace TT.Domain.Players.Entities
             TFEnergiesCast = new List<TFEnergy>();
             PlayerLogs = new List<PlayerLog>();
             Effects = new List<Effect>();
-            VictimMindControls = new List<Domain.Entities.MindControl.VictimMindControl>();
+            VictimMindControls = new List<VictimMindControl>();
         }
 
         public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd, Covenant covenant)
@@ -374,6 +376,46 @@ namespace TT.Domain.Players.Entities
         }
 
         /// <summary>
+        /// Return the maximum amount of items a player is allowed to hold in their inventory.  Once this limit is reached, a player cannot pick up any new items.  If exceeded, the player is unable to move.
+        /// </summary>
+        /// <param name="buffs"></param>
+        /// <returns></returns>
+        public int GetMaxInventorySize(BuffBox buffs)
+        {
+            return (int)Math.Floor(buffs.ExtraInventorySpace()) + PvPStatics.MaxCarryableItemCountBase;
+        }
+
+        /// <summary>
+        /// Returns whether or not the player is carrying too many items to be able to move.  This value does not count any items that are equipped.
+        /// </summary>
+        /// <param name="buffs"></param>
+        /// <returns></returns>
+        public bool IsCarryingTooMuchToMove(BuffBox buffs)
+        {
+            var carriedNonWornItems = this.Items.Count(i => !i.IsEquipped);
+            return carriedNonWornItems >= GetMaxInventorySize(buffs) + 1;
+        }
+
+        /// <summary>
+        /// Returns the count of items this player is carrying that are NOT equipped
+        /// </summary>
+        /// <returns></returns>
+        public int GetCarriedItemCount()
+        {
+            return this.Items.Count(i => !i.IsEquipped);
+        }
+
+        /// <summary>
+        /// Returns whether or not this player is not allowed to move due to having the Forced March mind control active on them.
+        /// </summary>
+        /// <returns></returns>
+        public bool CantMoveBecauseOfForcedMarch()
+        {
+            return VictimMindControls.Any(v =>
+                v.TurnsRemaining > 0 && v.Type == MindControlStatics.MindControl__Movement);
+        }
+
+        /// <summary>
         /// Gives this player a certain amount of a particular type of item
         /// </summary>
         /// <param name="itemSource"></param>
@@ -466,5 +508,117 @@ namespace TT.Domain.Players.Entities
 
             return xp;
         }
+
+        /// <summary>
+        /// Sets this player's number of action points
+        /// </summary>
+        /// <returns>Amount to set to</returns>
+        public void SetActionPoints(decimal amount)
+        {
+            ActionPoints = amount;
+        }
+
+        public MoveLogBox MoveToAsAnimal(string destination)
+        {
+
+            var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
+            var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
+
+            this.Location = nextLocation.dbName;
+
+            string leavingMessage = this.GetFullName() + " (feral) left toward " + nextLocation.Name;
+            string enteringMessage = this.GetFullName() + " (feral) entered from " + currentLocation.Name;
+
+            var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
+
+            AddLog(playerLog, false);
+            this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
+            this.LastActionTimestamp = DateTime.UtcNow;
+
+            var logBox = new MoveLogBox();
+            logBox.SourceLocationLog = leavingMessage;
+            logBox.DestinationLocationLog = enteringMessage;
+            logBox.PlayerLog = playerLog;
+            return logBox;
+        }
+
+        public MoveLogBox MoveTo(string destination, BuffBox buffs)
+        {
+            var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
+            var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
+
+            string leavingMessage = this.GetFullName() + " left toward " + nextLocation.Name;
+            string enteringMessage = this.GetFullName() + " entered from " + currentLocation.Name;
+
+            var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
+
+            int sneakLevel = this.CalculateSneakLevel(buffs);
+            if (sneakLevel > 0)
+            {
+                playerLog += $" (Concealment lvl <b>{sneakLevel}</b>)";
+            }
+
+            this.Location = destination;
+            AddLog(playerLog, false);
+            var movementCost = PvPStatics.LocationMoveCost - buffs.MoveActionPointDiscount();
+            this.ActionPoints -= movementCost;
+            this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
+            this.LastActionTimestamp = DateTime.UtcNow;
+
+            // set location of all owned items/pets to this to blank so they don't appear on the ground
+            foreach (var item in this.Items)
+            {
+                item.SetLocation(String.Empty);
+            }
+
+            var logBox = new MoveLogBox();
+            logBox.SourceLocationLog = leavingMessage;
+            logBox.DestinationLocationLog = enteringMessage;
+            logBox.PlayerLog = playerLog;
+            logBox.ConcealmentLevel = sneakLevel;
+            return logBox;
+        }
+
+        /// <summary>
+        /// Returns a random value between 0 and 75 to determine the concealment level of a player's movement
+        /// </summary>
+        /// <param name="buffs"></param>
+        /// <returns></returns>
+        private int CalculateSneakLevel(BuffBox buffs)
+        {
+            var sneakLevel = (int)buffs.SneakPercent();
+            if (sneakLevel < 0)
+            {
+                sneakLevel = -999;
+            }
+            else
+            {
+                sneakLevel -= (int)(new Random().NextDouble() * 75);
+            }
+            
+            return sneakLevel;
+        }
+
+        /// <summary>
+        /// Returns whether or not this player is in a location that is considered to be part of the PvP dungeon
+        /// </summary>
+        /// <returns></returns>
+        public bool IsInDungeon()
+        {
+            if (this.Location.Contains("dungeon_"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void SetItem(Item item)
+        {
+            this.Item = item;
+        }
+
     }
 }

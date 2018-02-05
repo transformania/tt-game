@@ -120,5 +120,15 @@ namespace TT.Domain.Items.Entities
             PvPEnabled = newGameMode;
         }
 
+        public void SetLocation(string location)
+        {
+            this.dbLocationName = location;
+        }
+
+        public void SetFormerPlayer(Player player)
+        {
+            this.FormerPlayer = player;
+        }
+
     }
 }

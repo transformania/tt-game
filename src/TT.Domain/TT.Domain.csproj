@@ -173,6 +173,7 @@
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
     <Compile Include="Identity\CommandHandlers\ResetSecurityStampHandler.cs" />
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
+    <Compile Include="Players\Commands\Move.cs" />
     <Compile Include="RequestInterfaces\IRequestWithRuleSet.cs" />
     <Compile Include="RequestInterfaces\IRequestWithUserNameId.cs" />
     <Compile Include="Services\IPrincipalAccessor.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="ValidatorSelectors\IntersectRulesetValidatorSelector.cs" />
     <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
+    <Compile Include="ViewModels\MoveLogBox.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldPvPLeaderboardViewModel.cs" />

@@ -162,6 +162,7 @@
     <Compile Include="Identity\RequestValidators\ResetSecurityStampValidatorTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
+    <Compile Include="Players\Commands\MoveTests.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
     <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />
     <Compile Include="World\Commands\SavePvPLeaderboardTests.cs" />

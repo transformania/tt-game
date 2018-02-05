@@ -32,7 +32,7 @@ namespace TT.Domain.ViewModels.Quest
         }
 
         /// <summary>
-        /// Appends an <hr> tag to the connection text if it is not empty
+        /// Appends an &lt;hr&gt; tag to the connection text if it is not empty
         /// </summary>
         /// <param name="input"></param>
         public void SetConnectionText(string input)

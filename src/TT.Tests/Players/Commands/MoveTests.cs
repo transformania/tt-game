@@ -27,9 +27,6 @@ namespace TT.Tests.Players.Commands
 
         private Player player;
         private BuffBox buffs;
-        private Item item1;
-        private Item item2;
-        private List<Item> items;
         private string destination;
         private List<Stat> stats;
 

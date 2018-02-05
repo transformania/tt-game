@@ -802,7 +802,7 @@ namespace TT.Domain.Procedures
                 return null;
             }
 
-            return PlayerProcedures.GetPlayerFormViewModel(wearer.Id); ;
+            return PlayerProcedures.GetPlayerFormViewModel(wearer.Id);
 
         }
 

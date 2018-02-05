@@ -394,7 +394,7 @@ namespace TT.Domain.Models
             Append,
 
             /// <summary>
-            /// Replace the entire full name, including nickname, with <see cref="Name"/> and append the appropriate tag.
+            /// Replace the entire full name, including nickname, with <see cref="PlayerDescriptorDTO.Name"/> and append the appropriate tag.
             /// </summary>
             ReplaceFullName,
 
@@ -429,8 +429,8 @@ namespace TT.Domain.Models
             };
 
         /// <summary>
-        /// <para>Retrieves the tag string from the enum using a backing <see cref="Dictionary{Role, string}"/>.</para>
-        /// <para>Falls back on <see cref="Enum.ToString"/>.</para>
+        /// <para>Retrieves the tag string from the enum using a backing <see cref="Dictionary{Role, String}"/>.</para>
+        /// <para>Falls back on <see cref="Role.ToString()"/>.</para>
         /// </summary>
         /// <param name="role">The role to try and get.</param>
         /// <returns>The tag string.</returns>

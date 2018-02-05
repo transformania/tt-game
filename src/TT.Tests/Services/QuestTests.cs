@@ -31,7 +31,7 @@ namespace TT.Tests.Services
         /// </summary>
         /// <param name="RequirementType"></param>
         /// <param name="RequirementValue"></param>
-        /// <param name="Operator">Operator for the requirement, ie \>, \<, ==</param>
+        /// <param name="Operator">Operator for the requirement, ie &gt;, &lt;, ==</param>
         public void AddStrictRequirement(int RequirementType, string RequirementValue, int Operator)
         {
             this._questConnection.QuestConnectionRequirements.Add(new QuestConnectionRequirement

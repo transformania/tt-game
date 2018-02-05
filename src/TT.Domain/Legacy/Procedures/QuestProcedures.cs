@@ -683,7 +683,7 @@ namespace TT.Domain.Procedures
         /// <summary>
         /// Returns true if a player passes all rolls for a quest connection.
         /// </summary>
-        /// <param name="questConnection"></param>
+        /// <param name="connection"></param>
         /// <param name="player">Player attempting to go down this connection</param>
         /// <param name="buffs">Player's statistics from effects and equipment</param>
         /// <param name="variables">All quest variables created by this player previously in the quest</param>

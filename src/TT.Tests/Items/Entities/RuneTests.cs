@@ -10,8 +10,6 @@ namespace TT.Tests.Items.Entities
     [TestFixture]
     public class RuneTests : TestBase
     {
-
-        private Item item;
         private Item rune;
 
         [SetUp]

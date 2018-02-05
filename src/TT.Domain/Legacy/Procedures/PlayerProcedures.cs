@@ -1426,6 +1426,7 @@ namespace TT.Domain.Procedures
         /// Allow a player to attempt to restore themself back to their own base form
         /// </summary>
         /// <param name="player"></param>
+        /// <param name="buffs"></param>
         /// <returns></returns>
         public static string SelfRestoreToBase(Player player, BuffBox buffs)
         {

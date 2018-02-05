@@ -12,7 +12,6 @@ namespace TT.Tests.Items.Queries
     public class GetItemsOwnedByPlayerTests : TestBase
     {
         [Test]
-        [Ignore("NOT WORKING -- WHY?")]
         public void get_all_items_owned_by_player()
         {
 
@@ -43,9 +42,9 @@ namespace TT.Tests.Items.Queries
 
             var cmd = new GetItemsOwnedByPlayer { OwnerId = 99 };
 
-            var items = DomainRegistry.Repository.Find(cmd);
+            var items = DomainRegistry.Repository.Find(cmd).ToList();
 
-            items.Count().Should().Be(2);
+            items.Count.Should().Be(2);
             items.ElementAt(0).Id.Should().Be(99);
             items.ElementAt(1).Id.Should().Be(100);
         }

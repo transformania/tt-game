@@ -9,12 +9,12 @@ namespace TT.Domain.Items.Queries
     public class GetItemsOwnedByPlayerOfType : DomainQuery<ItemDetail>
     {
 
-        public int OwnerId { get; set; }
-        public string ItemType { get; set; }
+        public int OwnerId { private get; set; }
+        public string ItemType { private get; set; }
 
         public override IEnumerable<ItemDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner.Id == OwnerId && i.ItemSource.ItemType == ItemType);
+            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner != null && i.Owner.Id == OwnerId && i.ItemSource.ItemType == ItemType);
             return ExecuteInternal(context);
         }
     }

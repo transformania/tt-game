@@ -9,11 +9,11 @@ namespace TT.Domain.Items.Queries
     public class GetItemsOwnedByPlayer : DomainQuery<ItemDetail>
     {
 
-        public int OwnerId { get; set; }
+        public int OwnerId { private get; set; }
 
         public override IEnumerable<ItemDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner.Id == OwnerId);
+            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner != null && i.Owner.Id == OwnerId);
             return ExecuteInternal(context);
         }
     }

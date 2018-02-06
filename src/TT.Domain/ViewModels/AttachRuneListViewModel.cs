@@ -12,7 +12,7 @@ namespace TT.Domain.ViewModels
         public bool CanAttachRune(ItemRuneDetail item)
         {
             var runeLimit = item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? 2 : 1;
-            return item.Runes.Count <= runeLimit && item.Level >= rune.ItemSource.RuneLevel;
+            return item.Runes.Count < runeLimit && item.Level >= rune.ItemSource.RuneLevel;
         }
     }
 }

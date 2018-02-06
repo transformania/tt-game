@@ -1591,45 +1591,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.ViewLog, PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse());
         }
 
-        public virtual ActionResult MyInventory()
-        {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            if (me.MembershipId == myMembershipId)
-            {
-                ViewBag.BelongsToPlayer = "block";
-            }
-            else
-            {
-                ViewBag.BelongsToPlayer = "none";
-            }
-
-
-            InventoryBonusesViewModel output = new InventoryBonusesViewModel
-            {
-                Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer{ OwnerId = me.Id}).Where(i => i.EmbeddedOnItem == null),
-                Bonuses = ItemProcedures.GetPlayerBuffs(me),
-                Health = me.Health,
-                MaxHealth = me.MaxHealth,
-                Mana = me.Mana,
-                MaxMana = me.MaxMana,
-
-            };
-
-            //output.Items = ItemProcedures.SortByItemType(output.Items);
-
-            ViewBag.ErrorMessage = TempData["Error"];
-            ViewBag.SubErrorMessage = TempData["SubError"];
-            ViewBag.Result = TempData["Result"];
-
-            ViewBag.ShowDetailLinks = true;
-            ViewBag.ItemsUsedThisTurn = me.ItemsUsedThisTurn;
-
-
-            return View(MVC.PvP.Views.Inventory, output);
-        }
-
         public virtual ActionResult Take(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1957,7 +1918,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = ItemProcedures.EquipItem(itemId, putOn);
 
-            return RedirectToAction(MVC.PvP.MyInventory());
+            return RedirectToAction(MVC.Item.MyInventory());
 
         }
 
@@ -1994,7 +1955,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type items next turn.";
-                return RedirectToAction(MVC.PvP.MyInventory());
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert that this item is of a consumable type (consumable or consumable-reusable)
@@ -2100,7 +2061,7 @@ namespace TT.Web.Controllers
 
             PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
 
-            return RedirectToAction(MVC.PvP.MyInventory());
+            return RedirectToAction(MVC.Item.MyInventory());
 
         }
 
@@ -2805,7 +2766,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type item next turn.";
-                return RedirectToAction(MVC.PvP.MyInventory());
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert player is not TPing into the dungeon from out in or vice versa

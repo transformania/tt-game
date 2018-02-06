@@ -72,7 +72,7 @@
         }
     }
 
-    <li class="visible-xs-inline"><a href="@Url.Action(MVC.PvP.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize </a></li>
+    <li class="visible-xs-inline"><a href="@Url.Action(MVC.Item.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize </a></li>
     @{
         if (Model.You.Player.UnusedLevelUpPerks > 0)
         {
@@ -127,7 +127,7 @@
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
         <div class="col-md-1">
-            <a href="@Url.Action(MVC.PvP.MyInventory())" class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)" title="View Inventory">@Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize</a>
+            <a href="@Url.Action(MVC.Item.MyInventory())" class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)" title="View Inventory">@Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize</a>
         </div>
         @{
             foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped))

@@ -26,7 +26,7 @@ namespace TT.Domain.ViewModels
         public int NewMessageCount { get; set; }
 
         public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
-        public IEnumerable<ItemListingDetail> LocationItems { get; set; }
+        public IEnumerable<ItemDetail> LocationItems { get; set; }
 
         public bool IsPermanent { get; set; }
 

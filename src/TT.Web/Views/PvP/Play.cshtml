@@ -320,18 +320,18 @@
     <div class="row boxContainer">
         @{
 
-            foreach (ItemListingDetail item in Model.LocationItems)
+            foreach (var item in Model.LocationItems)
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
                     <div class="charaBoxInner">
                         <div>
-                            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item,true));">
+                            <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
                                 @{ if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
                                  {
                                     <span class="floorItemLevel"><b>@item.Level</b></span>
                                  }
                                 }
-                                @CharactersHere.PrintItemTypeIcon(item)
+                                @CharactersHere.PrintItemTypeIcon(item.ItemSource.ItemType)
                             </div>
 
                             <div>
@@ -346,7 +346,7 @@
 
                                 }
 
-                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.ItemSource.FriendlyName, 75) <br /></span>
+                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.RuneDetails, item)<br /></span>
                                 @{
                 if (!item.VictimName.IsNullOrEmpty())
                 {

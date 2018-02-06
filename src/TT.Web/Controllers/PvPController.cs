@@ -334,7 +334,7 @@ namespace TT.Web.Controllers
             output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant);
 
             loadtime += "Start get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayerItems = ItemProcedures.GetAllPlayerItems(me.Id);
+            output.PlayerItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = me.Id});
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";

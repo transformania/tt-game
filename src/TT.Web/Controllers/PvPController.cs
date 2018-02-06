@@ -1674,13 +1674,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert the item is not a rune
-            if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Rune)
-            {
-                TempData["Error"] = "You cannot equip runes.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             string playerLogMessage = "";
             string locationLogMessage = "";
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
@@ -1879,6 +1872,13 @@ namespace TT.Web.Controllers
             if (item.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "You can't equip or unequip a pet, only tame or release them.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert the item is not a rune
+            if (item.Item.ItemType == PvPStatics.ItemType_Rune)
+            {
+                TempData["Error"] = "You cannot equip runes.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

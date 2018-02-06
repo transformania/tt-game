@@ -1279,7 +1279,7 @@ namespace TT.Domain.Procedures
         public static decimal GetCostOfItem(ItemViewModel item, string buyOrSell)
         {
 
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable)
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Rune)
             {
                 if (buyOrSell == "buy")
                 {
@@ -1317,7 +1317,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // item has custom sell value set and is consumable, use its sell override amount
-                if (item.Item.ItemType == PvPStatics.ItemType_Consumable && item.Item.MoneyValueSell > 0)
+                if ((item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Rune) && item.Item.MoneyValueSell > 0)
                 {
                     price = item.Item.MoneyValueSell;
                 }
@@ -1332,7 +1332,7 @@ namespace TT.Domain.Procedures
         public static decimal GetCostOfItem(ItemDetail item, string buyOrSell)
         {
 
-            if (item.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
+            if (item.ItemSource.ItemType == PvPStatics.ItemType_Consumable || item.ItemSource.ItemType == PvPStatics.ItemType_Rune)
             {
                 if (buyOrSell == "buy")
                 {
@@ -1370,7 +1370,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // item has custom sell value set and is consumable, use its sell override amount
-                if (item.ItemSource.ItemType == PvPStatics.ItemType_Consumable && item.ItemSource.MoneyValueSell > 0)
+                if ((item.ItemSource.ItemType == PvPStatics.ItemType_Consumable || item.ItemSource.ItemType  == PvPStatics.ItemType_Rune) && item.ItemSource.MoneyValueSell > 0)
                 {
                     price = item.ItemSource.MoneyValueSell;
                 }

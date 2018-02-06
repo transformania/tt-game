@@ -1,0 +1,8 @@
+﻿@model TT.Domain.Items.DTOs.PlayPageItemDetail
+    
+@{
+    foreach (var rune in Model.Runes)
+    {
+        <p class="playerMediatingNotification">+@rune.ItemSource.FriendlyName</p>
+    }
+}

@@ -13,8 +13,7 @@ IF OBJECT_ID('[dbo].[GetPlayerBuffs]') IS NULL
 GO
 ALTER PROCEDURE [dbo].[GetPlayerBuffs]
 	-- Add the parameters for the stored procedure here
-	@PlayerId int = -1,
-	@Item_LevelBonusModifier decimal(18,2) = 0.1
+	@PlayerId int = -1
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -29,44 +28,45 @@ BEGIN
 	(
 		SELECT
 		'Items' AS Type,
-		ISNULL(SUM(si.HealthBonusPercent + si.HealthBonusPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS HealthBonusPercent
-		,ISNULL(SUM(si.ManaBonusPercent + si.ManaBonusPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ManaBonusPercent
-		,ISNULL(SUM(si.MeditationExtraMana + si.MeditationExtraMana * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS MeditationExtraMana
-		,ISNULL(SUM(si.CleanseExtraHealth + si.CleanseExtraHealth * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS CleanseExtraHealth
-		,ISNULL(SUM(si.ExtraSkillCriticalPercent + si.ExtraSkillCriticalPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ExtraSkillCriticalPercent
-		,ISNULL(SUM(si.HealthRecoveryPerUpdate + si.HealthRecoveryPerUpdate * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS HealthRecoveryPerUpdate
-		,ISNULL(SUM(si.ManaRecoveryPerUpdate + si.ManaRecoveryPerUpdate * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ManaRecoveryPerUpdate
-		,ISNULL(SUM(si.SneakPercent + si.SneakPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SneakPercent
-		,ISNULL(SUM(si.EvasionPercent + si.EvasionPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS EvasionPercent
-		,ISNULL(SUM(si.EvasionNegationPercent + si.EvasionNegationPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS EvasionNegationPercent
-		,ISNULL(SUM(si.MoveActionPointDiscount + si.MoveActionPointDiscount * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS MoveActionPointDiscount
-		,ISNULL(SUM(si.SpellExtraTFEnergyPercent + si.SpellExtraTFEnergyPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SpellExtraTFEnergyPercent
-		,ISNULL(SUM(si.SpellExtraHealthDamagePercent + si.SpellExtraHealthDamagePercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SpellExtraHealthDamagePercent
-		,ISNULL(SUM(si.CleanseExtraTFEnergyRemovalPercent + si.CleanseExtraTFEnergyRemovalPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS CleanseExtraTFEnergyRemovalPercent
-		,ISNULL(SUM(si.SpellMisfireChanceReduction + si.SpellMisfireChanceReduction * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SpellMisfireChanceReduction
-		,ISNULL(SUM(si.SpellHealthDamageResistance + si.SpellHealthDamageResistance * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SpellHealthDamageResistance
-		,ISNULL(SUM(si.SpellTFEnergyDamageResistance + si.SpellTFEnergyDamageResistance * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SpellTFEnergyDamageResistance
-		,ISNULL(SUM(si.ExtraInventorySpace + si.ExtraInventorySpace * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ExtraInventorySpace
+		ISNULL(SUM(si.HealthBonusPercent), 0) AS HealthBonusPercent
+		,ISNULL(SUM(si.ManaBonusPercent), 0) AS ManaBonusPercent
+		,ISNULL(SUM(si.MeditationExtraMana), 0) AS MeditationExtraMana
+		,ISNULL(SUM(si.CleanseExtraHealth), 0) AS CleanseExtraHealth
+		,ISNULL(SUM(si.ExtraSkillCriticalPercent), 0) AS ExtraSkillCriticalPercent
+		,ISNULL(SUM(si.HealthRecoveryPerUpdate), 0) AS HealthRecoveryPerUpdate
+		,ISNULL(SUM(si.ManaRecoveryPerUpdate), 0) AS ManaRecoveryPerUpdate
+		,ISNULL(SUM(si.SneakPercent), 0) AS SneakPercent
+		,ISNULL(SUM(si.EvasionPercent), 0) AS EvasionPercent
+		,ISNULL(SUM(si.EvasionNegationPercent), 0) AS EvasionNegationPercent
+		,ISNULL(SUM(si.MoveActionPointDiscount), 0) AS MoveActionPointDiscount
+		,ISNULL(SUM(si.SpellExtraTFEnergyPercent), 0) AS SpellExtraTFEnergyPercent
+		,ISNULL(SUM(si.SpellExtraHealthDamagePercent), 0) AS SpellExtraHealthDamagePercent
+		,ISNULL(SUM(si.CleanseExtraTFEnergyRemovalPercent), 0) AS CleanseExtraTFEnergyRemovalPercent
+		,ISNULL(SUM(si.SpellMisfireChanceReduction), 0) AS SpellMisfireChanceReduction
+		,ISNULL(SUM(si.SpellHealthDamageResistance), 0) AS SpellHealthDamageResistance
+		,ISNULL(SUM(si.SpellTFEnergyDamageResistance), 0) AS SpellTFEnergyDamageResistance
+		,ISNULL(SUM(si.ExtraInventorySpace), 0) AS ExtraInventorySpace
 
 		-- New stats
-		,CAST(ISNULL(SUM(si.Discipline + si.Discipline * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Discipline
-		,CAST(ISNULL(SUM(si.Perception + si.Perception * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Perception
-		,CAST(ISNULL(SUM(si.Charisma + si.Charisma * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Charisma
-		,CAST(ISNULL(SUM(si.Submission_Dominance + si.Submission_Dominance * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Submission_Dominance
+		,CAST(ISNULL(SUM(si.Discipline), 0) AS real) AS Discipline
+		,CAST(ISNULL(SUM(si.Perception), 0) AS real) AS Perception
+		,CAST(ISNULL(SUM(si.Charisma), 0) AS real) AS Charisma
+		,CAST(ISNULL(SUM(si.Submission_Dominance), 0) AS real) AS Submission_Dominance
 
-		,CAST(ISNULL(SUM(si.Fortitude + si.Fortitude * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Fortitude
-		,CAST(ISNULL(SUM(si.Agility + si.Agility * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Agility
-		,CAST(ISNULL(SUM(si.Allure + si.Allure * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Allure
-		,CAST(ISNULL(SUM(si.Corruption_Purity + si.Corruption_Purity * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Corruption_Purity
+		,CAST(ISNULL(SUM(si.Fortitude), 0) AS real) AS Fortitude
+		,CAST(ISNULL(SUM(si.Agility), 0) AS real) AS Agility
+		,CAST(ISNULL(SUM(si.Allure), 0) AS real) AS Allure
+		,CAST(ISNULL(SUM(si.Corruption_Purity), 0) AS real) AS Corruption_Purity
 
-		,CAST(ISNULL(SUM(si.Magicka + si.Magicka * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Magicka
-		,CAST(ISNULL(SUM(si.Succour + si.Succour * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Succour
-		,CAST(ISNULL(SUM(si.Luck + si.Luck * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Luck
-		,CAST(ISNULL(SUM(si.Chaos_Order + si.Chaos_Order * ([Items].Level - 1) * @Item_LevelBonusModifier), 0) AS real) AS Chaos_Order
+		,CAST(ISNULL(SUM(si.Magicka), 0) AS real) AS Magicka
+		,CAST(ISNULL(SUM(si.Succour), 0) AS real) AS Succour
+		,CAST(ISNULL(SUM(si.Luck), 0) AS real) AS Luck
+		,CAST(ISNULL(SUM(si.Chaos_Order), 0) AS real) AS Chaos_Order
 
 		FROM [dbo].[Players]
 		JOIN [dbo].[Items] ON [Items].OwnerId=@PlayerId
-		JOIN [dbo].[DbStaticItems] AS si ON si.Id=[Items].ItemSourceId
+		JOIN [dbo].[Items] AS Runes ON [Runes].EmbeddedOnItemId=[Items].Id
+		JOIN [dbo].[DbStaticItems] AS si ON si.Id=[Runes].ItemSourceId
 		WHERE [Items].[IsEquipped]=1 AND [Players].Id = @PlayerId
 	)
 	UNION ALL

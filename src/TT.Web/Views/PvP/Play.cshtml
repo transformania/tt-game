@@ -72,7 +72,7 @@
         }
     }
 
-    <li class="visible-xs-inline"><a href="@Url.Action(MVC.Item.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize </a></li>
+    <li class="visible-xs-inline"><a href="@Url.Action(MVC.Item.MyInventory())">Inventory @Model.PlayerItems.Count(i => !i.IsEquipped)/@Model.InventoryMaxSize </a></li>
     @{
         if (Model.You.Player.UnusedLevelUpPerks > 0)
         {
@@ -127,13 +127,13 @@
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
         <div class="col-md-1">
-            <a href="@Url.Action(MVC.Item.MyInventory())" class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)" title="View Inventory">@Model.PlayerItems.Count(i => !i.dbItem.IsEquipped)/@Model.InventoryMaxSize</a>
+            <a href="@Url.Action(MVC.Item.MyInventory())" class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)" title="View Inventory">@Model.PlayerItems.Count(i => !i.IsEquipped)/@Model.InventoryMaxSize</a>
         </div>
         @{
-            foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped))
+            foreach (var item in Model.PlayerItems.Where(i => i.IsEquipped && i.ItemSource.ItemType != PvPStatics.ItemType_Rune))
             {
                 <div class="col-md-1">
-                    <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item, true));" title='@item.Item.FriendlyName'></div>
+                    <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName'></div>
                 </div>
             }
         }

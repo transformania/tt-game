@@ -473,12 +473,10 @@ namespace TT.Domain.Procedures
             // grab all of the bonuses coming from effects
             IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(playerId).Where(e => e.dbEffect.Duration > 0);
             var context = new StatsContext();
-            var bonusparam = new SqlParameter("Item_LevelBonusModifier", SqlDbType.Real);
-            bonusparam.Value = PvPStatics.Item_LevelBonusModifier;
             var playerparam = new SqlParameter("PlayerId", SqlDbType.Int);
             playerparam.Value = playerId;
-            object[] parameters = new object[] { playerparam, bonusparam };
-            var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId, @Item_LevelBonusModifier", parameters);
+            object[] parameters = new object[] { playerparam };
+            var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId", parameters);
 
             foreach (BuffStoredProc q in query)
             {

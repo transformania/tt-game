@@ -206,9 +206,11 @@ namespace TT.Web.Controllers
                 public class _ViewNamesClass
                 {
                     public readonly string ItemDetails = "ItemDetails";
+                    public readonly string PlayPageRuneDetails = "PlayPageRuneDetails";
                     public readonly string RuneDetails = "RuneDetails";
                 }
                 public readonly string ItemDetails = "~/Views/Item/partial/ItemDetails.cshtml";
+                public readonly string PlayPageRuneDetails = "~/Views/Item/partial/PlayPageRuneDetails.cshtml";
                 public readonly string RuneDetails = "~/Views/Item/partial/RuneDetails.cshtml";
             }
         }

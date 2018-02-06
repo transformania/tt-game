@@ -7,20 +7,20 @@ using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Queries
 {
-    public class GetItemsAtLocationVisibleToGameMode : DomainQuery<ItemDetail>
+    public class GetItemsAtLocationVisibleToGameMode : DomainQuery<PlayPageItemDetail>
     {
 
         public string dbLocationName { get; set; }
         public int gameMode { get; set; }
 
-        public override IEnumerable<ItemDetail> Execute(IDataContext context)
+        public override IEnumerable<PlayPageItemDetail> Execute(IDataContext context)
         {
 
             // treat SuperProtection same as Protection
             if (gameMode == GameModeStatics.SuperProtection)
                 gameMode = GameModeStatics.Protection;
 
-            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>()
+            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<PlayPageItemDetail>()
                 .Where(i => i.dbLocationName == dbLocationName &&
                 (i.PvPEnabled == GameModeStatics.Any || i.PvPEnabled == gameMode));
 

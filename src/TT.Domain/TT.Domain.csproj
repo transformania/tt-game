@@ -110,6 +110,7 @@
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItems.cs" />
     <Compile Include="Items\Commands\EmbedRune.cs" />
     <Compile Include="Items\Commands\UnembedAllRunes.cs" />
+    <Compile Include="Items\DTOs\PlayPageItemDetail.cs" />
     <Compile Include="Items\DTOs\ItemRuneDetail.cs" />
     <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
     <Compile Include="Items\Queries\GetItemRune.cs" />

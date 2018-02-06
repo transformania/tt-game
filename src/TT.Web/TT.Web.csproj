@@ -513,6 +513,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_50.cshtml" />
     <Content Include="Views\Item\AttachRuneList.cshtml" />
     <Content Include="Views\Item\partial\RuneDetails.cshtml" />
+    <Content Include="Views\Item\partial\PlayPageRuneDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

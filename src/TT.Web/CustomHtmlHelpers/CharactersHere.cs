@@ -103,16 +103,6 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString PrintItemTypeIcon(ItemListingDetail item)
-        {
-            return PrintItemTypeIcon(item.ItemSource.ItemType);
-        }
-
-        public static MvcHtmlString PrintItemTypeIcon(ItemSourceDetail item)
-        {
-            return PrintItemTypeIcon(item.ItemType);
-        }
-
         public static MvcHtmlString TruncateToLength(string text, int maxLength)
         {
             if (text.Length <= maxLength)
@@ -251,22 +241,6 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetImageURL(ItemViewModel item, bool thumb = false)
-        {
-            var strThumb = "";
-
-            var strItemType = item.Item.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
-
-            if (thumb)
-            {
-                strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl)) strThumb = "";
-            }
-
-            var output = "/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl;
-            return new MvcHtmlString(output);
-        }
-
         public static MvcHtmlString GetFormImageURL(string imageName, bool thumb = false)
         {
             var strThumb = "";
@@ -300,22 +274,6 @@ namespace TT.Web.CustomHtmlHelpers
             }
 
             var output = "/Images/PvP/" + strItemType + strThumb + imageName;
-            return new MvcHtmlString(output);
-        }
-
-        public static MvcHtmlString GetImageURL(ItemListingDetail item, bool thumb = false)
-        {
-            var strThumb = "";
-
-            var strItemType = item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
-
-            if (thumb)
-            {
-                strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl)) strThumb = "";
-            }
-
-            var output = "/Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl;
             return new MvcHtmlString(output);
         }
 

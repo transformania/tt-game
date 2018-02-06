@@ -358,7 +358,8 @@ namespace TT.Domain.Procedures
             covRepo.SaveCovenant(dbCovenant);
             LoadCovenantDictionary();
 
-            string covMessage = "Covenant safeground was establish at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == location).Name + ".";
+            var covMessage =
+                $"Covenant safeground was establish at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == location)?.Name ?? "unknown"}.";
             WriteCovenantLog(covMessage, covenant.Id, true);
 
             AttackProcedures.InstantTakeoverLocation(dbCovenant, location);
@@ -447,6 +448,10 @@ namespace TT.Domain.Procedures
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            if (dbCovenant == null)
+            {
+                return "Covenant could not be found.";
+            }
 
             string playerIdString = player.Id + ";";
 
@@ -477,6 +482,10 @@ namespace TT.Domain.Procedures
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            if (dbCovenant == null)
+            {
+                return "Covenant could not be found.";
+            }
 
             dbCovenant.LeaderId = player.Id;
             covRepo.SaveCovenant(dbCovenant);
@@ -499,16 +508,24 @@ namespace TT.Domain.Procedures
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
-            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == player.dbLocationName);
             Location location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string output = "";
-            if (info == null)
+            if (location == null)
             {
-                info = new LocationInfo{
-                    TakeoverAmount = 75,
-                    CovenantId = -1,
-                    dbName = player.dbLocationName,
-                };
+                output = "You cast an enchantment here, but you aren't actually anywhere!";
+                return output;
+            }
+
+            var info = repo.LocationInfos.FirstOrDefault(l => l.dbName == player.dbLocationName) ?? new LocationInfo
+            {
+                TakeoverAmount = 75,
+                CovenantId = -1,
+                dbName = player.dbLocationName,
+            };
+            if (player.Covenant == null)
+            {
+                output = "You cast an enchantment here, but it did no effect as you aren't part of a covenant";
+                return output;
             }
 
             if (info.TakeoverAmount >= 100 && info.CovenantId == player.Covenant)
@@ -576,20 +593,23 @@ namespace TT.Domain.Procedures
                     info.TakeoverAmount += takeoverAmount;
                     location.TakeoverAmount = info.TakeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
-                    output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
+                    output =
+                        $"Your enchantment reinforces this location by {takeoverAmount}.  New influence level is {info.TakeoverAmount} for your covenant, {cov?.Name ?? "unknown"}.  (+{XPGain} XP)</b>";
                    
                 }
                 else
                 {
                     info.TakeoverAmount -= takeoverAmount;
                     location.TakeoverAmount = info.TakeoverAmount;
-                    Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == info.CovenantId);
+                    var cov = info.CovenantId == null
+                        ? null
+                        : covRepo.Covenants.FirstOrDefault(c => c.Id == info.CovenantId);
 
                     if (info.TakeoverAmount <= 0)
                     {
 
                         // notify old covenant who stole the location and their covenant
-                        if (info.CovenantId > 0)
+                        if (info.CovenantId != null && info.CovenantId > 0)
                         {
                             CovenantViewModel attackingCov = CovenantProcedures.GetCovenantViewModel((int)player.Covenant);
                             string covLogLoser = player.GetFullName() + " of " + attackingCov.dbCovenant.Name + " enchanted " + location.Name + ", removing it from this covenant's influence!";

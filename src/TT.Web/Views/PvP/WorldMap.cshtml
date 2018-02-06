@@ -55,14 +55,14 @@
             {
                 <div class="mapcelltext">@loc.Name</div>
             }
-            else if (Model.LocationInfo != null)
+            else
             {
-                TT.Domain.Models.LocationInfo temp = Model.LocationInfo.FirstOrDefault(c => c.dbName == loc.dbName);
-                if (temp != null)
+                var temp = Model.LocationInfo?.FirstOrDefault(c => c.dbName == loc.dbName);
+                if (temp?.CovenantId != null)
                 {
                     try
                     {
-                        CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[(int)temp.CovenantId];
+                        var temp2 = CovenantDictionary.IdNameFlagLookup[(int)temp.CovenantId];
 
                         if (temp2 != null)
                         {

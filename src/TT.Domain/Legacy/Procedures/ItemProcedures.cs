@@ -985,7 +985,7 @@ namespace TT.Domain.Procedures
                     }
 
                     // assert owner is in a covenant
-                    if (owner.Covenant < 1)
+                    if (owner.Covenant == null || owner.Covenant < 1)
                     {
                         return "Unfortunately as you are not in a covenant, you aren't able to use this item.";
                     }

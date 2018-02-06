@@ -193,18 +193,21 @@
                    <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
                }
                 
-                try
+                if (Model.Location.CovenantController != null)
                 {
-                    CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[(int)Model.Location.CovenantController];
-
-                    if (temp2 != null)
+                    try
                     {
-                        <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
+                        CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[(int) Model.Location.CovenantController];
+    
+                        if (temp2 != null)
+                        {
+                            <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
+                        }
                     }
-                }
-                catch
-                {
+                    catch
+                    {
 
+                    }
                 }
 
 

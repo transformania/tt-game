@@ -20,6 +20,8 @@ namespace TT.Domain.Items.Commands
 
                 var item = ctx.AsQueryable<Item>()
                     .Include(i => i.ItemSource)   
+                    .Include(i => i.Runes)
+                    .Include(i => i.Runes.Select(r => r.ItemSource))
                     .SingleOrDefault(cr => cr.Id == ItemId);
 
                 if (item == null)

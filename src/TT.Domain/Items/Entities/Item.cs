@@ -112,30 +112,36 @@ namespace TT.Domain.Items.Entities
             return this;
         }
 
-        public Item ChangeOwner(Player newOwner)
+        public Item ChangeOwner(Player newOwner, int? gameModeFlag = null)
         {
-            Owner = newOwner;
-            return this;
-        }
 
-        public void PickUp(Player newOwner)
-        {
-            Owner = newOwner;
             TimeDropped = DateTime.UtcNow;
-            dbLocationName = null;
             LastSold = DateTime.UtcNow;
 
-            // automatically equip any pets
-            if (this.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            if (this.Owner != null)
             {
-                this.IsEquipped = true;
+                this.Owner.Items.Remove(this);
             }
 
-            // stay equipped and don't appear on ground if this rune is embedded on another item
+            // always equip pets immediately, otherwise unequip
+            this.IsEquipped = this.ItemSource.ItemType == PvPStatics.ItemType_Pet;
+
+            Owner = newOwner;
+            dbLocationName = String.Empty;
+
+            var gameModeValue = gameModeFlag != null ? gameModeFlag.Value : PvPEnabled;
+
+            PvPEnabled = gameModeValue;
+            
             foreach (var rune in this.Runes)
             {
                 rune.Owner = newOwner;
+                rune.IsEquipped = true;
+                rune.dbLocationName = String.Empty;
+                rune.PvPEnabled = gameModeValue;
             }
+
+            return this;
         }
 
         public void ChangeGameMode(int newGameMode)

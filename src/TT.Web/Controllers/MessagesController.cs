@@ -293,7 +293,7 @@ namespace TT.Web.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -324,7 +324,7 @@ namespace TT.Web.Controllers
             }
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());

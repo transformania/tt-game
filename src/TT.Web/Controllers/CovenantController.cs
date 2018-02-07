@@ -93,7 +93,7 @@ namespace TT.Web.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -118,7 +118,7 @@ namespace TT.Web.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -202,7 +202,7 @@ namespace TT.Web.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -246,7 +246,7 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -357,7 +357,7 @@ namespace TT.Web.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -419,7 +419,7 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -508,7 +508,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -571,7 +571,7 @@ namespace TT.Web.Controllers
 
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -593,7 +593,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+            ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName)?.Name ?? "unknown";
             ViewBag.CovenantMoney = myCov.Money;
 
             return View(MVC.Covenant.Views.ClaimLocation);
@@ -612,7 +612,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -637,7 +637,8 @@ namespace TT.Web.Controllers
             // assert that the covenant does not already have a safeground set
             if (CovenantProcedures.CovenantHasSafeground(myCov))
             {
-                TempData["Error"] = "Your covenant already has a safeground at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation).Name + ".";
+                TempData["Error"] =
+                    $"Your covenant already has a safeground at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation)?.Name ?? "unknown"}.";
                 TempData["SubError"] = "Covenants can only establish a safeground once per round.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
@@ -700,7 +701,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -757,7 +758,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -767,7 +768,12 @@ namespace TT.Web.Controllers
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
             Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
-            bool playerIsCovenantLeader = (myCov != null && myCov.LeaderId == me.Id && me.Covenant > 0);
+            if (myCov == null)
+            {
+                TempData["Error"] = "Error loading covenant information.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+            var playerIsCovenantLeader = myCov.LeaderId == me.Id && me.Covenant > 0;
             ViewBag.playerIsCovenantLeader = playerIsCovenantLeader;
             ViewBag.CovenantMoney = (int)myCov.Money;
 
@@ -784,7 +790,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -848,28 +854,22 @@ namespace TT.Web.Controllers
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
 
             // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
-            ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+            ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName)?.Name ?? "unknown";
 
-            string covSafegroundLocation = "";
-            if (!myCov.HomeLocation.IsNullOrEmpty())
-            {
-                covSafegroundLocation = "Your covenant's safeground is at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation).Name;
-            }
-            else
-            {
-                covSafegroundLocation = "Your covenant has not yet established a safeground and cannot yet lease any furniture.";
-            }
+            var covSafegroundLocation = myCov.HomeLocation.IsNullOrEmpty()
+                ? "Your covenant has not yet established a safeground and cannot yet lease any furniture."
+                : $"Your covenant\'s safeground is at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation)?.Name ?? "unknown"}";
             ViewBag.CovLocation = covSafegroundLocation;
 
             bool playerIsAtSafeground = false;
@@ -890,6 +890,12 @@ namespace TT.Web.Controllers
         public virtual ActionResult UseFurniture(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            if (me.Covenant == null || me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
 
@@ -958,7 +964,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -975,7 +981,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -1002,7 +1008,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -1045,7 +1051,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -1070,7 +1076,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
-            if (me.Covenant <= 0)
+            if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());

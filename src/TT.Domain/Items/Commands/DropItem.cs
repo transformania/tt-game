@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Entities;
@@ -11,16 +12,21 @@ namespace TT.Domain.Items.Commands
         public int OwnerId { get; set; }
         public int ItemId { get; set; }
 
+        // TODO:  update / add unit tests
         public override void Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
 
-                var item = ctx.AsQueryable<Item>().SingleOrDefault(cr => cr.Id == ItemId);
+                var item = ctx.AsQueryable<Item>()
+                    .Include(i => i.ItemSource)   
+                    .SingleOrDefault(cr => cr.Id == ItemId);
+
                 if (item == null)
                     throw new DomainException($"Item with ID {ItemId} could not be found");
 
                 var player = ctx.AsQueryable<Player>().SingleOrDefault(p => p.Id == OwnerId);
+
                 if (player == null)
                     throw new DomainException($"player with ID {ItemId} could not be found");
 
@@ -38,7 +44,11 @@ namespace TT.Domain.Items.Commands
 
         protected override void Validate()
         {
+            if (OwnerId <= 0)
+                throw new DomainException("OwnerId is required!");
 
+            if (ItemId <= 0)
+                throw new DomainException("OwnerId is required!");
         }
 
     }

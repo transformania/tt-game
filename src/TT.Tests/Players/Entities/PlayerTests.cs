@@ -504,5 +504,54 @@ namespace TT.Tests.Players.Entities
 
         }
 
+        [Test]
+        public void GetCurrentCarryWeight_returns_correct_weight_for_runes()
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 50)
+                .BuildAndSave();
+
+            var shirt = new ItemBuilder()
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Shirt)
+                .BuildAndSave()
+                ).With(i => i.IsEquipped, true)
+                .BuildAndSave();
+
+            var pants = new ItemBuilder()
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Pants)
+                    .BuildAndSave()
+                ).With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var runeOnWornItem = new ItemBuilder()
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave()
+                ).With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            var runeOnCarriedItem = new ItemBuilder()
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave()
+                ).With(i => i.IsEquipped, false)
+                .BuildAndSave();
+
+            shirt.AttachRune(runeOnWornItem);
+            pants.AttachRune(runeOnCarriedItem);
+
+            player.Items.Add(shirt);
+            player.Items.Add(pants);
+
+            player.GetCurrentCarryWeight().Should().Be(1);
+
+        }
+
     }
 }

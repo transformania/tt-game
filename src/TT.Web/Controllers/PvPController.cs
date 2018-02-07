@@ -305,8 +305,6 @@ namespace TT.Web.Controllers
             output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            // output.Location = Locations.GetLocation()
-
             output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
 
             if (output.Location == null && me.dbLocationName.Contains("dungeon_"))
@@ -335,6 +333,7 @@ namespace TT.Web.Controllers
 
             loadtime += "Start get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.PlayerItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = me.Id});
+            output.CurrentCarryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = me.Id});
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";

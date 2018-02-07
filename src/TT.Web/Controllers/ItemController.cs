@@ -9,6 +9,7 @@ using TT.Domain.Items.Commands;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Models;
+using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
@@ -43,7 +44,7 @@ namespace TT.Web.Controllers
                 MaxHealth = me.MaxHealth,
                 Mana = me.Mana,
                 MaxMana = me.MaxMana,
-
+                CurrentCarryCount = DomainRegistry.Repository.FindSingle( new GetCurrentCarryWeight { PlayerId = me.Id})
             };
 
             ViewBag.ErrorMessage = TempData["Error"];

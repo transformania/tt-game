@@ -620,5 +620,15 @@ namespace TT.Domain.Players.Entities
             this.Item = item;
         }
 
+        /// <summary>
+        /// Returns the number of items that adds weight from this player's inventory, which excludes any equipped items, or for runes any rune that is not embedded.
+        /// </summary>
+        /// <returns></returns>
+        public int GetCurrentCarryWeight()
+        {
+            return this.Items.Count(i => i.ItemSource.ItemType != PvPStatics.ItemType_Rune && !i.IsEquipped ||
+                i.ItemSource.ItemType == PvPStatics.ItemType_Rune && i.EmbeddedOnItem == null);
+        }
+
     }
 }

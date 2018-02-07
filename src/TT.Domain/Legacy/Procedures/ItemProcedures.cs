@@ -222,7 +222,6 @@ namespace TT.Domain.Procedures
             return carryWeight >= max;
         }
 
-        // TODO:  Make a command for this
         public static string GiveItemToPlayer(int itemId, int newOwnerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -245,11 +244,8 @@ namespace TT.Domain.Procedures
                         item.PvPEnabled = GameModeStatics.Protection;
                     }
                 }
-                item.dbLocationName = "";
-                item.OwnerId = newOwnerId;
-                item.IsEquipped = false;
+                DomainRegistry.Repository.Execute(new ChangeItemOwner {ItemId = item.Id, OwnerId = newOwnerId, GameMode = item.PvPEnabled});
                 ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
-                itemRepo.SaveItem(item);
 
                 // if item is not an animal
                 if (itemPlus.ItemType != PvPStatics.ItemType_Pet) { 

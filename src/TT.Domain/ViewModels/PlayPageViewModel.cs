@@ -21,6 +21,7 @@ namespace TT.Domain.ViewModels
 
         public IEnumerable<SkillViewModel> Skills { get; set; }
         public IEnumerable<ItemDetail> PlayerItems { get; set; }
+        public int CurrentCarryWeight { get; set; }
         public IEnumerable<PlayPageItemDetail> LocationItems { get; set; }
         public WorldStats WorldStats { get; set; }
         public int AttacksMade { get; set; }

@@ -13,6 +13,7 @@ using TT.Domain.Items.Commands;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Players.Commands;
+using TT.Domain.Players.Queries;
 
 namespace TT.Domain.Procedures
 {
@@ -214,14 +215,14 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsCarryingTooMuch(int newOwnerId, int offset, BuffBox buffs)
         {
-            var currentlyOwnedItems = GetAllPlayerItems(newOwnerId);
-            var nonWornItemsCarried = currentlyOwnedItems.Count(i => !i.dbItem.IsEquipped) - offset;
+            var carryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = newOwnerId}) - offset;
 
             var max = GetInventoryMaxSize(buffs);
 
-            return nonWornItemsCarried >= max;
+            return carryWeight >= max;
         }
 
+        // TODO:  Make a command for this
         public static string GiveItemToPlayer(int itemId, int newOwnerId)
         {
             IItemRepository itemRepo = new EFItemRepository();

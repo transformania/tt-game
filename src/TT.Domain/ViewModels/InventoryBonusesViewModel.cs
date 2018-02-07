@@ -11,5 +11,6 @@ namespace TT.Domain.ViewModels
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
+        public int CurrentCarryCount { get; set; }
     }
 }

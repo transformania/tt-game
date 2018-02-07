@@ -101,6 +101,14 @@ namespace TT.Domain.Items.Entities
             dbLocationName = owner.Location;
             IsEquipped = false;
             TimeDropped = DateTime.UtcNow;
+
+            foreach (var rune in this.Runes)
+            {
+                rune.dbLocationName = String.Empty;
+                rune.IsEquipped = true;
+                rune.Owner = null;
+            }
+
             return this;
         }
 
@@ -116,6 +124,18 @@ namespace TT.Domain.Items.Entities
             TimeDropped = DateTime.UtcNow;
             dbLocationName = null;
             LastSold = DateTime.UtcNow;
+
+            // automatically equip any pets
+            if (this.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            {
+                this.IsEquipped = true;
+            }
+
+            // stay equipped and don't appear on ground if this rune is embedded on another item
+            foreach (var rune in this.Runes)
+            {
+                rune.Owner = newOwner;
+            }
         }
 
         public void ChangeGameMode(int newGameMode)
@@ -185,6 +205,7 @@ namespace TT.Domain.Items.Entities
             this.Runes.Add(rune);
             rune.EmbeddedOnItem = this;
             rune.IsEquipped = true;
+            rune.Owner = this.Owner;
         }
 
         public void RemoveRunes()

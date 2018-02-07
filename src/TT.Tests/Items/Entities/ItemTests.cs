@@ -49,6 +49,62 @@ namespace TT.Tests.Items.Entities
             timeDifference.Should().BeLessThan(1);
         }
 
+        [Test]
+        public void Drop_attached_runes_stay_on_objects()
+        {
+            var owner = new PlayerBuilder()
+                .With(p => p.Location, "somewhere")
+                .With(p => p.BotId, AIStatics.PsychopathBotId)
+                .BuildAndSave();
+
+            var item = new ItemBuilder()
+                .With(i => i.Id, 100)
+                .With(i => i.IsEquipped, false)
+                .With(i => i.Owner, owner)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Shirt)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            var rune = new ItemBuilder()
+                .With(i => i.IsEquipped, true)
+                .With(i => i.Owner, owner)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave())
+            .BuildAndSave();
+
+            var unembeddedRune = new ItemBuilder()
+                .With(i => i.IsEquipped, false)
+                .With(i => i.Owner, owner)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            item.AttachRune(rune);
+
+            item.Drop(owner);
+
+            item.IsEquipped.Should().Be(false);
+            item.Owner.Should().Be(null);
+            item.Runes.Count.Should().Be(1);
+            item.dbLocationName.Should().Be(owner.Location);
+
+            rune.IsEquipped.Should().Be(true);
+            rune.Owner.Should().Be(null);
+            rune.EmbeddedOnItem.Id.Should().Be(item.Id);
+            rune.dbLocationName.Should().Be(String.Empty);
+
+            unembeddedRune.Drop(owner);
+
+            unembeddedRune.IsEquipped.Should().Be(false);
+            unembeddedRune.Owner.Should().Be(null);
+            unembeddedRune.dbLocationName.Should().Be(owner.Location);
+            unembeddedRune.EmbeddedOnItem.Should().Be(null);
+
+        }
+
         
     }
 }

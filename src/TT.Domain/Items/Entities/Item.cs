@@ -220,6 +220,18 @@ namespace TT.Domain.Items.Entities
             {
                 rune.EmbeddedOnItem = null;
                 rune.IsEquipped = false;
+
+                if (this.Owner != null)
+                {
+                    rune.Owner = this.Owner;
+                    rune.dbLocationName = String.Empty;
+                }
+                else
+                {
+                    rune.Owner = null;
+                    rune.dbLocationName = this.dbLocationName;
+                }
+
             }
             this.Runes.Clear();
         }

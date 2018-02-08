@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Entities;
@@ -165,11 +166,13 @@ namespace TT.Tests.Items.Entities
         }
 
         [Test]
-        public void CanUnembedAllRunes()
+        public void CanUmebedRunes_can_unembed_runes_on_unowned_items()
         {
-            var item1 = new ItemBuilder()
+            var unownedItem = new ItemBuilder()
                 .With(i => i.Id, 600)
                 .With(i => i.Level, 1)
+                .With(i => i.Owner, null)
+                .With(i => i.dbLocationName, "somewhere")
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Pet)
                     .BuildAndSave()
@@ -183,15 +186,67 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave())
                 .BuildAndSave();
 
-            item1.AttachRune(rune);
-            item1.AttachRune(rune2);
+            unownedItem.AttachRune(rune);
+            unownedItem.AttachRune(rune2);
 
-            item1.RemoveRunes();
-            item1.Runes.Count.Should().Be(0);
+            unownedItem.RemoveRunes();
+            unownedItem.Runes.Count.Should().Be(0);
+
             rune.EmbeddedOnItem.Should().Be(null);
             rune.IsEquipped.Should().Be(false);
+            rune.Owner.Should().Be(null);
+            rune.dbLocationName.Should().Be("somewhere");
+
             rune2.EmbeddedOnItem.Should().Be(null);
             rune2.IsEquipped.Should().Be(false);
+            rune2.Owner.Should().Be(null);
+            rune2.dbLocationName.Should().Be("somewhere");
+        }
+
+        [Test]
+        public void CanUmebedRunes_can_unembed_runes_on_owned_items()
+        {
+
+            var owner = new PlayerBuilder()
+                .With(i => i.Id, 1010)
+                .With(i => i.Location, "somewhere")
+                .BuildAndSave();
+
+            var ownedItem = new ItemBuilder()
+                .With(i => i.Id, 600)
+                .With(i => i.Level, 1)
+                .With(i => i.Owner, owner)
+                .With(i => i.dbLocationName, String.Empty)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Pet)
+                    .BuildAndSave()
+                ).BuildAndSave();
+
+            var rune2 = new ItemBuilder()
+                .With(i => i.Id, 1000)
+                .With(i => i.IsEquipped, false)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            ownedItem.AttachRune(rune);
+            ownedItem.AttachRune(rune2);
+
+            owner.GiveItem(ownedItem);
+
+            ownedItem.RemoveRunes();
+            ownedItem.Runes.Count.Should().Be(0);
+
+            rune.EmbeddedOnItem.Should().Be(null);
+            rune.IsEquipped.Should().Be(false);
+            rune.Owner.Id.Should().Be(owner.Id);
+            rune.dbLocationName.Should().Be(String.Empty);
+
+            rune2.EmbeddedOnItem.Should().Be(null);
+            rune2.IsEquipped.Should().Be(false);
+            rune2.Owner.Id.Should().Be(owner.Id);
+            rune2.dbLocationName.Should().Be(String.Empty);
         }
 
     }

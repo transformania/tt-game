@@ -165,6 +165,7 @@
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Items\Commands\EmbedRuneTests.cs" />
     <Compile Include="Items\Commands\UnembedAllRunesTest.cs" />
+    <Compile Include="Items\Commands\UnembedRunesOnItemTests.cs" />
     <Compile Include="Items\Entities\RuneTests.cs" />
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
     <Compile Include="Players\Commands\MoveTests.cs" />

@@ -1,0 +1,54 @@
+﻿
+@model TT.Domain.ViewModels.ItemRuneDetailViewModel
+@using TT.Web.CustomHtmlHelpers
+
+<p><b>@Model.itemRuneDetail.ItemSource.FriendlyName</b> (lvl @Model.itemRuneDetail.ItemSource.RuneLevel)</p>
+<ul>
+    @{
+        if (Model.itemRuneDetail.ItemSource.Discipline != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Discipline"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Discipline)">@Model.itemRuneDetail.ItemSource.Discipline</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Perception != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Perception"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Perception)">@Model.itemRuneDetail.ItemSource.Perception</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Charisma != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Charisma"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Charisma)">@Model.itemRuneDetail.ItemSource.Charisma</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Fortitude != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Fortitude"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Fortitude)">@Model.itemRuneDetail.ItemSource.Fortitude</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Agility != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Agility"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Agility)">@Model.itemRuneDetail.ItemSource.Agility</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Allure != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Allure"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Allure)">@Model.itemRuneDetail.ItemSource.Allure</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Magicka != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Magicka"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Magicka)">@Model.itemRuneDetail.ItemSource.Magicka</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Succour != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Succour"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Succour)">@Model.itemRuneDetail.ItemSource.Succour</span></li>
+        }
+
+        if (Model.itemRuneDetail.ItemSource.Luck != 0)
+        {
+            <li>@CharactersHere.PrintStatDescriptionPopup("Luck"): <span class="@Model.GetStyle(Model.itemRuneDetail.ItemSource.Luck)">@Model.itemRuneDetail.ItemSource.Luck</span></li>
+        }
+
+    }
+</ul>

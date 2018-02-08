@@ -208,10 +208,12 @@ namespace TT.Web.Controllers
                     public readonly string ItemDetails = "ItemDetails";
                     public readonly string PlayPageRuneDetails = "PlayPageRuneDetails";
                     public readonly string RuneDetails = "RuneDetails";
+                    public readonly string RuneStats = "RuneStats";
                 }
                 public readonly string ItemDetails = "~/Views/Item/partial/ItemDetails.cshtml";
                 public readonly string PlayPageRuneDetails = "~/Views/Item/partial/PlayPageRuneDetails.cshtml";
                 public readonly string RuneDetails = "~/Views/Item/partial/RuneDetails.cshtml";
+                public readonly string RuneStats = "~/Views/Item/partial/RuneStats.cshtml";
             }
         }
     }

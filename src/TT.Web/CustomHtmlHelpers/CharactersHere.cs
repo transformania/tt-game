@@ -174,38 +174,6 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetBuffedStat(ItemDetail item, decimal amount)
-        {
-            string output;
-
-            if (item.Level > 1 && item.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
-            {
-                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.Level-1) * PvPStatics.Item_LevelBonusModifier*amount) + amount) + ")</b></span>";
-            } else {
-                output = "<b>" + amount + "</b>";
-            }
-
-       
-            return new MvcHtmlString(output);
-        }
-
-        public static MvcHtmlString GetBuffedStat(ItemDetail item, float amount)
-        {
-            string output;
-
-            if (item.Level > 1 && item.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
-            {
-                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
-            }
-            else
-            {
-                output = "<b>" + amount + "</b>";
-            }
-
-
-            return new MvcHtmlString(output);
-        }
-
         public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
             var output = "";

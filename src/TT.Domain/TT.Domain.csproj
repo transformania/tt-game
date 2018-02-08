@@ -193,6 +193,7 @@
     <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
     <Compile Include="ViewModels\AttachRuneListViewModel.cs" />
+    <Compile Include="ViewModels\ItemRuneDetailViewModel.cs" />
     <Compile Include="ViewModels\MoveLogBox.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />

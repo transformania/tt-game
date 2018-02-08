@@ -1,6 +1,7 @@
 ﻿@model TT.Domain.Items.DTOs.ItemDetail
 
 @using TT.Domain.Statics
+@using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 
 <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true));">
@@ -42,158 +43,19 @@
 
     <ul>
         @{
-
             if (!Model.ItemSource.GivesEffect.IsNullOrEmpty())
             {
                 <li>Gives the @CharactersHere.GetEffectFriendlyName(@Model.ItemSource.GivesEffect) effect</li>
             }
-
-            if (@Model.ItemSource.HealthBonusPercent != 0)
-            {
-                <li>Extra willpower % maximum:  @CharactersHere.GetBuffedStat(Model, Model.ItemSource.HealthBonusPercent)</li>
-            }
-            if (@Model.ItemSource.ManaBonusPercent != 0)
-            {
-                <li>Extra mana % maximum: @CharactersHere.GetBuffedStat(Model, Model.ItemSource.ManaBonusPercent)</li>
-            }
-            if (@Model.ItemSource.HealthRecoveryPerUpdate != 0)
-            {
-                <li>Willpower recovery per update: @CharactersHere.GetBuffedStat(Model, Model.ItemSource.HealthRecoveryPerUpdate)</li>
-            }
-            if (@Model.ItemSource.ManaRecoveryPerUpdate != 0)
-            {
-                <li>Mana recovery per update: @CharactersHere.GetBuffedStat(Model, Model.ItemSource.ManaRecoveryPerUpdate)</li>
-            }
-            if (@Model.ItemSource.SneakPercent != 0)
-            {
-                <li>Sneak chance percent: @CharactersHere.GetBuffedStat(Model, Model.ItemSource.SneakPercent)</li>
-            }
-            if (@Model.ItemSource.MeditationExtraMana != 0)
-            {
-                <li>Extra mana recovering from meditating: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.MeditationExtraMana)</li>
-            }
-            if (@Model.ItemSource.CleanseExtraHealth != 0)
-            {
-                <li>Extra willpower recovered from cleansing: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.CleanseExtraHealth)</li>
-            }
-            if (@Model.ItemSource.InstantHealthRestore != 0)
-            {
-                <li>Willpower restored from eating or drinking: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.InstantHealthRestore)</li>
-            }
-            if (@Model.ItemSource.InstantManaRestore != 0)
-            {
-                <li>Mana restored from eating or drinking: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.InstantManaRestore)</li>
-            }
-            if (@Model.ItemSource.MoveActionPointDiscount != 0.0M)
-            {
-                <li>Action point discount when moving: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.MoveActionPointDiscount)</li>
-            }
-            if (@Model.ItemSource.ExtraSkillCriticalPercent != 0)
-            {
-                <li>Extra chance of spell critical hits: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.ExtraSkillCriticalPercent)</li>
-            }
-            if (@Model.ItemSource.ReuseableHealthRestore != 0)
-            {
-                <li>Willpower restored from eating or drinking from this: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.ReuseableHealthRestore)</li>
-            }
-            if (@Model.ItemSource.ReuseableManaRestore != 0)
-            {
-                <li>Mana restored from eating or drinking from this: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.ReuseableManaRestore)</li>
-            }
-            if (@Model.ItemSource.EvasionPercent != 0)
-            {
-                <li>Percent chance to evade an attack: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.EvasionPercent)</li>
-            }
-            if (@Model.ItemSource.EvasionNegationPercent != 0)
-            {
-                <li>Percent negation of opponent's ability to evade a spell: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.EvasionNegationPercent)</li>
-            }
-            if (@Model.ItemSource.SpellExtraTFEnergyPercent != 0.0M)
-            {
-                <li>Extra transformation energy damage percent: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.SpellExtraTFEnergyPercent)</li>
-            }
-            if (@Model.ItemSource.SpellExtraHealthDamagePercent != 0.0M)
-            {
-                <li>Extra willpower damage dealt from spells: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.SpellExtraHealthDamagePercent)</li>
-            }
-            if (@Model.ItemSource.CleanseExtraTFEnergyRemovalPercent != 0.0M)
-            {
-                <li>Extra transformation energy percent removed when cleansing: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.CleanseExtraTFEnergyRemovalPercent)</li>
-            }
-            if (@Model.ItemSource.SpellMisfireChanceReduction != 0.0M)
-            {
-                <li>Misfire percent chance reduction: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.SpellMisfireChanceReduction)</li>
-            }
-            if (@Model.ItemSource.SpellHealthDamageResistance != 0.0M)
-            {
-                <li>Willpower damage reduction when hit by spells: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.SpellHealthDamageResistance)</li>
-            }
-            if (@Model.ItemSource.SpellTFEnergyDamageResistance != 0.0M)
-            {
-                <li>Transformation energy reduction when hit by spells: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.SpellTFEnergyDamageResistance)</li>
-            }
-            if (@Model.ItemSource.ExtraInventorySpace != 0.0M)
-            {
-                <li>Extra inventory space: @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.ExtraInventorySpace)</li>
-            }
-
-
-            
-            
-            if (@Model.ItemSource.Discipline != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Discipline"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Discipline)</li>
-            }
-
-            if (@Model.ItemSource.Perception != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Perception"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Perception)</li>
-            }
-
-            if (@Model.ItemSource.Charisma != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Charisma"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Charisma)</li>
-            }
-
-            if (@Model.ItemSource.Fortitude != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Fortitude"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Fortitude)</li>
-            }
-
-            if (@Model.ItemSource.Agility != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Agility"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Agility)</li>
-            }
-
-            if (@Model.ItemSource.Allure != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Allure"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Allure)</li>
-            }
-
-   
-
-            if (@Model.ItemSource.Magicka != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Magicka"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Magicka)</li>
-            }
-
-            if (@Model.ItemSource.Succour != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Succour"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Succour)</li>
-            }
-
-            if (@Model.ItemSource.Luck != 0.0F)
-            {
-                 <li>@CharactersHere.PrintStatDescriptionPopup("Luck"): @CharactersHere.GetBuffedStat(Model, @Model.ItemSource.Luck)</li>
-            }
-
-
-
-
-
-
         }
 
     </ul>
+    
+    @{
+        foreach (var rune in Model.Runes)
+        {
+            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(rune))
+        }
+    }
 
 </div>

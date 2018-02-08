@@ -4,6 +4,7 @@ using System.Threading;
 using System.Web;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
@@ -320,6 +321,10 @@ namespace TT.Domain.Procedures
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;
                 dbPlayer.Mana = dbPlayer.MaxHealth / 3;
                 playerRepo.SavePlayer(dbPlayer);
+
+
+                // drop any runes embedded on the player-item, or return them to the former owner's inventory
+                DomainRegistry.Repository.Execute(new UnbembedRunesOnItem {ItemId = dbPlayerItem.Id});
 
                 // delete the item or animal that this player had turned into
                 itemRepo.DeleteItem(dbPlayerItem.Id);

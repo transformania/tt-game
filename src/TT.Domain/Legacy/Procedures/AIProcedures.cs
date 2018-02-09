@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
@@ -173,6 +174,27 @@ namespace TT.Domain.Procedures
                 else if (strength == 9)
                 {
                     EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl9", id);
+                }
+
+                // give this psycho a new rune with some random chance it is a higher level than they are, to a max of level 13
+                var random = new Random(Guid.NewGuid().GetHashCode());
+                var roll = random.NextDouble();
+
+                if (roll < .1)
+                {
+                    strength += 4;
+                }
+                else if (roll < .3)
+                {
+                    strength += 2;
+                }
+
+                var quantity = Math.Floor(random.NextDouble()*2) + 1; // 1 or 2
+
+                for (var c = 0; c < quantity; c++)
+                {
+                    var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength, Random = random});
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = id });
                 }
 
                 Player psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);

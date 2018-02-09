@@ -116,6 +116,7 @@
     <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
     <Compile Include="Items\Queries\GetItemRune.cs" />
     <Compile Include="Items\Queries\GetItemsThatCanGetRunes.cs" />
+    <Compile Include="Items\Queries\GetRandomRuneAtLevel.cs" />
     <Compile Include="Legacy\Abstract\IAchievementBadgeRepository.cs" />
     <Compile Include="Legacy\Abstract\IAchievementRepository.cs" />
     <Compile Include="Legacy\Abstract\IAIDirective.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
     <Compile Include="Identity\CommandHandlers\ResetSecurityStampHandler.cs" />
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
+    <Compile Include="Players\Commands\GiveRune.cs" />
     <Compile Include="Players\Commands\Move.cs" />
     <Compile Include="Players\Queries\GetCurrentCarryWeight.cs" />
     <Compile Include="RequestInterfaces\IRequestWithRuleSet.cs" />

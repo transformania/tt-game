@@ -1098,7 +1098,7 @@ namespace TT.Domain.Procedures
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs))
                 {
                     ItemViewModel randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.dbName == justFound.dbName).Last();
-                    ItemProcedures.DropItem(randomItem.dbItem.Id, here.dbName);
+                    ItemProcedures.DropItem(randomItem.dbItem.Id);
                     output += "  However, your arms are full and you dropped it.";
                 }
 

@@ -1,5 +1,6 @@
 ﻿
 using TT.Domain.Entities;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Entities
 {
@@ -72,6 +73,11 @@ namespace TT.Domain.Items.Entities
             {
                 
             };
+        }
+
+        public bool IsPermanentFromCreation()
+        {
+            return this.ItemType == PvPStatics.ItemType_Consumable || this.ItemType == PvPStatics.ItemType_Rune;
         }
 
     }

@@ -1774,7 +1774,7 @@ namespace TT.Web.Controllers
             if (here.Region != "dungeon")
             {
                 // in overworld, drop at player's feet
-                TempData["Result"] = ItemProcedures.DropItem(itemId, me.dbLocationName);
+                TempData["Result"] = ItemProcedures.DropItem(itemId);
             }
             else
             {
@@ -2978,7 +2978,7 @@ namespace TT.Web.Controllers
             }
 
             // all checks pass; drop item and notify owner
-            ItemProcedures.DropItem(inanimateMe.Id, owner.dbLocationName);
+            ItemProcedures.DropItem(inanimateMe.Id);
             ItemViewModel inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
             string message = me.GetFullName() + ", your " + inaniamteMePlus.Item.FriendlyName + ", slipped free due to your inactivity and can be claimed by a new owner.";
             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);

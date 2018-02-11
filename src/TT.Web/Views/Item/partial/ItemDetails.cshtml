@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.Items.DTOs.ItemDetail
 
+@using TT.Domain.Items.DTOs
 @using TT.Domain.Statics
 @using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
@@ -10,8 +11,8 @@
 </div>
 
 <b>
+    
     @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
-
 
     @{
 
@@ -33,7 +34,7 @@
 
     }
 
-    <br />
+    <br/>
 </b>
 
 
@@ -45,13 +46,18 @@
         @{
             if (!Model.ItemSource.GivesEffect.IsNullOrEmpty())
             {
-                <li>Gives the @CharactersHere.GetEffectFriendlyName(@Model.ItemSource.GivesEffect) effect</li>
+                <li>Gives the @CharactersHere.GetEffectFriendlyName(Model.ItemSource.GivesEffect) effect</li>
             }
         }
 
     </ul>
     
     @{
+        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
+        {
+            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail{ ItemSource = Model.ItemSource}, false))
+        }
+    
         foreach (var rune in Model.Runes)
         {
             @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(rune))

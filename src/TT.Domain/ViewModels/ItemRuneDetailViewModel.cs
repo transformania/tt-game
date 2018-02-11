@@ -6,10 +6,12 @@ namespace TT.Domain.ViewModels
     {
 
         public ItemRuneDetail itemRuneDetail { get; set; }
+        public bool ShowName { get; set; }
 
-        public ItemRuneDetailViewModel(ItemRuneDetail itemRuneDetail)
+        public ItemRuneDetailViewModel(ItemRuneDetail itemRuneDetail, bool ShowName = true)
         {
             this.itemRuneDetail = itemRuneDetail;
+            this.ShowName = ShowName;
         }
 
         public string GetStyle(float value)

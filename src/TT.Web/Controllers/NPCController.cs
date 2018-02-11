@@ -78,11 +78,7 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableLinks = "true";
 
-            IEnumerable<ItemDetail> output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id });
-            if (!String.IsNullOrWhiteSpace(filter))
-            {
-                output = output.Where(i => i.ItemSource.ItemType == filter);
-            }
+            IEnumerable<ItemDetail> output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter});
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

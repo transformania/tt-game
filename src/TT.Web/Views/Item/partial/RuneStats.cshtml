@@ -2,7 +2,13 @@
 @model TT.Domain.ViewModels.ItemRuneDetailViewModel
 @using TT.Web.CustomHtmlHelpers
 
-<p><b>@Model.itemRuneDetail.ItemSource.FriendlyName</b> (lvl @Model.itemRuneDetail.ItemSource.RuneLevel)</p>
+@{
+    if (Model.ShowName)
+    {
+        <p><b>@Model.itemRuneDetail.ItemSource.FriendlyName</b> (lvl @Model.itemRuneDetail.ItemSource.RuneLevel)</p>
+    }
+}
+
 <ul>
     @{
         if (Model.itemRuneDetail.ItemSource.Discipline != 0)

@@ -14,7 +14,12 @@ namespace TT.Domain.Items.Queries
 
         public override IEnumerable<ItemDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner != null && i.Owner.Id == OwnerId && i.ItemSource.ItemType == ItemType);
+            ContextQuery = ctx => ctx.AsQueryable<Item>()
+                .ProjectToQueryable<ItemDetail>()
+                .Where(i => i.Owner != null 
+                    && i.Owner.Id == OwnerId && 
+                    i.ItemSource.ItemType == ItemType);
+
             return ExecuteInternal(context);
         }
     }

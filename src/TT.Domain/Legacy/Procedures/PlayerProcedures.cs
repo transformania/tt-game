@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -755,6 +756,8 @@ namespace TT.Domain.Procedures
 
                 if (itemMe != null)
                 {
+                    // drop any runes embedded on the player-item, or return them to the former owner's inventory
+                    DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
                     itemRepo.DeleteItem(itemMe.Id);
                 }
             }

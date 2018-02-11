@@ -231,8 +231,6 @@ namespace TT.Domain.Procedures
             //LogBox log = new LogBox();
 
 
-            if (!item.dbLocationName.IsNullOrEmpty())
-            {
                 if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
                 {
                     if (owner.GameMode == GameModeStatics.PvP)
@@ -257,43 +255,6 @@ namespace TT.Domain.Procedures
                 {
                     return "You tame " + item.GetFullName() + " the " + itemPlus.FriendlyName + " and are now keeping them as a pet.";
                 }
-
-            }
-
-            return "";
-        }
-
-        public static void GiveItemToPlayer_Nocheck(int itemId, int newOwnerId) {
-            IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-            DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
-            item.OwnerId = newOwnerId;
-            Player owner = PlayerProcedures.GetPlayer(newOwnerId);
-
-            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
-            {
-                if (owner.GameMode == GameModeStatics.PvP)
-                {
-                    item.PvPEnabled = GameModeStatics.PvP;
-                }
-                else
-                {
-                    item.PvPEnabled = GameModeStatics.Protection;
-                }
-            }
-
-            if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
-            {
-                item.IsEquipped = true;
-            } else {
-                item.IsEquipped = false;
-                item.dbLocationName = "";
-            }
-           
-            item.TimeDropped = DateTime.UtcNow;
-            item.LastSold = item.TimeDropped;
-            ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
-            itemRepo.SaveItem(item);
         }
 
         public static string GiveNewItemToPlayer(Player player, DbStaticItem item)
@@ -335,10 +296,8 @@ namespace TT.Domain.Procedures
             return GiveNewItemToPlayer(player, i);
         }
 
-        public static string DropItem(int itemId, string locationDbName)
+        public static string DropItem(int itemId, string locationOverride = null)
         {
-
-
             var item = DomainRegistry.Repository.FindSingle( new GetItem { ItemId = itemId });
 
             int oldOwnerId = item.Owner.Id;
@@ -354,16 +313,13 @@ namespace TT.Domain.Procedures
             var cmd = new DropItem
             {
                 OwnerId = item.Owner.Id,
-                ItemId = item.Id
+                ItemId = item.Id,
+                LocationOverride = locationOverride
             };
             DomainRegistry.Repository.Execute(cmd);
 
-
             ItemTransferLogProcedures.AddItemTransferLog(itemId, -1);
-
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(PlayerProcedures.GetPlayer(oldOwnerId));
-
-            
 
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)

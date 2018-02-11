@@ -5,6 +5,7 @@ using FluentAssertions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
+using TT.Domain.Statics;
 using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Items.Commands
@@ -46,6 +47,26 @@ namespace TT.Tests.Items.Commands
 
             editedItem.Owner.Should().BeNull();
             editedItem.dbLocationName.Should().Be("hometown");
+
+        }
+
+        [Test]
+        public void player_can_drop_item_with_location_override()
+        {
+
+            var cmd = new DropItem
+            {
+                OwnerId = bob.Id,
+                ItemId = item.Id,
+                LocationOverride = LocationsStatics.STREET_70_EAST_9TH_AVE
+            };
+
+            Repository.Execute(cmd);
+
+            var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 87);
+
+            editedItem.Owner.Should().BeNull();
+            editedItem.dbLocationName.Should().Be(LocationsStatics.STREET_70_EAST_9TH_AVE);
 
         }
 

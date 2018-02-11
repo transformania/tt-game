@@ -239,7 +239,7 @@ namespace TT.Domain.Procedures
 
                         foreach (ItemViewModel i in dropList)
                         {
-                            ItemProcedures.DropItem(i.dbItem.Id, bot.dbLocationName);
+                            ItemProcedures.DropItem(i.dbItem.Id);
 
                             if (i.Item.ItemType == PvPStatics.ItemType_Pet)
                             {

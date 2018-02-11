@@ -185,7 +185,7 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float)cost)
             ).Start();
 
-            ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Lindella.";
@@ -221,7 +221,7 @@ namespace TT.Web.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == PvPStatics.ItemType_Consumable));
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == PvPStatics.ItemType_Consumable || i.Item.ItemType == PvPStatics.ItemType_Rune));
             return View(MVC.NPC.Views.SellList, output);
         }
 
@@ -285,13 +285,15 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is either permanent or consumable
-            if (!itemBeingSold.dbItem.IsPermanent && itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumable)
+            if (!itemBeingSold.dbItem.IsPermanent &&
+                itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumable && 
+                itemBeingSold.Item.ItemType != PvPStatics.ItemType_Rune)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemProcedures.GiveItemToPlayer_Nocheck(itemBeingSold.dbItem.Id, merchant.Id);
+            ItemProcedures.GiveItemToPlayer(itemBeingSold.dbItem.Id, merchant.Id);
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
@@ -453,7 +455,7 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)cost)
             ).Start();
 
-            ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
 
@@ -564,7 +566,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemProcedures.GiveItemToPlayer_Nocheck(itemBeingSold.dbItem.Id, merchant.Id);
+            ItemProcedures.GiveItemToPlayer(itemBeingSold.dbItem.Id, merchant.Id);
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
@@ -683,7 +685,7 @@ namespace TT.Web.Controllers
 
                 PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
-                ItemProcedures.DropItem(itemToDrop.dbItem.Id, victim.dbLocationName);
+                ItemProcedures.DropItem(itemToDrop.dbItem.Id);
 
                 string locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
                 LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage);
@@ -1271,7 +1273,7 @@ namespace TT.Web.Controllers
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
-            ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
 
             TempData["Result"] = "You purchased " + purchased.Item.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());

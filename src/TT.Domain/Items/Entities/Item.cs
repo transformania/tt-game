@@ -75,7 +75,7 @@ namespace TT.Domain.Items.Entities
             {
                 Owner = owner,
                 dbLocationName = "",
-                IsPermanent = false,
+                IsPermanent = itemSource.IsPermanentFromCreation(),
                 ItemSource = itemSource,
                 dbName = itemSource.DbName,
                 PvPEnabled = GameModeStatics.Any,
@@ -95,10 +95,10 @@ namespace TT.Domain.Items.Entities
             return this;
         }
 
-        public Item Drop(Player owner)
+        public Item Drop(Player owner, string locationOverride = null)
         {
             Owner = null;
-            dbLocationName = owner.Location;
+            dbLocationName = String.IsNullOrEmpty(locationOverride) ? owner.Location : locationOverride;
             IsEquipped = false;
             TimeDropped = DateTime.UtcNow;
 

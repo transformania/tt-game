@@ -11,6 +11,7 @@ namespace TT.Domain.Items.Commands
     {
         public int OwnerId { get; set; }
         public int ItemId { get; set; }
+        public string LocationOverride { get; set; }
 
         // TODO:  update / add unit tests
         public override void Execute(IDataContext context)
@@ -37,7 +38,7 @@ namespace TT.Domain.Items.Commands
                     throw new DomainException($"player {OwnerId} does not own item {ItemId}");
                 }
 
-                item.Drop(player);
+                item.Drop(player, LocationOverride);
                 ctx.Commit();
             };
 

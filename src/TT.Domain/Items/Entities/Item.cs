@@ -100,13 +100,15 @@ namespace TT.Domain.Items.Entities
             Owner = null;
             dbLocationName = String.IsNullOrEmpty(locationOverride) ? owner.Location : locationOverride;
             IsEquipped = false;
-            TimeDropped = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
+            TimeDropped = now;
 
             foreach (var rune in this.Runes)
             {
                 rune.dbLocationName = String.Empty;
                 rune.IsEquipped = true;
                 rune.Owner = null;
+                rune.TimeDropped = now;
             }
 
             return this;
@@ -115,8 +117,9 @@ namespace TT.Domain.Items.Entities
         public Item ChangeOwner(Player newOwner, int? gameModeFlag = null)
         {
 
-            TimeDropped = DateTime.UtcNow;
-            LastSold = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
+            TimeDropped = now;
+            LastSold = now;
 
             if (this.Owner != null)
             {
@@ -139,6 +142,8 @@ namespace TT.Domain.Items.Entities
                 rune.IsEquipped = true;
                 rune.dbLocationName = String.Empty;
                 rune.PvPEnabled = gameModeValue;
+                rune.TimeDropped = now;
+                rune.LastSold = now;
             }
 
             return this;
@@ -170,8 +175,6 @@ namespace TT.Domain.Items.Entities
             {
                 return false;
             }
-
-            
 
             return true;
         }

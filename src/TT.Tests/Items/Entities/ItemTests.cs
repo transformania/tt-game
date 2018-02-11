@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Commands;
@@ -13,6 +12,9 @@ namespace TT.Tests.Items.Entities
     [TestFixture]
     public class ItemTests : TestBase
     {
+
+        private int ONE_MINUTE = 60000;
+
         [Test]
         public void bot_items_have_old_last_souled_timestamp()
         {
@@ -61,6 +63,7 @@ namespace TT.Tests.Items.Entities
                 .With(i => i.Id, 100)
                 .With(i => i.IsEquipped, false)
                 .With(i => i.Owner, owner)
+                .With(i => i.TimeDropped, DateTime.UtcNow.AddHours(-8))
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Shirt)
                     .BuildAndSave())
@@ -69,6 +72,7 @@ namespace TT.Tests.Items.Entities
             var rune = new ItemBuilder()
                 .With(i => i.IsEquipped, true)
                 .With(i => i.Owner, owner)
+                .With(i => i.TimeDropped, DateTime.UtcNow.AddHours(-8))
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Rune)
                     .BuildAndSave())
@@ -77,6 +81,7 @@ namespace TT.Tests.Items.Entities
             var unembeddedRune = new ItemBuilder()
                 .With(i => i.IsEquipped, false)
                 .With(i => i.Owner, owner)
+                .With(i => i.TimeDropped, DateTime.UtcNow.AddHours(-8))
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Rune)
                     .BuildAndSave())
@@ -90,11 +95,13 @@ namespace TT.Tests.Items.Entities
             item.Owner.Should().Be(null);
             item.Runes.Count.Should().Be(1);
             item.dbLocationName.Should().Be(owner.Location);
+            item.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
 
             rune.IsEquipped.Should().Be(true);
             rune.Owner.Should().Be(null);
             rune.EmbeddedOnItem.Id.Should().Be(item.Id);
             rune.dbLocationName.Should().Be(String.Empty);
+            rune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
 
             unembeddedRune.Drop(owner);
 
@@ -102,6 +109,7 @@ namespace TT.Tests.Items.Entities
             unembeddedRune.Owner.Should().Be(null);
             unembeddedRune.dbLocationName.Should().Be(owner.Location);
             unembeddedRune.EmbeddedOnItem.Should().Be(null);
+            unembeddedRune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
 
         }
 
@@ -121,6 +129,7 @@ namespace TT.Tests.Items.Entities
             var item = new ItemBuilder()
                 .With(i => i.Id, 100)
                 .With(i => i.IsEquipped, false)
+                .With(i => i.TimeDropped, DateTime.UtcNow.AddHours(-8))
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Shirt)
                     .BuildAndSave())
@@ -129,6 +138,7 @@ namespace TT.Tests.Items.Entities
             var rune = new ItemBuilder()
                 .With(i => i.IsEquipped, true)
                 .With(i => i.Owner, oldOwner)
+                .With(i => i.TimeDropped, DateTime.UtcNow.AddHours(-8))
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Rune)
                     .BuildAndSave())
@@ -142,10 +152,13 @@ namespace TT.Tests.Items.Entities
 
             item.Owner.Id.Should().Be(newOwner.Id);
             item.Runes.Count.Should().Be(1);
+            item.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
+
             rune.Owner.Id.Should().Be(newOwner.Id);
             rune.EmbeddedOnItem.Id.Should().Be(100);
             rune.IsEquipped.Should().Be(true);
             rune.dbLocationName.Should().Be(String.Empty);
+            rune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
 
         }
 

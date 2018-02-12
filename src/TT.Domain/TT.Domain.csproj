@@ -190,6 +190,7 @@
     <Compile Include="RequestInterfaces\IRequestWithUserNameId.cs" />
     <Compile Include="Services\IPrincipalAccessor.cs" />
     <Compile Include="Statics\PortraitHelper.cs" />
+    <Compile Include="Statics\RuneStatics.cs" />
     <Compile Include="Validation\RuleSets.cs" />
     <Compile Include="ValidatorSelectors\IntersectRulesetValidatorSelector.cs" />
     <Compile Include="Validation\NullValidator.cs" />

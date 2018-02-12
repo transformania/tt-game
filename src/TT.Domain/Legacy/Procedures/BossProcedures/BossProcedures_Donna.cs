@@ -57,6 +57,11 @@ namespace TT.Domain.Procedures.BossProcedures
                 donnaEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(donnaEF));
                 playerRepo.SavePlayer(donnaEF);
 
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = donnaEF.Id });
+                }
+
             }
         }
 
@@ -267,8 +272,9 @@ namespace TT.Domain.Procedures.BossProcedures
             int i = 0;
             int maxReward = 800;
 
-            foreach (BossDamage damage in damages)
+            for (var r = 0; r < damages.Count; r++)
             {
+                var damage = damages.ElementAt(r);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 int reward = maxReward - (i * 40);
                 victor.XP += reward;
@@ -277,6 +283,12 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + donna.GetFullName() + ", you earn " + reward + " XP from your spells cast against the mythical sorceress.</b>", true);
 
                 playerRepo.SavePlayer(victor);
+
+                // top three get runes
+                if (r <= 2)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = victor.Id });
+                }
 
             }
         }

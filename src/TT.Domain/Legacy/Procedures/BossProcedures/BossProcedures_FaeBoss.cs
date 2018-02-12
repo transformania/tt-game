@@ -100,6 +100,11 @@ namespace TT.Domain.Procedures.BossProcedures
                 playerRepo.SavePlayer(faebossEF);
 
                 AIDirectiveProcedures.GetAIDirective(id);
+
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.NARCISSA_RUNE, PlayerId = faebossEF.Id });
+                }
             }
 
         }
@@ -280,8 +285,9 @@ namespace TT.Domain.Procedures.BossProcedures
             int l = 0;
             int maxReward = 1000;
 
-            foreach (BossDamage damage in damages)
+            for (var i = 0; i < damages.Count; i++)
             {
+                var damage = damages.ElementAt(0);
 
                 Player victor = PlayerProcedures.GetPlayer(damage.PlayerId);
                 int reward = maxReward - (l * 35);
@@ -290,6 +296,13 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 PlayerProcedures.GiveXP(victor, reward);
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
+
+                // top three get runes
+                if (i <= 2)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.NARCISSA_RUNE, PlayerId = victor.Id });
+                }
+
             }
 
         }

@@ -9,7 +9,7 @@ namespace TT.Domain.ViewModels
         public static Dictionary<string, BossSummon> GlobalBossSummonDictionary = new Dictionary<string, BossSummon> {
     { "ranch_bedroom", new BossSummon { BossName="Donna", MinimumTurn = 2600, ActivationText = "" }},
 
-     { "castle_armory", new BossSummon { BossName="Valentine", MinimumTurn = 1000, ActivationText = "" }},
+     { "castle_armory", new BossSummon { BossName="Valentine", MinimumTurn = 99999, ActivationText = "" }},
 
      { "stripclub_bar_seats", new BossSummon { BossName="BimboBoss", MinimumTurn = 1800, ActivationText = "" }},
 

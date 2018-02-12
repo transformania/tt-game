@@ -73,6 +73,12 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 aiRepo.SaveAIDirective(directive);
 
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = bimboEF.Id });
+                }
+                
+
             }
         }
 
@@ -346,8 +352,9 @@ namespace TT.Domain.Procedures.BossProcedures
             int l = 0;
             int maxReward = 650;
 
-            foreach (BossDamage damage in damages)
+            for (var i = 0; i < damages.Count; i++)
             {
+                var damage = damages.ElementAt(i);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 int reward = maxReward - (l * 35);
                 victor.XP += reward;
@@ -356,6 +363,12 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + BossFirstName + " " + BossLastName + ", you earn " + reward + " XP from your spells cast against the plague mother.</b>", true);
 
                 playerRepo.SavePlayer(victor);
+
+                // top three get runes
+                if (i <= 2)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
+                }
 
             }
 

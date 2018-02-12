@@ -112,6 +112,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 aiRepo.SaveAIDirective(directive);
 
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.VAMPIRE_RUNE, PlayerId = valentineEF.Id });
+                }
+
 
             }
         }
@@ -305,8 +310,9 @@ namespace TT.Domain.Procedures.BossProcedures
             int l = 0;
             int maxReward = 500;
 
-            foreach (BossDamage damage in damages)
+            for (var r = 0; r < damages.Count; r++)
             {
+                var damage = damages.ElementAt(r);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 int reward = maxReward - (l * 30);
                 victor.XP += reward;
@@ -315,6 +321,12 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging " + valentine.GetFullName() + " you receieve " + reward + " XP from your risky struggle!</b>", true);
 
                 playerRepo.SavePlayer(victor);
+
+                // top three get runes
+                if (r <= 2)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.VAMPIRE_RUNE, PlayerId = victor.Id });
+                }
 
             }
 

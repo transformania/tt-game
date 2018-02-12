@@ -250,8 +250,9 @@ namespace TT.Domain.Procedures.BossProcedures
             int i = 0;
             int maxReward = 1000;
 
-            foreach (BossDamage damage in damages)
+            for (var r = 0; r < damages.Count; r++)
             {
+                var damage = damages.ElementAt(r);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 int reward = maxReward - (i * 50);
                 victor.XP += reward;
@@ -260,10 +261,24 @@ namespace TT.Domain.Procedures.BossProcedures
                 if (winner == "bimbo")
                 {
                     PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + nerdBoss.GetFullName() + ", " + bimboBoss.GetFullName() + " gifts you with " + reward + " XP from her powerful magic of seduction!</b>", true);
+
+                    // top three get runes
+                    if (r <= 2)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.HEADMISTRESS_RUNE, PlayerId = victor.Id });
+                    }
+
                 }
                 else
                 {
                     PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + bimboBoss.GetFullName() + ", " + nerdBoss.GetFullName() + " gifts you with " + reward + " XP from her unchallenged mastery of the natural world!</b>", true);
+
+                    // top three get runes
+                    if (r <= 2)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
+                    }
+
                 }
 
                 playerRepo.SavePlayer(victor);

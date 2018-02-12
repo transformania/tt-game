@@ -70,6 +70,12 @@ namespace TT.Domain.Procedures.BossProcedures
                     Var1 = 0,
                 };
                 aiRepo.SaveAIDirective(maleDirective);
+
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = malethiefEF.Id });
+                }
+
             }
 
 
@@ -113,6 +119,11 @@ namespace TT.Domain.Procedures.BossProcedures
                     Var1 = 0,
                 };
                 aiRepo.SaveAIDirective(femaleDirective);
+
+                for (var i = 0; i < 2; i++)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = femalethiefEF.Id });
+                }
 
             }
 
@@ -423,8 +434,9 @@ namespace TT.Domain.Procedures.BossProcedures
             decimal maxReward_Female = 1000 + Math.Floor(femalethief.Money);
             decimal maxReward_Male = 300 + Math.Floor(malethief.Money);
 
-            foreach (BossDamage damage in damages_male)
+            for (var i = 0; i < damages_male.Count; i++)
             {
+                var damage = damages_male.ElementAt(i);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 decimal reward = Math.Floor(maxReward_Male);
                 victor.Money += maxReward_Male;
@@ -432,11 +444,19 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + MaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on him.</b>", true);
 
                 playerRepo.SavePlayer(victor);
-                maxReward_Male *= .75M; 
+                maxReward_Male *= .75M;
+
+                // top two get runes
+                if (i <= 1)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
+                }
+
             }
 
-            foreach (BossDamage damage in damages_female)
+            for (var i = 0; i < damages_female.Count; i++)
             {
+                var damage = damages_female.ElementAt(i);
                 Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
                 decimal reward = Math.Floor(maxReward_Female);
                 victor.Money += maxReward_Female;
@@ -445,6 +465,13 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(victor);
                 maxReward_Female *= .75M;
+
+                // top two get runes
+                if (i <= 1)
+                {
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
+                }
+
             }
 
         }

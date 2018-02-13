@@ -285,7 +285,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 playerRepo.SavePlayer(victor);
 
                 // top three get runes
-                if (r <= 2)
+                if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = victor.Id });
                 }

@@ -447,7 +447,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 maxReward_Male *= .75M;
 
                 // top two get runes
-                if (i <= 1)
+                if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
                 }
@@ -467,7 +467,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 maxReward_Female *= .75M;
 
                 // top two get runes
-                if (i <= 1)
+                if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
                 }

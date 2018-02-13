@@ -365,7 +365,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 playerRepo.SavePlayer(victor);
 
                 // top three get runes
-                if (i <= 2)
+                if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
                 }

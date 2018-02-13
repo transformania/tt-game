@@ -274,7 +274,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + bimboBoss.GetFullName() + ", " + nerdBoss.GetFullName() + " gifts you with " + reward + " XP from her unchallenged mastery of the natural world!</b>", true);
 
                     // top three get runes
-                    if (r <= 2)
+                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
                     {
                         DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
                     }

@@ -298,7 +298,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
 
                 // top three get runes
-                if (i <= 2)
+                if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.NARCISSA_RUNE, PlayerId = victor.Id });
                 }

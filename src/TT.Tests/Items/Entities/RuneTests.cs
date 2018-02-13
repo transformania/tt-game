@@ -135,6 +135,7 @@ namespace TT.Tests.Items.Entities
             rune.EmbeddedOnItem.Id.Should().Be(item.Id);
             rune.Owner.Id.Should().Be(owner.Id);
             rune.Owner.FirstName.Should().Be(owner.FirstName);
+            rune.EquippedThisTurn.Should().Be(true);
         }
 
         [Test]
@@ -166,7 +167,7 @@ namespace TT.Tests.Items.Entities
         }
 
         [Test]
-        public void CanUmebedRunes_can_unembed_runes_on_unowned_items()
+        public void can_unembed_runes_on_unowned_items()
         {
             var unownedItem = new ItemBuilder()
                 .With(i => i.Id, 600)
@@ -196,15 +197,17 @@ namespace TT.Tests.Items.Entities
             rune.IsEquipped.Should().Be(false);
             rune.Owner.Should().Be(null);
             rune.dbLocationName.Should().Be("somewhere");
+            rune.EquippedThisTurn.Should().Be(true);
 
             rune2.EmbeddedOnItem.Should().Be(null);
             rune2.IsEquipped.Should().Be(false);
             rune2.Owner.Should().Be(null);
             rune2.dbLocationName.Should().Be("somewhere");
+            rune2.EquippedThisTurn.Should().Be(true);
         }
 
         [Test]
-        public void CanUmebedRunes_can_unembed_runes_on_owned_items()
+        public void can_unembed_runes_on_owned_items()
         {
 
             var owner = new PlayerBuilder()

@@ -1,6 +1,5 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
-@using TT.Domain.ViewModels
-@using TT.Web.CustomHtmlHelpers
+﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+
 @{
     ViewBag.Title = "Sell Item";
 }
@@ -15,21 +14,21 @@
 <hr />
 
 @{
-    foreach (ItemViewModel item in Model.OrderByDescending(i => i.dbItem.Level))
+    foreach (var item in Model.OrderByDescending(i => i.Level))
     {
         <h3>
             @{
-        if (item.dbItem.Level > 0)
+        if (item.Level > 0)
         {
-            <span>Level @item.dbItem.Level</span>
+            <span>Level @item.Level</span>
         }
             }
 
-            @item.Item.FriendlyName <span> (@item.dbItem.GetFullName())</span>
+            @item.ItemSource.FriendlyName <span> (@item.GetFullName())</span>
         </h3>
         <p>
             You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-            <a href="@Url.Action(MVC.NPC.Sell(item.dbItem.Id))">Sell</a>
+            <a href="@Url.Action(MVC.NPC.Sell(item.Id))">Sell</a>
         </p>
 
         <hr />

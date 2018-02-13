@@ -1226,60 +1226,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        // TODO:  de-duplicate this method and the one below
-        public static decimal GetCostOfItem(ItemViewModel item, string buyOrSell)
-        {
-
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Rune)
-            {
-                if (buyOrSell == "buy")
-                {
-                    return item.Item.MoneyValue;
-                }
-                else
-                {
-                    return item.Item.MoneyValue * .5M;
-                }
-            }
-
-            if (buyOrSell == "buy")
-            {
-                decimal price = 50 + 50 * item.dbItem.Level;
-
-                // item is not permanent, charge less
-                if (!item.dbItem.IsPermanent)
-                {
-                    price *= .85M;
-                }
-           
-
-                return Math.Ceiling(price);
-            }
-
-                // selling, pay less money
-            else
-            {
-                decimal price = 50 + (30 * item.dbItem.Level * .75M);
-
-                // item is not permanent, charge less
-                if (!item.dbItem.IsPermanent)
-                {
-                    price *= .5M;
-                }
-
-                // item has custom sell value set and is consumable, use its sell override amount
-                if ((item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Rune) && item.Item.MoneyValueSell > 0)
-                {
-                    price = item.Item.MoneyValueSell;
-                }
-
-                return Math.Ceiling(price);
-
-            }
-            
-        }
-
-        // TODO:  de-duplicate this method and the one above
         public static decimal GetCostOfItem(ItemDetail item, string buyOrSell)
         {
 
@@ -1291,9 +1237,17 @@ namespace TT.Domain.Procedures
                 }
                 else
                 {
+                    // override with custom value
+                    if (item.ItemSource.MoneyValueSell > 0)
+                    {
+                        return item.ItemSource.MoneyValueSell;
+                    }
+
                     return item.ItemSource.MoneyValue * .5M;
                 }
             }
+
+            var runesValue = item.Runes.Select(r => r.ItemSource.MoneyValue).Sum();
 
             if (buyOrSell == "buy")
             {
@@ -1306,7 +1260,7 @@ namespace TT.Domain.Procedures
                 }
 
 
-                return Math.Ceiling(price);
+                return Math.Ceiling(price + runesValue);
             }
 
             // selling, pay less money
@@ -1320,13 +1274,7 @@ namespace TT.Domain.Procedures
                     price *= .5M;
                 }
 
-                // item has custom sell value set and is consumable, use its sell override amount
-                if ((item.ItemSource.ItemType == PvPStatics.ItemType_Consumable || item.ItemSource.ItemType  == PvPStatics.ItemType_Rune) && item.ItemSource.MoneyValueSell > 0)
-                {
-                    price = item.ItemSource.MoneyValueSell;
-                }
-
-                return Math.Ceiling(price);
+                return Math.Ceiling(price + runesValue*.75M);
 
             }
 

@@ -135,10 +135,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
+            ItemDetail purchased = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
 
             // assert that the item is in fact owned by the merchant
-            if (purchased.dbItem.OwnerId != merchant.Id)
+            if (purchased.Owner.Id != merchant.Id)
             {
                 TempData["Error"] = "Lindella does not own this item.";
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
@@ -163,7 +163,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is in the same game mode as the player, if the item's game mode is locked
-            if ((purchased.dbItem.PvPEnabled == GameModeStatics.PvP && me.GameMode != GameModeStatics.PvP || purchased.dbItem.PvPEnabled == GameModeStatics.Protection && me.GameMode == GameModeStatics.PvP))
+            if ((purchased.PvPEnabled == GameModeStatics.PvP && me.GameMode != GameModeStatics.PvP || purchased.PvPEnabled == GameModeStatics.Protection && me.GameMode == GameModeStatics.PvP))
             {
                 TempData["Error"] = "This item is the wrong mode.";
                 TempData["SubError"] = "You cannot buy this item. It does not match your gameplay mode.";
@@ -181,10 +181,10 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float)cost)
             ).Start();
 
-            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
-            TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Lindella.";
+            TempData["Result"] = "You have purchased a " + purchased.ItemSource.FriendlyName + " from Lindella.";
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
@@ -217,7 +217,11 @@ namespace TT.Web.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == PvPStatics.ItemType_Consumable || i.Item.ItemType == PvPStatics.ItemType_Rune));
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = me.Id})
+                .Where(i => i.ItemSource.ItemType != PvPStatics.ItemType_Pet && 
+                !i.IsEquipped && 
+                (i.IsPermanent || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable || i.ItemSource.ItemType == PvPStatics.ItemType_Rune));
+
             return View(MVC.NPC.Views.SellList, output);
         }
 
@@ -264,32 +268,32 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemViewModel itemBeingSold = ItemProcedures.GetItemViewModel(id);
+            ItemDetail itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
-            if (itemBeingSold.dbItem.OwnerId != me.Id)
+            if (itemBeingSold.Owner.Id != me.Id)
             {
                 TempData["Error"] = "You do not own this item.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is not an animal type
-            if (itemBeingSold.Item.ItemType == PvPStatics.ItemType_Pet)
+            if (itemBeingSold.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Lindella does not purchase or sell pets or animals.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is either permanent or consumable
-            if (!itemBeingSold.dbItem.IsPermanent &&
-                itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumable && 
-                itemBeingSold.Item.ItemType != PvPStatics.ItemType_Rune)
+            if (!itemBeingSold.IsPermanent &&
+                itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Consumable && 
+                itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Rune)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemProcedures.GiveItemToPlayer(itemBeingSold.dbItem.Id, merchant.Id);
+            ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
@@ -302,7 +306,7 @@ namespace TT.Web.Controllers
              ).Start();
 
 
-            TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
+            TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
@@ -412,10 +416,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
+            ItemDetail purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that the item is in fact owned by the merchant
-            if (purchased.dbItem.OwnerId != merchant.Id)
+            if (purchased.Owner.Id != merchant.Id)
             {
                 TempData["Error"] = "Wüffie does not own this pet.";
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
@@ -451,13 +455,10 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)cost)
             ).Start();
 
-            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
-
-
-
-            TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Wüffie.";
+            TempData["Result"] = "You have purchased a " + purchased.ItemSource.FriendlyName + " from Wüffie.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
@@ -490,10 +491,12 @@ namespace TT.Web.Controllers
             }
 
 
-
-
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped && i.dbItem.IsPermanent);
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
+                .Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet &&
+                            i.IsEquipped &&
+                            i.IsPermanent);
+
             return View(MVC.NPC.Views.SellPetList, output);
         }
 
@@ -539,30 +542,30 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemViewModel itemBeingSold = ItemProcedures.GetItemViewModel(id);
+            ItemDetail itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
-            if (itemBeingSold.dbItem.OwnerId != me.Id)
+            if (itemBeingSold.Owner.Id != me.Id)
             {
                 TempData["Error"] = "You do not own this item.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is only an animal type
-            if (itemBeingSold.Item.ItemType != PvPStatics.ItemType_Pet)
+            if (itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Wüffie only buys and sells pets.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is either permanent or consumable
-            if (!itemBeingSold.dbItem.IsPermanent)
+            if (!itemBeingSold.IsPermanent)
             {
                 TempData["Error"] = "Unfortunately Wüffie will not purchase pets that may later struggle free anymore.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemProcedures.GiveItemToPlayer(itemBeingSold.dbItem.Id, merchant.Id);
+            ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
@@ -574,7 +577,7 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)-cost)
             ).Start();
 
-            TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
+            TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
@@ -1248,8 +1251,8 @@ namespace TT.Web.Controllers
             }
 
             // assert lorekeeper owns this book
-            var purchased = ItemProcedures.GetItemViewModel(id);
-            if (purchased.dbItem.OwnerId != loremaster.Id)
+            var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
+            if (purchased.Owner.Id != loremaster.Id)
             {
                 TempData["Error"] = "You can't purchse this as " + loremaster.GetFullName() + " does not own it.";
                 return RedirectToAction(MVC.NPC.TalkToLorekeeper());
@@ -1269,9 +1272,9 @@ namespace TT.Web.Controllers
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
-            ItemProcedures.GiveItemToPlayer(purchased.dbItem.Id, me.Id);
+            ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
 
-            TempData["Result"] = "You purchased " + purchased.Item.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
+            TempData["Result"] = "You purchased " + purchased.ItemSource.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());
 
         }

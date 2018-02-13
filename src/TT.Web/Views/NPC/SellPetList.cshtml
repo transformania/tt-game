@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
+﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
 @using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 @{
@@ -15,11 +15,11 @@
     
 
     @{
-        if (Model.Any() && Model.First().dbItem.IsPermanent)
+        if (Model.Any() && Model.First().IsPermanent)
         {
-            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().dbItem.GetFullName()</b> your <b>@Model.First().Item.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
+            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().GetFullName()</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
         }
-        else if (Model.Any() && !Model.First().dbItem.IsPermanent)
+        else if (Model.Any() && !Model.First().IsPermanent)
         {
             <p>While you have a pet, Wuffie only takes care of pets who have been permanently sealed in their new form.</p>
         }
@@ -33,21 +33,21 @@
     <hr />
 
     @{
-        foreach (ItemViewModel item in Model.OrderByDescending(i => i.dbItem.Level))
+        foreach (var item in Model.OrderByDescending(i => i.Level))
         {
             <h3>
                 @{
-            if (item.dbItem.Level > 0)
+            if (item.Level > 0)
             {
-                <span>Level @item.dbItem.Level</span>
+                <span>Level @item.Level</span>
             }
                 }
 
-                @item.Item.FriendlyName <span> (@item.dbItem.GetFullName())</span>
+                @item.ItemSource.FriendlyName <span> (@item.GetFullName())</span>
             </h3>
             <p>
                 You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-                <a href="@Url.Action(MVC.NPC.SellPet(item.dbItem.Id))">Sell</a>
+                <a href="@Url.Action(MVC.NPC.SellPet(item.Id))">Sell</a>
             </p>
 
             <hr />

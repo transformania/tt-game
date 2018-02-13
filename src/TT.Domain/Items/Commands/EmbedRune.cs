@@ -53,6 +53,9 @@ namespace TT.Domain.Items.Commands
                 if (rune.EmbeddedOnItem != null)
                     throw new DomainException("This rune is already embedded on an item.");
 
+                if (rune.EquippedThisTurn)
+                    throw new DomainException("This rune has already been equipped once this turn.");
+
                 if (!itemToEmbedOn.CanAttachRunesToThisItemType())
                     throw new DomainException("You cannot embed a rune on this item type.");
 

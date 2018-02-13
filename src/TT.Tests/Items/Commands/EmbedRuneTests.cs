@@ -236,6 +236,28 @@ namespace TT.Tests.Items.Commands
             action.ShouldThrowExactly<DomainException>().WithMessage("This item has no more room for additional runes.");
         }
 
+        [Test]
+        public void should_throw_exception_if_rune_already_equipped_this_turn()
+        {
+
+            var rune2 = new ItemBuilder()
+                .With(i => i.Id, 550)
+                .With(i => i.EquippedThisTurn, true)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .With(i => i.RuneLevel, 1)
+                    .BuildAndSave()
+                )
+                .With(i => i.Owner, player)
+                .BuildAndSave();
+
+            var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune2.Id, PlayerId = player.Id };
+
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("This rune has already been equipped once this turn.");
+        }
+
 
     }
 }

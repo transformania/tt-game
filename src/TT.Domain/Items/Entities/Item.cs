@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TT.Domain.Entities;
 using TT.Domain.Items.Commands;
 using TT.Domain.Players.Entities;
@@ -215,6 +216,7 @@ namespace TT.Domain.Items.Entities
             rune.EmbeddedOnItem = this;
             rune.IsEquipped = true;
             rune.Owner = this.Owner;
+            rune.EquippedThisTurn = true;
         }
 
         public void RemoveRunes()
@@ -223,6 +225,7 @@ namespace TT.Domain.Items.Entities
             {
                 rune.EmbeddedOnItem = null;
                 rune.IsEquipped = false;
+                rune.EquippedThisTurn = true;
 
                 if (this.Owner != null)
                 {

@@ -13,7 +13,7 @@ using TT.Tests.Builders.Players;
 namespace TT.Tests.Items.Commands
 {
     [TestFixture]
-    public class UnembedRuneTests : TestBase
+    public class UnembedAllRunesTests : TestBase
     {
         private Player player;
         private Item item1;

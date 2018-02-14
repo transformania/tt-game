@@ -1,0 +1,48 @@
+﻿@using TT.Domain.Statics
+@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to Inventory</a></li>
+}
+
+<div class="containerInner">
+    <h1>Unembed Runes</h1>
+
+    <p>You can unembed runes from your items and place them on others.  You may only equip or unequip a rune once per turn, however, so choose carefully!</p>
+
+    <table id="Items" class="table table-hover messageTable dt-responsive">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Item Name</th>
+                <th>Level</th>
+                <th>Existing Runes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var i in Model)
+                {
+                    <tr>
+                        <td><img width="100px" height="100px" src="@PortraitHelper.GetGraphicByItemType(i.ItemSource.ItemType, i.ItemSource.PortraitUrl, true)" /></td>
+                        <td><b>@i.ItemSource.FriendlyName</b></td>
+                        <td>@i.Level</td>
+                        <td>
+
+                            @{
+                                foreach (var rune in i.Runes)
+                                {
+                                    <p><b>@rune.ItemSource.FriendlyName</b> <a href="@Url.Action(MVC.Item.UnattachRune(rune.Id))" class="attackLink">Remove</a></p>
+                                }
+                            }
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

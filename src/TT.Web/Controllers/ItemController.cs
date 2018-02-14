@@ -345,6 +345,30 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        public virtual ActionResult UnembedRunesList()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id }).Where(i => i.Runes.Any());
+
+            return View(MVC.Item.Views.UnembedRunesList, output);
+        }
+
+        public virtual ActionResult UnattachRune(int Id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new UnembedRune { PlayerId = me.Id, ItemId = Id});
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
+            return RedirectToAction(MVC.Item.MyInventory());
+        }
+
         public virtual ActionResult UnembedRunes()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Entities;
-using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Commands
 {

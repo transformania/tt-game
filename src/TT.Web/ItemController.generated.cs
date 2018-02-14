@@ -95,6 +95,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachRune);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UnattachRune()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnattachRune);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ItemController Actions { get { return MVC.Item; } }
@@ -121,6 +127,8 @@ namespace TT.Web.Controllers
             public readonly string ShowStatsTable = ("ShowStatsTable").ToLowerInvariant();
             public readonly string AttachRuneList = ("AttachRuneList").ToLowerInvariant();
             public readonly string AttachRune = ("AttachRune").ToLowerInvariant();
+            public readonly string UnembedRunesList = ("UnembedRunesList").ToLowerInvariant();
+            public readonly string UnattachRune = ("UnattachRune").ToLowerInvariant();
             public readonly string UnembedRunes = ("UnembedRunes").ToLowerInvariant();
         }
 
@@ -175,6 +183,14 @@ namespace TT.Web.Controllers
             public readonly string runeId = ("runeId").ToLowerInvariant();
             public readonly string itemId = ("itemId").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_UnattachRune s_params_UnattachRune = new ActionParamsClass_UnattachRune();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UnattachRune UnattachRuneParams { get { return s_params_UnattachRune; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UnattachRune
+        {
+            public readonly string Id = ("Id").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -190,12 +206,14 @@ namespace TT.Web.Controllers
                 public readonly string SelfCast = "SelfCast";
                 public readonly string ShowStatsTable = "ShowStatsTable";
                 public readonly string SkillBook = "SkillBook";
+                public readonly string UnembedRunesList = "UnembedRunesList";
             }
             public readonly string AttachRuneList = "~/Views/Item/AttachRuneList.cshtml";
             public readonly string RemoveCurse = "~/Views/Item/RemoveCurse.cshtml";
             public readonly string SelfCast = "~/Views/Item/SelfCast.cshtml";
             public readonly string ShowStatsTable = "~/Views/Item/ShowStatsTable.cshtml";
             public readonly string SkillBook = "~/Views/Item/SkillBook.cshtml";
+            public readonly string UnembedRunesList = "~/Views/Item/UnembedRunesList.cshtml";
             static readonly _partialClass s_partial = new _partialClass();
             public _partialClass partial { get { return s_partial; } }
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -338,6 +356,29 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "runeId", runeId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
             AttachRuneOverride(callInfo, runeId, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UnembedRunesListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UnembedRunesList()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnembedRunesList);
+            UnembedRunesListOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UnattachRuneOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UnattachRune(int Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnattachRune);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            UnattachRuneOverride(callInfo, Id);
             return callInfo;
         }
 

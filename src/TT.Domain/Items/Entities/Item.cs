@@ -221,25 +221,36 @@ namespace TT.Domain.Items.Entities
 
         public void RemoveRunes()
         {
-            foreach (var rune in this.Runes)
+            foreach (var rune in this.Runes.ToList())
             {
-                rune.EmbeddedOnItem = null;
-                rune.IsEquipped = false;
-                rune.EquippedThisTurn = true;
-
-                if (this.Owner != null)
-                {
-                    rune.Owner = this.Owner;
-                    rune.dbLocationName = String.Empty;
-                }
-                else
-                {
-                    rune.Owner = null;
-                    rune.dbLocationName = this.dbLocationName;
-                }
-
+                RemoveRune(rune);
             }
             this.Runes.Clear();
+        }
+
+        public void RemoveRune(Item rune)
+        {
+            rune.EmbeddedOnItem = null;
+            rune.IsEquipped = false;
+            rune.EquippedThisTurn = true;
+
+            if (this.Owner != null)
+            {
+                rune.Owner = this.Owner;
+                rune.dbLocationName = String.Empty;
+            }
+            else
+            {
+                rune.Owner = null;
+                rune.dbLocationName = this.dbLocationName;
+            }
+
+            this.Runes.Remove(rune);
+        }
+
+        public void SetEquippedThisTurn(bool equippedThisTurn)
+        {
+            this.EquippedThisTurn = equippedThisTurn;
         }
 
         public void SetLocation(string location)

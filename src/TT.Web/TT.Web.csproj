@@ -515,6 +515,7 @@
     <Content Include="Views\Item\partial\RuneDetails.cshtml" />
     <Content Include="Views\Item\partial\PlayPageRuneDetails.cshtml" />
     <Content Include="Views\Item\partial\RuneStats.cshtml" />
+    <Content Include="Views\Item\UnembedRunesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

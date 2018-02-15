@@ -14,5 +14,17 @@ namespace TT.Domain.ViewModels
             var runeLimit = item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? 2 : 1;
             return item.Runes.Count < runeLimit && item.Level >= rune.ItemSource.RuneLevel;
         }
+
+        public string GetReason(ItemRuneDetail item)
+        {
+            if (item.Level < rune.ItemSource.RuneLevel)
+            {
+                return "Item too low level";
+            }
+            else
+            {
+                return "No room for more runes";
+            }
+        }
     }
 }

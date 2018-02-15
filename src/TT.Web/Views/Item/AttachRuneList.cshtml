@@ -49,6 +49,10 @@
                             {
                                 <a href="@Url.Action(MVC.Item.AttachRune(Model.rune.Id, i.Id))" class="attackLink">Attach</a>
                             }
+                            else
+                            {
+                                <b class="bad">@Model.GetReason(i)</b>
+                            }
                         }
                     </td>
                 </tr>

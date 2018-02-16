@@ -194,23 +194,13 @@ namespace TT.Domain.Procedures
                     }
                 }
 
-                DateTime timeCutoff = DateTime.UtcNow.AddHours(-8);
+                var timeCutoff = DateTime.UtcNow.AddHours(-8);
+                var playersToSave = playerRepo.Players
+                    .Where(p => p.Mobility == PvPStatics.MobilityFull && p.LastActionTimestamp > timeCutoff).ToList();
 
-                List<int> playerIdsToSave = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && p.LastActionTimestamp > timeCutoff).Select(p => p.Id).ToList();
-
-                foreach (int i in playerIdsToSave)
+                foreach (var player in playersToSave)
                 {
-
-                    Player player = playerRepo.Players.FirstOrDefault(p => p.Id == i);
-
-                    // skip players who have not done anything in the past 24 hours
-                    double hoursSinceLastAction = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours));
-                    if (hoursSinceLastAction > 24)
-                    {
-                        continue;
-                    }
-
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                    var buffs = ItemProcedures.GetPlayerBuffs(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 
@@ -297,7 +287,7 @@ namespace TT.Domain.Procedures
 
                 }
 
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating animate players (" + playerIdsToSave.Count + ")");
+                log.AddLog($"{updateTimer.ElapsedMilliseconds}:  Finished updating animate players ({playersToSave.Count})");
                 serverLogRepo.SaveServerLog(log);
 
                 #endregion main player loop

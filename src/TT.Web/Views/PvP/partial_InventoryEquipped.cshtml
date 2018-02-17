@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
-@using TT.Domain.Items.DTOs
 @using TT.Domain.Statics
 
 @{
@@ -13,21 +12,8 @@
 
     var pet = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet && i.IsEquipped);
 
-
     var lhand = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped);
-
-    ItemDetail rhand;
-    try
-    {
-        rhand = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped).Skip(1).Single();
-    }
-    catch
-    {
-        rhand = null;
-    }
-
-
-
+    var rhand = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped).Skip(1).SingleOrDefault();
 }
 
 <div id="fullDetails">

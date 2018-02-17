@@ -1,5 +1,4 @@
-﻿@using TT.Domain.Players.DTOs
-@model TT.Domain.ViewModels.BusStopsViewModel
+﻿@model TT.Domain.ViewModels.BusStopsViewModel
 @{
     ViewBag.Title = "Bus";
 }
@@ -37,7 +36,7 @@
         <tbody>
 
             @{
-                foreach (BusStop b in Model.Stops)
+                foreach (var b in Model.Stops)
                 {
                     <tr>
                         <td>@b.Name</td>

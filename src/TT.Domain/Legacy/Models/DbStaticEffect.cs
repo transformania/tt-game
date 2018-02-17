@@ -67,7 +67,7 @@ namespace TT.Domain.Models
 
         public StaticEffect ToStaticEffect()
         {
-            StaticEffect output = new StaticEffect
+            var output = new StaticEffect
             {
                 dbName = this.dbName,
                 FriendlyName = this.FriendlyName,

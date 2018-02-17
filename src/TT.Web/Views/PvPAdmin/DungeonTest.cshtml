@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.Location>
 
-@using TT.Domain.ViewModels
-@using TT.Domain.Statics
-
 <div style="position: relative; float: left; margin-bottom: 15px;">
     <a href="@Url.Action(MVC.PvP.WorldMap("true"))">Show with Location Enchantments</a>
 </div>
@@ -15,7 +12,7 @@
         decimal minX = Model.Select(l => l.X).Min();
         decimal maxY = Model.Select(l => l.Y).Max();
 
-        foreach (Location loc in Model)
+        foreach (var loc in Model)
         {
 
             posX = ((loc.X - minX) * 100 + 10).ToString() + "px";

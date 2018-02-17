@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain;
 using TT.Domain.Services;
 
 namespace TT.Tests.Domain.Services

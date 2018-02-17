@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                CovenantApplication editMe = context.CovenantApplications.Find(CovenantApplication.Id);
+                var editMe = context.CovenantApplications.Find(CovenantApplication.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = CovenantApplication.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteCovenantApplication(int id)
         {
 
-            CovenantApplication dbEntry = context.CovenantApplications.Find(id);
+            var dbEntry = context.CovenantApplications.Find(id);
             if (dbEntry != null)
             {
                 context.CovenantApplications.Remove(dbEntry);

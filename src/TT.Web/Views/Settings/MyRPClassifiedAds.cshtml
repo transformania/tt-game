@@ -1,5 +1,4 @@
-﻿@using TT.Domain.ClassifiedAds.DTOs
-@model IEnumerable<TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail>
+﻿@model IEnumerable<TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail>
 @{
     ViewBag.Title = "Your RP Classified Ads";
 }
@@ -22,7 +21,7 @@
 
       <div class="row boxContainer">
             @{
-                foreach (RPClassifiedAdDetail ad in Model.OrderByDescending(m => m.RefreshTimestamp))
+                foreach (var ad in Model.OrderByDescending(m => m.RefreshTimestamp))
                 {
                     <div class="col-xs-12 col-md-3 rp-ad textSpaced">
 

@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                NewsPost editMe = context.NewsPosts.Find(NewsPost.Id);
+                var editMe = context.NewsPosts.Find(NewsPost.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = NewsPost.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteNewsPost(int id)
         {
 
-            NewsPost dbEntry = context.NewsPosts.Find(id);
+            var dbEntry = context.NewsPosts.Find(id);
             if (dbEntry != null)
             {
                 context.NewsPosts.Remove(dbEntry);

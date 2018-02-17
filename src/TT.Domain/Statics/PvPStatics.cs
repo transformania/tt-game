@@ -276,8 +276,8 @@ namespace TT.Domain.Statics
         /// <returns></returns>
         public static int GetDistanceBetweenLocations(string departure, string destination)
         {
-            Location departureLocation = LocationList.GetLocation.First(l => l.dbName == departure);
-            Location destinationLocation = LocationList.GetLocation.First(l => l.dbName == destination);
+            var departureLocation = LocationList.GetLocation.First(l => l.dbName == departure);
+            var destinationLocation = LocationList.GetLocation.First(l => l.dbName == destination);
 
             return Math.Abs(departureLocation.X - destinationLocation.X) + Math.Abs(departureLocation.Y - destinationLocation.Y);
         }
@@ -285,33 +285,33 @@ namespace TT.Domain.Statics
         public static string GetRandomLocation()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Where(s => s.Region != "dungeon").Select(l => l.dbName).ToList();
+            var spawnableLocations = LocationList.GetLocation.Where(s => s.Region != "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble();
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            var index = Convert.ToInt32(Math.Floor(num * max));
+            var locationToSpawnIn = spawnableLocations.ElementAt(index);
             return locationToSpawnIn;
         }
 
         public static string GetRandomLocation_NoStreets()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets" && l.Region != "dungeon").Select(l => l.dbName).ToList();
+            var spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets" && l.Region != "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble();
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            var index = Convert.ToInt32(Math.Floor(num * max));
+            var locationToSpawnIn = spawnableLocations.ElementAt(index);
             return locationToSpawnIn;
         }
 
         public static string GetRandomLocation_InDungeon()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
+            var spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
 
 
@@ -323,24 +323,24 @@ namespace TT.Domain.Statics
                 max = spawnableLocations.Count();
             }
 
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble();
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            var index = Convert.ToInt32(Math.Floor(num * max));
+            var locationToSpawnIn = spawnableLocations.ElementAt(index);
             return locationToSpawnIn;
         }
 
         public static string GetRandomLocation_InRegion(string region)
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
+            var spawnableLocations = LocationList.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble();
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            var index = Convert.ToInt32(Math.Floor(num * max));
+            var locationToSpawnIn = spawnableLocations.ElementAt(index);
             return locationToSpawnIn;
         }
 

@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.PlayerAchievementViewModel>
 @using TT.Domain.Procedures
-@using TT.Domain.ViewModels
 @{
     ViewBag.Title = "Statistics Leaders";
 }
@@ -15,9 +14,9 @@
     <h1>Statistics Leaders</h1>
     <div class="row">
         @{
-            foreach (string f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
+            foreach (var f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
             {
-                PlayerAchievementViewModel ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == f);
+                var ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == f);
                 if (ach != null)
                 {
                     <div class="col-md-4 stats-leader">

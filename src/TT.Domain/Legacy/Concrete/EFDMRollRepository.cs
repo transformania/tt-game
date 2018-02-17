@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DMRoll editMe = context.DMRolls.Find(DMRoll.Id);
+                var editMe = context.DMRolls.Find(DMRoll.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = DMRoll.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteDMRoll(int id)
         {
 
-            DMRoll dbEntry = context.DMRolls.Find(id);
+            var dbEntry = context.DMRolls.Find(id);
             if (dbEntry != null)
             {
                 context.DMRolls.Remove(dbEntry);

@@ -244,7 +244,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, new List<Item>())
                 .BuildAndSave();
 
-            BuffBox buffs = new BuffBox();
+            var buffs = new BuffBox();
 
             player.GetMaxInventorySize(buffs).Should().Be(6);
         }
@@ -270,7 +270,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            BuffBox buffs = new BuffBox();
+            var buffs = new BuffBox();
             buffs.FromForm_ExtraInventorySpace = 2;
 
             player.GetMaxInventorySize(buffs).Should().Be(8);
@@ -296,7 +296,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            BuffBox buffs = new BuffBox();
+            var buffs = new BuffBox();
 
             player.IsCarryingTooMuchToMove(buffs).Should().Be(false);
         }
@@ -321,7 +321,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            BuffBox buffs = new BuffBox();
+            var buffs = new BuffBox();
             buffs.FromForm_ExtraInventorySpace = -5;
 
             player.IsCarryingTooMuchToMove(buffs).Should().Be(true);
@@ -347,7 +347,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            BuffBox buffs = new BuffBox();
+            var buffs = new BuffBox();
             buffs.FromForm_ExtraInventorySpace = -4;
 
             player.IsCarryingTooMuchToMove(buffs).Should().Be(false);

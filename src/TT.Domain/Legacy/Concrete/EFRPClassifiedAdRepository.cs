@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                RPClassifiedAd editMe = context.RPClassifiedAds.Find(RPClassifiedAds.Id);
+                var editMe = context.RPClassifiedAds.Find(RPClassifiedAds.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = RPClassifiedAds.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteRPClassifiedAd(int id)
         {
 
-            RPClassifiedAd dbEntry = context.RPClassifiedAds.Find(id);
+            var dbEntry = context.RPClassifiedAds.Find(id);
             if (dbEntry != null)
             {
                 context.RPClassifiedAds.Remove(dbEntry);

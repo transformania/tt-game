@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                BookReading editMe = context.BookReadings.Find(BookReading.Id);
+                var editMe = context.BookReadings.Find(BookReading.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = BookReading.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteBookReading(int id)
         {
 
-            BookReading dbEntry = context.BookReadings.Find(id);
+            var dbEntry = context.BookReadings.Find(id);
             if (dbEntry != null)
             {
                 context.BookReadings.Remove(dbEntry);

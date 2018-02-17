@@ -33,7 +33,7 @@ namespace TT.Domain.Statics
             }
             else
             {
-                for (int i = 0; i < list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     if (i < list.Count - 2)
                     {

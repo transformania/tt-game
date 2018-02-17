@@ -17,7 +17,7 @@
     <tbody>
 
         @{
-            foreach (TT.Domain.ViewModels.ContributionCredit c in Model.OrderByDescending(c => c.SpellCount))
+            foreach (var c in Model.OrderByDescending(c => c.SpellCount))
             {
                 <tr>
                     @{if (!c.Website.IsNullOrEmpty())

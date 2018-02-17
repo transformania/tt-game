@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.Location>
-           @using TT.Domain.ViewModels
 @{
     ViewBag.Title = "Teleport";
 }
@@ -13,7 +12,7 @@
 
 @{
     
-    foreach (Location loc in Model) {
+    foreach (var loc in Model) {
         <a href="@Url.Action(MVC.PvP.Teleport(loc.dbName))">@loc.Name</a><br />
     }
     

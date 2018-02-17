@@ -12,7 +12,7 @@ namespace TT.Domain.Procedures
         public static void AddRerollGeneration(string playerMembershipId)
         {
             IRerollRepository RerollRepo = new EFRerollRepository();
-            Reroll playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();
+            var playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();
             if (playerReroll == null)
             {
                 // Does not exist, must be a new player. Create new Reroll, assume that it is first generation.
@@ -40,16 +40,16 @@ namespace TT.Domain.Procedures
         public static TimeSpan GetTimeUntilReroll(string playerMembershipId)
         {
             IRerollRepository RerollRepo = new EFRerollRepository();
-            Reroll playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();
+            var playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();
             if (playerReroll == null)
             {
                 // It's ok to reroll, they are a new first generation
                 return TimeSpan.Zero;
             }
 
-            int g = playerReroll.CharacterGeneration;
+            var g = playerReroll.CharacterGeneration;
             if (g >= PvPStatics.RerollTimer.Count()) g = PvPStatics.RerollTimer.Count() - 1;
-            DateTime rerollTime = playerReroll.LastCharacterCreation.AddMinutes(PvPStatics.RerollTimer[g]);
+            var rerollTime = playerReroll.LastCharacterCreation.AddMinutes(PvPStatics.RerollTimer[g]);
             return rerollTime.Subtract(DateTime.UtcNow);
         }
     }

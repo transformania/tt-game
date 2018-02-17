@@ -1,5 +1,4 @@
-﻿@using TT.Domain.Assets.DTOs
-@model IEnumerable<TT.Domain.Assets.DTOs.RestockItemDetail>
+﻿@model IEnumerable<TT.Domain.Assets.DTOs.RestockItemDetail>
 
 @section menu
 {
@@ -26,7 +25,7 @@
         <tbody>
 
         @{
-            foreach (RestockItemDetail r in Model)
+            foreach (var r in Model)
             {
                 <tr>
                     <td>@r.Id</td>

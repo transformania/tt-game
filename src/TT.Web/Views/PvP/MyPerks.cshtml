@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
-           @using TT.Domain.ViewModels
 @{
     ViewBag.Title = "My Effects";
 }
@@ -14,7 +13,7 @@
     <p>Through experience you have gained some unique traits that help you in your adventures.</p>
 
     @{
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent))
+        foreach (var e in Model.Where(e => e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <div class="perkBoxTitle"><h3 style="margin-top:0px; color:white;">@e.Effect.FriendlyName</h3></div>
@@ -31,7 +30,7 @@
 
     @{
 
-        foreach (EffectViewModel2 e in Model.Where(e => !e.dbEffect.IsPermanent))
+        foreach (var e in Model.Where(e => !e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <div class="perkBoxTitle"><h3 style="margin-top:0px; color:white;">@e.Effect.FriendlyName</h3></div>

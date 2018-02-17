@@ -1,6 +1,4 @@
-﻿@using TT.Domain.ViewModels
-
-@section menu
+﻿@section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
 }
@@ -19,7 +17,7 @@
 
 
                 @{
-                    foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap["HealthBonusPercent"].Keys)
+                    foreach (var f in TT.Domain.ViewModels.BuffMap.BuffsMap["HealthBonusPercent"].Keys)
                     {
 
 
@@ -38,7 +36,7 @@
         <tbody>
 
             @{
-                foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap.Keys)
+                foreach (var f in TT.Domain.ViewModels.BuffMap.BuffsMap.Keys)
                 {
                     <tr>
                         <td>
@@ -48,7 +46,7 @@
                         </td>
 
                         @{
-                    foreach (float ff in TT.Domain.ViewModels.BuffMap.BuffsMap[f].Values)
+                    foreach (var ff in TT.Domain.ViewModels.BuffMap.BuffsMap[f].Values)
                     {
                         <td>@ff</td>
                     }

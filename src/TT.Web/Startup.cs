@@ -13,7 +13,6 @@ using System.Web.Http;
 using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.World.Queries;
@@ -108,7 +107,7 @@ namespace TT.Web
 
             // set chaos mode 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
-            PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault();
+            var data = repo.PvPWorldStats.FirstOrDefault();
             PvPStatics.ChaosMode = data != null ? data.ChaosMode : false;
             PvPStatics.RoundDuration = data != null ? data.RoundDuration : 5000;
             PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber;

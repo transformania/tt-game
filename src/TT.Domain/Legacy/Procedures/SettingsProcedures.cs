@@ -13,7 +13,7 @@ namespace TT.Domain.Procedures
         public static void SavePlayerBio(SetBioViewModel bio, string membershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == membershipId);
+            var playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == membershipId);
 
             if (playerBio == null)
             {
@@ -35,7 +35,7 @@ namespace TT.Domain.Procedures
         public static void DeletePlayerBio(string ownerMembershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            PlayerBio myBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == ownerMembershipId);
+            var myBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == ownerMembershipId);
             if (myBio != null) {
                 playerBioRepo.DeletePlayerBio(myBio.Id);
             }
@@ -44,17 +44,17 @@ namespace TT.Domain.Procedures
         public static PlayerBio GetPlayerBioFromMembershipId(string id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+            var playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
             return playerBio;
         }
 
         public static SetBioViewModel GetSetBioViewModelFromMembershipId(string id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            Player player = PlayerProcedures.GetPlayerFromMembership(id);
-            PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+            var player = PlayerProcedures.GetPlayerFromMembership(id);
+            var playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
 
-            SetBioViewModel setBioViewModel
+            var setBioViewModel
                 = playerBio != null ? new SetBioViewModel(playerBio) : new SetBioViewModel(player.MembershipId);
 
             setBioViewModel.IsDonator = player.DonatorGetsMessagesRewards();
@@ -65,7 +65,7 @@ namespace TT.Domain.Procedures
         public static bool PlayerHasBio(string id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+            var playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
             if (playerBio != null)
             {
                 return true;
@@ -79,7 +79,7 @@ namespace TT.Domain.Procedures
         public static void SavePoll(PollEntry input, int round, int pollId, string membershipId)
         {
             IPollEntryRepository pollRepo = new EFPollEntriesRepository();
-            PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
+            var dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
             if (dbPoll == null)
             {
                 dbPoll = new PollEntry();
@@ -108,7 +108,7 @@ namespace TT.Domain.Procedures
         public static PollEntry LoadPoll(int pollId, string membershipId)
         {
             IPollEntryRepository pollRepo = new EFPollEntriesRepository();
-            PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
+            var dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
             if (dbPoll == null)
             {
                 dbPoll = new PollEntry();
@@ -126,7 +126,7 @@ namespace TT.Domain.Procedures
         public static AuthorArtistBio GetAuthorArtistBio(string ownerMembershipId)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
-            AuthorArtistBio output = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == ownerMembershipId);
+            var output = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == ownerMembershipId);
             if (output != null)
             {
                 return output;
@@ -157,7 +157,7 @@ namespace TT.Domain.Procedures
         public static void SaveAuthorArtistBio(AuthorArtistBio input, string membershipId)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
-            AuthorArtistBio saveMe = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == membershipId);
+            var saveMe = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == membershipId);
             if (saveMe == null)
             {
                 saveMe = new AuthorArtistBio
@@ -184,7 +184,7 @@ namespace TT.Domain.Procedures
         public static bool PlayerHasArtistAuthorBio(string id)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
-            AuthorArtistBio bio = repo.AuthorArtistBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+            var bio = repo.AuthorArtistBios.FirstOrDefault(p => p.OwnerMembershipId == id);
             if (bio != null)
             {
                 return true;

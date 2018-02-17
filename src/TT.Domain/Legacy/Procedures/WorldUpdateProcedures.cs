@@ -11,7 +11,6 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
-using TT.Domain.ViewModels;
 using TT.Domain.World.Queries;
 
 namespace TT.Domain.Procedures
@@ -22,7 +21,7 @@ namespace TT.Domain.Procedures
         {
             var worldStats = DomainRegistry.Repository.FindSingle(new GetWorld());
 
-            int turnNo = worldStats.TurnNumber;
+            var turnNo = worldStats.TurnNumber;
             PvPStatics.LastGameTurn = turnNo;
 
             if (turnNo < PvPStatics.RoundDuration)
@@ -31,7 +30,7 @@ namespace TT.Domain.Procedures
                 PvPStatics.AnimateUpdateInProgress = true;
 
                 IServerLogRepository serverLogRepo = new EFServerLogRepository();
-                ServerLog log = new ServerLog
+                var log = new ServerLog
                 {
                     TurnNumber = turnNo,
                     StartTimestamp = DateTime.UtcNow,
@@ -42,7 +41,7 @@ namespace TT.Domain.Procedures
                 };
                 log.AddLog("Started new log for turn " + turnNo + ".");
                 serverLogRepo.SaveServerLog(log);
-                Stopwatch updateTimer = new Stopwatch();
+                var updateTimer = new Stopwatch();
                 updateTimer.Start();
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -51,31 +50,31 @@ namespace TT.Domain.Procedures
                 // make sure the NPCs have been spawned early turn
                 if (turnNo <= 3)
                 {
-                    Player lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
+                    var lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
                     if (lindella == null)
                     {
                         BossProcedures_Lindella.SpawnLindella();
                     }
 
-                    Player wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
+                    var wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
                     if (wuffie == null)
                     {
                         BossProcedures_PetMerchant.SpawnPetMerchant();
                     }
 
-                    Player fae = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.JewdewfaeBotId);
+                    var fae = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.JewdewfaeBotId);
                     if (fae == null)
                     {
                         BossProcedures_Jewdewfae.SpawnFae();
                     }
 
-                    Player bartender = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.BartenderBotId);
+                    var bartender = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.BartenderBotId);
                     if (bartender == null)
                     {
                         BossProcedures_Bartender.SpawnBartender();
                     }
 
-                    Player lorekeeper = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LoremasterBotId);
+                    var lorekeeper = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LoremasterBotId);
                     if (lorekeeper == null)
                     {
                         BossProcedures_Loremaster.SpawnLoremaster();
@@ -88,12 +87,12 @@ namespace TT.Domain.Procedures
                 IEffectRepository effectRepo = new EFEffectRepository();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading effects");
-                List<Effect> temporaryEffects = effectRepo.Effects.Where(e => !e.IsPermanent).ToList();
+                var temporaryEffects = effectRepo.Effects.Where(e => !e.IsPermanent).ToList();
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished loading effects");
-                List<Effect> effectsToDelete = new List<Effect>();
+                var effectsToDelete = new List<Effect>();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating effects");
-                foreach (Effect e in temporaryEffects)
+                foreach (var e in temporaryEffects)
                 {
                     e.Duration--;
                     e.Cooldown--;
@@ -116,7 +115,7 @@ namespace TT.Domain.Procedures
                 serverLogRepo.SaveServerLog(log);
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired effects");
-                foreach (Effect e in effectsToDelete)
+                foreach (var e in effectsToDelete)
                 {
                     effectRepo.DeleteEffect(e.Id);
                 }
@@ -125,21 +124,21 @@ namespace TT.Domain.Procedures
 
                 #region playerExtra / protection cooldown loop
                 IPlayerExtraRepository playerExtraRepo = new EFPlayerExtraRepository();
-                List<PlayerExtra> extrasToIncrement = playerExtraRepo.PlayerExtras.ToList();
-                List<PlayerExtra> extrasToIncrement_SaveList = new List<PlayerExtra>();
-                List<PlayerExtra> extrasToIncrement_DeleteList = new List<PlayerExtra>();
+                var extrasToIncrement = playerExtraRepo.PlayerExtras.ToList();
+                var extrasToIncrement_SaveList = new List<PlayerExtra>();
+                var extrasToIncrement_DeleteList = new List<PlayerExtra>();
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating protection change cooldown (" + extrasToIncrement.Count + ")");
 
-                foreach (PlayerExtra e in extrasToIncrement)
+                foreach (var e in extrasToIncrement)
                 {
-                    Player owner = PlayerProcedures.GetPlayer(e.PlayerId);
+                    var owner = PlayerProcedures.GetPlayer(e.PlayerId);
                     if (PlayerProcedures.PlayerIsOffline(owner))
                     {
                         extrasToIncrement_SaveList.Add(e);
                     }
                 }
 
-                foreach (PlayerExtra e in extrasToIncrement_SaveList)
+                foreach (var e in extrasToIncrement_SaveList)
                 {
                     if (e.ProtectionToggleTurnsRemaining > 0)
                     {
@@ -152,7 +151,7 @@ namespace TT.Domain.Procedures
                     }
                 }
 
-                foreach (PlayerExtra e in extrasToIncrement_DeleteList)
+                foreach (var e in extrasToIncrement_DeleteList)
                 {
                     playerExtraRepo.DeletePlayerExtra(e.Id);
                 }
@@ -210,7 +209,7 @@ namespace TT.Domain.Procedures
                     // extra AP condition checks
                     if (player.Covenant > 0)
                     {
-                        CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
+                        var playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
 
                         // give this player an extra AP refill if they are at their safeground, scaled up by level
                         if (playerCov != null && !playerCov.HomeLocation.IsNullOrEmpty() && player.dbLocationName == playerCov.HomeLocation)
@@ -220,7 +219,7 @@ namespace TT.Domain.Procedures
                         }
 
                         // give this player an extra AP refill if they are on a location that their covenane has enchanted
-                        Location currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+                        var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
 
                         if (currentLocation != null && currentLocation.CovenantController == player.Covenant)
                         {
@@ -339,14 +338,14 @@ namespace TT.Domain.Procedures
                 // bump down the timer on all items that are reuseable consumables
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating items on cooldown");
                 IItemRepository itemsRepo = new EFItemRepository();
-                List<Item> itemsToUpdate = itemsRepo.Items.Where(i => i.TurnsUntilUse > 0).ToList();
+                var itemsToUpdate = itemsRepo.Items.Where(i => i.TurnsUntilUse > 0).ToList();
 
-                foreach (Item item in itemsToUpdate)
+                foreach (var item in itemsToUpdate)
                 {
                     item.TurnsUntilUse--;
                 }
 
-                foreach (Item item in itemsToUpdate)
+                foreach (var item in itemsToUpdate)
                 {
                     itemsRepo.SaveItem(item);
                 }
@@ -354,10 +353,10 @@ namespace TT.Domain.Procedures
                 serverLogRepo.SaveServerLog(log);
 
                 // find the ids for the merchants Lindella and Skaldyr
-                Player merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
-                Player skaldyr = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
-                int merchantId = merchant.Id;
-                int skaldyrId = skaldyr.Id;
+                var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
+                var skaldyr = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+                var merchantId = merchant.Id;
+                var skaldyrId = skaldyr.Id;
 
                 // have abandoned items go to Lindella
                 if (turnNo % 11 == 3 && merchant.Mobility == PvPStatics.MobilityFull)
@@ -407,9 +406,9 @@ namespace TT.Domain.Procedures
 
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
-                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();
+                var recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();
 
-                foreach (Item item in recentlyEquipped)
+                foreach (var item in recentlyEquipped)
                 {
                     item.EquippedThisTurn = false;
                     itemsRepo.SaveItem(item);
@@ -421,13 +420,13 @@ namespace TT.Domain.Procedures
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started giving covenants money from territories");
                     ICovenantRepository covRepo = new EFCovenantRepository();
-                    List<Covenant> covs = covRepo.Covenants.Where(c => c.HomeLocation != null && c.HomeLocation != "").ToList();
+                    var covs = covRepo.Covenants.Where(c => c.HomeLocation != null && c.HomeLocation != "").ToList();
 
 
-                    foreach (Covenant c in covs)
+                    foreach (var c in covs)
                     {
-                        int locationControlledSum = CovenantProcedures.GetLocationControlCount(c);
-                        decimal moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum));
+                        var locationControlledSum = CovenantProcedures.GetLocationControlCount(c);
+                        var moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum));
                         c.Money += moneyGain;
 
                         if (moneyGain > 0)
@@ -475,22 +474,22 @@ namespace TT.Domain.Procedures
 
 
                         IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
-                        int dungeonDemonCount = demons.Count();
+                        var dungeonDemonCount = demons.Count();
 
-                        Random randLevel = new Random(Guid.NewGuid().GetHashCode());
+                        var randLevel = new Random(Guid.NewGuid().GetHashCode());
 
                         var demonNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonDemonNames.xml");
 
-                        for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
+                        for (var x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
                         {
-                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                            Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
+                            var randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                            var spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
 
                             // pull a random last demon name
                             double maxDemonNameCount = demonNames.Count();
-                            double num = randLevel.NextDouble();
-                            int demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
-                            string demonlastName = demonNames.ElementAt(demonIndex);
+                            var num = randLevel.NextDouble();
+                            var demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
+                            var demonlastName = demonNames.ElementAt(demonIndex);
 
                             // if there's already a demon with this last name, reroll and try again
                             if (demons.FirstOrDefault(d => d.LastName == demonlastName) != null)
@@ -500,8 +499,8 @@ namespace TT.Domain.Procedures
                             }
 
 
-                            double levelRoll = randLevel.NextDouble();
-                            int level = (int)Math.Floor(levelRoll * 8 + 3);
+                            var levelRoll = randLevel.NextDouble();
+                            var level = (int)Math.Floor(levelRoll * 8 + 3);
 
                             var cmd = new CreatePlayer
                             {
@@ -525,7 +524,7 @@ namespace TT.Domain.Procedures
 
                             var id = DomainRegistry.Repository.Execute(cmd);
 
-                            Player newDemon = new EFPlayerRepository().Players.FirstOrDefault(p => p.Id == id);
+                            var newDemon = new EFPlayerRepository().Players.FirstOrDefault(p => p.Id == id);
                             
                             if (cmd.Level <= 5)
                             {
@@ -564,9 +563,9 @@ namespace TT.Domain.Procedures
                 try
                 {
                     IDuelRepository duelRepo = new EFDuelRepository();
-                    List<Duel> duels = duelRepo.Duels.Where(d => d.Status == DuelProcedures.ACTIVE).ToList();
+                    var duels = duelRepo.Duels.Where(d => d.Status == DuelProcedures.ACTIVE).ToList();
 
-                    foreach (Duel d in duels)
+                    foreach (var d in duels)
                     {
                         // if the duel has timed out, end it forcibly
                         if ((turnNo - d.StartTurn) >= PvPStatics.MaximumDuelTurnLength)
@@ -636,8 +635,8 @@ namespace TT.Domain.Procedures
                     // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
                     try
                     {
-                        Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
-                        AIDirective faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
+                        var fae = PlayerProcedures.GetPlayerFromBotId(-6);
+                        var faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
 
                         // if the turn since her last move has been long enough, relocate her
                         if (turnNo - (int)faeAI.Var2 > 48)

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
-using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Queries;
@@ -33,7 +30,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -59,7 +56,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -78,7 +75,7 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableLinks = "true";
 
-            IEnumerable<ItemDetail> output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter});
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter});
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -96,7 +93,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult Purchase(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -118,7 +115,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -135,7 +132,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemDetail purchased = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
+            var purchased = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
 
             // assert that the item is in fact owned by the merchant
             if (purchased.Owner.Id != merchant.Id)
@@ -144,7 +141,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
-            decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
+            var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
 
             // assert that the player has enough money for this
             if (me.Money < cost)
@@ -190,7 +187,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SellList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -199,7 +196,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -227,7 +224,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Sell(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -251,7 +248,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -268,7 +265,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemDetail itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
+            var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
             if (itemBeingSold.Owner.Id != me.Id)
@@ -294,7 +291,7 @@ namespace TT.Web.Controllers
             }
 
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
-            decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
+            var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
@@ -313,7 +310,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult TradeWithPetMerchant(int offset = 0)
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
 
             // assert player is animate
@@ -323,7 +320,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -345,9 +342,9 @@ namespace TT.Web.Controllers
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
 
-            IEnumerable<ItemDetail> pets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id }).Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet);
+            var pets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id }).Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet);
 
-            WuffieTradeViewModel output = new WuffieTradeViewModel
+            var output = new WuffieTradeViewModel
             {
                 Paginator = new Paginator(pets.Count(), PvPStatics.PaginationPageSize),
                 Money = (int)Math.Floor(me.Money),
@@ -355,7 +352,7 @@ namespace TT.Web.Controllers
             output.Paginator.CurrentPage = offset + 1;
             output.Pets = pets.Skip(output.Paginator.GetSkipCount()).Take(output.Paginator.PageSize);
 
-            int petAmount = ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet);
+            var petAmount = ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet);
 
             if (petAmount == 0)
             {
@@ -377,7 +374,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -399,7 +396,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -416,7 +413,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemDetail purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
+            var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that the item is in fact owned by the merchant
             if (purchased.Owner.Id != merchant.Id)
@@ -425,7 +422,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
-            decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
+            var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
 
             // assert that the player has enough money for this
             if (me.Money < cost)
@@ -464,7 +461,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SellPetList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -473,7 +470,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -502,7 +499,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SellPet(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -525,7 +522,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != PvPStatics.MobilityFull)
@@ -542,7 +539,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemDetail itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
+            var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
             if (itemBeingSold.Owner.Id != me.Id)
@@ -566,7 +563,7 @@ namespace TT.Web.Controllers
             }
 
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
-            decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
+            var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
@@ -583,14 +580,14 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MindControlList()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
 
             ViewBag.MyId = me.Id;
 
-            IEnumerable<MindControlViewModel> output = MindControlProcedures.GetAllMindControlVMsWithPlayer(me);
+            var output = MindControlProcedures.GetAllMindControlVMsWithPlayer(me);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -601,12 +598,12 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MoveVictim(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player victim = PlayerProcedures.GetPlayer(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -619,24 +616,24 @@ namespace TT.Web.Controllers
 
             if (victim.IsInDungeon())
             {
-                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
+                var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
                 return View(MVC.NPC.Views.MoveVictim, output);
             }
             else
             {
-                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
+                var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
                 return View(MVC.NPC.Views.MoveVictim, output);
             }
         }
 
         public virtual ActionResult StripVictim(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player victim = PlayerProcedures.GetPlayer(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Strip);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Strip);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -644,20 +641,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.MindControlList());
             }
 
-            List<ItemViewModel> victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
+            var victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
 
             if (victimItems.Any())
             {
                 double max = victimItems.Count();
-                Random rand = new Random();
-                double num = rand.NextDouble();
+                var rand = new Random();
+                var num = rand.NextDouble();
 
-                int index = Convert.ToInt32(Math.Floor(num * max));
-                ItemViewModel itemToDrop = victimItems.ElementAt(index);
+                var index = Convert.ToInt32(Math.Floor(num * max));
+                var itemToDrop = victimItems.ElementAt(index);
 
                 MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Strip);
 
-                string attackerMessage = "";
+                var attackerMessage = "";
 
                 if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
                 {
@@ -671,7 +668,7 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
                 TempData["Result"] = attackerMessage;
 
-                string victimMessage = "";
+                var victimMessage = "";
 
                 if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
                 {
@@ -686,7 +683,7 @@ namespace TT.Web.Controllers
 
                 ItemProcedures.DropItem(itemToDrop.dbItem.Id);
 
-                string locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
+                var locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
                 LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage);
 
 
@@ -701,12 +698,12 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult DeMeditateVictim(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player victim = PlayerProcedures.GetPlayer(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Meditate);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Meditate);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -714,8 +711,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.MindControlList());
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
-            string result = PlayerProcedures.DeMeditate(victim, me, buffs);
+            var buffs = ItemProcedures.GetPlayerBuffs(victim);
+            var result = PlayerProcedures.DeMeditate(victim, me, buffs);
 
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Meditate);
 
@@ -726,12 +723,12 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MoveVictimSend(int id, string to)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player victim = PlayerProcedures.GetPlayer(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -739,9 +736,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.MindControlList());
             }
 
-            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
+            var victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
             // assert that the victim has enough AP for the journey
-            decimal apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
+            var apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
             if (victim.ActionPoints < apCost)
             {
                 TempData["Error"] = "Your victim does not have enough action points to move there.";
@@ -757,7 +754,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has not attacked too recently to move
-            double lastAttackTimeAgo = Math.Abs(Math.Floor(victim.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(victim.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
             if (lastAttackTimeAgo < 45)
             {
                 TempData["Error"] = "Your victim is resting from a recent attack.";
@@ -774,7 +771,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is not TPing into the dungeon from out in or vice versa
-            bool destinationIsInDungeon = false;
+            var destinationIsInDungeon = false;
             if (to.Contains("dungeon_"))
             {
                 destinationIsInDungeon = true;
@@ -790,11 +787,11 @@ namespace TT.Web.Controllers
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Movement);
 
-            string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
+            var attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
             TempData["Result"] = attackerMessage;
 
-            string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
+            var victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
             PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
             return RedirectToAction(MVC.NPC.MindControlList());
@@ -802,9 +799,9 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult TalkToBartender(string question)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIStatics.BartenderBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var bartender = PlayerProcedures.GetPlayerFromBotId(AIStatics.BartenderBotId);
 
             // update timestamp (so that he can heal naturally)
             PlayerProcedures.SetTimestampToNow(bartender);
@@ -845,10 +842,10 @@ namespace TT.Web.Controllers
             }
             else if (question == "lindella")
             {
-                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
+                var lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                 if (lindella != null)
                 {
-                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
+                    var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
                     ViewBag.Speech = "\"The last I have heard, Lindella is at <b>" + temp.Name + "</b>.  She is always moving about town to find new customers, but she tends to stick to the streets because of her wagon.  Is there anything else I can assist you with?\"";
                 }
                 else
@@ -859,10 +856,10 @@ namespace TT.Web.Controllers
 
             else if (question == "wuffie")
             {
-                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
+                var wuffie = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                 if (wuffie != null)
                 {
-                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
+                    var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
                     ViewBag.Speech = "\"The last I have heard, Wüffie is at <b>" + temp.Name + "</b>.  She moves around every now and then to graze her animals and pets, so you'll typically see her where there is plenty of grass.  Is there anything else I can assist you with?\"";
                 }
                 else
@@ -872,10 +869,10 @@ namespace TT.Web.Controllers
             }
             else if (question == "jewdewfae")
             {
-                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
+                var jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
                 if (jewdewfae != null)
                 {
-                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
+                    var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
                     ViewBag.Speech = "\"The last I have heard, Jewdewfae is at <b>" + temp.Name + "</b>.  She is always looking for people to play with, and unlike many of her more mischevious peers, she won't do it by turning you into a statue for a hundred years!  Probably.  Is there anything else I can assist you with?\"";
                 }
                 else
@@ -885,10 +882,10 @@ namespace TT.Web.Controllers
             }
             else if (question == "lorekeeper")
             {
-                Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+                var lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
                 if (lorekeeper != null)
                 {
-                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lorekeeper.dbLocationName);
+                    var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lorekeeper.dbLocationName);
                     ViewBag.Speech = "\"The last I have heard, " + lorekeeper.GetFullName() + " is at <b>" + temp.Name + "</b>.  Poor chap, how far he's fallen from his glory days.  Why don't you go and talk to him?  He'll be willing to teach you a spell or two or sell you some books if you're looking to increase your knowledge.";
                 }
                 else
@@ -898,8 +895,8 @@ namespace TT.Web.Controllers
             }
             else if (question == "boss")
             {
-                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-                string output = "";
+                var stats = PvPWorldStatProcedures.GetWorldStats();
+                var output = "";
 
                 if (stats.Boss_Thief == "active")
                 {
@@ -935,10 +932,10 @@ namespace TT.Web.Controllers
             }
             else if (question == "quests")
             {
-                string output = "\"Looking for an adventure, eh?  You may want to go take a look at these locations...\"<br><br>";
-                IEnumerable<QuestStart> quests = QuestProcedures.GetAllAvailableQuestsForPlayer(me, PvPWorldStatProcedures.GetWorldTurnNumber());
+                var output = "\"Looking for an adventure, eh?  You may want to go take a look at these locations...\"<br><br>";
+                var quests = QuestProcedures.GetAllAvailableQuestsForPlayer(me, PvPWorldStatProcedures.GetWorldTurnNumber());
 
-                foreach (QuestStart q in quests)
+                foreach (var q in quests)
                 {
                     var Loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location);
 
@@ -965,8 +962,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult TalkWithJewdewfae()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Player fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1015,8 +1012,8 @@ namespace TT.Web.Controllers
         public virtual ActionResult PlayWithJewdewfae()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1070,7 +1067,7 @@ namespace TT.Web.Controllers
 
             if (me.Form == output.JewdewfaeEncounter.RequiredForm)
             {
-                decimal xpGained = BossProcedures_Jewdewfae.AddInteraction(me);
+                var xpGained = BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
                 output.XPGain = xpGained;
@@ -1107,9 +1104,9 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult TalkToCandice()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1138,9 +1135,9 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult TalkToAdrianna()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1371,9 +1368,9 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult TalkToValentine(string question)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1396,20 +1393,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string responseText = "";
+            var responseText = "";
 
             // assert that the question is valid depending on Valentine's stance
-            string stance = BossProcedures_Valentine.GetStance();
+            var stance = BossProcedures_Valentine.GetStance();
             if (question != "none")
             {
                 BossProcedures_Valentine.TalkToAndCastSpell(me, valentine);
-                List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
-                PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant);
+                var tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
+                var lastlog = tftext.FirstOrDefault(f => f.IsImportant);
 
                 if (lastlog != null)
                 {
                     // if the log is too old, presumably the player already got transformed, so don't show that text again.  Yeah, this is so hacky...
-                    double secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                    var secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
                     if (secDiff < 3)
                     {
                         responseText = lastlog.Message;

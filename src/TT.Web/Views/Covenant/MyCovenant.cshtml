@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
-@using TT.Domain.Models
-@using TT.Domain.ViewModels
 @using TT.Domain.Statics
 
 @section menu
@@ -83,7 +81,7 @@
 
 
                 @{
-        foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
+        foreach (var p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
         {
             <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                 <div class="charaBoxInner">

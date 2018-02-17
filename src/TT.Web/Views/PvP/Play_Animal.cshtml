@@ -2,7 +2,6 @@
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Procedures
 @using TT.Domain.Statics
-@using Recaptcha.Web.Mvc;
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -90,7 +89,7 @@
 
 <ul id="notificationBox" style="display:none;">
     @{
-        foreach (TT.Domain.Models.PlayerLog log in Model.PlayerLogImportant)
+        foreach (var log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
                 @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
@@ -295,7 +294,7 @@
             <div class="row boxContainer">
                 @*all players who are online*@
                 @{
-                    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+                    foreach (var p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
                     {
 
                         <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
@@ -327,7 +326,7 @@
                 <div class="row boxContainer">
 
                     @{
-            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+            foreach (var p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">

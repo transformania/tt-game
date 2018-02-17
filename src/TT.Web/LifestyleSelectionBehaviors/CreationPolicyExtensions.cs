@@ -1,8 +1,4 @@
 ﻿using SimpleInjector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using TT.Domain.CreationPolices;
 
 namespace TT.Web.LifestyleSelectionBehaviors

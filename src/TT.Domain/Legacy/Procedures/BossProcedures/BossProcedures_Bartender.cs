@@ -1,5 +1,4 @@
 ﻿using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
@@ -12,7 +11,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnBartender()
         {
-            PlayerDetail bartender = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.DonnaBotId });
+            var bartender = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.DonnaBotId });
 
             if (bartender == null)
             {

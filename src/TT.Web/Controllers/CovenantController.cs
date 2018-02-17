@@ -18,7 +18,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MyCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             ViewBag.Player = me;
 
             CovenantViewModel output;
@@ -51,16 +51,16 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult CovenantList()
         {
-            IEnumerable<CovenantListItemViewModel> output = CovenantProcedures.GetCovenantsList();
+            var output = CovenantProcedures.GetCovenantsList();
             return View(MVC.Covenant.Views.CovenantList, output);
         }
 
         public virtual ActionResult ApplyToCovenant(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the covenant actually exists...
-            Covenant cov = CovenantProcedures.GetDbCovenant(id);
+            var cov = CovenantProcedures.GetDbCovenant(id);
 
             if (cov == null)
             {
@@ -91,7 +91,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ReviewMyCovenantApplications()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -100,7 +100,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -109,14 +109,14 @@ namespace TT.Web.Controllers
             }
 
             // validations are okay:  return the application list
-            IEnumerable<CovenantApplicationViewModel> output = CovenantProcedures.GetCovenantApplications(myCov);
+            var output = CovenantProcedures.GetCovenantApplications(myCov);
 
             return View(MVC.Covenant.Views.ReviewMyCovenantApplications, output);
         }
 
         public virtual ActionResult ApplicationResponse(int id, string response)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -125,7 +125,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -142,14 +142,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the last acceptance wasn't too soon if it's past the first full day of the turn
-            double minutesAgo = Math.Abs(Math.Floor(myCov.LastMemberAcceptance.Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Abs(Math.Floor(myCov.LastMemberAcceptance.Subtract(DateTime.UtcNow).TotalMinutes));
             if ((PvPWorldStatProcedures.GetWorldTurnNumber() > 144) && minutesAgo < 120)
             {
 
             }
 
             // get the application from the database
-            CovenantApplication app = CovenantProcedures.GetCovenantApplication(id);
+            var app = CovenantProcedures.GetCovenantApplication(id);
 
             // assert that the application is for the same covenant
             if (app.CovenantId != myCov.Id)
@@ -175,7 +175,7 @@ namespace TT.Web.Controllers
             }
 
 
-            Player submitter = PlayerProcedures.GetPlayer(app.OwnerId);
+            var submitter = PlayerProcedures.GetPlayer(app.OwnerId);
             CovenantProcedures.RevokeApplication(submitter);
 
             return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -183,7 +183,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult LeaveCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is indeed in a covenant
             if (me.Covenant <= 0)
@@ -200,7 +200,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ChangeCovenantDescription()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -209,7 +209,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -217,12 +217,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            List<string> flagURLs = new List<string>();
+            var flagURLs = new List<string>();
 
-            string path = Server.MapPath("~/Images/PvP/CovenantFlags/");
-            DirectoryInfo d = new DirectoryInfo(path);//Assuming Test is your Folder
-            FileInfo[] Files = d.GetFiles("*.png"); //Getting Text files
-            foreach (FileInfo file in Files)
+            var path = Server.MapPath("~/Images/PvP/CovenantFlags/");
+            var d = new DirectoryInfo(path);//Assuming Test is your Folder
+            var Files = d.GetFiles("*.png"); //Getting Text files
+            foreach (var file in Files)
             {
                 flagURLs.Add(file.Name);
             }
@@ -244,7 +244,7 @@ namespace TT.Web.Controllers
                 return View(MVC.Covenant.Views.ChangeCovenantDescription);
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -253,7 +253,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -269,7 +269,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            string path = Server.MapPath("~/Images/PvP/CovenantFlags/" + input.FlagUrl);
+            var path = Server.MapPath("~/Images/PvP/CovenantFlags/" + input.FlagUrl);
             if (!System.IO.File.Exists(path))
             {
                 TempData["Error"] = "Flag not found.";
@@ -286,7 +286,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult StartNewCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that this player is not currently in a covenant
             if (me.Covenant > 0)
@@ -295,20 +295,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            Covenant output = new Covenant();
+            var output = new Covenant();
             return View(MVC.Covenant.Views.StartNewCovenant, output);
         }
 
         public virtual ActionResult StartNewCovenantSubmit(Covenant input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.ValidationMessage = "Your covenant was not created.  Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
                 return View(MVC.Covenant.Views.StartNewCovenant);
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that a covenant of this name does not already exists
             if (CovenantProcedures.CovenantOfNameExists(input.Name))
@@ -332,7 +332,7 @@ namespace TT.Web.Controllers
             CovenantProcedures.StartNewCovenant(input);
 
             // retrieve the recently made covenant's id so the player can be added to it
-            Covenant newcov = CovenantProcedures.GetDbCovenant(input.Name);
+            var newcov = CovenantProcedures.GetDbCovenant(input.Name);
             CovenantProcedures.AddPlayerToCovenant(me, newcov.Id);
             CovenantProcedures.LoadCovenantDictionary();
 
@@ -341,21 +341,21 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult LookAtCovenant(int id)
         {
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(id);
+            var output = CovenantProcedures.GetCovenantViewModel(id);
             ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
             return View(MVC.Covenant.Views.LookAtCovenant, output);
         }
 
         public virtual ActionResult WithdrawApplication()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             TempData["Result"] = CovenantProcedures.RevokeApplication(me);
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
         public virtual ActionResult CovenantLeaderAdmin()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -364,7 +364,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -390,7 +390,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult KickList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -399,7 +399,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me);
+            var output = CovenantProcedures.GetCovenantViewModel(me);
             if (output.dbCovenant.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant and cannot kick members.";
@@ -417,7 +417,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult KickMember(int id)
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -426,7 +426,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -435,7 +435,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player being kicked does belong to the covenant
-            Player beingKicked = PlayerProcedures.GetPlayer(id);
+            var beingKicked = PlayerProcedures.GetPlayer(id);
 
             if (beingKicked.Covenant != myCov.Id)
             {
@@ -452,7 +452,7 @@ namespace TT.Web.Controllers
             }
 
             CovenantProcedures.RemovePlayerFromCovenant(beingKicked);
-            string message = "<b>" + me.GetFullName() + " has kicked you out of " + myCov.Name + ".</b>";
+            var message = "<b>" + me.GetFullName() + " has kicked you out of " + myCov.Name + ".</b>";
             PlayerLogProcedures.AddPlayerLog(beingKicked.Id, message, true);
 
             TempData["Result"] = "You have kicked " + beingKicked.GetFullName() + " out of your covenant.";
@@ -461,7 +461,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AddToCovenantChest(int amount)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -477,7 +477,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has not been in recent combat
-            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
             if (minutesAgo < 30)
             {
                 TempData["Error"] = "You must wait another " + (30 - minutesAgo) + " minutes without being in combat in order to do this.";
@@ -505,7 +505,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult GiveMoneyFromCovenantChest(int id, decimal amount)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -515,7 +515,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader or captain
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader or a captain of your covenant.";
@@ -538,7 +538,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the giftee is in the same covenant
-            Player giftee = PlayerProcedures.GetPlayer(id);
+            var giftee = PlayerProcedures.GetPlayer(id);
             if (giftee.Covenant != me.Covenant)
             {
                 TempData["Error"] = "This player is not in your covenant.";
@@ -567,7 +567,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ClaimLocation()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
 
             // assert that player is in a covenant
@@ -578,7 +578,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -602,7 +602,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ClaimLocationSend()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -619,7 +619,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -691,7 +691,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UpgradeSafeground()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -708,7 +708,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -755,7 +755,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ViewAvailableFurniture()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -765,9 +765,9 @@ namespace TT.Web.Controllers
             }
 
             //  FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
-            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
+            var output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov == null)
             {
                 TempData["Error"] = "Error loading covenant information.";
@@ -786,8 +786,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult PurchaseFurniture(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -797,7 +797,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader or captain
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -805,7 +805,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
+            var furniture = FurnitureProcedures.GetdbFurniture(id);
 
             // assert that the covenant has enough money
             if (myCov.Money < furniture.Price)
@@ -840,7 +840,7 @@ namespace TT.Web.Controllers
 
             FurnitureProcedures.GiveFurnitureToCovenant(furniture, myCov);
 
-            string result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
+            var result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
             TempData["Result"] = result;
 
             ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
@@ -853,7 +853,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult MyCovenantFurniture()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -861,10 +861,10 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
 
             // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
-            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
+            var output = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName)?.Name ?? "unknown";
 
             var covSafegroundLocation = myCov.HomeLocation.IsNullOrEmpty()
@@ -872,7 +872,7 @@ namespace TT.Web.Controllers
                 : $"Your covenant\'s safeground is at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation)?.Name ?? "unknown"}";
             ViewBag.CovLocation = covSafegroundLocation;
 
-            bool playerIsAtSafeground = false;
+            var playerIsAtSafeground = false;
 
             if (!myCov.HomeLocation.IsNullOrEmpty() && me.dbLocationName == myCov.HomeLocation)
             {
@@ -889,15 +889,15 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UseFurniture(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             if (me.Covenant == null || me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
-            Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var furniture = FurnitureProcedures.GetdbFurniture(id);
 
             // assert that the player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -960,8 +960,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MyCovenantLog()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -970,15 +970,15 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs((int)me.Covenant);
+            var output = CovenantProcedures.GetCovenantLogs((int)me.Covenant);
 
             return View(MVC.Covenant.Views.MyCovenantLog, output);
         }
 
         public virtual ActionResult InviteCaptainList()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -988,14 +988,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
+            var output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
 
             ViewBag.CurrentCaptains = myCov.Captains;
 
@@ -1004,8 +1004,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult InviteCaptainSend(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -1015,14 +1015,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            Player newCaptain = PlayerProcedures.GetPlayer(id);
+            var newCaptain = PlayerProcedures.GetPlayer(id);
 
             // assert that the target player is in the same covenant
             if (newCaptain.Covenant != myCov.Id)
@@ -1039,7 +1039,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            string result = CovenantProcedures.ChangeCovenantCaptain(myCov, newCaptain);
+            var result = CovenantProcedures.ChangeCovenantCaptain(myCov, newCaptain);
 
             TempData["Result"] = result;
             return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -1047,8 +1047,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult InviteLeaderList()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -1058,22 +1058,22 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
+            var output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
             return View(MVC.Covenant.Views.InviteLeaderList, output);
         }
 
 
         public virtual ActionResult InviteLeaderSend(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
@@ -1083,14 +1083,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            Player newLeader = PlayerProcedures.GetPlayer(id);
+            var newLeader = PlayerProcedures.GetPlayer(id);
 
             // assert that the target player is in the same covenant
             if (newLeader.Covenant != myCov.Id)
@@ -1105,7 +1105,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "This player is already the leader of the covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
-            string result = CovenantProcedures.ChangeCovenantLeader(myCov, newLeader);
+            var result = CovenantProcedures.ChangeCovenantLeader(myCov, newLeader);
 
             TempData["Result"] = result;
             return RedirectToAction(MVC.Covenant.MyCovenant());

@@ -10,7 +10,7 @@ namespace TT.Domain.Identity.DTOs
 
         public string GetStyleColor()
         {
-            int caseSwitch = this.Donator.Tier;
+            var caseSwitch = this.Donator.Tier;
             switch (caseSwitch)
             {
                 case 0:

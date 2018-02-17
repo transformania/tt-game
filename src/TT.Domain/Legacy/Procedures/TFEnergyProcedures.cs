@@ -23,7 +23,7 @@ namespace TT.Domain.Procedures
                 modifier = 0;
             }
 
-            LogBox output = new LogBox();
+            var output = new LogBox();
             ITFEnergyRepository repo = new EFTFEnergyRepository();
 
             output.AttackerLog = "  ";
@@ -31,14 +31,14 @@ namespace TT.Domain.Procedures
 
             
             // crunch down any old TF Energies into one public energy
-            List<TFEnergy> energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName).ToList();
+            var energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName).ToList();
 
-            List<TFEnergy> energiesEligibleForDelete = new List<TFEnergy>();
+            var energiesEligibleForDelete = new List<TFEnergy>();
             decimal mergeUpEnergyAmt = 0;
 
-            foreach (TFEnergy e in energiesOnPlayer) {
+            foreach (var e in energiesOnPlayer) {
 
-                double minutesAgo = Math.Abs(Math.Floor(e.Timestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+                var minutesAgo = Math.Abs(Math.Floor(e.Timestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
                 if (minutesAgo > 180)
                 {
@@ -69,7 +69,7 @@ namespace TT.Domain.Procedures
                 DomainRegistry.Repository.Execute(cmd);
 
 
-                foreach (TFEnergy e in energiesEligibleForDelete)
+                foreach (var e in energiesEligibleForDelete)
                 {
                     repo.DeleteTFEnergy(e.Id);
                 }
@@ -77,7 +77,7 @@ namespace TT.Domain.Procedures
             }
 
             // get the amount of TF Energy the attacker has on the player
-            TFEnergy energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId == attacker.Id);
+            var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId == attacker.Id);
 
             if (energyFromMe == null)
             {
@@ -120,7 +120,7 @@ namespace TT.Domain.Procedures
 
             var totalEnergy = energyFromMe.Amount + mergeUpEnergyAmt;
 
-            DbStaticForm eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
+            var eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
 
             output.AttackerLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
             output.VictimLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
@@ -133,7 +133,7 @@ namespace TT.Domain.Procedures
             }
 
 
-            decimal percentTransformedByHealth = 1 - (victim.Health / victim.MaxHealth);
+            var percentTransformedByHealth = 1 - (victim.Health / victim.MaxHealth);
 
             // animate forms only need half of health requirement, so double the amount completed
             decimal PercentHealthToAllowTF = 0;
@@ -156,7 +156,7 @@ namespace TT.Domain.Procedures
 
             percentTransformedByHealth /= 1-PercentHealthToAllowTF;
 
-            decimal percentTransformed = totalEnergy / eventualForm.TFEnergyRequired;
+            var percentTransformed = totalEnergy / eventualForm.TFEnergyRequired;
 
             if (percentTransformed > 1)
             {
@@ -208,7 +208,7 @@ namespace TT.Domain.Procedures
             }
 
             // calculate the xp earned for this transformation
-            decimal xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
+            var xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
 
             if (xpEarned < 0)
             {
@@ -235,7 +235,7 @@ namespace TT.Domain.Procedures
                 output.AttackerLog += " (+" + xpEarned + " XP)";
                 output.ResultMessage += " (+" + xpEarned + " XP)";
 
-                string lvlMessage = PlayerProcedures.GiveXP(attacker, xpEarned);
+                var lvlMessage = PlayerProcedures.GiveXP(attacker, xpEarned);
                 output.AttackerLog += lvlMessage;
                 output.ResultMessage += lvlMessage;
 
@@ -246,7 +246,7 @@ namespace TT.Domain.Procedures
         public static LogBox RunFormChangeLogic(Player victim, string skilldbName, int attackerId)
         {
 
-            LogBox output = new LogBox();
+            var output = new LogBox();
 
             // redundant check to make sure the victim is still in a transformable state
             if (victim.Mobility != PvPStatics.MobilityFull)
@@ -257,12 +257,12 @@ namespace TT.Domain.Procedures
             ITFEnergyRepository repo = new EFTFEnergyRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            DbStaticSkill skill = SkillStatics.GetStaticSkill(skilldbName);
+            var skill = SkillStatics.GetStaticSkill(skilldbName);
 
-            TFEnergy pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == null);
-            TFEnergy myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
+            var pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == null);
+            var myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
 
-            DbStaticForm targetForm = FormStatics.GetForm(skill.FormdbName);
+            var targetForm = FormStatics.GetForm(skill.FormdbName);
 
             decimal energyAccumulated = 0;
             if (pooledEnergy != null)
@@ -281,8 +281,8 @@ namespace TT.Domain.Procedures
             }
 
             // check and see if the target's health is low enough to be eligible for the TF
-            Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
-            Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+            var attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
 
             // add in some extra WP damage if TF energy high enough for TF but WP is still high
             if (energyAccumulated > targetForm.TFEnergyRequired * 1.25M && energyAccumulated <= targetForm.TFEnergyRequired * 1.5M && (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId))
@@ -310,7 +310,7 @@ namespace TT.Domain.Procedures
                 playerRepo.SavePlayer(target);
             }
 
-                DbStaticForm oldForm = FormStatics.GetForm(target.Form);
+                var oldForm = FormStatics.GetForm(target.Form);
 
                 #region animate transformation
                 // target is turning into an animate form
@@ -331,7 +331,7 @@ namespace TT.Domain.Procedures
                         target.Mana = 0;
                     }
 
-                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(target);
+                    var targetbuffs = ItemProcedures.GetPlayerBuffs(target);
                     target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
 
 
@@ -409,23 +409,23 @@ namespace TT.Domain.Procedures
                     }
                    
                     // extra log stuff for turning into item
-                    LogBox extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
+                    var extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
                     output.AttackerLog += extra.AttackerLog;
                     output.VictimLog += extra.VictimLog;
                     output.LocationLog += extra.LocationLog;
 
                     // give some of the victim's money to the attacker, the amount depending on what mode the victim is in
-                    decimal moneygain = victim.Money * .35M;
+                    var moneygain = victim.Money * .35M;
                 PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
                 PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain / 2);
 
-                int levelDifference = attacker.Level - target.Level;
+                var levelDifference = attacker.Level - target.Level;
 
                 // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
                 if (levelDifference <= 5)
                 {
 
-                    decimal xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
+                    var xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
 
                     if (xpGain < 5)
                     {
@@ -443,7 +443,7 @@ namespace TT.Domain.Procedures
                 // exclude PvP score for bots
                 if (victim.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
+                    var score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
 
                     if (score > 0)
                     {
@@ -484,18 +484,18 @@ namespace TT.Domain.Procedures
                        SkillProcedures.DeleteAllPlayerSkills(attacker.Id);
 
                        // give this bot a random skill
-                       List<DbStaticSkill> eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
-                       Random rand = new Random();
+                       var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
+                       var rand = new Random();
                        double max = eligibleSkills.Count();
-                       int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+                       var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
-                       DbStaticSkill skillToLearn = eligibleSkills.ElementAt(randIndex);
+                       var skillToLearn = eligibleSkills.ElementAt(randIndex);
                        SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn);
 
                         // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
-                       List<ItemViewModel> psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();
+                       var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();
 
-                       foreach (ItemViewModel i in psychoItems)
+                       foreach (var i in psychoItems)
                        {
                            ItemProcedures.EquipItem(i.dbItem.Id, true);
                        }
@@ -541,12 +541,12 @@ namespace TT.Domain.Procedures
                 // if there is a duel going on, end it if all but 1 player is defeated (not in the form they started in)
                 if (victim.InDuel > 0)
                 {
-                    Duel duel = DuelProcedures.GetDuel(victim.InDuel);
-                    List<PlayerFormViewModel> duelParticipants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+                    var duel = DuelProcedures.GetDuel(victim.InDuel);
+                    var duelParticipants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
 
-                    int remainders = duelParticipants.Count();
+                    var remainders = duelParticipants.Count();
 
-                    foreach (PlayerFormViewModel p in duelParticipants)
+                    foreach (var p in duelParticipants)
                     {
                         if (p.Player.Form != duel.Combatants.FirstOrDefault(dp => dp.PlayerId == p.Player.Id).StartForm)
                         {
@@ -571,7 +571,7 @@ namespace TT.Domain.Procedures
             ITFEnergyRepository repo = new EFTFEnergyRepository();
             IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == player.Id).ToList();
 
-            foreach (TFEnergy energy in mydbEnergies)
+            foreach (var energy in mydbEnergies)
             {
                 energy.Amount *= 1 - (bonusPercentageFromBuffs / 100.0M);
                 repo.SaveTFEnergy(energy);
@@ -584,7 +584,7 @@ namespace TT.Domain.Procedures
             ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
             IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId).ToList();
 
-            foreach (TFEnergy s in energiesToDelete)
+            foreach (var s in energiesToDelete)
             {
                 tfEnergyRepo.DeleteTFEnergy(s.Id);
             }
@@ -595,7 +595,7 @@ namespace TT.Domain.Procedures
             ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
             IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId && s.FormName == spellType).ToList();
 
-            foreach (TFEnergy s in energiesToDelete)
+            foreach (var s in energiesToDelete)
             {
                 tfEnergyRepo.DeleteTFEnergy(s.Id);
             }
@@ -617,7 +617,7 @@ namespace TT.Domain.Procedures
         {
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
-            TFMessage tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == form.dbName);
+            var tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == form.dbName);
 
             if (tfMessage == null)
             {
@@ -978,7 +978,7 @@ namespace TT.Domain.Procedures
 
         public static decimal GetHigherLevelXPModifier(int lvl, int maxLvlBeforeLoss)
         {
-            decimal modifier = 1.0M;
+            var modifier = 1.0M;
 
             modifier = 1 - ((lvl - maxLvlBeforeLoss) * .1M);
 

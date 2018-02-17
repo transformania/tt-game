@@ -1,9 +1,5 @@
 ﻿@model TT.Domain.ViewModels.Quest.QuestStateFormViewModel
 
-@using TT.Domain.Statics
-@using TT.Domain.Models
-@using TT.Web.CustomHtmlHelpers
-
 <p>@Ajax.ActionLink("View Logs", MVC.QuestWriter.ShowQuestWriterLogs(Model.QuestState.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", MVC.QuestWriter.ShowAllQuestStates(Model.QuestState.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest connections in this quest", MVC.QuestWriter.ShowAllQuestConnections(Model.QuestState.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
@@ -13,7 +9,7 @@
 <h4>Connections TO this Quest State (@Model.QuestConnectionsFrom.Count()):</h4>
 
 @{
-    foreach (QuestConnection q in Model.QuestConnectionsTo)
+    foreach (var q in Model.QuestConnectionsTo)
     {
         <p>
             @Ajax.ActionLink("[" + q.ConnectionName + "]", MVC.QuestWriter.QuestConnection(q.Id, Model.QuestState.QuestId, q.QuestStateFromId, q.QuestStateToId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
@@ -32,7 +28,7 @@
 }
 
 @{
-    foreach (QuestConnection q in Model.QuestConnectionsFailTo)
+    foreach (var q in Model.QuestConnectionsFailTo)
     {
         <p>
             @Ajax.ActionLink("[" + q.ConnectionName + "]", MVC.QuestWriter.QuestConnection(q.Id, Model.QuestState.QuestId, q.QuestStateFromId, q.QuestStateToId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
@@ -45,7 +41,7 @@
 <h4>Connections FROM this Quest State (@Model.QuestConnectionsTo.Count()):</h4>
 
 @{
-    foreach (QuestConnection q in Model.QuestConnectionsFrom)
+    foreach (var q in Model.QuestConnectionsFrom)
     {
         <p>
             @Ajax.ActionLink("[" + q.ConnectionName + "]", MVC.QuestWriter.QuestConnection(q.Id, Model.QuestState.QuestId, q.QuestStateFromId, q.QuestStateToId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
@@ -94,7 +90,7 @@
 <table>
 
     @{
-        foreach (QuestStatePreaction r in Model.QuestState.QuestStatePreactions)
+        foreach (var r in Model.QuestState.QuestStatePreactions)
         {
             <tr>
                 <td>
@@ -121,7 +117,7 @@
 <table>
 
     @{
-        foreach (QuestEnd qe in Model.QuestState.QuestEnds)
+        foreach (var qe in Model.QuestState.QuestEnds)
         {
             <tr>
                 <td>

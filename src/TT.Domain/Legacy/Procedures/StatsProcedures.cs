@@ -547,7 +547,7 @@ namespace TT.Domain.Procedures
             if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == AIStatics.ActivePlayerBotId)
             {
                 IAchievementRepository repo = new EFAchievementRepository();
-                Achievement x = repo.Achievements.FirstOrDefault(a => a.OwnerMembershipId == membershipId && a.AchievementType == type);
+                var x = repo.Achievements.FirstOrDefault(a => a.OwnerMembershipId == membershipId && a.AchievementType == type);
 
                 if (x == null)
                 {
@@ -573,14 +573,14 @@ namespace TT.Domain.Procedures
         {
             IAchievementRepository repo = new EFAchievementRepository();
 
-            List<Achievement> x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenBy(a => a.Timestamp).Take(10).ToList();
-            List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
+            var x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenBy(a => a.Timestamp).Take(10).ToList();
+            var output = new List<PlayerAchievementViewModel>();
 
-            foreach (Achievement a in x)
+            foreach (var a in x)
             {
                 if (a != null)
                 {
-                    PlayerAchievementViewModel addMe = new PlayerAchievementViewModel
+                    var addMe = new PlayerAchievementViewModel
                     {
                         Player = PlayerProcedures.GetPlayerFormViewModel_FromMembership(a.OwnerMembershipId),
                         Achivement = a,
@@ -598,15 +598,15 @@ namespace TT.Domain.Procedures
 
             IEnumerable<Achievement> types = repo.Achievements.GroupBy(a => a.AchievementType).Select(grp => grp.FirstOrDefault()).ToList();
 
-            List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
+            var output = new List<PlayerAchievementViewModel>();
 
-            foreach (Achievement t in types)
+            foreach (var t in types)
             {
-                Achievement a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).ThenBy(b => b.Timestamp).FirstOrDefault();
+                var a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).ThenBy(b => b.Timestamp).FirstOrDefault();
 
                 if (a != null)
                 {
-                    PlayerAchievementViewModel addMe = new PlayerAchievementViewModel
+                    var addMe = new PlayerAchievementViewModel
                     {
                         Player = PlayerProcedures.GetPlayerFormViewModel_FromMembership(a.OwnerMembershipId),
                         Achivement = a,
@@ -624,16 +624,16 @@ namespace TT.Domain.Procedures
         {
             IAchievementBadgeRepository badgeRepo = new EFAchievementBadgeRepository();
 
-            List<PlayerAchievementViewModel> winners = GetPlayerMaxStats().ToList();
-            string output = "";
+            var winners = GetPlayerMaxStats().ToList();
+            var output = "";
 
-            string round = PvPStatics.AlphaRound;
+            var round = PvPStatics.AlphaRound;
 
-            foreach (PlayerAchievementViewModel a in winners)
+            foreach (var a in winners)
             {
-                AchievementBadge badge = badgeRepo.AchievementBadges.FirstOrDefault(b => b.AchievementType == a.Achivement.AchievementType && b.OwnerMembershipId == a.Player.Player.MembershipId && b.Round == round);
+                var badge = badgeRepo.AchievementBadges.FirstOrDefault(b => b.AchievementType == a.Achivement.AchievementType && b.OwnerMembershipId == a.Player.Player.MembershipId && b.Round == round);
 
-                string nextline = "<b>" + a.Achivement.AchievementType + "</b> for round <b>" + round + "</b> being assigned to <b>" + a.Player.Player.GetFullName() + "</b> of ID " + a.Player.Player.MembershipId + ".  ";
+                var nextline = "<b>" + a.Achivement.AchievementType + "</b> for round <b>" + round + "</b> being assigned to <b>" + a.Player.Player.GetFullName() + "</b> of ID " + a.Player.Player.MembershipId + ".  ";
 
                 if (badge == null)
                 {
@@ -676,9 +676,9 @@ namespace TT.Domain.Procedures
         public static void DeleteAchivemenstOfTypeForPlayer(Player player, List<string> achivements)
         {
             IAchievementRepository repo = new EFAchievementRepository();
-            List<Achievement> dbAchivements = repo.Achievements.Where(a => a.OwnerMembershipId == player.MembershipId && achivements.Contains(a.AchievementType)).ToList();
+            var dbAchivements = repo.Achievements.Where(a => a.OwnerMembershipId == player.MembershipId && achivements.Contains(a.AchievementType)).ToList();
 
-            foreach (Achievement a in dbAchivements)
+            foreach (var a in dbAchivements)
             {
                 repo.DeleteAchievement(a.Id);
             }

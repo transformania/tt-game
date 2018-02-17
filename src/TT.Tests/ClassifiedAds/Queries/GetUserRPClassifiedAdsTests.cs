@@ -28,7 +28,7 @@ namespace TT.Tests.ClassifiedAds.Queries
                 .With(u => u.Id, "guid")
                 .BuildAndSave();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 ads.Add(new RPClassifiedAdBuilder()
                     .With(ad => ad.Title, "This Is a Title")

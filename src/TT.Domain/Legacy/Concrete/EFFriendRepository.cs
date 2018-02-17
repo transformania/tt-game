@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Friend editMe = context.Friends.Find(Friend.Id);
+                var editMe = context.Friends.Find(Friend.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Friend.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteFriend(int id)
         {
 
-            Friend dbEntry = context.Friends.Find(id);
+            var dbEntry = context.Friends.Find(id);
             if (dbEntry != null)
             {
                 context.Friends.Remove(dbEntry);

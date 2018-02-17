@@ -2,12 +2,6 @@
 using Highway.Data.Contexts;
 using TT.Domain.Entities;
 using TT.Tests.Utilities;
-using System.Collections.Generic;
-using NSubstitute;
-using System.Data.Entity.Infrastructure;
-using System;
-using System.Collections;
-using System.Linq.Expressions;
 
 namespace TT.Tests
 {

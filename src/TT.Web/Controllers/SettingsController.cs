@@ -29,8 +29,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Settings()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             var output = new SettingsPageViewModel
             {
@@ -45,7 +45,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ChangeGameMode(int mode)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             try
             {
                 DomainRegistry.Repository.Execute(new ChangeGameMode
@@ -75,7 +75,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ChangeRPMode(bool inRP)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
 
             try
             {
@@ -92,8 +92,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetBio()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            SetBioViewModel output = SettingsProcedures.GetSetBioViewModelFromMembershipId(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var output = SettingsProcedures.GetSetBioViewModelFromMembershipId(myMembershipId);
 
             if (output.OwnerMembershipId != myMembershipId)
             {
@@ -106,7 +106,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetBioSend(SetBioViewModel input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (input.Text == null)
             {
                 input.Text = "";
@@ -117,7 +117,7 @@ namespace TT.Web.Controllers
                 input.Tags = "";
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (input.Text.Length > 2500 && !me.DonatorGetsMessagesRewards())
             {
                 TempData["Error"] = "The text of your bio is too long (more than 2,500 characters).";
@@ -155,7 +155,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetBioDelete(PlayerBio input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             SettingsProcedures.DeletePlayerBio(myMembershipId);
 
             TempData["Result"] = "Your bio has been deleted.";
@@ -164,10 +164,10 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ViewBio(string id)
         {
-            Player player = PlayerProcedures.GetPlayerFromMembership(id);
+            var player = PlayerProcedures.GetPlayerFromMembership(id);
             ViewBag.Name = player.GetFullName();
 
-            BioPageViewModel output = new BioPageViewModel();
+            var output = new BioPageViewModel();
             output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
             if (output.PlayerBio == null)
             {
@@ -207,8 +207,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult DumpWillpower(string amount)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -239,7 +239,7 @@ namespace TT.Web.Controllers
             decimal drop = 0;
             if (amount == "half")
             {
-                decimal halfHealth = me.MaxHealth / 2;
+                var halfHealth = me.MaxHealth / 2;
                 if (halfHealth < me.Health)
                 {
                     drop = me.Health - halfHealth;
@@ -273,8 +273,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetNickname()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (!me.DonatorGetsNickname())
             {
@@ -326,9 +326,9 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ToggleBlacklistOnPlayer(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player target = PlayerProcedures.GetPlayer(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var target = PlayerProcedures.GetPlayer(id);
 
             // assert that this player is not a bot
             if (target.BotId < AIStatics.ActivePlayerBotId)
@@ -354,18 +354,18 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MyBlacklistEntries()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            IEnumerable<BlacklistEntryViewModel> output = BlacklistProcedures.GetMyBlacklistEntries(me);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var output = BlacklistProcedures.GetMyBlacklistEntries(me);
 
             return View(MVC.Settings.Views.MyBlacklistEntries, output);
         }
 
         public virtual ActionResult ChangeBlacklistType(int id, int playerId, string type)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player target = PlayerProcedures.GetPlayer(playerId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var target = PlayerProcedures.GetPlayer(playerId);
 
 
             // assert that this player is not a bot
@@ -398,8 +398,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ViewPoll(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            PollEntry output = SettingsProcedures.LoadPoll(id, myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var output = SettingsProcedures.LoadPoll(id, myMembershipId);
             // TODO: T4ize
             return View("Polls/Open/poll" + id, output);
         }
@@ -408,7 +408,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult ReplyToPoll(PollEntry input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.Error = "Invalid input.";
@@ -423,7 +423,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult PollResults(int id)
         {
-            IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
+            var output = SettingsProcedures.GetAllPollResults(id);
             // TODO: T4ize
             return View("Polls/Read/poll" + id, output);
         }
@@ -436,11 +436,11 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetChatColor(string color)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/validChatColors.txt";
-            string text = System.IO.File.ReadAllText(filename);
+            var filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/validChatColors.txt";
+            var text = System.IO.File.ReadAllText(filename);
 
             if (!text.Contains(color + ";"))
             {
@@ -455,7 +455,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult WriteAuthorArtistBio()
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
@@ -463,7 +463,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(myMembershipId);
+            var output = SettingsProcedures.GetAuthorArtistBio(myMembershipId);
             return View(MVC.Settings.Views.WriteAuthorArtistBio, output);
         }
 
@@ -472,7 +472,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
@@ -488,13 +488,13 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AuthorArtistBio(string id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(id);
-            Player artistIngamePlayer = PlayerProcedures.GetPlayerFromMembership(id);
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var output = SettingsProcedures.GetAuthorArtistBio(id);
+            var artistIngamePlayer = PlayerProcedures.GetPlayerFromMembership(id);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.IngameCharacter = "This artist does not currently have a character ingame.";
 
-            bool friends = FriendProcedures.MemberIsMyFriend(id, myMembershipId);
+            var friends = FriendProcedures.MemberIsMyFriend(id, myMembershipId);
             ViewBag.IAmFriendsWithArtist = friends;
 
             if (artistIngamePlayer != null)
@@ -528,8 +528,8 @@ namespace TT.Web.Controllers
         /// <returns></returns>
         public virtual ActionResult UseMyCustomForm()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
             var customForms = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId).ToList();
@@ -541,10 +541,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ContributorCustomForm newForm = customForms.First();
+            var newForm = customForms.First();
 
-            int index = 0;
-            foreach (ContributorCustomForm c in customForms)
+            var index = 0;
+            foreach (var c in customForms)
             {
                 if (me.OriginalForm == c.CustomForm.dbName)
                 {
@@ -576,10 +576,10 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ArchiveSpell(string name)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert that player does own this skill
-            SkillViewModel skill = SkillProcedures.GetSkillViewModel(name, me.Id);
+            var skill = SkillProcedures.GetSkillViewModel(name, me.Id);
 
             if (skill == null)
             {
@@ -603,8 +603,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ArchiveAllMySpells(string archive)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (archive == "true")
             {
                 SkillProcedures.ArchiveAllSpells(me.Id, true);
@@ -622,7 +622,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult PlayerStats(string id)
         {
-            Player player = PlayerProcedures.GetPlayerFromMembership(id);
+            var player = PlayerProcedures.GetPlayerFromMembership(id);
             ViewBag.Name = player.GetFullName();
             ViewBag.PlayerId = player.Id;
             var output = DomainRegistry.Repository.Find(new GetPlayerStats { OwnerId = player.MembershipId });
@@ -631,7 +631,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult PlayerStatsTopOfType(string type)
         {
-            IEnumerable<PlayerAchievementViewModel> output = StatsProcedures.GetLeaderPlayersInStat(type);
+            var output = StatsProcedures.GetLeaderPlayersInStat(type);
             return PartialView(MVC.Settings.Views.partial.PlayerStatsTopOfType, output);
         }
 
@@ -701,7 +701,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MyRPClassifiedAds()
         {
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
             var output = DomainRegistry.Repository.Find(new GetUserRPClassifiedAds() { UserId = userId });
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -723,7 +723,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UpdateRPClassifiedAd(int id)
         {
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
             RPClassifiedAdDetail ad;
 
             try
@@ -749,7 +749,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult RefreshRPClassifiedAd(int id)
         {
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
 
             try
             {
@@ -773,7 +773,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
         {
             input.SetNullsToEmptyStrings();
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
 
             try
             {
@@ -815,7 +815,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
         {
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
             try
             {
                 DomainRegistry.Repository.Execute(new UpdateRPClassifiedAd()
@@ -852,7 +852,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult DeleteRPClassifiedAd(int id)
         {
-            string userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();
 
             try
             {
@@ -880,8 +880,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.Form == me.OriginalForm)
             {

@@ -12,11 +12,11 @@ namespace TT.Domain.Procedures
         public static string GetRoll(string actionType, string tag)
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            Random rand = new Random();
-            double roll = rand.NextDouble();
+            var rand = new Random();
+            var roll = rand.NextDouble();
 
             IEnumerable<DMRoll> options = repo.DMRolls.Where(r => r.IsLive && r.ActionType == actionType && r.Tags.Contains(tag));
-            List<DMRoll> test = options.ToList();
+            var test = options.ToList();
 
             double max = options.Count();
 
@@ -25,7 +25,7 @@ namespace TT.Domain.Procedures
                 return "[No results found for this encounter type and tag.]";
             }
 
-            int index = Convert.ToInt32(Math.Floor(roll * max));
+            var index = Convert.ToInt32(Math.Floor(roll * max));
             return "DM[" + actionType + ":" + tag + "]:  " + options.ElementAt(index).Message;
 
            

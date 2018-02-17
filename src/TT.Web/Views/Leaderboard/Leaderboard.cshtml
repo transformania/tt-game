@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.Player>
-@using TT.Domain.Models
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 @{
@@ -34,10 +33,10 @@
         <tbody>
 
             @{
-                int rank = 1;
+                var rank = 1;
             }
 
-            @foreach (Player p in Model)
+            @foreach (var p in Model)
             {
                 <tr>
                     <td style="width:15px">

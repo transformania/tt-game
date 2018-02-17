@@ -30,7 +30,7 @@
             <p>
                 <b>Player(s) found!</b>
             </p>
-            foreach (TT.Domain.Models.Player p in Model.PlayersFound)
+            foreach (var p in Model.PlayersFound)
             {
                 <p>
                     @p.GetFullName()

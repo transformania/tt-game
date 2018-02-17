@@ -411,7 +411,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintStatDescriptionPopup(string statName)
         {
-            string output = BuffMap.BuffDetailsMap[statName].DisplayName + " <span class='statPopupBubble' onclick='alert(\"";
+            var output = BuffMap.BuffDetailsMap[statName].DisplayName + " <span class='statPopupBubble' onclick='alert(\"";
             output += BuffMap.BuffDetailsMap[statName].Description;
             output += "\");'><b style='cursor: pointer'>[?]</b></span>";
             return new MvcHtmlString(output);

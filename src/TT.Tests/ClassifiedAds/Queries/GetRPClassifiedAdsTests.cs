@@ -23,7 +23,7 @@ namespace TT.Tests.ClassifiedAds.Queries
             base.SetUp();
 
             // Populate database users ads
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 users.Add(new UserBuilder()
                     .With(u => u.Email, "JohnSmith@example.com")
@@ -35,7 +35,7 @@ namespace TT.Tests.ClassifiedAds.Queries
             // Populate database with ads
             foreach (var user in users)
             {
-                for (int i = 0; i < 3; i++)
+                for (var i = 0; i < 3; i++)
                 {
                     ads.Add(new RPClassifiedAdBuilder()
                         .With(ad => ad.Title, "This Is a Title")

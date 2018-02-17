@@ -25,7 +25,7 @@
                 <div class="row boxContainer">
                     <h3>You are mind controlling:</h3>
                     @{
-            foreach (TT.Domain.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.MasterId == ViewBag.MyId))
+            foreach (var m in Model.Where(m => m.MindControl.MasterId == ViewBag.MyId))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">
@@ -48,7 +48,7 @@
         <div class="row boxContainer">
             <h3>You are being mind controlled by:</h3>
             @{
-            foreach (TT.Domain.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.VictimId == ViewBag.MyId))
+            foreach (var m in Model.Where(m => m.MindControl.VictimId == ViewBag.MyId))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">

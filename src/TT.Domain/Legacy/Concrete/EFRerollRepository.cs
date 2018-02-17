@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Reroll editMe = context.Rerolls.Find(Reroll.Id);
+                var editMe = context.Rerolls.Find(Reroll.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = ItemTransferLog.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteReroll(int id)
         {
 
-            Reroll dbEntry = context.Rerolls.Find(id);
+            var dbEntry = context.Rerolls.Find(id);
             if (dbEntry != null)
             {
                 context.Rerolls.Remove(dbEntry);

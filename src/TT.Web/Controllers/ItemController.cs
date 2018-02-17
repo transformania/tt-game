@@ -6,9 +6,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
-using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
-using TT.Domain.Models;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Skills.Queries;
@@ -23,8 +21,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MyInventory()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.MembershipId == myMembershipId)
             {
@@ -36,7 +34,7 @@ namespace TT.Web.Controllers
             }
 
 
-            InventoryBonusesViewModel output = new InventoryBonusesViewModel
+            var output = new InventoryBonusesViewModel
             {
                 Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id }).Where(i => i.EmbeddedOnItem == null),
                 Bonuses = ItemProcedures.GetPlayerBuffs(me),
@@ -60,11 +58,11 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SelfCast()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player owns at least one of the type of item needed
-            ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -92,8 +90,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SelfCastSend(string spell)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -125,7 +123,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns at least one of the type of item needed
-            ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -133,7 +131,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player does own this skill
-            SkillViewModel skill = SkillProcedures.GetSkillViewModel(spell, me.Id);
+            var skill = SkillProcedures.GetSkillViewModel(spell, me.Id);
             if (skill == null)
             {
                 TempData["Error"] = "You do not own this spell.";
@@ -160,7 +158,7 @@ namespace TT.Web.Controllers
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
-            DbStaticForm form = FormStatics.GetForm(skill.Skill.FormdbName);
+            var form = FormStatics.GetForm(skill.Skill.FormdbName);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
             new Thread(() =>
@@ -172,8 +170,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult RemoveCurse()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -182,7 +180,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns at least one of the type of item needed
-            ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_curselifter" || i.dbItem.dbName == "item_Butt_Plug_Hanna");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_curselifter" || i.dbItem.dbName == "item_Butt_Plug_Hanna");
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -197,8 +195,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult RemoveCurseSend(string curse, int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -207,7 +205,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns this item
-            ItemViewModel itemToUse = ItemProcedures.GetItemViewModel(id);
+            var itemToUse = ItemProcedures.GetItemViewModel(id);
             if (itemToUse == null || itemToUse.dbItem.OwnerId != me.Id)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -221,7 +219,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            DbStaticEffect curseToRemove = EffectStatics.GetEffect(curse);
+            var curseToRemove = EffectStatics.GetEffect(curse);
 
             // assert this curse is removable
             if (!curseToRemove.IsRemovable)
@@ -260,8 +258,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ReadSkillBook(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -270,7 +268,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemViewModel book = ItemProcedures.GetItemViewModel(id);
+            var book = ItemProcedures.GetItemViewModel(id);
 
             // assert player owns this book
             if (book.dbItem.OwnerId != me.Id)
@@ -310,7 +308,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ShowItemDetails(int id)
         {
-            ItemDetail output = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
+            var output = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
             return PartialView(MVC.Item.Views.partial.ItemDetails, output);
         }
 
@@ -321,7 +319,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AttachRuneList(int runeId)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var output = new AttachRuneListViewModel();
             output.items = DomainRegistry.Repository.Find(new GetItemsThatCanGetRunes { OwnerId = me.Id });
             output.rune = DomainRegistry.Repository.FindSingle(new GetItemRune { ItemId = runeId});
@@ -331,7 +329,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AttachRune(int runeId, int itemId)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             try
             {
@@ -347,7 +345,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UnembedRunesList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id }).Where(i => i.Runes.Any());
 
             return View(MVC.Item.Views.UnembedRunesList, output);
@@ -355,7 +353,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UnattachRune(int Id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             try
             {
@@ -371,7 +369,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult UnembedRunes()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             try
             {

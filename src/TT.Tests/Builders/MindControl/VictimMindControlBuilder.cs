@@ -1,5 +1,4 @@
-﻿using System;
-using TT.Domain.Entities.MindControl;
+﻿using TT.Domain.Entities.MindControl;
 
 namespace TT.Tests.Builders.MindControl
 {

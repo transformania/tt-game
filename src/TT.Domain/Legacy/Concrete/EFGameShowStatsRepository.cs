@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                GameshowStats editMe = context.GameshowStats.Find(GameshowStats.Id);
+                var editMe = context.GameshowStats.Find(GameshowStats.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = GameshowStats.Name;
@@ -37,7 +37,7 @@ namespace TT.Domain.Concrete
         public void DeleteGameshowStats(int id)
         {
 
-            GameshowStats dbEntry = context.GameshowStats.Find(id);
+            var dbEntry = context.GameshowStats.Find(id);
             if (dbEntry != null)
             {
                 context.GameshowStats.Remove(dbEntry);

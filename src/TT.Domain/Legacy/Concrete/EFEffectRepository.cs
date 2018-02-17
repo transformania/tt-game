@@ -26,7 +26,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Effect editMe = context.Effects.Find(Effect.Id);
+                var editMe = context.Effects.Find(Effect.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Effect.Name;
@@ -41,7 +41,7 @@ namespace TT.Domain.Concrete
         public void DeleteEffect(int id)
         {
 
-            Effect dbEntry = context.Effects.Find(id);
+            var dbEntry = context.Effects.Find(id);
             if (dbEntry != null)
             {
                 context.Effects.Remove(dbEntry);
@@ -57,7 +57,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticEffect editMe = context.DbStaticEffects.Find(Effect.Id);
+                var editMe = context.DbStaticEffects.Find(Effect.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Effect.Name;
@@ -72,7 +72,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticEffect(int id)
         {
 
-            DbStaticEffect dbEntry = context.DbStaticEffects.Find(id);
+            var dbEntry = context.DbStaticEffects.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticEffects.Remove(dbEntry);

@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                PvPWorldStat editMe = context.PvPWorldStats.Find(PvPWorldStat.Id);
+                var editMe = context.PvPWorldStats.Find(PvPWorldStat.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = PvPWorldStat.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeletePvPWorldStat(int id)
         {
 
-            PvPWorldStat dbEntry = context.PvPWorldStats.Find(id);
+            var dbEntry = context.PvPWorldStats.Find(id);
             if (dbEntry != null)
             {
                 context.PvPWorldStats.Remove(dbEntry);

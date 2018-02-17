@@ -22,8 +22,8 @@ namespace TT.Web.DependencyResolvers
 
         public override IEnumerable<object> GetServices(Type serviceType)
         {
-            Type collectionType = typeof(IEnumerable<>).MakeGenericType(serviceType);
-            IEnumerable<object> simpleInjectorServices = (IEnumerable<object>)_container.GetService(collectionType) ?? Enumerable.Empty<object>();
+            var collectionType = typeof(IEnumerable<>).MakeGenericType(serviceType);
+            var simpleInjectorServices = (IEnumerable<object>)_container.GetService(collectionType) ?? Enumerable.Empty<object>();
 
             return base.GetServices(serviceType).Concat(simpleInjectorServices);
         }

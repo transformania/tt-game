@@ -15,14 +15,14 @@ namespace TT.Web.Hubs
         public void Send(string input)
         {
             string room = Clients.Caller.toRoom;
-            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
            // Clients.Group(room).addNewMessageToPage(input);
         }
 
         public Task JoinRoom(string roomName)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
-            string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
+            var me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
+            var message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
             Clients.Group(roomName).addNewMessageToPage(message);
             return Groups.Add(Context.ConnectionId, roomName);
         }
@@ -55,7 +55,7 @@ namespace TT.Web.Hubs
         public static void RunTick(object source, ElapsedEventArgs e)
         {
 
-            ClientData output = new ClientData();
+            var output = new ClientData();
             output.p1 = P1;
             output.p2 = P2;
 

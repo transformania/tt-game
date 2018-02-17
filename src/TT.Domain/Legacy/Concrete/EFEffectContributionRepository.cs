@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                EffectContribution editMe = context.EffectContributions.Find(EffectContribution.Id);
+                var editMe = context.EffectContributions.Find(EffectContribution.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = EffectContribution.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteEffectContribution(int id)
         {
 
-            EffectContribution dbEntry = context.EffectContributions.Find(id);
+            var dbEntry = context.EffectContributions.Find(id);
             if (dbEntry != null)
             {
                 context.EffectContributions.Remove(dbEntry);

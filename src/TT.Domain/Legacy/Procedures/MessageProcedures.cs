@@ -23,11 +23,11 @@ namespace TT.Domain.Procedures
             var receivedMessagesToDelete = receivedMessages.Skip(inboxLimit);
 
             // paginate down to first N results
-            Paginator paginator = new Paginator(receivedMessages.Count(), 25);
+            var paginator = new Paginator(receivedMessages.Count(), 25);
             paginator.CurrentPage = offset + 1;
             receivedMessages = receivedMessages.Skip(paginator.GetSkipCount()).Take(paginator.PageSize).ToList();
 
-            MessageBag output = new MessageBag
+            var output = new MessageBag
             {
                 Messages = receivedMessages,
                 SentMessages = sentMessages

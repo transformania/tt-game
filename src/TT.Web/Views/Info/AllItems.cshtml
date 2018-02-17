@@ -1,5 +1,4 @@
-﻿@using TT.Domain.Items.DTOs
-@model IEnumerable<TT.Domain.Items.DTOs.ItemSourceDetail>
+﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemSourceDetail>
 
 <div>
     <h1>Animate Forms</h1>
@@ -21,7 +20,7 @@
         </thead>
         <tbody>
 
-            @foreach (ItemSourceDetail f in Model)
+            @foreach (var f in Model)
             {
                 <tr>
                     <td class="copyable" data-clipboard-text="@f.Id">@f.Id</td>

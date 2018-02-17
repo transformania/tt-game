@@ -1,9 +1,6 @@
 ﻿
 @model TT.Domain.ViewModels.Quest.QuestConnectionFormViewModel
 
-@using TT.Domain.Statics
-@using TT.Domain.Models
-
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", MVC.QuestWriter.ShowAllQuestStates(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest connections in this quest", MVC.QuestWriter.ShowAllQuestConnections(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("View Diagram", MVC.QuestWriter.Diagram(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
@@ -131,7 +128,7 @@
 <table>
 
     @{
-        foreach (QuestConnectionRequirement r in Model.QuestConnection.QuestConnectionRequirements)
+        foreach (var r in Model.QuestConnection.QuestConnectionRequirements)
         {
             <tr>
                 <td>

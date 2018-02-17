@@ -17,7 +17,7 @@
     <p><i>Note:  Achievements marked with <span class="playerMediatingNotification">*</span> are reset upon character reroll.</i></p>
     <div class="row">
         @{
-            foreach (string f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
+            foreach (var f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
             {
                 var ach = Model.FirstOrDefault(a => a.AchievementType == f);
                 if (ach != null)

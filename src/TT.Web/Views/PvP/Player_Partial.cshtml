@@ -4,9 +4,9 @@
 @using TT.Domain.Statics
 
 @{
-    int HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
+    var HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
     if (HealthWidth > 100) { HealthWidth = 100; }
-    int ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
+    var ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
     if (ManaWidth > 100) { ManaWidth = 100; }
     string gendercolor;
     if (Model.Player.Gender == PvPStatics.GenderMale)

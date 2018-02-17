@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.NewsPost>
-@using TT.Domain.Models
 
 @section menu
 {
@@ -27,7 +26,7 @@
         <tbody>
 
             @{
-                foreach (NewsPost n in Model)
+                foreach (var n in Model)
                 {
                     <tr>
                         <td>@n.Id</td>

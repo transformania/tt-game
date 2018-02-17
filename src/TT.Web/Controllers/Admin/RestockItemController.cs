@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Assets.Commands;
-using TT.Domain.Assets.DTOs;
 using TT.Domain.Assets.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels.Assets;
@@ -26,7 +24,7 @@ namespace TT.Web.Controllers.Admin
         public virtual ActionResult Edit(int Id)
         {
             var cmd = new GetRestockItem { RestockItemId = Id };
-            RestockItemDetail restockItemDetail = DomainRegistry.Repository.FindSingle(cmd);
+            var restockItemDetail = DomainRegistry.Repository.FindSingle(cmd);
 
             var output = new UpdateRestockItemViewModel(restockItemDetail);
 

@@ -1,10 +1,7 @@
 ﻿using Highway.Data;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Identity.QueryRequests;

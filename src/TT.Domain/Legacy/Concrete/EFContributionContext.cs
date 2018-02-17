@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Contribution editMe = context.Contributions.Find(Contribution.Id);
+                var editMe = context.Contributions.Find(Contribution.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Contribution.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteContribution(int id)
         {
 
-            Contribution dbEntry = context.Contributions.Find(id);
+            var dbEntry = context.Contributions.Find(id);
             if (dbEntry != null)
             {
                 context.Contributions.Remove(dbEntry);

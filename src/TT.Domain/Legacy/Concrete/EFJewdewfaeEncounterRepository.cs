@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                JewdewfaeEncounter editMe = context.JewdewfaeEncounters.Find(JewdewfaeEncounter.Id);
+                var editMe = context.JewdewfaeEncounters.Find(JewdewfaeEncounter.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = JewdewfaeEncounter.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteJewdewfaeEncounter(int id)
         {
 
-            JewdewfaeEncounter dbEntry = context.JewdewfaeEncounters.Find(id);
+            var dbEntry = context.JewdewfaeEncounters.Find(id);
             if (dbEntry != null)
             {
                 context.JewdewfaeEncounters.Remove(dbEntry);

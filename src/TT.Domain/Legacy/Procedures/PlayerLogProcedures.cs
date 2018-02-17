@@ -21,7 +21,7 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerLogRepository playerLogRepo = new EFPlayerLogRepository();
-            PlayerLog newlog = new PlayerLog();
+            var newlog = new PlayerLog();
             newlog.PlayerId = playerId;
             newlog.Message = message;
             newlog.Timestamp = DateTime.UtcNow;
@@ -33,7 +33,7 @@ namespace TT.Domain.Procedures
             if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerPlayer)
             {
                 IEnumerable<PlayerLog> reordered = ExistingLogs.OrderBy(l => l.Timestamp).ToList();
-                PlayerLog deleteMe = reordered.First();
+                var deleteMe = reordered.First();
                 playerLogRepo.DeletePlayerLog(deleteMe.Id);
             }
 
@@ -46,7 +46,7 @@ namespace TT.Domain.Procedures
             IPlayerLogRepository playerLogRepo = new EFPlayerLogRepository();
             IEnumerable<PlayerLog> myLogs = playerLogRepo.PlayerLogs.Where(l => l.PlayerId == playerId).ToList();
 
-            foreach (PlayerLog log in myLogs)
+            foreach (var log in myLogs)
             {
                 playerLogRepo.DeletePlayerLog(log.Id);
             }
@@ -57,13 +57,13 @@ namespace TT.Domain.Procedures
             IPlayerLogRepository playerLogRepo = new EFPlayerLogRepository();
             IEnumerable<PlayerLog> myLogs = playerLogRepo.PlayerLogs.Where(l => l.PlayerId == playerId && l.IsImportant).ToList();
 
-            foreach (PlayerLog log in myLogs)
+            foreach (var log in myLogs)
             {
                 log.IsImportant = false;
                
             }
 
-            foreach (PlayerLog log in myLogs)
+            foreach (var log in myLogs)
             {
                 playerLogRepo.SavePlayerLog(log);
 

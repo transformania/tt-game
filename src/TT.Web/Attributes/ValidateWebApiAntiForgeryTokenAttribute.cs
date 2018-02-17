@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
@@ -19,12 +16,12 @@ namespace TT.Web.Attributes
         {
             try
             {
-                string cookieToken = "";
-                string formToken = "";
+                var cookieToken = "";
+                var formToken = "";
 
                 if (actionContext.Request.Headers.TryGetValues("RequestVerificationToken", out var tokenHeaders))
                 {
-                    string[] tokens = tokenHeaders.FirstOrDefault()?.Split(':');
+                    var tokens = tokenHeaders.FirstOrDefault()?.Split(':');
                     if (tokens != null && tokens.Length == 2)
                     {
                         cookieToken = tokens[0].Trim();

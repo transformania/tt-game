@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -19,7 +16,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnPetMerchant()
         {
-            PlayerDetail petMerchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.WuffieBotId });
+            var petMerchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.WuffieBotId });
 
             if (petMerchant == null)
             {
@@ -44,7 +41,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player petMerchantEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var petMerchantEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 petMerchantEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(petMerchantEF));
                 playerRepo.SavePlayer(petMerchantEF);
             }
@@ -53,7 +50,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void CounterAttack(Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
+            var petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
             if (petMerchant.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
             {
@@ -65,24 +62,24 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunPetMerchantActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
+            var petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
 
             if (petMerchant.Mobility == PvPStatics.MobilityFull)
             {
                 if (petMerchant.Health < petMerchant.MaxHealth || petMerchant.Mana < petMerchant.MaxMana)
                 {
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(petMerchant);
+                    var buffs = ItemProcedures.GetPlayerBuffs(petMerchant);
                     if (petMerchant.Health < petMerchant.MaxHealth)
                     {
                         petMerchant.Health += 200;
-                        string logmessage = "<span class='playerCleansingNotification'>" + petMerchant.GetFullName() + " cleansed here.</span>";
+                        var logmessage = "<span class='playerCleansingNotification'>" + petMerchant.GetFullName() + " cleansed here.</span>";
                         LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
                     }
                     if (petMerchant.Mana < petMerchant.MaxMana)
                     {
                         petMerchant.Mana += 200;
-                        string logmessage = "<span class='playerMediatingNotification'>" + petMerchant.GetFullName() + " meditated here.</span>";
+                        var logmessage = "<span class='playerMediatingNotification'>" + petMerchant.GetFullName() + " meditated here.</span>";
                         LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
                     }
 
@@ -92,9 +89,9 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
 
-                int turnMod = turnNumber % (24 * 4);
+                var turnMod = turnNumber % (24 * 4);
 
-                string newLocation = "";
+                var newLocation = "";
                 if (turnMod < 24 * 1)
                 {
                     newLocation = LocationsStatics.GetRandomLocation_InRegion("ranch_outside");
@@ -112,7 +109,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     newLocation = LocationsStatics.GetRandomLocation_InRegion("campground");
                 }
 
-                string actualNewLocation = AIProcedures.MoveTo(petMerchant, newLocation, 5);
+                var actualNewLocation = AIProcedures.MoveTo(petMerchant, newLocation, 5);
                 petMerchant.dbLocationName = actualNewLocation;
                 playerRepo.SavePlayer(petMerchant);
 

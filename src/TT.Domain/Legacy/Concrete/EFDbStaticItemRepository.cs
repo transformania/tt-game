@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticItem editMe = context.DbStaticItems.Find(DbStaticItem.Id);
+                var editMe = context.DbStaticItems.Find(DbStaticItem.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = DbStaticItem.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticItem(int id)
         {
 
-            DbStaticItem dbEntry = context.DbStaticItems.Find(id);
+            var dbEntry = context.DbStaticItems.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticItems.Remove(dbEntry);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -19,7 +18,7 @@ namespace TT.Domain.Procedures
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
 
-            AIDirective directive = directiveRepo.AIDirectives.FirstOrDefault(ad => ad.OwnerId == botId);
+            var directive = directiveRepo.AIDirectives.FirstOrDefault(ad => ad.OwnerId == botId);
 
             if (directive == null)
             {
@@ -116,11 +115,11 @@ namespace TT.Domain.Procedures
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<AIDirective> directives = directiveRepo.AIDirectives.Where(d => d.TargetPlayerId == player.Id).ToList();
+            var directives = directiveRepo.AIDirectives.Where(d => d.TargetPlayerId == player.Id).ToList();
 
-            foreach (AIDirective d in directives)
+            foreach (var d in directives)
             {
-                Player p = playerRepo.Players.FirstOrDefault(x => x.Id == d.OwnerId);
+                var p = playerRepo.Players.FirstOrDefault(x => x.Id == d.OwnerId);
                 if (p.FirstName.Contains("Psychopath")) {
                     d.TargetPlayerId = -1;
                     d.State = "idle";

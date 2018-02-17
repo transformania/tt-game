@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
@@ -22,7 +20,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnFae()
         {
-            PlayerDetail fae = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.JewdewfaeBotId });
+            var fae = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.JewdewfaeBotId });
 
             if (fae == null)
             {
@@ -45,13 +43,13 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player faeEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var faeEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 faeEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(faeEF));
                 playerRepo.SavePlayer(faeEF);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-                AIDirective directive = new AIDirective
+                var directive = new AIDirective
                 {
                     OwnerId = id,
                     Timestamp = DateTime.UtcNow,
@@ -72,21 +70,21 @@ namespace TT.Domain.Procedures.BossProcedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
+            var fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IJewdewfaeEncounterRepository faeRepo = new EFJewdewfaeEncounterRepository();
 
              IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+            var directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
             // add fae's current location to the list of places visited
             directive.sVar2 += fae.dbLocationName + ";";
 
-            List<string> fairyLocations = faeRepo.JewdewfaeEncounters.Where(f => f.IsLive).Select(f => f.dbLocationName).ToList();
+            var fairyLocations = faeRepo.JewdewfaeEncounters.Where(f => f.IsLive).Select(f => f.dbLocationName).ToList();
 
-            List<string> visitedFairyLocations = directive.sVar2.Split(';').Where(f => f.Length > 1).ToList();
+            var visitedFairyLocations = directive.sVar2.Split(';').Where(f => f.Length > 1).ToList();
 
-            List<string> possibleLocations = fairyLocations.Except(visitedFairyLocations).ToList();
+            var possibleLocations = fairyLocations.Except(visitedFairyLocations).ToList();
 
             // if there are no locations left to visit, reset
             if (!possibleLocations.Any())
@@ -96,11 +94,11 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             double max = possibleLocations.Count();
-            Random rand = new Random();
-            double num = rand.NextDouble();
+            var rand = new Random();
+            var num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            string newLocation = possibleLocations.ElementAt(index);
+            var index = Convert.ToInt32(Math.Floor(num * max));
+            var newLocation = possibleLocations.ElementAt(index);
 
           
             directive.Var1 = 0;
@@ -123,10 +121,10 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
+            var fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+            var directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
 
             if (directive == null)
@@ -140,7 +138,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with down to 15 at lowest
-            decimal xpGain = 75 - directive.Var1 * 3;
+            var xpGain = 75 - directive.Var1 * 3;
 
             if (xpGain < 15) {
                 xpGain = 15;
@@ -172,7 +170,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static bool PlayerHasHadRecentInteraction(Player player, Player fae)
         {
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+            var directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
             PlayerProcedures.SetTimestampToNow(fae);
 

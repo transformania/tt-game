@@ -451,7 +451,7 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == id);
+            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == id);
 
             return player;
 
@@ -460,7 +460,7 @@ namespace TT.Domain.Procedures
         public static Player GetPlayerFromBotId(int id)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.BotId == id);
+            var player = playerRepo.Players.FirstOrDefault(p => p.BotId == id);
 
             return player;
 
@@ -469,7 +469,7 @@ namespace TT.Domain.Procedures
         public static Player GetPlayer(int? playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             return player;
         }
 
@@ -478,21 +478,21 @@ namespace TT.Domain.Procedures
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            string noGenerationLastName = player.LastName.Split(' ')[0];
+            var noGenerationLastName = player.LastName.Split(' ')[0];
 
-            Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
+            var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
 
             if (ghost != null && ghost.BotId != AIStatics.RerolledPlayerBotId && ghost.MembershipId != membershipId)
             {
                 return "A character of this name already exists.";
             }
 
-            string generationTitle = "";
+            var generationTitle = "";
 
             if (ghost != null && (ghost.BotId == AIStatics.RerolledPlayerBotId || ghost.MembershipId == membershipId) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
             {
 
-                List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
+                var possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
 
                 if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName) == null)
                 {
@@ -547,7 +547,7 @@ namespace TT.Domain.Procedures
             // check that the name has not been reserved by someone else with a different Membership Id
 
             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
-            ReservedName resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == player.FirstName + " " + player.LastName);
+            var resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == player.FirstName + " " + player.LastName);
 
             if (resNameGhost != null && resNameGhost.MembershipId != membershipId)
             {
@@ -555,7 +555,7 @@ namespace TT.Domain.Procedures
             }
 
             // assert that the form is a valid staring form
-            string x = player.FormName;
+            var x = player.FormName;
 
             if (!DomainRegistry.Repository.FindSingle(new IsBaseForm {form = x}))
             {
@@ -584,13 +584,13 @@ namespace TT.Domain.Procedures
             }
 
             // remove the old Player--Membership binding
-            Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
+            var oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
             int? oldCovId = null;
 
             if (oldplayer != null)
             {
-                TimeSpan rerollTime = RerollProcedures.GetTimeUntilReroll(oldplayer);
+                var rerollTime = RerollProcedures.GetTimeUntilReroll(oldplayer);
                 if (rerollTime.TotalSeconds > 0)
                 {
                     return "It is too soon for you to start again. Please try again in " + rerollTime.ToString(@"hh\:mm\:ss") + ".";
@@ -616,7 +616,7 @@ namespace TT.Domain.Procedures
 
                 // turn the item they player became permanent
                 IItemRepository itemRepo = new EFItemRepository();
-                Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
+                var oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                 oldItemMe.IsPermanent = true;
                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                 itemRepo.SaveItem(oldItemMe);
@@ -625,8 +625,8 @@ namespace TT.Domain.Procedures
 
 
             // clean the name entered by the player, capitalize first letter and downcase the rest
-            string cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
-            string cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
+            var cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
+            var cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
 
             player.FirstName = cleanFirstName;
             player.LastName = cleanLastName + generationTitle;
@@ -672,7 +672,7 @@ namespace TT.Domain.Procedures
 
             cmd.Location = LocationsStatics.GetRandomLocation();
 
-            int newPlayerId = DomainRegistry.Repository.Execute(cmd);
+            var newPlayerId = DomainRegistry.Repository.Execute(cmd);
            // playerRepo.SavePlayer(newplayer);
             RerollProcedures.AddRerollGeneration(cmd.UserId);
 
@@ -698,10 +698,10 @@ namespace TT.Domain.Procedures
             if (oldCovId != null && oldCovId > 0)
             {
                 ICovenantRepository covRepo = new EFCovenantRepository();
-                Covenant oldCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
+                var oldCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
 
                 // we need to regrab the new player from the repo again to get their Id
-                Player newmeFromDb = PlayerProcedures.GetPlayerWithExactName(cmd.FirstName + " " + cmd.LastName);
+                var newmeFromDb = PlayerProcedures.GetPlayerWithExactName(cmd.FirstName + " " + cmd.LastName);
 
                 if (oldCovenant != null && oldCovenant.LeaderId == oldplayer.Id)
                 {
@@ -715,7 +715,7 @@ namespace TT.Domain.Procedures
 
             if (player.InanimateForm != null)
             {
-                DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
+                var startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
                 if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
                 DomainRegistry.Repository.Execute(new ChangeForm
@@ -724,7 +724,7 @@ namespace TT.Domain.Procedures
                     FormName = startform.dbName
                 });
 
-                Player newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
+                var newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
                 newplayer.Health = 0;
                 newplayer.Mana = 0;
                 newplayer.ActionPoints = 120;
@@ -740,7 +740,7 @@ namespace TT.Domain.Procedures
         public static void SetCustomBase(Player player, string newFormName)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.OriginalForm = newFormName;
             playerRepo.SavePlayer(dbPlayer);
         }
@@ -752,7 +752,7 @@ namespace TT.Domain.Procedures
             if (player.Mobility != PvPStatics.MobilityFull)
             {
                 IItemRepository itemRepo = new EFItemRepository();
-                Item itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+                var itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
 
                 if (itemMe != null)
                 {
@@ -796,7 +796,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
 
             playerRepo.SavePlayer(dbPlayer);
@@ -805,7 +805,7 @@ namespace TT.Domain.Procedures
         public static void MovePlayer_InstantNoLog(int playerId, string newLocation)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.dbLocationName = newLocation;
             playerRepo.SavePlayer(player);
         }
@@ -813,7 +813,7 @@ namespace TT.Domain.Procedures
         public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             AIProcedures.MoveTo(dbPlayer, destinationDbName, 99999);
             dbPlayer.ActionPoints -= actionPointCost;
             dbPlayer.dbLocationName = destinationDbName;
@@ -827,17 +827,17 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            Location oldLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == user.dbLocationName);
-            Location newLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
+            var oldLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == user.dbLocationName);
+            var newLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
 
             user.dbLocationName = destination;
             playerRepo.SavePlayer(user);
 
-            string playerLogMessage = "";
-            string locationMessageOld = "";
-            string locationMessageNew = "";
+            var playerLogMessage = "";
+            var locationMessageOld = "";
+            var locationMessageNew = "";
 
             if (showDestinationInLocationLog)
             {
@@ -875,7 +875,7 @@ namespace TT.Domain.Procedures
         public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana, int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.ActionPoints -= actionPoints;
             player.Mana += mana;
             player.Health += health;
@@ -905,7 +905,7 @@ namespace TT.Domain.Procedures
         public static void ChangePlayerActionManaNoTimestamp(decimal actionPoints, decimal health, decimal mana, int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.ActionPoints -= actionPoints;
             player.Mana += mana;
             player.Health += health;
@@ -928,7 +928,7 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.Health -= amount;
 
             if (player.Health < 0)
@@ -945,8 +945,8 @@ namespace TT.Domain.Procedures
         public static string SearchLocation(Player player, string dbLocationName)
         {
 
-            Random rand = new Random();
-            double roll = rand.NextDouble() * 100;
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
 
             // check to see if this is a location that has a summonable boss.  If so, do the random roll for it
             if (BossSummonDictionary.GlobalBossSummonDictionary.ContainsKey(dbLocationName))
@@ -961,7 +961,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_Donna.SpawnDonna();
                             PvPWorldStatProcedures.Boss_StartDonna();
-                            string summontext = BossSummonDictionary.GetActivationText("Donna");
+                            var summontext = BossSummonDictionary.GetActivationText("Donna");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -973,7 +973,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_Valentine.SpawnValentine();
                             PvPWorldStatProcedures.Boss_StartValentine();
-                            string summontext = BossSummonDictionary.GetActivationText("Valentine");
+                            var summontext = BossSummonDictionary.GetActivationText("Valentine");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -984,7 +984,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_BimboBoss.SpawnBimboBoss();
                             PvPWorldStatProcedures.Boss_StartBimbo();
-                            string summontext = BossSummonDictionary.GetActivationText("BimboBoss");
+                            var summontext = BossSummonDictionary.GetActivationText("BimboBoss");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -995,7 +995,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_Thieves.SpawnThieves();
                             PvPWorldStatProcedures.Boss_StartThieves();
-                            string summontext = BossSummonDictionary.GetActivationText("Thieves");
+                            var summontext = BossSummonDictionary.GetActivationText("Thieves");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -1006,7 +1006,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_Sisters.SpawnSisters();
                             PvPWorldStatProcedures.Boss_StartSisters();
-                            string summontext = BossSummonDictionary.GetActivationText("Sisters");
+                            var summontext = BossSummonDictionary.GetActivationText("Sisters");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -1017,7 +1017,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_FaeBoss.SpawnFaeBoss();
                             PvPWorldStatProcedures.Boss_StartFaeBoss();
-                            string summontext = BossSummonDictionary.GetActivationText("FaeBoss");
+                            var summontext = BossSummonDictionary.GetActivationText("FaeBoss");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
@@ -1025,21 +1025,21 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+            var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
 
 
             // learn a new skill
             if (roll < 30)
             {
-                Random rand2 = new Random();
-                double roll2 = rand.NextDouble() * 100;
+                var rand2 = new Random();
+                var roll2 = rand.NextDouble() * 100;
 
                 IEnumerable<DbStaticSkill> eligibleSkills;
 
-                IEnumerable<StaticSkill> myKnownSkills = SkillProcedures.GetStaticSkillsOwnedByPlayer(player.Id);
+                var myKnownSkills = SkillProcedures.GetStaticSkillsOwnedByPlayer(player.Id);
 
                 // get all the skills that are found in THIS EXACT LOCATION
-                IEnumerable<DbStaticSkill> skillsAtThisLocation = SkillStatics.GetSkillsLearnedAtLocation(here.dbName);
+                var skillsAtThisLocation = SkillStatics.GetSkillsLearnedAtLocation(here.dbName);
                 eligibleSkills = from s in skillsAtThisLocation
                                  let sx = myKnownSkills.Select(r => r.dbName)
                                  where !sx.Contains(s.dbName)
@@ -1048,7 +1048,7 @@ namespace TT.Domain.Procedures
                 // get all the skills that are found in the region this location is in
                 if (!eligibleSkills.Any())
                 {
-                    IEnumerable<DbStaticSkill> skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
+                    var skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
                     eligibleSkills = from s in skillsAtThisRegion
                                      let sx = myKnownSkills.Select(r => r.dbName)
                                      where !sx.Contains(s.dbName)
@@ -1063,10 +1063,10 @@ namespace TT.Domain.Procedures
 
 
                 double max = eligibleSkills.Count();
-                int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+                var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
-                DbStaticSkill skillToLearn = eligibleSkills.ElementAt(randIndex);
-                string output = SkillProcedures.GiveSkillToPlayer(player.Id, skillToLearn);
+                var skillToLearn = eligibleSkills.ElementAt(randIndex);
+                var output = SkillProcedures.GiveSkillToPlayer(player.Id, skillToLearn);
 
                 return output;
 
@@ -1076,7 +1076,7 @@ namespace TT.Domain.Procedures
             // give the player some money (30-48)
             else if (roll < 48)
             {
-                decimal moneyamount = Convert.ToDecimal(1 + Math.Floor(rand.NextDouble() * 3));
+                var moneyamount = Convert.ToDecimal(1 + Math.Floor(rand.NextDouble() * 3));
                 GiveMoneyToPlayer(player, moneyamount);
                 return "You collected " + (int)moneyamount + " Arpeyjis that were scattered on the ground.";
 
@@ -1088,19 +1088,19 @@ namespace TT.Domain.Procedures
             {
 
 
-                List<DbStaticItem> eligibleItems = ItemStatics.GetAllFindableItems().ToList();
+                var eligibleItems = ItemStatics.GetAllFindableItems().ToList();
 
-                DbStaticItem justFound = ItemProcedures.GetRandomFindableItem();
+                var justFound = ItemProcedures.GetRandomFindableItem();
 
-                string output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
+                var output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
-                Player me = PlayerProcedures.GetPlayer(player.Id);
-                BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+                var me = PlayerProcedures.GetPlayer(player.Id);
+                var myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs))
                 {
-                    ItemViewModel randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.dbName == justFound.dbName).Last();
+                    var randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.dbName == justFound.dbName).Last();
                     ItemProcedures.DropItem(randomItem.dbItem.Id);
                     output += "  However, your arms are full and you dropped it.";
                 }
@@ -1120,7 +1120,7 @@ namespace TT.Domain.Procedures
             else if (roll <= 100)
             {
                 // see if there is an effect that can be found in this area
-                List<DbStaticEffect> effectsHere = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToList();
+                var effectsHere = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToList();
 
                 if (!effectsHere.Any())
                 {
@@ -1133,9 +1133,9 @@ namespace TT.Domain.Procedures
 
                     // give the player a random effect found here
                     double max = effectsHere.Count();
-                    int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+                    var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
-                    DbStaticEffect effectToGet = effectsHere.ElementAt(randIndex);
+                    var effectToGet = effectsHere.ElementAt(randIndex);
 
                     // assert that the player doesn't already have this effect.  IF they do, break out
                     if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName))
@@ -1160,9 +1160,9 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var players = playerRepo.Players;
 
-            DateTime cutoff = DateTime.UtcNow.AddHours(-1);
+            var cutoff = DateTime.UtcNow.AddHours(-1);
 
-            WorldStats output = new WorldStats
+            var output = new WorldStats
             {
                 TotalPlayers = players.Count(p => p.BotId == AIStatics.ActivePlayerBotId),
                 CurrentOnlinePlayers = players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff)
@@ -1187,7 +1187,7 @@ namespace TT.Domain.Procedures
             // must also be done there to keep new code consistent with legacy code.
 
             float xp = 11 * level * level + 0 + 89;
-            float leftover = xp % 10;
+            var leftover = xp % 10;
 
             xp = (float)Math.Round(xp / 10) * 10;
 
@@ -1207,7 +1207,7 @@ namespace TT.Domain.Procedures
 
         public static float GetWillpowerBaseByLevel(int level)
         {
-            float willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+            var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
             return willpowerBase;
         }
 
@@ -1220,7 +1220,7 @@ namespace TT.Domain.Procedures
         public static string GiveXP(Player player, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
             // decrease XP gain by 40% for psychos
             if (dbPlayer.BotId == AIStatics.PsychopathBotId)
@@ -1230,11 +1230,11 @@ namespace TT.Domain.Procedures
 
             dbPlayer.XP += amount;
 
-            string output = "";
+            var output = "";
 
             if (amount > 0)
             {
-                float xpNeeded = GetXPNeededForLevelUp(dbPlayer.Level);
+                var xpNeeded = GetXPNeededForLevelUp(dbPlayer.Level);
 
                 if ((float)dbPlayer.XP > xpNeeded)
                 {
@@ -1257,7 +1257,7 @@ namespace TT.Domain.Procedures
         public static void AddAttackCount(Player player, int amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate += amount;
             dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
             dbPlayer.LastActionTimestamp = DateTime.UtcNow;
@@ -1267,7 +1267,7 @@ namespace TT.Domain.Procedures
         public static void SetAttackCount(Player player, int amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate = amount;
             dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
             dbPlayer.LastActionTimestamp = DateTime.UtcNow;
@@ -1277,11 +1277,11 @@ namespace TT.Domain.Procedures
         public static void LogCombatTimestampsAndAddAttackCount(Player victim, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbvictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+            var dbvictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
            // dbvictim.LastCombatTimestamp = DateTime.UtcNow;
            // playerRepo.SavePlayer(dbvictim);
 
-            Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
+            var dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
             dbAttacker.LastCombatTimestamp = DateTime.UtcNow;
             dbAttacker.TimesAttackingThisUpdate++;
             dbvictim.LastCombatAttackedTimestamp = DateTime.UtcNow;
@@ -1297,7 +1297,7 @@ namespace TT.Domain.Procedures
         public static void SetTimestampToNow(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbplayer.LastActionTimestamp = DateTime.UtcNow;
             playerRepo.SavePlayer(dbplayer);
         }
@@ -1305,11 +1305,11 @@ namespace TT.Domain.Procedures
         public static void AddMinutesToTimestamp(Player player, int amount, bool PvPOnly)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
             dbplayer.LastActionTimestamp = dbplayer.LastActionTimestamp.AddMinutes(amount);
 
-            int timecompare = DateTime.Compare(dbplayer.LastActionTimestamp, DateTime.UtcNow);
+            var timecompare = DateTime.Compare(dbplayer.LastActionTimestamp, DateTime.UtcNow);
 
            // t1 is greater than t2, aka last action timestamp is larger than now
             if (timecompare > 0)
@@ -1332,7 +1332,7 @@ namespace TT.Domain.Procedures
         public static void LogIP(string ip, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
             dbPlayer.IpAddress = ip;
             playerRepo.SavePlayer(dbPlayer);
         }
@@ -1358,7 +1358,7 @@ namespace TT.Domain.Procedures
                 return false;
             }
 
-            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
             {
@@ -1377,7 +1377,7 @@ namespace TT.Domain.Procedures
                 return false;
             }
 
-            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
             {
@@ -1392,7 +1392,7 @@ namespace TT.Domain.Procedures
         public static Player GetPlayerWithExactName(string fullname)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            string cleanedName = fullname.ToLower();
+            var cleanedName = fullname.ToLower();
             return playerRepo.Players.FirstOrDefault(p => (p.FirstName + " " + p.LastName).ToLower() == cleanedName);
         }
 
@@ -1405,7 +1405,7 @@ namespace TT.Domain.Procedures
         public static void FlagPlayerForSuspicousActivity(int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.FlaggedForAbuse = !player.FlaggedForAbuse;
             playerRepo.SavePlayer(player);
         }
@@ -1435,14 +1435,14 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.ActionPoints -= (decimal)PvPStatics.SelfRestoreAPCost;
             dbPlayer.Mana -= (decimal)PvPStatics.SelfRestoreManaCost;
             dbPlayer.CleansesMeditatesThisRound++;
             playerRepo.SavePlayer(dbPlayer);
 
             ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
-            TFEnergy restoreEnergy = energyRepo.TFEnergies.FirstOrDefault(e => e.PlayerId == player.Id && e.FormName == "selfrestore");
+            var restoreEnergy = energyRepo.TFEnergies.FirstOrDefault(e => e.PlayerId == player.Id && e.FormName == "selfrestore");
 
             if (restoreEnergy==null)
             {
@@ -1456,12 +1456,12 @@ namespace TT.Domain.Procedures
                 };
             }
 
-            string output = "";
+            var output = "";
 
             // build up some restoration energy
 
-            float restoreAmount = PvPStatics.SelfRestoreBaseTFEnergyPerCast;
-            float restoreBonus = (float)Math.Floor(buffs.Allure() / 10 );
+            var restoreAmount = PvPStatics.SelfRestoreBaseTFEnergyPerCast;
+            var restoreBonus = (float)Math.Floor(buffs.Allure() / 10 );
             restoreAmount += restoreBonus;
 
             restoreEnergy.Amount += (decimal)restoreAmount;
@@ -1479,7 +1479,7 @@ namespace TT.Domain.Procedures
                 PlayerProcedures.InstantRestoreToBase(player);
                 PlayerProcedures.SetTimestampToNow(player);
                 energyRepo.DeleteTFEnergy(restoreEnergy.Id);
-                DbStaticForm newform = FormStatics.GetForm(dbPlayer.OriginalForm);
+                var newform = FormStatics.GetForm(dbPlayer.OriginalForm);
 
                 output += "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + newform.FriendlyName + "</b>!<span>";
 
@@ -1497,7 +1497,7 @@ namespace TT.Domain.Procedures
         }
 
         public static string DeMeditate(Player player, Player mindcontroller, BuffBox buffs) {
-            decimal meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + player.Level;
+            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + player.Level;
 
             if (meditateManaRestore < 0)
             {
@@ -1507,7 +1507,7 @@ namespace TT.Domain.Procedures
             PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id);
 
 
-            string result = "Your mind partially possessed by " + mindcontroller.GetFullName() +", your head swims with strange and random thoughts implanted by your agressor, shattering your focus and leaving your mana drained.";
+            var result = "Your mind partially possessed by " + mindcontroller.GetFullName() +", your head swims with strange and random thoughts implanted by your agressor, shattering your focus and leaving your mana drained.";
           
 
             PlayerLogProcedures.AddPlayerLog(player.Id, result, true);
@@ -1522,7 +1522,7 @@ namespace TT.Domain.Procedures
         public static void AddCleanseMeditateCount(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbplayer.CleansesMeditatesThisRound++;
             playerRepo.SavePlayer(dbplayer);
 
@@ -1531,7 +1531,7 @@ namespace TT.Domain.Procedures
         public static void SetCleanseMeditateCount(Player player, int amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbplayer.CleansesMeditatesThisRound = amount;
             playerRepo.SavePlayer(dbplayer);
 
@@ -1578,7 +1578,7 @@ namespace TT.Domain.Procedures
         public static void GiveMoneyToPlayer(Player player, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.Money += amount;
             playerRepo.SavePlayer(dbPlayer);
          
@@ -1592,15 +1592,15 @@ namespace TT.Domain.Procedures
 
         public static int RollDie(int size)
         {
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            int num = 1 + rand.Next(size);
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = 1 + rand.Next(size);
             return num;
         }
 
         public static string GivePlayerPvPScore(Player winner, Player loser, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == winner.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == winner.Id);
             dbPlayer.PvPScore += amount;
 
             playerRepo.SavePlayer(dbPlayer);
@@ -1610,7 +1610,7 @@ namespace TT.Domain.Procedures
         public static void GivePlayerPvPScore_NoLoser(Player player, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.PvPScore += amount;
             playerRepo.SavePlayer(dbPlayer);
         }
@@ -1618,7 +1618,7 @@ namespace TT.Domain.Procedures
         public static string RemovePlayerPvPScore(Player loser, Player attacker, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == loser.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == loser.Id);
 
             // impose a greater net loss to discourage swapping
             amount = Math.Floor(amount * 1.5M);
@@ -1657,7 +1657,7 @@ namespace TT.Domain.Procedures
             //    }
             //}
 
-            decimal scoreFromSteal = Math.Floor(victim.PvPScore / 3);
+            var scoreFromSteal = Math.Floor(victim.PvPScore / 3);
 
            // return scoreFromLevel + scoreFromSteal;
             return scoreFromSteal;
@@ -1666,7 +1666,7 @@ namespace TT.Domain.Procedures
         public static void SetNickname(string nickname, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
+            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
             if (nickname != null && nickname.Length > 0)
             {
@@ -1683,7 +1683,7 @@ namespace TT.Domain.Procedures
         public static void SetChatColor(Player player, string color)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player me = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var me = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             me.ChatColor = color;
             playerRepo.SavePlayer(me);
         }
@@ -1691,7 +1691,7 @@ namespace TT.Domain.Procedures
         public static void EnterDuel(int playerId, int duelId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             dbPlayer.InDuel = duelId;
             dbPlayer.LastActionTimestamp = DateTime.UtcNow;
             dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
@@ -1708,7 +1708,7 @@ namespace TT.Domain.Procedures
         public static void AddItemUses(int playerId, int amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             dbPlayer.ItemsUsedThisTurn += amount;
             playerRepo.SavePlayer(dbPlayer);
         }

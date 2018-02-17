@@ -169,7 +169,7 @@ namespace TT.Domain.ViewModels
         {
 
             float output = 0;
-            string substat = "HealthBonusPercent"; ;
+            var substat = "HealthBonusPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -191,7 +191,7 @@ namespace TT.Domain.ViewModels
         public decimal ManaBonusPercent()
         {
             float output = 0;
-            string substat = "ManaBonusPercent"; ;
+            var substat = "ManaBonusPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -213,7 +213,7 @@ namespace TT.Domain.ViewModels
         public decimal ExtraSkillCriticalPercent()
         {
             float output = 0;
-            string substat = "ExtraSkillCriticalPercent"; ;
+            var substat = "ExtraSkillCriticalPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -234,7 +234,7 @@ namespace TT.Domain.ViewModels
         public decimal HealthRecoveryPerUpdate()
         {
             float output = 0;
-            string substat = "HealthRecoveryPerUpdate"; ;
+            var substat = "HealthRecoveryPerUpdate"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -255,7 +255,7 @@ namespace TT.Domain.ViewModels
         public decimal ManaRecoveryPerUpdate()
         {
             float output = 0;
-            string substat = "ManaRecoveryPerUpdate"; ;
+            var substat = "ManaRecoveryPerUpdate"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -276,7 +276,7 @@ namespace TT.Domain.ViewModels
         public decimal SneakPercent()
         {
             float output = 0;
-            string substat = "SneakPercent"; ;
+            var substat = "SneakPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -297,7 +297,7 @@ namespace TT.Domain.ViewModels
         public decimal AntiSneakPercent()
         {
             float output = 0;
-            string substat = "AntiSneakPercent"; ;
+            var substat = "AntiSneakPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -315,7 +315,7 @@ namespace TT.Domain.ViewModels
         public decimal EvasionPercent()
         {
             float output = 0;
-            string substat = "EvasionPercent"; ;
+            var substat = "EvasionPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -336,7 +336,7 @@ namespace TT.Domain.ViewModels
         public decimal EvasionNegationPercent()
         {
             float output = 0;
-            string substat = "EvasionNegationPercent"; ;
+            var substat = "EvasionNegationPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -357,7 +357,7 @@ namespace TT.Domain.ViewModels
         public decimal MeditationExtraMana()
         {
             float output = 0;
-            string substat = "MeditationExtraMana"; ;
+            var substat = "MeditationExtraMana"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -378,7 +378,7 @@ namespace TT.Domain.ViewModels
         public decimal CleanseExtraHealth()
         {
             float output = 0;
-            string substat = "CleanseExtraHealth"; ;
+            var substat = "CleanseExtraHealth"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -399,7 +399,7 @@ namespace TT.Domain.ViewModels
         public decimal MoveActionPointDiscount()
         {
             float output = 0;
-            string substat = "MoveActionPointDiscount"; ;
+            var substat = "MoveActionPointDiscount"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -420,7 +420,7 @@ namespace TT.Domain.ViewModels
         public decimal SpellExtraTFEnergyPercent()
         {
             float output = 0;
-            string substat = "SpellExtraTFEnergyPercent"; ;
+            var substat = "SpellExtraTFEnergyPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -441,7 +441,7 @@ namespace TT.Domain.ViewModels
         public decimal SpellExtraHealthDamagePercent()
         {
             float output = 0;
-            string substat = "SpellExtraHealthDamagePercent"; ;
+            var substat = "SpellExtraHealthDamagePercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -462,7 +462,7 @@ namespace TT.Domain.ViewModels
         public decimal CleanseExtraTFEnergyRemovalPercent()
         {
             float output = 0;
-            string substat = "CleanseExtraTFEnergyRemovalPercent"; ;
+            var substat = "CleanseExtraTFEnergyRemovalPercent"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -483,7 +483,7 @@ namespace TT.Domain.ViewModels
         public decimal SpellMisfireChanceReduction()
         {
             float output = 0;
-            string substat = "SpellMisfireChanceReduction"; ;
+            var substat = "SpellMisfireChanceReduction"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -504,7 +504,7 @@ namespace TT.Domain.ViewModels
         public decimal SpellHealthDamageResistance()
         {
             float output = 0;
-            string substat = "SpellHealthDamageResistance"; ;
+            var substat = "SpellHealthDamageResistance"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -525,7 +525,7 @@ namespace TT.Domain.ViewModels
         public decimal SpellTFEnergyDamageResistance()
         {
             float output = 0;
-            string substat = "SpellTFEnergyDamageResistance"; ;
+            var substat = "SpellTFEnergyDamageResistance"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
@@ -546,7 +546,7 @@ namespace TT.Domain.ViewModels
         public decimal ExtraInventorySpace()
         {
             float output = 0;
-            string substat = "ExtraInventorySpace"; ;
+            var substat = "ExtraInventorySpace"; ;
 
             output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
             output += Perception() * BuffMap.BuffsMap[substat]["Perception"];

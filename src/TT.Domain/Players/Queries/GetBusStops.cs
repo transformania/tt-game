@@ -3,7 +3,6 @@ using System.Linq;
 using Highway.Data;
 using TT.Domain.Players.DTOs;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Players.Queries
 {
@@ -14,13 +13,13 @@ namespace TT.Domain.Players.Queries
         public override IEnumerable<BusStop> Execute(IDataContext context)
         {
 
-            List<BusStop> stops = new List<BusStop>();
-            foreach (string stop in LocationsStatics.BusStops)
+            var stops = new List<BusStop>();
+            foreach (var stop in LocationsStatics.BusStops)
             {
 
-                Location loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == stop);
+                var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == stop);
 
-                BusStop busStop = new BusStop
+                var busStop = new BusStop
                 {
                     Name = loc.Name,
                     dbName = loc.dbName

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
@@ -22,7 +20,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnLoremaster()
         {
-            PlayerDetail loremaster = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LoremasterBotId });
+            var loremaster = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LoremasterBotId });
 
             if (loremaster == null)
             {
@@ -46,7 +44,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player lorekeeperEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var lorekeeperEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 lorekeeperEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(lorekeeperEF));
                 playerRepo.SavePlayer(lorekeeperEF);
             }
@@ -55,12 +53,12 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void TransferBooksFromLindellaToLorekeeper(Player lorekeeper)
         {
-            Player lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
+            var lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
             IItemRepository itemRepo = new EFItemRepository();
 
-            List<Item> LindellasBooks = itemRepo.Items.Where(i => i.OwnerId == lindella.Id && (i.dbName.Contains("item_consumable_spellbook_") || i.dbName.Contains("item_consumable_tome-"))).ToList();
+            var LindellasBooks = itemRepo.Items.Where(i => i.OwnerId == lindella.Id && (i.dbName.Contains("item_consumable_spellbook_") || i.dbName.Contains("item_consumable_tome-"))).ToList();
 
-            foreach (Item i in LindellasBooks)
+            foreach (var i in LindellasBooks)
             {
                 var cmd = new ChangeItemOwner {ItemId = i.Id, OwnerId = lorekeeper.Id};
                 DomainRegistry.Repository.Execute(cmd);

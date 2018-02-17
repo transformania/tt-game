@@ -1,5 +1,4 @@
 ﻿@model TT.Web.ViewModels.MySkillsViewModel
-@using TT.Domain.Skills.DTOs
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "My Spells";
@@ -33,7 +32,7 @@
         </thead>
         <tbody>
             @{
-                foreach (SkillSourceFormSourceDetail skill in Model.skills.OrderBy(s => s.SkillSource.FriendlyName))
+                foreach (var skill in Model.skills.OrderBy(s => s.SkillSource.FriendlyName))
                 {
                     <tr>
                         <td class="playerMediatingNotification">

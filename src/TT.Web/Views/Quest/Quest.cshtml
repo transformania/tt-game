@@ -1,5 +1,4 @@
 ﻿@model TT.Domain.ViewModels.Quest.QuestPlayPageViewModel
-@using TT.Domain.Models
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
@@ -31,7 +30,7 @@
 <div id="textBody">
 
     @{
-        string rollResult = (string)TempData["RollResult"];
+        var rollResult = (string)TempData["RollResult"];
         if (rollResult != null)
         {
             
@@ -54,9 +53,9 @@
 
 @{
 
-    foreach (QuestConnection connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
+    foreach (var connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
     {
-        bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
+        var isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
         if (!isAvailable && connection.HideIfRequirementsNotMet)
         {
             // do nothing, option is unavailable and should be hidden

@@ -23,7 +23,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                MindControl editMe = context.MindControls.Find(MindControl.Id);
+                var editMe = context.MindControls.Find(MindControl.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Effect.Name;
@@ -38,7 +38,7 @@ namespace TT.Domain.Concrete
         public void DeleteMindControl(int id)
         {
 
-            MindControl dbEntry = context.MindControls.Find(id);
+            var dbEntry = context.MindControls.Find(id);
             if (dbEntry != null)
             {
                 context.MindControls.Remove(dbEntry);

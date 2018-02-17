@@ -13,7 +13,7 @@ namespace TT.Domain.Assets.Commands
 
         public override int Execute(IDataContext context)
         {
-            int result = 0;
+            var result = 0;
 
             ContextQuery = ctx =>
             {

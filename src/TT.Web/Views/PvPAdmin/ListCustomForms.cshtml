@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.ContributorCustomForm>
-    @using TT.Domain.Models
 
 <h2>List Custom Forms</h2>
 
@@ -21,7 +20,7 @@
     <tbody>
 
         @{
-            foreach (ContributorCustomForm c in Model.ToList())
+            foreach (var c in Model.ToList())
             {
                 <tr>
                     <td>@c.Id</td>

@@ -3,7 +3,6 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Statics
 {

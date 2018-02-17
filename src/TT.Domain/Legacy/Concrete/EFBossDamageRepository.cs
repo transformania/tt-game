@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                BossDamage editMe = context.BossDamages.Find(BossDamage.Id);
+                var editMe = context.BossDamages.Find(BossDamage.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = BossDamage.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteBossDamage(int id)
         {
 
-            BossDamage dbEntry = context.BossDamages.Find(id);
+            var dbEntry = context.BossDamages.Find(id);
             if (dbEntry != null)
             {
                 context.BossDamages.Remove(dbEntry);

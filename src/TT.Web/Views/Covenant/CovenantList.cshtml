@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.CovenantListItemViewModel>
-           @using TT.Domain.ViewModels
-            @using TT.Domain.Models
 @using TT.Web.CustomHtmlHelpers
 
 @section menu
@@ -11,7 +9,7 @@
 
 <div class="containerInner">
     @{
-        foreach (CovenantListItemViewModel c in Model.OrderByDescending(c => c.MemberCount))
+        foreach (var c in Model.OrderByDescending(c => c.MemberCount))
         {
             <div class="covListing">
                 <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>

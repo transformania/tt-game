@@ -41,7 +41,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestState dbQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+            var dbQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
 
             if (dbQuestState.QuestEnds==null)
             {
@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestConnection dbQuestConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == Id);
+            var dbQuestConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == Id);
 
             return dbQuestConnection;
         }
@@ -98,7 +98,7 @@ namespace TT.Domain.Procedures
                 return false;
             }
 
-            foreach (QuestPlayerStatus q in questPlayerStatuses)
+            foreach (var q in questPlayerStatuses)
             {
                 if (q.QuestId == questStart.Id)
                 {
@@ -125,9 +125,9 @@ namespace TT.Domain.Procedures
             // TODO:  Filter out quests that have a prerequisite not yet fulfilled
             if (questStart.PrerequisiteQuest > 0)
             {
-                bool preReqMet = false;
+                var preReqMet = false;
 
-                foreach (QuestPlayerStatus q in questPlayerStatuses)
+                foreach (var q in questPlayerStatuses)
                 {
                     if (q.QuestId == questStart.PrerequisiteQuest && q.Outcome==(int)QuestStatics.QuestOutcomes.Completed)
                     {
@@ -157,12 +157,12 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            List<QuestStart> quests = repo.QuestStarts.Where(s => s.Location == player.dbLocationName && s.IsLive).ToList();
-            List<QuestPlayerStatus> playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
-            List<QuestStart> eligibleQuests = new List<QuestStart>();
+            var quests = repo.QuestStarts.Where(s => s.Location == player.dbLocationName && s.IsLive).ToList();
+            var playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
+            var eligibleQuests = new List<QuestStart>();
 
 
-            foreach (QuestStart q in quests)
+            foreach (var q in quests)
             {
                 if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn)) {
                     eligibleQuests.Add(q);
@@ -175,11 +175,11 @@ namespace TT.Domain.Procedures
         public static IEnumerable<QuestStart> GetAllAvailableQuestsForPlayer(Player player, int turn)
         {
             IQuestRepository repo = new EFQuestRepository();
-            List<QuestStart> quests = repo.QuestStarts.Where(q => q.IsLive).ToList();
-            List<QuestPlayerStatus> playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
-            List<QuestStart> eligibleQuests = new List<QuestStart>();
+            var quests = repo.QuestStarts.Where(q => q.IsLive).ToList();
+            var playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
+            var eligibleQuests = new List<QuestStart>();
 
-            foreach (QuestStart q in quests)
+            foreach (var q in quests)
             {
                 if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn))
                 {
@@ -193,7 +193,7 @@ namespace TT.Domain.Procedures
         public static void PlayerBeginQuest(Player player, QuestStart questStart)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.InQuest = questStart.Id;
             dbPlayer.InQuestState = questStart.StartState;
             playerRepo.SavePlayer(dbPlayer);
@@ -203,7 +203,7 @@ namespace TT.Domain.Procedures
         public static void PlayerSetQuestState(Player player, QuestState questState)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.LastActionTimestamp = DateTime.UtcNow;
             dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
             dbPlayer.InQuestState = questState.Id;
@@ -212,15 +212,15 @@ namespace TT.Domain.Procedures
 
         public static string PlayerEndQuest(Player player, int endType)
         {
-            string message = "";
+            var message = "";
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.InQuest = 0;
             dbPlayer.InQuestState = 0;
             playerRepo.SavePlayer(dbPlayer);
 
             IQuestRepository questRepo = new EFQuestRepository();
-            QuestPlayerStatus questPlayerStatus = questRepo.QuestPlayerStatuses.FirstOrDefault(q => q.PlayerId == player.Id && q.QuestId == player.InQuest);
+            var questPlayerStatus = questRepo.QuestPlayerStatuses.FirstOrDefault(q => q.PlayerId == player.Id && q.QuestId == player.InQuest);
 
             if (questPlayerStatus == null)
             {
@@ -240,11 +240,11 @@ namespace TT.Domain.Procedures
             if (endType == (int)QuestStatics.QuestOutcomes.Completed)
             {
 
-                QuestState questState = GetQuestState(player.InQuestState);
+                var questState = GetQuestState(player.InQuestState);
 
                 decimal xpGain = 0;
 
-                foreach (QuestEnd q in questState.QuestEnds)
+                foreach (var q in questState.QuestEnds)
                 {
                     // experience gain
                     if (q.RewardType==(int)QuestStatics.RewardType.Experience)
@@ -255,7 +255,7 @@ namespace TT.Domain.Procedures
                     // item gain
                     else if (q.RewardType==(int)QuestStatics.RewardType.Item)
                     {
-                        DbStaticItem item = ItemStatics.GetStaticItem(q.RewardAmount);
+                        var item = ItemStatics.GetStaticItem(q.RewardAmount);
                         ItemProcedures.GiveNewItemToPlayer(player, item);
                         message += " < br/>You received a <b>" + item.FriendlyName + "</b>.";
                     }
@@ -263,7 +263,7 @@ namespace TT.Domain.Procedures
                     // effect gain
                     else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
                     {
-                        DbStaticEffect effect = EffectStatics.GetEffect(q.RewardAmount);
+                        var effect = EffectStatics.GetEffect(q.RewardAmount);
                         EffectProcedures.GivePerkToPlayer(effect.dbName, player.Id);
                         message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
                     }
@@ -271,7 +271,7 @@ namespace TT.Domain.Procedures
                     // spell gain
                     else if (q.RewardType == (int)QuestStatics.RewardType.Spell)
                     {
-                        DbStaticSkill spell = SkillStatics.GetStaticSkill(q.RewardAmount);
+                        var spell = SkillStatics.GetStaticSkill(q.RewardAmount);
                         SkillProcedures.GiveSkillToPlayer(player.Id, q.RewardAmount);
                         message += "<br/>You learned the spell <b>" + spell.FriendlyName + "</b>.";
                     }
@@ -287,8 +287,8 @@ namespace TT.Domain.Procedures
             }
 
             // delete all of the player's quest variables
-            List<QuestPlayerVariable> vars = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(player.InQuest, player.Id).ToList();
-            foreach (QuestPlayerVariable v in vars)
+            var vars = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(player.InQuest, player.Id).ToList();
+            foreach (var v in vars)
             {
                 questRepo.DeleteQuestPlayerVariable(v.Id);
             }
@@ -308,14 +308,14 @@ namespace TT.Domain.Procedures
         public static bool QuestConnectionIsAvailable(QuestConnection questConnection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
 
-            bool isAvailable = true;
+            var isAvailable = true;
 
             if (questConnection.QuestStateFromId < 0 || questConnection.QuestStateToId < 0)
             {
                 return false;
             }
 
-            foreach (QuestConnectionRequirement q in questConnection.QuestConnectionRequirements)
+            foreach (var q in questConnection.QuestConnectionRequirements)
             {
 
                 // skip all roll-based requirements; a player can always attempt a roll
@@ -328,7 +328,7 @@ namespace TT.Domain.Procedures
                 if (q.RequirementType == (int)QuestStatics.RequirementType.Variable)
                 {
 
-                    QuestPlayerVariable var = variables.FirstOrDefault(v => v.VariableName == q.VariabledbName);
+                    var var = variables.FirstOrDefault(v => v.VariableName == q.VariabledbName);
 
                     // variable has never been set, so fail
                     if (var == null)
@@ -367,7 +367,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // evaluate player buff/ability
-                float playerValue = GetValueFromType(q, buffs);
+                var playerValue = GetValueFromType(q, buffs);
                 isAvailable = ExpressionIsTrue(playerValue, q);
                 if (!isAvailable)
                 {
@@ -433,9 +433,9 @@ namespace TT.Domain.Procedures
         private static bool ExpressionIsTrue(float playerValue, QuestConnectionRequirement q)
         {
             
-            float requirementValue = Convert.ToSingle(q.RequirementValue);
+            var requirementValue = Convert.ToSingle(q.RequirementValue);
 
-            bool isAvailable = false;
+            var isAvailable = false;
 
             if (q.Operator == (int)QuestStatics.Operator.Less_Than)
             {
@@ -485,19 +485,19 @@ namespace TT.Domain.Procedures
         public static string GetRequirementsAsString(QuestConnection q, BuffBox buffs)
         {
 
-            string output = "";
+            var output = "";
 
             if (!q.QuestConnectionRequirements.Any())
             {
                 return output;
             }
 
-            int len = q.QuestConnectionRequirements.Count();
-            int i = 0;
+            var len = q.QuestConnectionRequirements.Count();
+            var i = 0;
 
             output += "[";
 
-            foreach (QuestConnectionRequirement qs in q.QuestConnectionRequirements.ToList())
+            foreach (var qs in q.QuestConnectionRequirements.ToList())
             {
                 // don't print anything for variables or gender requirements
                 if (qs.RequirementType == (int)QuestStatics.RequirementType.Variable || 
@@ -510,9 +510,9 @@ namespace TT.Domain.Procedures
                 // random roll, calculate % chance and display that
                 if (qs.IsRandomRoll)
                 {
-                    float playerValue = GetValueFromType(qs, buffs);
+                    var playerValue = GetValueFromType(qs, buffs);
 
-                    double chance = Math.Round(qs.RollModifier * playerValue + qs.RollOffset,1);
+                    var chance = Math.Round(qs.RollModifier * playerValue + qs.RollOffset,1);
 
                     if (chance < 0)
                     {
@@ -570,10 +570,10 @@ namespace TT.Domain.Procedures
 
 
             // replace [img]filename[/img] with proper html image links
-            Match match = Regex.Match(input, ImageRegexPattern);
-            string imgName = match.Groups[1].Value;
+            var match = Regex.Match(input, ImageRegexPattern);
+            var imgName = match.Groups[1].Value;
 
-            Regex rgx = new Regex(ImageRegexPattern);
+            var rgx = new Regex(ImageRegexPattern);
             input = Regex.Replace(input, ImageRegexPattern, "<img src='/Images/PvP/quests/" + imgName + "' />");
 
             return input;
@@ -582,15 +582,15 @@ namespace TT.Domain.Procedures
         public static void PlayerClearAllQuestStatuses(Player player)
         {
             IQuestRepository repo = new EFQuestRepository();
-            List<QuestPlayerStatus> statuses = repo.QuestPlayerStatuses.Where(q => q.PlayerId == player.Id).ToList();
+            var statuses = repo.QuestPlayerStatuses.Where(q => q.PlayerId == player.Id).ToList();
 
-            foreach (QuestPlayerStatus s in statuses)
+            foreach (var s in statuses)
             {
                 repo.DeleteQuestPlayerStatus(s.Id);
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.InQuest = 0;
             dbPlayer.InQuestState = 0;
             playerRepo.SavePlayer(dbPlayer);
@@ -600,9 +600,9 @@ namespace TT.Domain.Procedures
         public static Player ProcessQuestStatePreactions(Player player, QuestState questState)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            foreach (QuestStatePreaction p in questState.QuestStatePreactions.ToList())
+            foreach (var p in questState.QuestStatePreactions.ToList())
             {
 
                 // try to parse the value from string into number, if it fails, default to 0
@@ -625,7 +625,7 @@ namespace TT.Domain.Procedures
                 // move player
                 else if (p.ActionType == (int)QuestStatics.PreactionType.MoveToLocation)
                 {
-                    Location loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == p.ActionValue);
+                    var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == p.ActionValue);
                     if (loc != null)
                     {
                         dbPlayer.dbLocationName = p.ActionValue;
@@ -691,19 +691,19 @@ namespace TT.Domain.Procedures
         public static bool RollForQuestConnection(QuestConnection connection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
            
-            foreach(QuestConnectionRequirement q in connection.QuestConnectionRequirements)
+            foreach(var q in connection.QuestConnectionRequirements)
             {
                 if (!q.IsRandomRoll)
                 {
                     continue;
                 }
 
-                float playerValue = GetValueFromType(q, buffs);
+                var playerValue = GetValueFromType(q, buffs);
 
-                float chance = q.RollModifier * playerValue + q.RollOffset;
+                var chance = q.RollModifier * playerValue + q.RollOffset;
 
-                Random r = new Random();
-                double roll = r.NextDouble()*100;
+                var r = new Random();
+                var roll = r.NextDouble()*100;
 
                 if (roll > chance)
                 {
@@ -718,7 +718,7 @@ namespace TT.Domain.Procedures
         public static void SetQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)
         {
             IQuestRepository repo = new EFQuestRepository();
-            QuestPlayerVariable variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+            var variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
 
             if (variable==null)
             {
@@ -737,7 +737,7 @@ namespace TT.Domain.Procedures
         public static void EditQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)
         {
             IQuestRepository repo = new EFQuestRepository();
-            QuestPlayerVariable variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+            var variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
 
             if (variable == null)
             {
@@ -750,9 +750,9 @@ namespace TT.Domain.Procedures
                 };
             }
 
-            float oldValueAsFloat = float.Parse(variable.VariableValue);
-            float updateValueAsFloat =  float.Parse(variableValue);
-            float endValueAsFloat = oldValueAsFloat + updateValueAsFloat;
+            var oldValueAsFloat = float.Parse(variable.VariableValue);
+            var updateValueAsFloat =  float.Parse(variableValue);
+            var endValueAsFloat = oldValueAsFloat + updateValueAsFloat;
 
             variable.VariableValue = endValueAsFloat.ToString();
 
@@ -789,12 +789,12 @@ namespace TT.Domain.Procedures
         public static List<string> GetAllPossibleVariablesNamesInQuest(int questId)
         {
 
-            List<string> output = new List<string>();
+            var output = new List<string>();
 
             IQuestRepository repo = new EFQuestRepository();
             IEnumerable<QuestStatePreaction> allPreactions = repo.QuestStatePreactions.Where(q => q.QuestId == questId);
 
-            foreach(QuestStatePreaction p in allPreactions)
+            foreach(var p in allPreactions)
             {
                 if (p.ActionType == (int)QuestStatics.PreactionType.Variable)
                 {
@@ -804,7 +804,7 @@ namespace TT.Domain.Procedures
 
             IEnumerable<QuestConnectionRequirement> allRequirements = repo.QuestConnectionRequirements.Where(q => q.QuestId == questId);
 
-            foreach (QuestConnectionRequirement p in allRequirements)
+            foreach (var p in allRequirements)
             {
                 if (p.RequirementType == (int)QuestStatics.RequirementType.Variable)
                 {
@@ -826,7 +826,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            foreach (QuestPlayerVariable q in repo.QuestPlayerVariablees.Where(v => v.PlayerId == playerId && v.QuestId == questId).ToList())
+            foreach (var q in repo.QuestPlayerVariablees.Where(v => v.PlayerId == playerId && v.QuestId == questId).ToList())
             {
                 repo.DeleteQuestPlayerVariable(q.Id);
             }

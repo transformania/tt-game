@@ -107,17 +107,17 @@ namespace TT.Domain.Procedures
 
             // see what perks the player already has
             IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent);
-            List<string> playerEffectsString = playerEffects.Select(e => e.dbName).ToList();
+            var playerEffectsString = playerEffects.Select(e => e.dbName).ToList();
 
 
-             List<DbStaticEffect> availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk).ToList();
+             var availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk).ToList();
 
-            List<DbStaticEffect> availablePerksFinal = new List<DbStaticEffect>();
+            var availablePerksFinal = new List<DbStaticEffect>();
 
-            foreach (DbStaticEffect effect in availablePerks)
+            foreach (var effect in availablePerks)
             {
 
-                bool available = true;
+                var available = true;
 
                 // if the player already has this effect, it is not available
                 if (playerEffectsString.Contains(effect.dbName))
@@ -144,7 +144,7 @@ namespace TT.Domain.Procedures
         public static string GivePerkToPlayer(string perkName, int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             return GivePerkToPlayer(perkName, dbPlayer);
         }
 
@@ -154,7 +154,7 @@ namespace TT.Domain.Procedures
             IEffectRepository effectRepo = new EFEffectRepository();
             
             // see if this player already has this perk.  If so, reject it
-            Effect possibleSamePerk = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var possibleSamePerk = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
 
             if (possibleSamePerk != null)
             {
@@ -162,7 +162,7 @@ namespace TT.Domain.Procedures
             }
 
             // grab the static part of this effect
-            DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);
+            var effectPlus = EffectStatics.GetStaticEffect2(perkName);
 
 
             if (effectPlus.isLevelUpPerk)
@@ -176,7 +176,7 @@ namespace TT.Domain.Procedures
                 // assert that the perk doesn't require a prerequisite that the player does not yet have
                 if (!effectPlus.PreRequesite.IsNullOrEmpty())
                 {
-                    Effect requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectPlus.PreRequesite);
+                    var requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectPlus.PreRequesite);
                     if (requiredPrerequisite == null)
                     {
                         return "This perk requires the <b>" + EffectStatics.GetStaticEffect2(effectPlus.PreRequesite).FriendlyName + "</b> prerequisite perk which you do not have.";
@@ -215,12 +215,12 @@ namespace TT.Domain.Procedures
             // this is a level up perk so just return a simple message
             if (cmd.IsPermanent)
             {
-                string logmessage = "You have gained the perk " + effectPlus.FriendlyName + ".";
+                var logmessage = "You have gained the perk " + effectPlus.FriendlyName + ".";
                 PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);
 
                 //remove an unused perk from the player
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                Player person = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+                var person = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
                 person.UnusedLevelUpPerks--;
                 playerRepo.SavePlayer(person);
 
@@ -232,7 +232,7 @@ namespace TT.Domain.Procedures
             else
             {
 
-                string logmessage = "";
+                var logmessage = "";
 
                 if (player.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                 {
@@ -259,7 +259,7 @@ namespace TT.Domain.Procedures
         {
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            Effect effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
             effectRepo.DeleteEffect(effect.Id);
         }
 
@@ -267,7 +267,7 @@ namespace TT.Domain.Procedures
         {
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            Effect effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
             effect.Duration = 0;
             effectRepo.SaveEffect(effect);
         }
@@ -276,9 +276,9 @@ namespace TT.Domain.Procedures
         {
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            List<Effect> effectsToDelete = effectRepo.Effects.Where(e => e.OwnerId == playerId).ToList();
+            var effectsToDelete = effectRepo.Effects.Where(e => e.OwnerId == playerId).ToList();
 
-            foreach (Effect e in effectsToDelete)
+            foreach (var e in effectsToDelete)
             {
                 effectRepo.DeleteEffect(e.Id);
             }
@@ -289,7 +289,7 @@ namespace TT.Domain.Procedures
 
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            Effect possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectName);
+            var possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectName);
 
             if (possibleEffect == null)
             {

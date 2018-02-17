@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                TFMessage editMe = context.TFMessages.Find(TFMessage.Id);
+                var editMe = context.TFMessages.Find(TFMessage.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = TFMessage.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteTFMessage(int id)
         {
 
-            TFMessage dbEntry = context.TFMessages.Find(id);
+            var dbEntry = context.TFMessages.Find(id);
             if (dbEntry != null)
             {
                 context.TFMessages.Remove(dbEntry);

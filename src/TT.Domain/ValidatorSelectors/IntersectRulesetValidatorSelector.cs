@@ -24,7 +24,7 @@ namespace TT.Domain.ValidatorSelectors
         public bool CanExecute(IValidationRule rule, string propertyPath, ValidationContext context)
         {
             // if RuleSet is empty, it will be considered default
-            RuleSets ruleSets = string.IsNullOrEmpty(rule.RuleSet) ? RuleSets.Default : (RuleSets) Enum.Parse(typeof(RuleSets), rule.RuleSet);
+            var ruleSets = string.IsNullOrEmpty(rule.RuleSet) ? RuleSets.Default : (RuleSets) Enum.Parse(typeof(RuleSets), rule.RuleSet);
 
             if (ruleSets == RuleSets.Default)
             {

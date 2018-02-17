@@ -13,7 +13,7 @@
 <div class="containerInner">
     <ul>
         @{
-            foreach (TT.Domain.Models.PlayerLog log in Model)
+            foreach (var log in Model)
             {
                 <li>@Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
             }

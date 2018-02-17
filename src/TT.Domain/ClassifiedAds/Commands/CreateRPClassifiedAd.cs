@@ -27,7 +27,7 @@ namespace TT.Domain.ClassifiedAds.Commands
         /// <exception cref="RPClassifiedAdInvalidInputException"></exception>
         public override int Execute(IDataContext context)
         {
-            int result = 0;
+            var result = 0;
 
             ContextQuery = ctx =>
             {

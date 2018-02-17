@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                AchievementBadge editMe = context.AchievementBadges.Find(AchievementBadge.Id);
+                var editMe = context.AchievementBadges.Find(AchievementBadge.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = AchievementBadge.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteAchievementBadge(int id)
         {
 
-            AchievementBadge dbEntry = context.AchievementBadges.Find(id);
+            var dbEntry = context.AchievementBadges.Find(id);
             if (dbEntry != null)
             {
                 context.AchievementBadges.Remove(dbEntry);

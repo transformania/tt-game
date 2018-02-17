@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
-@using TT.Domain.ViewModels
 
 @section menu
 {
@@ -11,7 +10,7 @@
     <p>Through experience this player gained some unique traits that help them in their adventures.</p>
 
     @{
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent))
+        foreach (var e in Model.Where(e => e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
@@ -26,7 +25,7 @@
 
     @{
 
-        foreach (EffectViewModel2 e in Model.Where(e => !e.dbEffect.IsPermanent))
+        foreach (var e in Model.Where(e => !e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>

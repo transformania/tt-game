@@ -18,7 +18,7 @@ namespace TT.Domain.Procedures
         public static void StopUpdatingWorld()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.WorldIsUpdating = false;
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -26,7 +26,7 @@ namespace TT.Domain.Procedures
         public static void UpdateWorldTurnCounter_UpdateDone()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.WorldIsUpdating = false;
             stat.LastUpdateTimestamp_Finished = DateTime.UtcNow;
             worldStatRepo.SavePvPWorldStat(stat);
@@ -49,7 +49,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartDonna()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Donna = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -57,7 +57,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndDonna()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Donna = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -68,7 +68,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartValentine()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Valentine = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -76,7 +76,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndValentine()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Valentine = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -88,7 +88,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartBimbo()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Bimbo = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -96,7 +96,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndBimbo()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Bimbo = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -109,7 +109,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartThieves()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Thief = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -117,7 +117,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndThieves()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Thief = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -129,7 +129,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartSisters()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Sisters = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -137,7 +137,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndSisters()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Sisters = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -150,7 +150,7 @@ namespace TT.Domain.Procedures
         public static void Boss_StartFaeBoss()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Faeboss = "active";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -158,7 +158,7 @@ namespace TT.Domain.Procedures
         public static void Boss_EndFaeBoss()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             stat.Boss_Faeboss = "completed";
             worldStatRepo.SavePvPWorldStat(stat);
         }
@@ -168,7 +168,7 @@ namespace TT.Domain.Procedures
         public static bool IsAnyBossActive()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            var stat = worldStatRepo.PvPWorldStats.First();
             return stat.AnyBossIsActive();
         }
 

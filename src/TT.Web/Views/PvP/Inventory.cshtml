@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.InventoryBonusesViewModel
-@using TT.Domain.ViewModels
-@using TT.Domain.Statics
 @{
     ViewBag.Title = "Inventory";
 }
@@ -13,9 +11,9 @@
 
 @{
 
-    int HealthWidth = Convert.ToInt32(Model.Health / Model.MaxHealth * 100);
+    var HealthWidth = Convert.ToInt32(Model.Health / Model.MaxHealth * 100);
     if (HealthWidth > 100) { HealthWidth = 100; }
-    int ManaWidth = Convert.ToInt32(Model.Mana / Model.MaxMana * 100);
+    var ManaWidth = Convert.ToInt32(Model.Mana / Model.MaxMana * 100);
     if (ManaWidth > 100) { ManaWidth = 100; }
 
 }

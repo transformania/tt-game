@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.Player>
-@using TT.Domain.Models
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Procedures
@@ -39,10 +38,10 @@
         <tbody>
 
             @{
-                int rank = 1;
+                var rank = 1;
             }
 
-            @foreach (Player p in Model.OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level))
+            @foreach (var p in Model.OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level))
             {
                 <tr>
                     <td style="width:15px">

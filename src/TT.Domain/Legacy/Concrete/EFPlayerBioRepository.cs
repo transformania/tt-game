@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                PlayerBio editMe = context.PlayerBios.Find(PlayerBio.Id);
+                var editMe = context.PlayerBios.Find(PlayerBio.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = PlayerBio.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeletePlayerBio(int id)
         {
 
-            PlayerBio dbEntry = context.PlayerBios.Find(id);
+            var dbEntry = context.PlayerBios.Find(id);
             if (dbEntry != null)
             {
                 context.PlayerBios.Remove(dbEntry);

@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                BlacklistEntry editMe = context.BlacklistEntries.Find(BlacklistEntry.Id);
+                var editMe = context.BlacklistEntries.Find(BlacklistEntry.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = BlacklistEntry.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteBlacklistEntry(int id)
         {
 
-            BlacklistEntry dbEntry = context.BlacklistEntries.Find(id);
+            var dbEntry = context.BlacklistEntries.Find(id);
             if (dbEntry != null)
             {
                 context.BlacklistEntries.Remove(dbEntry);

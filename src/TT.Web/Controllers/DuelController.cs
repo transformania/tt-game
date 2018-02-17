@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -22,8 +21,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult IssueChallenge(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -48,14 +47,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has not been in recent combat
-            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
             if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
             {
                 TempData["Error"] = "You must wait another " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes without being in combat in order to challenge this opponent to a duel.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player duelTarget = PlayerProcedures.GetPlayer(id);
+            var duelTarget = PlayerProcedures.GetPlayer(id);
 
             // assert target is not a bot
             if (duelTarget.BotId != AIStatics.ActivePlayerBotId)
@@ -110,7 +109,7 @@ namespace TT.Web.Controllers
             }
 
             // assert both players are in an okay game mode
-            bool weAreFriends = FriendProcedures.PlayerIsMyFriend(me, duelTarget);
+            var weAreFriends = FriendProcedures.PlayerIsMyFriend(me, duelTarget);
             if (!weAreFriends)
             {
                 // player is in PvP; target is not
@@ -140,7 +139,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AcceptChallenge(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
 
             if (PvPStatics.AnimateUpdateInProgress)
             {
@@ -149,8 +148,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Duel duel = DuelProcedures.GetDuel(id);
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var duel = DuelProcedures.GetDuel(id);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert duel challenge is not too old
             if (duel.ProposalTurn > PvPWorldStatProcedures.GetWorldTurnNumber() + 1)
@@ -167,12 +166,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            List<PlayerFormViewModel> participants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
-            string duelLocation = participants.First().Player.dbLocationName;
+            var participants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+            var duelLocation = participants.First().Player.dbLocationName;
 
-            List<string> errorMessages = new List<string>();
+            var errorMessages = new List<string>();
 
-            foreach (PlayerFormViewModel p in participants)
+            foreach (var p in participants)
             {
 
                 // assert player is not a bot... somehow
@@ -212,7 +211,7 @@ namespace TT.Web.Controllers
                 }
 
                 // assert all players are in an okay game mode
-                bool weAreFriends = FriendProcedures.PlayerIsMyFriend(me, p.Player.ToDbPlayer());
+                var weAreFriends = FriendProcedures.PlayerIsMyFriend(me, p.Player.ToDbPlayer());
                 if (!weAreFriends)
                 {
                     // player is in PvP; target is not
@@ -229,7 +228,7 @@ namespace TT.Web.Controllers
                 }
 
                 // assert that the player has not been in recent combat
-                double minutesAgo = Math.Abs(Math.Floor(p.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+                var minutesAgo = Math.Abs(Math.Floor(p.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                 if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
                 {
                     errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must wait another " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes without being in combat in order accept this challenge to a duel.");
@@ -246,8 +245,8 @@ namespace TT.Web.Controllers
 
             if (errorMessages.Any())
             {
-                string errors = "";
-                foreach (string s in errorMessages)
+                var errors = "";
+                foreach (var s in errorMessages)
                 {
                     errors += s + "<br>";
                 }
@@ -263,16 +262,16 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult DuelDetail(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Duel duel = DuelProcedures.GetDuel(id);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var duel = DuelProcedures.GetDuel(id);
             if (me.InDuel != duel.Id)
             {
                 TempData["Error"] = "You are not in this duel.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            DuelPlayersViewModel output = new DuelPlayersViewModel
+            var output = new DuelPlayersViewModel
             {
                 Duel = duel,
                 Combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id)
@@ -286,8 +285,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AdvanceTurn()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.InDuel <= 0)
             {
@@ -295,13 +294,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Duel duel = DuelProcedures.GetDuel(me.InDuel);
+            var duel = DuelProcedures.GetDuel(me.InDuel);
 
-            List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+            var combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
 
             if (!PvPStatics.ChaosMode)
             {
-                foreach (PlayerFormViewModel p in combatants)
+                foreach (var p in combatants)
                 {
                     if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
                     {
@@ -311,11 +310,11 @@ namespace TT.Web.Controllers
                 }
             }
 
-            foreach (PlayerFormViewModel p in combatants)
+            foreach (var p in combatants)
             {
                 PlayerProcedures.SetAttackCount(p.Player.ToDbPlayer(), 0);
                 PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
-                string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
+                var message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
                 NoticeService.PushNotice(p.Player.Id, message, NoticeService.PushType__PlayerLog);
             }
@@ -329,8 +328,8 @@ namespace TT.Web.Controllers
         public virtual ActionResult DuelTimeout()
         {
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.InDuel <= 0)
             {
@@ -338,9 +337,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Duel duel = DuelProcedures.GetDuel(me.InDuel);
+            var duel = DuelProcedures.GetDuel(me.InDuel);
 
-            int turnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
+            var turnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
 
             if (turnsLeft > 0)
             {

@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using TT.Domain.Identity.CommandRequests;
 using TT.Domain.Identity.PropertyValidators;
-using TT.Domain.Services;
 using TT.Web.Attributes;
-using TT.Web.Services;
 
 namespace TT.Web.Controllers.API.Admin
 {

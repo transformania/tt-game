@@ -31,7 +31,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Skill editMe = context.Skills.Find(Skill.Id);
+                var editMe = context.Skills.Find(Skill.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Skill.Name;
@@ -46,7 +46,7 @@ namespace TT.Domain.Concrete
         public void DeleteSkill(int id)
         {
 
-            Skill dbEntry = context.Skills.Find(id);
+            var dbEntry = context.Skills.Find(id);
             if (dbEntry != null)
             {
                 context.Skills.Remove(dbEntry);

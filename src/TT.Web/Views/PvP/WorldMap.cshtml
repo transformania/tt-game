@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.MapViewModel
-
-@using TT.Domain.ViewModels
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "World Map";
@@ -21,7 +19,7 @@
         decimal minX = LocationsStatics.LocationList.GetLocation.Select(l => l.X).Min();
         decimal maxY = LocationsStatics.LocationList.GetLocation.Select(l => l.Y).Max();
 
-        foreach (Location loc in Model.Locations)
+        foreach (var loc in Model.Locations)
         {
 
             posX = ((loc.X - minX) * 100 + 10).ToString() + "px";

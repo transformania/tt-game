@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TT.Domain.Messages.DTOs;
-using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
 {

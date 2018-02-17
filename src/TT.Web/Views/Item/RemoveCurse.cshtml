@@ -11,7 +11,7 @@
     <p>You can use your Hex-B-Gone Moisturizer to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
 
     @{
-        foreach (TT.Domain.ViewModels.EffectViewModel2 effect in Model.OrderBy(x => x.Effect.FriendlyName))
+        foreach (var effect in Model.OrderBy(x => x.Effect.FriendlyName))
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
             <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.dbName, (int)ViewBag.itemToUseId))">Remove this curse</a>

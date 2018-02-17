@@ -15,10 +15,10 @@ namespace TT.Domain.Procedures
 
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestStart questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == input.Id);
-            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.QuestId == input.Id);
+            var questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == input.Id);
+            var questState = repo.QuestStates.FirstOrDefault(q => q.QuestId == input.Id);
 
-            bool newStart = false;
+            var newStart = false;
 
             if (questStart == null)
             {
@@ -63,7 +63,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == input.Id);
+            var questState = repo.QuestStates.FirstOrDefault(q => q.Id == input.Id);
 
             if (questState == null)
             {
@@ -95,11 +95,11 @@ namespace TT.Domain.Procedures
         public static void DeleteQuestState(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
-            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+            var questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
 
             // dangle any from connections connecting TO this state
-            List<QuestConnection> connections = repo.QuestConnections.Where(q => q.QuestStateToId == questState.Id).ToList();
-            foreach(QuestConnection q in connections)
+            var connections = repo.QuestConnections.Where(q => q.QuestStateToId == questState.Id).ToList();
+            foreach(var q in connections)
             {
                 q.QuestStateToId = -1;
                 repo.SaveQuestConnection(q);
@@ -107,22 +107,22 @@ namespace TT.Domain.Procedures
 
             // dangle any from connections connecting TO this state
             connections = repo.QuestConnections.Where(q => q.QuestStateFromId == questState.Id).ToList();
-            foreach (QuestConnection q in connections)
+            foreach (var q in connections)
             {
                 q.QuestStateFromId = -1;
                 repo.SaveQuestConnection(q);
             }
 
             // delete any ends on this quest state
-            List<QuestEnd> ends = repo.QuestEnds.Where(q => q.QuestStateId.Id == questState.Id).ToList();
-            foreach (QuestEnd q in ends)
+            var ends = repo.QuestEnds.Where(q => q.QuestStateId.Id == questState.Id).ToList();
+            foreach (var q in ends)
             {
                 repo.DeleteQuestEnd(q.Id);
             }
 
             // delete any quest state preactions on this quest state
-            List<QuestStatePreaction> preactions = repo.QuestStatePreactions.Where(q => q.QuestStateId.Id == questState.Id).ToList();
-            foreach (QuestStatePreaction q in preactions)
+            var preactions = repo.QuestStatePreactions.Where(q => q.QuestStateId.Id == questState.Id).ToList();
+            foreach (var q in preactions)
             {
                 repo.DeleteQuestStatePreaction(q.Id);
             }
@@ -136,7 +136,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestConnection questConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == input.Id);
+            var questConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == input.Id);
 
             if (questConnection == null)
             {
@@ -169,7 +169,7 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestConnectionRequirement QuestConnectionRequirement = repo.QuestConnectionRequirements.FirstOrDefault(q => q.Id == input.Id);
+            var QuestConnectionRequirement = repo.QuestConnectionRequirements.FirstOrDefault(q => q.Id == input.Id);
            // QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
 
             if (QuestConnectionRequirement == null)
@@ -202,8 +202,8 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == input.Id);
-            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
+            var questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == input.Id);
+            var dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
 
             if (questEnd == null)
             {
@@ -226,8 +226,8 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestStatePreaction questStatePreaction = repo.QuestStatePreactions.FirstOrDefault(q => q.Id == input.Id);
-            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
+            var questStatePreaction = repo.QuestStatePreactions.FirstOrDefault(q => q.Id == input.Id);
+            var dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
 
             if (questStatePreaction == null)
             {
@@ -273,9 +273,9 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            List<QuestConnectionRequirement> reqs = repo.QuestConnectionRequirements.Where(q => q.QuestConnectionId.Id == id).ToList();
+            var reqs = repo.QuestConnectionRequirements.Where(q => q.QuestConnectionId.Id == id).ToList();
 
-            foreach(QuestConnectionRequirement q in reqs)
+            foreach(var q in reqs)
             {
                 repo.DeleteQuestConnectionRequirement(q.Id);
             }
@@ -286,7 +286,7 @@ namespace TT.Domain.Procedures
         public static void MarkQuestAsLive(int Id, bool live)
         {
             IQuestRepository repo = new EFQuestRepository();
-            QuestStart dbQuestStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
+            var dbQuestStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
             dbQuestStart.IsLive = live;
             repo.SaveQuestStart(dbQuestStart);
         }
@@ -312,7 +312,7 @@ namespace TT.Domain.Procedures
         public static void LogQuestWriterAction(string username, int questId, string logText)
         {
             IQuestRepository repo = new EFQuestRepository();
-            QuestWriterLog log = new QuestWriterLog
+            var log = new QuestWriterLog
             {
                 User = username,
                 Text = logText,

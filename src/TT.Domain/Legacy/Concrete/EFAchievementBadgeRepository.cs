@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Achievement editMe = context.Achievements.Find(Achievement.Id);
+                var editMe = context.Achievements.Find(Achievement.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Achievement.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteAchievement(int id)
         {
 
-            Achievement dbEntry = context.Achievements.Find(id);
+            var dbEntry = context.Achievements.Find(id);
             if (dbEntry != null)
             {
                 context.Achievements.Remove(dbEntry);

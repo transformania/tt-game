@@ -16,10 +16,10 @@ namespace TT.Domain.Procedures
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
-            Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+            var dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
+            var dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id && m.Type == type);
+            var mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id && m.Type == type);
 
             if (mc == null)
             {
@@ -55,15 +55,15 @@ namespace TT.Domain.Procedures
         public static IEnumerable<MindControlViewModel> GetAllMindControlVMsWithPlayer(Player player)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            List<MindControl> mcs = mcRepo.MindControls.Where(m => m.MasterId == player.Id || m.VictimId == player.Id).ToList();
+            var mcs = mcRepo.MindControls.Where(m => m.MasterId == player.Id || m.VictimId == player.Id).ToList();
 
-            List<MindControlViewModel> output = new List<MindControlViewModel>();
+            var output = new List<MindControlViewModel>();
 
-            PlayerFormViewModel basePlayer = PlayerProcedures.GetPlayerFormViewModel(player.Id);
+            var basePlayer = PlayerProcedures.GetPlayerFormViewModel(player.Id);
 
-            foreach (MindControl mc in mcs)
+            foreach (var mc in mcs)
             {
-                MindControlViewModel addme = new MindControlViewModel
+                var addme = new MindControlViewModel
                 {
                     MindControl = mc,
                     Victim = PlayerProcedures.GetPlayerFormViewModel(mc.VictimId),
@@ -103,7 +103,7 @@ namespace TT.Domain.Procedures
 
         public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim, string mcType)
         {
-            ErrorBox output = new ErrorBox();
+            var output = new ErrorBox();
             output.HasError = true;
 
             // assert that world update is not in progress
@@ -130,9 +130,9 @@ namespace TT.Domain.Procedures
             }
 
             // assert that there is indeed a mind control between these two players
-            IEnumerable<MindControl> mcs = MindControlProcedures.GetMindControlsBetweenPlayers(master, victim);
+            var mcs = MindControlProcedures.GetMindControlsBetweenPlayers(master, victim);
 
-            MindControl mc = mcs.FirstOrDefault(m => m.Type == mcType);
+            var mc = mcs.FirstOrDefault(m => m.Type == mcType);
 
             if (mc == null)
             {
@@ -201,8 +201,8 @@ namespace TT.Domain.Procedures
 
         public static decimal GetAPCostToMove(BuffBox buffs, string oldLocation, string newLocation)
         {
-            Location oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
-            Location newLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
+            var oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
+            var newLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
             decimal output = Math.Abs(oldLocationl.X - newLocationl.X) + Math.Abs(oldLocationl.Y - newLocationl.Y);
             output *= 1-buffs.MoveActionPointDiscount();
 
@@ -241,7 +241,7 @@ namespace TT.Domain.Procedures
         public static void AddCommandUsedToMindControl(Player master, Player victim, string type)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id && m.Type == type);
+            var mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id && m.Type == type);
             mc.TimesUsedThisTurn++;
             mcRepo.SaveMindControl(mc);
         }

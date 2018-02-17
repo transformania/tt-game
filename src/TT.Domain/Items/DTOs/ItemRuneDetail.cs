@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using TT.Domain.ClassifiedAds.DTOs;
 
 namespace TT.Domain.Items.DTOs
 {
     public class ItemRuneDetail
     {
         public int Id { get; set; }
-        public ItemSourceDetail ItemSource { get; set; }
-        public PlayerDetail Owner { get; set; }
-        public PlayerDetail FormerPlayer { get; set; }
+        public InventoryItemSource ItemSource { get; set; }
+        public PlayPageItemDetail.PlayPagePlayerDetail Owner { get; set; }
+        public PlayPageItemDetail.PlayPagePlayerDetail FormerPlayer { get; set; }
         public string VictimName { get; set; }
         public int Level { get; set; }
         public List<ItemRuneObject> Runes { get; protected set; }

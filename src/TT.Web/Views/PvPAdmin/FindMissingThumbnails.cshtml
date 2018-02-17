@@ -1,7 +1,7 @@
 ﻿<h1>Missing thumbnails report</h1>
 @{
-    string strImagesPath = AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/";
-    string strCurPath = "";
+    var strImagesPath = AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/";
+    var strCurPath = "";
     int iNumMissing;
 }
 <h2>Animates</h2>
@@ -9,8 +9,8 @@
 @{
     strCurPath = strImagesPath + "portraits/";
     iNumMissing = 0;
-    IEnumerable<string> files = Directory.EnumerateFiles(strCurPath);
-    foreach(string file in files) {
+    var files = Directory.EnumerateFiles(strCurPath);
+    foreach(var file in files) {
         if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {
             <li>@file.Substring(strCurPath.Length)</li>
@@ -29,7 +29,7 @@
     strCurPath = strImagesPath + "animalPortraits/";
     iNumMissing = 0;
     files = Directory.EnumerateFiles(strCurPath);
-    foreach (string file in files)
+    foreach (var file in files)
     {
         if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {
@@ -50,7 +50,7 @@
     strCurPath = strImagesPath + "itemsPortraits/";
     iNumMissing = 0;
     files = Directory.EnumerateFiles(strCurPath);
-    foreach (string file in files)
+    foreach (var file in files)
     {
         if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {

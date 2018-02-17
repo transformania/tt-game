@@ -23,7 +23,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestStart editMe = context.QuestStarts.Find(QuestStart.Id);
+                var editMe = context.QuestStarts.Find(QuestStart.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestStart.Name;
@@ -49,7 +49,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestStart(int id)
         {
 
-            QuestStart dbEntry = context.QuestStarts.Find(id);
+            var dbEntry = context.QuestStarts.Find(id);
             if (dbEntry != null)
             {
                 context.QuestStarts.Remove(dbEntry);
@@ -73,7 +73,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestState editMe = context.QuestStates.Find(QuestState.Id);
+                var editMe = context.QuestStates.Find(QuestState.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestState.Name;
@@ -99,7 +99,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestState(int id)
         {
 
-            QuestState dbEntry = context.QuestStates.Find(id);
+            var dbEntry = context.QuestStates.Find(id);
             if (dbEntry != null)
             {
                 context.QuestStates.Remove(dbEntry);
@@ -123,7 +123,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestConnection editMe = context.QuestConnections.Find(QuestConnection.Id);
+                var editMe = context.QuestConnections.Find(QuestConnection.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestConnection.Name;
@@ -149,7 +149,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestConnection(int id)
         {
 
-            QuestConnection dbEntry = context.QuestConnections.Find(id);
+            var dbEntry = context.QuestConnections.Find(id);
             if (dbEntry != null)
             {
                 context.QuestConnections.Remove(dbEntry);
@@ -173,7 +173,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestConnectionRequirement editMe = context.QuestConnectionRequirements.Find(QuestConnectionRequirement.Id);
+                var editMe = context.QuestConnectionRequirements.Find(QuestConnectionRequirement.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestConnectionRequirement.Name;
@@ -199,7 +199,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestConnectionRequirement(int id)
         {
 
-            QuestConnectionRequirement dbEntry = context.QuestConnectionRequirements.Find(id);
+            var dbEntry = context.QuestConnectionRequirements.Find(id);
             if (dbEntry != null)
             {
                 context.QuestConnectionRequirements.Remove(dbEntry);
@@ -223,7 +223,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestEnd editMe = context.QuestEnds.Find(QuestEnd.Id);
+                var editMe = context.QuestEnds.Find(QuestEnd.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestEnd.Name;
@@ -249,7 +249,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestEnd(int id)
         {
 
-            QuestEnd dbEntry = context.QuestEnds.Find(id);
+            var dbEntry = context.QuestEnds.Find(id);
             if (dbEntry != null)
             {
                 context.QuestEnds.Remove(dbEntry);
@@ -273,7 +273,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestStatePreaction editMe = context.QuestStatePreactions.Find(QuestStatePreaction.Id);
+                var editMe = context.QuestStatePreactions.Find(QuestStatePreaction.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestStatePreaction.Name;
@@ -299,7 +299,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestStatePreaction(int id)
         {
 
-            QuestStatePreaction dbEntry = context.QuestStatePreactions.Find(id);
+            var dbEntry = context.QuestStatePreactions.Find(id);
             if (dbEntry != null)
             {
                 context.QuestStatePreactions.Remove(dbEntry);
@@ -323,7 +323,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestWriterLog editMe = context.QuestWriterLogs.Find(QuestWriterLog.Id);
+                var editMe = context.QuestWriterLogs.Find(QuestWriterLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestWriterLog.Name;
@@ -349,7 +349,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestWriterLog(int id)
         {
 
-            QuestWriterLog dbEntry = context.QuestWriterLogs.Find(id);
+            var dbEntry = context.QuestWriterLogs.Find(id);
             if (dbEntry != null)
             {
                 context.QuestWriterLogs.Remove(dbEntry);
@@ -373,7 +373,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestPlayerStatus editMe = context.QuestPlayerStatuses.Find(QuestPlayerStatus.Id);
+                var editMe = context.QuestPlayerStatuses.Find(QuestPlayerStatus.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestPlayerStatus.Name;
@@ -399,7 +399,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestPlayerStatus(int id)
         {
 
-            QuestPlayerStatus dbEntry = context.QuestPlayerStatuses.Find(id);
+            var dbEntry = context.QuestPlayerStatuses.Find(id);
             if (dbEntry != null)
             {
                 context.QuestPlayerStatuses.Remove(dbEntry);
@@ -423,7 +423,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestPlayerVariable editMe = context.QuestPlayerVariables.Find(QuestPlayerVariable.Id);
+                var editMe = context.QuestPlayerVariables.Find(QuestPlayerVariable.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestPlayerVariable.Name;
@@ -449,7 +449,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestPlayerVariable(int id)
         {
 
-            QuestPlayerVariable dbEntry = context.QuestPlayerVariables.Find(id);
+            var dbEntry = context.QuestPlayerVariables.Find(id);
             if (dbEntry != null)
             {
                 context.QuestPlayerVariables.Remove(dbEntry);
@@ -473,7 +473,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                QuestWriterPermission editMe = context.QuestWriterPermissions.Find(QuestWriterPermission.Id);
+                var editMe = context.QuestWriterPermissions.Find(QuestWriterPermission.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = QuestWriterPermission.Name;
@@ -499,7 +499,7 @@ namespace TT.Domain.Concrete
         public void DeleteQuestWriterPermission(int id)
         {
 
-            QuestWriterPermission dbEntry = context.QuestWriterPermissions.Find(id);
+            var dbEntry = context.QuestWriterPermissions.Find(id);
             if (dbEntry != null)
             {
                 context.QuestWriterPermissions.Remove(dbEntry);

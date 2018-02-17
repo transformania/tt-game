@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                ServerLog editMe = context.ServerLogs.Find(ServerLog.Id);
+                var editMe = context.ServerLogs.Find(ServerLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = ServerLog.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteServerLog(int id)
         {
 
-            ServerLog dbEntry = context.ServerLogs.Find(id);
+            var dbEntry = context.ServerLogs.Find(id);
             if (dbEntry != null)
             {
                 context.ServerLogs.Remove(dbEntry);

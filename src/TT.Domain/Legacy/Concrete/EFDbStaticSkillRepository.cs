@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticSkill editMe = context.DbStaticSkills.Find(DbStaticSkill.Id);
+                var editMe = context.DbStaticSkills.Find(DbStaticSkill.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = DbStaticSkill.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticSkill(int id)
         {
 
-            DbStaticSkill dbEntry = context.DbStaticSkills.Find(id);
+            var dbEntry = context.DbStaticSkills.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticSkills.Remove(dbEntry);

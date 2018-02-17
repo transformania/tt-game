@@ -22,7 +22,7 @@ namespace TT.Tests.Identity.Queries
                     .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(-1))
                 .BuildAndSave();
 
-            bool isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
+            var isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
 
             isExpired.Should().BeTrue();
         }
@@ -37,7 +37,7 @@ namespace TT.Tests.Identity.Queries
                     .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(1))
                 .BuildAndSave();
 
-            bool isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
+            var isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
 
             isExpired.Should().BeFalse();
         }

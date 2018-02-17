@@ -189,7 +189,7 @@ namespace TT.Tests.Messages.Queries
                 MessageId = 23
             };
 
-            bool playerOwnsMessage = DomainRegistry.Repository.FindSingle(cmd);
+            var playerOwnsMessage = DomainRegistry.Repository.FindSingle(cmd);
 
             playerOwnsMessage.Should().BeTrue();
         }

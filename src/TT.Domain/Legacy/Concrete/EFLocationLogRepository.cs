@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                LocationLog editMe = context.LocationLogs.Find(LocationLog.Id);
+                var editMe = context.LocationLogs.Find(LocationLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = LocationLog.Name;
@@ -48,7 +48,7 @@ namespace TT.Domain.Concrete
         public void DeleteLocationLog(int id)
         {
 
-            LocationLog dbEntry = context.LocationLogs.Find(id);
+            var dbEntry = context.LocationLogs.Find(id);
             if (dbEntry != null)
             {
                 context.LocationLogs.Remove(dbEntry);

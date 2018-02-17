@@ -1,5 +1,4 @@
-﻿@using TT.Domain.Identity.DTOs
-@model IEnumerable<TT.Domain.Identity.DTOs.UserDonatorDetail>
+﻿@model IEnumerable<TT.Domain.Identity.DTOs.UserDonatorDetail>
 
 @section menu
 {
@@ -31,7 +30,7 @@
         <tbody>
 
         @{
-            foreach (UserDonatorDetail d in Model)
+            foreach (var d in Model)
             {
                 <tr style="background-color: @d.GetStyleColor()">
                     <td class="copyable" data-clipboard-text="@d.Id">@d.Id</td>

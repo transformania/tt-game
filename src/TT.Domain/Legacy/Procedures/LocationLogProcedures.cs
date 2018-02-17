@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -19,7 +17,7 @@ namespace TT.Domain.Procedures
         public static void AddLocationLog(string dbLocationName, string message, int concealmentLevel)
         {
             ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
-            LocationLog newlog = new LocationLog();
+            var newlog = new LocationLog();
             newlog.dbLocationName = dbLocationName;
             newlog.Message = message;
             newlog.Timestamp = DateTime.UtcNow;

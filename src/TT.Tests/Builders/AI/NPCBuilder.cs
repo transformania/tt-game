@@ -1,6 +1,4 @@
-﻿using System;
-using TT.Domain.AI.Entities;
-using TT.Tests.Builders.Identity;
+﻿using TT.Domain.AI.Entities;
 
 namespace TT.Tests.Builders.AI
 {

@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Duel editMe = context.Duels.Find(Duel.Id);
+                var editMe = context.Duels.Find(Duel.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Duel.Name;
@@ -48,7 +48,7 @@ namespace TT.Domain.Concrete
         public void DeleteDuel(int id)
         {
 
-            Duel dbEntry = context.Duels.Find(id);
+            var dbEntry = context.Duels.Find(id);
             if (dbEntry != null)
             {
                 context.Duels.Remove(dbEntry);

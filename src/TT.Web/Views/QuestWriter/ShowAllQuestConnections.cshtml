@@ -11,7 +11,7 @@
 
 @{
     <table>
-        @foreach (TT.Domain.Models.QuestConnection q in Model.ToList())
+        @foreach (var q in Model.ToList())
         {
 
             // int Id, int QuestId, int FromQuestId, int ToQuestId

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -68,13 +67,13 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AllLocations()
         {
-            List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => s.Region!="dungeon").ToList();
+            var output = LocationsStatics.LocationList.GetLocation.Where(s => s.Region!="dungeon").ToList();
             return PartialView(MVC.Info.Views.AllLocations, output);
         }
 
         public virtual ActionResult AllForms()
         {
-            List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
+            var output = PlayerProcedures.GetAllDbStaticForms().ToList();
             return PartialView(MVC.Info.Views.AllForms, output);
         }
 

@@ -30,7 +30,7 @@ namespace TT.Tests.Identity.PropertyValidators
         public void OneTimeSetup()
         {
             IEnumerable<string> roles = new[] { "Role" };
-            string userNameId = "TestUser";
+            var userNameId = "TestUser";
 
             request = new UserHasAnyRoleRequest()
             {

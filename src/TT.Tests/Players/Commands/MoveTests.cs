@@ -200,12 +200,12 @@ namespace TT.Tests.Players.Commands
         public void should_throw_exception_if_player_is_not_feral_animal()
         {
 
-            Player petPlayer = new PlayerBuilder()
+            var petPlayer = new PlayerBuilder()
                 .With(p => p.Id, 51)
                 .With(p => p.Mobility, PvPStatics.MobilityPet)
                 .BuildAndSave();
 
-            Item item = new ItemBuilder()
+            var item = new ItemBuilder()
                 .With(p => p.FormerPlayer, petPlayer)
                 .With(p => p.Owner, new PlayerBuilder()
                     .With(p => p.FirstName, "Bob")

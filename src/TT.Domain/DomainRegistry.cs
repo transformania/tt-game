@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Linq;
 using AutoMapper;
 using TT.Domain.Abstract;
 using TT.Domain.Services;

@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                TFEnergy editMe = context.TFEnergies.Find(TFEnergy.Id);
+                var editMe = context.TFEnergies.Find(TFEnergy.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = TFEnergies.Name;
@@ -37,7 +37,7 @@ namespace TT.Domain.Concrete
         public void DeleteTFEnergy(int id)
         {
 
-            TFEnergy dbEntry = context.TFEnergies.Find(id);
+            var dbEntry = context.TFEnergies.Find(id);
             if (dbEntry != null)
             {
                 context.TFEnergies.Remove(dbEntry);

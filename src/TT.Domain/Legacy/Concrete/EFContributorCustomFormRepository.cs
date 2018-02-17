@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                ContributorCustomForm editMe = context.ContributorCustomForms.Find(ContributorCustomForm.Id);
+                var editMe = context.ContributorCustomForms.Find(ContributorCustomForm.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = ContributorCustomForm.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteContributorCustomForm(int id)
         {
 
-            ContributorCustomForm dbEntry = context.ContributorCustomForms.Find(id);
+            var dbEntry = context.ContributorCustomForms.Find(id);
             if (dbEntry != null)
             {
                 context.ContributorCustomForms.Remove(dbEntry);

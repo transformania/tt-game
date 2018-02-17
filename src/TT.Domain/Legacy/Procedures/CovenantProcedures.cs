@@ -44,11 +44,11 @@ namespace TT.Domain.Procedures
             ICovenantRepository covRepo = new EFCovenantRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            CovenantViewModel output = new CovenantViewModel();
+            var output = new CovenantViewModel();
 
             output.dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == id);
 
-            IEnumerable<PlayerFormViewModel> playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
+            var playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
 
             output.Leader = playerRepo.Players.FirstOrDefault(p => p.Id == output.dbCovenant.LeaderId);
 
@@ -65,9 +65,9 @@ namespace TT.Domain.Procedures
             CovenantDictionary.IdNameFlagLookup.Clear();
 
 
-            foreach (Covenant c in covRepo.Covenants.Where(c => c.LeaderId > -1))
+            foreach (var c in covRepo.Covenants.Where(c => c.LeaderId > -1))
             {
-                CovenantNameFlag temp = new CovenantNameFlag
+                var temp = new CovenantNameFlag
                 {
                     FlagUrl = c.FlagUrl,
                     Name = c.Name,
@@ -94,11 +94,11 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             dbPlayer.Covenant = covId;
             playerRepo.SavePlayer(dbPlayer);
 
-            string covMessage = dbPlayer.GetFullName() + " is now a member of the covenant.";
+            var covMessage = dbPlayer.GetFullName() + " is now a member of the covenant.";
             WriteCovenantLog(covMessage, covId, true);
 
             return "";
@@ -107,7 +107,7 @@ namespace TT.Domain.Procedures
         public static string StartNewCovenant(Covenant newcov)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCov = new Covenant();
+            var dbCov = new Covenant();
           //  dbCov.IsPvP = newcov.IsPvP;
             dbCov.IsPvP = false;
             dbCov.FounderMembershipId = newcov.FounderMembershipId;
@@ -127,7 +127,7 @@ namespace TT.Domain.Procedures
         public static bool CovenantOfNameExists(string name)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant possible = covRepo.Covenants.FirstOrDefault(c => c.Name == name);
+            var possible = covRepo.Covenants.FirstOrDefault(c => c.Name == name);
 
             if (possible != null)
             {
@@ -142,15 +142,15 @@ namespace TT.Domain.Procedures
         public static void RemovePlayerFromCovenant(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.First(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.First(p => p.Id == player.Id);
             dbPlayer.Covenant = null;
             playerRepo.SavePlayer(dbPlayer);
 
             // delete the covenant if it is now empty
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant possible = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
+            var possible = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
 
-            int covMemberCount = GetPlayerCountInCovenant(possible, false);
+            var covMemberCount = GetPlayerCountInCovenant(possible, false);
 
             if (covMemberCount == 0)
             {
@@ -161,7 +161,7 @@ namespace TT.Domain.Procedures
             // the covenant is not empty, so we need to give it a new leader.  For now the new leader is essentially random.
             else if (possible.LeaderId == player.Id)
             {
-                Player nextleader = playerRepo.Players.FirstOrDefault(p => p.Covenant == possible.Id);
+                var nextleader = playerRepo.Players.FirstOrDefault(p => p.Covenant == possible.Id);
                 possible.LeaderId = nextleader.Id;
                 covRepo.SaveCovenant(possible);
             }
@@ -178,7 +178,7 @@ namespace TT.Domain.Procedures
 
             LoadCovenantDictionary();
 
-            string covMessage = player.GetFullName() + " is no longer a member of the covenant.";
+            var covMessage = player.GetFullName() + " is no longer a member of the covenant.";
             WriteCovenantLog(covMessage, possible.Id, true);
         }
 
@@ -204,7 +204,7 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
 
-            List<Covenant> dbCovenants = covRepo.Covenants.Where(c => c.Id > 0).ToList();
+            var dbCovenants = covRepo.Covenants.Where(c => c.Id > 0).ToList();
 
             return dbCovenants.Select(c => new CovenantListItemViewModel
             {
@@ -218,7 +218,7 @@ namespace TT.Domain.Procedures
         public static void AddCovenantApplication(Player applicant, Covenant covenant)
         {
             ICovenantApplicationRepository covAppRepo = new EFCovenantApplicationRepository();
-            CovenantApplication saveMe = new CovenantApplication
+            var saveMe = new CovenantApplication
             {
                 CovenantId = covenant.Id,
                 OwnerId = applicant.Id,
@@ -226,14 +226,14 @@ namespace TT.Domain.Procedures
                 Message = "",
             };
             covAppRepo.SaveCovenantApplication(saveMe);
-            string message = "<b><span style='color: #003300;'>" + applicant.FirstName + " " + applicant.LastName + " has applied to your covenant, " + covenant.Name + ".</span></b>";
+            var message = "<b><span style='color: #003300;'>" + applicant.FirstName + " " + applicant.LastName + " has applied to your covenant, " + covenant.Name + ".</span></b>";
             PlayerLogProcedures.AddPlayerLog(covenant.LeaderId, message , true);
         }
 
         public static string RevokeApplication(Player player)
         {
             ICovenantApplicationRepository covAppRepo = new EFCovenantApplicationRepository();
-            CovenantApplication app = covAppRepo.CovenantApplications.FirstOrDefault(c => c.OwnerId == player.Id);
+            var app = covAppRepo.CovenantApplications.FirstOrDefault(c => c.OwnerId == player.Id);
 
             if (app != null)
             {
@@ -246,7 +246,7 @@ namespace TT.Domain.Procedures
         public static bool PlayerHasPendingApplication(Player player)
         {
             ICovenantApplicationRepository covAppRepo = new EFCovenantApplicationRepository();
-            CovenantApplication app = covAppRepo.CovenantApplications.FirstOrDefault(c => c.OwnerId == player.Id);
+            var app = covAppRepo.CovenantApplications.FirstOrDefault(c => c.OwnerId == player.Id);
 
             if (app != null)
             {
@@ -264,11 +264,11 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             IEnumerable<CovenantApplication> apps = covAppRepo.CovenantApplications.Where(c => c.CovenantId == covenant.Id);
-            List<CovenantApplicationViewModel> output = new List<CovenantApplicationViewModel>();
+            var output = new List<CovenantApplicationViewModel>();
 
-            foreach (CovenantApplication app in apps)
+            foreach (var app in apps)
             {
-                CovenantApplicationViewModel addme = new CovenantApplicationViewModel();
+                var addme = new CovenantApplicationViewModel();
                 addme.dbCovenantApplication = app;
                 addme.dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == app.OwnerId);
                 output.Add(addme);
@@ -287,7 +287,7 @@ namespace TT.Domain.Procedures
         public static void UpdateCovenantDescription(int covId, string newDescription, string flagUrl)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant oldcov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
+            var oldcov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
             oldcov.SelfDescription = newDescription;
             oldcov.FlagUrl = flagUrl;
             covRepo.SaveCovenant(oldcov);
@@ -296,7 +296,7 @@ namespace TT.Domain.Procedures
         public static void SetLastMemberJoinTimestamp(Covenant covenant)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
+            var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
             dbCov.LastMemberAcceptance = DateTime.UtcNow;
             covRepo.SaveCovenant(dbCov);
         }
@@ -305,8 +305,8 @@ namespace TT.Domain.Procedures
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Covenant dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
             dbPlayer.Money -= amount;
            
@@ -314,7 +314,7 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
 
-            string covMessage = player.GetFullName() + " donated " + (int)amount + " Arpeyjis to the covenant treasury.";
+            var covMessage = player.GetFullName() + " donated " + (int)amount + " Arpeyjis to the covenant treasury.";
             WriteCovenantLog(covMessage, dbCov.Id, false);
 
         }
@@ -323,8 +323,8 @@ namespace TT.Domain.Procedures
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Covenant dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == giftee.Id);
+            var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == giftee.Id);
 
             dbCov.Money -= amount;
 
@@ -337,7 +337,7 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
 
-            string covMessage = (int)amount + " Arpeyjis were gifted out to " + giftee.GetFullName() + " from the covenant treasury.";
+            var covMessage = (int)amount + " Arpeyjis were gifted out to " + giftee.GetFullName() + " from the covenant treasury.";
             WriteCovenantLog(covMessage, covId, false);
         }
 
@@ -351,7 +351,7 @@ namespace TT.Domain.Procedures
         public static void SetCovenantSafeground(Covenant covenant, string location)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
             dbCovenant.HomeLocation = location;
             dbCovenant.Money -= 2500;
             dbCovenant.Level = 1;
@@ -369,7 +369,7 @@ namespace TT.Domain.Procedures
         public static bool CovenantHasSafeground(int covenantId)
         {
             ICovenantRepository repo = new EFCovenantRepository();
-            Covenant cov = repo.Covenants.FirstOrDefault(c => c.Id == covenantId);
+            var cov = repo.Covenants.FirstOrDefault(c => c.Id == covenantId);
             return CovenantHasSafeground(cov);
         }
 
@@ -388,7 +388,7 @@ namespace TT.Domain.Procedures
         public static void WriteCovenantLog(string message, int covenantId, bool isImportant)
         {
             ICovenantLogRepository covLogRepo = new EFCovenantLogRepository();
-            CovenantLog log = new CovenantLog
+            var log = new CovenantLog
             {
                 CovenantId = covenantId,
                 Message = message,
@@ -412,13 +412,13 @@ namespace TT.Domain.Procedures
         public static void UpgradeCovenant(Covenant covenant)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
             dbCovenant.Money -= GetUpgradeCost(covenant);
             dbCovenant.Level++;
             
             covRepo.SaveCovenant(dbCovenant);
             ICovenantLogRepository covLogRepo = new EFCovenantLogRepository();
-            CovenantLog newlog = new CovenantLog
+            var newlog = new CovenantLog
             {
                 CovenantId = covenant.Id,
                 IsImportant = true,
@@ -447,13 +447,13 @@ namespace TT.Domain.Procedures
         public static string ChangeCovenantCaptain(Covenant covenant, Player player, bool removeOnly)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
             if (dbCovenant == null)
             {
                 return "Covenant could not be found.";
             }
 
-            string playerIdString = player.Id + ";";
+            var playerIdString = player.Id + ";";
 
             // if the captains is null, change it to have an empty string to prevent null exceptions
             if (dbCovenant.Captains == null)
@@ -481,7 +481,7 @@ namespace TT.Domain.Procedures
         public static string ChangeCovenantLeader(Covenant covenant, Player player)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
             if (dbCovenant == null)
             {
                 return "Covenant could not be found.";
@@ -499,7 +499,7 @@ namespace TT.Domain.Procedures
             {
                 return false;
             }
-            string idString = player.Id + ";";
+            var idString = player.Id + ";";
             return covenant.Captains.Contains(idString);
 
         }
@@ -508,8 +508,8 @@ namespace TT.Domain.Procedures
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Location location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
-            string output = "";
+            var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            var output = "";
             if (location == null)
             {
                 output = "You cast an enchantment here, but you aren't actually anywhere!";
@@ -534,7 +534,7 @@ namespace TT.Domain.Procedures
                 return output;
             }
 
-            float takeoverAmount = (float)player.Level / 2.0F;
+            var takeoverAmount = (float)player.Level / 2.0F;
 
             takeoverAmount += buffs.EnchantmentBoost;
 
@@ -571,13 +571,13 @@ namespace TT.Domain.Procedures
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
                 location.CovenantController = (int)player.Covenant;
                 location.TakeoverAmount = info.TakeoverAmount;
-                Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
+                var myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
-                string locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
+                var locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
 
 
-                string covLogWinner = player.GetFullName() + " enchanted " + location.Name + " and has claimed it for this covenant.";
+                var covLogWinner = player.GetFullName() + " enchanted " + location.Name + " and has claimed it for this covenant.";
                 CovenantProcedures.WriteCovenantLog(covLogWinner, myCov.Id, true);
 
                 
@@ -592,7 +592,7 @@ namespace TT.Domain.Procedures
                 {
                     info.TakeoverAmount += takeoverAmount;
                     location.TakeoverAmount = info.TakeoverAmount;
-                    Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
+                    var cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
                     output =
                         $"Your enchantment reinforces this location by {takeoverAmount}.  New influence level is {info.TakeoverAmount} for your covenant, {cov?.Name ?? "unknown"}.  (+{XPGain} XP)</b>";
                    
@@ -611,8 +611,8 @@ namespace TT.Domain.Procedures
                         // notify old covenant who stole the location and their covenant
                         if (info.CovenantId != null && info.CovenantId > 0)
                         {
-                            CovenantViewModel attackingCov = CovenantProcedures.GetCovenantViewModel((int)player.Covenant);
-                            string covLogLoser = player.GetFullName() + " of " + attackingCov.dbCovenant.Name + " enchanted " + location.Name + ", removing it from this covenant's influence!";
+                            var attackingCov = CovenantProcedures.GetCovenantViewModel((int)player.Covenant);
+                            var covLogLoser = player.GetFullName() + " of " + attackingCov.dbCovenant.Name + " enchanted " + location.Name + ", removing it from this covenant's influence!";
                             CovenantProcedures.WriteCovenantLog(covLogLoser, (int)info.CovenantId, true);
                         }
 
@@ -633,7 +633,7 @@ namespace TT.Domain.Procedures
 
                 }
 
-                string locationLogMessage = "<span class='playerAttackNotification'>" + player.GetFullName() + " cast an enchantment on this location.</span>";
+                var locationLogMessage = "<span class='playerAttackNotification'>" + player.GetFullName() + " cast an enchantment on this location.</span>";
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
 
             }
@@ -664,7 +664,7 @@ namespace TT.Domain.Procedures
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
 
-            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
+            var info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
 
             if (info != null && info.CovenantId != null)
             {
@@ -691,7 +691,7 @@ namespace TT.Domain.Procedures
         public static bool FlagIsInUse(string flagURL)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            Covenant covWithFlag = covRepo.Covenants.FirstOrDefault(c => c.FlagUrl == flagURL);
+            var covWithFlag = covRepo.Covenants.FirstOrDefault(c => c.FlagUrl == flagURL);
 
             if (covWithFlag != null)
             {
@@ -708,11 +708,11 @@ namespace TT.Domain.Procedures
         public static List<string> FilterAvailableFlags(List<string> input)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            List<string> usedFlags = covRepo.Covenants.Select(c => c.FlagUrl).ToList();
+            var usedFlags = covRepo.Covenants.Select(c => c.FlagUrl).ToList();
 
-            List<string> output = new List<string>();
+            var output = new List<string>();
 
-            foreach (string s in input)
+            foreach (var s in input)
             {
                 if (!usedFlags.Contains(s))
                 {

@@ -36,7 +36,7 @@ namespace TT.Domain.Models
             }
              else
              {
-                 string[] nameArray = this.VictimName.Split(' ');
+                 var nameArray = this.VictimName.Split(' ');
                  return nameArray[0] + " '" + this.Nickname + "' " + nameArray[1];
              }
         }
@@ -77,7 +77,7 @@ namespace TT.Domain.Models
             }
             else
             {
-                string[] nameArray = this.VictimName.Split(' ');
+                var nameArray = this.VictimName.Split(' ');
                 return nameArray[0] + " " + this.Nickname + " " + nameArray[1];
             }
         }

@@ -4,7 +4,6 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
@@ -33,7 +32,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnSisters()
         {
-            PlayerDetail nerdBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseNerdBotId });
+            var nerdBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseNerdBotId });
 
             if (nerdBoss == null)
             {
@@ -58,13 +57,13 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player nerdBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var nerdBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 nerdBossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(nerdBossEF));
                 playerRepo.SavePlayer(nerdBossEF);
             }
 
 
-            PlayerDetail bimboboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseBimboBotId });
+            var bimboboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseBimboBotId });
 
             if (bimboboss == null)
             {
@@ -87,7 +86,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player bimboBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var bimboBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 bimboBossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(bimboBossEF));
                 playerRepo.SavePlayer(bimboBossEF);
 
@@ -136,7 +135,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             AIProcedures.DealBossDamage(bossTarget, attacker, true, 1);
 
-            string spell = ChooseSpell(bossTarget);
+            var spell = ChooseSpell(bossTarget);
 
             // nerd counters with nerd spell unless she has changed form
             if (bossTarget.FirstName == NerdBossFirstName && bossTarget.Form == NerdBossForm || bossTarget.FirstName == BimboBossFirstName && bossTarget.Form == BimboBossForm)
@@ -166,8 +165,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunSistersAction()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
+            var nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            var bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             // check to see if a sister has been TFed and the event should end
             if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)
@@ -177,7 +176,7 @@ namespace TT.Domain.Procedures.BossProcedures
             else
             {
                 // get all of the players in the room by nerd
-                List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
+                var playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
                 playersByNerd = playersByNerd.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
@@ -188,7 +187,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
 
                 // get all of the players in the room by bimbo
-                List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
+                var playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
                 playersByBimbo = playersByBimbo.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
@@ -197,7 +196,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
 
-                foreach (Player p in playersByNerd)
+                foreach (var p in playersByNerd)
                 {
                     AttackProcedures.Attack(nerdBoss, p, NerdSpell);
                     AttackProcedures.Attack(nerdBoss, p, NerdSpell);
@@ -206,7 +205,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
 
-                foreach (Player p in playersByBimbo)
+                foreach (var p in playersByBimbo)
                 {
                     AttackProcedures.Attack(bimboBoss, p, BimboSpell);
                     AttackProcedures.Attack(bimboBoss, p, BimboSpell);
@@ -224,10 +223,10 @@ namespace TT.Domain.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndSisters();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
+            var nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            var bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
-            string winner = "";
+            var winner = "";
 
             if (nerdBoss.Form != NerdBossForm) {
                 winner = "bimbo";
@@ -247,14 +246,14 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // top player gets 500 XP, each player down the line receives 25 fewer
-            int i = 0;
-            int maxReward = 1000;
+            var i = 0;
+            var maxReward = 1000;
 
             for (var r = 0; r < damages.Count; r++)
             {
                 var damage = damages.ElementAt(r);
-                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
-                int reward = maxReward - (i * 50);
+                var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                var reward = maxReward - (i * 50);
                 victor.XP += reward;
                 i++;
 

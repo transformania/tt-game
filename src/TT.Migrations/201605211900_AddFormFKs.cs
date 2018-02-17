@@ -1,5 +1,4 @@
 ﻿using FluentMigrator;
-using System.Data;
 
 namespace TT.Migrations
 {

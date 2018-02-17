@@ -187,7 +187,7 @@ namespace TT.Domain.Models
                 return false;
             } 
 
-            foreach (QuestConnectionRequirement q in this.QuestConnectionRequirements)
+            foreach (var q in this.QuestConnectionRequirements)
             {
                 if (q.IsRandomRoll)
                 {

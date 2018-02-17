@@ -1,22 +1,20 @@
 ﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
 @using TT.Domain.Items.DTOs
-@using TT.Domain.ViewModels
 @using TT.Domain.Statics
-@using TT.Web.CustomHtmlHelpers
 
 @{
-    ItemDetail hat = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Hat && i.IsEquipped);
-    ItemDetail shirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shirt && i.IsEquipped);
+    var hat = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Hat && i.IsEquipped);
+    var shirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shirt && i.IsEquipped);
 
-    ItemDetail undershirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Undershirt && i.IsEquipped);
-    ItemDetail pants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pants && i.IsEquipped);
-    ItemDetail underpants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Underpants && i.IsEquipped);
-    ItemDetail shoes = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shoes && i.IsEquipped);
+    var undershirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Undershirt && i.IsEquipped);
+    var pants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pants && i.IsEquipped);
+    var underpants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Underpants && i.IsEquipped);
+    var shoes = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shoes && i.IsEquipped);
 
-    ItemDetail pet = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet && i.IsEquipped);
+    var pet = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet && i.IsEquipped);
 
 
-    ItemDetail lhand = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped);
+    var lhand = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped);
 
     ItemDetail rhand;
     try

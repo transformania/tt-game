@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
@@ -9,10 +8,8 @@ using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Messages.Queries;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.Quest;
 
 namespace TT.Web.Controllers
@@ -24,7 +21,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult StartQuest(int Id)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -32,7 +29,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -56,7 +53,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not been in combat recently
-            double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
             if (lastAttackTimeAgo < PvPStatics.DuelNoCombatMinutes)
             {
                 TempData["Error"] = "You have been in combat too recently in order to begin this quest.";
@@ -64,7 +61,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            QuestStart questStart = QuestProcedures.GetQuest(Id);
+            var questStart = QuestProcedures.GetQuest(Id);
 
             // assert player is in the correct place
             if (me.dbLocationName != questStart.Location)
@@ -73,10 +70,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            int gameTurnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
+            var gameTurnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
 
             // assert player did not fail or abandon this quest too soon ago
-            int lastTurnAttempted = QuestProcedures.GetLastTurnQuestEnded(me, questStart.Id);
+            var lastTurnAttempted = QuestProcedures.GetLastTurnQuestEnded(me, questStart.Id);
             if (PvPWorldStatProcedures.GetWorldTurnNumber() - lastTurnAttempted < QuestStatics.QuestFailCooldownTurnLength)
             {
                 TempData["Error"] = "You recently failed or abandoned this quest.";
@@ -84,9 +81,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            IEnumerable<QuestPlayerStatus> questPlayerStatuses = QuestProcedures.GetQuestPlayerStatuses(me);
+            var questPlayerStatuses = QuestProcedures.GetQuestPlayerStatuses(me);
 
-            bool canStartQuest = QuestProcedures.PlayerCanBeginQuest(me, questStart, questPlayerStatuses, gameTurnNum);
+            var canStartQuest = QuestProcedures.PlayerCanBeginQuest(me, questStart, questPlayerStatuses, gameTurnNum);
 
             // assert player meets level / game turn requirements for this quest
             if (!canStartQuest)
@@ -105,10 +102,10 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult QuestsAvailableHere()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            QuestsAtLocationViewModel output = new QuestsAtLocationViewModel
+            var output = new QuestsAtLocationViewModel
             {
                 AllQuests = QuestProcedures.GetAllQuestStartsAtLocation(me.dbLocationName),
                 AvailableQuests = QuestProcedures.GetAvailableQuestsAtLocation(me, PvPWorldStatProcedures.GetWorldTurnNumber()),
@@ -119,10 +116,10 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Questing()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            QuestStart questStart = QuestProcedures.GetQuest(me.InQuest);
+            var questStart = QuestProcedures.GetQuest(me.InQuest);
             return View(MVC.Quest.Views.Questing, questStart);
         }
 
@@ -130,10 +127,10 @@ namespace TT.Web.Controllers
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            QuestPlayPageViewModel output = new QuestPlayPageViewModel();
+            var output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestState = QuestProcedures.GetQuestState(me.InQuestState);
@@ -155,8 +152,8 @@ namespace TT.Web.Controllers
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -173,9 +170,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Quest.Quest());
             }
 
-            QuestState currentState = QuestProcedures.GetQuestState(me.InQuestState);
-            QuestConnection desiredConnection = QuestProcedures.GetQuestConnection(Id);
-            QuestState nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateToId);
+            var currentState = QuestProcedures.GetQuestState(me.InQuestState);
+            var desiredConnection = QuestProcedures.GetQuestConnection(Id);
+            var nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateToId);
 
             // assert desired state is in same quest
             if (nextState.QuestId != me.InQuest || desiredConnection.QuestId != me.InQuest)
@@ -191,11 +188,11 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Quest.Quest());
             }
 
-            QuestPlayPageViewModel output = new QuestPlayPageViewModel();
+            var output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
+            var buffs = ItemProcedures.GetPlayerBuffs(me);
 
             // assert player has the right requirements for this
             if (!QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables))
@@ -207,7 +204,7 @@ namespace TT.Web.Controllers
             // make rolls for pass / fail
             if (desiredConnection.RequiresRolls())
             {
-                bool passes = QuestProcedures.RollForQuestConnection(desiredConnection, me, buffs, output.QuestPlayerVariables);
+                var passes = QuestProcedures.RollForQuestConnection(desiredConnection, me, buffs, output.QuestPlayerVariables);
 
                 // player fails; reroute to the failure quest state
                 if (!passes)
@@ -237,8 +234,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Abandon()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that this player is in a quest
             if (me.InQuest <= 0)
@@ -252,8 +249,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AbandonConfirm()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that this player is in a quest
             if (me.InQuest <= 0)
@@ -264,7 +261,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is not currently in a quest with an end state
-            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
+            var state = QuestProcedures.GetQuestState(me.InQuestState);
 
             if (state.QuestEnds != null && state.QuestEnds.Any())
             {
@@ -282,8 +279,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult EndQuest(bool restore)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that this player is in a quest
             if (me.InQuest <= 0)
@@ -292,8 +289,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            QuestStart quest = QuestProcedures.GetQuest(me.InQuest);
-            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
+            var quest = QuestProcedures.GetQuest(me.InQuest);
+            var state = QuestProcedures.GetQuestState(me.InQuestState);
 
             // assert that there is an end state to this quest state
             if (!state.QuestEnds.Any())
@@ -303,7 +300,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Quest.Quest());
             }
 
-            int endType = state.QuestEnds.First().EndType;
+            var endType = state.QuestEnds.First().EndType;
 
             // if the player is not animate, either restore them or create a new item for them to exist as
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -314,7 +311,7 @@ namespace TT.Web.Controllers
                 }
                 else if (!restore)
                 {
-                    DbStaticForm newform = FormStatics.GetForm(me.Form);
+                    var newform = FormStatics.GetForm(me.Form);
                     ItemProcedures.PlayerBecomesItem(me, newform, null);
                 }
             }
@@ -334,7 +331,7 @@ namespace TT.Web.Controllers
             }
 
             // pass!
-            string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
+            var victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
 
             new Thread(() =>
@@ -350,8 +347,8 @@ namespace TT.Web.Controllers
         public virtual ActionResult ResetQuests()
         {
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (!PvPStatics.ChaosMode)
             {

@@ -26,7 +26,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Player editMe = context.Players.Find(Player.Id);
+                var editMe = context.Players.Find(Player.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Player.Name;
@@ -41,7 +41,7 @@ namespace TT.Domain.Concrete
         public void DeletePlayer(int id)
         {
 
-            Player dbEntry = context.Players.Find(id);
+            var dbEntry = context.Players.Find(id);
             if (dbEntry != null)
             {
                 context.Players.Remove(dbEntry);
@@ -57,7 +57,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticForm editMe = context.DbStaticForms.Find(DbStaticForm.Id);
+                var editMe = context.DbStaticForms.Find(DbStaticForm.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = DbStaticForm.Name;
@@ -72,7 +72,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticForm(int id)
         {
 
-            DbStaticForm dbEntry = context.DbStaticForms.Find(id);
+            var dbEntry = context.DbStaticForms.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticForms.Remove(dbEntry);

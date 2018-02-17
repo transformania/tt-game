@@ -46,14 +46,14 @@ namespace TT.Web.Controllers
         {
             #region location checks
 
-            string output = "<h1>Location Errors: </h1><br>";
-            List<Location> places = LocationsStatics.LocationList.GetLocation.ToList();
+            var output = "<h1>Location Errors: </h1><br>";
+            var places = LocationsStatics.LocationList.GetLocation.ToList();
 
-            foreach (Location place in places)
+            foreach (var place in places)
             {
                 if (place.Name_North != null)
                 {
-                    Location x = places.FirstOrDefault(l => l.dbName == place.Name_North);
+                    var x = places.FirstOrDefault(l => l.dbName == place.Name_North);
                     if (x == null)
                     {
                         output += "Location <b>" + place.dbName + " (" + place.Name + ")</b> is referencing location <b>" + place.Name_North + "</b> which is null.<br>";
@@ -68,7 +68,7 @@ namespace TT.Web.Controllers
                 }
                 if (place.Name_East != null)
                 {
-                    Location x = places.FirstOrDefault(l => l.dbName == place.Name_East);
+                    var x = places.FirstOrDefault(l => l.dbName == place.Name_East);
                     if (x == null)
                     {
                         output += "Location <b>" + place.dbName + "(" + place.Name + ")</b> is referencing location <b>" + place.Name_East + "</b> which is null.";
@@ -83,7 +83,7 @@ namespace TT.Web.Controllers
                 }
                 if (place.Name_West != null)
                 {
-                    Location x = places.FirstOrDefault(l => l.dbName == place.Name_West);
+                    var x = places.FirstOrDefault(l => l.dbName == place.Name_West);
                     if (x == null)
                     {
                         output += "Location <b>" + place.dbName + "(" + place.Name + ")</b> is referencing location <b>" + place.Name_West + "</b> which is null.";
@@ -98,7 +98,7 @@ namespace TT.Web.Controllers
                 }
                 if (place.Name_South != null)
                 {
-                    Location x = places.FirstOrDefault(l => l.dbName == place.Name_South);
+                    var x = places.FirstOrDefault(l => l.dbName == place.Name_South);
                     if (x == null)
                     {
                         output += "Location <b>" + place.dbName + "(" + place.Name + ")</b> is referencing location <b>" + place.Name_South + "</b> which is null.";
@@ -133,7 +133,7 @@ namespace TT.Web.Controllers
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
 
-            PvPWorldStat output = repo.PvPWorldStats.First();
+            var output = repo.PvPWorldStats.First();
 
             return View(MVC.PvPAdmin.Views.ChangeWorldStats, output);
 
@@ -198,7 +198,7 @@ namespace TT.Web.Controllers
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
 
-            PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault(i => i.Id == input.Id);
+            var data = repo.PvPWorldStats.FirstOrDefault(i => i.Id == input.Id);
 
             data.TurnNumber = input.TurnNumber;
             data.RoundDuration = input.RoundDuration;
@@ -241,9 +241,9 @@ namespace TT.Web.Controllers
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
 
-            EffectContribution OldCopy = effectConRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+            var OldCopy = effectConRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
 
-            EffectContribution ProofreadCopy = effectConRepo.EffectContributions.FirstOrDefault(c => c.ProofreadingCopy && c.Effect_FriendlyName == OldCopy.Effect_FriendlyName);
+            var ProofreadCopy = effectConRepo.EffectContributions.FirstOrDefault(c => c.ProofreadingCopy && c.Effect_FriendlyName == OldCopy.Effect_FriendlyName);
 
             if (ProofreadCopy != null)
             {
@@ -337,7 +337,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                PublicBroadcastViewModel output = new PublicBroadcastViewModel();
+                var output = new PublicBroadcastViewModel();
                 return View(MVC.PvPAdmin.Views.PublicBroadcast, output);
             }
         }
@@ -354,13 +354,13 @@ namespace TT.Web.Controllers
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 IPlayerLogRepository logRepo = new EFPlayerLogRepository();
 
-                string msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
+                var msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
 
-                List<Player> players = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).ToList();
+                var players = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
-                string errors = "";
+                var errors = "";
 
-                foreach (Player p in players)
+                foreach (var p in players)
                 {
                     try
                     {
@@ -391,10 +391,10 @@ namespace TT.Web.Controllers
             }
             else
             {
-                PublicBroadcastViewModel output = new PublicBroadcastViewModel();
+                var output = new PublicBroadcastViewModel();
                 IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
 
-                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                var stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
 
                 if (stats != null)
                 {
@@ -420,7 +420,7 @@ namespace TT.Web.Controllers
             {
                 IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
 
-                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                var stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
                 stats.GameNewsDate = input.Message;
                 repo.SavePvPWorldStat(stats);
                 PvPStatics.LastGameUpdate = stats.GameNewsDate;
@@ -455,12 +455,12 @@ namespace TT.Web.Controllers
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
-            List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == PvPStatics.MobilityInanimate || f.MobilityType == PvPStatics.MobilityPet).ToList();
+            var forms = formRepo.DbStaticForms.Where(f => f.MobilityType == PvPStatics.MobilityInanimate || f.MobilityType == PvPStatics.MobilityPet).ToList();
 
-            foreach (DbStaticForm form in forms)
+            foreach (var form in forms)
             {
 
-                DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
+                var item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
 
                 if (item != null)
                 {
@@ -563,11 +563,11 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.Region.Equals("dungeon")).ToList();
+            var locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.Region.Equals("dungeon")).ToList();
 
 
             // conceal some data about dungeon location in case whoever pulls this JSON is trying to make a map
-            foreach (Location l in locations)
+            foreach (var l in locations)
             {
                 if (l.Region.Equals("dungeon"))
                 {
@@ -608,12 +608,12 @@ namespace TT.Web.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 
-            Contribution OldCopy = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var OldCopy = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            Contribution ProofreadCopy = contributionRepo.Contributions.FirstOrDefault(c => c.ProofreadingCopy && c.Skill_FriendlyName == OldCopy.Skill_FriendlyName);
+            var ProofreadCopy = contributionRepo.Contributions.FirstOrDefault(c => c.ProofreadingCopy && c.Skill_FriendlyName == OldCopy.Skill_FriendlyName);
 
 
-            Player owner = PlayerProcedures.GetPlayerFromMembership(OldCopy.OwnerMembershipId);
+            var owner = PlayerProcedures.GetPlayerFromMembership(OldCopy.OwnerMembershipId);
 
             if (owner != null)
             {
@@ -789,11 +789,11 @@ namespace TT.Web.Controllers
 
             IContributionRepository contRepo = new EFContributionRepository();
 
-            Contribution contribution = contRepo.Contributions.FirstOrDefault(i => i.Id == id);
+            var contribution = contRepo.Contributions.FirstOrDefault(i => i.Id == id);
             contribution.IsReadyForReview = false;
             contRepo.SaveContribution(contribution);
 
-            Player owner = PlayerProcedures.GetPlayerFromMembership(contribution.OwnerMembershipId);
+            var owner = PlayerProcedures.GetPlayerFromMembership(contribution.OwnerMembershipId);
 
             if (owner != null)
             {
@@ -806,15 +806,15 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ServerBalance_Forms()
         {
-            List<BalancePageViewModel> output = new List<BalancePageViewModel>();
+            var output = new List<BalancePageViewModel>();
 
-            foreach (DbStaticForm form in FormStatics.GetAllAnimateForms())
+            foreach (var form in FormStatics.GetAllAnimateForms())
             {
-                BalanceBox bbox = new BalanceBox();
+                var bbox = new BalanceBox();
                 bbox.LoadBalanceBox(form);
-                decimal balance = bbox.GetBalance();
-                decimal absolute = bbox.GetPointTotal();
-                BalancePageViewModel addme = new BalancePageViewModel
+                var balance = bbox.GetBalance();
+                var absolute = bbox.GetPointTotal();
+                var addme = new BalancePageViewModel
                 {
                     dbName = form.dbName,
                     FriendlyName = form.FriendlyName,
@@ -831,15 +831,15 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ServerBalance_Items()
         {
-            List<BalancePageViewModel> output = new List<BalancePageViewModel>();
+            var output = new List<BalancePageViewModel>();
 
-            foreach (DbStaticItem item in ItemStatics.GetAllNonPetItems())
+            foreach (var item in ItemStatics.GetAllNonPetItems())
             {
-                BalanceBox bbox = new BalanceBox();
+                var bbox = new BalanceBox();
                 bbox.LoadBalanceBox(item);
-                decimal balance = bbox.GetBalance();
-                decimal absolute = bbox.GetPointTotal();
-                BalancePageViewModel addme = new BalancePageViewModel
+                var balance = bbox.GetBalance();
+                var absolute = bbox.GetPointTotal();
+                var addme = new BalancePageViewModel
                 {
                     dbName = item.dbName,
                     FriendlyName = item.FriendlyName,
@@ -856,15 +856,15 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ServerBalance_Pets()
         {
-            List<BalancePageViewModel> output = new List<BalancePageViewModel>();
+            var output = new List<BalancePageViewModel>();
 
-            foreach (DbStaticItem item in ItemStatics.GetAllPetItems())
+            foreach (var item in ItemStatics.GetAllPetItems())
             {
-                BalanceBox bbox = new BalanceBox();
+                var bbox = new BalanceBox();
                 bbox.LoadBalanceBox(item);
-                decimal balance = bbox.GetBalance();
-                decimal absolute = bbox.GetPointTotal();
-                BalancePageViewModel addme = new BalancePageViewModel
+                var balance = bbox.GetBalance();
+                var absolute = bbox.GetPointTotal();
+                var addme = new BalancePageViewModel
                 {
                     dbName = item.dbName,
                     FriendlyName = item.FriendlyName,
@@ -881,18 +881,18 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ServerBalance_Effects()
         {
-            List<BalancePageViewModel> output = new List<BalancePageViewModel>();
+            var output = new List<BalancePageViewModel>();
 
             IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
-            List<EffectContribution> effectsToAnalyze = effectContributionRepo.EffectContributions.Where(e => e.IsLive && e.ProofreadingCopy).ToList();
+            var effectsToAnalyze = effectContributionRepo.EffectContributions.Where(e => e.IsLive && e.ProofreadingCopy).ToList();
 
-            foreach (EffectContribution effect in effectsToAnalyze)
+            foreach (var effect in effectsToAnalyze)
             {
-                BalanceBox bbox = new BalanceBox();
+                var bbox = new BalanceBox();
                 bbox.LoadBalanceBox(effect);
-                decimal balance = bbox.GetBalance__NoModifiersOrCaps();
-                decimal absolute = bbox.GetPointTotal();
-                BalancePageViewModel addme = new BalancePageViewModel
+                var balance = bbox.GetBalance__NoModifiersOrCaps();
+                var absolute = bbox.GetPointTotal();
+                var addme = new BalancePageViewModel
                 {
                     dbName = effect.GetEffectDbName(),
                     FriendlyName = effect.Effect_FriendlyName,
@@ -910,7 +910,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ViewServerLog(int turn)
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
-            ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(t => t.TurnNumber == turn);
+            var log = serverLogRepo.ServerLogs.FirstOrDefault(t => t.TurnNumber == turn);
             return View(MVC.PvPAdmin.Views.ViewServerLog, log);
         }
 
@@ -945,7 +945,7 @@ namespace TT.Web.Controllers
             }
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
-            JewdewfaeEncounter encounter = repo.JewdewfaeEncounters.FirstOrDefault(e => e.Id == id);
+            var encounter = repo.JewdewfaeEncounters.FirstOrDefault(e => e.Id == id);
 
             if (encounter == null)
             {
@@ -978,7 +978,7 @@ namespace TT.Web.Controllers
             ViewBag.LocationExists = "";
             ViewBag.FormExists = "";
 
-            Location loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == encounter.dbLocationName);
+            var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == encounter.dbLocationName);
 
             if (loc == null)
             {
@@ -989,7 +989,7 @@ namespace TT.Web.Controllers
                 ViewBag.LocationExists = "<span class='good'>LOCATION " + encounter.dbLocationName + " EXISTs.</span>";
             }
 
-            DbStaticForm form = FormStatics.GetForm(encounter.RequiredForm);
+            var form = FormStatics.GetForm(encounter.RequiredForm);
 
             if (form == null)
             {
@@ -1019,7 +1019,7 @@ namespace TT.Web.Controllers
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
 
-            JewdewfaeEncounter encounter = repo.JewdewfaeEncounters.FirstOrDefault(f => f.Id == input.Id);
+            var encounter = repo.JewdewfaeEncounters.FirstOrDefault(f => f.Id == input.Id);
 
             if (encounter == null)
             {
@@ -1051,14 +1051,14 @@ namespace TT.Web.Controllers
             }
 
 
-            FairyChallengeBag output = new FairyChallengeBag();
+            var output = new FairyChallengeBag();
 
             try
             {
                 // load data from the xml
-                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/FairyChallengeText/fae_temp.xml";
-                System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
-                System.IO.StreamReader file = new System.IO.StreamReader(filename);
+                var filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/FairyChallengeText/fae_temp.xml";
+                var reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
+                var file = new System.IO.StreamReader(filename);
                 output = (FairyChallengeBag)reader.Deserialize(file);
             }
             catch
@@ -1073,7 +1073,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult LoadSpecificEncounter(string filename)
         {
 
-            FairyChallengeBag output = new FairyChallengeBag();
+            var output = new FairyChallengeBag();
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
@@ -1095,13 +1095,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string path = Server.MapPath("~/XMLs/FairyChallengeText/");
+            var path = Server.MapPath("~/XMLs/FairyChallengeText/");
 
             // input.title = "Serialization Overview";
-            System.Xml.Serialization.XmlSerializer writer =
+            var writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
 
-            System.IO.StreamWriter file = new System.IO.StreamWriter(
+            var file = new System.IO.StreamWriter(
                 path + "fae_temp.xml");
             writer.Serialize(file, input);
             file.Close();
@@ -1122,7 +1122,7 @@ namespace TT.Web.Controllers
         {
 
             // assert only admin can view this
-            bool iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
+            var iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
@@ -1131,8 +1131,8 @@ namespace TT.Web.Controllers
 
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<Player> players = playerRepo.Players.Where(p => p.IpAddress == address).ToList();
-            foreach (Player p in players)
+            var players = playerRepo.Players.Where(p => p.IpAddress == address).ToList();
+            foreach (var p in players)
             {
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
@@ -1148,7 +1148,7 @@ namespace TT.Web.Controllers
         {
 
             // assert only admin can view this
-            bool iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
+            var iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
@@ -1157,7 +1157,7 @@ namespace TT.Web.Controllers
 
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player bannedPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+            var bannedPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == id);
 
             if (bannedPlayer.IsBannedFromGlobalChat)
             {
@@ -1185,20 +1185,20 @@ namespace TT.Web.Controllers
         {
 
             // assert only admin can view this
-            bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
+            var iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
             if (!iAmAdmin)
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string output = "";
+            var output = "";
 
             IDonatorRepository repo = new EFDonatorRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            foreach (Donator d in repo.Donators.ToList())
+            foreach (var d in repo.Donators.ToList())
             {
-                Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == d.OwnerMembershipId);
+                var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == d.OwnerMembershipId);
 
                 if (player != null && player.DonatorLevel > 0)
                 {
@@ -1208,13 +1208,13 @@ namespace TT.Web.Controllers
                     {
                         player.DonatorLevel = d.Tier;
                         output += "  Knocking down to tier " + d.Tier + ".  </br>";
-                        string message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to Judoo on the forums or through Patreon.  Thank you for your past support!</span>";
+                        var message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to Judoo on the forums or through Patreon.  Thank you for your past support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
                     else
                     {
                         output += "  Okay at tier " + d.Tier + ".  </br>";
-                        string message = "<span class='good'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
+                        var message = "<span class='good'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
 
@@ -1235,13 +1235,13 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Killswitcher))
             {
                 IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
-                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                var stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
                 stats.LastUpdateTimestamp = stats.LastUpdateTimestamp.AddDays(1);
                 repo.SavePvPWorldStat(stats);
 
                 IPlayerLogRepository logRepo = new EFPlayerLogRepository();
-                Player me = PlayerProcedures.GetPlayerFromMembership("69");
-                PlayerLog newlog = new PlayerLog
+                var me = PlayerProcedures.GetPlayerFromMembership("69");
+                var newlog = new PlayerLog
                 {
                     IsImportant = true,
                     Message = "<span class='bad'><b>" + User.Identity.Name + " activated the game pause killswitch.</b></span>",
@@ -1259,7 +1259,7 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
-                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                var stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
                 stats.LastUpdateTimestamp = DateTime.UtcNow;
                 repo.SavePvPWorldStat(stats);
             }
@@ -1325,11 +1325,11 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
-                PlayerNameViewModel output = new PlayerNameViewModel();
+                var output = new PlayerNameViewModel();
 
                 if (id != -1)
                 {
-                    PlayerFormViewModel pm = PlayerProcedures.GetPlayerFormViewModel(id);
+                    var pm = PlayerProcedures.GetPlayerFormViewModel(id);
                     output.Id = id;
                     output.NewFirstName = pm.Player.FirstName;
                     output.NewLastName = pm.Player.LastName;
@@ -1351,8 +1351,8 @@ namespace TT.Web.Controllers
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
-                string myMembershipId = User.Identity.GetUserId();
-                Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                var myMembershipId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
@@ -1361,10 +1361,10 @@ namespace TT.Web.Controllers
                 }
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                Player player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+                var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
 
-                string origFirstName = player.FirstName;
-                string origLastName = player.LastName;
+                var origFirstName = player.FirstName;
+                var origLastName = player.LastName;
                 string changed_name = null;
                 string changed_level = null;
                 string changed_money = null;
@@ -1401,7 +1401,7 @@ namespace TT.Web.Controllers
                 {
                     changed_form = " form,";
                     IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
-                    DbStaticForm form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
+                    var form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
 
                     if (form != null && form.MobilityType == PvPStatics.MobilityFull)
                     {
@@ -1419,7 +1419,7 @@ namespace TT.Web.Controllers
                     if (form.MobilityType == PvPStatics.MobilityFull && player.Mobility != PvPStatics.MobilityFull)
                     {
                         IItemRepository itemRepo = new EFItemRepository();
-                        Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                        var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
                         player.Mobility = PvPStatics.MobilityFull;
                         itemRepo.DeleteItem(item.Id);
                     }
@@ -1430,7 +1430,7 @@ namespace TT.Web.Controllers
                 if (player.Mobility != PvPStatics.MobilityFull)
                 {
                     IItemRepository itemRepo = new EFItemRepository();
-                    Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                    var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
                     item.VictimName = input.NewFirstName + " " + input.NewLastName;
                     itemRepo.SaveItem(item);
                 }
@@ -1480,7 +1480,7 @@ namespace TT.Web.Controllers
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpell);
                 }
 
-                string cm = changed_name + changed_form + changed_level + changed_money;
+                var cm = changed_name + changed_form + changed_level + changed_money;
                 cm = cm.TrimEnd(cm[cm.Length - 1]);
 
                 // if chaoslord changes themself, they won't get a notification that they changed themself.
@@ -1524,7 +1524,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult FastInanimateMe()
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());
@@ -1540,7 +1540,7 @@ namespace TT.Web.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
+            var me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
@@ -1548,7 +1548,7 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
+            var possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
             if (possibleMeItem != null)
             {
                 itemRepo.DeleteItem(possibleMeItem.Id);
@@ -1577,7 +1577,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult FastPetMe()
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());
@@ -1593,7 +1593,7 @@ namespace TT.Web.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
+            var me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
@@ -1601,7 +1601,7 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            var possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
             if (possibleMeItem != null)
             {
                 itemRepo.DeleteItem(possibleMeItem.Id);
@@ -1629,7 +1629,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult FastAnimateMe()
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());
@@ -1644,7 +1644,7 @@ namespace TT.Web.Controllers
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
+            var me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
@@ -1666,16 +1666,16 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult FastGiveTPScroll()
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
-            PvPWorldStat stat = repo.PvPWorldStats.First();
+            var stat = repo.PvPWorldStats.First();
 
-            bool test = stat.TestServer;
+            var test = stat.TestServer;
 
             if (!PvPStatics.ChaosMode && !test)
             {
@@ -1683,7 +1683,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             var cmd = new CreateItem
             {
@@ -1708,7 +1708,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult AssignLeadersBadges()
         {
 
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());
@@ -1726,7 +1726,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string output = StatsProcedures.AssignLeadersBadges();
+            var output = StatsProcedures.AssignLeadersBadges();
 
             TempData["Result"] = output;
             return RedirectToAction(MVC.PvP.Play());
@@ -1784,7 +1784,7 @@ namespace TT.Web.Controllers
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
-            DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == input.CustomForm.Id);
+            var form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == input.CustomForm.Id);
 
             // assert form actually does exist
             if (form == null)
@@ -1917,7 +1917,7 @@ namespace TT.Web.Controllers
         /// <returns></returns>
         public virtual ActionResult DeleteNewsPost(int Id)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction(MVC.PvP.Play());

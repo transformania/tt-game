@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.QuestWriterLog>
-@using TT.Domain.Models
 
 @{
     if (Model.Any())
@@ -8,7 +7,7 @@
         <h1>Quest Writer Logs for Quest Id: @Model.First().QuestId</h1>
 
 
-        foreach (QuestWriterLog l in Model)
+        foreach (var l in Model)
         {
             <p><b>@l.User</b> at <b>@l.Timestamp</b>:  @Html.Raw(l.Text)</p>
         }

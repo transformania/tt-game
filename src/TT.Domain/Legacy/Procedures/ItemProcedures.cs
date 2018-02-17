@@ -225,9 +225,9 @@ namespace TT.Domain.Procedures
         public static string GiveItemToPlayer(int itemId, int newOwnerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-            DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
-            Player owner = PlayerProcedures.GetPlayer(newOwnerId);
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
+            var itemPlus = ItemStatics.GetStaticItem(item.dbName);
+            var owner = PlayerProcedures.GetPlayer(newOwnerId);
             //LogBox log = new LogBox();
 
 
@@ -292,7 +292,7 @@ namespace TT.Domain.Procedures
 
         public static string GiveNewItemToPlayer(Player player, string itemName)
         {
-            DbStaticItem i = ItemStatics.GetStaticItem(itemName);
+            var i = ItemStatics.GetStaticItem(itemName);
             return GiveNewItemToPlayer(player, i);
         }
 
@@ -300,9 +300,9 @@ namespace TT.Domain.Procedures
         {
             var item = DomainRegistry.Repository.FindSingle( new GetItem { ItemId = itemId });
 
-            int oldOwnerId = item.Owner.Id;
+            var oldOwnerId = item.Owner.Id;
 
-            DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
+            var itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
             // dropped "item" is a pet so automatically unequip them
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
@@ -338,12 +338,12 @@ namespace TT.Domain.Procedures
         public static string EquipItem(int itemId, bool putOn)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-            DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
+            var itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            Player dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == item.OwnerId);
+            var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == item.OwnerId);
             
 
             if (putOn)
@@ -352,7 +352,7 @@ namespace TT.Domain.Procedures
                 item.EquippedThisTurn = true;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                var targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -367,7 +367,7 @@ namespace TT.Domain.Procedures
                 item.IsEquipped = false;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                var targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -383,7 +383,7 @@ namespace TT.Domain.Procedures
         public static void ResetUseCooldown(ItemViewModel input)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item dbItem = itemRepo.Items.FirstOrDefault(i => i.Id == input.dbItem.Id);
+            var dbItem = itemRepo.Items.FirstOrDefault(i => i.Id == input.dbItem.Id);
             dbItem.TurnsUntilUse = input.Item.UseCooldown;
 
             // these special reusable consumables can have a lower cooldown at higher levels
@@ -402,14 +402,14 @@ namespace TT.Domain.Procedures
         public static int PlayerIsWearingNumberOfThisType(int playerId, string itemType)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.ItemType == itemType && i.dbItem.IsEquipped);
+            var itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.ItemType == itemType && i.dbItem.IsEquipped);
             return itemsOfThisType.Count();
         }
 
         public static int PlayerIsWearingNumberOfThisExactItem(int playerId, string itemDbName)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.dbName == itemDbName && i.dbItem.IsEquipped);
+            var itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.dbName == itemDbName && i.dbItem.IsEquipped);
             return itemsOfThisType.Count();
         }
 
@@ -421,17 +421,17 @@ namespace TT.Domain.Procedures
         public static BuffBox GetPlayerBuffs(int playerId)
         {
 
-            BuffBox output = new BuffBox();
+            var output = new BuffBox();
 
             // grab all of the bonuses coming from effects
-            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(playerId).Where(e => e.dbEffect.Duration > 0);
+            var myEffects = EffectProcedures.GetPlayerEffects2(playerId).Where(e => e.dbEffect.Duration > 0);
             var context = new StatsContext();
             var playerparam = new SqlParameter("PlayerId", SqlDbType.Int);
             playerparam.Value = playerId;
-            object[] parameters = new object[] { playerparam };
+            var parameters = new object[] { playerparam };
             var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId", parameters);
 
-            foreach (BuffStoredProc q in query)
+            foreach (var q in query)
             {
                 if (q.Type == "Items")
                 {
@@ -546,7 +546,7 @@ namespace TT.Domain.Procedures
             // non-stat buffs
 
             output.HasSearchDiscount = false;
-            foreach (EffectViewModel2 eff in myEffects)
+            foreach (var eff in myEffects)
             {
                 if (eff.dbEffect.dbName == "perk_sharp_eye")
                 {
@@ -587,7 +587,7 @@ namespace TT.Domain.Procedures
 
         public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker)
         {
-            LogBox output = new LogBox();
+            var output = new LogBox();
             IItemRepository itemRepo = new EFItemRepository();
 
             var cmd = new CreateItem
@@ -647,11 +647,11 @@ namespace TT.Domain.Procedures
                 cmd.IsPermanent = false;
             }
 
-            BuffBox attackerBuffs = GetPlayerBuffs(attacker);
+            var attackerBuffs = GetPlayerBuffs(attacker);
 
-            DbStaticItem newItemPlus = ItemStatics.GetStaticItem(cmd.dbName);
+            var newItemPlus = ItemStatics.GetStaticItem(cmd.dbName);
 
-            int inventoryMax = GetInventoryMaxSize(attackerBuffs);
+            var inventoryMax = GetInventoryMaxSize(attackerBuffs);
 
             // regular item logic
             if (newItemPlus.ItemType != PvPStatics.ItemType_Pet)
@@ -680,9 +680,9 @@ namespace TT.Domain.Procedures
             else if (newItemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+                var dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-                IEnumerable<ItemViewModel> AttackerExistingItems = GetAllPlayerItems(attacker.Id);
+                var AttackerExistingItems = GetAllPlayerItems(attacker.Id);
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
@@ -717,7 +717,7 @@ namespace TT.Domain.Procedures
             }
 
 
-            DbStaticItem item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
+            var item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
            
             var newItemId = DomainRegistry.Repository.Execute(cmd);
             var ownerId = cmd.OwnerId;
@@ -743,10 +743,10 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            string victimName = player.FirstName + " " + player.LastName;
+            var victimName = player.FirstName + " " + player.LastName;
 
-            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
-            Player wearer = playerRepo.Players.FirstOrDefault(p => item.OwnerId == p.Id);
+            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
+            var wearer = playerRepo.Players.FirstOrDefault(p => item.OwnerId == p.Id);
 
             if (wearer == null)
             {
@@ -761,9 +761,9 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            ItemViewModel itemPlus = ItemProcedures.GetItemViewModel(itemId);
+            var itemPlus = ItemProcedures.GetItemViewModel(itemId);
 
-            Player owner = playerRepo.Players.FirstOrDefault(p => p.Id == itemPlus.dbItem.OwnerId);
+            var owner = playerRepo.Players.FirstOrDefault(p => p.Id == itemPlus.dbItem.OwnerId);
 
             string name;
 
@@ -792,7 +792,7 @@ namespace TT.Domain.Procedures
                     }
                   
 
-                    string output = "";
+                    var output = "";
                     if (itemPlus.dbItem.dbName == "item_consumeable_willpower_bomb_weak")
                     {
                         output = AttackProcedures.ThrowGrenade(owner, 10, "Weak");
@@ -931,7 +931,7 @@ namespace TT.Domain.Procedures
                         return "You must finish your quest before you can use this item.";
                     }
                     // assert owner has not been in combat recently
-                    double minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+                    var minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                     if (minutesSinceCombat < 30)
                     {
                         return "Unfortunately you have been in combat too recently for the crystal to work.";
@@ -944,7 +944,7 @@ namespace TT.Domain.Procedures
                     }
 
                     // assert covenant has a safeground
-                    Covenant myCov = CovenantProcedures.GetDbCovenant((int)owner.Covenant);
+                    var myCov = CovenantProcedures.GetDbCovenant((int)owner.Covenant);
                     if (myCov.HomeLocation.IsNullOrEmpty())
                     {
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
@@ -954,7 +954,7 @@ namespace TT.Domain.Procedures
                         StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1)
                     ).Start();
 
-                    string output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
+                    var output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }
@@ -962,7 +962,7 @@ namespace TT.Domain.Procedures
                 // spellbooks; these give the reader some spells they do not know.
                 if (itemPlus.Item.dbName.Contains("item_consumable_spellbook_"))
                 {
-                    int amount = 4;
+                    var amount = 4;
                     if (itemPlus.Item.dbName.Contains("small"))
                     {
                         amount = 4;
@@ -978,7 +978,7 @@ namespace TT.Domain.Procedures
                     {
                         amount = 16;
                     }
-                    string output = $"You learned the spells: {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount), true)} from reading your spellbook before it crumbles and vanishes into dust.";
+                    var output = $"You learned the spells: {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount), true)} from reading your spellbook before it crumbles and vanishes into dust.";
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }
@@ -1003,7 +1003,7 @@ namespace TT.Domain.Procedures
                 else
                 {
                     // add waiting time back on to the item
-                    Item thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
+                    var thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
                     thisdbItem.TurnsUntilUse = itemPlus.Item.UseCooldown;
 
                     // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
@@ -1015,8 +1015,8 @@ namespace TT.Domain.Procedures
                         // get the bonus from this item being leveled
                         
 
-                        decimal bonusFromLevelHealth = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
-                        decimal bonusFromLevelMana = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
+                        var bonusFromLevelHealth = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
+                        var bonusFromLevelMana = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
 
                         owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth;
                         if (owner.Health > owner.MaxHealth)
@@ -1053,7 +1053,7 @@ namespace TT.Domain.Procedures
                     {
 
                           // get the bonus from this item being leveled
-                        decimal bonusFromLevel = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
+                        var bonusFromLevel = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
 
                         owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore + bonusFromLevel;
                         if (owner.Health > owner.MaxHealth)
@@ -1079,7 +1079,7 @@ namespace TT.Domain.Procedures
                     {
 
                         // get the bonus from this item being leveled
-                        decimal bonusFromLevel = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
+                        var bonusFromLevel = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
 
                         owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevel;
                         if (owner.Mana > owner.MaxMana)
@@ -1097,7 +1097,7 @@ namespace TT.Domain.Procedures
                     {
                         itemRepo.SaveItem(thisdbItem);
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
-                        DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
+                        var effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
                         if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;
@@ -1138,22 +1138,22 @@ namespace TT.Domain.Procedures
         public static DbStaticItem GetRandomFindableItem()
         {
 
-            IEnumerable<DbStaticItem> eligibleItems = ItemStatics.GetAllFindableItems();
+            var eligibleItems = ItemStatics.GetAllFindableItems();
 
-            double RollMax = eligibleItems.Select(i => i.FindWeight).Sum();
+            var RollMax = eligibleItems.Select(i => i.FindWeight).Sum();
 
-            Random randomItemIndex2 = new Random(DateTime.Now.Millisecond);
-            double roll2 = randomItemIndex2.NextDouble() * RollMax;
+            var randomItemIndex2 = new Random(DateTime.Now.Millisecond);
+            var roll2 = randomItemIndex2.NextDouble() * RollMax;
 
-            int currentIndex = 0;
+            var currentIndex = 0;
 
-            List<StaticItem> iteratedThrough = new List<StaticItem>();
+            var iteratedThrough = new List<StaticItem>();
 
-            foreach (DbStaticItem item in eligibleItems.ToList())
+            foreach (var item in eligibleItems.ToList())
             {
 
-                double lowRange = eligibleItems.Take(currentIndex).Sum(i => i.FindWeight);
-                double highRange = eligibleItems.Take(currentIndex+1).Sum(i => i.FindWeight);
+                var lowRange = eligibleItems.Take(currentIndex).Sum(i => i.FindWeight);
+                var highRange = eligibleItems.Take(currentIndex+1).Sum(i => i.FindWeight);
 
                 if (roll2 >= lowRange && roll2 < highRange)
                 {
@@ -1171,17 +1171,17 @@ namespace TT.Domain.Procedures
         public static DbStaticForm GetFormFromItem(DbStaticItem item)
         {
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-            DbStaticForm form = formRepo.DbStaticForms.Where(f => f.BecomesItemDbName == item.dbName).FirstOrDefault();
+            var form = formRepo.DbStaticForms.Where(f => f.BecomesItemDbName == item.dbName).FirstOrDefault();
             return form;
         }
 
         public static DbStaticItem GetRandomItemOfType(string itemtype)
         {
             if (itemtype == "random") return GetRandomPlayableItem();
-            Random rand = new Random();
+            var rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype && !i.IsUnique);
-            int iCount = item.Count();
+            var iCount = item.Count();
             if (iCount > 0)
             {
                 return item.ElementAt(rand.Next(0, iCount));
@@ -1194,7 +1194,7 @@ namespace TT.Domain.Procedures
 
         public static DbStaticItem GetRandomPlayableItem()
         {
-            Random rand = new Random();
+            var rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != PvPStatics.ItemType_Consumable && !i.IsUnique);
             return item.ElementAt(rand.Next(0, item.Count()));
@@ -1211,7 +1211,7 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
 
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
 
             itemRepo.DeleteItem(item.Id);
         }
@@ -1220,7 +1220,7 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
 
-            Item item = itemRepo.Items.FirstOrDefault(i => i.dbName == itemdbname && i.OwnerId == player.Id);
+            var item = itemRepo.Items.FirstOrDefault(i => i.dbName == itemdbname && i.OwnerId == player.Id);
 
             itemRepo.DeleteItem(item.Id);
 
@@ -1266,7 +1266,7 @@ namespace TT.Domain.Procedures
             // selling, pay less money
             else
             {
-                decimal price = 50 + (30 * item.Level * .75M);
+                var price = 50 + (30 * item.Level * .75M);
 
                 // item is not permanent, charge less
                 if (!item.IsPermanent)
@@ -1283,7 +1283,7 @@ namespace TT.Domain.Procedures
         public static void LockItem(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
             if (item == null)
             {
                 return;
@@ -1296,7 +1296,7 @@ namespace TT.Domain.Procedures
         {
             IBookReadingRepository repo = new EFBookReadingRepository();
 
-            BookReading reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
+            var reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
 
             if (reading == null)
             {
@@ -1314,11 +1314,11 @@ namespace TT.Domain.Procedures
         {
             IBookReadingRepository repo = new EFBookReadingRepository();
 
-            BookReading reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
+            var reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
 
             if (reading == null)
             {
-                BookReading newReading = new BookReading
+                var newReading = new BookReading
                 {
                     PlayerId = player.Id,
                     BookDbName = bookDbName,
@@ -1332,7 +1332,7 @@ namespace TT.Domain.Procedures
         public static void SetNickname(Player player, string nickname)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+            var playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
             playerItem.Nickname = nickname;
             itemRepo.SaveItem(playerItem);
         }
@@ -1340,7 +1340,7 @@ namespace TT.Domain.Procedures
         public static void UpdateSouledItem(int id)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
             item.LastSouledTimestamp = DateTime.UtcNow;
             itemRepo.SaveItem(item);
         }
@@ -1348,7 +1348,7 @@ namespace TT.Domain.Procedures
         public static void UpdateSouledItem(string firstName, string lastName)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == firstName + " " + lastName);
+            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == firstName + " " + lastName);
             item.LastSouledTimestamp = DateTime.UtcNow;
             itemRepo.SaveItem(item);
         }
@@ -1365,8 +1365,8 @@ namespace TT.Domain.Procedures
             float b = 0;
             float c = 89;
 
-            float xp = a * level * level + b * level + c;
-            float leftover = xp % 10;
+            var xp = a * level * level + b * level + c;
+            var leftover = xp % 10;
 
             xp = (float)Math.Round(xp / 10) * 10;
 

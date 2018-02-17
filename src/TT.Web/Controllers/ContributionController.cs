@@ -53,11 +53,11 @@ namespace TT.Web.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 
-            string currentUserId = User.Identity.GetUserId();
+            var currentUserId = User.Identity.GetUserId();
 
             IEnumerable<Contribution> myContributions = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == currentUserId);
 
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             Contribution contribution;
 
@@ -79,7 +79,7 @@ namespace TT.Web.Controllers
                     // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
                     if (iAmProofreader && !contribution.ProofreadingCopy)
                     {
-                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
+                        var contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
                         if (contributionProofed != null)
                         {
                             TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";
@@ -116,9 +116,9 @@ namespace TT.Web.Controllers
 
             ViewBag.OtherContributions = myContributions;
 
-            BalanceBox bbox = new BalanceBox();
+            var bbox = new BalanceBox();
             bbox.LoadBalanceBox(contribution);
-            decimal balance = bbox.GetBalance();
+            var balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
 
@@ -129,10 +129,10 @@ namespace TT.Web.Controllers
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
                 IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
 
-                string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-                string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
-                string itemdbname = "";
+                var itemdbname = "";
 
                 if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
                 {
@@ -143,9 +143,9 @@ namespace TT.Web.Controllers
                     itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
                 }
 
-                DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
-                DbStaticForm sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
-                DbStaticItem sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+                var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+                var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+                var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
 
                 if (sskill == null)
                 {
@@ -191,12 +191,12 @@ namespace TT.Web.Controllers
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview && !c.ProofreadingCopy);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview && !c.ProofreadingCopy);
             ViewBag.DisableLinks = true;
 
-            BalanceBox bbox = new BalanceBox();
+            var bbox = new BalanceBox();
             bbox.LoadBalanceBox(contribution);
-            decimal balance = bbox.GetBalance();
+            var balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
             return View(MVC.Contribution.Views.Contribute, contribution);
@@ -207,10 +207,10 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeBalanceCalculatorEffect(int id)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
-            EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (!iAmProofreader && contribution.OwnerMemberhipId != me.MembershipId)
             {
@@ -225,10 +225,10 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeBalanceCalculator2(int id)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (!iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
             {
@@ -243,10 +243,10 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeBalanceCalculatorSend(Contribution input)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
+            var SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (!iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
             {
@@ -305,10 +305,10 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
-            EffectContribution SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
+            var SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (!iAmProofreader && SaveMe.OwnerMemberhipId != me.MembershipId)
             {
@@ -381,7 +381,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeSetGraphicStatus(int id)
         {
 
-            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+            var iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
 
             if (!iAmArtist)
             {
@@ -390,9 +390,9 @@ namespace TT.Web.Controllers
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            ContributionStatusViewModel output = new ContributionStatusViewModel
+            var output = new ContributionStatusViewModel
             {
                 ContributionId = id,
                 OwnerMembershipId = cont.OwnerMembershipId,
@@ -406,7 +406,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult ContributeSetGraphicStatusSubmit(ContributionStatusViewModel input)
         {
 
-            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+            var iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
 
             if (!iAmArtist)
             {
@@ -415,7 +415,7 @@ namespace TT.Web.Controllers
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
+            var cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
 
             cont.AssignedToArtist = input.Status;
             cont.History += "Assigned artist changed by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
@@ -431,13 +431,13 @@ namespace TT.Web.Controllers
         [HttpPost]
         public virtual ActionResult SendContribution(Contribution input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution SaveMe;
 
             Session["ContributionId"] = input.Id;
 
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
             if (SaveMe == null)
@@ -615,8 +615,8 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult SendContributionUndoLock(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (!iAmProofreader)
             {
@@ -625,7 +625,7 @@ namespace TT.Web.Controllers
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
             if (!contribution.ProofreadingCopy)
             {
@@ -642,19 +642,19 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ContributeEffect(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             // get all of this players effect contributions
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
 
             IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == myMembershipId);
             ViewBag.OtherEffectContributions = myEffectContributions;
 
-            EffectContribution output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+            var output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
 
-            List<EffectContribution> proofreading = new List<EffectContribution>();
+            var proofreading = new List<EffectContribution>();
 
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
-            bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
 
             // add the rest of the submitted contributions if the player is a proofread
             if (iAmProofreader)
@@ -700,8 +700,8 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin) && output.ProofreadingCopy)
             {
 
-                string effectDbName = output.GetEffectDbName();
-                string spellDbName = output.GetSkillDbName();
+                var effectDbName = output.GetEffectDbName();
+                var spellDbName = output.GetSkillDbName();
                 if (spellDbName.IsNullOrEmpty())
                 {
                     spellDbName = "NO SKILL NAME SET";
@@ -711,14 +711,14 @@ namespace TT.Web.Controllers
                 ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell for " + spellDbName + " not found!<span>";
 
                 IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-                DbStaticEffect possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+                var possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
                 if (possibleEffect != null)
                 {
                     ViewBag.StaticEffectExists = "<span class = 'good'>Static effect " + effectDbName + " exists!</span>";
                 }
 
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-                DbStaticSkill possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.dbName == spellDbName);
+                var possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.dbName == spellDbName);
                 if (possibleSkill != null)
                 {
                     ViewBag.StaticSpellExists = "<span class = 'good'>Static spell " + spellDbName + " exists!</span>";
@@ -726,9 +726,9 @@ namespace TT.Web.Controllers
 
             }
 
-            BalanceBox bbox = new BalanceBox();
+            var bbox = new BalanceBox();
             bbox.LoadBalanceBox(output);
-            decimal balance = bbox.GetBalance__NoModifiersOrCaps();
+            var balance = bbox.GetBalance__NoModifiersOrCaps();
 
             ViewBag.BalanceScore = balance * output.Effect_Duration;
 
@@ -742,13 +742,13 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SendEffectContribution(EffectContribution input)
         {
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
-            EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == input.Id);
+            var saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == input.Id);
 
             // TODO:  assert player owns this
 
-            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (saveme == null)
             {
@@ -822,7 +822,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult UnlockEffectContribution(int id)
         {
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
-            EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+            var saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
             saveme.ProofreadingLockIsOn = false;
             saveme.CheckedOutBy = "";
             effectContRepo.SaveEffectContribution(saveme);
@@ -843,16 +843,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string message = "started.<br>";
+            var message = "started.<br>";
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string skilldbname = contribution.GetSkillDbName();
-            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            var skilldbname = contribution.GetSkillDbName();
+            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
-            DbStaticSkill spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
 
             if (spell == null)
             {
@@ -891,7 +891,7 @@ namespace TT.Web.Controllers
             spell.MobilityType = contribution.Form_MobilityType;
 
             #region write credits
-            string output = "New spell, " + contribution.Skill_FriendlyName + ", submitted by ";
+            var output = "New spell, " + contribution.Skill_FriendlyName + ", submitted by ";
 
             if (!contribution.SubmitterUrl.IsNullOrEmpty())
             {
@@ -920,7 +920,7 @@ namespace TT.Web.Controllers
 
             if (contribution.Skill_LearnedAtLocationOrRegion == "location")
             {
-                Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == spell.LearnedAtLocation);
+                var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == spell.LearnedAtLocation);
                 if (temp == null)
                 {
                     message += "<span class='bad'> !!!!! WARNING:  NO LOCATION FOUND FOR THIS SPELL.</span>  ";
@@ -929,7 +929,7 @@ namespace TT.Web.Controllers
 
             if (contribution.Skill_LearnedAtLocationOrRegion == "region")
             {
-                Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.Region == spell.LearnedAtRegion);
+                var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.Region == spell.LearnedAtRegion);
                 if (temp == null)
                 {
                     message += "<span class='bad'> !!!!! WARNING:  NO REGION FOUND FOR THIS SPELL.</span>  ";
@@ -970,16 +970,16 @@ namespace TT.Web.Controllers
 
 
 
-            string message = "started.<br>";
+            var message = "started.<br>";
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             ITFMessageRepository tfRepo = new EFTFMessageRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
-            string itemdbname = "";
+            var itemdbname = "";
 
             if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
@@ -990,7 +990,7 @@ namespace TT.Web.Controllers
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
 
-            DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(s => s.dbName == formdbname);
+            var form = formRepo.DbStaticForms.FirstOrDefault(s => s.dbName == formdbname);
             if (form == null)
             {
                 form = new DbStaticForm();
@@ -1002,7 +1002,7 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing form from database.</p>";
             }
 
-            TFMessage tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == formdbname);
+            var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == formdbname);
 
             if (tf == null)
             {
@@ -1130,13 +1130,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string message = "started.<br>";
+            var message = "started.<br>";
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string itemdbname = "";
+            var itemdbname = "";
 
             if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
@@ -1147,7 +1147,7 @@ namespace TT.Web.Controllers
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
 
-            DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(s => s.dbName == itemdbname);
+            var item = itemRepo.DbStaticItems.FirstOrDefault(s => s.dbName == itemdbname);
 
             if (item == null)
             {
@@ -1177,7 +1177,7 @@ namespace TT.Web.Controllers
 
                 // update the form's graphic too while we're at it.
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-                DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemDbName == item.dbName);
+                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemDbName == item.dbName);
                 if (form != null)
                 {
                     form.PortraitUrl = item.PortraitUrl;
@@ -1235,7 +1235,7 @@ namespace TT.Web.Controllers
             if (item.CurseTFFormdbName != null && item.CurseTFFormdbName.Length > 0)
             {
                 ITFMessageRepository tfRepo = new EFTFMessageRepository();
-                TFMessage tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == item.CurseTFFormdbName);
+                var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == item.CurseTFFormdbName);
 
                 if (tf == null)
                 {
@@ -1275,14 +1275,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string message = "";
+            var message = "";
 
             IEffectContributionRepository contRepo = new EFEffectContributionRepository();
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
 
-            EffectContribution contribution = contRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
-            string effectDbName = contribution.GetEffectDbName();
-            DbStaticEffect effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+            var contribution = contRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+            var effectDbName = contribution.GetEffectDbName();
+            var effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
 
 
             if (effect == null)
@@ -1375,11 +1375,11 @@ namespace TT.Web.Controllers
             IEffectContributionRepository contRepo = new EFEffectContributionRepository();
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
 
-            EffectContribution contribution = contRepo.EffectContributions.First(e => e.Id == id);
-            string effectDbName = contribution.GetEffectDbName();
-            DbStaticSkill skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
+            var contribution = contRepo.EffectContributions.First(e => e.Id == id);
+            var effectDbName = contribution.GetEffectDbName();
+            var skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
 
-            string message = "";
+            var message = "";
 
             if (skill == null)
             {
@@ -1428,10 +1428,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string message = "";
+            var message = "";
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
-            Contribution contribution_original = contributionRepo.Contributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution_original = contributionRepo.Contributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
 
             contribution.IsLive = true;
             contributionRepo.SaveContribution(contribution);
@@ -1460,10 +1460,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            string message = "";
+            var message = "";
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
-            EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
-            EffectContribution contribution_original = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
+            var contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+            var contribution_original = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
 
             contribution.IsLive = true;
             contributionRepo.SaveEffectContribution(contribution);
@@ -1494,12 +1494,12 @@ namespace TT.Web.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
 
-            DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
             sskill.IsLive = "live";
             skillRepo.SaveDbStaticSkill(sskill);
             ViewBag.Message = "Set to live.";
@@ -1519,12 +1519,12 @@ namespace TT.Web.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
-            string itemdbname = "";
+            var itemdbname = "";
 
             if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
@@ -1535,11 +1535,11 @@ namespace TT.Web.Controllers
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
 
-            DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
-            DbStaticForm sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
-            DbStaticItem sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+            var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+            var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
 
-            string message = "";
+            var message = "";
 
             if (sskill == null)
             {
@@ -1577,7 +1577,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult MyDMRolls()
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
             return View(MVC.Contribution.Views.MyDMRolls, repo.DMRolls.Where(r => r.MembershipOwnerId == myMembershipId));
         }
 
@@ -1585,7 +1585,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult DMRoll(int id)
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            DMRoll output = repo.DMRolls.FirstOrDefault(r => r.Id == id);
+            var output = repo.DMRolls.FirstOrDefault(r => r.Id == id);
             if (output == null)
             {
                 output = new DMRoll();
@@ -1606,8 +1606,8 @@ namespace TT.Web.Controllers
         public virtual ActionResult SendDMRoll(DMRoll input)
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == input.Id);
-            string myMembershipId = User.Identity.GetUserId();
+            var roll = repo.DMRolls.FirstOrDefault(i => i.Id == input.Id);
+            var myMembershipId = User.Identity.GetUserId();
 
             if (roll == null)
             {
@@ -1669,7 +1669,7 @@ namespace TT.Web.Controllers
             }
 
             IDMRollRepository repo = new EFDMRollRepository();
-            DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == id);
+            var roll = repo.DMRolls.FirstOrDefault(i => i.Id == id);
             roll.IsLive = true;
             repo.SaveDMRoll(roll);
 
@@ -1681,13 +1681,13 @@ namespace TT.Web.Controllers
             IContributionRepository contributionRepo = new EFContributionRepository();
             IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
-            List<ContributionCredit> output = new List<ContributionCredit>();
-            List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy && c.IsLive && c.OwnerMembershipId != "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && !c.IsNonstandard).Select(c => c.OwnerMembershipId).Distinct().ToList();
+            var output = new List<ContributionCredit>();
+            var uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy && c.IsLive && c.OwnerMembershipId != "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && !c.IsNonstandard).Select(c => c.OwnerMembershipId).Distinct().ToList();
 
 
-            foreach (string ownerId in uniqueOwnerIds)
+            foreach (var ownerId in uniqueOwnerIds)
             {
-                ContributionCredit addme = new ContributionCredit
+                var addme = new ContributionCredit
                 {
                     OwnerMembershipId = ownerId,
                 };

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Domain.Procedures;
-using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.World;
 using TT.Domain.World.Queries;
 
@@ -67,7 +65,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult PlayerStatsLeaders()
         {
-            List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
+            var output = StatsProcedures.GetPlayerMaxStats().ToList();
             return View(MVC.Leaderboard.Views.PlayerStatsLeaders, output);
         }
 

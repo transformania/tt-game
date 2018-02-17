@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                AuthorArtistBio editMe = context.AuthorArtistBios.Find(AuthorArtistBio.Id);
+                var editMe = context.AuthorArtistBios.Find(AuthorArtistBio.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = AuthorArtistBio.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteAuthorArtistBio(int id)
         {
 
-            AuthorArtistBio dbEntry = context.AuthorArtistBios.Find(id);
+            var dbEntry = context.AuthorArtistBios.Find(id);
             if (dbEntry != null)
             {
                 context.AuthorArtistBios.Remove(dbEntry);

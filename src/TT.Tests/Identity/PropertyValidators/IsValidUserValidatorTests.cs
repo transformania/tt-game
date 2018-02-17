@@ -28,7 +28,7 @@ namespace TT.Tests.Identity.PropertyValidators
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            string userNameId = "TestUser";
+            var userNameId = "TestUser";
 
             request = new IsValidUserRequest()
             {

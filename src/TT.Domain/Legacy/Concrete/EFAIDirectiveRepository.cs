@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                AIDirective editMe = context.AIDirectives.Find(AIDirective.Id);
+                var editMe = context.AIDirectives.Find(AIDirective.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = AIDirective.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteAIDirective(int id)
         {
 
-            AIDirective dbEntry = context.AIDirectives.Find(id);
+            var dbEntry = context.AIDirectives.Find(id);
             if (dbEntry != null)
             {
                 context.AIDirectives.Remove(dbEntry);

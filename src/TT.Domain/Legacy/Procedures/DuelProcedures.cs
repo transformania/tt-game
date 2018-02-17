@@ -24,11 +24,11 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IDuelRepository duelRepo = new EFDuelRepository();
 
-            Player dbChallenger = playerRepo.Players.FirstOrDefault(p => p.Id == challenger.Id);
-            Player dbTarget = playerRepo.Players.FirstOrDefault(p => p.Id == target.Id);
+            var dbChallenger = playerRepo.Players.FirstOrDefault(p => p.Id == challenger.Id);
+            var dbTarget = playerRepo.Players.FirstOrDefault(p => p.Id == target.Id);
 
 
-            Duel newDuel = new Duel
+            var newDuel = new Duel
             {
                 StartTurn = -1,
                 ProposalTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
@@ -52,7 +52,7 @@ namespace TT.Domain.Procedures
            // dbChallenger.InDuel = newDuel.Id;
            // dbTarget.InDuel = newDuel.Id;
 
-            string messageToTarget = "You have been challenge to a duel by <b>" + challenger.GetFullName() + "</b>!  Will you accept the challenge or show your cowardice?  " +
+            var messageToTarget = "You have been challenge to a duel by <b>" + challenger.GetFullName() + "</b>!  Will you accept the challenge or show your cowardice?  " +
                 "<b><u><a href='/Duel/AcceptChallenge/" + newDuel.Id + "'>Click here to Accept</a></b></u>."
                 ;
             PlayerLogProcedures.AddPlayerLog(dbTarget.Id, messageToTarget, true);
@@ -71,11 +71,11 @@ namespace TT.Domain.Procedures
         public static List<PlayerFormViewModel> GetPlayerViewModelsInDuel(int duelId)
         {
             IDuelRepository duelRepo = new EFDuelRepository();
-            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            var duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
 
-            List<PlayerFormViewModel> output = new List<PlayerFormViewModel>();
+            var output = new List<PlayerFormViewModel>();
 
-            foreach (DuelCombatant p in duel.Combatants)
+            foreach (var p in duel.Combatants)
             {
                 output.Add(PlayerProcedures.GetPlayerFormViewModel(p.PlayerId));
             }
@@ -86,23 +86,23 @@ namespace TT.Domain.Procedures
         public static void BeginDuel(int duelId)
         {
             IDuelRepository duelRepo = new EFDuelRepository();
-            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            var duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
             duel.StartTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             duel.Status = ACTIVE;
 
-            List<PlayerFormViewModel> members = GetPlayerViewModelsInDuel(duelId);
-            string memberNames = "";
+            var members = GetPlayerViewModelsInDuel(duelId);
+            var memberNames = "";
 
-            foreach (PlayerFormViewModel p in members)
+            foreach (var p in members)
             {
                 memberNames += p.Player.GetFullName() + ", ";
             }
         
-            foreach (PlayerFormViewModel p in members)
+            foreach (var p in members)
             {
                 duel.Combatants.FirstOrDefault(f => f.PlayerId == p.Player.Id).StartForm = p.Player.Form;
                 PlayerProcedures.EnterDuel(p.Player.Id, duel.Id);
-                string playerMessage = "<b>Your duel between " + memberNames + " has begun!</b>";
+                var playerMessage = "<b>Your duel between " + memberNames + " has begun!</b>";
                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, playerMessage, true);
             }
 
@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures
         public static bool PlayerIsNotInDuel(Player attacker, Player target)
         {
 
-            Duel duel = DuelProcedures.GetDuel(attacker.InDuel);
+            var duel = DuelProcedures.GetDuel(attacker.InDuel);
 
             // attacker is not in any duel, so obviously they are not in this duel
             if (duel == null)
@@ -124,8 +124,8 @@ namespace TT.Domain.Procedures
             }
 
             // otherwise scan through participants and see if the target is amongst them
-            bool notInDuel = true;
-            foreach (DuelCombatant d in duel.Combatants)
+            var notInDuel = true;
+            foreach (var d in duel.Combatants)
             {
                 if (target.Id == d.PlayerId)
                 {
@@ -147,17 +147,17 @@ namespace TT.Domain.Procedures
         public static void EndDuel(int duelId, string endStatus)
         {
             IDuelRepository duelRepo = new EFDuelRepository();
-            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            var duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
             duel.CompletionTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             duel.Status = endStatus;
 
             duelRepo.SaveDuel(duel);
 
-            foreach (DuelCombatant d in duel.Combatants)
+            foreach (var d in duel.Combatants)
             {
                 PlayerProcedures.EnterDuel(d.PlayerId, 0);
 
-                string message = "";
+                var message = "";
 
                 if (endStatus==TIMEOUT) {
                     message = "<b class='bad'>Your duel has timed out, ending in a disappointing draw.  You feel as if some frustrated spirits have left you weakened by a curse...</b>";
@@ -174,7 +174,7 @@ namespace TT.Domain.Procedures
         public static void SetLastDuelAttackTimestamp(int duelId)
         {
             IDuelRepository duelRepo = new EFDuelRepository();
-            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            var duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
             duel.LastResetTimestamp = DateTime.UtcNow;
             duelRepo.SaveDuel(duel);
         }

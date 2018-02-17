@@ -53,7 +53,7 @@ namespace TT.Tests.Pipeline
         [Test]
         public async Task AssertRuleSetIsPassed()
         {
-            bool rulesetRan = false;
+            var rulesetRan = false;
             requestMock.RuleSets.Returns(RuleSets.Admin);
 
             validatorMock.RuleSet(RuleSets.Admin.ToString(), () =>

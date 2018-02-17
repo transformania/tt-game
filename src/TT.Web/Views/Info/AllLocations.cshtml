@@ -20,7 +20,7 @@
         </thead>
         <tbody>
 
-            @foreach (TT.Domain.ViewModels.Location l in Model.OrderBy(l => l.Name))
+            @foreach (var l in Model.OrderBy(l => l.Name))
             {
                 <tr>
                     <td class="copyable" data-clipboard-text="@l.Name">@l.Name</td>

@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                PlayerExtra editMe = context.PlayerExtras.Find(PlayerExtra.Id);
+                var editMe = context.PlayerExtras.Find(PlayerExtra.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = PlayerExtra.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeletePlayerExtra(int id)
         {
 
-            PlayerExtra dbEntry = context.PlayerExtras.Find(id);
+            var dbEntry = context.PlayerExtras.Find(id);
             if (dbEntry != null)
             {
                 context.PlayerExtras.Remove(dbEntry);

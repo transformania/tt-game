@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                PlayerLog editMe = context.PlayerLogs.Find(PlayerLog.Id);
+                var editMe = context.PlayerLogs.Find(PlayerLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = PlayerLog.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeletePlayerLog(int id)
         {
 
-            PlayerLog dbEntry = context.PlayerLogs.Find(id);
+            var dbEntry = context.PlayerLogs.Find(id);
             if (dbEntry != null)
             {
                 context.PlayerLogs.Remove(dbEntry);

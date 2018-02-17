@@ -5,10 +5,8 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -71,7 +69,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// </summary>
         public static void SpawnFaeBoss()
         {
-            PlayerDetail faeboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FaebossId });
+            var faeboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FaebossId });
 
             if (faeboss == null)
             {
@@ -95,7 +93,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player faebossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var faebossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 faebossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(faebossEF));
                 playerRepo.SavePlayer(faebossEF);
 
@@ -138,7 +136,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunTurnLogic()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
 
             // fae boss is no longer animate; end the event
             if (faeboss.Mobility!=PvPStatics.MobilityFull)
@@ -153,7 +151,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = faeboss.Id});
             }
 
-            BuffBox faeBuffs = ItemProcedures.GetPlayerBuffs(faeboss);
+            var faeBuffs = ItemProcedures.GetPlayerBuffs(faeboss);
 
             // have Narcissa meditate to get her mana back up
             if (faeboss.Mana < faeboss.MaxMana / 2)
@@ -173,14 +171,14 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
 
-            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
+            var directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
             // no target, go out and hit some random people with animate spells
             if (!HasValidTarget(directive))
             {
                 ResetTarget(directive);
-                string newTargetLocation = GetLocationWithMostEligibleTargets();
-                string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
+                var newTargetLocation = GetLocationWithMostEligibleTargets();
+                var newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
                 faeboss.dbLocationName = newActualLocation;
                 playerRepo.SavePlayer(faeboss);
 
@@ -190,17 +188,17 @@ namespace TT.Domain.Procedures.BossProcedures
             // Narcissa has a valid target, go for them
             else
             {
-                Player target = PlayerProcedures.GetPlayer((int)directive.Var1);
-                string newTargetLocation = target.dbLocationName;
-                string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
+                var target = PlayerProcedures.GetPlayer((int)directive.Var1);
+                var newTargetLocation = target.dbLocationName;
+                var newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
                 faeboss.dbLocationName = newActualLocation;
                 playerRepo.SavePlayer(faeboss);
 
                 if (faeboss.dbLocationName == target.dbLocationName)
                 {
-                    string spell = ChooseSpell(target, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
+                    var spell = ChooseSpell(target, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
 
-                    for (int i = 0; i < 4; i++)
+                    for (var i = 0; i < 4; i++)
                     {
                         AttackProcedures.Attack(faeboss, target, spell);
                     }
@@ -220,11 +218,11 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void CounterAttack(Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
 
             AIProcedures.DealBossDamage(faeboss, attacker, true, 1); // log attack for human on boss
 
-            string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityInanimate);
+            var spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityInanimate);
 
             for (var i = 0; i < 3; i++)
             {
@@ -232,16 +230,16 @@ namespace TT.Domain.Procedures.BossProcedures
                 AIProcedures.DealBossDamage(faeboss, attacker, false, 1); // log attack for boss on human
             }
 
-            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
+            var directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
             // random chance to aggro faeboss
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble();
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble();
 
             if (num < AggroChance || directive.Var1==0)
             {
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-                AIDirective dbDirective = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
+                var dbDirective = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
 
                 dbDirective.Var1 = attacker.Id;
                 aiRepo.SaveAIDirective(dbDirective);
@@ -263,11 +261,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
             if (spellMobilityType==PvPStatics.MobilityFull)
             {
-                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % animateSpellsToCast.Count();
+                var index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % animateSpellsToCast.Count();
                 return animateSpellsToCast[index];
             } else
             {
-                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % inanimateSpellsToCast.Count();
+                var index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % inanimateSpellsToCast.Count();
                 return inanimateSpellsToCast[index];
             }
         }
@@ -279,18 +277,18 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             PvPWorldStatProcedures.Boss_EndFaeBoss();
 
-            List<BossDamage> damages = AIProcedures.GetTopAttackers(AIStatics.FaebossId, 25);
+            var damages = AIProcedures.GetTopAttackers(AIStatics.FaebossId, 25);
 
             // top player gets 1000 XP, each player down the line receives 35 fewer
-            int l = 0;
-            int maxReward = 1000;
+            var l = 0;
+            var maxReward = 1000;
 
             for (var i = 0; i < damages.Count; i++)
             {
                 var damage = damages.ElementAt(0);
 
-                Player victor = PlayerProcedures.GetPlayer(damage.PlayerId);
-                int reward = maxReward - (l * 35);
+                var victor = PlayerProcedures.GetPlayer(damage.PlayerId);
+                var reward = maxReward - (l * 35);
                 victor.XP += reward;
                 l++;
 
@@ -314,8 +312,8 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <returns></returns>
         private static List<Player> GetEligibleTargetsInLocation(Player player)
         {
-            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(player.dbLocationName).Where(m => m.Mobility == PvPStatics.MobilityFull &&
+            var cutoff = DateTime.UtcNow.AddMinutes(-30);
+            var playersHere = PlayerProcedures.GetPlayersAtLocation(player.dbLocationName).Where(m => m.Mobility == PvPStatics.MobilityFull &&
             m.Id != player.Id &&
             m.BotId >= AIStatics.PsychopathBotId &&
             m.LastActionTimestamp > cutoff &&
@@ -332,7 +330,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
+            var cutoff = DateTime.UtcNow.AddMinutes(-30);
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
             p.LastActionTimestamp > cutoff &&
             p.Form != GreatFaeForm &&
@@ -355,7 +353,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 return false;
             }
 
-            Player target = PlayerProcedures.GetPlayer((int)directive.Var1);
+            var target = PlayerProcedures.GetPlayer((int)directive.Var1);
 
             // TODO:  This can probably be swapped out with Arrhae's "CanBeAttacked" method in the future.  But for now...
             if (target == null ||
@@ -379,7 +377,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static void ResetTarget(AIDirective directive)
         {
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective ai = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
+            var ai = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
             ai.Var1 = 0;
             aiRepo.SaveAIDirective(ai);
         }
@@ -390,8 +388,8 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <returns>Random int between 7 and 12</returns>
         private static int GetRandomChaseDistance()
         {
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            double num = rand.NextDouble()*6;
+            var rand = new Random(Guid.NewGuid().GetHashCode());
+            var num = rand.NextDouble()*6;
             return MovementBaseDistance + (int)MovementRandomExtraDistance;
         }
 
@@ -401,11 +399,11 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <param name="faeboss">Player casting the spells.  In this case, always Narcissa.</param>
         private static void CastAnimateSpellsAtLocation(Player faeboss)
         {
-            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss);
+            var playersHere = GetEligibleTargetsInLocation(faeboss);
 
-            foreach (Player p in playersHere)
+            foreach (var p in playersHere)
             {
-                string spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
+                var spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
                 AttackProcedures.Attack(faeboss, p, spell);
                 AIProcedures.DealBossDamage(faeboss, p, false, 1); // log attack for human on boss
             }

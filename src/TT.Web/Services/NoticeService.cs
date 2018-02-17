@@ -18,7 +18,7 @@ namespace TT.Web.Services
         public static void PushNotice(int playerId, string message, string type)
         {
             var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<NoticeHub>();
-            string group = "_" + playerId;
+            var group = "_" + playerId;
 
             // message type
             if (type == PushType__PlayerLog)
@@ -57,7 +57,7 @@ namespace TT.Web.Services
         public static void PushAttackNotice(Player player, string message)
         {
             var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<NoticeHub>();
-            string group = "_" + player.Id;
+            var group = "_" + player.Id;
             var obj = new
             {
                 type = PushType__Attack,

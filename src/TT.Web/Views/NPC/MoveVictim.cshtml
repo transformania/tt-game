@@ -12,7 +12,7 @@
 
     @{
 
-        foreach (TT.Domain.ViewModels.Location loc in Model)
+        foreach (var loc in Model)
         {
             <a href="@Url.Action(MVC.NPC.MoveVictimSend((int)ViewBag.Victim.Id, loc.dbName))">@loc.Name</a>
             <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />

@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.CovenantApplicationViewModel>
-           @using TT.Domain.ViewModels
-            @using TT.Web.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 
 @section menu
 {
@@ -12,7 +11,7 @@
     <h3>Review Applications</h3>
 
     @{
-        foreach (CovenantApplicationViewModel app in Model)
+        foreach (var app in Model)
         {
             <p>
                 @app.dbPlayer.GetFullName() applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)

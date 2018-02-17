@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                LocationInfo editMe = context.LocationInfos.Find(LocationInfo.Id);
+                var editMe = context.LocationInfos.Find(LocationInfo.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = LocationInfo.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteLocationInfo(int id)
         {
 
-            LocationInfo dbEntry = context.LocationInfos.Find(id);
+            var dbEntry = context.LocationInfos.Find(id);
             if (dbEntry != null)
             {
                 context.LocationInfos.Remove(dbEntry);

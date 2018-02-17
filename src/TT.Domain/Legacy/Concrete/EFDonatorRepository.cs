@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Donator editMe = context.Donators.Find(Donator.Id);
+                var editMe = context.Donators.Find(Donator.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Donator.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteDonator(int id)
         {
 
-            Donator dbEntry = context.Donators.Find(id);
+            var dbEntry = context.Donators.Find(id);
             if (dbEntry != null)
             {
                 context.Donators.Remove(dbEntry);

@@ -1,5 +1,4 @@
 ﻿@model TT.Domain.ViewModels.DuelPlayersViewModel
-@using TT.Domain.ViewModels
 
 @section menu
 {
@@ -14,7 +13,7 @@
             <ul>
 
                 @{
-                    foreach (PlayerFormViewModel p in Model.Combatants)
+                    foreach (var p in Model.Combatants)
                     {
                         <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Player.Id))">@p.Player.GetFullName()</a></li>
                     }

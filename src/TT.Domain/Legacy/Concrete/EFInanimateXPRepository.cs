@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                InanimateXP editMe = context.InanimateXPs.Find(InanimateXP.Id);
+                var editMe = context.InanimateXPs.Find(InanimateXP.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = InanimateXP.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteInanimateXP(int id)
         {
 
-            InanimateXP dbEntry = context.InanimateXPs.Find(id);
+            var dbEntry = context.InanimateXPs.Find(id);
             if (dbEntry != null)
             {
                 context.InanimateXPs.Remove(dbEntry);

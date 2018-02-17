@@ -136,7 +136,7 @@ namespace TT.Web
 
             foreach (var type in validatorTypes)
             {
-                Type typeGenericArgs = type.GetClosedTypeOf(typeof(IValidator<>)).GenericTypeArguments.First();
+                var typeGenericArgs = type.GetClosedTypeOf(typeof(IValidator<>)).GenericTypeArguments.First();
 
                 if (!(typeof(IRequest).IsAssignableFrom(typeGenericArgs) || typeGenericArgs.IsClosedTypeOf(typeof(IRequest<>))))
                 {

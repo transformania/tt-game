@@ -180,7 +180,7 @@ namespace TT.Domain.Players.Entities
 
         public void DropAllItems()
         {
-            foreach (Item i in Items)
+            foreach (var i in Items)
             {
                 i.Drop(this);
             }
@@ -335,7 +335,7 @@ namespace TT.Domain.Players.Entities
         {
             var cleansePercentage = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
 
-            foreach (TFEnergy energy in TFEnergies)
+            foreach (var energy in TFEnergies)
             {
                 var newValue = energy.Amount * (1 - (cleansePercentage / 100.0M));
                 energy.SetAmount(newValue);
@@ -467,7 +467,7 @@ namespace TT.Domain.Players.Entities
 
         private static float GetWillpowerBaseByLevel(int level)
         {
-            float willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+            var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
             return willpowerBase;
         }
 
@@ -497,7 +497,7 @@ namespace TT.Domain.Players.Entities
             // must also be done there to keep new code consistent with legacy code.
 
             float xp = 11 * Level * Level + 0 + 89;
-            float leftover = xp % 10;
+            var leftover = xp % 10;
 
             xp = (float)Math.Round(xp / 10) * 10; // round to nearest 10
 
@@ -526,8 +526,8 @@ namespace TT.Domain.Players.Entities
 
             this.Location = nextLocation.dbName;
 
-            string leavingMessage = this.GetFullName() + " (feral) left toward " + nextLocation.Name;
-            string enteringMessage = this.GetFullName() + " (feral) entered from " + currentLocation.Name;
+            var leavingMessage = this.GetFullName() + " (feral) left toward " + nextLocation.Name;
+            var enteringMessage = this.GetFullName() + " (feral) entered from " + currentLocation.Name;
 
             var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
 
@@ -547,12 +547,12 @@ namespace TT.Domain.Players.Entities
             var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
             var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
 
-            string leavingMessage = this.GetFullName() + " left toward " + nextLocation.Name;
-            string enteringMessage = this.GetFullName() + " entered from " + currentLocation.Name;
+            var leavingMessage = this.GetFullName() + " left toward " + nextLocation.Name;
+            var enteringMessage = this.GetFullName() + " entered from " + currentLocation.Name;
 
             var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
 
-            int sneakLevel = this.CalculateSneakLevel(buffs);
+            var sneakLevel = this.CalculateSneakLevel(buffs);
             if (sneakLevel > 0)
             {
                 playerLog += $" (Concealment lvl <b>{sneakLevel}</b>)";

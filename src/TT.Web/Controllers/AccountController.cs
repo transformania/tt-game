@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using FeatureSwitch;
@@ -12,7 +11,6 @@ using Recaptcha.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 
 namespace TT.Web.Controllers
@@ -52,13 +50,13 @@ namespace TT.Web.Controllers
 
             if (FeatureContext.IsEnabled<UseCaptcha>())
             {
-                RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+                var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     ModelState.AddModelError("", "Captcha answer cannot be empty.");
                     return View(MVC.Account.Views.Login, model);
                 }
-                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                var recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
                 {
                     ModelState.AddModelError("", "Incorrect captcha answer.");
@@ -115,13 +113,13 @@ namespace TT.Web.Controllers
 
             if (FeatureContext.IsEnabled<UseCaptcha>())
             {
-                RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+                var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     ModelState.AddModelError("", "Captcha answer cannot be empty.");
                     return View(MVC.Account.Views.Register, model);
                 }
-                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                var recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
                 {
                     ModelState.AddModelError("", "Incorrect captcha answer.");
@@ -159,7 +157,7 @@ namespace TT.Web.Controllers
             var owner = userManager.Find(new UserLoginInfo(provider, providerUserId));
             if (owner != null && owner.UserName == User.Identity.Name)
             {
-                IdentityResult result = userManager.RemoveLogin(owner.Id, new UserLoginInfo(provider, providerUserId));
+                var result = userManager.RemoveLogin(owner.Id, new UserLoginInfo(provider, providerUserId));
                 if (result.Succeeded)
                 {
                     message = ManageMessageId.RemoveLoginSuccess;
@@ -193,7 +191,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ChangeEmail()
         {
-            LocalEmailModel Email = new LocalEmailModel
+            var Email = new LocalEmailModel
             {
                 Email = GetUser().Email
             };
@@ -212,7 +210,7 @@ namespace TT.Web.Controllers
             {
                 if (userManager.CheckPassword(user, model.OldPassword))
                 {
-                    IdentityResult result = userManager.SetEmail(User.Identity.GetUserId(), model.Email);
+                    var result = userManager.SetEmail(User.Identity.GetUserId(), model.Email);
                     if (result.Succeeded)
                     {
                         user = userManager.FindById(User.Identity.GetUserId());
@@ -250,7 +248,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasPassword = HasPassword();
+            var hasPassword = HasPassword();
             var user = GetUser();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action(MVC.Account.Manage());
@@ -258,7 +256,7 @@ namespace TT.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = userManager.ChangePassword(user.Id, model.OldPassword, model.NewPassword);
+                    var result = userManager.ChangePassword(user.Id, model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
                         user = userManager.FindById(User.Identity.GetUserId());
@@ -278,7 +276,7 @@ namespace TT.Web.Controllers
             else
             {
                 // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
+                var state = ModelState["OldPassword"];
                 if (state != null)
                 {
                     state.Errors.Clear();
@@ -286,7 +284,7 @@ namespace TT.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = userManager.AddPassword(user.Id, model.NewPassword);
+                    var result = userManager.AddPassword(user.Id, model.NewPassword);
                     if (result.Succeeded)
                     {
                         return RedirectToAction(MVC.Account.Manage(ManageMessageId.SetPasswordSuccess));
@@ -306,18 +304,18 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult SubmitCaptcha()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (FeatureContext.IsEnabled<UseCaptcha>() && DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
             {
-                RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+                var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     TempData["Error"] = "You must correctly answer the captcha in order to do this.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
-                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                var recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
                 {
                     DomainRegistry.Repository.Execute(new UpdateCaptchaEntry

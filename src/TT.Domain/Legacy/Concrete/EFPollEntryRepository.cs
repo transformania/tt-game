@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                PollEntry editMe = context.PollEntries.Find(PollEntries.Id);
+                var editMe = context.PollEntries.Find(PollEntries.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = PollEntries.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeletePollEntry(int id)
         {
 
-            PollEntry dbEntry = context.PollEntries.Find(id);
+            var dbEntry = context.PollEntries.Find(id);
             if (dbEntry != null)
             {
                 context.PollEntries.Remove(dbEntry);

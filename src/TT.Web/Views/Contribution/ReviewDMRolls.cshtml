@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<TT.Domain.Models.DMRoll>
-@using TT.Domain.Models
 
 <h1>Review DM Encounter Contributions</h1>
 
 <hr />
 
 
-@foreach (DMRoll roll in Model.OrderBy(r => r.Tags))
+@foreach (var roll in Model.OrderBy(r => r.Tags))
 {
 
     <p><span style="color: darkblue;">@roll.Tags.ToUpper()</span>  <span style="color: darkred;">@roll.ActionType.ToUpper()</span></p>

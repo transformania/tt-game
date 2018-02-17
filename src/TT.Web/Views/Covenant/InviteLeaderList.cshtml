@@ -11,7 +11,7 @@
     <p>Click on one of the names below to set a member of the covenant as the leader.</p>
     <p>Covenant leaders are the highest trusted member of the covenant and are permitted all covenant administrative access. Setting a new covenant leader will revoke your leadership status.</p>
     @{
-        foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.Members)
+        foreach (var p in Model.Members)
         {
             <p>
                 <a href="@Url.Action(MVC.Covenant.InviteLeaderSend(p.Player.Id))">@p.Player.GetFullName()</a>

@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                CovenantLog editMe = context.CovenantLogs.Find(CovenantLog.Id);
+                var editMe = context.CovenantLogs.Find(CovenantLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = CovenantLog.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteCovenantLog(int id)
         {
 
-            CovenantLog dbEntry = context.CovenantLogs.Find(id);
+            var dbEntry = context.CovenantLogs.Find(id);
             if (dbEntry != null)
             {
                 context.CovenantLogs.Remove(dbEntry);

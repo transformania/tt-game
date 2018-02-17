@@ -1,6 +1,5 @@
 ﻿using TT.Domain.Assets.Entities;
 using TT.Domain.Statics;
-using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Item;
 
 namespace TT.Tests.Builders.Assets

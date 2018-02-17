@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
-using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
@@ -14,11 +12,11 @@ namespace TT.Domain.Procedures
         public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
+            var animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
 
-            ItemDetail animalItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = animalPlayer.FirstName, LastName = animalPlayer.LastName});
+            var animalItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = animalPlayer.FirstName, LastName = animalPlayer.LastName});
 
-            Player victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
+            var victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 
             Player attackerOwner = null;
 
@@ -26,14 +24,14 @@ namespace TT.Domain.Procedures
                 attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.Owner.Id);
             }
 
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
+            var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
 
 
-            PlayerFormViewModel attackerPlus = PlayerProcedures.GetPlayerFormViewModel(animalPlayerId);
+            var attackerPlus = PlayerProcedures.GetPlayerFormViewModel(animalPlayerId);
 
-            string victimMessage = "";
-            string attackerMessage = "";
-            string locationMessage = "";
+            var victimMessage = "";
+            var attackerMessage = "";
+            var locationMessage = "";
 
             string victimPronoun;
             if (victim.Gender == PvPStatics.GenderMale)

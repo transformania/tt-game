@@ -107,9 +107,9 @@ namespace TT.Domain.ViewModels
 
             decimal total = 0;
 
-            foreach (BuffStat buff in this.BuffStats) {
+            foreach (var buff in this.BuffStats) {
 
-                decimal value = buff.Amount * buff.Value;
+                var value = buff.Amount * buff.Value;
 
                 if (value < 0 && buff.NegativeModifier != 0) {
                     value = value*buff.NegativeModifier;
@@ -130,9 +130,9 @@ namespace TT.Domain.ViewModels
 
             decimal total = 0;
 
-            foreach (BuffStat buff in this.BuffStats)
+            foreach (var buff in this.BuffStats)
             {
-                decimal value = buff.Amount * buff.Value;
+                var value = buff.Amount * buff.Value;
                 total += value;
             }
             return total;
@@ -142,10 +142,10 @@ namespace TT.Domain.ViewModels
         {
             decimal total = 0;
 
-            foreach (BuffStat buff in this.BuffStats)
+            foreach (var buff in this.BuffStats)
             {
 
-                decimal value = buff.Amount * buff.Value;
+                var value = buff.Amount * buff.Value;
 
                 if (value < 0 && buff.NegativeModifier != 0)
                 {
@@ -167,7 +167,7 @@ namespace TT.Domain.ViewModels
         public void LoadBalanceBox(DbStaticForm input)
         {
             BuffStats = new List<BuffStat>();
-            BuffStat addme = new BuffStat();
+            var addme = new BuffStat();
 
             if (input.Discipline != 0)
             {
@@ -282,7 +282,7 @@ namespace TT.Domain.ViewModels
         public void LoadBalanceBox(DbStaticItem input)
         {
             BuffStats = new List<BuffStat>();
-            BuffStat addme = new BuffStat();
+            var addme = new BuffStat();
 
             if (input.Discipline != 0)
             {
@@ -396,7 +396,7 @@ namespace TT.Domain.ViewModels
         public void LoadBalanceBox(Contribution input)
         {
             BuffStats = new List<BuffStat>();
-            BuffStat addme = new BuffStat();
+            var addme = new BuffStat();
 
             if (input.Discipline != 0)
             {
@@ -510,7 +510,7 @@ namespace TT.Domain.ViewModels
         public void LoadBalanceBox(EffectContribution input)
         {
             BuffStats = new List<BuffStat>();
-            BuffStat addme = new BuffStat();
+            var addme = new BuffStat();
 
             if (input.Discipline != 0)
             {
@@ -624,7 +624,7 @@ namespace TT.Domain.ViewModels
         public void LoadBalanceBox(DbStaticEffect input)
         {
             BuffStats = new List<BuffStat>();
-            BuffStat addme = new BuffStat();
+            var addme = new BuffStat();
             if (input.HealthBonusPercent != 0)
             {
                 addme = new BuffStat

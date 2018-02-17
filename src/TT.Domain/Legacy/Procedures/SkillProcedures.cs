@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -171,13 +170,13 @@ namespace TT.Domain.Procedures
 
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            Skill_VM tempskill = new Skill_VM
+            var tempskill = new Skill_VM
             {
                 Name = skilldbName,
             };
 
-            DbStaticSkill dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
-            StaticSkill tempstatic = new StaticSkill
+            var dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
+            var tempstatic = new StaticSkill
             {
                 dbName = dbstatic.dbName,
                 FriendlyName = dbstatic.FriendlyName,
@@ -195,7 +194,7 @@ namespace TT.Domain.Procedures
                 IsPlayerLearnable = dbstatic.IsPlayerLearnable
             };
 
-            SkillViewModel output = new SkillViewModel
+            var output = new SkillViewModel
             {
                 dbSkill = tempskill,
                 Skill = tempstatic,
@@ -208,7 +207,7 @@ namespace TT.Domain.Procedures
         public static string GiveSkillToPlayer(int playerId, string skilldbName)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            DbStaticSkill skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
+            var skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
             return GiveSkillToPlayer(playerId, skill);
         }
 
@@ -216,12 +215,12 @@ namespace TT.Domain.Procedures
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            Skill ghost = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == playerId && s.Name == skill.dbName);
+            var ghost = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == playerId && s.Name == skill.dbName);
             if (ghost == null) //player does not have this skill yet; add it
             {
                 DomainRegistry.Repository.Execute(new CreateSkill {ownerId = playerId, skillSourceId = skill.Id});
 
-                string output = "";
+                var output = "";
                 output += skill.DiscoveryMessage;
                 return output + "  <b>Congratulations, you have learned a new spell, " + skill.FriendlyName + ".</b>";
             }
@@ -240,7 +239,7 @@ namespace TT.Domain.Procedures
             IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.dbName).ToList();
 
 
-            IEnumerable<string> eligibleSkills = from s in learnableSkills
+            var eligibleSkills = from s in learnableSkills
                                                  let sx = playerSkills
                                      where !sx.Contains(s)
                                      select s;
@@ -252,9 +251,9 @@ namespace TT.Domain.Procedures
                 return output;
             }
 
-            Random rand = new Random(DateTime.UtcNow.Millisecond);
+            var rand = new Random(DateTime.UtcNow.Millisecond);
 
-            for (int i = 0; i < amount; i++)
+            for (var i = 0; i < amount; i++)
             {
                 if (!eligibleSkills.Any())
                 {
@@ -263,9 +262,9 @@ namespace TT.Domain.Procedures
                 else
                 {
                     double max = eligibleSkills.Count();
-                    int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
-                    string skillToGive = eligibleSkills.ElementAt(randIndex);
-                    DbStaticSkill staticSkill = SkillStatics.GetStaticSkill(skillToGive);
+                    var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+                    var skillToGive = eligibleSkills.ElementAt(randIndex);
+                    var staticSkill = SkillStatics.GetStaticSkill(skillToGive);
                     GiveSkillToPlayer(player.Id, staticSkill);
                     eligibleSkills = eligibleSkills.Where(s => s != skillToGive);
                     output.Add(staticSkill.FriendlyName);
@@ -280,7 +279,7 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
             IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == playerId).ToList();
 
-            foreach (Skill s in skillsToDelete)
+            foreach (var s in skillsToDelete)
             {
                 skillRepo.DeleteSkill(s.Id);
             }
@@ -291,13 +290,13 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
             IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.Name != "lowerHealth").ToList();
 
-            foreach (Skill s in skillsToDelete)
+            foreach (var s in skillsToDelete)
             {
                 s.OwnerId = newPlayerId;
                 skillRepo.SaveSkill(s);
             }
 
-            Skill weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == "lowerHealth");
+            var weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == "lowerHealth");
             if (weakenSkill != null)
             {
                 skillRepo.DeleteSkill(weakenSkill.Id);
@@ -318,18 +317,18 @@ namespace TT.Domain.Procedures
             IEnumerable<SkillViewModel> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
             IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.Skill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
 
-            foreach (int id in formSpecificSkillIds)
+            foreach (var id in formSpecificSkillIds)
             {
                 skillRepo.DeleteSkill(id);
             }
 
             // now give the player the new form specific skills
-            List<DbStaticSkill> formSpecificSkillsToGive = SkillStatics.GetFormSpecificSkills(newFormDbName).ToList();
-            foreach (DbStaticSkill skill in formSpecificSkillsToGive)
+            var formSpecificSkillsToGive = SkillStatics.GetFormSpecificSkills(newFormDbName).ToList();
+            foreach (var skill in formSpecificSkillsToGive)
             {
 
                 // make sure player does not already have this skill due to some bug or othher
-                Skill possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.Name == skill.dbName);
+                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.Name == skill.dbName);
 
                 if (possibledbSkill == null)
                 {
@@ -356,9 +355,9 @@ namespace TT.Domain.Procedures
             // delete all of the old item specific skills for the player
             IEnumerable<SkillViewModel> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
             IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped && i.dbName != newItemName).Select(s => s.dbName).ToList();
-            List<int> itemSpecificSkillsIds = new List<int>();
+            var itemSpecificSkillsIds = new List<int>();
 
-            foreach (SkillViewModel s in itemSpecificSkills)
+            foreach (var s in itemSpecificSkills)
             {
                 if (!s.Skill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
                 {
@@ -366,7 +365,7 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            foreach (int id in itemSpecificSkillsIds)
+            foreach (var id in itemSpecificSkillsIds)
             {
                 skillRepo.DeleteSkill(id);
             }
@@ -378,12 +377,12 @@ namespace TT.Domain.Procedures
             }
 
             // now give the player any skills they are missing
-            List<DbStaticSkill> itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemName).ToList();
-            foreach (DbStaticSkill skill in itemSpecificSkillsToGive)
+            var itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemName).ToList();
+            foreach (var skill in itemSpecificSkillsToGive)
             {
 
                 // make sure player does not already have this skill due to some bug or othher
-                Skill possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.Name == skill.dbName);
+                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.Name == skill.dbName);
 
                 if (possibledbSkill == null)
                 {
@@ -402,7 +401,7 @@ namespace TT.Domain.Procedures
         public static void ArchiveSpell(int id)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            Skill skill = skillRepo.Skills.FirstOrDefault(s => s.Id == id);
+            var skill = skillRepo.Skills.FirstOrDefault(s => s.Id == id);
             skill.IsArchived = !skill.IsArchived;
             skillRepo.SaveSkill(skill);
         }

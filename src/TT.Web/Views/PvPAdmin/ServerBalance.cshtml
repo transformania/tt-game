@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (TT.Domain.ViewModels.BalancePageViewModel entry in Model)
+            @foreach (var entry in Model)
             {
                 <tr>
                     <td>@Html.Raw(entry.dbName)</td>

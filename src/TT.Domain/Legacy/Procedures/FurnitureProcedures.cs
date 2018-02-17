@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -123,8 +120,8 @@ namespace TT.Domain.Procedures
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
 
-            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
-            Furniture dbFurniture = furnRepo.Furnitures.First(f => f.Id == furniture.Id);
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
+            var dbFurniture = furnRepo.Furnitures.First(f => f.Id == furniture.Id);
 
             dbCovenant.Money -= furniture.Price;
             dbFurniture.CovenantId = covenant.Id;
@@ -136,44 +133,44 @@ namespace TT.Domain.Procedures
             covRepo.SaveCovenant(dbCovenant);
             furnRepo.SaveFurniture(dbFurniture);
 
-            string message = "The leader of the covenant has purchased the furniture contract for " + dbFurniture.HumanName + ".";
+            var message = "The leader of the covenant has purchased the furniture contract for " + dbFurniture.HumanName + ".";
             CovenantProcedures.WriteCovenantLog(message, covenant.Id, true);
 
         }
 
         public static double GetMinutesUntilReuse(FurnitureViewModel furniture) {
 
-            double rechargeTime = (double)furniture.FurnitureType.MinutesUntilReuse;
-            double minutesSinceLastUse = furniture.dbFurniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
+            var rechargeTime = (double)furniture.FurnitureType.MinutesUntilReuse;
+            var minutesSinceLastUse = furniture.dbFurniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
             return rechargeTime + minutesSinceLastUse;
         }
 
         public static double GetMinutesUntilReuse(Furniture furniture)
         {
              IFurnitureRepository furnRepo = new EFFurnitureRepository();
-             DbStaticFurniture staticFurniture = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == furniture.dbType);
-             double rechargeTime = (double)staticFurniture.MinutesUntilReuse;
-             double minutesSinceLastUse = furniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
+             var staticFurniture = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == furniture.dbType);
+             var rechargeTime = (double)staticFurniture.MinutesUntilReuse;
+             var minutesSinceLastUse = furniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
              return rechargeTime + minutesSinceLastUse;
         }
 
         public static string UseFurniture(int furnitureId, Player user)
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
-            Furniture dbFurniture = furnRepo.Furnitures.FirstOrDefault(f => f.Id == furnitureId);
+            var dbFurniture = furnRepo.Furnitures.FirstOrDefault(f => f.Id == furnitureId);
             dbFurniture.LastUseTimestamp = DateTime.UtcNow;
             furnRepo.SaveFurniture(dbFurniture);
 
-            DbStaticFurniture furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
+            var furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
 
-            string logMessage = "<b>" + user.GetFullName() + "</b> used <b>" + dbFurniture.HumanName + "</b>.";
+            var logMessage = "<b>" + user.GetFullName() + "</b> used <b>" + dbFurniture.HumanName + "</b>.";
             CovenantProcedures.WriteCovenantLog(logMessage, (int)user.Covenant, false);
 
             // furniture gives AP reserve bonus
             if (furnitureStatic.APReserveRefillAmount > 0)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == user.Id);
+                var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == user.Id);
                 dbPlayer.ActionPoints_Refill += furnitureStatic.APReserveRefillAmount;
                 if (dbPlayer.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
                 {
@@ -198,7 +195,7 @@ namespace TT.Domain.Procedures
             {
                 ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
                 PlayerProcedures.SetTimestampToNow(user);
-                DbStaticItem itemGained = ItemStatics.GetStaticItem(furnitureStatic.GivesItem);
+                var itemGained = ItemStatics.GetStaticItem(furnitureStatic.GivesItem);
                 return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, gaining a " + itemGained.FriendlyName + ".";
             }
 
@@ -211,16 +208,16 @@ namespace TT.Domain.Procedures
 
             IEnumerable<Furniture> furnitureOnMarket = furnRepo.Furnitures.Where(f => f.CovenantId == -1).ToList();
 
-            Random rand = new Random();
-            int amountToDelete = (int)Math.Floor(rand.NextDouble() * 2 + 1);
-            int amountToAdd = (int)Math.Floor(rand.NextDouble() * 3 + 1);
+            var rand = new Random();
+            var amountToDelete = (int)Math.Floor(rand.NextDouble() * 2 + 1);
+            var amountToAdd = (int)Math.Floor(rand.NextDouble() * 3 + 1);
 
             // delete some of the furniture currently available on the market if 
             IEnumerable<Furniture> furnitureToDelete;
             if (furnitureOnMarket.Count() > 5)
             {
                 furnitureToDelete = furnitureOnMarket.Take(amountToDelete);
-                foreach (Furniture f in furnitureToDelete)
+                foreach (var f in furnitureToDelete)
                 {
                     furnRepo.DeleteFurniture(f.Id);
                 }

@@ -31,7 +31,7 @@ namespace TT.Domain.Procedures
                                 Timestamp = p.Timestamp
                             }
                         };
-            List<ItemTransferLogViewModel> output = query.OrderBy(p => p.ItemLog.Timestamp).ToList();
+            var output = query.OrderBy(p => p.ItemLog.Timestamp).ToList();
 
             return output;
         }
@@ -39,7 +39,7 @@ namespace TT.Domain.Procedures
         public static void AddItemTransferLog(int iItem, int iOwner)
         {
             IItemTransferLogRepository ItemTransferLogRepo = new EFItemTransferLogRepository();
-            ItemTransferLog newlog = new ItemTransferLog();
+            var newlog = new ItemTransferLog();
 
             newlog.ItemId = iItem;
             newlog.OwnerId = iOwner;

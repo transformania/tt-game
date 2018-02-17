@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.FriendPageViewModel
-@using TT.Web.CustomHtmlHelpers
-@using TT.Domain.Procedures
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "My Friends";
@@ -32,7 +30,7 @@
                 <tbody>
 
                     @{
-        foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
+        foreach (var fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
         {
             <tr>
 
@@ -122,7 +120,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+                    @foreach (var fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
                     {
                         <tr>
                             <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(fp2.dbPlayer.Id))">@fp2.dbPlayer.GetFullName() (#@fp2.dbPlayer.MembershipId)</a></td>
@@ -163,7 +161,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+                    @foreach (var fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
                     {
                         <tr>
                             <td>

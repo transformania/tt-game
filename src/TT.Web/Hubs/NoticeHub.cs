@@ -2,7 +2,6 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using TT.Domain;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Services;
 using TT.Web.Services;
@@ -33,13 +32,13 @@ namespace TT.Web.Hubs
         {
             DomainRegistry.AttackNotificationBroker.NotificationRaised += NotificationRaised;
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
 
-            int minimumDonatorLevelForNotifications = 0;
+            var minimumDonatorLevelForNotifications = 0;
 
             if (me.DonatorLevel >= minimumDonatorLevelForNotifications)
             {
-                string room = "_" + me.Id;
+                var room = "_" + me.Id;
                 return Groups.Add(Context.ConnectionId, room);
             }
 
@@ -50,7 +49,7 @@ namespace TT.Web.Hubs
 
         public void ReceiveNotice(int playerId, string message)
         {
-            string room = "_" + playerId;
+            var room = "_" + playerId;
             Clients.Group(room).receiveNotice(message);
         }
 

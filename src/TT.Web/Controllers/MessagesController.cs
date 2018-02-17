@@ -7,7 +7,6 @@ using TT.Domain.Exceptions;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Queries;
-using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -23,13 +22,13 @@ namespace TT.Web.Controllers
         public virtual ActionResult Index(int offset = 0)
         {
 
-            string myMembershipId = User.Identity.GetUserId();
+            var myMembershipId = User.Identity.GetUserId();
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             DomainRegistry.Repository.Execute(new DeletePlayerExpiredMessages { OwnerId = me.Id });
 
-            MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
+            var output = MessageProcedures.GetPlayerMessages(me, offset);
 
             output.InboxSize = 150;
 
@@ -37,7 +36,7 @@ namespace TT.Web.Controllers
 
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
-                PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
+                var personWearingMe = ItemProcedures.BeingWornBy(me);
                 if (personWearingMe != null)
                 {
                     output.WearerId = personWearingMe.Player.Id;
@@ -45,7 +44,7 @@ namespace TT.Web.Controllers
                 }
             }
 
-            bool isDonator = me.DonatorGetsMessagesRewards();
+            var isDonator = me.DonatorGetsMessagesRewards();
 
             ViewBag.IsDonator = isDonator;
 
@@ -66,8 +65,8 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult DeleteMessage(bool deleteAll, int messageId)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (deleteAll)
             {
@@ -94,8 +93,8 @@ namespace TT.Web.Controllers
         [HttpGet]
         public virtual ActionResult ReadMessage(int messageId)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             MessageDetail message;
 
@@ -117,8 +116,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ReadConversation(int messageId)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (!DomainRegistry.Repository.FindSingle(new PlayerOwnsMessage { MessageId = messageId, OwnerId = me.Id }))
             {
@@ -154,8 +153,8 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult MarkReadStatus(int messageId, int readStatus)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             try
             {
@@ -184,10 +183,10 @@ namespace TT.Web.Controllers
         [HttpGet]
         public virtual ActionResult Write(int playerId, int responseTo = -1)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player sendingTo = PlayerProcedures.GetPlayer(playerId);
-            MessageSubmitViewModel output = new MessageSubmitViewModel();
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var sendingTo = PlayerProcedures.GetPlayer(playerId);
+            var output = new MessageSubmitViewModel();
 
             output.SenderId = me.Id;
             output.ReceiverId = playerId;
@@ -205,7 +204,7 @@ namespace TT.Web.Controllers
             {
                 try
                 {
-                    MessageDetail msgRepliedTo = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = responseTo, OwnerId = me.Id });
+                    var msgRepliedTo = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = responseTo, OwnerId = me.Id });
                     output.RespondingToMsg = msgRepliedTo.MessageText;
 
                 }
@@ -225,9 +224,9 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult SendMessage(MessageSubmitViewModel input)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
             // assert player is not banned from chat
             if (me.IsBannedFromGlobalChat)
@@ -291,7 +290,7 @@ namespace TT.Web.Controllers
         [HttpGet]
         public virtual ActionResult CovenantWideMessage()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -300,7 +299,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -322,7 +321,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
@@ -331,7 +330,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -348,7 +347,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MarkAsAbusive(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             try
             {

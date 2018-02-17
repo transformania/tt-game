@@ -26,7 +26,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                ItemTransferLog editMe = context.ItemTransferLogs.Find(ItemTransferLog.Id);
+                var editMe = context.ItemTransferLogs.Find(ItemTransferLog.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = ItemTransferLog.Name;
@@ -41,7 +41,7 @@ namespace TT.Domain.Concrete
         public void DeleteItemTransferLog(int id)
         {
 
-            ItemTransferLog dbEntry = context.ItemTransferLogs.Find(id);
+            var dbEntry = context.ItemTransferLogs.Find(id);
             if (dbEntry != null)
             {
                 context.ItemTransferLogs.Remove(dbEntry);

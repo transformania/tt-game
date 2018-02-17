@@ -88,10 +88,10 @@ namespace TT.Tests.Services
         public void Should_print_correct_choice_text_1_roll_requirement()
         {
             b.AddRollRequirement((int)QuestStatics.RequirementType.Luck, 1.25f, 10);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
             buffs.FromEffects_Luck = 50;
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[Luck - 72.5%]");
         }
@@ -101,12 +101,12 @@ namespace TT.Tests.Services
         {
             b.AddRollRequirement((int)QuestStatics.RequirementType.Charisma, .5f, 0);
             b.AddRollRequirement((int)QuestStatics.RequirementType.Magicka, .5f, 15);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
 
             buffs.FromEffects_Charisma = 25;
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[Charisma - 12.5%, Magicka - 15%]");
         }
@@ -115,9 +115,9 @@ namespace TT.Tests.Services
         public void Should_print_correct_choice_text_1_strict_requirement()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Luck, "150", (int)QuestStatics.Operator.Greater_Than);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[> 150 Luck]");
         }
@@ -128,11 +128,11 @@ namespace TT.Tests.Services
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Luck, "150", (int)QuestStatics.Operator.Greater_Than);
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Perception, "35", (int)QuestStatics.Operator.Equal_To);
 
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
             buffs.FromEffects_Luck = 50;
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[> 150 Luck, = 35 Perception]");
         }
@@ -142,11 +142,11 @@ namespace TT.Tests.Services
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Fortitude, "10", (int)QuestStatics.Operator.Greater_Than_Or_Equal);
             b.AddRollRequirement((int)QuestStatics.RequirementType.Magicka, 1.0f, -50);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
             buffs.FromEffects_Magicka = 60;
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[>= 10 Fortitude, Magicka - 10%]");
         }
@@ -155,9 +155,9 @@ namespace TT.Tests.Services
         public void Should_not_print_details_for_required_gender()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, PvPStatics.GenderMale, 0);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("");
         }
@@ -166,9 +166,9 @@ namespace TT.Tests.Services
         public void Should_not_print_details_for_required_form()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Form, "derpform", 0);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("");
         }
@@ -177,9 +177,9 @@ namespace TT.Tests.Services
         public void Should_not_print_details_for_required_variable()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("");
         }
@@ -189,9 +189,9 @@ namespace TT.Tests.Services
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, PvPStatics.GenderMale, 0);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("");
         }
@@ -202,9 +202,9 @@ namespace TT.Tests.Services
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Succour, "25", (int)QuestStatics.Operator.Greater_Than_Or_Equal);
-            QuestConnection q = b.GetQuestConnection();
+            var q = b.GetQuestConnection();
 
-            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+            var message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
             message.Should().Be("[>= 25 Succour]");
         }
@@ -266,7 +266,7 @@ namespace TT.Tests.Services
         public void Cant_start_quests_that_are_not_live()
         {
             questStart.IsLive = false;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -275,7 +275,7 @@ namespace TT.Tests.Services
         {
             questStart.MinStartLevel = 3;
             player.Level = 2;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -284,7 +284,7 @@ namespace TT.Tests.Services
         {
             questStart.MinStartLevel = 3;
             player.Level = 2;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -293,7 +293,7 @@ namespace TT.Tests.Services
         {
             questStart.RequiredGender = (int)QuestStatics.Gender.Male;
             player.Gender = PvPStatics.GenderFemale;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -302,7 +302,7 @@ namespace TT.Tests.Services
         {
             questStart.RequiredGender = (int)QuestStatics.Gender.Female;
             player.Gender = PvPStatics.GenderMale;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -314,7 +314,7 @@ namespace TT.Tests.Services
                 QuestId = fakeTestId,
                 Outcome = (int)QuestStatics.QuestOutcomes.Completed
             });
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -329,7 +329,7 @@ namespace TT.Tests.Services
                 LastEndedTurn = turnNumber - 1,
                 StartedTurn = turnNumber - 1
             });
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -342,7 +342,7 @@ namespace TT.Tests.Services
                 Outcome = (int)QuestStatics.QuestOutcomes.Failed,
                 LastEndedTurn = turnNumber - QuestStatics.QuestFailCooldownTurnLength - 1
             });
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsTrue(ok);
         }
 
@@ -350,7 +350,7 @@ namespace TT.Tests.Services
         public void Cant_start_quest_if_prerequisite_test_not_completed()
         {
             questStart.PrerequisiteQuest = 2;
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsFalse(ok);
         }
 
@@ -365,7 +365,7 @@ namespace TT.Tests.Services
                 Outcome = (int)QuestStatics.QuestOutcomes.Completed
             });
 
-            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            var ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
             Assert.IsTrue(ok);
         }
 

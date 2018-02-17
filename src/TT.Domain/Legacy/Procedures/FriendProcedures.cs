@@ -51,8 +51,8 @@ namespace TT.Domain.Procedures
         public static bool MemberIsMyFriend(string me, string them)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted);
-            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted);
+            var dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted);
+            var dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted);
 
             if (dbFriend != null || dbFriend2 != null)
             {
@@ -71,17 +71,17 @@ namespace TT.Domain.Procedures
 
             IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == membershipId || f.FriendMembershipId == membershipId);
 
-            List<FriendPlayerViewModel> output = new List<FriendPlayerViewModel>();
+            var output = new List<FriendPlayerViewModel>();
 
-            foreach (Friend friend in mydbfriends)
+            foreach (var friend in mydbfriends)
             {
-                FriendPlayerViewModel friendPlayer = new FriendPlayerViewModel();
+                var friendPlayer = new FriendPlayerViewModel();
 
                 // this was a request sent BY me.  Grab the player who it was sent to
                 if (friend.OwnerMembershipId == membershipId)
                 {
 
-                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
+                    var plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
 
                     if (plyr != null)
                     {
@@ -95,7 +95,7 @@ namespace TT.Domain.Procedures
                     // this was a request sent TO me.  Grab the player who sent it
                 else if (friend.FriendMembershipId == membershipId)
                 {
-                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+                    var plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
 
                     if (plyr != null)
                     {
@@ -113,7 +113,7 @@ namespace TT.Domain.Procedures
         public static string CancelFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            var friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
 
 
             // assert exists
@@ -139,7 +139,7 @@ namespace TT.Domain.Procedures
         public static string AcceptFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            var friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
 
 
             // assert exists
@@ -164,7 +164,7 @@ namespace TT.Domain.Procedures
         public static string OwnerSetNicknameOfFriend(int id, string input)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            var friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
             friend.OwnerNicknameForFriend = input;
             friendRepo.SaveFriend(friend);
             return "You set the nickname of this friend to '" + input + "'.";
@@ -173,7 +173,7 @@ namespace TT.Domain.Procedures
         public static string FriendSetNicknameOfOwner(int id, string input)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            var friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
             friend.FriendNicknameForOwner = input;
             friendRepo.SaveFriend(friend);
             return "You set the nickname of this friend to '" + input + "'.";

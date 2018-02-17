@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.Models.Contribution>
-@using TT.Domain.Models
 
 @section menu
 {
@@ -40,7 +39,7 @@
         <tbody>
 
             @{
-                foreach (Contribution c in Model)
+                foreach (var c in Model)
                 {
                     <tr>
                         <td>

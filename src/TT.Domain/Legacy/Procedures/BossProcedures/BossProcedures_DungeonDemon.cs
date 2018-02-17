@@ -12,18 +12,18 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void CounterAttack(Player demon, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbDemon = playerRepo.Players.FirstOrDefault(f => f.Id == demon.Id);
+            var dbDemon = playerRepo.Players.FirstOrDefault(f => f.Id == demon.Id);
 
             if (dbDemon.Mobility != PvPStatics.MobilityFull)
             {
                 decimal xpGain = 30+5*dbDemon.Level;
                 decimal pointsGain = dbDemon.Level * 2;
                 PlayerProcedures.GivePlayerPvPScore_NoLoser(attacker, pointsGain);
-                string playerLog = "You absorb dark magic from your vanquished opponent, earning " + pointsGain + " points and " + xpGain + " XP.  Unfortunately the demon's new form fades into mist, denying you any other trophies of your conquest.";
+                var playerLog = "You absorb dark magic from your vanquished opponent, earning " + pointsGain + " points and " + xpGain + " XP.  Unfortunately the demon's new form fades into mist, denying you any other trophies of your conquest.";
                 PlayerLogProcedures.AddPlayerLog(attacker.Id, playerLog, true);
                 PlayerProcedures.GiveXP(attacker, xpGain);
 
-                Item item = ItemProcedures.GetItemByVictimName(dbDemon.FirstName, dbDemon.LastName);
+                var item = ItemProcedures.GetItemByVictimName(dbDemon.FirstName, dbDemon.LastName);
                 ItemProcedures.DeleteItem(item.Id);
 
                 new Thread(() =>

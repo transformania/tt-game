@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
@@ -19,7 +17,7 @@ namespace TT.Domain.Procedures
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             decimal output = -6 * player.Level;
-            InanimateXP myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
+            var myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
             if (myItemXP != null)
             {
@@ -37,10 +35,10 @@ namespace TT.Domain.Procedures
             IItemRepository itemRep = new EFItemRepository();
 
             // get the current level of this player based on what item they are
-            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
-            Item inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
+            var inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
 
-            int currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
 
             decimal xpGain = 0;
 
@@ -54,7 +52,7 @@ namespace TT.Domain.Procedures
             }
             xpGain = xpGain / playerCount;
 
-            InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == me.Id);
+            var xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == me.Id);
 
             if (xp == null)
             {
@@ -124,7 +122,7 @@ namespace TT.Domain.Procedures
                 xp.LastActionTurnstamp = currentGameTurn;
             }
 
-            string resultMessage = "  ";
+            var resultMessage = "  ";
 
 
 
@@ -136,21 +134,21 @@ namespace TT.Domain.Procedures
 
                 resultMessage += "  You have gained " + xpGain + " xp.  <b>Congratulations, you have gained a level!  Your owner will be so proud...</b>";
 
-                string wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.dbName).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
+                var wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.dbName).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
 
 
                 // now we need to change the owner's max health or mana based on this leveling
                 if (inanimateMe.OwnerId > 0)
                 {
-                    ItemViewModel inanimateMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
+                    var inanimateMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
 
                     if (inanimateMePlus.Item.HealthBonusPercent != 0.0M || inanimateMePlus.Item.ManaBonusPercent != 0.0M)
                     {
 
-                        Player myowner = playerRepo.Players.FirstOrDefault(p => p.Id == inanimateMe.OwnerId);
+                        var myowner = playerRepo.Players.FirstOrDefault(p => p.Id == inanimateMe.OwnerId);
 
-                        decimal healthChange = PvPStatics.Item_LevelBonusModifier * inanimateMePlus.Item.HealthBonusPercent;
-                        decimal manaChange = PvPStatics.Item_LevelBonusModifier * inanimateMePlus.Item.ManaBonusPercent;
+                        var healthChange = PvPStatics.Item_LevelBonusModifier * inanimateMePlus.Item.HealthBonusPercent;
+                        var manaChange = PvPStatics.Item_LevelBonusModifier * inanimateMePlus.Item.ManaBonusPercent;
 
                         myowner.MaxHealth += healthChange;
                         myowner.MaxMana += manaChange;
@@ -216,9 +214,9 @@ namespace TT.Domain.Procedures
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            InanimateXP inanimXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
+            var inanimXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
-            int currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
 
             if (inanimXP == null)
             {
@@ -254,13 +252,13 @@ namespace TT.Domain.Procedures
 
             // increment the player's attack count.  Also decrease their player XP some.
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate++;
 
-            double strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
+            var strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
 
-            Random rand = new Random();
-            double roll = rand.NextDouble() * 100;
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
 
             // if player is in dungeon, make struggling chance much lower
             if (dungeonHalfPoints)
@@ -268,15 +266,15 @@ namespace TT.Domain.Procedures
                 roll = roll * 3;
             }
 
-            Item dbPlayerItem = ItemProcedures.GetItemByVictimName(player.FirstName, player.LastName);
+            var dbPlayerItem = ItemProcedures.GetItemByVictimName(player.FirstName, player.LastName);
 
             if (dbPlayerItem.OwnerId > 0)
             {
-                Player owner = PlayerProcedures.GetPlayer(dbPlayerItem.OwnerId);
+                var owner = PlayerProcedures.GetPlayer(dbPlayerItem.OwnerId);
                 dbPlayer.dbLocationName = owner.dbLocationName;
             }
 
-            DbStaticItem itemPlus = ItemStatics.GetStaticItem(dbPlayerItem.dbName);
+            var itemPlus = ItemStatics.GetStaticItem(dbPlayerItem.dbName);
 
             if (roll < strugglesMade)
             {
@@ -284,7 +282,7 @@ namespace TT.Domain.Procedures
                 // assert that the covenant the victim is in is not too full to accept them back in
                 if (dbPlayer.Covenant > 0)
                 {
-                    Covenant victimCov = CovenantProcedures.GetCovenantViewModel((int)dbPlayer.Covenant).dbCovenant;
+                    var victimCov = CovenantProcedures.GetCovenantViewModel((int)dbPlayer.Covenant).dbCovenant;
                     if (victimCov != null && CovenantProcedures.GetPlayerCountInCovenant(victimCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
                     {
                         return "Although you had enough energy to break free from your body as a " + itemPlus.FriendlyName + " and restore your regular body, you were unfortunately not able to break free because there is no more room in your covenant for any more animate mages.";
@@ -295,7 +293,7 @@ namespace TT.Domain.Procedures
                 // if the item has an owner, notify them via a message.
                 if (dbPlayerItem.OwnerId != null)
                 {
-                    string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
+                    var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
                     PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
                 }
 
@@ -335,7 +333,7 @@ namespace TT.Domain.Procedures
                 // give the player the recovery buff
                 EffectProcedures.GivePerkToPlayer(PvPStatics.Effect_Back_On_Your_Feet, dbPlayer);
 
-                string msg = "You have managed to break free from your form as " + itemPlus.FriendlyName + " and occupy an animate body once again!";
+                var msg = "You have managed to break free from your form as " + itemPlus.FriendlyName + " and occupy an animate body once again!";
 
                 if (PvPStatics.ChaosMode)
                 {
@@ -365,7 +363,7 @@ namespace TT.Domain.Procedures
 
                 if (dbPlayerItem.OwnerId != null)
                 {
-                    string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
+                    var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
                     PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
                 }
 
@@ -377,13 +375,13 @@ namespace TT.Domain.Procedures
 
         public static string CurseTransformOwner(Player player, Player owner, Item playerItem, DbStaticItem playerItemPlus, bool isWhitelist)
         {
-            Random rand = new Random();
-            double roll = rand.NextDouble() * 100;
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
 
 
             IInanimateXPRepository inanimateXpRepo = new EFInanimateXPRepository();
-            InanimateXP xp = inanimateXpRepo.InanimateXPs.FirstOrDefault(x => x.OwnerId == player.Id);
-            int gameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            var xp = inanimateXpRepo.InanimateXPs.FirstOrDefault(x => x.OwnerId == player.Id);
+            var gameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
 
             // assign the player inanimate XP based on turn building
             if (xp == null)
@@ -401,10 +399,10 @@ namespace TT.Domain.Procedures
             double chanceOfSuccess = (gameTurn - xp.LastActionTurnstamp);
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
-            TFMessage tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItemPlus.CurseTFFormdbName);
+            var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItemPlus.CurseTFFormdbName);
 
-            string ownerMessage = "";
-            string playerMessage = "";
+            var ownerMessage = "";
+            var playerMessage = "";
 
 
 
@@ -412,7 +410,7 @@ namespace TT.Domain.Procedures
             if (roll < chanceOfSuccess)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                DbStaticForm newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
+                var newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
 
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {

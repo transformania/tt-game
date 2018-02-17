@@ -26,7 +26,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                Furniture editMe = context.Furnitures.Find(Furniture.Id);
+                var editMe = context.Furnitures.Find(Furniture.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Furniture.Name;
@@ -41,7 +41,7 @@ namespace TT.Domain.Concrete
         public void DeleteFurniture(int id)
         {
 
-            Furniture dbEntry = context.Furnitures.Find(id);
+            var dbEntry = context.Furnitures.Find(id);
             if (dbEntry != null)
             {
                 context.Furnitures.Remove(dbEntry);
@@ -57,7 +57,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticFurniture editMe = context.DbStaticFurniture.Find(StaticFurniture.Id);
+                var editMe = context.DbStaticFurniture.Find(StaticFurniture.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = Furniture.Name;
@@ -72,7 +72,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticFurniture(int id)
         {
 
-            DbStaticFurniture dbEntry = context.DbStaticFurniture.Find(id);
+            var dbEntry = context.DbStaticFurniture.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticFurniture.Remove(dbEntry);

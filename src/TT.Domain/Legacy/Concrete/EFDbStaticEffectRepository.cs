@@ -21,7 +21,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                DbStaticEffect editMe = context.DbStaticEffects.Find(DbStaticEffect.Id);
+                var editMe = context.DbStaticEffects.Find(DbStaticEffect.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = DbStaticEffect.Name;
@@ -36,7 +36,7 @@ namespace TT.Domain.Concrete
         public void DeleteDbStaticEffect(int id)
         {
 
-            DbStaticEffect dbEntry = context.DbStaticEffects.Find(id);
+            var dbEntry = context.DbStaticEffects.Find(id);
             if (dbEntry != null)
             {
                 context.DbStaticEffects.Remove(dbEntry);

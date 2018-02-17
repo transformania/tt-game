@@ -5,11 +5,11 @@
 
 @{
 
-    int HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
+    var HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
     if (HealthWidth > 100) { HealthWidth = 100; }
-    int ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
+    var ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
     if (ManaWidth > 100) { ManaWidth = 100; }
-    int ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / PvPStatics.MaximumStoreableActionPoints * 100);
+    var ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / PvPStatics.MaximumStoreableActionPoints * 100);
 
 }
 <div class="row">

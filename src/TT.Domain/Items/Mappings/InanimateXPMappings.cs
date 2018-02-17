@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-using AutoMapper;
-using Highway.Data;
+﻿using AutoMapper;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Entities;
 

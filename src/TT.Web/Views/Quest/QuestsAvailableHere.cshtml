@@ -1,5 +1,4 @@
 ﻿@model TT.Domain.ViewModels.Quest.QuestsAtLocationViewModel
-@using TT.Domain.Models
 @{
     ViewBag.Title = "Quests Available Here";
 }
@@ -14,7 +13,7 @@
     <h1>Available Quests (@Model.AvailableQuests.Count())</h1>
 
     @{
-        foreach (QuestStart s in Model.AvailableQuests)
+        foreach (var s in Model.AvailableQuests)
         {
             <div class="text-center" style="border: 4px solid #A16969; padding: 5px; padding-bottom: 10px;">
                 <p><a href="@Url.Action(MVC.Quest.StartQuest(s.Id))" class="attackLink">Begin</a></p>
@@ -48,7 +47,7 @@
     <h1 style="margin-top: 20px !important;">All Quests (@Model.AllQuests.Count(q => q.IsLive))</h1>
 
     @{
-        foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive))
+        foreach (var s in Model.AllQuests.Where(q => q.IsLive))
         {
             <div class="text-center" style="border: 4px solid #A16969; padding: 5px; padding-bottom: 10px;">
                 <h4>@s.Name</h4>

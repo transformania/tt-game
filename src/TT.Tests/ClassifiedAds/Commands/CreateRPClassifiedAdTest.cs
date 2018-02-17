@@ -142,7 +142,7 @@ namespace TT.Tests.ClassifiedAds.Commands
         public void Should_throw_exception_if_user_makes_too_many_ads(int adLimit)
         {
             // Populate database with the limit of ads
-            for (int i = 0; i < adLimit; i++)
+            for (var i = 0; i < adLimit; i++)
             {
                 new RPClassifiedAdBuilder()
                     .With(ad => ad.Title, "This Is a Title")

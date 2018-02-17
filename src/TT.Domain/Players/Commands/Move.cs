@@ -50,7 +50,7 @@ namespace TT.Domain.Players.Commands
                 if (player.Mobility == PvPStatics.MobilityInanimate)
                     throw new DomainException("You can't move because you are currently inanimate!");
 
-                double lastAttackTimeAgo = Math.Abs(Math.Floor(player.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                var lastAttackTimeAgo = Math.Abs(Math.Floor(player.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
                 if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
                     throw new DomainException($"You are resting from a recent attack.  You must wait {Math.Ceiling(PvPStatics.NoMovingAfterAttackSeconds - lastAttackTimeAgo)} more seconds before moving.");
 

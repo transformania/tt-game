@@ -1,5 +1,4 @@
-﻿@using TT.Domain.Assets.DTOs
-@model IEnumerable<TT.Domain.Assets.DTOs.TomeDetail>
+﻿@model IEnumerable<TT.Domain.Assets.DTOs.TomeDetail>
 
 @section menu
 {
@@ -24,7 +23,7 @@
         <tbody>
 
             @{
-                foreach (TomeDetail t in Model)
+                foreach (var t in Model)
                 {
                     <tr>
                         <td>@t.Id</td>

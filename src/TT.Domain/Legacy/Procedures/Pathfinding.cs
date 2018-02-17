@@ -43,7 +43,7 @@ namespace TT.Domain.Procedures
         public void MoveToOpenList(List<LocationNode> openList)
         {
             // assert that it's not already in the open list
-            LocationNode possibleOld = openList.FirstOrDefault(n => n.dbName == this.dbName);
+            var possibleOld = openList.FirstOrDefault(n => n.dbName == this.dbName);
             // it isn't in the list yet, so add it in.  Otherwise do nothing.
             if (possibleOld == null)
             {
@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures
         {
           //  openList = openList.Where(n => n.dbName != this.dbName).ToList();
             closedList.Add(this);
-            LocationNode toRemove = openList.FirstOrDefault(l => l.dbName == this.dbName);
+            var toRemove = openList.FirstOrDefault(l => l.dbName == this.dbName);
             openList.Remove(toRemove);
         }
 
@@ -86,7 +86,7 @@ namespace TT.Domain.Procedures
         public static string GetMovementPath(Location start, Location end)
         {
 
-            Stopwatch updateTimer = new Stopwatch();
+            var updateTimer = new Stopwatch();
             updateTimer.Start();
 
             if (start.dbName == end.dbName)
@@ -94,12 +94,12 @@ namespace TT.Domain.Procedures
                 return "";
             }
 
-            List<LocationNode> nodes = new List<LocationNode>();
+            var nodes = new List<LocationNode>();
 
             // populate the location nodes
-            foreach (Location loc in LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != ""))
+            foreach (var loc in LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != ""))
             {
-                LocationNode addMe = new LocationNode
+                var addMe = new LocationNode
                 {
                     dbName = loc.dbName,
                     NorthNode = loc.Name_North,
@@ -115,10 +115,10 @@ namespace TT.Domain.Procedures
 
             // we may want to filter out certain nodes based on other criteria, but we're not doing that now.
 
-            LocationNode startingNode = nodes.FirstOrDefault(n => n.dbName == start.dbName);
-            LocationNode endingNode = nodes.FirstOrDefault(n => n.dbName == end.dbName);
-            List<LocationNode> openList = new List<LocationNode>();
-            List<LocationNode> closedList = new List<LocationNode>();
+            var startingNode = nodes.FirstOrDefault(n => n.dbName == start.dbName);
+            var endingNode = nodes.FirstOrDefault(n => n.dbName == end.dbName);
+            var openList = new List<LocationNode>();
+            var closedList = new List<LocationNode>();
 
             startingNode.CalculateH(endingNode);
 
@@ -148,9 +148,9 @@ namespace TT.Domain.Procedures
 
 
           //  bool done = Search(startingNode, nodes, openList, closedList, endingNode);
-            int breakoutMax = 1000;
-            int breakoutCurrent = 0;
-            bool done = false;
+            var breakoutMax = 1000;
+            var breakoutCurrent = 0;
+            var done = false;
 
             while (!done && breakoutCurrent < breakoutMax)
             {
@@ -167,22 +167,22 @@ namespace TT.Domain.Procedures
             }
 
             // we should now have the shortest path, so get a list of the nodes we went through and turn it to a big string.
-            string next = end.dbName;
-            List<string> pathList = new List<string>();
+            var next = end.dbName;
+            var pathList = new List<string>();
 
             while (next != start.dbName)
             {
                 pathList.Add(next);
-                LocationNode current = closedList.FirstOrDefault(n => n.dbName == next);
-                LocationNode parent = closedList.FirstOrDefault(n => n.dbName == current.ParentNode);
+                var current = closedList.FirstOrDefault(n => n.dbName == next);
+                var parent = closedList.FirstOrDefault(n => n.dbName == current.ParentNode);
                 next = parent.dbName;
             }
 
-            string output = "";
+            var output = "";
 
             pathList.Reverse();
 
-            foreach (string s in pathList)
+            foreach (var s in pathList)
             {
                 output += LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == s).dbName + ";";
             }
@@ -210,11 +210,11 @@ namespace TT.Domain.Procedures
             }
 
             // get the eligible neighboring nodes
-            List<LocationNode> Neighbors = new List<LocationNode>();
-            LocationNode northNode = nodes.FirstOrDefault(n => n.dbName == currentNode.NorthNode);
-            LocationNode eastNode = nodes.FirstOrDefault(n => n.dbName == currentNode.EastNode);
-            LocationNode southNode = nodes.FirstOrDefault(n => n.dbName == currentNode.SouthNode);
-            LocationNode westNode = nodes.FirstOrDefault(n => n.dbName == currentNode.WestNode);
+            var Neighbors = new List<LocationNode>();
+            var northNode = nodes.FirstOrDefault(n => n.dbName == currentNode.NorthNode);
+            var eastNode = nodes.FirstOrDefault(n => n.dbName == currentNode.EastNode);
+            var southNode = nodes.FirstOrDefault(n => n.dbName == currentNode.SouthNode);
+            var westNode = nodes.FirstOrDefault(n => n.dbName == currentNode.WestNode);
 
             if (northNode != null && !northNode.IsOnClosedList(closedList))
             {
@@ -250,7 +250,7 @@ namespace TT.Domain.Procedures
             }
 
             // now compute the f(x) and change the parent if needed
-            foreach (LocationNode neighbor in Neighbors)
+            foreach (var neighbor in Neighbors)
             {
 
                 if (neighbor.H == -1)

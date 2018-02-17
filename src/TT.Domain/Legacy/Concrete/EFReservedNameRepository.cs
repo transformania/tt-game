@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
             }
             else
             {
-                ReservedName editMe = context.ReservedNames.Find(ReservedName.Id);
+                var editMe = context.ReservedNames.Find(ReservedName.Id);
                 if (editMe != null)
                 {
                     // dbEntry.Name = ReservedNames.Name;
@@ -37,7 +37,7 @@ namespace TT.Domain.Concrete
         public void DeleteReservedName(int id)
         {
 
-            ReservedName dbEntry = context.ReservedNames.Find(id);
+            var dbEntry = context.ReservedNames.Find(id);
             if (dbEntry != null)
             {
                 context.ReservedNames.Remove(dbEntry);

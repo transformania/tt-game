@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Procedures;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using TT.Domain.Players.Commands;
 using static TT.Domain.Models.PlayerDescriptorStatics;
 
@@ -244,7 +243,7 @@ namespace TT.Domain.Models
 
             if (staffDictionary.TryGetValue(MembershipId, out desc))
             {
-                string name = desc.Name;
+                var name = desc.Name;
 
                 switch(desc.TagBehaviorEnum)
                 {
@@ -279,7 +278,7 @@ namespace TT.Domain.Models
 
         public Player ToDbPlayer()
         {
-            Player output = new Player{
+            var output = new Player{
                 Id = this.Id,
                 MembershipId = this.MembershipId,
                 FirstName = this.FirstName,

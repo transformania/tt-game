@@ -1,6 +1,4 @@
-﻿using TT.Domain.World.Entities;
-
-namespace TT.Tests.Builders.Game
+﻿namespace TT.Tests.Builders.Game
 {
     public class WorldBuilder : Builder<TT.Domain.World.Entities.World, int>
     {

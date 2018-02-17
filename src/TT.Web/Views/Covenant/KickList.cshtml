@@ -1,6 +1,5 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
-           @using TT.Domain.Models
-            @using TT.Domain.ViewModels
+
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
@@ -15,7 +14,7 @@
 
 
     @{
-        foreach (PlayerFormViewModel p in Model.Members)
+        foreach (var p in Model.Members)
         {
             <hr />
             <p>

@@ -17,32 +17,32 @@ namespace TT.Domain.Procedures
         public static string Attack(Player attacker, Player victim, SkillViewModel skillBeingUsed)
         {
 
-            string result = "";
+            var result = "";
 
-            Player me = PlayerProcedures.GetPlayer(attacker.Id);
-            Player targeted = PlayerProcedures.GetPlayer(victim.Id);
+            var me = PlayerProcedures.GetPlayer(attacker.Id);
+            var targeted = PlayerProcedures.GetPlayer(victim.Id);
 
             if (targeted.Mobility != PvPStatics.MobilityFull || me.Mobility != PvPStatics.MobilityFull)
             {
                 return "";
             }
 
-            LogBox logs = new LogBox();
+            var logs = new LogBox();
 
-            decimal manaCost = (decimal)AttackProcedures.GetSpellManaCost(me, targeted);
+            var manaCost = (decimal)AttackProcedures.GetSpellManaCost(me, targeted);
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
             PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -manaCost, me.Id);
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(targeted, me);
 
-            string attackerFullName = me.GetFullName();
-            string victimFullName = targeted.GetFullName();
+            var attackerFullName = me.GetFullName();
+            var victimFullName = targeted.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
             if (skillBeingUsed.Skill.GivesEffect != null)
             {
-                DbStaticEffect effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.Skill.GivesEffect);
+                var effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.Skill.GivesEffect);
 
                 EffectProcedures.GivePerkToPlayer(skillBeingUsed.Skill.GivesEffect, victim);
 
@@ -79,8 +79,8 @@ namespace TT.Domain.Procedures
                 logs.AttackerLog = "You cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against you.</span>  ";
 
-                string attackerPronoun = "";
-                string victimPronoun = "";
+                var attackerPronoun = "";
+                var victimPronoun = "";
 
                 if (me.Gender == PvPStatics.GenderMale)
                 {
@@ -107,17 +107,17 @@ namespace TT.Domain.Procedures
                     victimPronoun = "their";
                 }
 
-                BuffBox meBuffs = ItemProcedures.GetPlayerBuffs(me);
-                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
+                var meBuffs = ItemProcedures.GetPlayerBuffs(me);
+                var targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
 
-                Random rand = new Random(Guid.NewGuid().GetHashCode());
-                double basehitChance = rand.NextDouble() * 100;
+                var rand = new Random(Guid.NewGuid().GetHashCode());
+                var basehitChance = rand.NextDouble() * 100;
 
-                decimal meDmgExtra = meBuffs.SpellExtraHealthDamagePercent();
-                decimal targetProt = targetedBuffs.SpellHealthDamageResistance();
+                var meDmgExtra = meBuffs.SpellExtraHealthDamagePercent();
+                var targetProt = targetedBuffs.SpellHealthDamageResistance();
 
-                decimal criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
-                decimal evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
+                var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
+                var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
                 // clamp evasion at 66% max
                 if (evasionPercentChance > 66)
@@ -152,8 +152,8 @@ namespace TT.Domain.Procedures
                 {
 
 
-                    Random rand2 = new Random();
-                    double criticalHitChance = rand.NextDouble() * 100;
+                    var rand2 = new Random();
+                    var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
                     if (criticalHitChance < (double)(PvPStatics.CriticalHitPercentChance + meBuffs.ExtraSkillCriticalPercent()))
@@ -169,12 +169,12 @@ namespace TT.Domain.Procedures
                     {
 
                         // add even more damage if the spell is "weaken"
-                        decimal extraDamageFromWeaken = (skillBeingUsed.Skill.dbName == WEAKEN) ? skillBeingUsed.Skill.HealthDamageAmount*1.5M : 0;
+                        var extraDamageFromWeaken = (skillBeingUsed.Skill.dbName == WEAKEN) ? skillBeingUsed.Skill.HealthDamageAmount*1.5M : 0;
 
-                        decimal extraDamageFromLevel = .75M*me.Level;
+                        var extraDamageFromLevel = .75M*me.Level;
 
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
-                        decimal willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
+                        var willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
                         if (willpowerDamageModifierFromBonuses < .5M)
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = 2;
                         }
 
-                        decimal totalHealthDamage = (skillBeingUsed.Skill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
+                        var totalHealthDamage = (skillBeingUsed.Skill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
 
                         // make sure damage is never in the negatives (which would heal instead)
                         if (totalHealthDamage < 0)
@@ -210,11 +210,11 @@ namespace TT.Domain.Procedures
                     if (skillBeingUsed.Skill.TFPointsAmount > 0)
                     {
 
-                        decimal TFEnergyDmg = meBuffs.SpellExtraTFEnergyPercent();
-                        decimal TFEnergyArmor = targetedBuffs.SpellTFEnergyDamageResistance();
+                        var TFEnergyDmg = meBuffs.SpellExtraTFEnergyPercent();
+                        var TFEnergyArmor = targetedBuffs.SpellTFEnergyDamageResistance();
 
                         // calculator the modifier as extra attack - defense.
-                        decimal tfEnergyDamageModifierFromBonuses = 1 + ((TFEnergyDmg - TFEnergyArmor) / 100.0M);
+                        var tfEnergyDamageModifierFromBonuses = 1 + ((TFEnergyDmg - TFEnergyArmor) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
                         if (tfEnergyDamageModifierFromBonuses < .5M)
@@ -228,13 +228,13 @@ namespace TT.Domain.Procedures
                             tfEnergyDamageModifierFromBonuses = 2;
                         }
 
-                        decimal totalTFEnergyModifier = criticalModifier * tfEnergyDamageModifierFromBonuses;
+                        var totalTFEnergyModifier = criticalModifier * tfEnergyDamageModifierFromBonuses;
 
-                        LogBox tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(targeted, me, skillBeingUsed, totalTFEnergyModifier);
+                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(targeted, me, skillBeingUsed, totalTFEnergyModifier);
 
 
                         logs.Add(tfEnergyResult);
-                        LogBox formChangeLog = TFEnergyProcedures.RunFormChangeLogic(targeted, skillBeingUsed.Skill.dbName, me.Id);
+                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(targeted, skillBeingUsed.Skill.dbName, me.Id);
                         logs.Add(formChangeLog);
                         result = logs.AttackerLog;
 
@@ -253,8 +253,8 @@ namespace TT.Domain.Procedures
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
             if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
             {
-                Random rand = new Random(Guid.NewGuid().GetHashCode());
-                double botAggroRoll = rand.NextDouble();
+                var rand = new Random(Guid.NewGuid().GetHashCode());
+                var botAggroRoll = rand.NextDouble();
                 if (botAggroRoll < .08)
                 {
                     AIDirectiveProcedures.SetAIDirective_Attack(victim.Id, attacker.Id);
@@ -266,7 +266,7 @@ namespace TT.Domain.Procedures
 
         public static string Attack(Player attacker, Player victim, string skillBeingUsed)
         {
-            SkillViewModel vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
+            var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
             return Attack(attacker, victim, vm);
         }
 
@@ -275,10 +275,10 @@ namespace TT.Domain.Procedures
 
             IPlayerRepository playerREpo = new EFPlayerRepository();
 
-            Location here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
 
-            List<Player> playersHere = new List<Player>();
-            List<Player> playersHereOnline = new List<Player>();
+            var playersHere = new List<Player>();
+            var playersHereOnline = new List<Player>();
             if (attacker.GameMode == GameModeStatics.PvP)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
@@ -297,7 +297,7 @@ namespace TT.Domain.Procedures
             }
 
             // filter out offline players as well as the attacker
-            foreach (Player p in playersHere)
+            foreach (var p in playersHere)
             {
                 if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != attacker.Id)
                 {
@@ -305,7 +305,7 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            foreach (Player p in playersHereOnline)
+            foreach (var p in playersHereOnline)
             {
                 p.Health -= damage;
                 if (p.Health < 0)
@@ -313,19 +313,19 @@ namespace TT.Domain.Procedures
                     p.Health = 0;
                 }
                 playerREpo.SavePlayer(p);
-                string message = "<span class='playerAttackNotification'>" + attacker.GetFullName() + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                var message = "<span class='playerAttackNotification'>" + attacker.GetFullName() + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
                 PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
 
             }
 
-            string logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
+            var logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
             LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
 
-            string attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
+            var attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag
-            Player dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
+            var dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
             dbAttacker.LastActionTimestamp = DateTime.UtcNow;
             dbAttacker.TimesAttackingThisUpdate++;
             playerREpo.SavePlayer(dbAttacker);
@@ -337,7 +337,7 @@ namespace TT.Domain.Procedures
         public static void InstantTakeoverLocation(Covenant cov, string location)
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
-            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
+            var info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
             if (info == null)
             {
                 info = new LocationInfo
@@ -358,10 +358,10 @@ namespace TT.Domain.Procedures
         public static void LoadCovenantOwnersIntoRAM()
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
-            List<LocationInfo> info = repo.LocationInfos.ToList();
-            foreach (Location loc in LocationsStatics.LocationList.GetLocation)
+            var info = repo.LocationInfos.ToList();
+            foreach (var loc in LocationsStatics.LocationList.GetLocation)
             {
-                LocationInfo temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
+                var temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
                 if (temp == null)
                 {
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = null;
@@ -390,9 +390,9 @@ namespace TT.Domain.Procedures
         {
             float baseManaCost = 4;
 
-            float extra = (.75F * victim.Level) + (.25F * attacker.Level);
+            var extra = (.75F * victim.Level) + (.25F * attacker.Level);
 
-            float cost = (float)Math.Round((baseManaCost + extra),1);
+            var cost = (float)Math.Round((baseManaCost + extra),1);
 
             return cost;
 
@@ -400,9 +400,9 @@ namespace TT.Domain.Procedures
 
         public static decimal GetMiddleLevel(Player attacker, Player victim)
         {
-            int lvlDiff = attacker.Level - victim.Level;
+            var lvlDiff = attacker.Level - victim.Level;
 
-            int lowerLevel = 0;
+            var lowerLevel = 0;
 
             if (attacker.Level <= victim.Level)
             {
@@ -412,7 +412,7 @@ namespace TT.Domain.Procedures
                 lowerLevel = victim.Level;
             }
 
-            decimal mid = (decimal)(Math.Round(lowerLevel + (lvlDiff * .5),1));
+            var mid = (decimal)(Math.Round(lowerLevel + (lvlDiff * .5),1));
 
             return mid;
         }

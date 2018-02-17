@@ -2,12 +2,9 @@
 using TT.Domain.Abstract;
 using TT.Domain.AI.Commands;
 using TT.Domain.Concrete;
-using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -18,7 +15,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnLindella()
         {
-            PlayerDetail merchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LindellaBotId });
+            var merchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LindellaBotId });
 
             if (merchant == null)
             {
@@ -50,16 +47,16 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
+            var merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
 
             if (merchant != null && merchant.Mobility == PvPStatics.MobilityFull)
             {
 
-                AIDirective directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);
+                var directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);
 
                 if (directive.TargetLocation != merchant.dbLocationName)
                 {
-                    string newplace = AIProcedures.MoveTo(merchant, directive.TargetLocation, 5);
+                    var newplace = AIProcedures.MoveTo(merchant, directive.TargetLocation, 5);
                     merchant.dbLocationName = newplace;
                 }
 
@@ -89,7 +86,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 playerRepo.SavePlayer(merchant);
-                BuffBox box = ItemProcedures.GetPlayerBuffs(merchant);
+                var box = ItemProcedures.GetPlayerBuffs(merchant);
 
                 if ((merchant.Health / merchant.MaxHealth) < .75M)
                 {

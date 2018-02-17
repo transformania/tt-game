@@ -14,7 +14,7 @@
     @{
         foreach (ItemViewModel item in ViewBag.playeritems)
         {
-            string strItemName = "";
+            var strItemName = "";
             if (item.dbItem.Level > 0)
             {
                 strItemName += "L" + item.dbItem.Level + " ";

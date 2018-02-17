@@ -16,16 +16,16 @@ namespace TT.Domain.Procedures
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            List<BlacklistEntry> rawEntries = repo.BlacklistEntries.Where(e => e.CreatorMembershipId == player.MembershipId).ToList();
-            List<BlacklistEntryViewModel> output = new List<BlacklistEntryViewModel>();
+            var rawEntries = repo.BlacklistEntries.Where(e => e.CreatorMembershipId == player.MembershipId).ToList();
+            var output = new List<BlacklistEntryViewModel>();
 
-            foreach (BlacklistEntry e in rawEntries) {
-                BlacklistEntryViewModel addme = new BlacklistEntryViewModel
+            foreach (var e in rawEntries) {
+                var addme = new BlacklistEntryViewModel
                 {
                     dbBlacklistEntry = e,
                 };
 
-                Player target = playerRepo.Players.FirstOrDefault(p => p.MembershipId == e.TargetMembershipId);
+                var target = playerRepo.Players.FirstOrDefault(p => p.MembershipId == e.TargetMembershipId);
 
                 if (target != null)
                 {
@@ -48,7 +48,7 @@ namespace TT.Domain.Procedures
         public static string TogglePlayerBlacklist(Player creator, Player receiver)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
-            BlacklistEntry entry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == creator.MembershipId && e.TargetMembershipId == receiver.MembershipId);
+            var entry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == creator.MembershipId && e.TargetMembershipId == receiver.MembershipId);
 
             if (entry != null)
             {
@@ -57,7 +57,7 @@ namespace TT.Domain.Procedures
             }
             else
             {
-                BlacklistEntry newentry = new BlacklistEntry
+                var newentry = new BlacklistEntry
                 {
                     CreatorMembershipId = creator.MembershipId,
                     TargetMembershipId = receiver.MembershipId,
@@ -72,7 +72,7 @@ namespace TT.Domain.Procedures
         public static string TogglePlayerBlacklistType(int id, string type, Player player, Player receiver)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
-            BlacklistEntry entry = repo.BlacklistEntries.FirstOrDefault(e => e.Id == id);
+            var entry = repo.BlacklistEntries.FirstOrDefault(e => e.Id == id);
 
             if (entry == null)
             {
@@ -104,7 +104,7 @@ namespace TT.Domain.Procedures
         public static bool PlayersHaveBlacklistedEachOther(Player sender, Player receiver, string type)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
-            BlacklistEntry entry = repo.BlacklistEntries.FirstOrDefault(e => (e.CreatorMembershipId == receiver.MembershipId && e.TargetMembershipId == sender.MembershipId) || (e.CreatorMembershipId == sender.MembershipId && e.TargetMembershipId == receiver.MembershipId));
+            var entry = repo.BlacklistEntries.FirstOrDefault(e => (e.CreatorMembershipId == receiver.MembershipId && e.TargetMembershipId == sender.MembershipId) || (e.CreatorMembershipId == sender.MembershipId && e.TargetMembershipId == receiver.MembershipId));
 
             if (entry == null)
             {

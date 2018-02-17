@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.PlayerAchievementViewModel>
-@using TT.Domain.Procedures
-@using TT.Domain.ViewModels
 
 <div>
     @{
         
-        int i = 1;
+        var i = 1;
         
-        foreach (PlayerAchievementViewModel p in Model.OrderByDescending(m => m.Achivement.Amount).ThenBy(m => m.Achivement.Timestamp))
+        foreach (var p in Model.OrderByDescending(m => m.Achivement.Amount).ThenBy(m => m.Achivement.Timestamp))
         {
             <p>
                 @i. <a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Player.Player.Id))">@p.Player.Player.GetFullName()</a> (@($"{p.Achivement.Amount:n0}"))

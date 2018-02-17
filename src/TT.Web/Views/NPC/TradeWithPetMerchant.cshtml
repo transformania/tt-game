@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.WuffieTradeViewModel
-@using TT.Domain.ViewModels
-@using TT.Web.CustomHtmlHelpers
 @{
     ViewBag.Title = "Buy Pet";
 }
@@ -26,7 +24,7 @@
     <span>Jump to page:</span>
 
     @{
-        for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
+        for (var i = 0; i < Model.Paginator.MaxPageNumber; i++)
         {
             <a href="@Url.Action(MVC.NPC.TradeWithPetMerchant(i))" class="@Model.Paginator.GetStylingClass(i)">@(i + 1) | </a>
         }

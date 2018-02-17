@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace TT.Web.Services
+﻿namespace TT.Web.Services
 {
     public class HubConnectionIdAccessor : IHubConnectionIdAccessor
     {

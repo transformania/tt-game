@@ -5,10 +5,8 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
-using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -28,7 +26,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnThieves()
         {
-            PlayerDetail malethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MaleRatBotId });
+            var malethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MaleRatBotId });
 
             if (malethief == null)
             {
@@ -54,13 +52,13 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player malethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var malethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 malethiefEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(malethiefEF));
                 playerRepo.SavePlayer(malethiefEF);
 
 
-                EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-                AIDirective maleDirective = new AIDirective
+                var aiRepo = new EFAIDirectiveRepository();
+                var maleDirective = new AIDirective
                 {
                     OwnerId = id,
                     DoNotRecycleMe = true,
@@ -79,7 +77,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
 
-            PlayerDetail femalethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FemaleRatBotId });
+            var femalethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FemaleRatBotId });
 
             if (femalethief == null)
             {
@@ -104,12 +102,12 @@ namespace TT.Domain.Procedures.BossProcedures
                 var id = DomainRegistry.Repository.Execute(cmd);
 
                 var playerRepo = new EFPlayerRepository();
-                Player femalethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                var femalethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 femalethiefEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(femalethiefEF));
                 playerRepo.SavePlayer(femalethiefEF);
 
-                EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-                AIDirective femaleDirective = new AIDirective
+                var aiRepo = new EFAIDirectiveRepository();
+                var femaleDirective = new AIDirective
                 {
                     OwnerId = id,
                     DoNotRecycleMe = true,
@@ -132,11 +130,11 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunThievesAction(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            Player femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective maleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == malethief.Id);
-            AIDirective femaleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == femalethief.Id);
+            var maleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == malethief.Id);
+            var femaleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == femalethief.Id);
 
             // both male and female are no longer animate, end boss event
             if (malethief.Mobility != PvPStatics.MobilityFull && femalethief.Mobility != PvPStatics.MobilityFull)
@@ -158,20 +156,20 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 if (malethief.Health < malethief.MaxHealth / 6)
                 {
-                    BuffBox malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
+                    var malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
                     DomainRegistry.Repository.Execute(new Cleanse { PlayerId = malethief.Id, Buffs = malebuffs, NoValidate = true });
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
                 if (femalethief.Health < femalethief.MaxHealth / 4)
                 {
-                    BuffBox femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
+                    var femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
                     DomainRegistry.Repository.Execute(new Cleanse { PlayerId = femalethief.Id, Buffs = femalebuffs, NoValidate = true });
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
 
 
-                string[] idArray = maleAI.sVar1.Split(';');
+                var idArray = maleAI.sVar1.Split(';');
                 idArray = idArray.Take(idArray.Length - 1).ToArray();
 
                 if (maleAI.Var1 >= idArray.Length)
@@ -179,9 +177,9 @@ namespace TT.Domain.Procedures.BossProcedures
                     maleAI.Var1 = 0;
                 }
 
-                int targetId = Convert.ToInt32(idArray[Convert.ToInt32(maleAI.Var1)]);
+                var targetId = Convert.ToInt32(idArray[Convert.ToInt32(maleAI.Var1)]);
 
-                Player target = playerRepo.Players.FirstOrDefault(p => p.Id == targetId);
+                var target = playerRepo.Players.FirstOrDefault(p => p.Id == targetId);
 
                 while ((target == null || PlayerProcedures.PlayerIsOffline(target) || target.Mobility != PvPStatics.MobilityFull || target.Money < 20) && maleAI.Var1 < idArray.Length-1)
                 {
@@ -208,8 +206,8 @@ namespace TT.Domain.Procedures.BossProcedures
                     AttackProcedures.Attack(femalethief, target, "skill_Seekshadow's_Silence_Judoo");
                     AIProcedures.DealBossDamage(femalethief, target, false, 1);
 
-                    string message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
-                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
+                    var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
+                    var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
                     PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
                     LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
 
@@ -247,12 +245,12 @@ namespace TT.Domain.Procedures.BossProcedures
                     itemThief = malethief;
                 }
 
-                Item victimThiefItem = ItemProcedures.GetItemByVictimName(itemThief.FirstName, itemThief.LastName);
-                ItemViewModel victimThiefItemPlus = ItemProcedures.GetItemViewModel(victimThiefItem.Id);
+                var victimThiefItem = ItemProcedures.GetItemByVictimName(itemThief.FirstName, itemThief.LastName);
+                var victimThiefItemPlus = ItemProcedures.GetItemViewModel(victimThiefItem.Id);
 
                 // the transformed thief is owned by someone, try and get it back!
                 if (victimThiefItem.OwnerId > 0) {
-                    Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
+                    var target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
 
                     if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
                     {
@@ -261,11 +259,11 @@ namespace TT.Domain.Procedures.BossProcedures
                         {
                             ItemProcedures.EquipItem(victimThiefItem.Id, true);
                         }
-                        string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
+                        var newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                         AIProcedures.MoveTo(attackingThief, newlocation, 99999);
                         attackingThief.dbLocationName = newlocation;
                         playerRepo.SavePlayer(attackingThief);
-                        BuffBox buffs = ItemProcedures.GetPlayerBuffs(attackingThief);
+                        var buffs = ItemProcedures.GetPlayerBuffs(attackingThief);
 
                         if (attackingThief.Health < attackingThief.Health / 10)
                         {
@@ -327,7 +325,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetRichestPlayerIds()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            DateTime cutoff = DateTime.UtcNow.AddHours(-1);
+            var cutoff = DateTime.UtcNow.AddHours(-1);
             IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
@@ -335,8 +333,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 p.InDuel <= 0 &&
                 p.InQuest <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 
-            string output = "";
-            foreach (int s in ids)
+            var output = "";
+            foreach (var s in ids)
             {
                 output += s.ToString() + ";";
             }
@@ -349,9 +347,9 @@ namespace TT.Domain.Procedures.BossProcedures
         
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            Player femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var rand = new Random(Guid.NewGuid().GetHashCode());
 
             // both thieves are full, dont' attack too hard
             if (malethief.Mobility == PvPStatics.MobilityFull && femalethief.Mobility == PvPStatics.MobilityFull)
@@ -372,16 +370,16 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 
-                double roll = rand.NextDouble();
+                var roll = rand.NextDouble();
 
                 // random chance of moving to a new random location
                 if (roll < .166)
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
                     AIProcedures.DealBossDamage(femalethief, attacker, false, 1);
-                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.</b>";
+                    var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.</b>";
                     LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage);
-                    string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
+                    var newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                     malethief.dbLocationName = newlocation;
                     femalethief.dbLocationName = newlocation;
                     playerRepo.SavePlayer(malethief);
@@ -392,10 +390,10 @@ namespace TT.Domain.Procedures.BossProcedures
             // one thief is defeated, the other goes berserk
             else 
             {
-                double roll = rand.NextDouble() * 3;
+                var roll = rand.NextDouble() * 3;
                 if (malethief.Mobility == PvPStatics.MobilityFull)
                 {
-                    for (int i = 0; i < roll; i++)
+                    for (var i = 0; i < roll; i++)
                     {
                         AttackProcedures.Attack(malethief, attacker, "lowerHealth");
                         AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
@@ -404,7 +402,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
                 else if (femalethief.Mobility == PvPStatics.MobilityFull)
                 {
-                    for (int i = 0; i < roll; i++)
+                    for (var i = 0; i < roll; i++)
                     {
                         AttackProcedures.Attack(femalethief, attacker, "lowerHealth");
                         AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
@@ -420,25 +418,25 @@ namespace TT.Domain.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndThieves();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            Player femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
 
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(malethief.Id);
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(femalethief.Id);
 
             // find the players who dealt the most damage and award them with money
-            List<BossDamage> damages_male = AIProcedures.GetTopAttackers(malethief.BotId, 10);
-            List<BossDamage> damages_female = AIProcedures.GetTopAttackers(femalethief.BotId, 10);
+            var damages_male = AIProcedures.GetTopAttackers(malethief.BotId, 10);
+            var damages_female = AIProcedures.GetTopAttackers(femalethief.BotId, 10);
 
             // top player gets 500 XP, each player down the line receives 25 fewer
-            decimal maxReward_Female = 1000 + Math.Floor(femalethief.Money);
-            decimal maxReward_Male = 300 + Math.Floor(malethief.Money);
+            var maxReward_Female = 1000 + Math.Floor(femalethief.Money);
+            var maxReward_Male = 300 + Math.Floor(malethief.Money);
 
             for (var i = 0; i < damages_male.Count; i++)
             {
                 var damage = damages_male.ElementAt(i);
-                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
-                decimal reward = Math.Floor(maxReward_Male);
+                var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                var reward = Math.Floor(maxReward_Male);
                 victor.Money += maxReward_Male;
 
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + MaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on him.</b>", true);
@@ -457,8 +455,8 @@ namespace TT.Domain.Procedures.BossProcedures
             for (var i = 0; i < damages_female.Count; i++)
             {
                 var damage = damages_female.ElementAt(i);
-                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
-                decimal reward = Math.Floor(maxReward_Female);
+                var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                var reward = Math.Floor(maxReward_Female);
                 victor.Money += maxReward_Female;
 
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FemaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on her.</b>", true);

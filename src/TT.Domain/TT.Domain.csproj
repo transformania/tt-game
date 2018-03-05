@@ -107,6 +107,7 @@
     <Compile Include="Identity\QueryRequests\UserHasRoleRequest.cs" />
     <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandler.cs" />
     <Compile Include="Identity\RequestValidators\ResetSecurityStampValidator.cs" />
+    <Compile Include="Items\Commands\DeleteExpiredRunesOnMerchants.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItems.cs" />
     <Compile Include="Items\Commands\EmbedRune.cs" />
     <Compile Include="Items\Commands\UnbembedRunesOnItem.cs" />

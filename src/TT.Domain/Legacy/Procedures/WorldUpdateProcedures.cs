@@ -384,15 +384,31 @@ namespace TT.Domain.Procedures
 
                 }
 
-
                 // delete all consumable type items that have been sitting around on the ground for too long
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
                 DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnGround());
-                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnMerchants {LindellaId = merchantId, LorekeeperId = skaldyrId});
+                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnMerchants { LindellaId = merchantId, LorekeeperId = skaldyrId });
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
                 serverLogRepo.SaveServerLog(log);
-            
+
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired runes");
+                DomainRegistry.Repository.Execute(new DeleteExpiredRunesOnMerchants());
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired runes");
+
+                serverLogRepo.SaveServerLog(log);
+
+                try
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
+                    DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
+                }
+                catch (DomainException e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
+                }
+
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
                 var recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();

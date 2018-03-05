@@ -394,7 +394,15 @@
     },
     {
       "number": 50,
-      "name": "Alpha R49 (Era of Yuriko Oyama)",
+      "name": "Alpha R50 (Era of Yuriko Oyama)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 51,
+      "name": "Alpha R51 (Era of Iris Waldron)",
       "pvp": true,
       "item": true,
       "xp": true,

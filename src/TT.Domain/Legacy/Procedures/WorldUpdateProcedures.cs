@@ -392,18 +392,7 @@ namespace TT.Domain.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
                 serverLogRepo.SaveServerLog(log);
-
-                try
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
-                    DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
-                }
-                catch (DomainException e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
-                }
-
+            
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
                 var recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();
@@ -823,6 +812,17 @@ namespace TT.Domain.Procedures
                     }
                 }
                 #endregion
+
+                try
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
+                    DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
+                }
+                catch (DomainException e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
+                }
 
                 log.FinishTimestamp = DateTime.UtcNow;
                 serverLogRepo.SaveServerLog(log);

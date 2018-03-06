@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e);
                         serverLogRepo.SaveServerLog(log);
                     }
                 }
@@ -304,7 +304,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e);
                     }
                 }
 
@@ -326,7 +326,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e);
                     }
                 }
                 #endregion
@@ -377,7 +377,7 @@ namespace TT.Domain.Procedures
                         catch (Exception e)
                         {
                             log.Errors++;
-                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
+                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e);
                         }
                     }
 
@@ -393,7 +393,16 @@ namespace TT.Domain.Procedures
                 serverLogRepo.SaveServerLog(log);
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired runes");
-                DomainRegistry.Repository.Execute(new DeleteExpiredRunesOnMerchants());
+                try
+                {
+                    DomainRegistry.Repository.Execute(new DeleteExpiredRunesOnMerchants());
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + "Error deleting expired runes:  " + e.Message);
+                    log.Errors++;
+                }
+                
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired runes");
 
                 serverLogRepo.SaveServerLog(log);
@@ -404,9 +413,10 @@ namespace TT.Domain.Procedures
                     DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
                 }
-                catch (DomainException e)
+                catch (Exception e)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
+                    log.Errors++;
                 }
 
                 // allow all items that have been recently equipped to be taken back off
@@ -488,7 +498,6 @@ namespace TT.Domain.Procedures
                         for (var x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
                         {
                             var randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                            var spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
 
                             // pull a random last demon name
                             double maxDemonNameCount = demonNames.Count();
@@ -554,7 +563,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e);
                 }
 
 
@@ -584,7 +593,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Failed to complete duel updates.  Reason:  " + e.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Failed to complete duel updates.  Reason:  " + e);
                 }
                 #endregion duel updates
 
@@ -601,7 +610,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e);
                 }
 
 
@@ -618,7 +627,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e);
                 }
 
 
@@ -634,7 +643,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR MOVING FURNITURE ON MARKET:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR MOVING FURNITURE ON MARKET:  " + e);
                     }
 
                     // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
@@ -653,7 +662,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e);
                     }
                 }
                 #endregion furniture
@@ -677,7 +686,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException);
                     serverLogRepo.SaveServerLog(log);
                 }
 
@@ -698,7 +707,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException);
                 }
 
                 // BIMBO
@@ -717,7 +726,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException);
                 }
 
                 // THIEVES
@@ -736,7 +745,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException);
                 }
 
                 // SISTERS
@@ -754,7 +763,7 @@ namespace TT.Domain.Procedures
                 }
                 catch (Exception e)
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException);
                 }
 
                 // FAEBOSS
@@ -772,7 +781,7 @@ namespace TT.Domain.Procedures
                 }
                 catch (Exception e)
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Narcissa ERROR:  " + e.InnerException.ToString());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Narcissa ERROR:  " + e.InnerException);
                 }
 
                 #endregion bosses
@@ -824,7 +833,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e.ToString());
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e);
                     }
                 }
                 #endregion
@@ -835,8 +844,9 @@ namespace TT.Domain.Procedures
                     DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
                 }
-                catch (DomainException e)
+                catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
                 }
 

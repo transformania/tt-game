@@ -439,8 +439,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            AIProcedures.SpawnAIPsychopaths(10);
-
             return RedirectToAction(MVC.PvPAdmin.Index());
         }
 

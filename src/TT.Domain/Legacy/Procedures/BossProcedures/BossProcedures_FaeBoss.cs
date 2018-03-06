@@ -285,7 +285,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             for (var i = 0; i < damages.Count; i++)
             {
-                var damage = damages.ElementAt(0);
+                var damage = damages.ElementAt(i);
 
                 var victor = PlayerProcedures.GetPlayer(damage.PlayerId);
                 var reward = maxReward - (l * 35);

@@ -162,6 +162,7 @@
     <Compile Include="Identity\QueryRequestHandlers\IsValidUserRequestHandlerTests.cs" />
     <Compile Include="Identity\QueryRequestHandlers\UserHasRoleRequestHandlerTests.cs" />
     <Compile Include="Identity\RequestValidators\ResetSecurityStampValidatorTests.cs" />
+    <Compile Include="Items\Commands\DeleteExpiredRunesOnMerchantsTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Items\Commands\EmbedRuneTests.cs" />
     <Compile Include="Items\Commands\UnembedAllRunesTest.cs" />

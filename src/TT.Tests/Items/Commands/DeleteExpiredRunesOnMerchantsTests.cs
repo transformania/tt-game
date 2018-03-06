@@ -106,10 +106,16 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void should_throw_exception_if_lindella_not_found()
         {
-            var cmd = new DeleteExpiredConsumablesOnMerchants { LindellaId = 1, LorekeeperId = 2 };
+
+            new PlayerBuilder()
+                .With(p => p.Id, 1)
+                .With(p => p.BotId, AIStatics.LoremasterBotId)
+                .BuildAndSave();
+
+            var cmd = new DeleteExpiredRunesOnMerchants();
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lindella with Id 1");
+            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
         }
 
         [Test]
@@ -117,12 +123,14 @@ namespace TT.Tests.Items.Commands
         {
 
             new PlayerBuilder()
-                .With(p => p.Id, 1).BuildAndSave();
+                .With(p => p.Id, 1)
+                .With(p => p.BotId, AIStatics.LindellaBotId)
+                .BuildAndSave();
 
-            var cmd = new DeleteExpiredConsumablesOnMerchants { LindellaId = 1, LorekeeperId = 2 };
+            var cmd = new DeleteExpiredRunesOnMerchants();
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with Id 2");
+            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with BotId -15");
         }
     }
 }

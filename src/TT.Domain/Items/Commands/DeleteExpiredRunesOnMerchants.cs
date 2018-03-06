@@ -30,7 +30,7 @@ namespace TT.Domain.Items.Commands
                 var cutoff = DateTime.UtcNow.AddMinutes(-12*PvPStatics.MinutesToDroppedItemDelete);
 
                 var items = ctx.AsQueryable<Item>()
-                    .Include(i => i.ItemSource.ItemType)
+                    .Include(i => i.ItemSource)
                     .Where(i => i.Owner != null && 
                     (i.Owner.Id == lindella.Id || i.Owner.Id == lorekeeper.Id) &&
                     i.ItemSource.ItemType == PvPStatics.ItemType_Rune &&

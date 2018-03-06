@@ -407,18 +407,6 @@ namespace TT.Domain.Procedures
 
                 serverLogRepo.SaveServerLog(log);
 
-                try
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
-                    DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
-                    log.Errors++;
-                }
-
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
                 var recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();

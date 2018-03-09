@@ -61,6 +61,15 @@ namespace TT.Tests
 
             public IQueryable CreateQuery(Expression expression)
             {
+                if (expression is MethodCallExpression m)
+                {
+                    // Fix for a possible Automapper bug.
+                    var resultType = m.Method.ReturnType;
+                    var tElement = resultType.GetGenericArguments()[0];
+                    var queryType = typeof(DbAsyncEnumerable<>).MakeGenericType(tElement, tElement);
+                    return (IQueryable)Activator.CreateInstance(queryType, expression);
+                }
+
                 return new DbAsyncEnumerable<TEntity>(expression);
             }
 

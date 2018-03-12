@@ -175,6 +175,7 @@
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
     <Compile Include="Players\Commands\GiveRuneTests.cs" />
     <Compile Include="Players\Commands\MoveTests.cs" />
+    <Compile Include="Utilities\MapBuilder.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
     <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />
     <Compile Include="World\Commands\SavePvPLeaderboardTests.cs" />
@@ -274,7 +275,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TT.Domain\TT.Domain.csproj">

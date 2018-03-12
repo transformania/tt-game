@@ -70,7 +70,7 @@ namespace TT.Tests.Messages.Queries
 
             var message = DomainRegistry.Repository.FindSingle(cmd);
 
-            message.Id.Should().Be(23);
+            message.MessageId.Should().Be(23);
             message.Sender.FirstName.Should().BeEquivalentTo("Sam");
             message.Sender.LastName.Should().BeEquivalentTo("Houston");
             message.Receiver.FirstName.Should().BeEquivalentTo("Lora");
@@ -121,7 +121,7 @@ namespace TT.Tests.Messages.Queries
             messages.First().MessageText.Should().BeEquivalentTo("hello");
             messages.Last().MessageText.Should().BeEquivalentTo("world!");
 
-            var messagesIds = messages.Select(i => i.Id);
+            var messagesIds = messages.Select(i => i.MessageId);
             messagesIds.Should().NotContain(deletedMessage.Id);
 
         }
@@ -167,7 +167,7 @@ namespace TT.Tests.Messages.Queries
             messages.First().MessageText.Should().BeEquivalentTo("hello");
             messages.Last().MessageText.Should().BeEquivalentTo("world!");
 
-            var messagesIds = messages.Select(i => i.Id);
+            var messagesIds = messages.Select(i => i.MessageId);
             messagesIds.Should().NotContain(deletedMessage.Id);
         }
 

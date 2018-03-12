@@ -23,7 +23,7 @@ namespace TT.Domain.Messages.Mappings
 
         public MessageMappings()
         {
-            CreateMap<Message, MessageDetail>();
+            CreateMap<Message, MessageDetail>().ForMember(dst => dst.MessageId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

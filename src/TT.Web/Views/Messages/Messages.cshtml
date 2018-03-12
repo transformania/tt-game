@@ -90,11 +90,11 @@
                     @{
                     if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
                     {
-                        <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.Id))">@messageTeaser</a></td>
+                        <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
                     }
                     else
                     {
-                        <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.Id))">@messageTeaser</a></td>
+                        <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
                     }
                         }
 
@@ -104,7 +104,7 @@
                             {
                                 @Html.AntiForgeryToken()
                                 <input name="deleteAll" type="hidden" value="False">
-                                <input name="messageId" type="hidden" value="@msg.Id">
+                                <input name="messageId" type="hidden" value="@msg.MessageId">
 
                                 <input type="submit" value="Delete Message">
                             }
@@ -114,7 +114,7 @@
                                 using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
                                 {
                                     @Html.AntiForgeryToken()
-                                    <input name="messageId" type="hidden" value="@msg.Id">
+                                    <input name="messageId" type="hidden" value="@msg.MessageId">
                                     <input name="ReadStatus" type="hidden" value="@MessageStatics.ReadAndMarkedAsUnread">
 
                                     <input type="submit" value="Mark As Unread">
@@ -125,7 +125,7 @@
                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
                                 {
                                     @Html.AntiForgeryToken()
-                                    <input name="messageId" type="hidden" value="@msg.Id">
+                                    <input name="messageId" type="hidden" value="@msg.MessageId">
                                     <input name="ReadStatus" type="hidden" value="@MessageStatics.Read">
 
                                     <input type="submit" value="Mark As Read">

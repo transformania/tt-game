@@ -56,7 +56,7 @@ namespace TT.Tests.Messages.Queries
             var cmd = new GetMessagesInConversation { conversationId = guid1};
             var messages = DomainRegistry.Repository.Find(cmd);
 
-            var ids = messages.Select(m => m.Id);
+            var ids = messages.Select(m => m.MessageId);
 
             ids.Should().Contain(1);
             ids.Should().Contain(2);

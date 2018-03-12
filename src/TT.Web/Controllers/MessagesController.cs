@@ -109,7 +109,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Messages.Index());
             }
 
-            DomainRegistry.Repository.Execute(new MarkAsRead { MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id });
+            DomainRegistry.Repository.Execute(new MarkAsRead { MessageId = message.MessageId, ReadStatus = MessageStatics.Read, OwnerId = me.Id });
 
             return View(MVC.Messages.Views.ReadMessage, message);
         }

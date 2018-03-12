@@ -5,7 +5,7 @@ namespace TT.Domain.Messages.DTOs
 {
     public class MessageDetail
     {
-        public int Id { get; set; }
+        public int MessageId { get; set; }
         public PlayerMessageDetail Sender { get; set; }
         public PlayerMessageDetail Receiver { get; set; }
 

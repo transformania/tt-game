@@ -35,7 +35,7 @@ namespace TT.Domain.Procedures
 
             foreach (var message in receivedMessagesToDelete)
             {
-                DomainRegistry.Repository.Execute(new DeleteMessage {MessageId = message.Id, OwnerId = player.Id});
+                DomainRegistry.Repository.Execute(new DeleteMessage {MessageId = message.MessageId, OwnerId = player.Id});
             }
 
             output.Paginator = paginator;

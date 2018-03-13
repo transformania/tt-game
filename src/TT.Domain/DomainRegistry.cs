@@ -24,19 +24,17 @@ namespace TT.Domain
         [ThreadStatic]
         private static IList<Guid> _sentNotifications;
 
-        private static IMapper _mapper;
-
         public static IRoot Root
         {
             get { return _root ?? (_root = new Root()); }
             set { _root = value; }
         }
-        
+
         public static IDomainRepository Repository
         {
             get
             {
-                return (_repository == null || _repository.Disposed) ? 
+                return (_repository == null || _repository.Disposed) ?
                     (_repository = new DomainRepository(new DomainContext())) :
                     _repository;
             }
@@ -54,25 +52,13 @@ namespace TT.Domain
             get { return _sentNotifications ?? (_sentNotifications = new List<Guid>()); }
         }
 
-        public static IMapper Mapper
+        public static IMapper Mapper => mapperFunc();
+
+        private static Func<IMapper> mapperFunc;
+
+        public static void SetMapperFunc(Func<IMapper> mapperFunc)
         {
-            get
-            {
-                if (_mapper == null)
-                    ConfigureMapper();
-
-                return _mapper;
-            }
-        }
-
-        public static void ConfigureMapper()
-        {
-            var mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfiles(typeof(DomainRegistry).Assembly);
-            });
-
-            _mapper = mapperConfiguration.CreateMapper();
+            DomainRegistry.mapperFunc = mapperFunc;
         }
     }
 }

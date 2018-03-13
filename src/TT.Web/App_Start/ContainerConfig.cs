@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Highway.Data;
 using MediatR;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -174,6 +175,25 @@ namespace TT.Web
                     }
                 }
             };
+
+            // AutoMapper
+            container.RegisterCollection(typeof(Profile), typeof(DomainRegistry).Assembly);
+
+            IMapper CreateMapper() => new MapperConfiguration(cfg =>
+            {
+                // Calling GetAllInstances is fine here since this action is delayed until CreateMapper is called.
+                // At that point the mapper was requested and so the container is already locked.
+                foreach (var profile in container.GetAllInstances<Profile>())
+                {
+                    cfg.AddProfile(profile);
+                }
+            }).CreateMapper();
+
+            // This function is called once when the mapper singleton is needed.
+            container.RegisterSingleton(CreateMapper);
+
+            // This function is called only when something accesses the static Mapper instance.
+            DomainRegistry.SetMapperFunc(container.GetInstance<IMapper>);
 
             container.Verify();
         }

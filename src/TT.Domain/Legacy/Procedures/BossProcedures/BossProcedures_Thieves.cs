@@ -130,8 +130,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunThievesAction(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             var maleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == malethief.Id);
             var femaleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == femalethief.Id);
@@ -158,14 +158,14 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     var malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
                     DomainRegistry.Repository.Execute(new Cleanse { PlayerId = malethief.Id, Buffs = malebuffs, NoValidate = true });
-                    malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+                    malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
                 }
 
                 if (femalethief.Health < femalethief.MaxHealth / 4)
                 {
                     var femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
                     DomainRegistry.Repository.Execute(new Cleanse { PlayerId = femalethief.Id, Buffs = femalebuffs, NoValidate = true });
-                    femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+                    femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
                 }
 
 
@@ -347,8 +347,8 @@ namespace TT.Domain.Procedures.BossProcedures
         
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
             var rand = new Random(Guid.NewGuid().GetHashCode());
 
             // both thieves are full, dont' attack too hard
@@ -358,7 +358,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     AttackProcedures.Attack(malethief, attacker, "lowerHealth");
                     AIProcedures.DealBossDamage(malethief, attacker, true, 1);
-                    malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+                    malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
                 }
 
                 if (femalethief.Mobility == PvPStatics.MobilityFull)
@@ -366,7 +366,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     AIProcedures.DealBossDamage(femalethief, attacker, true, 2);
-                    femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+                    femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
                 }
 
                 
@@ -418,8 +418,8 @@ namespace TT.Domain.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndThieves();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
-            var femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            var malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
+            var femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
 
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(malethief.Id);
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(femalethief.Id);

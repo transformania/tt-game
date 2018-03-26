@@ -145,10 +145,10 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
+            var bimboBoss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BimboBossBotId);
 
             // move her toward the location with the most eligible targets
-            if (bimboBoss.Mobility != PvPStatics.MobilityFull) {
+            if (bimboBoss == null || bimboBoss.Mobility != PvPStatics.MobilityFull) {
                 EndEvent();
                 return;
             }
@@ -159,7 +159,7 @@ namespace TT.Domain.Procedures.BossProcedures
             bimboBoss.dbLocationName = newlocation;
 
             playerRepo.SavePlayer(bimboBoss);
-            bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
+            bimboBoss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BimboBossBotId);
 
             var rand = new Random(Guid.NewGuid().GetHashCode());
 

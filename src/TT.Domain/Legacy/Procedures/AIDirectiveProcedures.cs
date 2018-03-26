@@ -3,6 +3,7 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures
 {
@@ -120,7 +121,7 @@ namespace TT.Domain.Procedures
             foreach (var d in directives)
             {
                 var p = playerRepo.Players.FirstOrDefault(x => x.Id == d.OwnerId);
-                if (p.FirstName.Contains("Psychopath")) {
+                if (p.BotId == AIStatics.PsychopathBotId) {
                     d.TargetPlayerId = -1;
                     d.State = "idle";
                     directiveRepo.SaveAIDirective(d);

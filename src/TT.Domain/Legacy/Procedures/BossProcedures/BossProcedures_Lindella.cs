@@ -47,7 +47,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
+            var merchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LindellaBotId && f.Mobility == PvPStatics.MobilityFull);
 
             if (merchant != null && merchant.Mobility == PvPStatics.MobilityFull)
             {

@@ -98,13 +98,13 @@ namespace TT.Domain.Procedures.BossProcedures
         {
 
             // only allow nerd mouse girls to attack bimbo boss
-            if (target.FirstName == NerdBossFirstName && attacker.Form != BimboSpellForm)
+            if (target.BotId == AIStatics.MouseNerdBotId && attacker.Form != BimboSpellForm)
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Adrianna.  Maybe you'd have better luck if you were casting magic against her as a Bimbo Mousegirl...";
             }
 
             // only allow nerd mouse girls to attack bimbo boss
-            if (target.FirstName == BimboBossFirstName && attacker.Form != NerdSpellForm)
+            if (target.BotId == AIStatics.MouseBimboBotId && attacker.Form != NerdSpellForm)
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Candice.  Maybe you'd have better luck if you were casting magic against her as a Nerdy Mousegirl...";
             }
@@ -121,7 +121,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             //disallow spells cast against the bosses if they have changed animate forms
-            if ((target.FirstName == NerdBossFirstName && target.Form != NerdBossForm) || (target.FirstName == BimboBossFirstName && target.Form != BimboBossForm))
+            if ((target.BotId == AIStatics.MouseNerdBotId && target.Form != NerdBossForm) || (target.BotId == AIStatics.MouseBimboBotId && target.Form != BimboBossForm))
             {
                 return "One of the Brisby sisters have already been transformed; there's no need to attack them any further.";
             }
@@ -138,7 +138,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var spell = ChooseSpell(bossTarget);
 
             // nerd counters with nerd spell unless she has changed form
-            if (bossTarget.FirstName == NerdBossFirstName && bossTarget.Form == NerdBossForm || bossTarget.FirstName == BimboBossFirstName && bossTarget.Form == BimboBossForm)
+            if (bossTarget.BotId == AIStatics.MouseNerdBotId && bossTarget.Form == NerdBossForm || bossTarget.BotId == AIStatics.MouseBimboBotId && bossTarget.Form == BimboBossForm)
             {
                 AttackProcedures.Attack(bossTarget, attacker, spell);
                 AttackProcedures.Attack(bossTarget, attacker, spell);
@@ -150,7 +150,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private static string ChooseSpell(Player sister)
         {
-            if (sister.FirstName == BimboBossFirstName)
+            if (sister.BotId == AIStatics.MouseBimboBotId)
             {
                 return IsAtThreeQuartersHealthOrLower(sister) ? MakeupKitSpell : BimboSpell;
             }
@@ -169,7 +169,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             // check to see if a sister has been TFed and the event should end
-            if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)
+            if (nerdBoss == null || nerdBoss.Form != NerdBossForm || bimboBoss == null || bimboBoss.Form != BimboBossForm)
             {
                 EndEvent();
             }

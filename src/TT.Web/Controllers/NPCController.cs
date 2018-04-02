@@ -75,7 +75,8 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableLinks = "true";
 
-            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter});
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter})
+                .Where(i => i.EmbeddedOnItem == null);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -138,6 +139,13 @@ namespace TT.Web.Controllers
             if (purchased.Owner.Id != merchant.Id)
             {
                 TempData["Error"] = "Lindella does not own this item.";
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
+            }
+
+            // assert this item is not already embedded on an item
+            if (purchased.EmbeddedOnItem != null)
+            {
+                TempData["Error"] = "You cannot purchase an already-embedded rune.";
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 

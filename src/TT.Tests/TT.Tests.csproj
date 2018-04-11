@@ -175,6 +175,7 @@
     <Compile Include="Items\Entities\ItemSourceTests.cs" />
     <Compile Include="Items\Entities\RuneTests.cs" />
     <Compile Include="Items\Queries\GetRandomRuneAtLevelTests.cs" />
+    <Compile Include="Items\Queries\Leaderboard\ItemLeaderboardMappingsTests.cs" />
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />
     <Compile Include="Players\Commands\GiveRuneTests.cs" />
     <Compile Include="Players\Commands\MoveTests.cs" />

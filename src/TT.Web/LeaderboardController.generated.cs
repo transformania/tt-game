@@ -28,9 +28,6 @@ namespace TT.Web.Controllers
     public partial class LeaderboardController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public LeaderboardController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected LeaderboardController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -564,11 +561,11 @@ namespace TT.Web.Controllers
         partial void ItemLeaderboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ItemLeaderboard()
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ItemLeaderboard()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ItemLeaderboard);
             ItemLeaderboardOverride(callInfo);
-            return callInfo;
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
         [NonAction]

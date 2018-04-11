@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using MediatR;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
+using TT.Domain.Items.Queries.Leaderboard;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels.World;
 using TT.Domain.World.Queries;
@@ -14,6 +18,12 @@ namespace TT.Web.Controllers
     public partial class LeaderboardController : Controller
     {
         private const int LastRoundWithDatabaseLeaderboardData = 43;
+        private readonly IMediator mediator;
+
+        public LeaderboardController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
 
         public virtual ActionResult Leaderboard()
         {
@@ -45,7 +55,7 @@ namespace TT.Web.Controllers
             return View(MVC.Leaderboard.Views.PvPLeaderboard, PlayerProcedures.GetLeadingPlayers__PvP(100));
         }
 
-        public virtual ActionResult ItemLeaderboard()
+        public virtual async Task<ActionResult> ItemLeaderboard()
         {
             var myMembershipId = User.Identity.GetUserId();
             if (myMembershipId.IsNullOrEmpty())
@@ -58,9 +68,10 @@ namespace TT.Web.Controllers
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
             }
 
-            var output = DomainRegistry.Repository.Find(new GetHighestLevelPlayerItems { Limit = 100 });
+            var output = await mediator.Send(new ItemLeaderboardRequest { Limit = 100 });
+            var castedOutput = output.Select(i => (ItemFormerPlayerDetail)i).Memoize();
 
-            return View(MVC.Leaderboard.Views.ItemLeaderboard, output);
+            return View(MVC.Leaderboard.Views.ItemLeaderboard, castedOutput);
         }
 
         public virtual ActionResult PlayerStatsLeaders()

@@ -121,6 +121,14 @@
     <Compile Include="Items\DTOs\PlayPageItemDetail.cs" />
     <Compile Include="Items\DTOs\ItemRuneDetail.cs" />
     <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
+    <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardInanimateXPDetail.cs" />
+    <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardItemDetail.cs" />
+    <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardItemSourceDetail.cs" />
+    <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardPlayerDetail.cs" />
+    <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardDetail.cs" />
+    <Compile Include="Items\Queries\Leaderboard\ItemLeaderboardHandler.cs" />
+    <Compile Include="Items\Queries\Leaderboard\ItemLeaderboardMappings.cs" />
+    <Compile Include="Items\Queries\Leaderboard\ItemLeaderboardRequest.cs" />
     <Compile Include="Items\Queries\GetItemRune.cs" />
     <Compile Include="Items\Queries\GetItemsThatCanGetRunes.cs" />
     <Compile Include="Items\Queries\GetRandomRuneAtLevel.cs" />

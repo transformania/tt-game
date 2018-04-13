@@ -15,7 +15,7 @@ namespace TT.Tests.Utilities
             Profiles = new List<Profile>();
         }
 
-        public IMapBuilder AddAssemblies(params Assembly[] assembliesToScan) => AddAssemblies(assembliesToScan);
+        public IMapBuilder AddAssemblies(params Assembly[] assembliesToScan) => AddAssemblies(assembliesToScan.AsEnumerable());
         
         public IMapBuilder AddAssemblies(IEnumerable<Assembly> assembliesToScan)
         {
@@ -27,7 +27,7 @@ namespace TT.Tests.Utilities
             return this;
         }
 
-        public IMapBuilder AddProfileInstances(params Profile[] profiles) => AddProfileInstances(profiles);
+        public IMapBuilder AddProfileInstances(params Profile[] profiles) => AddProfileInstances(profiles.AsEnumerable());
 
         public IMapBuilder AddProfileInstances(IEnumerable<Profile> profiles)
         {
@@ -39,7 +39,7 @@ namespace TT.Tests.Utilities
             return this;
         }
 
-        public IMapBuilder AddProfileTypes(params Type[] profiles) => AddProfileTypes(profiles);
+        public IMapBuilder AddProfileTypes(params Type[] profiles) => AddProfileTypes(profiles.AsEnumerable());
 
         public IMapBuilder AddProfileTypes(IEnumerable<Type> profiles)
         {

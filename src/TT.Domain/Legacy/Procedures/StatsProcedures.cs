@@ -74,7 +74,17 @@ namespace TT.Domain.Procedures
 
         public const string Stat__JewdewfaeEncountersCompleted = "jewdewfae_completions";
 
+        // PvP
+        public const string Stat__PvPPlayerNumberTakedowns = "pvp_player_takedowns";
+        public const string Stat__PvPPlayerLevelTakedowns = "pvp_total_level_takedowns";
 
+        // bosses
+        public const string Stat__BossAllAttacks = "boss_totalBossAttacks";
+        public const string Stat__BossRatThiefAttacks = "boss_ratThiefAttacks";
+        public const string Stat__BossLovebringerAttacks = "boss_lovebringerAttacks";
+        public const string Stat__BossDonnaAttacks = "boss_donnaAttacks";
+        public const string Stat__FaebossAttacks = "boss_faebossAttacks";
+        public const string Stat__MouseSisterAttacks = "boss_mouseSisterAttacks";
 
         // Dungeon
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
@@ -530,6 +540,94 @@ namespace TT.Domain.Procedures
                         ResetsOnReroll = false
                         }
                 },
+
+            {
+                Stat__PvPPlayerNumberTakedowns,
+                new StatsDetailsMap{
+                    FriendlyName="Player Transformayer",
+                    Description="Total PvP-PvP players transformed into items or pets",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__PvPPlayerLevelTakedowns,
+                new StatsDetailsMap{
+                    FriendlyName="Level Shmevel",
+                    Description="Sum of all PvP-PvP levels of players transformed into items or pets",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__BossAllAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="You Aren't the Boss of Me!",
+                    Description="Times attacking boss NPCs",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__BossRatThiefAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="I Am the Law!",
+                    Description="Times attacking the Seekshadow thieves",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__BossLovebringerAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="A.B.S Agent-In-Training",
+                    Description="Times attacking the Lady Lovebringer, PHD",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__BossDonnaAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="Down With Donna!",
+                    Description="Times attacking 'Aunt' Donna Milton",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__FaebossAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="Fae-Away",
+                    Description="Times attacking Narcissa the Corrupted Lunar Fae",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__MouseSisterAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="Brisby Battler",
+                    Description="Times attacking either of the Brisby twins",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
 
             };
 

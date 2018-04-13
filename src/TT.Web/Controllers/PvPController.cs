@@ -763,7 +763,6 @@ namespace TT.Web.Controllers
             PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            var logs = new LogBox();
 
             #region validation checks
 
@@ -1172,6 +1171,32 @@ namespace TT.Web.Controllers
                 new Thread(() =>
                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SpellsCast, 1)
                 ).Start();
+
+                if (AIStatics.IsABoss(targeted.BotId))
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossAllAttacks, 1);
+                }
+
+                if (targeted.BotId == AIStatics.FemaleRatBotId || targeted.BotId == AIStatics.MaleRatBotId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossRatThiefAttacks, 1);
+                }
+                else if (targeted.BotId == AIStatics.BimboBossBotId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossLovebringerAttacks, 1);
+                }
+                else if (targeted.BotId == AIStatics.DonnaBotId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossDonnaAttacks, 1);
+                }
+                else if (targeted.BotId == AIStatics.FaebossId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__FaebossAttacks, 1);
+                }
+                else if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MouseSisterAttacks, 1);
+                }
 
             }
             catch (Exception e)

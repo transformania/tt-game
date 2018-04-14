@@ -1,4 +1,6 @@
-﻿namespace TT.Domain.Statics
+﻿using System;
+
+namespace TT.Domain.Statics
 {
     public static class AIStatics
     {
@@ -24,5 +26,17 @@
         public const int FemalePsychoFormId = 14;
 
         public const int DungeonDemonFormId = 371;
+
+        public static bool IsABoss(int id)
+        {
+            return id == ValentineBotId ||
+                   id == DonnaBotId ||
+                   id == BimboBossBotId ||
+                   id == FemaleRatBotId ||
+                   id == MaleRatBotId ||
+                   id == MouseNerdBotId ||
+                   id == MouseBimboBotId ||
+                   id == FaebossId;
+        } 
     }
 }

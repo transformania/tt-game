@@ -158,7 +158,6 @@ namespace TT.Domain.Statics
 
         public const string ItemType_TGBomb = "item_consumable_tg_bomb";
 
-
         public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
 
         public const int PsychopathDefaultAmount = 15;

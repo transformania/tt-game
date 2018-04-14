@@ -379,12 +379,6 @@ namespace TT.Domain.Procedures
                             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1)
                         ).Start();
 
-                        if (target.BotId == AIStatics.PsychopathBotId)
-                        {
-                            new Thread(() =>
-                                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated, 1)
-                            ).Start();
-                        }
 
                     }
                     else if (targetForm.MobilityType == "animal")
@@ -398,6 +392,11 @@ namespace TT.Domain.Procedures
                              StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1)
                         ).Start();
 
+                    }
+
+                    if (targetForm.MobilityType == PvPStatics.MobilityPet || targetForm.MobilityType == PvPStatics.MobilityInanimate)
+                    {
+
                         if (target.BotId == AIStatics.PsychopathBotId)
                         {
                             new Thread(() =>
@@ -405,6 +404,11 @@ namespace TT.Domain.Procedures
                             ).Start();
                         }
 
+                        if (target.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)PvPStatics.GameModes.PvP && victim.GameMode == (int)PvPStatics.GameModes.PvP)
+                        {
+                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerNumberTakedowns, 1);
+                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerLevelTakedowns, victim.Level);
+                        }
 
                     }
                    

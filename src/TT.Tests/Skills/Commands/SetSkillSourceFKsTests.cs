@@ -112,7 +112,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSource = "fake"};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found.  Does it need to be published first?");
+            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found.  Does it need to be published first?");
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToFormSource = "fake"};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ExclusiveToFormSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToFormSource with name 'fake' could not be found");
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, GivesEffectSource = "fake"};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("EffectSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("EffectSource with name 'fake' could not be found");
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToItemSource = "fake" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with name 'fake' could not be found");
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 3457};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Skill Source with Id 3457 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Skill Source with Id 3457 could not be found");
         }
 
     }

@@ -45,7 +45,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new MarkAsRead { MessageId = 999, ReadStatus = MessageStatics.ReadAndMarkedAsUnread, OwnerId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message with ID 999 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message with ID 999 could not be found");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new MarkAsRead { MessageId = 61, ReadStatus = MessageStatics.ReadAndMarkedAsUnread, OwnerId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 999");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 999");
         }
 
         [TestCase(-1)]
@@ -71,7 +71,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new MarkAsRead { MessageId = 61, ReadStatus = readStatus, OwnerId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"{readStatus} is not a valid read status.");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"{readStatus} is not a valid read status.");
         }
     }
 }

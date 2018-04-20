@@ -90,7 +90,7 @@ namespace TT.Tests.AI.Commands
         {
             var cmd = new RestockNPC { BotId = 12345 };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with BotId '12345' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with BotId '12345' could not be found");
         }
     }
 }

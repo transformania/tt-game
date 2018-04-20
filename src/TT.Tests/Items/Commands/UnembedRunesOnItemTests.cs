@@ -70,7 +70,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new UnbembedRunesOnItem { };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required");
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new UnbembedRunesOnItem { ItemId = 999};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Cannot find an item with id '999'");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Cannot find an item with id '999'");
         }
 
 

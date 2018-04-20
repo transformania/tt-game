@@ -44,7 +44,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new MarkAsAbusive { MessageId = 61, OwnerId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message with ID 61 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message with ID 61 could not be found");
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new MarkAsAbusive { MessageId = 61, OwnerId = 123};
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 123");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 123");
         }
 
     }

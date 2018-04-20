@@ -109,7 +109,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new UnembedAllRunes { };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("PlayerId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required");
         }
 
     }

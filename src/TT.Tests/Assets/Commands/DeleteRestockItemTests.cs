@@ -32,7 +32,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new DeleteRestockItem { RestockItemId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new DeleteRestockItem { RestockItemId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"RestockItem with ID {id} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"RestockItem with ID {id} was not found");
         }
     }
 }

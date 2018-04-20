@@ -67,7 +67,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new DeletePlayer {PlayerId = 23};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID 23 was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 23 was not found");
         }
     }
 }

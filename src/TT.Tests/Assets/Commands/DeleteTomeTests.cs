@@ -35,7 +35,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new DeleteTome { TomeId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new DeleteTome { TomeId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
         }
     }
 }

@@ -61,7 +61,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeDonatorTier { UserId = "fakeuser", Tier = 0 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with user ID 'fakeuser' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with user ID 'fakeuser' could not be found");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeDonatorTier { UserId = null, Tier = 0 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("userId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeDonatorTier { UserId = "user", Tier = tier };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Tier must be an integer between 0 and 3.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Tier must be an integer between 0 and 3.");
         }
     }
 }

@@ -63,7 +63,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = 987, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with Id '987' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id '987' could not be found");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You must be animate in order to take the bus.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to take the bus.");
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = 987 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Destination is required.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Destination is required.");
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = player.Location};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't take the bus to the location you're already at.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't take the bus to the location you're already at.");
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a duel.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a duel.");
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a quest.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a quest.");
         }
 
         [Test]
@@ -202,7 +202,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't afford this bus ticket!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't afford this bus ticket!");
         }
 
         [Test]
@@ -221,7 +221,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You aren't at a valid bus stop.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You aren't at a valid bus stop.");
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = "college_sciences" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Your destination is not a valid bus stop.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Your destination is not a valid bus stop.");
         }
 
         [Test]
@@ -262,7 +262,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_230_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You don't have enough AP to take the bus.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough AP to take the bus.");
         }
 
         [Test]
@@ -283,7 +283,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't ride the bus while under the Forced March! mind control spell.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't ride the bus while under the Forced March! mind control spell.");
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't ride the bus while immobilized.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't ride the bus while immobilized.");
         }
     }
 }

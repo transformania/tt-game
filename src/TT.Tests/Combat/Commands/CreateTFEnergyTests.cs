@@ -61,7 +61,7 @@ namespace TT.Tests.Combat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID 13 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 13 could not be found");
         }
 
     }

@@ -38,7 +38,7 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new UpdateRoundNumber { RoundNumber = "new round" });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Round renaming can only be done at turn 0 or the maximum round turn.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Round renaming can only be done at turn 0 or the maximum round turn.");
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new UpdateRoundNumber { RoundNumber = "new round" });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Round renaming can only be done in chaos mode.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Round renaming can only be done in chaos mode.");
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new UpdateRoundNumber { });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
         }
 
     }

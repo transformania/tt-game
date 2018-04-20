@@ -59,7 +59,7 @@ namespace TT.Tests.Identity.Commands
            
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("userId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace TT.Tests.Identity.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("User 'fakeuser' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("User 'fakeuser' could not be found");
         }
     }
 }

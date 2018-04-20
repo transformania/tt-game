@@ -50,7 +50,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
         }
 
 
@@ -62,7 +62,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Base item with Id {id} could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Base item with Id {id} could not be found");
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Minimum amount before restock must be 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount before restock must be 0");
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Minimum amount to restock to must be 1");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount to restock to must be 1");
         }
 
     }

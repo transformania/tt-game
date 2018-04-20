@@ -47,7 +47,7 @@ namespace TT.Tests.Identity.Queries
         {
             var cmd = (new UserCaptchaIsExpired {UserId = "abcde"});
             Action action = () => Repository.FindSingle(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("User with Id abcde has no CaptchaEntry");
+            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id abcde has no CaptchaEntry");
         }
 
     }

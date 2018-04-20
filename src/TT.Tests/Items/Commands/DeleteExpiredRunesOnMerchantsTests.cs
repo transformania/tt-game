@@ -115,7 +115,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteExpiredRunesOnMerchants();
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteExpiredRunesOnMerchants();
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with BotId -15");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with BotId -15");
         }
     }
 }

@@ -89,7 +89,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("First name is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("First name is required");
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Last name is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Last name is required");
         }
 
         [TestCase(0)]
@@ -110,7 +110,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Willpower must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Willpower must be greater than 0");
         }
 
         [TestCase(0)]
@@ -121,7 +121,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Maximum willpower must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Maximum willpower must be greater than 0");
         }
 
         [TestCase(0)]
@@ -132,7 +132,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Mana must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Mana must be greater than 0");
         }
 
         [TestCase(0)]
@@ -143,7 +143,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Maximum mana must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Maximum mana must be greater than 0");
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Level must be at least one.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Level must be at least one.");
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("TimesAttackingThisUpdate must be at least 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("TimesAttackingThisUpdate must be at least 0");
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("XP must be at least 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("XP must be at least 0");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ActionPoints must be at least 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints must be at least 0");
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be at least 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be at least 0");
         }
 
         [Test]
@@ -216,7 +216,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be less than " + PvPStatics.MaximumStoreableActionPoints));
+            action.Should().ThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be less than " + PvPStatics.MaximumStoreableActionPoints));
         }
 
         [Test]
@@ -226,7 +226,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be less than " + PvPStatics.MaximumStoreableActionPoints_Refill);
+            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be less than " + PvPStatics.MaximumStoreableActionPoints_Refill);
         }
 
         [Test]
@@ -236,7 +236,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Gender must be either " + PvPStatics.GenderMale + " or " + PvPStatics.GenderFemale);
+            action.Should().ThrowExactly<DomainException>().WithMessage("Gender must be either " + PvPStatics.GenderMale + " or " + PvPStatics.GenderFemale);
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Mobility must be one of the following: " + PvPStatics.MobilityFull + ", " + PvPStatics.MobilityInanimate + ", or " + PvPStatics.MobilityPet);
+            action.Should().ThrowExactly<DomainException>().WithMessage("Mobility must be one of the following: " + PvPStatics.MobilityFull + ", " + PvPStatics.MobilityInanimate + ", or " + PvPStatics.MobilityPet);
         }
 
         [Test]

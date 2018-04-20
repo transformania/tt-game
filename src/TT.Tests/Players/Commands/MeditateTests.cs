@@ -86,7 +86,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = player.Id, Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = 3, Buffs = buffs};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID '3' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '3' could not be found");
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You don't have enough action points to meditate!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to meditate!");
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You must be animate in order to meditate!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to meditate!");
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You have cleansed and meditated the maximum number of times this update.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You have cleansed and meditated the maximum number of times this update.");
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player ID is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player ID is required!");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Meditate { PlayerId = 100  };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Buffs are required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Buffs are required!");
         }
 
         [Test]

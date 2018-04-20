@@ -41,7 +41,7 @@ namespace TT.Tests.Chat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Chat room '{existingName}' already exists");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Chat room '{existingName}' already exists");
         }
 
         [TestCase("Test!")]
@@ -56,7 +56,7 @@ namespace TT.Tests.Chat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(
+            action.Should().ThrowExactly<DomainException>().WithMessage(
                 $"Chat room '{roomName}' contains unsupported characters, only alphanumeric names with _ or - are allowed");
         }
 
@@ -85,7 +85,7 @@ namespace TT.Tests.Chat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("No room name was provided");
+            action.Should().ThrowExactly<DomainException>().WithMessage("No room name was provided");
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace TT.Tests.Chat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("No room creator was provided");
+            action.Should().ThrowExactly<DomainException>().WithMessage("No room creator was provided");
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace TT.Tests.Chat.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Room creator does not exist");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Room creator does not exist");
         }
     }
 }

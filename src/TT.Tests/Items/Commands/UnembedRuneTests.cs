@@ -79,7 +79,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("PlayerId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required");
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Rune with id '999' could not be found!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Rune with id '999' could not be found!");
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You don't own this rune!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You don't own this rune!");
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("This rune is not currently embdded on an item.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("This rune is not currently embdded on an item.");
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace TT.Tests.Items.Commands
             };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("This rune was equipped this turn.  Wait until next turn to remove it.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("This rune was equipped this turn.  Wait until next turn to remove it.");
         }
 
     }

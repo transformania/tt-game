@@ -37,7 +37,7 @@ namespace TT.Tests.Forms.Commands
         public void throws_exception_if_formSource_not_found()
         {
             Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = 12345});
-            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource with Id '12345' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource with Id '12345' could not be found");
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace TT.Tests.Forms.Commands
                  .BuildAndSave();
 
             Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = formSource.Id, ItemSourceName = "fake"});
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemSource with dbName 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with dbName 'fake' could not be found");
         }
     }
 }

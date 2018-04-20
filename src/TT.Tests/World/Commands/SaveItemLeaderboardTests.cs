@@ -114,7 +114,7 @@ namespace TT.Tests.World.Commands
                  .BuildAndSave();
 
             Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  The game is currently in chaos mode.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  The game is currently in chaos mode.");
         }
 
         [Test]
@@ -147,21 +147,21 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.ShouldThrowExactly<DomainException>().WithMessage("There are already existing Item/Pet leaderboard entries for round 13.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("There are already existing Item/Pet leaderboard entries for round 13.");
         }
 
         [Test]
         public void should_throw_error_if_round_number_not_set()
         {
             Action action = () => Repository.Execute(new SaveItemLeaderboards());
-            action.ShouldThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
         }
 
         [Test]
         public void should_throw_error_if_no_world_data_found()
         {
             Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.ShouldThrowExactly<DomainException>().WithMessage("No world data found.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("No world data found.");
         }
     }
 }

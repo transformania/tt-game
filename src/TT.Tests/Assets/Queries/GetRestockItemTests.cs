@@ -42,7 +42,7 @@ namespace TT.Tests.Assets.Queries
 
             var action = new Action(() => { Repository.FindSingle(query); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
         }
 
         [Test]

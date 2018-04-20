@@ -56,7 +56,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new UpdateCaptchaEntry {UserId = "abcde", AddPassAttempt = true, AddFailAttempt = false};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("CaptchaEntry with Id abcde could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("CaptchaEntry with Id abcde could not be found");
         }
     }
 }

@@ -33,7 +33,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteItem { ItemId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemId must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId must be greater than 0");
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteItem { ItemId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Item with ID {id} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Item with ID {id} was not found");
         }
     }
 

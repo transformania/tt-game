@@ -84,7 +84,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new AddStrike() { UserId = "fake", ModeratorId = moderator.Id, Reason = "Did stuff", Round = 50 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("User with Id 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id 'fake' could not be found");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new AddStrike() { UserId = user.Id, ModeratorId = "fake", Reason = "Did stuff", Round = 50 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Moderator with Id 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Moderator with Id 'fake' could not be found");
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new AddStrike() { UserId = "user", ModeratorId = "fake", Round = 50 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Reason for strike is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Reason for strike is required");
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new AddStrike() { UserId = "user", ModeratorId = "fake", Reason = "Did stuff", Round = round };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Round must be a positive integer greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Round must be a positive integer greater than 0");
         }
     }
 }

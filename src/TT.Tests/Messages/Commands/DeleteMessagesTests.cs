@@ -41,7 +41,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new DeleteMessage { MessageId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message Id must be greater than 0");
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new DeleteMessage { MessageId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Message with ID {999} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Message with ID {999} was not found");
         }
 
 
@@ -65,7 +65,7 @@ namespace TT.Tests.Messages.Commands
 
             var cmd = new DeleteMessage { MessageId = 61 };
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("OwnerId is required to delete a message");
+            action.Should().ThrowExactly<DomainException>().WithMessage("OwnerId is required to delete a message");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace TT.Tests.Messages.Commands
             var cmd = new DeleteMessage { MessageId = 61, OwnerId = 4};
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 4");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 4");
         }
 
         [Test]

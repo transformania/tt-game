@@ -85,7 +85,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.RPClassifiedAdId++;
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<RPClassifiedAdNotFoundException>()
+            action.Should().ThrowExactly<RPClassifiedAdNotFoundException>()
                 .WithMessage($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found")
                 .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
         }
@@ -96,7 +96,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.UserId += '-';
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<RPClassifiedAdNotOwnerException>()
+            action.Should().ThrowExactly<RPClassifiedAdNotOwnerException>()
                 .WithMessage($"User {cmd.UserId} does not own RPClassifiedAdId {cmd.RPClassifiedAdId}")
                 .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
         }
@@ -125,7 +125,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.Title = new string('-', titleLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<RPClassifiedAdInvalidInputException>()
+            action.Should().ThrowExactly<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The title is too short.");
         }
 
@@ -135,7 +135,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.Title = new string('-', titleLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The title is too long.");
         }
 
@@ -145,7 +145,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.Text = new string('-', textLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The description is too short.");
         }
 
@@ -155,7 +155,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.Text = new string('-', textLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The description is too long.");
         }
 
@@ -165,7 +165,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.YesThemes = new string('-', yesThemesLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The desired themes field is too long.");
         }
 
@@ -175,7 +175,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.NoThemes = new string('-', noThemesLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The undesired themes field is too long.");
         }
 
@@ -185,7 +185,7 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.PreferredTimezones = new string('-', preferredTimezonesLength);
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+            action.Should().Throw<RPClassifiedAdInvalidInputException>()
                 .WithMessage("The preferred timezones field is too long.");
         }
     }

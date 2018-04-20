@@ -120,7 +120,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(new DeleteUnpurchasedPsychoItems()); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
 
         }
 
@@ -135,7 +135,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(new DeleteUnpurchasedPsychoItems()); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Wuffie with BotId -10");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Wuffie with BotId -10");
 
         }
     }

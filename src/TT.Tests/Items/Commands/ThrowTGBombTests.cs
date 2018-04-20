@@ -165,7 +165,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new ThrowTGBomb {ItemId = bomb.Id, PlayerId = 12};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("player with ID 12 could not be found.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("player with ID 12 could not be found.");
 
         }
 
@@ -175,7 +175,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new ThrowTGBomb { ItemId = 12 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("PlayerId is required.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required.");
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new ThrowTGBomb { ItemId = 2365, PlayerId = thrower.Id };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Item with ID 2365 could not be found or does not belong to you.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Item with ID 2365 could not be found or does not belong to you.");
 
         }
 
@@ -200,7 +200,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new ThrowTGBomb { PlayerId = 12 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemId is required.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required.");
         }
     }
 }

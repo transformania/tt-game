@@ -1,6 +1,6 @@
 #addin "nuget:?package=Cake.SqlServer"
 #addin Cake.FluentMigrator
-#tool "nuget:?package=FluentMigrator.Tools"
+#tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"

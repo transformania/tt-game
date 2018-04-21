@@ -61,6 +61,7 @@ TRUNCATE TABLE [Stats].[dbo].[QuestPlayerVariables]
 -- TRUNCATE TABLE [Stats].[dbo].[Players]
 -- TRUNCATE TABLE [Stats].[dbo].[Covenants]
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [Boss_Faeboss] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
+UPDATE [dbo].[NewsPosts] SET ViewState = 2 WHERE Timestamp < DATEADD(month, -3, GETUTCDATE())
 ```
 
 ## Don't forget to change the round number

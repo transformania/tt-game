@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
-using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -805,7 +804,6 @@ namespace TT.Domain.Procedures
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
 

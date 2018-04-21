@@ -407,6 +407,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 52,
+      "name": "Alpha R52 (Era of Abigail Jasione)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

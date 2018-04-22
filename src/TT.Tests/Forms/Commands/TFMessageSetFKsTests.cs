@@ -36,7 +36,7 @@ namespace TT.Tests.Forms.Commands
         public void throws_exception_if_tfmessage_not_found()
         {
             Action action = () => Repository.Execute(new SetTFMessageFKs {TFMessageId = 12345});
-            action.ShouldThrowExactly<DomainException>().WithMessage("TFMessage with Id 12345 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("TFMessage with Id 12345 could not be found");
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace TT.Tests.Forms.Commands
                 .BuildAndSave();
 
             Action action = () => Repository.Execute(new SetTFMessageFKs { TFMessageId = 50, FormSource = "fake"});
-            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource with name 'fake' could not be found");
         }
     }
 }

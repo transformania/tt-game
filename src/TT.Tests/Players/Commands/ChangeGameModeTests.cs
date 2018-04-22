@@ -42,7 +42,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = GameModeStatics.Protection, InChaos = false };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You cannot leave PvP mode during regular gameplay.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot leave PvP mode during regular gameplay.");
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = GameModeStatics.PvP, InChaos = false };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You cannot enter PvP mode during regular gameplay.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot enter PvP mode during regular gameplay.");
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode {MembershipId = "fake", GameMode = GameModeStatics.Protection};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = null, GameMode = GameModeStatics.Protection };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = "abcde", GameMode = mode };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Game mode selection is invalid");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Game mode selection is invalid");
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = null, GameMode = GameModeStatics.SuperProtection };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
         }
     }
 }

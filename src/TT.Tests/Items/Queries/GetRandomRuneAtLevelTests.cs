@@ -52,7 +52,7 @@ namespace TT.Tests.Items.Queries
             var query = new GetRandomRuneAtLevel {};
             var action = new Action(() => { Repository.FindSingle(query); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("RuneLevel is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("RuneLevel is required");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace TT.Tests.Items.Queries
             var query = new GetRandomRuneAtLevel { RuneLevel = 12345};
             var action = new Action(() => { Repository.FindSingle(query); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("RuneLevel '12345' is not a valid level.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("RuneLevel '12345' is not a valid level.");
         }
     }
 }

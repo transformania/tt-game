@@ -19,7 +19,7 @@ namespace TT.Tests.Domain.Mapper
 
             var action = new Action(() => { mapperConfiguration.AssertConfigurationIsValid(); });
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
     }
 }

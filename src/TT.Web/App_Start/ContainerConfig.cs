@@ -95,8 +95,8 @@ namespace TT.Web
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();
-            container.RegisterSingleton(new SingleInstanceFactory(((IServiceProvider)container).GetService));
-            container.RegisterSingleton(new MultiInstanceFactory(container.GetAllInstances));
+            container.RegisterInstance(new SingleInstanceFactory(((IServiceProvider)container).GetService));
+            container.RegisterInstance(new MultiInstanceFactory(container.GetAllInstances));
 
             // Request Handlers
             var requestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<,>), domainAssembly);

@@ -56,7 +56,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new GiveRune { ItemSourceId = runeSource.Id};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("PlayerId is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required!");
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new GiveRune { PlayerId = owner.Id };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemId is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required!");
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new GiveRune { PlayerId = 555, ItemSourceId = runeSource.Id };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID '555' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '555' could not be found");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new GiveRune { PlayerId = owner.Id, ItemSourceId = 555 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ItemSource with ID '555' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with ID '555' could not be found");
         }
 
     }

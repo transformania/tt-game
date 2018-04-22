@@ -82,7 +82,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Item with Id {999} could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Item with Id {999} could not be found");
 
         }
 

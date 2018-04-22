@@ -70,7 +70,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new MoveAbandonedPetsToWuffie { WuffieId = 13 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Wuffie with Id 13");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Wuffie with Id 13");
         }
     }
 }

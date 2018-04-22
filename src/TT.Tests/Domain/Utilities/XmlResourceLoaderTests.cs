@@ -26,7 +26,7 @@ namespace TT.Tests.Domain.Utilities
 
             Action action = () => XmlResourceLoader.Load<List<string>>(resourcePath);
 
-            action.ShouldThrow<ResourceNotFoundException>();
+            action.Should().Throw<ResourceNotFoundException>();
         }
     }
 }

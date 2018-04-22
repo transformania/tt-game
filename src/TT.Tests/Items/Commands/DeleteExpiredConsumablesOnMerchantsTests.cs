@@ -106,7 +106,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteExpiredConsumablesOnMerchants { LindellaId = 1, LorekeeperId = 2 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lindella with Id 1");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lindella with Id 1");
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace TT.Tests.Items.Commands
             var cmd = new DeleteExpiredConsumablesOnMerchants { LindellaId = 1, LorekeeperId = 2 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with Id 2");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with Id 2");
         }
     }
 }

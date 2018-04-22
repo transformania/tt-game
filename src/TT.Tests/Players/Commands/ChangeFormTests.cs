@@ -55,7 +55,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeForm { PlayerId = 23, FormId = 3 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID 23 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 23 could not be found");
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeForm { PlayerId = 23, FormId = 3 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource with ID 3 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource with ID 3 could not be found");
         }
 
 

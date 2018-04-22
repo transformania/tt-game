@@ -40,7 +40,7 @@ namespace TT.Tests.Effects.Commands
             var cmd = new CreateEffect() { OwnerId = 100, EffectSourceId = 55 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Effect Source with Id 55 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Effect Source with Id 55 could not be found");
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace TT.Tests.Effects.Commands
             var cmd = new CreateEffect() { OwnerId = 100, EffectSourceId = 55 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with Id 100 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id 100 could not be found");
         }
 
     }

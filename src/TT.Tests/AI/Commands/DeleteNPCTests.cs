@@ -33,7 +33,7 @@ namespace TT.Tests.AI.Commands
             var cmd = new DeleteNPC { NPCId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage("NPC Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("NPC Id must be greater than 0");
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace TT.Tests.AI.Commands
             var cmd = new DeleteNPC { NPCId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"NPC with ID {id} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"NPC with ID {id} was not found");
         }
     }
 }

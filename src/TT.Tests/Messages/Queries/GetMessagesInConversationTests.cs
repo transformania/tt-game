@@ -71,7 +71,7 @@ namespace TT.Tests.Messages.Queries
             var cmd = new GetMessagesInConversation { conversationId = null };
             var action = new Action(() => { Repository.Find(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("ConversationId cannot be null");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ConversationId cannot be null");
         }
 
         

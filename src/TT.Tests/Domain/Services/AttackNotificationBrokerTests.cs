@@ -15,14 +15,17 @@ namespace TT.Tests.Domain.Services
             const string message = "You've been attacked";
 
             var service = new AttackNotificationBroker();
-            service.MonitorEvents();
+            using (var monitoredService = service.Monitor())
+            {
+                service.Notify(playerId, message);
 
-            service.Notify(playerId, message);
-
-            service
-                .ShouldRaise("NotificationRaised")
-                .WithSender(service)
-                .WithArgs<NotificationRaisedEventArgs>(args => args.PlayerId == playerId && args.Message == message);
+                monitoredService
+                    .Should()
+                    .Raise("NotificationRaised")
+                    .WithSender(service)
+                    .WithArgs<NotificationRaisedEventArgs>(args =>
+                        args.PlayerId == playerId && args.Message == message);
+            }
         }
 
         [TestCase(-1)]
@@ -35,7 +38,7 @@ namespace TT.Tests.Domain.Services
 
             Action action = () => service.Notify(id, message);
 
-            action.ShouldThrowExactly<ArgumentException>()
+            action.Should().ThrowExactly<ArgumentException>()
                 .WithMessage("Cannot raise attack notification. Parameter name: playerId");
         }
 
@@ -50,7 +53,7 @@ namespace TT.Tests.Domain.Services
 
             Action action = () => service.Notify(playerId, message);
 
-            action.ShouldThrowExactly<ArgumentException>()
+            action.Should().ThrowExactly<ArgumentException>()
                 .WithMessage("Cannot raise attack notification. Parameter name: message");
         }
     }

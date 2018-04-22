@@ -98,7 +98,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with Id 999 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id 999 could not be found");
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Former player with Id 999 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Former player with Id 999 could not be found");
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace TT.Tests.Items.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Item Source with Id {999} could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Item Source with Id {999} could not be found");
         }
 
     }

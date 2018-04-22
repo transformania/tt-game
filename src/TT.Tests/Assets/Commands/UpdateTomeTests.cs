@@ -43,7 +43,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("No text was provided for the tome");
+            action.Should().ThrowExactly<DomainException>().WithMessage("No text was provided for the tome");
         }
 
         [TestCase(-1)]
@@ -54,7 +54,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
         }
 
         [TestCase(-1)]
@@ -65,7 +65,7 @@ namespace TT.Tests.Assets.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace TT.Tests.Assets.Commands
             var cmd = new UpdateTome { Text = "tome text", TomeId = tomeId, BaseItemId = baseItemId };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage($"Base item with ID {baseItemId} was not found");
+            action.Should().ThrowExactly<DomainException>().WithMessage($"Base item with ID {baseItemId} was not found");
         }
     }
 }

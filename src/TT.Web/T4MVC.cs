@@ -278,55 +278,55 @@ namespace Links
         {
             public static class Assets
             {
-                public const string _references_js = "~/Scripts/_references.js"; 
-                public const string boxesResize_js = "~/Scripts/boxesResize.js"; 
-                public const string Character_js = "~/Scripts/Character.js"; 
-                public const string CharacterLoader_js = "~/Scripts/CharacterLoader.js"; 
-                public const string game_discus_js = "~/Scripts/game_discus.js"; 
-                public const string game_dpong_js = "~/Scripts/game_dpong.js"; 
-                public const string game_memory_js = "~/Scripts/game_memory.js"; 
-                public const string game_popup_js = "~/Scripts/game_popup.js"; 
-                public const string game_reflex_js = "~/Scripts/game_reflex.js"; 
-                public const string game_roulette_js = "~/Scripts/game_roulette.js"; 
-                public const string game_sequence_js = "~/Scripts/game_sequence.js"; 
-                public const string GenericCharData_js = "~/Scripts/GenericCharData.js"; 
-                public const string GenericPlayerData_js = "~/Scripts/GenericPlayerData.js"; 
-                public const string jquery_2_1_0_intellisense_js = "~/Scripts/jquery-2.1.0.intellisense.js"; 
-                public const string jquery_2_1_0_js = "~/Scripts/jquery-2.1.0.js"; 
-                public const string jquery_2_1_0_min_js = "~/Scripts/jquery-2.1.0.min.js"; 
-                public const string jquery_ui_1_10_4_js = "~/Scripts/jquery-ui-1.10.4.js"; 
-                public const string jquery_ui_1_10_4_min_js = "~/Scripts/jquery-ui-1.10.4.min.js"; 
-                public const string jquery_animate_color_min_js = "~/Scripts/jquery.animate-color.min.js"; 
-                public const string jquery_js = "~/Scripts/jquery.js"; 
-                public const string jquery_mobile_custom_js = "~/Scripts/jquery.mobile.custom.js"; 
-                public const string jquery_mobile_custom_min_js = "~/Scripts/jquery.mobile.custom.min.js"; 
-                public const string jquery_mobile_doubletap_js = "~/Scripts/jquery.mobile.doubletap.js"; 
-                public const string jquery_rotate_js = "~/Scripts/jquery.rotate.js"; 
-                public const string jquery_signalR_2_0_3_js = "~/Scripts/jquery.signalR-2.0.3.js"; 
-                public const string jquery_signalR_2_0_3_min_js = "~/Scripts/jquery.signalR-2.0.3.min.js"; 
-                public const string jquery_unobtrusive_ajax_js = "~/Scripts/jquery.unobtrusive-ajax.js"; 
-                public const string jquery_unobtrusive_ajax_min_js = "~/Scripts/jquery.unobtrusive-ajax.min.js"; 
-                public const string jQueryRotate_js = "~/Scripts/jQueryRotate.js"; 
-                public const string jQueryRotateCompressed_js = "~/Scripts/jQueryRotateCompressed.js"; 
-                public const string knockout_3_0_0_debug_js = "~/Scripts/knockout-3.0.0.debug.js"; 
-                public const string knockout_3_0_0_js = "~/Scripts/knockout-3.0.0.js"; 
-                public const string leaderboardDropdown_js = "~/Scripts/leaderboardDropdown.js"; 
-                public const string modernizr_2_7_1_js = "~/Scripts/modernizr-2.7.1.js"; 
-                public const string moment_with_locales_js = "~/Scripts/moment-with-locales.js"; 
-                public const string moment_with_locales_min_js = "~/Scripts/moment-with-locales.min.js"; 
-                public const string moment_js = "~/Scripts/moment.js"; 
-                public const string moment_min_js = "~/Scripts/moment.min.js"; 
-                public const string newCharacter_js = "~/Scripts/newCharacter.js"; 
-                public const string notices_js = "~/Scripts/notices.js"; 
-                public const string randomFirstLastNames_js = "~/Scripts/randomFirstLastNames.js"; 
-                public const string script_js = "~/Scripts/script.js"; 
-                public const string suggestedLength_js = "~/Scripts/suggestedLength.js"; 
-                public const string tt_api_js = "~/Scripts/tt.api.js"; 
-                public const string tt_chat_js = "~/Scripts/tt.chat.js"; 
-                public const string tt_chat_messages_js = "~/Scripts/tt.chat.messages.js"; 
-                public const string tt_chat_operations_js = "~/Scripts/tt.chat.operations.js"; 
-                public const string tt_chat_userList_js = "~/Scripts/tt.chat.userList.js"; 
-                public const string tt_config_js = "~/Scripts/tt.config.js"; 
+                public static readonly string _references_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/_references.js"); 
+                public static readonly string boxesResize_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/boxesResize.js"); 
+                public static readonly string Character_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/Character.js"); 
+                public static readonly string CharacterLoader_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/CharacterLoader.js"); 
+                public static readonly string game_discus_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_discus.js"); 
+                public static readonly string game_dpong_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_dpong.js"); 
+                public static readonly string game_memory_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_memory.js"); 
+                public static readonly string game_popup_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_popup.js"); 
+                public static readonly string game_reflex_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_reflex.js"); 
+                public static readonly string game_roulette_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_roulette.js"); 
+                public static readonly string game_sequence_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_sequence.js"); 
+                public static readonly string GenericCharData_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/GenericCharData.js"); 
+                public static readonly string GenericPlayerData_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/GenericPlayerData.js"); 
+                public static readonly string jquery_2_1_0_intellisense_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.intellisense.js"); 
+                public static readonly string jquery_2_1_0_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.js"); 
+                public static readonly string jquery_2_1_0_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.min.js"); 
+                public static readonly string jquery_ui_1_10_4_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-ui-1.10.4.js"); 
+                public static readonly string jquery_ui_1_10_4_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-ui-1.10.4.min.js"); 
+                public static readonly string jquery_animate_color_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.animate-color.min.js"); 
+                public static readonly string jquery_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.js"); 
+                public static readonly string jquery_mobile_custom_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.custom.js"); 
+                public static readonly string jquery_mobile_custom_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.custom.min.js"); 
+                public static readonly string jquery_mobile_doubletap_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.doubletap.js"); 
+                public static readonly string jquery_rotate_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.rotate.js"); 
+                public static readonly string jquery_signalR_2_0_3_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.0.3.js"); 
+                public static readonly string jquery_signalR_2_0_3_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.0.3.min.js"); 
+                public static readonly string jquery_unobtrusive_ajax_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.unobtrusive-ajax.js"); 
+                public static readonly string jquery_unobtrusive_ajax_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.unobtrusive-ajax.min.js"); 
+                public static readonly string jQueryRotate_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jQueryRotate.js"); 
+                public static readonly string jQueryRotateCompressed_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jQueryRotateCompressed.js"); 
+                public static readonly string knockout_3_0_0_debug_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/knockout-3.0.0.debug.js"); 
+                public static readonly string knockout_3_0_0_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/knockout-3.0.0.js"); 
+                public static readonly string leaderboardDropdown_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/leaderboardDropdown.js"); 
+                public static readonly string modernizr_2_7_1_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/modernizr-2.7.1.js"); 
+                public static readonly string moment_with_locales_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/moment-with-locales.js"); 
+                public static readonly string moment_with_locales_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/moment-with-locales.min.js"); 
+                public static readonly string moment_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/moment.js"); 
+                public static readonly string moment_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/moment.min.js"); 
+                public static readonly string newCharacter_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/newCharacter.js"); 
+                public static readonly string notices_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/notices.js"); 
+                public static readonly string randomFirstLastNames_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/randomFirstLastNames.js"); 
+                public static readonly string script_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/script.js"); 
+                public static readonly string suggestedLength_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/suggestedLength.js"); 
+                public static readonly string tt_api_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.api.js"); 
+                public static readonly string tt_chat_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.chat.js"); 
+                public static readonly string tt_chat_messages_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.chat.messages.js"); 
+                public static readonly string tt_chat_operations_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.chat.operations.js"); 
+                public static readonly string tt_chat_userList_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.chat.userList.js"); 
+                public static readonly string tt_config_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.config.js"); 
             }
         }
         public static partial class Content 
@@ -351,44 +351,44 @@ namespace Links
                         }
                         public static class Assets
                         {
-                            public const string jquery_ui_min_css = "~/Content/themes/base/minified/jquery-ui.min.css";
-                            public const string jquery_ui_accordion_min_css = "~/Content/themes/base/minified/jquery.ui.accordion.min.css";
-                            public const string jquery_ui_autocomplete_min_css = "~/Content/themes/base/minified/jquery.ui.autocomplete.min.css";
-                            public const string jquery_ui_button_min_css = "~/Content/themes/base/minified/jquery.ui.button.min.css";
-                            public const string jquery_ui_core_min_css = "~/Content/themes/base/minified/jquery.ui.core.min.css";
-                            public const string jquery_ui_datepicker_min_css = "~/Content/themes/base/minified/jquery.ui.datepicker.min.css";
-                            public const string jquery_ui_dialog_min_css = "~/Content/themes/base/minified/jquery.ui.dialog.min.css";
-                            public const string jquery_ui_menu_min_css = "~/Content/themes/base/minified/jquery.ui.menu.min.css";
-                            public const string jquery_ui_progressbar_min_css = "~/Content/themes/base/minified/jquery.ui.progressbar.min.css";
-                            public const string jquery_ui_resizable_min_css = "~/Content/themes/base/minified/jquery.ui.resizable.min.css";
-                            public const string jquery_ui_selectable_min_css = "~/Content/themes/base/minified/jquery.ui.selectable.min.css";
-                            public const string jquery_ui_slider_min_css = "~/Content/themes/base/minified/jquery.ui.slider.min.css";
-                            public const string jquery_ui_spinner_min_css = "~/Content/themes/base/minified/jquery.ui.spinner.min.css";
-                            public const string jquery_ui_tabs_min_css = "~/Content/themes/base/minified/jquery.ui.tabs.min.css";
-                            public const string jquery_ui_theme_min_css = "~/Content/themes/base/minified/jquery.ui.theme.min.css";
-                            public const string jquery_ui_tooltip_min_css = "~/Content/themes/base/minified/jquery.ui.tooltip.min.css";
+                            public static readonly string jquery_ui_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery-ui.min.css");
+                            public static readonly string jquery_ui_accordion_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.accordion.min.css");
+                            public static readonly string jquery_ui_autocomplete_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.autocomplete.min.css");
+                            public static readonly string jquery_ui_button_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.button.min.css");
+                            public static readonly string jquery_ui_core_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.core.min.css");
+                            public static readonly string jquery_ui_datepicker_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.datepicker.min.css");
+                            public static readonly string jquery_ui_dialog_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.dialog.min.css");
+                            public static readonly string jquery_ui_menu_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.menu.min.css");
+                            public static readonly string jquery_ui_progressbar_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.progressbar.min.css");
+                            public static readonly string jquery_ui_resizable_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.resizable.min.css");
+                            public static readonly string jquery_ui_selectable_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.selectable.min.css");
+                            public static readonly string jquery_ui_slider_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.slider.min.css");
+                            public static readonly string jquery_ui_spinner_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.spinner.min.css");
+                            public static readonly string jquery_ui_tabs_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.tabs.min.css");
+                            public static readonly string jquery_ui_theme_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.theme.min.css");
+                            public static readonly string jquery_ui_tooltip_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/minified/jquery.ui.tooltip.min.css");
                         }
                     }
                     public static class Assets
                     {
-                        public const string jquery_ui_css = "~/Content/themes/base/jquery-ui.css";
-                        public const string jquery_ui_accordion_css = "~/Content/themes/base/jquery.ui.accordion.css";
-                        public const string jquery_ui_all_css = "~/Content/themes/base/jquery.ui.all.css";
-                        public const string jquery_ui_autocomplete_css = "~/Content/themes/base/jquery.ui.autocomplete.css";
-                        public const string jquery_ui_base_css = "~/Content/themes/base/jquery.ui.base.css";
-                        public const string jquery_ui_button_css = "~/Content/themes/base/jquery.ui.button.css";
-                        public const string jquery_ui_core_css = "~/Content/themes/base/jquery.ui.core.css";
-                        public const string jquery_ui_datepicker_css = "~/Content/themes/base/jquery.ui.datepicker.css";
-                        public const string jquery_ui_dialog_css = "~/Content/themes/base/jquery.ui.dialog.css";
-                        public const string jquery_ui_menu_css = "~/Content/themes/base/jquery.ui.menu.css";
-                        public const string jquery_ui_progressbar_css = "~/Content/themes/base/jquery.ui.progressbar.css";
-                        public const string jquery_ui_resizable_css = "~/Content/themes/base/jquery.ui.resizable.css";
-                        public const string jquery_ui_selectable_css = "~/Content/themes/base/jquery.ui.selectable.css";
-                        public const string jquery_ui_slider_css = "~/Content/themes/base/jquery.ui.slider.css";
-                        public const string jquery_ui_spinner_css = "~/Content/themes/base/jquery.ui.spinner.css";
-                        public const string jquery_ui_tabs_css = "~/Content/themes/base/jquery.ui.tabs.css";
-                        public const string jquery_ui_theme_css = "~/Content/themes/base/jquery.ui.theme.css";
-                        public const string jquery_ui_tooltip_css = "~/Content/themes/base/jquery.ui.tooltip.css";
+                        public static readonly string jquery_ui_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery-ui.css");
+                        public static readonly string jquery_ui_accordion_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.accordion.css");
+                        public static readonly string jquery_ui_all_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.all.css");
+                        public static readonly string jquery_ui_autocomplete_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.autocomplete.css");
+                        public static readonly string jquery_ui_base_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.base.css");
+                        public static readonly string jquery_ui_button_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.button.css");
+                        public static readonly string jquery_ui_core_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.core.css");
+                        public static readonly string jquery_ui_datepicker_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.datepicker.css");
+                        public static readonly string jquery_ui_dialog_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.dialog.css");
+                        public static readonly string jquery_ui_menu_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.menu.css");
+                        public static readonly string jquery_ui_progressbar_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.progressbar.css");
+                        public static readonly string jquery_ui_resizable_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.resizable.css");
+                        public static readonly string jquery_ui_selectable_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.selectable.css");
+                        public static readonly string jquery_ui_slider_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.slider.css");
+                        public static readonly string jquery_ui_spinner_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.spinner.css");
+                        public static readonly string jquery_ui_tabs_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.tabs.css");
+                        public static readonly string jquery_ui_theme_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.theme.css");
+                        public static readonly string jquery_ui_tooltip_css = T4MVCHelpers.ProcessAssetPath("~/Content/themes/base/jquery.ui.tooltip.css");
                     }
                 }
                 public static class Assets
@@ -397,12 +397,12 @@ namespace Links
             }
             public static class Assets
             {
-                public const string bootstrap_min_css = "~/Content/bootstrap.min.css";
-                public const string custom_css = "~/Content/custom.css";
-                public const string mystyle_css = "~/Content/mystyle.css";
-                public const string ng_animation_css = "~/Content/ng-animation.css";
-                public const string PvP_css = "~/Content/PvP.css";
-                public const string Site_css = "~/Content/Site.css";
+                public static readonly string bootstrap_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/bootstrap.min.css");
+                public static readonly string custom_css = T4MVCHelpers.ProcessAssetPath("~/Content/custom.css");
+                public static readonly string mystyle_css = T4MVCHelpers.ProcessAssetPath("~/Content/mystyle.css");
+                public static readonly string ng_animation_css = T4MVCHelpers.ProcessAssetPath("~/Content/ng-animation.css");
+                public static readonly string PvP_css = T4MVCHelpers.ProcessAssetPath("~/Content/PvP.css");
+                public static readonly string Site_css = T4MVCHelpers.ProcessAssetPath("~/Content/Site.css");
             }
         }
     }
@@ -421,8 +421,14 @@ internal static class T4MVCHelpers {
         return path;
     }
 
+    private static string ProcessAssetPathDefault(string virtualPath) {
+        // The path that comes in starts with ~/ and should retain this prefix
+        return virtualPath;
+    }
+
     // Calling ProcessVirtualPath through delegate to allow it to be replaced for unit testing
     public static Func<string, string> ProcessVirtualPath = ProcessVirtualPathDefault;
+    public static Func<string, string> ProcessAssetPath = ProcessAssetPathDefault;
 
     // Calling T4Extension.TimestampString through delegate to allow it to be replaced for unit testing and other purposes
     public static Func<string, string> TimestampString = System.Web.Mvc.T4Extensions.TimestampString;

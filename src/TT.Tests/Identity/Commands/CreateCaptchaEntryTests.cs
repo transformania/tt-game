@@ -39,7 +39,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new CreateCaptchaEntry() { UserId = "abcde" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("User with Id abcde could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id abcde could not be found");
         }
 
     }

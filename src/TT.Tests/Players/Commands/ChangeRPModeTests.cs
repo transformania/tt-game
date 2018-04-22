@@ -50,7 +50,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeRPMode {MembershipId = "fake", InRPMode = true};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeRPMode { MembershipId = null, InRPMode = true };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
         }
     }
 }

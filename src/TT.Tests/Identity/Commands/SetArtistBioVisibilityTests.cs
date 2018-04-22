@@ -36,7 +36,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new SetArtistBioVisibility { UserId = "fake", IsVisible = true };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Artist bio for user 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Artist bio for user 'fake' could not be found");
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace TT.Tests.Identity.Commands
             var cmd = new SetArtistBioVisibility { IsVisible = true };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("userId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
         }
 
     }

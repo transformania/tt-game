@@ -139,7 +139,7 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 0, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player ID is required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player ID is required!");
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 1234, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with ID '1234' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '1234' could not be found");
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 50, Buffs = buffs };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Destination must be specified");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Destination must be specified");
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = "fakePlace" };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Location with dbName 'fakePlace' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Location with dbName 'fakePlace' could not be found");
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 5, Buffs = null, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("Buffs are required!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Buffs are required!");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
             player.SetActionPoints(0);
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You don't have enough action points to move.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to move.");
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't move because you are currently inanimate!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move because you are currently inanimate!");
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't move because you are a non-feral pet owned by Bob Smith.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move because you are a non-feral pet owned by Bob Smith.");
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace TT.Tests.Players.Commands
             buffs.FromEffects_MoveActionPointDiscount = -999;
             var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can't move since you have been immobilized!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move since you have been immobilized!");
         }
 
         [Test]
@@ -236,7 +236,7 @@ namespace TT.Tests.Players.Commands
             buffs.FromForm_ExtraInventorySpace = -5; // limit of 1
             var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 1 item.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 1 item.");
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace TT.Tests.Players.Commands
             buffs.FromForm_ExtraInventorySpace = -6; // limit of 0
             var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 2 items.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 2 items.");
         }
 
         [Test]
@@ -268,7 +268,7 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You try to move but discover you cannot!  Some other mage has partial control of your mind, disabling your ability to move on your own!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You try to move but discover you cannot!  Some other mage has partial control of your mind, disabling your ability to move on your own!");
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait 44 more seconds before moving.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait 44 more seconds before moving.");
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You must finish your duel before you can move again.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must finish your duel before you can move again.");
         }
 
         [Test]
@@ -310,7 +310,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You must end your quest before you can move again.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must end your quest before you can move again.");
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.ShouldThrowExactly<DomainException>().WithMessage("You cannot move directly from Street: 70 E. 9th Avenue to Carolyne's Coffee Shop (Patio).");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot move directly from Street: 70 E. 9th Avenue to Carolyne's Coffee Shop (Patio).");
         }
 
     }

@@ -44,7 +44,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = "Hello world!", UserId = null };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("userId is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = shout, UserId = "abcde" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("A shout message is required");
+            action.Should().ThrowExactly<DomainException>().WithMessage("A shout message is required");
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = "Yes this is a very long shout, too long for someone to reasonably want to say as a shout and stuff whoooo", UserId = "abcde" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("A shout must contain 100 characters or fewer.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("A shout must contain 100 characters or fewer.");
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = "Hello world!", UserId = "abcde" };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("Player with user ID 'abcde' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("Player with user ID 'abcde' could not be found");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = "Hello world!", UserId = player.User.Id };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You can only shout once per turn.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You can only shout once per turn.");
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Shout { Message = "Hello world!", UserId = player.User.Id };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("You must be animate in order to shout!");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to shout!");
         }
 
     }

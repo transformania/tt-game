@@ -804,6 +804,8 @@ namespace TT.Domain.Procedures
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand(
+                        $"UPDATE [Stats].[dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
 

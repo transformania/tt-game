@@ -203,8 +203,11 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static void RunPsychopathActions()
+        public static List<Exception> RunPsychopathActions()
         {
+
+            var errors = new List<Exception>();
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
 
@@ -219,157 +222,198 @@ namespace TT.Domain.Procedures
 
             foreach (var bot in bots)
             {
-                // if bot is no longer fully animate or is null, skip them
-                if (bot == null || bot.Mobility != PvPStatics.MobilityFull)
+
+                try
                 {
-                    continue;
-                }
 
-                #region drop excess items
-                var botItems = ItemProcedures.GetAllPlayerItems(bot.Id).ToList();
-
-                string[] itemTypes = { PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants, PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes, PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt };
-
-                foreach (var typeToDrop in itemTypes)
-                {
-                    if (botItems.Count(i => i.Item.ItemType == typeToDrop) > 1)
+                    // if bot is no longer fully animate or is null, skip them
+                    if (bot == null || bot.Mobility != PvPStatics.MobilityFull)
                     {
-                        var dropList = botItems.Where(i => i.Item.ItemType == typeToDrop).Skip(1).ToList();
+                        continue;
+                    }
 
-                        foreach (var i in dropList)
+                    #region drop excess items
+
+                    var botItems = ItemProcedures.GetAllPlayerItems(bot.Id).ToList();
+
+                    string[] itemTypes =
+                    {
+                        PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants,
+                        PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes,
+                        PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt
+                    };
+
+                    foreach (var typeToDrop in itemTypes)
+                    {
+                        if (botItems.Count(i => i.Item.ItemType == typeToDrop) > 1)
                         {
-                            ItemProcedures.DropItem(i.dbItem.Id);
+                            var dropList = botItems.Where(i => i.Item.ItemType == typeToDrop).Skip(1).ToList();
 
-                            if (i.Item.ItemType == PvPStatics.ItemType_Pet)
+                            foreach (var i in dropList)
                             {
-                                LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.GetFullName() + "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
-                            }
-                            else
-                            {
-                                LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.GetFullName() + "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                ItemProcedures.DropItem(i.dbItem.Id);
+
+                                if (i.Item.ItemType == PvPStatics.ItemType_Pet)
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName,
+                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.GetFullName() +
+                                        "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
+                                else
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName,
+                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.GetFullName() +
+                                        "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
                             }
                         }
                     }
-                }
-                #endregion
 
-                var botbuffs = ItemProcedures.GetPlayerBuffs(bot);
+                    #endregion
 
-                var meditates = 0;
+                    var botbuffs = ItemProcedures.GetPlayerBuffs(bot);
 
-                // meditate if needed
-                if (bot.Mana < bot.MaxMana * .5M)
-                {
-                    var manarand = new Random(DateTime.Now.Millisecond);
-                    var manaroll = (int)Math.Floor(manarand.NextDouble() * 4.0D);
-                    for (var i = 0; i < manaroll; i++)
+                    var meditates = 0;
+
+                    // meditate if needed
+                    if (bot.Mana < bot.MaxMana * .5M)
                     {
-                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = bot.Id, Buffs = botbuffs, NoValidate = true });
-                        meditates++;
-                    }
-                }
-
-                // cleanse if needed, less if psycho has cleansed lately
-                if (bot.Health < bot.MaxHealth * .5M)
-                {
-                    var healthrand = new Random(DateTime.Now.Millisecond);
-                    var healthroll = (int)Math.Floor(healthrand.NextDouble() * 4.0D);
-                    for (var i = meditates; i < healthroll; i++)
-                    {
-                        DomainRegistry.Repository.Execute(new Cleanse { PlayerId = bot.Id, Buffs = botbuffs, NoValidate = true });
-                    }
-                }
-
-
-                var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
-                var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
-
-                // the bot has an attack target, so go chase it
-                if (directive.State == "attack")
-                {
-                    var myTarget = PlayerProcedures.GetPlayer(directive.TargetPlayerId);
-
-                    // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
-                    if (PlayerProcedures.PlayerIsOffline(myTarget) || 
-                        myTarget.Mobility != PvPStatics.MobilityFull ||
-                        skill == null ||
-                        myTarget.Form == skill.Skill.FormdbName || 
-                        myTarget.IsInDungeon() ||
-                        myTarget.InDuel > 0 ||
-                        myTarget.InQuest > 0)
-                    {
-                        AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
+                        var manarand = new Random(DateTime.Now.Millisecond);
+                        var manaroll = (int) Math.Floor(manarand.NextDouble() * 4.0D);
+                        for (var i = 0; i < manaroll; i++)
+                        {
+                            DomainRegistry.Repository.Execute(new Meditate
+                            {
+                                PlayerId = bot.Id,
+                                Buffs = botbuffs,
+                                NoValidate = true
+                            });
+                            meditates++;
+                        }
                     }
 
-                    // the target is okay for attacking
+                    // cleanse if needed, less if psycho has cleansed lately
+                    if (bot.Health < bot.MaxHealth * .5M)
+                    {
+                        var healthrand = new Random(DateTime.Now.Millisecond);
+                        var healthroll = (int) Math.Floor(healthrand.NextDouble() * 4.0D);
+                        for (var i = meditates; i < healthroll; i++)
+                        {
+                            DomainRegistry.Repository.Execute(new Cleanse
+                            {
+                                PlayerId = bot.Id,
+                                Buffs = botbuffs,
+                                NoValidate = true
+                            });
+                        }
+                    }
+
+
+                    var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
+                    var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s =>
+                        s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null &&
+                        s.Skill.ExclusiveToItem == null);
+
+                    // the bot has an attack target, so go chase it
+                    if (directive.State == "attack")
+                    {
+                        var myTarget = PlayerProcedures.GetPlayer(directive.TargetPlayerId);
+
+                        // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
+                        if (PlayerProcedures.PlayerIsOffline(myTarget) ||
+                            myTarget.Mobility != PvPStatics.MobilityFull ||
+                            skill == null ||
+                            myTarget.Form == skill.Skill.FormdbName ||
+                            myTarget.IsInDungeon() ||
+                            myTarget.InDuel > 0 ||
+                            myTarget.InQuest > 0)
+                        {
+                            AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
+                        }
+
+                        // the target is okay for attacking
+                        else
+                        {
+                            // the bot must move to its target location.
+                            if (myTarget.dbLocationName != bot.dbLocationName)
+                            {
+                                if (botbuffs.MoveActionPointDiscount() > -100)
+                                {
+                                    var newplace = MoveTo(bot, myTarget.dbLocationName, 4);
+                                    bot.dbLocationName = newplace;
+                                }
+                            }
+
+                            // if the bot is now in the same place as the target, attack away, so long as the target is online and animate
+                            if (bot.dbLocationName == myTarget.dbLocationName &&
+                                !PlayerProcedures.PlayerIsOffline(myTarget) &&
+                                myTarget.Mobility == PvPStatics.MobilityFull)
+                            {
+                                playerRepo.SavePlayer(bot);
+                                if (bot.Mana >= 7)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+
+                                if (bot.Mana >= 14)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+
+                                if (bot.Mana >= 21)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    // the bot has no target, so wander and try to find new targets and attack them.
                     else
                     {
-                        // the bot must move to its target location.
-                        if (myTarget.dbLocationName != bot.dbLocationName)
+                        if (botbuffs.MoveActionPointDiscount() > -100)
                         {
-                            if (botbuffs.MoveActionPointDiscount() > -100)
-                            {
-                                var newplace = MoveTo(bot, myTarget.dbLocationName, 4);
-                                bot.dbLocationName = newplace;
-                            }
+                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocation(), 4);
+                            bot.dbLocationName = newplace;
                         }
 
-                        // if the bot is now in the same place as the target, attack away, so long as the target is online and animate
-                        if (bot.dbLocationName == myTarget.dbLocationName && !PlayerProcedures.PlayerIsOffline(myTarget) && myTarget.Mobility == PvPStatics.MobilityFull)
+
+                        // attack stage
+                        var playersHere = playerRepo.Players.Where(p =>
+                                p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull &&
+                                p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level)
+                            .ToList(); // don't attack the merchant
+
+                        // filter out offline players and Lindella
+                        var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();
+
+                        if (onlinePlayersHere.Any())
                         {
+                            var rand = new Random(DateTime.Now.Millisecond);
+                            var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());
+                            var victim = onlinePlayersHere.ElementAt((int) roll);
+                            AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
                             playerRepo.SavePlayer(bot);
-                            if (bot.Mana >= 7)
-                            {
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                            }
-                            if (bot.Mana >= 14)
-                            {
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                            }
-                            if (bot.Mana >= 21)
-                            {
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                            }
-
+                            AttackProcedures.Attack(bot, victim, skill);
+                            AttackProcedures.Attack(bot, victim, skill);
+                            AttackProcedures.Attack(bot, victim, skill);
                         }
+
+
                     }
 
-                }
+                    playerRepo.SavePlayer(bot);
 
-                // the bot has no target, so wander and try to find new targets and attack them.
-                else
+                }
+                catch (Exception e)
                 {
-                    if (botbuffs.MoveActionPointDiscount() > -100)
-                    {
-                        var newplace = MoveTo(bot, LocationsStatics.GetRandomLocation(), 4);
-                        bot.dbLocationName = newplace;
-                    }
-
-
-                    // attack stage
-                    var playersHere = playerRepo.Players.Where(p => p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull && p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList(); // don't attack the merchant
-
-                    // filter out offline players and Lindella
-                    var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();
-
-                    if (onlinePlayersHere.Any())
-                    {
-                        var rand = new Random(DateTime.Now.Millisecond);
-                        var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());
-                        var victim = onlinePlayersHere.ElementAt((int)roll);
-                        AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
-                        playerRepo.SavePlayer(bot);
-                        AttackProcedures.Attack(bot, victim, skill);
-                        AttackProcedures.Attack(bot, victim, skill);
-                        AttackProcedures.Attack(bot, victim, skill);
-                    }
-
-
+                    errors.Add(e);
                 }
-
-                playerRepo.SavePlayer(bot);
             }
 
+            return errors;
 
         }
 

@@ -187,7 +187,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e);
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ANIMATE SQL UPDATE FAILED", e));
                         serverLogRepo.SaveServerLog(log);
                     }
                 }
@@ -303,7 +303,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e);
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ERROR UPDATING INANIMATE/ANIMAL PLAYERS", e));
                     }
                 }
 
@@ -325,7 +325,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e);
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "MIND CONTROL COOLDOWN UPDATE FAILED", e));
                     }
                 }
                 #endregion
@@ -376,7 +376,8 @@ namespace TT.Domain.Procedures
                         catch (Exception e)
                         {
                             log.Errors++;
-                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e);
+                            log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR collecting all abandoned items for Lindella", e));
+
                         }
                     }
 
@@ -398,7 +399,7 @@ namespace TT.Domain.Procedures
                 }
                 catch (Exception e)
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + "Error deleting expired runes:  " + e.Message);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR deleting expired runes", e));
                     log.Errors++;
                 }
                 
@@ -550,7 +551,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running dungeon actions", e));
                 }
 
 
@@ -580,12 +581,9 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Failed to complete duel updates.  Reason:  " + e);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR completing duel updates", e));
                 }
                 #endregion duel updates
-
-
-                //TempData["Result"] = "WORLD UPDATED";
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Lindella actions");
                 try
@@ -597,12 +595,8 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Lindella action", e));
                 }
-
-
-                // log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
                 serverLogRepo.SaveServerLog(log);
@@ -614,7 +608,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Wuffie actions", e));
                 }
 
 
@@ -673,7 +667,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Donna actions", e));
                     serverLogRepo.SaveServerLog(log);
                 }
 
@@ -694,7 +688,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Valentine actions", e));
                 }
 
                 // BIMBO
@@ -713,7 +707,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Bimbo actions", e));
                 }
 
                 // THIEVES
@@ -732,7 +726,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Thieves actions", e));
                 }
 
                 // SISTERS
@@ -750,7 +744,8 @@ namespace TT.Domain.Procedures
                 }
                 catch (Exception e)
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException);
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Sisters actions", e));
                 }
 
                 // FAEBOSS
@@ -768,7 +763,8 @@ namespace TT.Domain.Procedures
                 }
                 catch (Exception e)
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Narcissa ERROR:  " + e.InnerException);
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Narcissa actions", e));
                 }
 
                 #endregion bosses
@@ -777,17 +773,15 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started psychopath actions");
                 serverLogRepo.SaveServerLog(log);
 
-                try
+                var psychoExceptions = AIProcedures.RunPsychopathActions();
+
+                foreach (var e in psychoExceptions)
                 {
-                    AIProcedures.RunPsychopathActions();
-                    log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running pycho action", e));
                 }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  PSYCHOPATH RUNTIME ERROR:  " + e);
-                }
+
+                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
 
 
                 PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
@@ -821,7 +815,7 @@ namespace TT.Domain.Procedures
                     catch (Exception e)
                     {
                         log.Errors++;
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e);
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Dungeon generation FAILED", e));
                     }
                 }
                 #endregion
@@ -835,7 +829,7 @@ namespace TT.Domain.Procedures
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR deleting unwanted psycho items", e));
                 }
 
                 log.FinishTimestamp = DateTime.UtcNow;
@@ -843,6 +837,13 @@ namespace TT.Domain.Procedures
 
 
             }
+        }
+
+        private static string FormatExceptionLog(long elapsedMilliseconds, string header, Exception e)
+        {
+            var message = String.IsNullOrEmpty(e.Message) ? String.Empty : $"Message: '{e.Message}'.  ";
+            var innerException = e.InnerException == null ? String.Empty : $"InnerException: '{e.InnerException}'. ";
+            return $"<span class='playerAttackNotification'>{elapsedMilliseconds}: ERROR: {header}. {message}{innerException}</span>";
         }
 
     }

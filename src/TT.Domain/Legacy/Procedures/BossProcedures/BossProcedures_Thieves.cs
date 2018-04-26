@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -245,12 +246,11 @@ namespace TT.Domain.Procedures.BossProcedures
                     itemThief = malethief;
                 }
 
-                var victimThiefItem = ItemProcedures.GetItemByVictimName(itemThief.FirstName, itemThief.LastName);
-                var victimThiefItemPlus = ItemProcedures.GetItemViewModel(victimThiefItem.Id);
+                var victimThiefItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = itemThief.Id});
 
                 // the transformed thief is owned by someone, try and get it back!
-                if (victimThiefItem.OwnerId > 0) {
-                    var target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
+                if (victimThiefItem.Owner != null) {
+                    var target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.Owner.Id);
 
                     if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
                     {
@@ -278,7 +278,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     else if (target.BotId == AIStatics.LindellaBotId)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
+                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + " from Lindella.</b>");
                     }
 
                     // target is a human and they are not offline
@@ -291,13 +291,13 @@ namespace TT.Domain.Procedures.BossProcedures
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
-                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
+                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.Owner.Id && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
 
                         // if we have managed to turn the target, take back the victim-item
                         if (target.Mobility != PvPStatics.MobilityFull)
                         {
                             ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                            LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
+                            LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".</b>");
                         }
                     }
 
@@ -315,7 +315,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     attackingThief.dbLocationName = victimThiefItem.dbLocationName;
                     playerRepo.SavePlayer(attackingThief);
                     ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
+                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".</b>");
                 }
             }
             #endregion

@@ -249,7 +249,7 @@
     <Compile Include="Items\Queries\GetItemsAtLocationTests.cs" />
     <Compile Include="Items\Queries\GetItemSourcesTests.cs" />
     <Compile Include="Items\Queries\GetItemSourceTest.cs" />
-    <Compile Include="Items\Queries\GetItemByVictimNameTest.cs" />
+    <Compile Include="Items\Queries\GetItemByFormerPlayerTest.cs" />
     <Compile Include="World\Queries\GetLocationLogsAtLocationTest.cs" />
     <Compile Include="Messages\Queries\GetMessagesInConversationTests.cs" />
     <Compile Include="Messages\Queries\GetMessagesTests.cs" />

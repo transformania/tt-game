@@ -336,7 +336,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintSouledIcon(ItemDetail item)
         {
-            if (item.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
+            if (item.FormerPlayer == null) return new MvcHtmlString("");
             var timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])

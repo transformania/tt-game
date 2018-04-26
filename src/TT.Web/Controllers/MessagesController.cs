@@ -280,7 +280,7 @@ namespace TT.Web.Controllers
 
             if (me.Mobility != PvPStatics.MobilityFull)
             {
-                ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+                ItemProcedures.UpdateSouledItem(me);
             }
 
             return RedirectToAction(MVC.Messages.Index());

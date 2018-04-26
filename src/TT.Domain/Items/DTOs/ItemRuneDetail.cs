@@ -8,7 +8,6 @@ namespace TT.Domain.Items.DTOs
         public InventoryItemSource ItemSource { get; set; }
         public PlayPageItemDetail.PlayPagePlayerDetail Owner { get; set; }
         public PlayPageItemDetail.PlayPagePlayerDetail FormerPlayer { get; set; }
-        public string VictimName { get; set; }
         public int Level { get; set; }
         public List<ItemRuneObject> Runes { get; protected set; }
 

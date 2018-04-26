@@ -1,4 +1,5 @@
-﻿@using TT.Domain.ViewModels
+﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+@using TT.Domain.ViewModels
 @{
     PlayerFormViewModel player = ViewBag.player;
 }
@@ -12,21 +13,21 @@
 <h1>Items held by @player.Player.GetFullName()</h1>
 <ul>
     @{
-        foreach (ItemViewModel item in ViewBag.playeritems)
+        foreach (var item in Model)
         {
             var strItemName = "";
-            if (item.dbItem.Level > 0)
+            if (item.Level > 0)
             {
-                strItemName += "L" + item.dbItem.Level + " ";
+                strItemName += "L" + item.Level + " ";
             }
 
-            strItemName += item.Item.FriendlyName;
+            strItemName += item.ItemSource.FriendlyName;
 
-            if (!item.dbItem.VictimName.IsNullOrEmpty())
+            if (item.FormerPlayer != null)
             {
-                strItemName += " (" + item.dbItem.GetFullName() + ")";
+                strItemName += " (" + item.FormerPlayer.FullName + ")";
             }
-            <li><a href="@Url.Action(MVC.PvPAdmin.ViewItemTransferLog(item.dbItem.Id))">@strItemName</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.ViewItemTransferLog(item.Id))">@strItemName</a></li>
         }
     }
 </ul>

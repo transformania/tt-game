@@ -15,7 +15,7 @@
     @{
         if (Model.Any() && Model.First().IsPermanent)
         {
-            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().GetFullName()</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
+            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().FormerPlayer.FullName</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
         }
         else if (Model.Any() && !Model.First().IsPermanent)
         {
@@ -41,7 +41,7 @@
             }
                 }
 
-                @item.ItemSource.FriendlyName <span> (@item.GetFullName())</span>
+                @item.ItemSource.FriendlyName <span> (@item.FormerPlayer.FullName)</span>
             </h3>
             <p>
                 You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis

@@ -234,7 +234,7 @@ namespace TT.Domain.Procedures
 
                     #region drop excess items
 
-                    var botItems = ItemProcedures.GetAllPlayerItems(bot.Id).ToList();
+                    var botItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = bot.Id }).ToList();
 
                     string[] itemTypes =
                     {
@@ -245,25 +245,25 @@ namespace TT.Domain.Procedures
 
                     foreach (var typeToDrop in itemTypes)
                     {
-                        if (botItems.Count(i => i.Item.ItemType == typeToDrop) > 1)
+                        if (botItems.Count(i => i.ItemSource.ItemType == typeToDrop) > 1)
                         {
-                            var dropList = botItems.Where(i => i.Item.ItemType == typeToDrop).Skip(1).ToList();
+                            var dropList = botItems.Where(i => i.ItemSource.ItemType == typeToDrop).Skip(1).ToList();
 
                             foreach (var i in dropList)
                             {
-                                ItemProcedures.DropItem(i.dbItem.Id);
+                                ItemProcedures.DropItem(i.Id);
 
-                                if (i.Item.ItemType == PvPStatics.ItemType_Pet)
+                                if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.GetFullName() +
-                                        "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.FormerPlayer.FullName +
+                                        "</b> the pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                                 else
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.GetFullName() +
-                                        "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.FormerPlayer.FullName +
+                                        "</b> the <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                             }
                         }

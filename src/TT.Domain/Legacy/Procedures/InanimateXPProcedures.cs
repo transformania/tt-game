@@ -4,6 +4,8 @@ using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
@@ -36,7 +38,8 @@ namespace TT.Domain.Procedures
 
             // get the current level of this player based on what item they are
             var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
-            var inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            var inanimateMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
+            var inanimateMe = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMeHack.Id); // TODO: Replace with proper Command
 
             var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
 
@@ -266,11 +269,11 @@ namespace TT.Domain.Procedures
                 roll = roll * 3;
             }
 
-            var dbPlayerItem = ItemProcedures.GetItemByVictimName(player.FirstName, player.LastName);
+            var dbPlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
-            if (dbPlayerItem.OwnerId > 0)
+            if (dbPlayerItem.Owner != null)
             {
-                var owner = PlayerProcedures.GetPlayer(dbPlayerItem.OwnerId);
+                var owner = PlayerProcedures.GetPlayer(dbPlayerItem.Owner.Id);
                 dbPlayer.dbLocationName = owner.dbLocationName;
             }
 
@@ -291,10 +294,10 @@ namespace TT.Domain.Procedures
 
 
                 // if the item has an owner, notify them via a message.
-                if (dbPlayerItem.OwnerId != null)
+                if (dbPlayerItem.Owner != null)
                 {
                     var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
-                    PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
+                    PlayerLogProcedures.AddPlayerLog(dbPlayerItem.Owner.Id, message, true);
                 }
 
                 // change the player's form and mobility
@@ -361,10 +364,10 @@ namespace TT.Domain.Procedures
 
                 playerRepo.SavePlayer(dbPlayer);
 
-                if (dbPlayerItem.OwnerId != null)
+                if (dbPlayerItem.Owner != null)
                 {
                     var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
-                    PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
+                    PlayerLogProcedures.AddPlayerLog(dbPlayerItem.Owner.Id, message, true);
                 }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, "You struggled to return to a human form.", false);
@@ -373,7 +376,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string CurseTransformOwner(Player player, Player owner, Item playerItem, DbStaticItem playerItemPlus, bool isWhitelist)
+        public static string CurseTransformOwner(Player player, Player owner, ItemDetail playerItem, bool isWhitelist)
         {
             var rand = new Random();
             var roll = rand.NextDouble() * 100;
@@ -399,7 +402,7 @@ namespace TT.Domain.Procedures
             double chanceOfSuccess = (gameTurn - xp.LastActionTurnstamp);
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
-            var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItemPlus.CurseTFFormdbName);
+            var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItem.ItemSource.CurseTFFormdbName);
 
             var ownerMessage = "";
             var playerMessage = "";
@@ -410,27 +413,27 @@ namespace TT.Domain.Procedures
             if (roll < chanceOfSuccess)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
+                var newForm = FormStatics.GetForm(playerItem.ItemSource.CurseTFFormdbName);
 
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
-                        PlayerId = owner.Id,
-                        FormName = playerItemPlus.CurseTFFormdbName
+                        PlayerId = playerItem.Owner.Id,
+                        FormName = playerItem.ItemSource.CurseTFFormdbName
                     });
 
-                    var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
+                    var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == playerItem.Owner.Id);
                     dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbOwner));
                     dbOwner.Mana -= dbOwner.MaxMana * .5M;
                     dbOwner.NormalizeHealthMana();
                     playerRepo.SavePlayer(dbOwner);
 
-                    if (owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                    if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_M;
                     }
-                    else if (owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
+                    else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_F;
                     }
@@ -440,8 +443,8 @@ namespace TT.Domain.Procedures
                     }
 
                     playerMessage = "Your subtle transformation curse overwhelms your owner, transforming them into a " + newForm.FriendlyName + "!";
-                    PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
-                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.GetFullName() + " the " + playerItemPlus.FriendlyName + ", one of their belongings!</b>");
+                    PlayerLogProcedures.AddPlayerLog(playerItem.Owner.Id, ownerMessage, true);
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.FormerPlayer.FullName + " the " + playerItem.ItemSource.FriendlyName + ", one of their belongings!</b>");
                 }
             }
 

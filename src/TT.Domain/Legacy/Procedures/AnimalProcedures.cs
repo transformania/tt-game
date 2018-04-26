@@ -14,7 +14,7 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
 
-            var animalItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = animalPlayer.FirstName, LastName = animalPlayer.LastName});
+            var animalItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = animalPlayerId });
 
             var victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 

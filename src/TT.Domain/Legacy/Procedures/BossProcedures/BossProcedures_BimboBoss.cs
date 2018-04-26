@@ -402,7 +402,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Level = 0,
                     PvPEnabled = 2,
                     OwnerId = null,
-                    VictimName = "",
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
                     ItemSourceId = ItemStatics.GetStaticItem(CureItemDbName).Id

@@ -26,9 +26,9 @@
             <span> (Equipped)</span>
         }
 
-        if (!Model.VictimName.IsNullOrEmpty())
+        if (Model.FormerPlayer != null)
         {
-            <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayerItem(Model.VictimName))">@Model.GetFullName()</a></span>
+            <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.FormerPlayer.Id))">@Model.FormerPlayer.FullName</a></span>
             @CharactersHere.PrintPermanencyIcon(Model.IsPermanent)
         }
 

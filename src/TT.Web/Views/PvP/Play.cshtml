@@ -349,9 +349,9 @@
 
                                 <span class="floorItemName">@CharactersHere.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br /></span>
                                 @{
-                if (!item.VictimName.IsNullOrEmpty())
+                if (item.FormerPlayer != null)
                 {
-                    <span class="formerPlayer">(Formerly @item.GetFullName())</span>
+                    <span class="formerPlayer">(Formerly @item.FormerPlayer.FullName)</span>
                 }
                                 }
                             </div>

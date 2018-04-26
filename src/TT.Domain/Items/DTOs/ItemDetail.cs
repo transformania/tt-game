@@ -9,32 +9,18 @@ namespace TT.Domain.Items.DTOs
         public string dbName { get;  set; }
         public InventoryItemSource ItemSource { get;  set; }
         public PlayPageItemDetail.PlayPagePlayerDetail Owner { get;  set; }
+        public PlayPageItemDetail.PlayPagePlayerDetail FormerPlayer { get;  set; }
         public string dbLocationName { get;  set; }
-        public string VictimName { get;  set; }
         public bool IsEquipped { get;  set; }
         public int TurnsUntilUse { get;  set; }
         public int Level { get;  set; }
         public bool EquippedThisTurn { get;  set; }
         public int PvPEnabled { get;  set; }
         public bool IsPermanent { get;  set; }
-        public string Nickname { get;  set; }
         public DateTime LastSouledTimestamp { get;  set; }
+        public DateTime LastSold { get; protected set; }
         public ICollection<ItemRuneDetail> Runes { get; set; }
         public ItemRuneDetail EmbeddedOnItem { get; set; }
-
-        public string GetFullName()
-        {
-            if (this.Nickname.IsNullOrEmpty())
-            {
-                return VictimName;
-            }
-            else
-            {
-                var nameArray = this.VictimName.Split(' ');
-                return nameArray[0] + " '" + this.Nickname + "' " + nameArray[1];
-            }
-        }
-
     }
 
     public class InventoryItemSource

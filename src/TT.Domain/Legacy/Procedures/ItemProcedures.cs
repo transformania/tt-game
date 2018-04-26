@@ -41,8 +41,6 @@ namespace TT.Domain.Procedures
                                                              PvPEnabled = i.PvPEnabled,
                                                              TimeDropped = i.TimeDropped,
                                                              TurnsUntilUse = i.TurnsUntilUse,
-                                                             VictimName = i.VictimName,
-                                                             Nickname = i.Nickname,
                                                              LastSouledTimestamp = i.LastSouledTimestamp,
                                                              EmbeddedOnItemId = i.EmbeddedOnItemId
                                                           },
@@ -142,8 +140,6 @@ namespace TT.Domain.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName,
-                                                         Nickname = i.Nickname,
                                                          LastSouledTimestamp = i.LastSouledTimestamp,
                                                      },
 
@@ -224,12 +220,8 @@ namespace TT.Domain.Procedures
 
         public static string GiveItemToPlayer(int itemId, int newOwnerId)
         {
-            IItemRepository itemRepo = new EFItemRepository();
-            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-            var itemPlus = ItemStatics.GetStaticItem(item.dbName);
+            var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
             var owner = PlayerProcedures.GetPlayer(newOwnerId);
-            //LogBox log = new LogBox();
-
 
                 if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
                 {
@@ -246,14 +238,14 @@ namespace TT.Domain.Procedures
                 ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
 
                 // if item is not an animal
-                if (itemPlus.ItemType != PvPStatics.ItemType_Pet) { 
-                    return "You picked up a " + itemPlus.FriendlyName + " and put it into your inventory.";
+                if (item.ItemSource.ItemType != PvPStatics.ItemType_Pet) { 
+                    return "You picked up a " + item.ItemSource.FriendlyName + " and put it into your inventory.";
                 }
 
                 // item is an animal
                 else
                 {
-                    return "You tame " + item.GetFullName() + " the " + itemPlus.FriendlyName + " and are now keeping them as a pet.";
+                    return "You tame " + item.FormerPlayer.FullName + " the " + item.ItemSource.FriendlyName + " and are now keeping them as a pet.";
                 }
         }
 
@@ -265,7 +257,6 @@ namespace TT.Domain.Procedures
                 OwnerId = player.Id,
                 dbName = item.dbName,
                 IsEquipped = false,
-                VictimName = "",
                 dbLocationName = "",
                 ItemSourceId = item.Id
             };
@@ -324,7 +315,7 @@ namespace TT.Domain.Procedures
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
-                return "You released " + item.GetFullName() + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
+                return "You released " + item.FormerPlayer.FullName + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
             }
 
             // item is a regular item
@@ -593,10 +584,8 @@ namespace TT.Domain.Procedures
             var cmd = new CreateItem
             {
                 IsEquipped = false,
-                VictimName = victim.FirstName + " " + victim.LastName,
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
-                Nickname = victim.Nickname,
                 ItemSourceId = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName).Id,
                 FormerPlayerId = victim.Id
             };
@@ -741,20 +730,9 @@ namespace TT.Domain.Procedures
 
         public static PlayerFormViewModel BeingWornBy(Player player)
         {
-            IItemRepository itemRepo = new EFItemRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var victimName = player.FirstName + " " + player.LastName;
+            var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
-            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
-            var wearer = playerRepo.Players.FirstOrDefault(p => item.OwnerId == p.Id);
-
-            if (wearer == null)
-            {
-                return null;
-            }
-
-            return PlayerProcedures.GetPlayerFormViewModel(wearer.Id);
-
+            return item.Owner == null ? null : PlayerProcedures.GetPlayerFormViewModel(item.Owner.Id);
         }
 
         public static string UseItem(int itemId, string membershipId)
@@ -1129,12 +1107,6 @@ namespace TT.Domain.Procedures
             return "";
         }
 
-        public static Item GetItemByVictimName(string firstName, string lastName)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            return itemRepo.Items.FirstOrDefault(i => i.VictimName == (firstName + " " + lastName));
-        }
-
         public static DbStaticItem GetRandomFindableItem()
         {
 
@@ -1283,7 +1255,8 @@ namespace TT.Domain.Procedures
         public static void LockItem(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+            var itemHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemHack.Id); // TODO: Replace with proper command
             if (item == null)
             {
                 return;
@@ -1329,14 +1302,6 @@ namespace TT.Domain.Procedures
             
         }
 
-        public static void SetNickname(Player player, string nickname)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            var playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
-            playerItem.Nickname = nickname;
-            itemRepo.SaveItem(playerItem);
-        }
-
         public static void UpdateSouledItem(int id)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -1345,10 +1310,11 @@ namespace TT.Domain.Procedures
             itemRepo.SaveItem(item);
         }
 
-        public static void UpdateSouledItem(string firstName, string lastName)
+        public static void UpdateSouledItem(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == firstName + " " + lastName);
+            var itemHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemHack.Id); // TODO: Replace with proper command
             item.LastSouledTimestamp = DateTime.UtcNow;
             itemRepo.SaveItem(item);
         }

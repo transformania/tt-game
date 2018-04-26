@@ -127,12 +127,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult LookAtPlayerItem()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LookAtPlayerItem);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult PlayerLookup()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerLookup);
@@ -260,7 +254,6 @@ namespace TT.Web.Controllers
             public readonly string Use = ("Use").ToLowerInvariant();
             public readonly string LookAtPlayer_FromMembershipId = ("LookAtPlayer_FromMembershipId").ToLowerInvariant();
             public readonly string LookAtPlayer = ("LookAtPlayer").ToLowerInvariant();
-            public readonly string LookAtPlayerItem = ("LookAtPlayerItem").ToLowerInvariant();
             public readonly string PlayerLookup = ("PlayerLookup").ToLowerInvariant();
             public readonly string PlayerLookupSend = ("PlayerLookupSend").ToLowerInvariant();
             public readonly string InanimateAction = ("InanimateAction").ToLowerInvariant();
@@ -380,14 +373,6 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_LookAtPlayer
         {
             public readonly string id = ("id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_LookAtPlayerItem s_params_LookAtPlayerItem = new ActionParamsClass_LookAtPlayerItem();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_LookAtPlayerItem LookAtPlayerItemParams { get { return s_params_LookAtPlayerItem; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_LookAtPlayerItem
-        {
-            public readonly string vicname = ("vicname").ToLowerInvariant();
         }
         static readonly ActionParamsClass_PlayerLookup s_params_PlayerLookup = new ActionParamsClass_PlayerLookup();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -896,18 +881,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LookAtPlayer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             LookAtPlayerOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LookAtPlayerItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string vicname);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult LookAtPlayerItem(string vicname)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LookAtPlayerItem);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vicname", vicname);
-            LookAtPlayerItemOverride(callInfo, vicname);
             return callInfo;
         }
 

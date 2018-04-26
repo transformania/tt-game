@@ -93,7 +93,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Level = 11,
                     OwnerId = id,
                     PvPEnabled = -1,
-                    VictimName = "",
                     ItemSourceId = ItemStatics.GetStaticItem(QueensPanties).Id
                 };
 

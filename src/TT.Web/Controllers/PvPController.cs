@@ -153,18 +153,15 @@ namespace TT.Web.Controllers
                     World = world,
                     Player = me,
                     Form = FormStatics.GetForm(me.Form),
-                    Item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName
+                    Item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
                     {
-                        FirstName = me.FirstName,
-                        LastName = me.LastName
+                        PlayerId = me.Id
                     }),
-                    IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent,
                     NewMessageCount =
                         DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer {OwnerId = me.Id}),
                     PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse(),
                     StruggleChance = InanimateXPProcedures.GetStruggleChance(me)
                 };
-
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
 
                 if (inanimateOutput.Item.Owner == null)
@@ -219,7 +216,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
-                animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
+                animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
                 if (animalOutput.YouItem.Owner != null)
                 {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.Owner.Id);
@@ -1731,13 +1728,11 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.Id, true);
-                playerLogMessage = "You tamed <b>" + pickup.GetFullName() + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.GetFullName() + " the " + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
-
-                var personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.VictimName);
+                playerLogMessage = "You tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
 
                 var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
-                PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
+                PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
 
             }
 
@@ -1776,10 +1771,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var dropme = ItemProcedures.GetItemViewModel(itemId);
+            var dropme = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = itemId});
 
             // assert player does own this
-            if (dropme.dbItem.OwnerId != me.Id)
+            if (dropme.Owner.Id != me.Id)
             {
                 TempData["Error"] = "You don't own that item.";
 
@@ -1787,7 +1782,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not currently wearing this UNLESS it is an animal type, since pets are always "equipped"
-            if (dropme.dbItem.IsEquipped && dropme.Item.ItemType != PvPStatics.ItemType_Pet)
+            if (dropme.IsEquipped && dropme.ItemSource.ItemType != PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "You can't drop this item.";
                 TempData["SubError"] = "Unequip this item first if you are wearing it.";
@@ -1813,23 +1808,21 @@ namespace TT.Web.Controllers
             string locationLogMessage;
 
             // animals are released
-            if (dropme.Item.ItemType == PvPStatics.ItemType_Pet)
+            if (dropme.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
-                playerLogMessage = "You released your " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
-
-                var personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
+                playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
+                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(dropme) + "</b> here.";
 
                 var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
-                PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
+                PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
 
 
             }
             // everything else is dropped
             else
             {
-                playerLogMessage = "You dropped a " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
+                playerLogMessage = "You dropped a " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
+                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(dropme) + "</b> here.";
             }
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
@@ -2125,44 +2118,32 @@ namespace TT.Web.Controllers
             {
 
 
-                var playerItem = ItemProcedures.GetItemByVictimName(playerLookedAt.Player.FirstName, playerLookedAt.Player.LastName);
-                var playerItemStatic = ItemStatics.GetStaticItem(playerItem.dbName);
+                var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = playerLookedAt.Player.Id});
 
                 if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
                 {
-                    ViewBag.ImgUrl = "itemsPortraits/" + playerItemStatic.PortraitUrl;
+                    ViewBag.ImgUrl = "itemsPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
                 else if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
                 {
-                    ViewBag.ImgUrl = "animalPortraits/" + playerItemStatic.PortraitUrl;
+                    ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
 
 
                 ViewBag.ItemLevel = playerItem.Level;
-                ViewBag.FormDescriptionItem = playerItemStatic.Description;
+                ViewBag.FormDescriptionItem = playerItem.ItemSource.Description;
 
-                if (playerItemStatic.ItemType == PvPStatics.ItemType_Pet)
+                if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
-                    if (playerItem.OwnerId != -1)
-                    {
-                        ViewBag.IsWorn = "This creature has been tamed and is following their master.";
-                    }
-                    else
-                    {
-                        ViewBag.IsWorn = "This creature has not been tamed as is running around feral.";
-                    }
+                    ViewBag.IsWorn = playerItem.Owner == null
+                        ? "This creature has not been tamed as is running around feral."
+                        : "This creature has been tamed and is following their master.";
                 }
                 else
                 {
-
-                    if (playerItem.OwnerId != -1)
-                    {
-                        ViewBag.IsWorn = "This item is currently being carried and possibly worn by another player.";
-                    }
-                    else
-                    {
-                        ViewBag.IsWorn = "This item is not currently owned and is lying around available to be claimed by whoever comes across them.";
-                    }
+                    ViewBag.IsWorn = playerItem.Owner == null
+                        ? "This item is not currently owned and is lying around available to be claimed by whoever comes across them."
+                        : "This item is currently being carried and possibly worn by another player.";
                 }
 
 
@@ -2177,12 +2158,6 @@ namespace TT.Web.Controllers
 
                 return View(MVC.PvP.Views.LookAtPlayer, output);
             }
-        }
-
-        public virtual ActionResult LookAtPlayerItem(string vicname)
-        {
-            var victim = PlayerProcedures.GetPlayerWithExactName(vicname);
-            return RedirectToAction(MVC.PvP.LookAtPlayer(victim.Id));
         }
 
         public virtual ActionResult PlayerLookup(string name)
@@ -2210,8 +2185,7 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var wearer = ItemProcedures.BeingWornBy(me);
-            var meDbItem = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-            var meItem = ItemStatics.GetStaticItem(meDbItem.dbName);
+            var meItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
 
             // assert that player is inanimate
             if (me.Mobility != PvPStatics.MobilityInanimate)
@@ -2221,7 +2195,7 @@ namespace TT.Web.Controllers
             }
 
             // assert item is owned by wearer
-            if (meDbItem.OwnerId != wearer.Player.Id)
+            if (meItem.Owner.Id != wearer.Player.Id)
             {
                 TempData["Error"] = "You are not currently owned by this player.";
                 TempData["SubError"] = "Your former owner must have dropped you or was transformed themself.";
@@ -2251,28 +2225,28 @@ namespace TT.Web.Controllers
             if (actionName == "rub")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, .25M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.ItemSource.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You affectionately rub against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
             }
 
             if (actionName == "pinch")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -.15M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.ItemSource.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
                 firstP = "You agitatedly pinch against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
             }
 
             if (actionName == "soothe")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, .25M, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.ItemSource.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
             }
 
             if (actionName == "zap")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, -.15M, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.ItemSource.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
                 firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
             }
 
@@ -2284,7 +2258,7 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(wearer.Player.Id, thirdP, true);
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, true);
 
-            ItemProcedures.UpdateSouledItem(meDbItem.Id);
+            ItemProcedures.UpdateSouledItem(meItem.Id);
 
             return RedirectToAction(MVC.PvP.Play());
         }
@@ -2384,7 +2358,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = result + leveluptext;
 
-            ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+            ItemProcedures.UpdateSouledItem(me);
 
             return RedirectToAction(MVC.PvP.Play());
         }
@@ -2487,8 +2461,8 @@ namespace TT.Web.Controllers
                 // animal
                 if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
-                    var meAnimal = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-                    if (meAnimal.OwnerId > 0)
+                    var meAnimal = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
+                    if (meAnimal.Owner != null)
                     {
                         TempData["Error"] = "You can't move by yourself.";
                         TempData["SubError"] = "You are an animal and are currently tamed as a pet.";
@@ -2841,7 +2815,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not already locked into their current form
-            var itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+            var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
             if (itemMe.IsPermanent)
             {
                 TempData["Error"] = "You cannot return to an animate form again.";
@@ -2853,9 +2827,9 @@ namespace TT.Web.Controllers
             var dungeonHalfPoints = false;
 
             // Give items/pets a struggle penalty if their owner isn't a bot and is in the dungeon
-            if (itemMe.OwnerId > 0)
+            if (itemMe.Owner != null)
             {
-                var owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+                var owner = PlayerProcedures.GetPlayer(itemMe.Owner.Id);
                 if (owner.IsInDungeon())
                 {
                     dungeonHalfPoints = true;
@@ -2897,19 +2871,18 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-            var itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
+            var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
 
             // assert item does have the ability to curse transform
-            if (itemMePlus.CurseTFFormdbName.IsNullOrEmpty())
+            if (itemMe.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
             {
                 TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+            var owner = PlayerProcedures.GetPlayer(itemMe.Owner.Id);
             // assert player is owned
-            if (owner == null)
+            if (itemMe.Owner == null)
             {
                 TempData["Error"] = "You aren't owned by anyone.";
                 TempData["SubError"] = "You don't currently belong to an owner and as such have nobody to curse.";
@@ -2917,7 +2890,7 @@ namespace TT.Web.Controllers
             }
 
             // assert owner is not an invalid bot
-            if (owner.BotId < AIStatics.PsychopathBotId)
+            if (itemMe.Owner.BotId < AIStatics.PsychopathBotId)
             {
                 TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
                 TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
@@ -2925,14 +2898,14 @@ namespace TT.Web.Controllers
             }
 
             // assert owner is animate (they always should be, but just in case...)
-            if (owner.Mobility != PvPStatics.MobilityFull)
+            if (itemMe.Owner.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the form does exist
-            var form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
+            var form = FormStatics.GetForm(itemMe.ItemSource.CurseTFFormdbName);
             if (form == null || form.IsUnique)
             {
                 TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
@@ -2940,7 +2913,7 @@ namespace TT.Web.Controllers
             }
 
             // all checks pass
-            TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
+            TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
 
             return RedirectToAction(MVC.PvP.Play());
@@ -2960,16 +2933,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var inanimateMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+            var inanimateMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
 
             // assert that the player is owned
-            if (inanimateMe.OwnerId <= 0)
+            if (inanimateMe.Owner == null)
             {
                 TempData["Error"] = "You are not owned by anyone.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var owner = PlayerProcedures.GetPlayer(inanimateMe.OwnerId);
+            var owner = PlayerProcedures.GetPlayer(inanimateMe.Owner.Id);
 
             // if player is owned by a vendor, assert that the player has been in their inventory for sufficient amount of time
             if (owner.BotId == AIStatics.LindellaBotId || owner.BotId == AIStatics.WuffieBotId)
@@ -3029,7 +3002,7 @@ namespace TT.Web.Controllers
             // if player is not mobile, see if the item they have become is at least level 3
             if (me.Mobility != PvPStatics.MobilityFull)
             {
-                var itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
                 if (itemMe.Level < 3)
                 {
                     TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";

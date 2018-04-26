@@ -15,7 +15,6 @@ namespace TT.Domain.Items.Entities
         public Player Owner { get; protected set; }
         public Player FormerPlayer { get; protected set; }
         public string dbLocationName { get; protected set; }
-        public string VictimName { get; protected set; }
         public bool IsEquipped { get; protected set; }
         public int TurnsUntilUse { get; protected set; }
         public int Level { get; protected set; }
@@ -23,7 +22,6 @@ namespace TT.Domain.Items.Entities
         public bool EquippedThisTurn { get; protected set; }
         public int PvPEnabled { get; protected set; }
         public bool IsPermanent { get; protected set; }
-        public string Nickname { get; protected set; }
         public DateTime LastSouledTimestamp { get; protected set; }
         public DateTime LastSold { get; protected set; }
         public Item EmbeddedOnItem { get; protected set; }
@@ -43,7 +41,6 @@ namespace TT.Domain.Items.Entities
                 ItemSource = itemSource,
                 dbName = cmd.dbName,
                 dbLocationName = cmd.dbLocationName,
-                VictimName = cmd.VictimName,
                 IsEquipped = cmd.IsEquipped,
                 TurnsUntilUse = cmd.TurnsUntilUse,
                 Level = cmd.Level,
@@ -51,7 +48,6 @@ namespace TT.Domain.Items.Entities
                 EquippedThisTurn = cmd.EquippedThisTurn,
                 PvPEnabled = cmd.PvPEnabled,
                 IsPermanent = cmd.IsPermanent,
-                Nickname = cmd.Nickname,
                 LastSouledTimestamp = cmd.LastSouledTimestamp,
                 LastSold = cmd.LastSold
             };

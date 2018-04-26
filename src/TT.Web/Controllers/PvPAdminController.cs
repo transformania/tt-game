@@ -1283,9 +1283,9 @@ namespace TT.Web.Controllers
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
             {
-                ViewBag.playeritems = ItemProcedures.GetAllPlayerItems(id).OrderByDescending(i => i.dbItem.Level);
+                var playeritems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = id}).OrderByDescending(i => i.Level);
                 ViewBag.player = PlayerProcedures.GetPlayerFormViewModel(id);
-                return View(MVC.PvPAdmin.Views.ViewPlayerItems);
+                return View(MVC.PvPAdmin.Views.ViewPlayerItems, playeritems);
             }
             else
             {
@@ -1416,22 +1416,13 @@ namespace TT.Web.Controllers
 
                     if (form.MobilityType == PvPStatics.MobilityFull && player.Mobility != PvPStatics.MobilityFull)
                     {
-                        IItemRepository itemRepo = new EFItemRepository();
-                        var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                        var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
                         player.Mobility = PvPStatics.MobilityFull;
-                        itemRepo.DeleteItem(item.Id);
+                        DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
                     }
                 }
 
                 playerRepo.SavePlayer(player);
-
-                if (player.Mobility != PvPStatics.MobilityFull)
-                {
-                    IItemRepository itemRepo = new EFItemRepository();
-                    var item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
-                    item.VictimName = input.NewFirstName + " " + input.NewLastName;
-                    itemRepo.SaveItem(item);
-                }
 
                 // if Donna, give player her spells
                 if (player.Form == BossProcedures_Donna.DonnaDbForm)
@@ -1536,7 +1527,6 @@ namespace TT.Web.Controllers
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IItemRepository itemRepo = new EFItemRepository();
 
             var me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             DomainRegistry.Repository.Execute(new ChangeForm
@@ -1546,19 +1536,17 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            var possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
+            var possibleMeItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
             if (possibleMeItem != null)
             {
-                itemRepo.DeleteItem(possibleMeItem.Id);
+                DomainRegistry.Repository.Execute(new DeleteItem {ItemId = possibleMeItem.Id});
             }
 
             var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
-                VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
                 FormerPlayerId = me.Id,
-                Nickname = me.Nickname,
                 OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
@@ -1589,7 +1577,6 @@ namespace TT.Web.Controllers
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IItemRepository itemRepo = new EFItemRepository();
 
             var me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             DomainRegistry.Repository.Execute(new ChangeForm
@@ -1599,19 +1586,17 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            var possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            var possibleMeItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
             if (possibleMeItem != null)
             {
-                itemRepo.DeleteItem(possibleMeItem.Id);
+                DomainRegistry.Repository.Execute(new DeleteItem {ItemId = possibleMeItem.Id});
             }
 
             var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
                 dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
-                VictimName = me.FirstName + " " + me.LastName,
                 FormerPlayerId = me.Id,
-                Nickname = me.Nickname,
                 OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
@@ -1650,7 +1635,7 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            var item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
+            var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
             if (item != null)
             {
                 DomainRegistry.Repository.Execute(new DeleteItem { ItemId = item.Id });
@@ -1690,7 +1675,6 @@ namespace TT.Web.Controllers
                 dbLocationName = "",
                 EquippedThisTurn = false,
                 LastSouledTimestamp = DateTime.UtcNow,
-                VictimName = "",
                 Level = 0,
                 ItemSourceId = ItemStatics.GetStaticItem("item_consumeable_teleportation_scroll").Id
             };

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -163,16 +164,15 @@ namespace TT.Domain.Procedures.BossProcedures
                     itemRepo.SaveItem(i);
                 }
 
-                var donnasPlayerPets = ItemProcedures.GetAllPlayerItems(donna.Id).ToList();
+                var donnasPlayerPets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = donna.Id}).OrderBy(i => i.Level).ToList();
 
                 // have Donna release her weakest pet every so often
                 if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Any())
                 {
-                    IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
-                    var weakestItem = weakest.First();
+                    var weakestItem = donnasPlayerPets.First();
                     ItemProcedures.DropItem(weakestItem.Id);
-                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.GetFullName() + ", here.");
-                    var luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
+                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.FormerPlayer.FullName + ", here.");
+                    var luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.FormerPlayer.FullName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
                 }
 

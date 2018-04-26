@@ -13,7 +13,6 @@ namespace TT.Domain.Items.Commands
         public string dbName { get;  set; }
 
         public string dbLocationName { get;  set; }
-        public string VictimName { get;  set; }
         public bool IsEquipped { get;  set; }
         public int TurnsUntilUse { get;  set; }
         public int Level { get;  set; }
@@ -21,7 +20,6 @@ namespace TT.Domain.Items.Commands
         public bool EquippedThisTurn { get;  set; }
         public int PvPEnabled { get;  set; }
         public bool IsPermanent { get;  set; }
-        public string Nickname { get;  set; }
         public DateTime LastSouledTimestamp { get;  set; }
         public DateTime LastSold { get;  set; }
 
@@ -33,7 +31,6 @@ namespace TT.Domain.Items.Commands
         {
             dbLocationName = "";
             dbName = "";
-            VictimName = "";
             IsEquipped = false;
             TurnsUntilUse = 0;
             Level = 1;
@@ -41,7 +38,6 @@ namespace TT.Domain.Items.Commands
             EquippedThisTurn = false;
             PvPEnabled = 0;
             IsPermanent = false;
-            Nickname = "";
             LastSouledTimestamp = DateTime.UtcNow;
             LastSold = DateTime.UtcNow;
             FormerPlayerId = null;

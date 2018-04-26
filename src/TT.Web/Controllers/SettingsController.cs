@@ -315,11 +315,6 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.SetNickname(input.Nickname, myMembershipId);
 
-            if (me.Mobility == PvPStatics.MobilityInanimate || me.Mobility == PvPStatics.MobilityPet)
-            {
-                ItemProcedures.SetNickname(me, input.Nickname);
-            }
-
             TempData["Result"] = "Your new nickname has been set.";
             return RedirectToAction(MVC.PvP.Play());
         }

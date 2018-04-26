@@ -4,6 +4,7 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -616,7 +617,8 @@ namespace TT.Domain.Procedures
 
                 // turn the item they player became permanent
                 IItemRepository itemRepo = new EFItemRepository();
-                var oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
+                var oldItemMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = oldplayer.Id});
+                var oldItemMe = itemRepo.Items.FirstOrDefault(i => i.Id == oldItemMeHack.Id);
                 oldItemMe.IsPermanent = true;
                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                 itemRepo.SaveItem(oldItemMe);
@@ -751,14 +753,13 @@ namespace TT.Domain.Procedures
 
             if (player.Mobility != PvPStatics.MobilityFull)
             {
-                IItemRepository itemRepo = new EFItemRepository();
-                var itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
                 if (itemMe != null)
                 {
                     // drop any runes embedded on the player-item, or return them to the former owner's inventory
                     DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
-                    itemRepo.DeleteItem(itemMe.Id);
+                    DomainRegistry.Repository.Execute(new DeleteItem {ItemId = itemMe.Id});
                 }
             }
             DomainRegistry.Repository.Execute(new ChangeForm

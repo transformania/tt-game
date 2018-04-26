@@ -121,6 +121,7 @@
     <Compile Include="Items\DTOs\PlayPageItemDetail.cs" />
     <Compile Include="Items\DTOs\ItemRuneDetail.cs" />
     <Compile Include="Items\Mappings\InanimateXPMappings.cs" />
+    <Compile Include="Items\Queries\GetItemByFormerPlayer.cs" />
     <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardInanimateXPDetail.cs" />
     <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardItemDetail.cs" />
     <Compile Include="Items\Queries\Leaderboard\DTOs\ItemLeaderboardItemSourceDetail.cs" />
@@ -550,7 +551,6 @@
     <Compile Include="Items\Queries\GetAllItemsOfType.cs" />
     <Compile Include="Items\Queries\GetHighestLevelPlayerItems.cs" />
     <Compile Include="Items\Queries\GetItem.cs" />
-    <Compile Include="Items\Queries\GetItemByVictimName.cs" />
     <Compile Include="Items\Queries\GetItemsAtLocation.cs" />
     <Compile Include="Items\Queries\GetItemsAtLocationVisibleToGameMode.cs" />
     <Compile Include="Items\Queries\GetItemSource.cs" />
@@ -635,7 +635,6 @@
     <Compile Include="ViewModels\InanimatePlayPageViewModel.cs" />
     <Compile Include="ViewModels\AnimalPlayPageViewModel.cs" />
     <Compile Include="ViewModels\InventoryBonusesViewModel.cs" />
-    <Compile Include="ViewModels\ItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\ItemTransferLogViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\Location.cs" />

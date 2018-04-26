@@ -368,7 +368,7 @@ namespace TT.Domain.Procedures
                         {
                             context.Database.ExecuteSqlCommand("UPDATE [dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', PvPEnabled = -1, TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND (dbName LIKE 'item_%' OR dbName LIKE 'rune_%') AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
 
-                            context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
+                            context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE Id IN ( SELECT FormerPlayerId FROM [dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
 
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
 
@@ -468,7 +468,6 @@ namespace TT.Domain.Procedures
                                 PvPEnabled = 2,
                                 IsEquipped = false,
                                 TurnsUntilUse = 0,
-                                VictimName = "",
                                 dbName = PvPStatics.ItemType_DungeonArtifact,
                                 ItemSourceId = ItemStatics.GetStaticItem(PvPStatics.ItemType_DungeonArtifact).Id
                             };

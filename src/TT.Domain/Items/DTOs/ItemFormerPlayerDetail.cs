@@ -9,7 +9,5 @@ namespace TT.Domain.Items.DTOs
         public PlayerDetail FormerPlayer { get; set; }
         public int Level { get; set; }
         public bool IsPermanent { get; set; }
-        public string Nickname { get; set; }
-
     }
 }

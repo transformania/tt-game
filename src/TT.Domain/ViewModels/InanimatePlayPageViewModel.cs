@@ -14,7 +14,6 @@ namespace TT.Domain.ViewModels
         public PlayerFormViewModel WornBy { get; set; }
         public string AtLocation { get; set; }
         public int NewMessageCount { get; set; }
-        public bool IsPermanent { get; set; }
         public IEnumerable<LocationLogDetail> LocationLog { get; set; }
         public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
         public IEnumerable<PlayerLog> PlayerLog { get; set; }

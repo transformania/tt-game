@@ -2,6 +2,7 @@
 using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Statics;
 
@@ -23,7 +24,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 PlayerLogProcedures.AddPlayerLog(attacker.Id, playerLog, true);
                 PlayerProcedures.GiveXP(attacker, xpGain);
 
-                var item = ItemProcedures.GetItemByVictimName(dbDemon.FirstName, dbDemon.LastName);
+                var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = dbDemon.Id});
                 ItemProcedures.DeleteItem(item.Id);
 
                 new Thread(() =>

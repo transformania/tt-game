@@ -24,7 +24,11 @@
         }
             }
 
-            @item.ItemSource.FriendlyName <span> (@item.FormerPlayer.FullName</span>
+            @item.ItemSource.FriendlyName
+            @if (item.FormerPlayer != null)
+            {
+                <span> (@item.FormerPlayer.FullName)</span>
+            }
         </h3>
         <p>
             You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis

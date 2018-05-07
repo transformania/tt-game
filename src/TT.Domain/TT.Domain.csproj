@@ -201,6 +201,7 @@
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
     <Compile Include="Players\Commands\GiveRune.cs" />
     <Compile Include="Players\Commands\Move.cs" />
+    <Compile Include="Players\Queries\CanInteractWith.cs" />
     <Compile Include="Players\Queries\GetCurrentCarryWeight.cs" />
     <Compile Include="RequestInterfaces\IRequestWithRuleSet.cs" />
     <Compile Include="RequestInterfaces\IRequestWithUserNameId.cs" />

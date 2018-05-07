@@ -278,7 +278,7 @@ AppSettings.config
 src/TT.Web/Images/PvP/
 custom.css
 custom.min.css
-coverage.xml
+unitCoverage.xml
 coverage/
 
 # Cake

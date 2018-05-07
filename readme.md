@@ -2,9 +2,6 @@
 
 This rather unofficial document is meant to help any new developers get up to speed with what's going on in the source code.
 
-[![build status](https://gitlab.com/transformania/tt-game/badges/master/build.svg)](https://gitlab.com/transformania/tt-game/commits/master)
-[![coverage report](https://gitlab.com/transformania/tt-game/badges/master/coverage.svg)](https://gitlab.com/transformania/tt-game/commits/master)
-
 First off, here is the stack of technologies being used:
 
 * ASP.Net MVC5
@@ -15,6 +12,15 @@ First off, here is the stack of technologies being used:
 * Git for source control
 * SignalR for chat / realtime notifications
 * T4MVC for strong typing in MVC
+
+## Build status
+
+[![build status](https://gitlab.com/transformania/tt-game/badges/master/build.svg)](https://gitlab.com/transformania/tt-game/commits/master)
+
+## Unit test coverage report
+
+[![coverage report](https://transformania.gitlab.io/tt-game/unit/badge_branchcoverage.svg)](https://transformania.gitlab.io/tt-game/unit/index.htm)
+[![coverage report](https://transformania.gitlab.io/tt-game/unit/badge_linecoverage.svg)](https://transformania.gitlab.io/tt-game/unit/index.htm)
 
 ## Good tools to have ##
 

@@ -1,5 +1,6 @@
 #addin "nuget:?package=Cake.SqlServer"
 #addin Cake.FluentMigrator
+#addin Cake.FileHelpers
 #tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
@@ -59,12 +60,10 @@ var connectionString = connectionStringBuilder.ToString();
 
 Task("Clean")
     .Does(() => {
-        CleanDirectories(new DirectoryPath[] { 
-            Directory("./src/TT.Web/bin"), 
-            Directory("./src/TT.Tests/bin/"), 
-            Directory("./src/TT.Domain/bin/"),
-            Directory("./src/TT.Migrations/bin/"),
-        });   
+        MSBuild("./src/TT.sln", settings =>
+            settings.SetConfiguration(configuration)
+                .SetVerbosity(Verbosity.Minimal)
+                .WithTarget("Clean"));
     }
 );
 
@@ -95,18 +94,18 @@ Task("Run-Unit-Tests")
         var platform = new CakePlatform();
         if (platform.Family == PlatformFamily.Windows)
         {
-            var coverage = new FilePath("coverage.xml");
+            var unitCoverage = new FilePath("unitCoverage.xml");
             OpenCover(tool => {
                tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
             },
-            coverage,
+            unitCoverage,
             new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
                 .WithFilter("+[TT.Domain]*")
                 .WithFilter("-[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")
                 .WithFilter("-[TT.Tests]*")
+                .WithFilter("-[TT.IntegrationTests]*")
             );
-            ReportGenerator(coverage, "coverage/");
         }
         else
         {
@@ -114,6 +113,25 @@ Task("Run-Unit-Tests")
         }
     }
 );
+
+Task("Generate-Report")
+    .IsDependentOn("Run-Unit-Tests")
+    .Does(() => {
+        ReportGenerator(new FilePath("unitCoverage.xml"), "coverage/unit", new ReportGeneratorSettings(){
+            ReportTypes = new List<ReportGeneratorReportType>() { ReportGeneratorReportType.Html, ReportGeneratorReportType.Badges, ReportGeneratorReportType.TextSummary },
+            HistoryDirectory = new DirectoryPath("coverage/unit/history")
+        });
+
+        foreach(var line in FileReadLines(MakeAbsolute(new FilePath("coverage/unit/Summary.txt"))))
+        {
+            if (string.IsNullOrEmpty(line))
+                break;
+            if (line == "Summary")
+                Information("Unit Test Summary");
+            else
+                Information(line);
+        }
+    });
 
 Task("Migrate")
     .IsDependentOn("Build")
@@ -226,7 +244,8 @@ Task("CI-Build")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
-    .IsDependentOn("Run-Unit-Tests");
+    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Generate-Report");
 
 // Drops, re-migrates and re-seeds the DB
 Task("Recreate-DB")

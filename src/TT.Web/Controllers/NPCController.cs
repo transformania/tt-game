@@ -4,7 +4,9 @@ using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Exceptions;
 using TT.Domain.Items.Queries;
+using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Queries;
@@ -29,49 +31,23 @@ namespace TT.Web.Controllers
                 filter = "clothes";
             }
 
-            // assert that player is logged in
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith {BotId = AIStatics.LindellaBotId, PlayerId = me.Id});
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
-
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
-            {
-                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a quest
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
 
             ViewBag.DisableLinks = "true";
 
@@ -93,45 +69,20 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult Purchase(int id)
         {
-            // assert that player is logged in
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LindellaBotId, PlayerId = me.Id });
             }
-
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a duel
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
 
@@ -197,27 +148,14 @@ namespace TT.Web.Controllers
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LindellaBotId, PlayerId = me.Id });
             }
-
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -234,44 +172,18 @@ namespace TT.Web.Controllers
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LindellaBotId, PlayerId = me.Id });
             }
-
-
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a duel
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
 
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -321,31 +233,18 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Wüffie.";
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.WuffieBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-
 
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
@@ -390,36 +289,18 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
+            try
             {
-                TempData["Error"] = "You must finish your duel before you can interact with Wüffie.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.WuffieBotId, PlayerId = me.Id });
             }
-
-            // assert that this player is not in a quest
-            if (me.InQuest > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must finish your quest before you can interact with Wüffie.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -471,30 +352,16 @@ namespace TT.Web.Controllers
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Wüffie.";
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.WuffieBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
-
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Wüffie
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
 
             // show the permanent and consumable items the player is carrying
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
@@ -509,44 +376,18 @@ namespace TT.Web.Controllers
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to trade with Wüffie.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.WuffieBotId, PlayerId = me.Id });
             }
-
-            // assert player is not in a duel
-            if (me.InDuel > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is not in a quest
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must conclude your quest before you can interact with Wuffie.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
-
-            // assert the merchant is animate
-            if (merchant.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same location as Lindella
-            if (me.dbLocationName != merchant.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
-                TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
@@ -813,25 +654,14 @@ namespace TT.Web.Controllers
 
             // update timestamp (so that he can heal naturally)
             PlayerProcedures.SetTimestampToNow(bartender);
-
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with Rusty.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.BartenderBotId, PlayerId = me.Id });
             }
-
-            // assert bartender is mobile
-            if (bartender.Mobility != PvPStatics.MobilityFull)
+            catch (DomainException e)
             {
-                TempData["Error"] = "Rusty must be animate in order to chat with you.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is animate
-            if (me.dbLocationName != bartender.dbLocationName)
-            {
-                TempData["Error"] = "You cannot chat with Rusty as you are not in the same location as him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -973,17 +803,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.JewdewfaeBotId, PlayerId = me.Id });
             }
-
-            // assert player is in same location as jewdewfae
-            if (me.dbLocationName != fae.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1023,31 +850,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.JewdewfaeBotId, PlayerId = me.Id });
             }
-
-            // assert that this player is not in a duel
-            if (me.InDuel > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must finish your duel before you can play with Jewdewfae.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that this player is not in a quest
-            if (me.InQuest > 0)
-            {
-                TempData["Error"] = "You must finish your quest before you can play with Jewdewfae.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in same location as jewdewfae
-            if (me.dbLocationName != fae.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1116,17 +926,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.BimboBossFirstName + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.MouseBimboBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as Candice
-            if (me.dbLocationName != bimbo.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.BimboBossFirstName + " in order to talk with her.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1147,17 +954,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.NerdBossFirstName + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.MouseNerdBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as Candice
-            if (me.dbLocationName != nerd.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.NerdBossFirstName + " in order to talk with her.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1178,17 +982,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LoremasterBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as loremaster
-            if (me.dbLocationName != loremaster.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1209,17 +1010,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LoremasterBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as loremaster
-            if (me.dbLocationName != loremaster.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1241,17 +1039,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LoremasterBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as loremaster
-            if (me.dbLocationName != loremaster.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1290,17 +1085,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LoremasterBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as loremaster
-            if (me.dbLocationName != loremaster.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1322,18 +1114,15 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
-            // assert player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to learn spells from " + loremaster.GetFullName() + ".";
-                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.LoremasterBotId, PlayerId = me.Id });
             }
-
-            // assert player is in the same place as loremaster
-            if (me.dbLocationName != loremaster.dbLocationName)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
-                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player has enough money to buy a spell
@@ -1380,24 +1169,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be animate in order to chat with " + valentine.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.ValentineBotId, PlayerId = me.Id });
             }
-
-            // assert player is not dueling
-            if (me.InDuel > 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is in the same place as Valenti8ne
-            if (me.dbLocationName != valentine.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 

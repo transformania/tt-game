@@ -1205,7 +1205,7 @@ namespace TT.Domain.Procedures
             {
                 if (buyOrSell == "buy")
                 {
-                    return item.ItemSource.MoneyValue;
+                    return Math.Ceiling(item.ItemSource.MoneyValue);
                 }
                 else
                 {
@@ -1215,7 +1215,7 @@ namespace TT.Domain.Procedures
                         return item.ItemSource.MoneyValueSell;
                     }
 
-                    return item.ItemSource.MoneyValue * .5M;
+                    return Math.Floor(item.ItemSource.MoneyValue * (decimal)ItemStatics.GetSellValueModifier(item.ItemSource.ItemType));
                 }
             }
 
@@ -1228,7 +1228,7 @@ namespace TT.Domain.Procedures
                 // item is not permanent, charge less
                 if (!item.IsPermanent)
                 {
-                    price *= .85M;
+                    return Math.Floor(price * .85M);
                 }
 
 
@@ -1238,15 +1238,15 @@ namespace TT.Domain.Procedures
             // selling, pay less money
             else
             {
-                var price = 50 + (30 * item.Level * .75M);
+                var price = 50 + (10 * item.Level);
 
                 // item is not permanent, charge less
                 if (!item.IsPermanent)
                 {
-                    price *= .5M;
+                    return Math.Floor(price * .5M);
                 }
 
-                return Math.Ceiling(price + runesValue*.75M);
+                return Math.Floor(price + runesValue * (decimal) ItemStatics.GetSellValueModifier(PvPStatics.ItemType_Rune));
 
             }
 

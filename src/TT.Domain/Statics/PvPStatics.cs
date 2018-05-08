@@ -47,14 +47,12 @@ namespace TT.Domain.Statics
         public const int MaxLogMessagesPerPlayer = 50;
 
         public const decimal XP__GainPerAttackBase = 5;
-        public const decimal XP__AnimateTFXPBonusModifier = 1.5M;
         public const decimal XP__LevelDifferenceXPGainModifier = 1.5M;
         public const decimal XP__EndgameTFCompletionLevelBase = 8;
-        public const decimal ExtraHealthDamagePerLevel = 0.75M;
         public const decimal XP__EnchantmentMaxXP = 3;
 
         public const double OfflineAfterXMinutes = 30;
-        public const int DuelNoCombatMinutes = 15;
+        public const int MinutesSinceLastCombatBeforeQuestingOrDuelling = 30;
         public const int MaximumDuelTurnLength = 10;
 
         public const string Permissions_Admin = "admin";

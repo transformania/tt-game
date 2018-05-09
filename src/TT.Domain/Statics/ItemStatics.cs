@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -32,6 +33,18 @@ namespace TT.Domain.Statics
             IItemRepository itemRepo = new EFItemRepository();
             return itemRepo.DbStaticItems.Where(i => i.ItemType == PvPStatics.ItemType_Pet);
         }
-    }
 
+        private static readonly Dictionary<String, double> SellValueModifiers = new Dictionary<string, double>
+        {
+            {PvPStatics.ItemType_Consumable, .4},
+            {PvPStatics.ItemType_Rune, .2}
+        };
+
+        public static double GetSellValueModifier(string itemType)
+        {
+            SellValueModifiers.TryGetValue(itemType, out var result);
+            return result == 0 ? .75 : result;
+        }
+    }
 }
+

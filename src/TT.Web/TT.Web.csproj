@@ -683,7 +683,6 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_2.cshtml" />
     <Content Include="Views\Contribution\ContributeGraphicsNeeded.cshtml" />
     <Content Include="Views\Contribution\ContributeSetGraphicStatus.cshtml" />
-    <Content Include="Views\Info\GameNews_PlannedFeatures.cshtml" />
     <Content Include="Views\Contribution\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
     <Content Include="Views\PvP\MyPerks.cshtml" />

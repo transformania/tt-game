@@ -415,6 +415,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 53,
+      "name": "Alpha R52 (Era of Lydia Gemma)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

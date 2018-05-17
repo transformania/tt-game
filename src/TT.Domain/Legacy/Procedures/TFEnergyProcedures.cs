@@ -35,6 +35,7 @@ namespace TT.Domain.Procedures
 
             var energiesEligibleForDelete = new List<TFEnergy>();
             decimal mergeUpEnergyAmt = 0;
+            decimal sharedEnergyAmt = 0;
 
             foreach (var e in energiesOnPlayer) {
 
@@ -44,6 +45,10 @@ namespace TT.Domain.Procedures
                 {
                     mergeUpEnergyAmt += e.Amount;
                     energiesEligibleForDelete.Add(e);
+                }
+                else if (e.CasterId == null)
+                {
+                    sharedEnergyAmt += e.Amount;
                 }
             }
 
@@ -118,7 +123,7 @@ namespace TT.Domain.Procedures
 
             
 
-            var totalEnergy = energyFromMe.Amount + mergeUpEnergyAmt;
+            var totalEnergy = energyFromMe.Amount + sharedEnergyAmt + mergeUpEnergyAmt;
 
             var eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
 

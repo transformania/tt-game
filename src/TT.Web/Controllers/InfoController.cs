@@ -33,12 +33,6 @@ namespace TT.Web.Controllers
             return View(MVC.Info.Views.Rules);
         }
 
-
-        public virtual ActionResult GameNews_PlannedFeatures()
-        {
-            return View(MVC.Info.Views.GameNews_PlannedFeatures);
-        }
-
         public virtual ActionResult GameNews()
         {
             INewsPostRepository repo = new EFNewsPostRepository();

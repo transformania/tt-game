@@ -78,7 +78,6 @@ namespace TT.Web.Controllers
             public readonly string FAQ = ("FAQ").ToLowerInvariant();
             public readonly string HowToPlay = ("HowToPlay").ToLowerInvariant();
             public readonly string Rules = ("Rules").ToLowerInvariant();
-            public readonly string GameNews_PlannedFeatures = ("GameNews_PlannedFeatures").ToLowerInvariant();
             public readonly string GameNews = ("GameNews").ToLowerInvariant();
             public readonly string GameNews_Archive = ("GameNews_Archive").ToLowerInvariant();
             public readonly string RecentRPClassifieds = ("RecentRPClassifieds").ToLowerInvariant();
@@ -111,7 +110,6 @@ namespace TT.Web.Controllers
                 public readonly string FAQ = "FAQ";
                 public readonly string GameNews = "GameNews";
                 public readonly string GameNews_Archive = "GameNews_Archive";
-                public readonly string GameNews_PlannedFeatures = "GameNews_PlannedFeatures";
                 public readonly string GearTool = "GearTool";
                 public readonly string HowToPlay = "HowToPlay";
                 public readonly string RecentRPClassifieds = "RecentRPClassifieds";
@@ -125,7 +123,6 @@ namespace TT.Web.Controllers
             public readonly string FAQ = "~/Views/Info/FAQ.cshtml";
             public readonly string GameNews = "~/Views/Info/GameNews.cshtml";
             public readonly string GameNews_Archive = "~/Views/Info/GameNews_Archive.cshtml";
-            public readonly string GameNews_PlannedFeatures = "~/Views/Info/GameNews_PlannedFeatures.cshtml";
             public readonly string GearTool = "~/Views/Info/GearTool.cshtml";
             public readonly string HowToPlay = "~/Views/Info/HowToPlay.cshtml";
             public readonly string RecentRPClassifieds = "~/Views/Info/RecentRPClassifieds.cshtml";
@@ -169,17 +166,6 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Rules);
             RulesOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void GameNews_PlannedFeaturesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult GameNews_PlannedFeatures()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GameNews_PlannedFeatures);
-            GameNews_PlannedFeaturesOverride(callInfo);
             return callInfo;
         }
 

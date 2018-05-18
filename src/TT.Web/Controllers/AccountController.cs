@@ -241,6 +241,12 @@ namespace TT.Web.Controllers
             return View(MVC.Account.Views.TermsOfService);
         }
 
+        [AllowAnonymous]
+        public virtual ActionResult PrivacyPolicy()
+        {
+            return View(MVC.Account.Views.PrivacyPolicy);
+        }
+
         //
         // POST: /Account/Manage
 

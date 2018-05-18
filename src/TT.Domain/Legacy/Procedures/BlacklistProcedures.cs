@@ -34,7 +34,7 @@ namespace TT.Domain.Procedures
                 }
                 else
                 {
-                    addme.PlayerName = "(no player created this round)";
+                    addme.PlayerName = "(You do not currently have any players on your blacklist.)";
                     addme.PlayerId = -1;
                 }
 

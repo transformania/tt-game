@@ -3,6 +3,8 @@ before_script:
 
 ps_build:
   stage: build
+  variables:
+    TT_UNIT_HISTORY_URI: "https://transformania.gitlab.io/tt-game/unit/history.tar.gz"
   script:
     - .\build.ps1 -target "CI-Build"
   artifacts:

@@ -1,10 +1,14 @@
 #addin "nuget:?package=Cake.SqlServer"
 #addin Cake.FluentMigrator
 #addin Cake.FileHelpers
+#addin nuget:?package=SharpZipLib
+#addin nuget:?package=Cake.Compression
 #tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
+
+using static Cake.Common.Tools.ReportGenerator.ReportGeneratorReportType;
 
 // Default settings
 var target = Argument("target", EnvironmentVariable("TT_TARGET") ?? "Default");
@@ -13,6 +17,11 @@ var dbType = Argument("dbType", EnvironmentVariable("TT_DBTYPE") ?? "localdb_v2"
 var dbName = Argument("dbName", EnvironmentVariable("TT_DBNAME") ?? "Stats");
 var updateUrl = Argument("updateUrl", "http://localhost:52223/API/WorldUpdate");
 var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/Images/PvP.zip");
+
+var isInCI = Convert<bool>(EnvironmentVariable("CI") ?? "false");
+Uri unitHistoryUri = null;
+if (isInCI)
+    unitHistoryUri = Convert<Uri>(EnvironmentVariable("TT_UNIT_HISTORY_URI"));
 
 // Dictionary of DB instances and connection strings
 var instances = new Dictionary<string,Tuple<string,bool>>()
@@ -117,12 +126,42 @@ Task("Run-Unit-Tests")
 Task("Generate-Report")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() => {
+        bool TryDownload(out FilePath unitHistory)
+        {
+            try 
+            {
+                unitHistory = DownloadFile(unitHistoryUri);
+            }
+            catch (AggregateException ex)
+            when(ex.GetBaseException() is System.Net.Http.HttpRequestException)
+            {
+                Warning("Unit coverage history not found.");
+                unitHistory = null;
+                return false;
+            }
+
+            return true;
+        }
+
+        if (isInCI && TryDownload(out FilePath unitResult))
+        {
+            try 
+            {
+                GZipUncompress(unitResult, new DirectoryPath("coverage/unit/history"));
+            }
+            catch (Exception ex)
+            {
+                Error(ex);
+                throw;
+            }
+        }
+
         ReportGenerator(new FilePath("unitCoverage.xml"), "coverage/unit", new ReportGeneratorSettings(){
-            ReportTypes = new List<ReportGeneratorReportType>() { ReportGeneratorReportType.Html, ReportGeneratorReportType.Badges, ReportGeneratorReportType.TextSummary },
+            ReportTypes = new List<ReportGeneratorReportType>() { Html, Badges, TextSummary },
             HistoryDirectory = new DirectoryPath("coverage/unit/history")
         });
 
-        foreach(var line in FileReadLines(MakeAbsolute(new FilePath("coverage/unit/Summary.txt"))))
+        foreach(var line in FileReadLines(new FilePath("coverage/unit/Summary.txt")))
         {
             if (string.IsNullOrEmpty(line))
                 break;
@@ -130,6 +169,27 @@ Task("Generate-Report")
                 Information("Unit Test Summary");
             else
                 Information(line);
+        }
+        
+        if (isInCI)
+        {
+            try 
+            {
+                GZipCompress(new DirectoryPath("coverage/unit/history"), new FilePath("coverage/unit/history.tar.gz"), 9);
+            }
+            catch (Exception ex)
+            {
+                Error(ex);
+                throw;
+            }
+
+            if (FileExists("coverage/unit/history.tar.gz"))
+            {
+                DeleteDirectory(new DirectoryPath("coverage/unit/history"), new DeleteDirectorySettings
+                {
+                    Recursive = true
+                });
+            }
         }
     });
 
@@ -231,6 +291,12 @@ Task("Drop-Images")
         CleanDirectory("./src/TT.Web/Images/PvP");
     }
 );
+
+private static T Convert<T>(string value)
+{
+    var converter = System.ComponentModel.TypeDescriptor.GetConverter(typeof(T));
+    return (T)converter.ConvertFromInvariantString(value);
+}
 
 // Default build, if required Migrates DB, Seeds DB and Seeds images. Skips steps if nothing to do
 Task("Default")

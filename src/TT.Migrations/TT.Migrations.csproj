@@ -70,6 +70,7 @@
     <Compile Include="201702211090_RestockItemBotId.cs" />
     <Compile Include="201702190840_UserStrikes.cs" />
     <Compile Include="201702120607_SoftDeleteMessages.cs" />
+    <Compile Include="201805201803_AddMotorcycleBoss.cs" />
     <Compile Include="201801291714_AddRunes.cs" />
     <Compile Include="201801031109_RoundStartsAt.cs" />
     <Compile Include="201703261037_Covenants.cs" />

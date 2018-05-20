@@ -5,6 +5,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -911,8 +912,6 @@ namespace TT.Domain.Procedures
             player.Mana += mana;
             player.Health += health;
 
-            // player.LastActionTimestamp = DateTime.UtcNow;
-
             if (player.Mana > player.MaxMana)
             {
                 player.Mana = player.MaxMana;
@@ -1023,6 +1022,17 @@ namespace TT.Domain.Procedures
                             return summontext;
                         }
                     }
+                    else if (roll < 1 && dbLocationName == BossProcedures_MotorcycleGang.SpawnLocation)
+                    {
+                        if (world.IsMotorCycleGangBossAvailable())
+                        {
+                            BossProcedures_MotorcycleGang.Spawn();
+                            PvPWorldStatProcedures.Boss_StartMotorcycleGang();
+                            var summontext = BossSummonDictionary.GetActivationText("RoadQueen");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+                    }
                 }
             }
 
@@ -1032,8 +1042,6 @@ namespace TT.Domain.Procedures
             // learn a new skill
             if (roll < 30)
             {
-                var rand2 = new Random();
-                var roll2 = rand.NextDouble() * 100;
 
                 IEnumerable<DbStaticSkill> eligibleSkills;
 

@@ -69,7 +69,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// </summary>
         public static void SpawnFaeBoss()
         {
-            var faeboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FaebossId });
+            var faeboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FaebossBotId });
 
             if (faeboss == null)
             {
@@ -88,7 +88,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
-                    BotId = AIStatics.FaebossId,
+                    BotId = AIStatics.FaebossBotId,
                 };
                 var id = DomainRegistry.Repository.Execute(cmd);
 
@@ -136,7 +136,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunTurnLogic()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossBotId);
 
             // fae boss is no longer animate; end the event
             if (faeboss.Mobility!=PvPStatics.MobilityFull)
@@ -218,7 +218,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void CounterAttack(Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            var faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossBotId);
 
             AIProcedures.DealBossDamage(faeboss, attacker, true, 1); // log attack for human on boss
 
@@ -277,7 +277,7 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             PvPWorldStatProcedures.Boss_EndFaeBoss();
 
-            var damages = AIProcedures.GetTopAttackers(AIStatics.FaebossId, 25);
+            var damages = AIProcedures.GetTopAttackers(AIStatics.FaebossBotId, 25);
 
             // top player gets 1000 XP, each player down the line receives 35 fewer
             var l = 0;

@@ -16,6 +16,7 @@ using TT.Domain.ViewModels;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Commands;
 using TT.Domain.World.Commands;
 using TT.Domain.World.DTOs;
@@ -438,6 +439,8 @@ namespace TT.Web.Controllers
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
+
+            BossProcedures_MotorcycleGang.Spawn();
 
             return RedirectToAction(MVC.PvPAdmin.Index());
         }

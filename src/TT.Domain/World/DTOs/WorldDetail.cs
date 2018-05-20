@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.World.DTOs
@@ -11,13 +12,13 @@ namespace TT.Domain.World.DTOs
         public DateTime LastUpdateTimestamp { get;  set; }
         public bool WorldIsUpdating { get;  set; }
         public DateTime LastUpdateTimestamp_Finished { get;  set; }
-        public bool Boss_DonnaActive { get;  set; }
         public string Boss_Donna { get;  set; }
         public string Boss_Valentine { get;  set; }
         public string Boss_Bimbo { get;  set; }
         public string Boss_Thief { get;  set; }
         public string Boss_Sisters { get;  set; }
         public string Boss_Faeboss { get;  set; }
+        public string Boss_MotorcycleGang { get; set; }
         public string GameNewsDate { get;  set; }
         public bool TestServer { get;  set; }
         public bool ChaosMode { get;  set; }
@@ -26,94 +27,56 @@ namespace TT.Domain.World.DTOs
         public string RoundNumber { get; set; }
         public DateTime? RoundStartsAt { get; protected set; }
 
+ 
+
         /// <summary>
         /// Returns true if any of the NPC bosses are currently active
         /// </summary>
         /// <returns></returns>
         public bool AnyBossIsActive()
         {
-
-            if (this.Boss_Thief == "active")
-            {
-                return true;
-            }
-            else if (this.Boss_Valentine == "active")
-            {
-                return true;
-            }
-            else if (this.Boss_Bimbo == "active")
-            {
-                return true;
-            }
-            else if (this.Boss_Donna == "active")
-            {
-                return true;
-            }
-            else if (this.Boss_Sisters == "active")
-            {
-                return true;
-            }
-
-            return false;
+            return this.Boss_Thief == AIStatics.ACTIVE ||
+                   this.Boss_Valentine == AIStatics.ACTIVE ||
+                   this.Boss_Bimbo == AIStatics.ACTIVE ||
+                   this.Boss_Donna == AIStatics.ACTIVE ||
+                   this.Boss_Sisters == AIStatics.ACTIVE ||
+                   this.Boss_Faeboss == AIStatics.ACTIVE ||
+                   this.Boss_MotorcycleGang == AIStatics.ACTIVE;
         }
 
         public bool IsDonnaAvailable()
         {
-            if (Boss_Donna == "unstarted" && Boss_Valentine != "active" && Boss_Bimbo != "active" && Boss_Thief != "active" && Boss_Sisters != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Donna").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Donna == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.DonnaBotId);
         }
+
         public bool IsValentineAvailable()
         {
-            if (Boss_Valentine == "unstarted" && Boss_Donna != "active" && Boss_Bimbo != "active" && Boss_Thief != "active" && Boss_Sisters != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Valentine").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Valentine == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.ValentineBotId);
         }
 
         public bool IsBimboAvailable()
         {
-            if (Boss_Bimbo == "unstarted" && Boss_Valentine != "active" && Boss_Donna != "active" && Boss_Thief != "active" && Boss_Sisters != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "BimboBoss").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Bimbo == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.BimboBossBotId);
         }
 
         public bool IsTheifAvailable()
         {
-            if (Boss_Thief == "unstarted" && Boss_Valentine != "active" && Boss_Donna != "active" && Boss_Bimbo != "active" && Boss_Sisters != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Thieves").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Thief == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.FemaleRatBotId);
         }
 
         public bool IsSistersAvailable()
         {
-            if (Boss_Sisters == "unstarted" && Boss_Thief != "active" && Boss_Valentine != "active" && Boss_Donna != "active" && Boss_Bimbo != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Sisters").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Sisters == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.MouseNerdBotId);
         }
 
         /// <summary>
@@ -122,16 +85,26 @@ namespace TT.Domain.World.DTOs
         /// <returns></returns>
         public bool IsFaeBossAvailable()
         {
-            if (this.Boss_Faeboss == "unstarted" &&
-                !this.AnyBossIsActive() &&
-                this.TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "FaeBoss").MinimumTurn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !AnyBossIsActive() &&
+                   this.Boss_Faeboss == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.FaebossBotId);
+        }
+
+        /// <summary>
+        /// Returns true if the motorcycle boss has not yet been started, no other bosses are active, and the minimum turn number has passed
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMotorCycleGangBossAvailable()
+        {
+            return !AnyBossIsActive() &&
+                   this.Boss_MotorcycleGang == AIStatics.UNSTARTED &&
+                   minimumTurnIsMet(AIStatics.MotorcycleGangLeaderBotId);
+        }
+
+        private bool minimumTurnIsMet(int botId)
+        {
+            return this.TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossId == botId)
+                .MinimumTurn;
         }
     }
 }

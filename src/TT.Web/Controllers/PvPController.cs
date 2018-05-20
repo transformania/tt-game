@@ -23,6 +23,7 @@ using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -737,13 +738,13 @@ namespace TT.Web.Controllers
             }
 
             // Fae-In-A-Bottle only works against Narcissa
-            if (target.BotId == AIStatics.FaebossId)
+            if (target.BotId == AIStatics.FaebossBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
             }
 
             // Filter out Fae-In-A-Bottle when attacking non-Narcissa player
-            if (target.BotId != AIStatics.FaebossId)
+            if (target.BotId != AIStatics.FaebossBotId)
             {
                 output = output.Where(s => s.Skill.dbName != BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
             }
@@ -813,9 +814,6 @@ namespace TT.Web.Controllers
                 TempData["SubError"] = "You can't attack in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
-
-            // assert that it is not too EARLY in the round for this attack to happen
-            var secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
             if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
             {
@@ -992,7 +990,7 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is Fae-in-a-Bottle, only have it work against Narcissa
-            if (skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa && targeted.BotId != AIStatics.FaebossId)
+            if (skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa && targeted.BotId != AIStatics.FaebossBotId)
             {
                 TempData["Error"] = "This spell can only be cast against " + BossProcedures_FaeBoss.FirstName;
                 return RedirectToAction(MVC.PvP.Play());
@@ -1099,7 +1097,7 @@ namespace TT.Web.Controllers
                 }
 
                 // Narcissa
-                if (targeted.BotId == AIStatics.FaebossId)
+                if (targeted.BotId == AIStatics.FaebossBotId)
                 {
                     var isValid = BossProcedures_FaeBoss.SpellIsValid(attackName, me);
                     if (!isValid.Item1)
@@ -1108,6 +1106,14 @@ namespace TT.Web.Controllers
                         return RedirectToAction(MVC.PvP.Play());
                     }
                 }
+
+                // Motorcycle boss
+                if (targeted.BotId == AIStatics.MotorcycleGangLeaderBotId && !BossProcedures_MotorcycleGang.SpellIsValid(skill))
+                {
+                    TempData["Error"] = "Your target seems immune from this kind of spell.";
+                    TempData["SubError"] = "Maybe a different one would do...";
+                    return RedirectToAction(MVC.PvP.Play());
+                } 
 
             }
             #endregion
@@ -1186,7 +1192,7 @@ namespace TT.Web.Controllers
                 {
                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossDonnaAttacks, 1);
                 }
-                else if (targeted.BotId == AIStatics.FaebossId)
+                else if (targeted.BotId == AIStatics.FaebossBotId)
                 {
                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__FaebossAttacks, 1);
                 }

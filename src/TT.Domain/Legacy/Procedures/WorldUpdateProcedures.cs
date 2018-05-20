@@ -559,7 +559,6 @@ namespace TT.Domain.Procedures
                 #endregion
 
                 serverLogRepo.SaveServerLog(log);
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
 
                 #region forcibly terminate duels that have timed out
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started duel updates");
@@ -587,31 +586,30 @@ namespace TT.Domain.Procedures
                 #endregion duel updates
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Lindella actions");
+                serverLogRepo.SaveServerLog(log);
                 try
                 {
-                    serverLogRepo.SaveServerLog(log);
                     BossProcedures_Lindella.RunActions(turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
                 }
                 catch (Exception e)
                 {
                     log.Errors++;
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Lindella action", e));
                 }
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
                 serverLogRepo.SaveServerLog(log);
                 try
                 {
                     BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
                 }
                 catch (Exception e)
                 {
                     log.Errors++;
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Wuffie actions", e));
                 }
-
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
 
                 #region furniture
                 if (turnNo % 6 == 0)
@@ -652,139 +650,122 @@ namespace TT.Domain.Procedures
                 #region bosses
 
                 // DONNA
-                try
+                if (worldStats.Boss_Donna == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Donna == AIStatics.ACTIVE)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Donna actions");
-                        serverLogRepo.SaveServerLog(log);
-                        BossProcedures_Donna.RunDonnaActions();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Donna actions");
-                        serverLogRepo.SaveServerLog(log);
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Donna actions", e));
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Donna actions");
                     serverLogRepo.SaveServerLog(log);
+                    try
+                    {
+                        BossProcedures_Donna.RunDonnaActions();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Donna actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Donna actions");
                 }
-
 
                 // VALENTINE
-                try
+                if (worldStats.Boss_Valentine == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Valentine == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
-                        serverLogRepo.SaveServerLog(log);
-                        TT.Domain.Procedures.BossProcedures.BossProcedures_Valentine.RunValentineActions();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Valentine actions");
+                        BossProcedures_Valentine.RunValentineActions();
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Valentine actions", e));
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Valentine actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Valentine actions");
                 }
 
                 // BIMBO
-                try
+                if (worldStats.Boss_Bimbo == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Bimbo == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
-                        serverLogRepo.SaveServerLog(log);
-                        TT.Domain.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
+                        BossProcedures_BimboBoss.RunActions(turnNo);
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Bimbo actions", e));
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Bimbo actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
                 }
 
-                // THIEVES
-                try
+                // THIEVES                    
+                if (worldStats.Boss_Thief == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Thief == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
-                        serverLogRepo.SaveServerLog(log);
-                        TT.Domain.Procedures.BossProcedures.BossProcedures_Thieves.RunThievesAction(turnNo);
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Thieves actions");
+                        BossProcedures_Thieves.RunThievesAction(turnNo);
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Thieves actions", e));
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Thieves actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Thieves actions");
                 }
 
                 // SISTERS
-                try
+                if (worldStats.Boss_Sisters == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Sisters == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
-                        serverLogRepo.SaveServerLog(log);
-                        TT.Domain.Procedures.BossProcedures.BossProcedures_Sisters.RunSistersAction();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Sisters actions");
+                        BossProcedures_Sisters.RunSistersAction();
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Sisters actions", e));
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Sisters actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Sisters actions");
                 }
 
                 // FAEBOSS
-                try
+                if (worldStats.Boss_Faeboss == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Faeboss == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Narcissa actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Narcissa actions");
-                        serverLogRepo.SaveServerLog(log);
-                        TT.Domain.Procedures.BossProcedures.BossProcedures_FaeBoss.RunTurnLogic();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Narcissa actions");
+                        BossProcedures_FaeBoss.RunTurnLogic();
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Narcissa actions", e));
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Narcissa actions", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Narcissa actions");
                 }
 
                 // BIKER GANG BOSS
-                try
+                if (worldStats.Boss_MotorcycleGang == AIStatics.ACTIVE)
                 {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_MotorcycleGang == AIStatics.ACTIVE)
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started BikerBoss actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
                     {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started BikerBoss actions");
-                        serverLogRepo.SaveServerLog(log);
                         BossProcedures_MotorcycleGang.RunTurnLogic();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished BikerBoss actions");
                     }
-                }
-                catch (Exception e)
-                {
-                    log.Errors++;
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  BikerBoss ERROR:  " + e);
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  BikerBoss ERROR:  " + e);
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished BikerBoss actions");
                 }
 
                 #endregion bosses
@@ -797,10 +778,10 @@ namespace TT.Domain.Procedures
 
                 foreach (var e in psychoExceptions)
                 {
+                    log.Errors++;
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running pycho action", e));
                 }
 
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
 
 
@@ -830,28 +811,27 @@ namespace TT.Domain.Procedures
                     try
                     {
                         DungeonProcedures.GenerateDungeon();
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation completed.");
                     }
                     catch (Exception e)
                     {
                         log.Errors++;
                         log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Dungeon generation FAILED", e));
                     }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation completed.");
                 }
                 #endregion
 
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
                 try
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
                     DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
                 }
                 catch (Exception e)
                 {
                     log.Errors++;
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR deleting unwanted psycho items", e));
                 }
-
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
                 log.FinishTimestamp = DateTime.UtcNow;
                 serverLogRepo.SaveServerLog(log);
 

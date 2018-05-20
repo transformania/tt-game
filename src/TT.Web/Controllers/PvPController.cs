@@ -1200,6 +1200,10 @@ namespace TT.Web.Controllers
                 {
                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MouseSisterAttacks, 1);
                 }
+                else if (targeted.BotId == AIStatics.MotorcycleGangLeaderBotId)
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
+                }
 
             }
             catch (Exception e)

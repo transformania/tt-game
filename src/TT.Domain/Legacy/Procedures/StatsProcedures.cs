@@ -85,6 +85,7 @@ namespace TT.Domain.Procedures
         public const string Stat__BossDonnaAttacks = "boss_donnaAttacks";
         public const string Stat__FaebossAttacks = "boss_faebossAttacks";
         public const string Stat__MouseSisterAttacks = "boss_mouseSisterAttacks";
+        public const string Stat__MotorcycleGangAttacks = "boss_motorcycleGangAttacks";
 
         // Dungeon
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
@@ -628,6 +629,17 @@ namespace TT.Domain.Procedures
                     ResetsOnReroll = true
                 }
             },
+
+            {
+                Stat__MotorcycleGangAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="This Town Ain't Big Enough",
+                    Description="Times attacking Harley the Road Queen",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            }
 
             };
 

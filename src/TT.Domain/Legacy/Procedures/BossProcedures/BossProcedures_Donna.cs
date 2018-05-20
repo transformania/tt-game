@@ -67,7 +67,6 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void RunDonnaActions()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IServerLogRepository serverLogRepo = new EFServerLogRepository();
 
             var worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
 

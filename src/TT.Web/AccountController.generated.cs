@@ -97,6 +97,7 @@ namespace TT.Web.Controllers
             public readonly string Manage = ("Manage").ToLowerInvariant();
             public readonly string ChangeEmail = ("ChangeEmail").ToLowerInvariant();
             public readonly string TermsOfService = ("TermsOfService").ToLowerInvariant();
+            public readonly string PrivacyPolicy = ("PrivacyPolicy").ToLowerInvariant();
             public readonly string SubmitCaptcha = ("SubmitCaptcha").ToLowerInvariant();
         }
 
@@ -159,6 +160,7 @@ namespace TT.Web.Controllers
                 public readonly string ChangeEmail = "ChangeEmail";
                 public readonly string Login = "Login";
                 public readonly string Manage = "Manage";
+                public readonly string PrivacyPolicy = "PrivacyPolicy";
                 public readonly string Register = "Register";
                 public readonly string TermsOfService = "TermsOfService";
             }
@@ -167,6 +169,7 @@ namespace TT.Web.Controllers
             public readonly string ChangeEmail = "~/Views/Account/ChangeEmail.cshtml";
             public readonly string Login = "~/Views/Account/Login.cshtml";
             public readonly string Manage = "~/Views/Account/Manage.cshtml";
+            public readonly string PrivacyPolicy = "~/Views/Account/PrivacyPolicy.cshtml";
             public readonly string Register = "~/Views/Account/Register.cshtml";
             public readonly string TermsOfService = "~/Views/Account/TermsOfService.cshtml";
         }
@@ -292,6 +295,17 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TermsOfService);
             TermsOfServiceOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PrivacyPolicyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult PrivacyPolicy()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PrivacyPolicy);
+            PrivacyPolicyOverride(callInfo);
             return callInfo;
         }
 

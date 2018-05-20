@@ -199,6 +199,7 @@
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
     <Compile Include="Identity\CommandHandlers\ResetSecurityStampHandler.cs" />
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
+    <Compile Include="Legacy\Procedures\BossProcedures\BossProcedures_MotorcycleGang.cs" />
     <Compile Include="Players\Commands\GiveRune.cs" />
     <Compile Include="Players\Commands\Move.cs" />
     <Compile Include="Players\Queries\CanInteractWith.cs" />
@@ -881,6 +882,9 @@
     <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_pool.xml" />
     <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <EmbeddedResource Include="XMLs\LocationDescriptions\z_template - Copy.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="XMLs\BossSummonText\RoadQueen.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

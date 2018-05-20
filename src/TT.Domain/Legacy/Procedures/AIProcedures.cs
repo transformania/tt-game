@@ -4,11 +4,13 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.Procedures
 {
@@ -203,7 +205,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static List<Exception> RunPsychopathActions()
+        public static List<Exception> RunPsychopathActions(WorldDetail worldDetail)
         {
 
             var errors = new List<Exception>();
@@ -337,7 +339,7 @@ namespace TT.Domain.Procedures
                             // the bot must move to its target location.
                             if (myTarget.dbLocationName != bot.dbLocationName)
                             {
-                                if (botbuffs.MoveActionPointDiscount() > -100)
+                                if (botbuffs.MoveActionPointDiscount() > -100 && CanMove(worldDetail, myTarget))
                                 {
                                     var newplace = MoveTo(bot, myTarget.dbLocationName, 4);
                                     bot.dbLocationName = newplace;
@@ -347,7 +349,9 @@ namespace TT.Domain.Procedures
                             // if the bot is now in the same place as the target, attack away, so long as the target is online and animate
                             if (bot.dbLocationName == myTarget.dbLocationName &&
                                 !PlayerProcedures.PlayerIsOffline(myTarget) &&
-                                myTarget.Mobility == PvPStatics.MobilityFull)
+                                myTarget.Mobility == PvPStatics.MobilityFull &&
+                                CanAttack(worldDetail, bot, myTarget)
+                                )
                             {
                                 playerRepo.SavePlayer(bot);
                                 if (bot.Mana >= 7)
@@ -476,12 +480,6 @@ namespace TT.Domain.Procedures
 
             }
 
-            // if the target is the merchant, run the counterattack procedure
-            if (bot.BotId == AIStatics.LindellaBotId)
-            {
-                AIProcedures.CounterAttack(personAttacking, bot);
-            }
-
             // if the target is Donna, counterattack and set that player as her target immediately
             if (bot.BotId == AIStatics.DonnaBotId)
             {
@@ -508,16 +506,17 @@ namespace TT.Domain.Procedures
             }
 
             // fae boss counterattack
-            else if (bot.BotId == AIStatics.FaebossId)
+            else if (bot.BotId == AIStatics.FaebossBotId)
             {
                 AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
                 BossProcedures_FaeBoss.CounterAttack(personAttacking);
             }
 
-            // Wuffie counterattack
-            else if (bot.BotId == AIStatics.WuffieBotId)
+            // motocycle boss counterattack
+            else if (bot.BotId == AIStatics.MotorcycleGangLeaderBotId)
             {
-                BossProcedures_PetMerchant.CounterAttack(personAttacking);
+                AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
+                BossProcedures_MotorcycleGang.CounterAttack(personAttacking, bot);
             }
 
             // mouse sisters counterattack
@@ -737,7 +736,35 @@ namespace TT.Domain.Procedures
             return repo.BossDamages.Where(b => b.BossBotId == bossBotId && b.PlayerAttacksOnBoss > 0).OrderByDescending(b => b.TotalPoints).Take(amount).ToList();
         }
 
-        
+        private static bool CanMove(WorldDetail world, Player bot)
+        {
+            if (world.Boss_MotorcycleGang == AIStatics.ACTIVE && bot.Form == BossProcedures_MotorcycleGang.BikerFollowerForm)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool CanAttack(WorldDetail world, Player bot, Player victim)
+        {
+
+            if (victim.BotId == AIStatics.MotorcycleGangLeaderBotId)
+            {
+                return false;
+            }
+
+            if (world.Boss_MotorcycleGang == AIStatics.ACTIVE &&
+                bot.Form == BossProcedures_MotorcycleGang.BikerFollowerForm &&
+                victim.Form == BossProcedures_MotorcycleGang.BikerFollowerForm &&
+                victim.BotId == AIStatics.PsychopathBotId
+                )
+            {
+                return false;
+            }
+
+            return true;
+        }
 
     }
 

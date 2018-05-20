@@ -5,11 +5,13 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
+using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
 
 namespace TT.Domain.Procedures
@@ -653,7 +655,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Donna == "active")
+                    if (worldStats.Boss_Donna == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Donna actions");
                         serverLogRepo.SaveServerLog(log);
@@ -675,7 +677,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Valentine == "active")
+                    if (worldStats.Boss_Valentine == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
                         serverLogRepo.SaveServerLog(log);
@@ -694,7 +696,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Bimbo == "active")
+                    if (worldStats.Boss_Bimbo == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
                         serverLogRepo.SaveServerLog(log);
@@ -713,7 +715,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Thief == "active")
+                    if (worldStats.Boss_Thief == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
                         serverLogRepo.SaveServerLog(log);
@@ -732,7 +734,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Sisters == "active")
+                    if (worldStats.Boss_Sisters == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
                         serverLogRepo.SaveServerLog(log);
@@ -751,7 +753,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     // run boss logic if one is active
-                    if (worldStats.Boss_Faeboss == "active")
+                    if (worldStats.Boss_Faeboss == AIStatics.ACTIVE)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Narcissa actions");
                         serverLogRepo.SaveServerLog(log);
@@ -766,13 +768,32 @@ namespace TT.Domain.Procedures
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running Narcissa actions", e));
                 }
 
+                // BIKER GANG BOSS
+                try
+                {
+                    // run boss logic if one is active
+                    if (worldStats.Boss_MotorcycleGang == AIStatics.ACTIVE)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started BikerBoss actions");
+                        serverLogRepo.SaveServerLog(log);
+                        BossProcedures_MotorcycleGang.RunTurnLogic();
+                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished BikerBoss actions");
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Errors++;
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  BikerBoss ERROR:  " + e);
+                }
+
                 #endregion bosses
 
                 // psychopaths
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started psychopath actions");
                 serverLogRepo.SaveServerLog(log);
 
-                var psychoExceptions = AIProcedures.RunPsychopathActions();
+                var psychoExceptions = AIProcedures.RunPsychopathActions(worldStats);
 
                 foreach (var e in psychoExceptions)
                 {

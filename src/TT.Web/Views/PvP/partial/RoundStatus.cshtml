@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.World.DTOs.WorldDetail
 @using TT.Domain.Statics
+@using TT.Domain.World.DTOs
 
 @{
     if (Model.TestServer)
@@ -42,36 +43,41 @@
         <p class="specialBox specialBox2">You are currently engaged in the quest <b>@ViewBag.QuestName!</b>  Click <a href="@Url.Action(MVC.Quest.Questing())">here</a> to resume questing.</p>
     }
 
-    if (Model.Boss_Donna == "active")
+    if (Model.Boss_Donna == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 
-    if (Model.Boss_Valentine == "active")
+    if (Model.Boss_Valentine == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful vampire lord known as Lord Valentine is lurking in his castle waiting for mortals to dare and fight him... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 
-    if (Model.Boss_Bimbo == "active")
+    if (Model.Boss_Bimbo == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a mad scientist is spreading a virus that is transforming many inhabitants of the city into her loyal bimbo army... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 
-    if (Model.Boss_Thief == "active")
+    if (Model.Boss_Thief == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a pair of rat thieves of the infamous Seekshadow Guild are out and about pickpocketing any mage with a fat enough wallet... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
-    
-    if (Model.Boss_Sisters == "active")
+
+    if (Model.Boss_Sisters == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it the Brisby twin sisters are having a fight and are seeking help from mages to help convince their other to try out a new lifestyle...<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 
-    if (Model.Boss_Faeboss == "active")
+    if (Model.Boss_Faeboss == AIStatics.ACTIVE)
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it that the infamous corrupted fae Narcissa has started her conquest of the town, purging it of any non-fae... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
-    
+
+    if (Model.Boss_MotorcycleGang == AIStatics.ACTIVE)
+    {
+        <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it that a biker gang is in town seeking to recruit new members, and those who don't join become their trophies... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
+    }
+
 }
 
 

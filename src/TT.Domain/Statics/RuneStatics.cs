@@ -9,5 +9,6 @@
         public static int HEADMISTRESS_RUNE = 516;
         public static int NARCISSA_RUNE = 517;
         public static int BIMBO_RUNE = 518;
+        public static int MOTORCYCLE_RUNE = 557;
     }
 }

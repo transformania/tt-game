@@ -20,12 +20,16 @@ namespace TT.Domain.Statics
         public const int DemonBotId = -13;
         public const int BartenderBotId = -14;
         public const int LoremasterBotId = -15;
-        public const int FaebossId = -16;
+        public const int FaebossBotId = -16;
+        public const int MotorcycleGangLeaderBotId = -17;
 
         public const int MalePsychoFormId = 13;
         public const int FemalePsychoFormId = 14;
 
         public const int DungeonDemonFormId = 371;
+
+        public const string ACTIVE = "active";
+        public const string UNSTARTED = "unstarted";
 
         public static bool IsABoss(int id)
         {
@@ -36,7 +40,7 @@ namespace TT.Domain.Statics
                    id == MaleRatBotId ||
                    id == MouseNerdBotId ||
                    id == MouseBimboBotId ||
-                   id == FaebossId;
-        } 
+                   id == FaebossBotId;
+        }
     }
 }

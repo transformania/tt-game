@@ -3,11 +3,15 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.World.Queries;
 
 namespace TT.Domain.Procedures
 {
     public class PvPWorldStatProcedures
     {
+
+        private const string COMPLETED = "completed";
+        private const string ACTIVE = "active";
 
         public static PvPWorldStat GetWorldStats()
         {
@@ -50,7 +54,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Donna = "active";
+            stat.Boss_Donna = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -58,7 +62,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Donna = "completed";
+            stat.Boss_Donna = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
         #endregion
@@ -69,7 +73,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Valentine = "active";
+            stat.Boss_Valentine = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -77,7 +81,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Valentine = "completed";
+            stat.Boss_Valentine = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -89,7 +93,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Bimbo = "active";
+            stat.Boss_Bimbo = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -97,7 +101,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Bimbo = "completed";
+            stat.Boss_Bimbo = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -110,7 +114,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Thief = "active";
+            stat.Boss_Thief = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -118,7 +122,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Thief = "completed";
+            stat.Boss_Thief = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -130,7 +134,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Sisters = "active";
+            stat.Boss_Sisters = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -138,10 +142,25 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Sisters = "completed";
+            stat.Boss_Sisters = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
+        public static void Boss_StartMotorcycleGang()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            var stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_MotorcycleGang = ACTIVE;
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
+        public static void Boss_EndMotorcycleGang()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            var stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_MotorcycleGang = COMPLETED;
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
 
         #endregion
 
@@ -151,7 +170,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Faeboss = "active";
+            stat.Boss_Faeboss = ACTIVE;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -159,7 +178,7 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             var stat = worldStatRepo.PvPWorldStats.First();
-            stat.Boss_Faeboss = "completed";
+            stat.Boss_Faeboss = COMPLETED;
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
@@ -167,9 +186,8 @@ namespace TT.Domain.Procedures
 
         public static bool IsAnyBossActive()
         {
-            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            var stat = worldStatRepo.PvPWorldStats.First();
-            return stat.AnyBossIsActive();
+            var worldDetails = DomainRegistry.Repository.FindSingle(new GetWorld());
+            return worldDetails.AnyBossIsActive();
         }
 
 

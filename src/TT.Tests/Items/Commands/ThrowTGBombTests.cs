@@ -111,7 +111,7 @@ namespace TT.Tests.Items.Commands
              .With(p => p.PlayerLogs, new List<PlayerLog>())
              .BuildAndSave();
 
-            // shouldn't get hit, offline
+            // shouldn't get hit, not in a base form
             var nonBaseFormPlayer = new PlayerBuilder()
              .With(p => p.Id, 10)
              .With(p => p.Location, TavernLocation)

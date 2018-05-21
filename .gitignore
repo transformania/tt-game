@@ -282,6 +282,6 @@ unitCoverage.xml
 coverage/
 
 # Cake
-tools/
+/tools/
 *.flg
 .dotnet/

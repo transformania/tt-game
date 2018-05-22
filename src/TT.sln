@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Web", "TT.Web\TT.Web.csproj", "{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Tests", "TT.Tests\TT.Tests.csproj", "{DBFCEC04-8C92-43AB-AB33-DFE02A0A51A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Migrations", "TT.Migrations\TT.Migrations.csproj", "{10556679-DA4A-4F86-ADAE-D98B4AD6260C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.IntegrationTests", "TT.IntegrationTests\TT.IntegrationTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A6DA43C-7502-4656-A5FD-83A0A7561246} = {6A6DA43C-7502-4656-A5FD-83A0A7561246}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +38,15 @@ Global
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C08D0ECD-4D1B-461D-886F-E0ACA492DD31}
 	EndGlobalSection
 EndGlobal

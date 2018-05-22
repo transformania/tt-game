@@ -3,12 +3,14 @@
 #addin Cake.FileHelpers
 #addin nuget:?package=SharpZipLib
 #addin nuget:?package=Cake.Compression
+#addin nuget:?package=System.ValueTuple
 #tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
 
 using static Cake.Common.Tools.ReportGenerator.ReportGeneratorReportType;
+using static System.Globalization.CultureInfo;
 
 // Default settings
 var target = Argument("target", EnvironmentVariable("TT_TARGET") ?? "Default");
@@ -20,8 +22,12 @@ var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/Images/Pv
 
 var isInCI = Convert<bool>(EnvironmentVariable("CI") ?? "false");
 Uri unitHistoryUri = null;
+Uri integrationHistoryUri = null;
 if (isInCI)
+{
     unitHistoryUri = Convert<Uri>(EnvironmentVariable("TT_UNIT_HISTORY_URI"));
+    integrationHistoryUri = Convert<Uri>(EnvironmentVariable("TT_INTEGRATION_HISTORY_URI"));
+}
 
 // Dictionary of DB instances and connection strings
 var instances = new Dictionary<string,Tuple<string,bool>>()
@@ -123,72 +129,119 @@ Task("Run-Unit-Tests")
     }
 );
 
-Task("Generate-Report")
-    .IsDependentOn("Run-Unit-Tests")
+Task("Run-Integration-Tests")
+    .IsDependentOn("Build")
     .Does(() => {
-        bool TryDownload(out FilePath unitHistory)
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/ConnectionStrings.config"))
         {
-            try 
-            {
-                unitHistory = DownloadFile(unitHistoryUri);
-            }
-            catch (AggregateException ex)
-            when(ex.GetBaseException() is System.Net.Http.HttpRequestException)
-            {
-                Warning("Unit coverage history not found.");
-                unitHistory = null;
-                return false;
-            }
-
-            return true;
+            file.WriteLine($"<connectionStrings><add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{connectionString}\"/></connectionStrings>");
         }
-
-        if (isInCI && TryDownload(out FilePath unitResult))
+    
+        var platform = new CakePlatform();
+        if (platform.Family == PlatformFamily.Windows)
         {
-            try 
-            {
-                GZipUncompress(unitResult, new DirectoryPath("coverage/unit/history"));
-            }
-            catch (Exception ex)
-            {
-                Error(ex);
-                throw;
-            }
+            var integrationCoverage = new FilePath("integrationCoverage.xml");
+            OpenCover(tool => {
+               tool.NUnit3("./src/**/bin/" + configuration + "/*.IntegrationTests.dll");
+            },
+            integrationCoverage,
+            new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
+                .WithFilter("+[TT.Domain]*")
+                .WithFilter("+[TT.Web]*")
+                .WithFilter("-[TT.Migrations]*")
+                .WithFilter("-[TT.Tests]*")
+                .WithFilter("-[TT.IntegrationTests]*")
+            );
         }
-
-        ReportGenerator(new FilePath("unitCoverage.xml"), "coverage/unit", new ReportGeneratorSettings(){
-            ReportTypes = new List<ReportGeneratorReportType>() { Html, Badges, TextSummary },
-            HistoryDirectory = new DirectoryPath("coverage/unit/history")
-        });
-
-        foreach(var line in FileReadLines(new FilePath("coverage/unit/Summary.txt")))
+        else
         {
-            if (string.IsNullOrEmpty(line))
-                break;
-            if (line == "Summary")
-                Information("Unit Test Summary");
-            else
-                Information(line);
+            NUnit3("./src/**/bin/" + configuration + "/*.IntegrationTests.dll");
         }
         
-        if (isInCI)
+        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/ConnectionStrings.config");
+    }
+);
+
+Task("Generate-Report")
+    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Run-Integration-Tests")
+    .DoesForEach(new [] { (File("unitCoverage.xml"), "unit", unitHistoryUri), (File("integrationCoverage.xml"), "integration", integrationHistoryUri) }, (tuple) =>
+    {
+        var (path, testName, historyUri) = tuple;
+
+        if (FileExists(path))
         {
-            try 
+            bool TryDownload(out FilePath historyPath)
             {
-                GZipCompress(new DirectoryPath("coverage/unit/history"), new FilePath("coverage/unit/history.tar.gz"), 9);
-            }
-            catch (Exception ex)
-            {
-                Error(ex);
-                throw;
+                try 
+                {
+                    historyPath = DownloadFile(historyUri);
+                }
+                catch (AggregateException ex)
+                when(ex.GetBaseException() is System.Net.Http.HttpRequestException)
+                {
+                    Warning($"{testName} coverage history not found.");
+                    historyPath = null;
+                    return false;
+                }
+
+                return true;
             }
 
-            if (FileExists("coverage/unit/history.tar.gz"))
+            if (isInCI && TryDownload(out FilePath result))
             {
-                DeleteDirectory(new DirectoryPath("coverage/unit/history"), new DeleteDirectorySettings
+                try 
                 {
-                    Recursive = true
-                });
+                    GZipUncompress(result, new DirectoryPath($"coverage/{testName}/history"));
+                }
+                catch (Exception ex)
+                {
+                    Error(ex);
+                    throw;
+                }
+            }
+
+            ReportGenerator(path, $"coverage/{testName}", new ReportGeneratorSettings(){
+                ReportTypes = new List<ReportGeneratorReportType>() { Html, Badges, TextSummary },
+                HistoryDirectory = new DirectoryPath($"coverage/{testName}/history")
+            });
+
+            foreach(var line in FileReadLines(new FilePath($"coverage/{testName}/Summary.txt")))
+            {
+                if (string.IsNullOrEmpty(line))
+                    break;
+
+                if (line == "Summary")
+                    Information($"{CurrentCulture.TextInfo.ToTitleCase(testName)} Test Summary");
+                else
+                {
+                    var trimmed = line.Trim();
+                    if (trimmed.StartsWith("Line coverage:"))
+                        Information($"  {CurrentCulture.TextInfo.ToTitleCase(testName)} " + trimmed.ToLower());
+                    else
+                        Information(line);
+                }
+            }
+            
+            if (isInCI)
+            {
+                try 
+                {
+                    GZipCompress(new DirectoryPath($"coverage/{testName}/history"), new FilePath($"coverage/{testName}/history.tar.gz"), 9);
+                }
+                catch (Exception ex)
+                {
+                    Error(ex);
+                    throw;
+                }
+
+                if (FileExists($"coverage/{testName}/history.tar.gz"))
+                {
+                    DeleteDirectory(new DirectoryPath($"coverage/{testName}/history"), new DeleteDirectorySettings
+                    {
+                        Recursive = true
+                    });
+                }
             }
         }
     });
@@ -311,6 +364,7 @@ Task("CI-Build")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Run-Integration-Tests")
     .IsDependentOn("Generate-Report");
 
 // Drops, re-migrates and re-seeds the DB

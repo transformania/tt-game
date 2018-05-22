@@ -5,12 +5,13 @@ ps_build:
   stage: build
   variables:
     TT_UNIT_HISTORY_URI: "https://transformania.gitlab.io/tt-game/unit/history.tar.gz"
+    TT_INTEGRATION_HISTORY_URI: "https://transformania.gitlab.io/tt-game/integration/history.tar.gz"
   script:
     - .\build.ps1 -target "CI-Build"
   artifacts:
     paths:
       - coverage/
-  coverage: '/Line coverage: (\d+\.\d+\%)/'
+  coverage: '/Unit line coverage: (\d+\.\d+\%)/'
   tags:
     - powershell
     - windows

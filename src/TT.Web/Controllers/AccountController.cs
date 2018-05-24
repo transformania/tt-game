@@ -11,6 +11,8 @@ using Recaptcha.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
+using TT.Domain.Legacy.Procedures;
+using TT.Domain.Models;
 using TT.Domain.Procedures;
 
 namespace TT.Web.Controllers
@@ -233,6 +235,30 @@ namespace TT.Web.Controllers
             }
             // If we got this far, something failed, redisplay form
             return View(MVC.Account.Views.ChangeEmail, model);
+        }
+
+        public virtual ActionResult DeleteAccount()
+        {
+            return View(MVC.Account.Views.DeleteAccount);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public virtual ActionResult DeleteAccountConfirm()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            try
+            {
+                DeleteAccountProcedures.DeleteAccount(myMembershipId, me.Id);
+                authenticationManager.SignOut();
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = $"FAILED to delete account.  Reason: {e}.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            return View(MVC.Account.Views.Register);
         }
 
         [AllowAnonymous]

@@ -8,18 +8,18 @@
     <meta name="referrer" content="never">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>@(string.IsNullOrEmpty(ViewBag.Title) ? "Transformania Time" : $"{ViewBag.Title} - Transformania Time")</title>
-    <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
+    <script src="~/js/datatables/1.10.11/jquery.dataTables.min.js"></script>
+    <script src="~/js/datatables/1.10.11/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/datatables-responsive/2.0.2/dataTables.responsive.min.js"></script>
+    <script src="~/js/datatables-responsive/2.0.2/responsive.bootstrap.min.js"></script>
     <script src="~/Scripts/moment.min.js"></script>
 
     <!-- Bootstrap -->
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
 	<link href="~/Content/custom.min.css" rel="stylesheet">
 	<link href="~/Content/PvP.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="//cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="~/js/datatables/1.10.11/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/js/datatables-responsive/2.0.2/responsive.dataTables.min.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="/Images/PvP/Icons/tt_logo.ico">
     @RenderSection("head", required: false)
@@ -115,7 +115,7 @@
       <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="~/js/bootstrap/3.3.1/bootstrap.min.js"></script>
         @RenderSection("scripts", required: false)
       <script src="~/Scripts/boxesResize.js"></script>
   </body>

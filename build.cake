@@ -18,7 +18,8 @@ var configuration = Argument("configuration", EnvironmentVariable("TT_CONFIGURAT
 var dbType = Argument("dbType", EnvironmentVariable("TT_DBTYPE") ?? "localdb_v2").ToLower();
 var dbName = Argument("dbName", EnvironmentVariable("TT_DBNAME") ?? "Stats");
 var updateUrl = Argument("updateUrl", "http://localhost:52223/API/WorldUpdate");
-var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/Images/PvP.zip");
+var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/cake/images.zip");
+var jsUrl = Argument("jsUrl", "https://www.transformaniatime.com/cake/js.zip");
 
 var isInCI = Convert<bool>(EnvironmentVariable("CI") ?? "false");
 Uri unitHistoryUri = null;
@@ -337,6 +338,14 @@ Task("Seed-Images")
      }
 );
 
+Task("Download-JS")
+    .Does(() => {
+        var jsArchive = DownloadFile(jsUrl);
+        Unzip(jsArchive, "./src/TT.Web/js");
+        DeleteFile(jsArchive);
+     }
+);
+
 Task("Drop-Images")
     .Does(() => {
         if (FileExists("images.flg"))
@@ -356,6 +365,7 @@ Task("Default")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Seed-Images")
+    .IsDependentOn("Download-JS")
     .IsDependentOn("Run-Unit-Tests");
 
 // Resets to a blank DB, runs full DB migration and DB seed but doesn't seed images

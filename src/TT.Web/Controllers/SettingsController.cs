@@ -532,7 +532,6 @@ namespace TT.Web.Controllers
             if (!customForms.Any())
             {
                 TempData["Error"] = "You do not have any custom base forms.";
-                TempData["SubError"] = "Read more about how to get one here:  http://luxianne.com/forum/viewtopic.php?f=9&t=400";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

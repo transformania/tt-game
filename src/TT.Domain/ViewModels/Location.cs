@@ -36,7 +36,7 @@ namespace TT.Domain.ViewModels
             }
             catch (ResourceNotFoundException)
             {
-                return "ERROR:  The description for this location was not able to be loaded.  Please report this bug at http://luxianne.com/forum/viewforum.php?f=5.";
+                return "ERROR:  The description for this location was not able to be loaded.";
             }
         }
     }

@@ -838,7 +838,7 @@ namespace TT.Web.Controllers
             if (!iAmWhitelisted && PlayerProcedures.IsMyIPInUseAndAnimate(Request.GetRealUserHostAddress(), me))
             {
                 TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to attack.";
-                TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.  Read more about the rules regarding multiple accounts here:  http://luxianne.com/forum/viewtopic.php?f=5&t=449 .";
+                TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1208,17 +1208,10 @@ namespace TT.Web.Controllers
             }
             catch (Exception e)
             {
-                TempData["Error"] = "There was a server error while carrying out your attack.  Reason:  <br><br>" + e.ToString() + ".<br><br>If this error persists please report this bug at on the game forums, found at http://luxianne.com/forum/viewforum.php?f=5&sid=3eeb3207fe885b88851edcb7d964eb94.  When posting this bug please including information on which spell you were casting, whether you or your target was in protection mode, and if possible how close to a turn update this attack was made.";
-
-                //  PlayerProcedures.AddAttackCount(me, -1);
-                // PlayerProcedures.ChangePlayerActionMana(4, 0, skillBeingUsed.Skill.ManaCost, me.Id);
+                TempData["Error"] = "There was a server error while carrying out your attack.  Reason:  <br><br>" + e;
             }
 
-
-
             AIProcedures.CheckAICounterattackRoutine(me, targeted);
-
-
 
             return RedirectToAction(MVC.PvP.Play());
         }

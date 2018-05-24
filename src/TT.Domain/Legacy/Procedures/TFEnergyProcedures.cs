@@ -630,7 +630,7 @@ namespace TT.Domain.Procedures
 
             if (tfMessage == null)
             {
-                return "ERROR RETRIEVING TRANSFORMATION TEXT.  This is a bug.  Please post this error at the forums in the Bug Reports section:  http://luxianne.com/forum/index.php";
+                return "ERROR RETRIEVING TRANSFORMATION TEXT.  This is a bug.";
             }
 
             #region 20 percent TF

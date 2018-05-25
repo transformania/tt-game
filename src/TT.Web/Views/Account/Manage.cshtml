@@ -3,26 +3,34 @@
     ViewBag.Title = "Manage Account";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
-<p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
-
-<a href="@Url.Action(MVC.Account.ChangeEmail())">Change e-mail address</a><br>
-
-<a href="@Url.Action(MVC.Account.TermsOfService())">View Terms of Service</a>
-
-@if (ViewBag.HasLocalPassword)
+@section menu
 {
-    @Html.Partial(MVC.Account.Views._ChangePasswordPartial)
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Account.ChangeEmail())">Change e-mail address</a></li>
+    <li><a href="@Url.Action(MVC.Account.TermsOfService())">View Terms of Service</a></li>
+    <li><a href="@Url.Action(MVC.Account.PrivacyPolicy())">View Privacy Policy</a></li>
+    <li><a href="@Url.Action(MVC.Account.DeleteAccount())"><span class="bad">Delete Account</span></a></li>
 }
-else
-{ 
-    @Html.Partial(MVC.Account.Views._SetPasswordPartial)
-}
+
+
+<div class="containerInner">
+
+    <h1>Manage Account</h1>
+
+    <p class="message-success">@ViewBag.StatusMessage</p>
+
+    <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+
+    @if (ViewBag.HasLocalPassword)
+    {
+        @Html.Partial(MVC.Account.Views._ChangePasswordPartial)
+    }
+    else
+    {
+        @Html.Partial(MVC.Account.Views._SetPasswordPartial)
+    }
+
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -200,6 +200,7 @@
     <Compile Include="Identity\CommandHandlers\ResetSecurityStampHandler.cs" />
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
     <Compile Include="Legacy\Procedures\BossProcedures\BossProcedures_MotorcycleGang.cs" />
+    <Compile Include="Legacy\Procedures\DeleteAccountProcedures.cs" />
     <Compile Include="Players\Commands\GiveRune.cs" />
     <Compile Include="Players\Commands\Move.cs" />
     <Compile Include="Players\Queries\CanInteractWith.cs" />

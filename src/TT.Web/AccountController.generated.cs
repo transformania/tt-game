@@ -96,6 +96,8 @@ namespace TT.Web.Controllers
             public readonly string Disassociate = ("Disassociate").ToLowerInvariant();
             public readonly string Manage = ("Manage").ToLowerInvariant();
             public readonly string ChangeEmail = ("ChangeEmail").ToLowerInvariant();
+            public readonly string DeleteAccount = ("DeleteAccount").ToLowerInvariant();
+            public readonly string DeleteAccountConfirm = ("DeleteAccountConfirm").ToLowerInvariant();
             public readonly string TermsOfService = ("TermsOfService").ToLowerInvariant();
             public readonly string PrivacyPolicy = ("PrivacyPolicy").ToLowerInvariant();
             public readonly string SubmitCaptcha = ("SubmitCaptcha").ToLowerInvariant();
@@ -158,6 +160,7 @@ namespace TT.Web.Controllers
                 public readonly string _ChangePasswordPartial = "_ChangePasswordPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
                 public readonly string ChangeEmail = "ChangeEmail";
+                public readonly string DeleteAccount = "DeleteAccount";
                 public readonly string Login = "Login";
                 public readonly string Manage = "Manage";
                 public readonly string PrivacyPolicy = "PrivacyPolicy";
@@ -167,6 +170,7 @@ namespace TT.Web.Controllers
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";
             public readonly string ChangeEmail = "~/Views/Account/ChangeEmail.cshtml";
+            public readonly string DeleteAccount = "~/Views/Account/DeleteAccount.cshtml";
             public readonly string Login = "~/Views/Account/Login.cshtml";
             public readonly string Manage = "~/Views/Account/Manage.cshtml";
             public readonly string PrivacyPolicy = "~/Views/Account/PrivacyPolicy.cshtml";
@@ -284,6 +288,28 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeEmail);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             ChangeEmailOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteAccountOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeleteAccount()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteAccount);
+            DeleteAccountOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteAccountConfirmOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeleteAccountConfirm()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteAccountConfirm);
+            DeleteAccountConfirmOverride(callInfo);
             return callInfo;
         }
 

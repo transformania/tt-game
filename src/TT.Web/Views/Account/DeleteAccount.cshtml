@@ -1,0 +1,68 @@
+﻿@using FeatureSwitch
+@using Recaptcha.Web.Mvc
+@using TT.Domain
+@using TT.Domain.Statics
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+<div class="containerInner">
+
+    <h1>Delete Account</h1>
+    <p class="bad">You may delete your account here if you no longer wish to have an account or withdraw your consent to Transformania Time's <a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a>.  Please by aware that deleting your account is <b>PERMANENT</b> and <b>IRREVERSIBLE</b>.</p><br/>
+
+    <p>The following data will be deleted immediately along with your account:</p>
+
+    <ul class="listdots">
+        <li><a href="@Url.Action(MVC.Settings.SetBio())">Player Bio</a></li>
+        <li>Ingame messages, both sent and received</li>
+        <li>Achievements from past rounds (as seen on a player bio)</li>
+        <li>Friend accounts saved on the friends list</li>
+        <li>Blacklisted accounts saved on the blacklist page</li>
+        <li>Artist biography page</li>
+        <li>Patreon backer rewards</li>
+        <li>RP Classified Ads you have created</li>
+        <li>Responses to polls, past and present</li>
+    </ul>
+
+    <p>The following data will NOT be deleted along with your account, but you will no longer have access to any of them:</p>
+
+    <ul class="listdots">
+        <li>Your current player character.  Your character will no longer be associated with any account and will become inactive for the remainder of the round / chaos mode.  Your character will be deleted at the beginning of the following round.</li>
+        <li>Your Contributions, both in progress and those currently live in the game.  This includes spell contributions and artwork.  Live contributions may continue to be updated by proofreaders for spelling and/or grammar mistakes and to meet required updates for gameplay.</li>
+        <li>Your submitted quests, both in progress and live in the game.</li>
+        <li>Mentions of your character names, past or present, on the past round leaderboards.</li>
+        <li>Your reserved player name.  This is done to prevent imposters from creating new characters under the same name.</li>
+    </ul>
+    
+    <br>
+    
+    <p>After deleting your account, you will be redirected to the Register page.  It may take several months for all IIS logs and database backups with your information to be deleted as outlined in the <a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a>.  This does <b>NOT</b> mean we will honor requests to restore your information after deleting your account.</p><br>
+    
+    
+    <input type="checkbox" id="confirmBox" onclick="toggleButton()"/> <b>Check here to enable the delete button</b> <br><br>
+
+    @using (Html.BeginForm(MVC.Account.DeleteAccountConfirm(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input name="deleteAccount" type="hidden" value="True">
+        <input type="submit" id="submitButton" value="Yes, I want to delete my account">
+    }
+
+</div>
+
+<script>
+
+    $("#submitButton").attr("disabled", "disabled");
+
+    function toggleButton() {
+        $("#submitButton").removeAttr("disabled");
+    }
+</script>
+
+<style>
+    input[disabled] {
+        background-color: darkgray;
+    }
+</style>

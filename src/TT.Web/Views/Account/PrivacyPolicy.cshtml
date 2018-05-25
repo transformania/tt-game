@@ -21,7 +21,7 @@
 
     <ul class="listdots">
         <li><b>Email addresses.</b>  Providing your email address is entirely <b>optional</b>, and you have the freedom to <a href="@Url.Action(MVC.Account.ChangeEmail())">change or remove your email address</a> at any time while logged into your account.  There is currently <b>NO</b> password recovery system in place, however if such a system becomes available, Transformania Time may use your email address to send you password reset options.  Your email address will not be redistributed to any third parties.</li>
-        <li><b>IP Addresses.</b>  IP addresses are logged to detect multiple account abuse and to blacklist known abusers.</li>
+        <li><b>IP Addresses.</b>  IP addresses are logged to detect multiple account abuse and to blacklist known violators of the terms of service.</li>
         <li><b>Cookies.</b>  Cookies are used to store session management information on both the server and on your browser.  Transformania Time does not read cookies saved from any other site.</li>
     </ul>
     
@@ -31,11 +31,11 @@
     
     <h3>How is this information stored and for how long?</h3>
     
-    <p>In order to recovery data in case of server outtages or migrations, the server makes a database backup of all game information every six hours.  Backups include email addresses and each player's last recorded IP address.  Backups are only available to  the site administrators (not Developers or Moderators) and may be used as database recovery or for testing of new or existing code for the sake of determining site performance.  Database backups older than 6 months will be deleted. Additionally, the server keeps IP addresses logged for HTTP communications between the server and client for up to 30 days, at which point they will be automatically deleted.</p>
+    <p>In order to recovery data in case of server outtages or migrations, the server makes a database backup of all game information every six hours.  Backups include email addresses (if provided) and each player's last recorded IP address.  Backups are only available to  the site administrators (not Developers or Moderators).  Database backups may be used as database recovery or for testing of new or existing code on personal development machines.  Database backups older than one (1) month will be deleted. Additionally, the server keeps IP addresses logged for HTTP communications between the server and client for up to one (1) month, at which point they will be automatically deleted.</p>
     
     <h3>Can I delete my account?  What happens if my account is deleted?</h3>
     
-    <p>The choice to delete your account is <b>NOT</b> currently available but will be prioritized as a feature.  Account deletion will be permanent and irrevocable.  Your <a href="@Url.Action((MVC.Settings.SetBio()))">Player Bio</a> and past round achievements will be removed as part of your account deletion.  Any Contributions to the game in the form of spells, effects, or graphics are not considered personal information and will <b>NOT</b> be removed as part of this process.  Please be aware that your account may be preserved in database backups for up to six months.  </p>
+    <p>Yes, <a href="@Url.Action(MVC.Account.DeleteAccount())">you may delete your account</a>.  Account deletion is permanent and irrevocable.  Please be aware that your account may be preserved in database backups stored on the server for up to one (1) month.</p>
     
     <br>
     <p><b>Tranformania Time does not and will not ever ask for your name, surname, address, phone number, password, or age (except to confirm that you meet the minimum legal age as outlined in the <a href="@Url.Action(MVC.Account.TermsOfService())">Terms of Service</a>).</b>  Transformania Time is funded solely through <a href="@Url.Action(MVC.Info.Donate())">Patreon</a> support.</p>

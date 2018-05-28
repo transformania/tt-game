@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.FurnitureViewModel>
+﻿@model TT.Domain.ViewModels.UseFurnitureViewModel
 
 @section menu
 {
@@ -7,29 +7,30 @@
 }
 
 @{
-    if (ViewBag.AtCovenantSafeground)
+    if (Model.AtCovenantSafeground)
     {
         <p class="infoMessage result">You are at your covenant's safeground and can use any available furniture.</p>
     }
     else
     {
-        <p class="infoMessage error">You are not at your covenant's safeground and cannot use any furniture.  @ViewBag.CovLocation</p>
+        <p class="infoMessage error">You are not at your covenant's safeground and cannot use any furniture.  @Model.CovenantSafeground</p>
     }
 }
 
 <div class="containerInner">
     <h1>Your Covenant's Furniture</h1>
     <p>Human Resource Furniture(TM) proudly pairs people desiring a temporary placement as a piece of furniture with eager owners for a price.  These enchanted household belongings are highly in demand as the rare and powerful spells that transform them also allow them to return various gifts and magics to their new owners.  These willings items (people) of furniture are owned by your covenant and can be used when you are at your covenant's safeground.</p>
-    <p>Your covenant is able to hold at most <b>@ViewBag.FurnitureLimit</b> pieces of furniture in your safeground.  Your covenant's leader must upgrade the safeground to be able to keep more at once.</p>
+    <p>Your covenant is able to hold at most <b>@Model.FurnitureLimit</b> pieces of furniture in your safeground.  Your covenant's leader must upgrade the safeground to be able to keep more at once.</p>
 
     @{
-        foreach (var f in Model.OrderBy(l => l.dbFurniture.HumanName))
+        foreach (var f in Model.Furniture.OrderBy(l => l.dbFurniture.HumanName))
         {
             @Html.Partial(MVC.Covenant.Views.partial.CovenantFurnitureViewModel, f);
 
-            <a href="@Url.Action(MVC.Covenant.UseFurniture(f.dbFurniture.Id))">Use</a>
-
-
+            if (f.CanUse(f.MyUserId))
+            {
+                <a href="@Url.Action(MVC.Covenant.UseFurniture(f.dbFurniture.Id))">Use</a>
+            }
             <hr />
         }
 

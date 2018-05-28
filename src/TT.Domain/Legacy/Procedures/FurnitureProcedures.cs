@@ -159,6 +159,7 @@ namespace TT.Domain.Procedures
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
             var dbFurniture = furnRepo.Furnitures.FirstOrDefault(f => f.Id == furnitureId);
             dbFurniture.LastUseTimestamp = DateTime.UtcNow;
+            dbFurniture.LastUsersIds = user.Id.ToString();
             furnRepo.SaveFurniture(dbFurniture);
 
             var furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);

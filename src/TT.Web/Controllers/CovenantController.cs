@@ -764,7 +764,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            //  FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             var output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
@@ -863,25 +862,25 @@ namespace TT.Web.Controllers
             }
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
 
-            // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
-            var output = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
+            var furniture = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
+
             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName)?.Name ?? "unknown";
 
             var covSafegroundLocation = myCov.HomeLocation.IsNullOrEmpty()
                 ? "Your covenant has not yet established a safeground and cannot yet lease any furniture."
                 : $"Your covenant\'s safeground is at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation)?.Name ?? "unknown"}";
-            ViewBag.CovLocation = covSafegroundLocation;
 
-            var playerIsAtSafeground = false;
+            var playerIsAtSafeground = !myCov.HomeLocation.IsNullOrEmpty() && me.dbLocationName == myCov.HomeLocation;
 
-            if (!myCov.HomeLocation.IsNullOrEmpty() && me.dbLocationName == myCov.HomeLocation)
+            var output = new UseFurnitureViewModel
             {
-                playerIsAtSafeground = true;
-            }
+                CovenantSafeground = covSafegroundLocation,
+                FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov),
+                Furniture = furniture.ToList(),
+                AtCovenantSafeground = playerIsAtSafeground
+            };
 
-            ViewBag.AtCovenantSafeground = playerIsAtSafeground;
-
-            ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
+            output.Furniture.ForEach(f => f.MyUserId = me.Id);
 
             return View(MVC.Covenant.Views.MyCovenantFurniture, output);
 
@@ -945,6 +944,13 @@ namespace TT.Web.Controllers
             if (FurnitureProcedures.GetMinutesUntilReuse(furniture) > 0)
             {
                 TempData["Error"] = "This item of furniture needs more time to regather its energy before it can be used for any bonuses.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that this player was not the last person to use this furniture
+            if (furniture.LastUsersIds == me.Id.ToString())
+            {
+                TempData["Error"] = "You were the last person to use this furniture!  Let someone else have a chance.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

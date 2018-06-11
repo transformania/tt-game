@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FeatureSwitch;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -97,6 +98,7 @@ namespace TT.Domain.World.DTOs
         public bool IsMotorCycleGangBossAvailable()
         {
             return !AnyBossIsActive() &&
+                   FeatureContext.IsEnabled<EnableMotorcycleBoss>() && 
                    this.Boss_MotorcycleGang == AIStatics.UNSTARTED &&
                    minimumTurnIsMet(AIStatics.MotorcycleGangLeaderBotId);
         }

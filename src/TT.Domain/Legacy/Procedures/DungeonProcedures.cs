@@ -10,7 +10,7 @@ namespace TT.Domain.Procedures
     public static class DungeonProcedures
     {
 
-        public static IEnumerable<Location> GenerateDungeon()
+        public static void GenerateDungeon()
         {
             // get a random name
             var adjectives = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonAdjectives.xml");
@@ -249,12 +249,6 @@ namespace TT.Domain.Procedures
                 nouns.Remove(nounToUse);
             }
 
-
-         
-
-
-          
-
             var old = LocationsStatics.LocationList.GetLocation.ToList();
 
             // clear out the old dungeon from memory
@@ -263,7 +257,6 @@ namespace TT.Domain.Procedures
 
             LocationsStatics.LocationList.GetLocation = old;
 
-            return maze;
         }
 
 

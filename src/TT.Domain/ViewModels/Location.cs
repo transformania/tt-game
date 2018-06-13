@@ -9,8 +9,6 @@ namespace TT.Domain.ViewModels
         public string Description { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public bool IsSafe { get; set; }
-        public string ImageUrl { get; set; }
         public string Name_North { get; set; }
         public string Name_East { get; set; }
         public string Name_South { get; set; }

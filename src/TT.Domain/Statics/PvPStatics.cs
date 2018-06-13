@@ -173,28 +173,6 @@ namespace TT.Domain.Statics
         public const int FriendNicknameMaxLength = 100;
     }
 
-    public static class BonusStatics
-    {
-        public const string HealthBonusPercent_Description = "Maximum willpower increase (%)";
-        public const string ManaBonusPercent_Description = "Maximum mana increase (%)";
-        public const string ExtraSkillCriticalPercent_Description = "Extra spell critical hit chance (%)";
-        public const string HealthRecoveryPerUpdate_Description = "Willpower recovery per game update (Amt)";
-        public const string ManaRecoveryPerUpdate_Description = "Mana recovery per game update (Amt)";
-        public const string SneakPercent_Description = "Sneak chance (%)";
-        public const string EvasionPercent_Description = "Spell evasion (%)";
-        public const string EvasionNegationPercent_Description = "Spell Evasion NEGATION (%)";
-        public const string MeditationExtraMana_Description = "Extra mana recovered from meditating (Amt)";
-        public const string CleanseExtraHealth_Description = "Extra willpower recovered from cleansing (Amt)";
-        public const string MoveActionPointDiscount_Description = "Action point discount when moving (Amt)";
-        public const string SpellExtraTFEnergyPercent_Description = "Extra transformation energy from spells (%)";
-        public const string SpellExtraHealthDamagePercent_Description = "Extra willpower damage from spells (%)";
-        public const string CleanseExtraTFEnergyRemovalPercent_Description = "Extra transformation energy removal when cleansing (%)";
-        public const string SpellMisfireChanceReduction_Description = "Misfire chance reduction (%)";
-        public const string SpellHealthDamageResistance_Description = "Willpower damage reduction when hit by a spell (%)";
-        public const string SpellTFEnergyDamageResistance_Description = "Transformation energy damage reduction when hit by a spell (%)";
-        public const string ExtraInventorySpace_Description = "Extra inventory spaces (Amt)";
-    }
-
     public static class MindControlStatics
     {
         public const string MindControl__Movement = "form_(MC-Movement)_Judoo";
@@ -207,7 +185,6 @@ namespace TT.Domain.Statics
 
         public const string MindControl__Meditate = "form_(MC-Meditation)_Duhad";
         public const int MindControl__Meditate_Limit = 2;
-        public const string MindControl__Meditate_DebuffEffect = "";
     }
 
     public static class InanimateXPStatics
@@ -219,12 +196,6 @@ namespace TT.Domain.Statics
 
     public static class LocationsStatics
     {
-
-        /*
-        - Street: 230 Sunnyglade Drive
-        */
-
-
         public const string STREET_40_EAST_9TH_AVE = "street_e9th_westof_valley";
         public const string STREET_70_EAST_9TH_AVE = "street_70e9th";
 
@@ -342,24 +313,9 @@ namespace TT.Domain.Statics
             return locationToSpawnIn;
         }
 
-
-
         public static class LocationList
         {
-
-            public static List<Location> GetLocation;
-
-              public static void AddLocation(Location location) {
-                GetLocation.Add(location);
-            }
-
-            static LocationList() {
-                GetLocation = new List<Location>{
-
-
-          
-
-           
+            public static List<Location> GetLocation = new List<Location> {
 
             new Location {
                 dbName = "coffee_shop",
@@ -367,8 +323,6 @@ namespace TT.Domain.Statics
                 Region = "coffee_shop",
                 X = 0,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "coffee_shop",
                 Name_North = "coffee_shop_patio",
                 Name_East = "coffee_shop_kitchen"
             }, new Location {
@@ -377,8 +331,6 @@ namespace TT.Domain.Statics
                 Region = "coffee_shop",
                 X = 0,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "coffee_shop_patio",
                 Name_South = "coffee_shop",
                 Name_West = "street_01"
 
@@ -388,8 +340,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "coffee_shop_patio",
                 Name_West = "bookstore_front",
                 Name_North = "street_02",
@@ -401,8 +351,6 @@ namespace TT.Domain.Statics
                 Region = "coffee_shop",
                 X = 1,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "coffee_shop_kitchen",
                 Name_West = "coffee_shop"
 
             }, new Location {
@@ -411,8 +359,6 @@ namespace TT.Domain.Statics
                 Region = "bookstore",
                 X = -2,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "street_01",
                 Name_West = "bookstore_back"
 
@@ -423,8 +369,6 @@ namespace TT.Domain.Statics
                 Region = "bookstore",
                 X = -3,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "bookstore_front",
 
 
@@ -434,8 +378,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "street_01",
                 Name_North = "street_13th",
                 Name_West = "apartment_rental_office",
@@ -446,8 +388,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "street_02",
                 Name_North = "street_14th",
                 Name_East = "park_entrance"
@@ -458,8 +398,6 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 0,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "street_13th",
                 Name_East = "park_fountain"
 
@@ -469,8 +407,6 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 1,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "park_entrance",
                 Name_North = "park_merrygoround",
                 Name_South = "park_rose_garden",
@@ -482,8 +418,6 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 1,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "park_fountain",
                 Name_West="park_duck_pond",
                 Name_East="park_shrine",
@@ -494,8 +428,6 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 1,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "park_fountain",
                 Name_East = "park_toolshed",
                 Name_West = "park_boardwalk",
@@ -506,21 +438,17 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 2,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "park_fountain",
 
-            
+
              }, new Location {
                 dbName = "park_duck_pond",
                 Name = "Sunnyglade Park (Duck Pond)",
                 Region = "park",
                 X = 0,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="park_merrygoround"
-         
+
 
             }, new Location {
                 dbName = "park_shrine",
@@ -528,10 +456,8 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 2,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West= "park_merrygoround",
-         
+
 
            }, new Location {
                 dbName = "park_toolshed",
@@ -539,8 +465,6 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 2,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "park_rose_garden",
 
             },
@@ -551,20 +475,16 @@ namespace TT.Domain.Statics
                 Region = "park",
                 X = 0,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "park_rose_garden",
 
             },
-            
+
             new Location {
                 dbName = "street_14th",
                 Name = "Street: 230 Main Street",
                 Region = "streets",
                 X = -1,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "street_13th",
                 Name_North = "street_14th_north"
 
@@ -575,8 +495,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_01",
                 Name_South = "street_9th",
                 Name_West = "350_west_9th_ave",
@@ -588,8 +506,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_03",
                 Name_South = "street_8th",
                 Name_West = "gas_station_pumps",
@@ -601,8 +517,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_9th",
                 Name_East = "record_store_front",
                 Name_West = "gas_station_parking",
@@ -614,8 +528,6 @@ namespace TT.Domain.Statics
                 Region = "record_store",
                 X = 0,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "record_store_usedInstruments",
                 Name_West = "street_8th",
 
@@ -625,8 +537,6 @@ namespace TT.Domain.Statics
                 Region = "record_store",
                 X = 1,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "record_store_front",
 
             }, new Location {
@@ -635,8 +545,6 @@ namespace TT.Domain.Statics
                 Region = "gas_station",
                 X = -2,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "street_8th",
                 Name_North = "gas_station_pumps",
                 Name_West = "gas_station_carwash",
@@ -647,8 +555,6 @@ namespace TT.Domain.Statics
                 Region = "gas_station",
                 X = -2,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "street_9th",
                 Name_West = "gas_station_counter",
                 Name_South = "gas_station_parking",
@@ -659,8 +565,6 @@ namespace TT.Domain.Statics
                 Region = "gas_station",
                 X = -3,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "gas_station_pumps",
                 Name_South = "gas_station_carwash"
 
@@ -670,21 +574,17 @@ namespace TT.Domain.Statics
                 Region = "gas_station",
                 X = -3,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "gas_station_parking",
                 Name_North =  "gas_station_counter"
 
-            
-            
+
+
             }, new Location {
                 dbName = "street_7th_main",
                 Name = "Street: 160 Main Street",
                 Region = "streets",
                 X = -1,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_8th",
                 Name_South = "street_6th_main",
                 Name_West="pool_entrance",
@@ -696,81 +596,67 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_7th_main",
                 Name_East = "clothing_front",
                 Name_South = "street_140_main",
-            
+
             },  new Location {
                 dbName = "clothing_front",
                 Name = "Ophalia's Embroidery (Front Counter)",
                 Region = "clothing",
                 X = 0,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="street_6th_main",
                 Name_North = "clothing_mens",
                 Name_East="clothing_womens",
-            
+
             },  new Location {
                 dbName = "clothing_womens",
                 Name = "Ophalia's Embroidery (Women's Section)",
                 Region = "clothing",
                 X = 1,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="clothing_front",
                 Name_North="clothing_intimate"
-            
+
             },  new Location {
                 dbName = "clothing_intimate",
                 Name = "Ophalia's Embroidery (Intimates Section)",
                 Region = "clothing",
                 X = 1,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="clothing_womens",
                 Name_West="clothing_mens",
-            
+
             },  new Location {
                 dbName = "clothing_mens",
                 Name = "Ophalia's Embroidery (Men's Section)",
                 Region = "clothing",
                 X = 0,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="clothing_intimate",
                 Name_South="clothing_front",
-            
+
             }, new Location {
                 dbName = "street_14th_north",
                 Name = "Street: Main Street and Sunnyglade Drive Intersection",
                 Region="streets",
                 X = -1,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="street_14th",
                 Name_North="street_15th_south",
                 Name_East="street_14th_east",
                 Name_West = "street_140_sunnyglade_drive",
-            
+
             }, new Location {
                 dbName = "street_15th_south",
                 Name = "Street: 250 Main Street",
                 Region="streets",
                 X = -1,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="street_14th_north",
                 Name_East="tavern_counter",
-            }, 
+            },
 
              new Location {
                 dbName = "street_14th_east",
@@ -778,8 +664,6 @@ namespace TT.Domain.Statics
                 Region="streets",
                 X = 0,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="tavern_counter",
                 Name_West="street_14th_north",
                 Name_East="street_170_sunnyglade_drive",
@@ -792,21 +676,16 @@ namespace TT.Domain.Statics
                 Region = "tavern",
                 X = 0,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                Name_South="street_14th_east",
                Name_West="street_15th_south",
                Name_East = "tavern_pool",
                Name_North = "tavern_private_room",
-                
                },  new Location {
                 dbName = "tavern_pool",
                 Name = "The Smelly Sorceress Tavern (Pool Room)",
                 Region = "tavern",
                 X = 1,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "tavern_counter",
                 Name_North = "tavern_dumpsters",
 
@@ -816,8 +695,6 @@ namespace TT.Domain.Statics
                 Region = "tavern",
                 X = 0,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "tavern_counter",
                 Name_East = "tavern_dumpsters",
 
@@ -827,12 +704,10 @@ namespace TT.Domain.Statics
                 Region = "tavern",
                 X = 1,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West = "tavern_private_room",
                 Name_South = "tavern_pool",
 
-            }, 
+            },
 
                   new Location {
                 dbName = "street_e9th_eastof_main",
@@ -840,12 +715,10 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 0,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "street_e9th_eastof_valley",
                 Name_West= "street_9th",
 
-                 }, 
+                 },
 
                   new Location {
                 dbName = "street_e9th_eastof_valley",
@@ -853,12 +726,10 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 1,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="street_e9th_eastof_main",
                 Name_East="street_e9th_valley_crossing",
 
-                 }, 
+                 },
 
                   new Location {
                 dbName = "street_e9th_valley_crossing",
@@ -866,70 +737,57 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 2,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="street_e9th_eastof_valley",
                 Name_East="street_e9th_westof_valley",
-            }, 
+            },
                 new Location {
                 dbName = "street_e9th_westof_valley",
                 Name = "Street: 40 E. 9th Avenue",
                 Region = "streets",
                 X = 3,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_50e9th",
                 Name_West="street_e9th_valley_crossing",
                 Name_South = "concert_hall_front_door",
                 Name_North = "lab_lobby",
-          }, 
+          },
                 new Location {
                 dbName = "apartment_rental_office",
                 Name = "Oldoak Apartments (Rental Office)",
                 Region = "oldoak_apartments",
                 X = -2,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_02",
                 Name_West="apartment_parking_lot",
                 Name_North = "apartment_complex_a",
-            }, 
+            },
                 new Location {
                 dbName = "apartment_parking_lot",
                 Name = "Oldoak Apartments (Parking Lot)",
                 Region = "oldoak_apartments",
                 X = -3,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "apartment_rental_office",
                 Name_North = "apartment_dog_park",
-                
-            }, 
+            },
                 new Location {
                 dbName = "apartment_dog_park",
                 Name = "Oldoak Apartments (Dog Park)",
                 Region = "oldoak_apartments",
                 X = -3,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South = "apartment_parking_lot",
                 Name_East = "apartment_complex_a",
-           }, 
+           },
                 new Location {
                 dbName = "apartment_complex_a",
                 Name = "Oldoak Apartments (Apartment Building)",
                 Region = "oldoak_apartments",
                 X = -2,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="apartment_dog_park",
                 Name_South="apartment_rental_office",
-               }, 
+               },
 
             new Location {
                 dbName = "concert_hall_front_door",
@@ -937,13 +795,11 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 3,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_e9th_westof_valley",
                 Name_South = "concert_hall_seats",
                 Name_East = "concert_hall_bar",
 
-                }, 
+                },
 
         new Location {
                 dbName = "concert_hall_seats",
@@ -951,11 +807,9 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 3,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="concert_hall_front_door",
                 Name_East="concert_hall_stage",
-                }, 
+                },
 
          new Location {
                 dbName = "concert_hall_stage",
@@ -963,13 +817,11 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 4,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="concert_hall_bar",
                 Name_East="concert_hall_backstage",
                 Name_West="concert_hall_seats",
 
-                }, 
+                },
 
            new Location {
                 dbName = "concert_hall_bar",
@@ -977,13 +829,11 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 4,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="concert_hall_dressingroom",
                 Name_South="concert_hall_stage",
                 Name_West="concert_hall_front_door",
 
-                }, 
+                },
 
           new Location {
                 dbName = "concert_hall_dressingroom",
@@ -991,12 +841,10 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 5,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="concert_hall_backstage",
                 Name_West="concert_hall_bar",
 
-                }, 
+                },
 
           new Location {
                 dbName = "concert_hall_backstage",
@@ -1004,8 +852,6 @@ namespace TT.Domain.Statics
                 Region = "concert_hall",
                 X = 5,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="concert_hall_dressingroom",
                 Name_West="concert_hall_stage",
 
@@ -1017,8 +863,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -2,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_03",
                 Name_West="340_west_9th_ave",
 
@@ -1030,8 +874,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -3,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="350_west_9th_ave",
                 Name_West="330_west_9th_ave",
 
@@ -1043,8 +885,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -4,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="340_west_9th_ave",
                 Name_West="320_west_9th_ave",
 
@@ -1056,8 +896,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -5,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "gym_entrance",
                 Name_East="330_west_9th_ave",
                 Name_West="310_west_9th_ave",
@@ -1070,8 +908,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -6,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="320_west_9th_ave",
                 Name_West = "300_west_9th_ave",
                 Name_South = "college_foyer",
@@ -1083,8 +919,6 @@ namespace TT.Domain.Statics
                 Region = "gym",
                 X = -5,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="gym_cardio",
                 Name_South="320_west_9th_ave",
                 Name_West="gym_aerobics",
@@ -1095,8 +929,6 @@ namespace TT.Domain.Statics
                 Region = "gym",
                 X = -6,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="gym_weights",
                 Name_East="gym_entrance",
 
@@ -1106,8 +938,6 @@ namespace TT.Domain.Statics
                 Region = "gym",
                 X = -6,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="gym_laundry",
                 Name_East="gym_cardio",
                 Name_South="gym_aerobics",
@@ -1118,8 +948,6 @@ namespace TT.Domain.Statics
                 Region = "gym",
                 X = -5,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="gym_entrance",
                 Name_West="gym_weights",
 
@@ -1129,8 +957,6 @@ namespace TT.Domain.Statics
                 Region = "gym",
                 X = -6,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="gym_weights",
 
            }, new Location {
@@ -1139,8 +965,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -7,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="310_west_9th_ave",
                 Name_West="290_west_9th_ave",
 
@@ -1150,8 +974,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -6,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="310_west_9th_ave",
                 Name_East="college_sciences",
                 Name_South="college_humanities",
@@ -1163,8 +985,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -5,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="college_vet",
                 Name_West="college_foyer",
 
@@ -1174,8 +994,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -5,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="college_sciences",
                 Name_West="college_humanities",
 
@@ -1185,8 +1003,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -6,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="college_foyer",
                 Name_East="college_vet",
                 Name_West="college_business",
@@ -1197,8 +1013,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -7,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="college_arts",
                 Name_East="college_humanities",
                 Name_South="college_track",
@@ -1209,8 +1023,6 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -7,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="college_foyer",
                 Name_South="college_business",
 
@@ -1220,19 +1032,15 @@ namespace TT.Domain.Statics
                 Region = "college",
                 X = -7,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="college_business",
                 Name_South="pathway_sccc",
- 
+
           }, new Location {
                 dbName = "lab_lobby",
                 Name = "Dr. Hadkin's Research Clinic (Lobby)",
                 Region = "lab",
                 X = 3,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="lab_laboratory",
                 Name_East="lab_offices",
                 Name_South="street_e9th_westof_valley",
@@ -1243,8 +1051,6 @@ namespace TT.Domain.Statics
                 Region = "lab",
                 X = 4,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="lab_freezers",
                 Name_West="lab_lobby",
 
@@ -1254,8 +1060,6 @@ namespace TT.Domain.Statics
                 Region = "lab",
                 X = 4,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="lab_offices",
                 Name_West="lab_laboratory",
 
@@ -1265,8 +1069,6 @@ namespace TT.Domain.Statics
                 Region = "lab",
                 X = 3,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="lab_freezers",
                 Name_South="lab_lobby",
                 Name_West="lab_secret_laboratory",
@@ -1277,8 +1079,6 @@ namespace TT.Domain.Statics
                 Region = "lab",
                 X = 2,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="lab_laboratory",
 
 
@@ -1288,8 +1088,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -2,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_7th_main",
                 Name_South="pool_shallow",
                 Name_West="pool_slide",
@@ -1300,8 +1098,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -2,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="pool_entrance",
                 Name_West="pool_concessions",
 
@@ -1311,8 +1107,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -3,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="pool_slide",
                 Name_East="pool_shallow",
                 Name_West="pool_playground",
@@ -1323,8 +1117,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -3,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="pool_entrance",
                 Name_South="pool_concessions",
                 Name_West="pool_deep",
@@ -1335,8 +1127,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -4,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="pool_slide",
                 Name_South="pool_playground",
 
@@ -1346,8 +1136,6 @@ namespace TT.Domain.Statics
                 Region = "pool",
                 X = -4,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="pool_deep",
                 Name_East="pool_concessions",
                 Name_West="pathway_pool",
@@ -1358,8 +1146,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -2,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="comicstore_counter",
                 Name_East="street_14th_north",
                 Name_West="street_130_sunnyglade_drive",
@@ -1370,8 +1156,6 @@ namespace TT.Domain.Statics
                 Region = "comicstore",
                 X = -2,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="comicstore_videogames",
                 Name_South="street_140_sunnyglade_drive",
                 Name_West="comicstore_gaming_room",
@@ -1382,8 +1166,6 @@ namespace TT.Domain.Statics
                 Region = "comicstore",
                 X = -3,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="comicstore_comics",
                 Name_East="comicstore_counter",
 
@@ -1393,8 +1175,6 @@ namespace TT.Domain.Statics
                 Region = "comicstore",
                 X = -3,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="comicstore_videogames",
                 Name_South="comicstore_gaming_room",
 
@@ -1404,8 +1184,6 @@ namespace TT.Domain.Statics
                 Region = "comicstore",
                 X = -2,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="comicstore_counter",
                 Name_West="comicstore_comics",
 
@@ -1415,8 +1193,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 1,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_180_sunnyglade_drive",
                 Name_West="street_14th_east",
 
@@ -1426,8 +1202,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 2,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_190_sunnyglade_drive",
                 Name_West="street_170_sunnyglade_drive",
 
@@ -1437,8 +1211,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 3,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_200_sunnyglade_drive",
                 Name_West="street_180_sunnyglade_drive",
 
@@ -1448,8 +1220,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 4,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_gate",
                 Name_West="street_190_sunnyglade_drive",
                 Name_East="street_210_sunnyglade_drive"
@@ -1460,8 +1230,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 4,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_foyer",
                 Name_East="mansion_eastgarden",
                 Name_South="street_200_sunnyglade_drive",
@@ -1473,8 +1241,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 3,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_dining",
                 Name_East="mansion_gate",
 
@@ -1484,8 +1250,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 5,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_bedroom",
                 Name_West="mansion_gate",
 
@@ -1495,8 +1259,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 4,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_courtyard",
                 Name_East="mansion_bedroom",
                 Name_South="mansion_gate",
@@ -1508,8 +1270,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 3,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_ballroom",
                 Name_East="mansion_foyer",
                 Name_South="mansion_westgarden",
@@ -1520,8 +1280,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 5,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_baths",
                 Name_South="mansion_eastgarden",
                 Name_West="mansion_foyer",
@@ -1532,8 +1290,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 4,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_chapel",
                 Name_South="mansion_foyer",
 
@@ -1543,8 +1299,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 3,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_servant_quarters",
                 Name_South="mansion_dining",
 
@@ -1554,8 +1308,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 5,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_study",
                 Name_South="mansion_bedroom",
 
@@ -1565,8 +1317,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 4,
                 Y = 9,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="mansion_mausoleum",
                 Name_East="mansion_study",
                 Name_South="mansion_courtyard",
@@ -1578,8 +1328,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 3,
                 Y = 9,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="mansion_chapel",
                 Name_South="mansion_ballroom",
 
@@ -1589,8 +1337,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 5,
                 Y = 9,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="mansion_baths",
                 Name_West="mansion_chapel",
 
@@ -1600,8 +1346,6 @@ namespace TT.Domain.Statics
                 Region = "mansion",
                 X = 4,
                 Y = 10,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="mansion_chapel",
 
 
@@ -1611,8 +1355,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = -5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_6th_main",
                 Name_South="street_130_main",
                 Name_West = "medclinic_lobby",
@@ -1623,8 +1365,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -1,
                 Y = -6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_140_main",
                 Name_East="stripclub_bar_seats",
 
@@ -1634,8 +1374,6 @@ namespace TT.Domain.Statics
                 Region = "stripclub",
                 X = 0,
                 Y = -6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="stripclub_store",
                 Name_South="stripclub_booths",
                 Name_West="street_130_main",
@@ -1646,8 +1384,6 @@ namespace TT.Domain.Statics
                 Region = "stripclub",
                 X = 0,
                 Y = -7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "stripclub_bar_seats",
 
            }, new Location {
@@ -1656,8 +1392,6 @@ namespace TT.Domain.Statics
                 Region = "stripclub",
                 X = 1,
                 Y = -7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="stripclub_store",
 
            }, new Location {
@@ -1666,8 +1400,6 @@ namespace TT.Domain.Statics
                 Region = "stripclub",
                 X = 1,
                 Y = -6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="stripclub_office",
                 Name_West="stripclub_bar_seats",
 
@@ -1677,8 +1409,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 5,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_220_sunnyglade_drive",
                 Name_West="street_200_sunnyglade_drive",
 
@@ -1688,8 +1418,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 6,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_230_sunnyglade_drive",
                 Name_South="ranch_entrance",
                 Name_West="street_210_sunnyglade_drive",
@@ -1700,8 +1428,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 6,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_220_sunnyglade_drive",
                 Name_West="ranch_porch",
 
@@ -1711,8 +1437,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 6,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="ranch_hallway",
 
            }, new Location {
@@ -1721,8 +1445,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 5,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "ranch_porch",
                 Name_East="ranch_bedroom",
                 Name_West="ranch_bedroom_teenager",
@@ -1734,8 +1456,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 5,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="ranch_entrance",
                 Name_South="ranch_hallway",
                 Name_West="ranch_livingroom",
@@ -1746,8 +1466,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 4,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="ranch_porch",
 
           }, new Location {
@@ -1756,10 +1474,8 @@ namespace TT.Domain.Statics
                 Region = "ranch_inside",
                 X = 4,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="ranch_hallway",
- 
+
 
         }, new Location {
                 dbName = "ranch_pens",
@@ -1767,8 +1483,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_outside",
                 X = 4,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="ranch_pasture",
 
            },  new Location {
@@ -1777,8 +1491,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_outside",
                 X = 5,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "ranch_hallway",
                 Name_East="ranch_barn",
                 Name_West="ranch_pens",
@@ -1789,8 +1501,6 @@ namespace TT.Domain.Statics
                 Region = "ranch_outside",
                 X = 6,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="ranch_pasture",
 
             }, new Location {
@@ -1799,8 +1509,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -8,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="300_west_9th_ave",
                 Name_West="280_west_9th_ave",
 
@@ -1810,8 +1518,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -9,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="290_west_9th_ave",
                 Name_West="270_west_9th_ave",
 
@@ -1821,8 +1527,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -10,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_garden",
                 Name_East="280_west_9th_ave",
                 Name_South = "sorority_yard",
@@ -1833,8 +1537,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -10,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_greathall",
                 Name_South="270_west_9th_ave",
 
@@ -1845,8 +1547,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -10,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_tower",
                 Name_East="castle_kitchen",
                 Name_South="castle_garden",
@@ -1858,8 +1558,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -9,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_servants",
                 Name_East="castle_cellar",
                 Name_West="castle_greathall",
@@ -1870,8 +1568,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -11,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="castle_greathall",
                 Name_West="castle_dungeon",
 
@@ -1881,8 +1577,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -12,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="castle_armory",
 
          }, new Location {
@@ -1891,8 +1585,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -10,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_throneroom",
                 Name_East="castle_servants",
                 Name_South="castle_greathall",
@@ -1904,8 +1596,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -11,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_lordroom",
                 Name_East="castle_tower",
 
@@ -1915,8 +1605,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -9,
                 Y = 3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="castle_kitchen",
                 Name_West="castle_tower",
 
@@ -1926,8 +1614,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -10,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "castle_beach",
                 Name_East="castle_solar",
                 Name_South="castle_tower",
@@ -1939,8 +1625,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -11,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="castle_throneroom",
                 Name_South="castle_baths",
                 Name_West = "castle_treasury",
@@ -1951,8 +1635,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -9,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="castle_training",
                 Name_West="castle_throneroom",
 
@@ -1962,8 +1644,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -12,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="castle_lordroom",
 
        }, new Location {
@@ -1972,8 +1652,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -8,
                 Y = 2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="castle_kitchen",
 
          }, new Location {
@@ -1982,8 +1660,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -10,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="castle_throneroom",
 
          }, new Location {
@@ -1992,8 +1668,6 @@ namespace TT.Domain.Statics
                 Region = "castle",
                 X = -8,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="castle_solar",
 
           }, new Location {
@@ -2002,8 +1676,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -3,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_140_sunnyglade_drive",
                 Name_West="street_120_sunnyglade_drive",
 
@@ -2013,11 +1685,8 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -4,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_130_sunnyglade_drive",
                 Name_South="candystore_counter",
-                //Name_West="",
 
           }, new Location {
                 dbName = "candystore_shelves",
@@ -2025,8 +1694,6 @@ namespace TT.Domain.Statics
                 Region = "candystore",
                 X = -3,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="candystore_counter",
 
            }, new Location {
@@ -2035,8 +1702,6 @@ namespace TT.Domain.Statics
                 Region = "candystore",
                 X = -4,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "street_120_sunnyglade_drive",
                 Name_East="candystore_shelves",
                 Name_West="candystore_kitchen",
@@ -2047,8 +1712,6 @@ namespace TT.Domain.Statics
                 Region = "candystore",
                 X = -5,
                 Y = 4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="candystore_counter",
 
            }, new Location {
@@ -2057,8 +1720,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 4,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_60e9th",
                 Name_West="street_e9th_westof_valley",
 
@@ -2068,8 +1729,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 5,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="street_70e9th",
                 Name_West="street_50e9th",
 
@@ -2079,8 +1738,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 6,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="street_60e9th",
                 Name_North="salon_front_desk",
 
@@ -2090,8 +1747,6 @@ namespace TT.Domain.Statics
                 Region = "salon",
                 X = 6,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "salon_hairdressing",
                 Name_East="salon_massage",
                 Name_South="street_70e9th",
@@ -2102,8 +1757,6 @@ namespace TT.Domain.Statics
                 Region = "salon",
                 X = 6,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="salon_front_desk",
 
           }, new Location {
@@ -2112,8 +1765,6 @@ namespace TT.Domain.Statics
                 Region = "salon",
                 X = 7,
                 Y = 0,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "salon_storage",
                 Name_West="salon_front_desk",
 
@@ -2123,18 +1774,14 @@ namespace TT.Domain.Statics
                 Region = "salon",
                 X = 7,
                 Y = 1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="salon_massage",
 
-             }, new Location {
+          }, new Location {
                 dbName = "sorority_yard",
                 Name = "EGM Sorority House (Front Yard)",
                 Region = "sorority",
                 X = -10,
                 Y = -1,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "270_west_9th_ave",
                 Name_South="sorority_common",
 
@@ -2144,8 +1791,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -10,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_yard",
                 Name_East="sorority_dining",
                 Name_West="sorority_bedrooms",
@@ -2156,8 +1801,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -11,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="sorority_common",
                 Name_South="sorority_motherbed",
 
@@ -2167,8 +1810,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -11,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_bedrooms",
                 Name_South="sorority_basement",
 
@@ -2178,8 +1819,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -11,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_motherbed",
                 Name_East="sorority_patio",
 
@@ -2189,8 +1828,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -10,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_rooftop",
                 Name_East="sorority_backyard",
                 Name_West="sorority_basement",
@@ -2201,8 +1838,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -10,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="sorority_patio",
 
             }, new Location {
@@ -2211,8 +1846,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -9,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_kitchen",
                 Name_East="pathway_sorority",
                 Name_West="sorority_patio",
@@ -2223,8 +1856,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -9,
                 Y = -3,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "sorority_dining",
                 Name_South="sorority_backyard",
 
@@ -2234,8 +1865,6 @@ namespace TT.Domain.Statics
                 Region = "sorority",
                 X = -9,
                 Y = -2,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="sorority_kitchen",
                 Name_West="sorority_common",
 
@@ -2245,8 +1874,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -8,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="pathway_sccc",
                 Name_West="sorority_backyard",
 
@@ -2256,8 +1883,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -7,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "college_track",
                 Name_East="pathway_campground",
                 Name_South="campground_lake",
@@ -2269,8 +1894,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -6,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="pathway_pool",
                 Name_West="pathway_sccc",
 
@@ -2280,8 +1903,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -5,
                 Y = -4,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="pool_playground",
                 Name_West="pathway_campground",
 
@@ -2291,8 +1912,6 @@ namespace TT.Domain.Statics
                 Region = "campground",
                 X = -7,
                 Y = -5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North = "pathway_sccc",
                 Name_East="campground_makeout",
 
@@ -2302,10 +1921,7 @@ namespace TT.Domain.Statics
                 Region = "campground",
                 X = -6,
                 Y = -5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="campground_lake",
-
 
            }, new Location {
                 dbName = "medclinic_lobby",
@@ -2313,8 +1929,6 @@ namespace TT.Domain.Statics
                 Region = "medclinic",
                 X = -2,
                 Y = -5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "street_140_main",
                 Name_South = "medclinic_physician_a",
                 Name_West = "medclinic_records",
@@ -2325,8 +1939,6 @@ namespace TT.Domain.Statics
                 Region = "medclinic",
                 X = -2,
                 Y = -6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="medclinic_lobby",
                 Name_West = "medclinic_physician_b",
 
@@ -2336,8 +1948,6 @@ namespace TT.Domain.Statics
                 Region = "medclinic",
                 X = -3,
                 Y = -6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="medclinic_records",
                 Name_East = "medclinic_physician_a",
 
@@ -2347,8 +1957,6 @@ namespace TT.Domain.Statics
                 Region = "medclinic",
                 X = -3,
                 Y = -5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East = "medclinic_lobby",
                 Name_South = "medclinic_physician_b",
 
@@ -2358,8 +1966,6 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = 7,
                 Y = 5,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="forest_parking",
                 Name_West="street_220_sunnyglade_drive",
 
@@ -2369,8 +1975,6 @@ namespace TT.Domain.Statics
                 Region = "forest",
                 X = 7,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="cave_mouth",
                 Name_East="forest_pinecove",
                 Name_South="street_230_sunnyglade_drive",
@@ -2382,8 +1986,6 @@ namespace TT.Domain.Statics
                 Region = "forest",
                 X = 6,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="forest_hotspring",
                 Name_East="forest_parking",
 
@@ -2393,8 +1995,6 @@ namespace TT.Domain.Statics
                 Region = "forest",
                 X = 6,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="fairygrove_entrance",
                 Name_East="cave_mouth",
                 Name_South="forest_ancestor_tree",
@@ -2405,8 +2005,6 @@ namespace TT.Domain.Statics
                 Region = "cave",
                 X = 7,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="cave_antechamber",
                 Name_South="forest_parking",
                 Name_West="forest_hotspring",
@@ -2417,8 +2015,6 @@ namespace TT.Domain.Statics
                 Region = "cave",
                 X = 8,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="cave_burialchamber",
                 Name_East="cave_lake",
                 Name_West="cave_mouth",
@@ -2429,8 +2025,6 @@ namespace TT.Domain.Statics
                 Region = "cave",
                 X = 8,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="cave_antechamber",
 
           }, new Location {
@@ -2439,8 +2033,6 @@ namespace TT.Domain.Statics
                 Region = "cave",
                 X = 9,
                 Y = 7,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="cave_antechamber",
 
           }, new Location {
@@ -2449,8 +2041,6 @@ namespace TT.Domain.Statics
                 Region = "forest",
                 X = 8,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="forest_cabin",
                 Name_West="forest_parking",
 
@@ -2460,10 +2050,7 @@ namespace TT.Domain.Statics
                 Region = "forest",
                 X = 9,
                 Y = 6,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_West="forest_pinecove",
-
            },
 
            new Location {
@@ -2472,12 +2059,9 @@ namespace TT.Domain.Statics
                 Region = "fairygrove",
                 X = 6,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="fairygrove_flowerhomes",
                 Name_East="fairygrove_springs",
                 Name_South="forest_hotspring",
-
            },
 
            new Location {
@@ -2486,11 +2070,8 @@ namespace TT.Domain.Statics
                 Region = "fairygrove",
                 X = 6,
                 Y = 9,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_East="fairygrove_greathall",
                 Name_South="fairygrove_entrance",
-
            },
 
            new Location {
@@ -2499,11 +2080,8 @@ namespace TT.Domain.Statics
                 Region = "fairygrove",
                 X = 7,
                 Y = 9,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_South="fairygrove_springs",
                 Name_West="fairygrove_flowerhomes",
-
            },
 
            new Location {
@@ -2512,24 +2090,17 @@ namespace TT.Domain.Statics
                 Region = "fairygrove",
                 X = 7,
                 Y = 8,
-                IsSafe = false,
-                ImageUrl = "",
                 Name_North="fairygrove_greathall",
                 Name_West="fairygrove_entrance",
-
-           },
+           }
 
         };
 
-            }
-    
         }
-
-
 
         public static string GetConnectionName(string locDbName)
         {
-            var Location = LocationList.GetLocation.FirstOrDefault(l => l.dbName == locDbName);
+            var Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locDbName);
             if (Location != null)
             {
                 return Location.Name;
@@ -2542,11 +2113,7 @@ namespace TT.Domain.Statics
     public static class ChatStatics
     {
         public const int OnlineActivityCutoffMinutes = -2;
-        private const string JudooThumbnail = "Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
         private const string MizuhoThumbnail = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
-     // private const string ArrhaeThumbnail =
-     // private const string EricThumbnail =
-     // private const string TempestThumbnail =
 
         private static IDictionary<string, PlayerDescriptorDTO> staff
             = new Dictionary<string, PlayerDescriptorDTO>
@@ -2556,7 +2123,6 @@ namespace TT.Domain.Statics
                     "69", new PlayerDescriptorDTO // Judoo
                     {
                         Name = "Judoo",
-                     // PictureURL = JudooThumbnail, turning off thumbnail for a while
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
                         RoleEnum = RoleEnum.Admin
                     }

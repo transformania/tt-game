@@ -104,6 +104,7 @@ namespace TT.Web
             app.UseWebApi(httpConfig);
 
             AttackProcedures.LoadCovenantOwnersIntoRAM();
+            DungeonProcedures.GenerateDungeon();
 
             // set chaos mode 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();

@@ -928,9 +928,7 @@ namespace TT.Domain.Procedures
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
                     }
 
-                    new Thread(() =>
-                        StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1)
-                    ).Start();
+                    StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1);
 
                     var output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
@@ -1044,9 +1042,8 @@ namespace TT.Domain.Procedures
 
                         if (itemPlus.Item.dbName == "item_Inflatable_Sex_Doll_LexamTheGemFox")
                         {
-                            new Thread(() =>
-                                StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored, (float)(itemPlus.Item.ReuseableHealthRestore + bonusFromLevel))
-                            ).Start();
+                            StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored,
+                                (float) (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel));
                         }
 
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";

@@ -130,13 +130,9 @@ namespace TT.Web.Controllers
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float)cost)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float) cost);
 
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float)cost)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float) cost);
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -215,14 +211,8 @@ namespace TT.Web.Controllers
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost)
-             ).Start();
-
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost)
-             ).Start();
-
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float) cost);
 
             TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
@@ -334,13 +324,8 @@ namespace TT.Web.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)-cost)
-             ).Start();
-
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)cost)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float) -cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float) cost);
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -416,13 +401,9 @@ namespace TT.Web.Controllers
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)cost)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float) cost);
 
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)-cost)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float) -cost);
 
             TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
@@ -911,9 +892,7 @@ namespace TT.Web.Controllers
 
                 output.SpellsLearned = spellsLearned;
 
-                new Thread(() =>
-                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
-                 ).Start();
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1);
 
                 return View(MVC.NPC.Views.TalkWithJewdewfae, output);
             }
@@ -1160,9 +1139,7 @@ namespace TT.Web.Controllers
             SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.Skill.dbName);
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned, 1)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned, 1);
 
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());

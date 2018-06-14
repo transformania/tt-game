@@ -322,9 +322,7 @@ namespace TT.Web.Controllers
                 QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
                 QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
 
-                new Thread(() =>
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsFailed, 1)
-                ).Start();
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsFailed, 1);
 
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
                 return RedirectToAction(MVC.PvP.Play());
@@ -334,9 +332,7 @@ namespace TT.Web.Controllers
             var victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
 
-            new Thread(() =>
-                   StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsPassed, 1)
-               ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsPassed, 1);
 
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
 

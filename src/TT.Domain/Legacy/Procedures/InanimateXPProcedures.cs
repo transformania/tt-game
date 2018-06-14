@@ -70,15 +70,11 @@ namespace TT.Domain.Procedures
 
                 if (me.Mobility == PvPStatics.MobilityInanimate)
                 {
-                    new Thread(() =>
-                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
-                    ).Start();
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float) xpGain);
                 }
                 else if (me.Mobility == PvPStatics.MobilityPet)
                 {
-                    new Thread(() =>
-                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
-                    ).Start();
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain);
                 }
 
 
@@ -108,15 +104,11 @@ namespace TT.Domain.Procedures
 
                 if (me.Mobility == PvPStatics.MobilityInanimate)
                 {
-                    new Thread(() =>
-                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
-                    ).Start();
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float) xpGain);
                 }
                 else if (me.Mobility == PvPStatics.MobilityPet)
                 {
-                    new Thread(() =>
-                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
-                    ).Start();
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float) xpGain);
                 }
 
                 xp.Amount += xpGain;
@@ -345,9 +337,7 @@ namespace TT.Domain.Procedures
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, msg, false);
 
-                new Thread(() =>
-                        StatsProcedures.AddStat(dbPlayer.MembershipId, StatsProcedures.Stat__SuccessfulStruggles, 1)
-                    ).Start();
+                StatsProcedures.AddStat(dbPlayer.MembershipId, StatsProcedures.Stat__SuccessfulStruggles, 1);
 
                 return msg;
 

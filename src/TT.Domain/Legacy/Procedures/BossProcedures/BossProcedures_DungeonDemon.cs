@@ -27,9 +27,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = dbDemon.Id});
                 ItemProcedures.DeleteItem(item.Id);
 
-                new Thread(() =>
-                  StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonDemonsDefeated, 1)
-              ).Start();
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonDemonsDefeated, 1);
 
 
             }

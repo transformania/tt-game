@@ -351,13 +351,9 @@ namespace TT.Domain.Procedures
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
 
-                    new Thread(() =>
-                         StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1)
-                     ).Start();
+                    StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1);
 
-                    new Thread(() =>
-                         StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimateTFing, 1)
-                     ).Start();
+                    StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimateTFing, 1);
 
                 }
                 #endregion
@@ -376,26 +372,17 @@ namespace TT.Domain.Procedures
 
                     if (targetForm.MobilityType == PvPStatics.MobilityInanimate)
                     {
-                        new Thread(() =>
-                             StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1)
-                        ).Start();
+                        StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1);
 
-                        new Thread(() =>
-                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1)
-                        ).Start();
+                        StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1);
 
 
                     }
                     else if (targetForm.MobilityType == "animal")
                     {
-                        new Thread(() =>
-                             StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1)
-                        ).Start();
+                        StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1);
 
-
-                        new Thread(() =>
-                             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1)
-                        ).Start();
+                        StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1);
 
                     }
 
@@ -404,9 +391,8 @@ namespace TT.Domain.Procedures
 
                         if (target.BotId == AIStatics.PsychopathBotId)
                         {
-                            new Thread(() =>
-                                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated, 1)
-                            ).Start();
+                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated,
+                                1);
                         }
 
                         if (target.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)PvPStatics.GameModes.PvP && victim.GameMode == (int)PvPStatics.GameModes.PvP)
@@ -460,9 +446,7 @@ namespace TT.Domain.Procedures
                         output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
                         output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
 
-                        new Thread(() =>
-                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float)score)
-                        ).Start();
+                        StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float) score);
 
                     }
                     else

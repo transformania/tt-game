@@ -161,9 +161,7 @@ namespace TT.Web.Controllers
             var form = FormStatics.GetForm(skill.Skill.FormdbName);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
-            new Thread(() =>
-                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1);
 
             return RedirectToAction(MVC.PvP.Play());
         }
@@ -297,9 +295,7 @@ namespace TT.Web.Controllers
             ItemProcedures.AddBookReading(me, book.dbItem.dbName);
             PlayerProcedures.GiveXP(me, 35);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1);
 
             TempData["Result"] = "You read your copy of " + book.Item.FriendlyName + ", absorbing its knowledge for 35 XP.  The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
             return RedirectToAction(MVC.PvP.Play());

@@ -495,9 +495,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to your covenant.";
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, amount)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, amount);
 
             return RedirectToAction(MVC.Covenant.MyCovenant());
 
@@ -556,9 +554,7 @@ namespace TT.Web.Controllers
             CovenantProcedures.SendCovenantMoneyToPlayer((int)me.Covenant, giftee, amount);
 
 
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, (float)-amount)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, (float) -amount);
 
             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";
             return RedirectToAction(MVC.Covenant.MyCovenant());
@@ -956,9 +952,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = FurnitureProcedures.UseFurniture(id, me);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantFurnitureUsed, 1)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantFurnitureUsed, 1);
 
             return RedirectToAction(MVC.Covenant.MyCovenant());
 

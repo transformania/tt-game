@@ -1164,9 +1164,7 @@ namespace TT.Web.Controllers
                 TempData["Result"] = AttackProcedures.Attack(me, targeted, skillBeingUsed);
 
                 // record into statistics
-                new Thread(() =>
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SpellsCast, 1)
-                ).Start();
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
 
                 if (AIStatics.IsABoss(targeted.BotId))
                 {
@@ -1358,9 +1356,7 @@ namespace TT.Web.Controllers
             PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
 
             // record into statistics
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1);
 
             TempData["Result"] = output;
             return RedirectToAction(MVC.PvP.Play());
@@ -1578,9 +1574,7 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
 
             // record into statistics
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SearchCount, 1)
-            ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SearchCount, 1);
 
             return RedirectToAction(MVC.PvP.Play());
         }
@@ -1704,9 +1698,7 @@ namespace TT.Web.Controllers
                 playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
                 locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> here and immediately absorbed its dark powers.";
 
-                new Thread(() =>
-                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1)
-                 ).Start();
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1);
 
                 EffectProcedures.GivePerkToPlayer(PvPStatics.Dungeon_ArtifactCurse, me);
 
@@ -2782,9 +2774,7 @@ namespace TT.Web.Controllers
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
-            new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesTeleported_Scroll, 1)
-             ).Start();
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesTeleported_Scroll, 1);
 
             return RedirectToAction(MVC.PvP.Play());
         }

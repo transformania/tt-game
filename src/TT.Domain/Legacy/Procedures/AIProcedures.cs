@@ -84,7 +84,7 @@ namespace TT.Domain.Procedures
                 var cmd = new CreatePlayer
                 {
                     FirstName = "Psychopath",
-                    Location = LocationsStatics.GetRandomLocation(),
+                    Location = LocationsStatics.GetRandomLocationNotInDungeon(),
                     Health = 200,
                     MaxHealth = 200,
                     Mana = 200,
@@ -379,7 +379,7 @@ namespace TT.Domain.Procedures
                     {
                         if (botbuffs.MoveActionPointDiscount() > -100)
                         {
-                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocation(), 4);
+                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocationNotInDungeon(), 4);
                             bot.dbLocationName = newplace;
                         }
 

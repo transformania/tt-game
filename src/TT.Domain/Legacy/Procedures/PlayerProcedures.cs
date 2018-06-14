@@ -673,7 +673,7 @@ namespace TT.Domain.Procedures
 
             cmd.InRP = player.StartInRP;
 
-            cmd.Location = LocationsStatics.GetRandomLocation();
+            cmd.Location = LocationsStatics.GetRandomLocationNotInDungeon();
 
             var newPlayerId = DomainRegistry.Repository.Execute(cmd);
            // playerRepo.SavePlayer(newplayer);

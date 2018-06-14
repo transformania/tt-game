@@ -396,7 +396,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 var cmd = new CreateItem
                 {
-                    dbLocationName = LocationsStatics.GetRandomLocation(),
+                    dbLocationName = LocationsStatics.GetRandomLocationNotInDungeon(),
                     dbName = CureItemDbName,
                     IsEquipped = false,
                     IsPermanent = false,

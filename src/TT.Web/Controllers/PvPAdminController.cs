@@ -440,8 +440,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            BossProcedures_MotorcycleGang.Spawn();
-
             return RedirectToAction(MVC.PvPAdmin.Index());
         }
 

@@ -304,13 +304,6 @@ namespace TT.Web.Controllers
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
-
-            if (output.Location == null && me.dbLocationName.Contains("dungeon_"))
-            {
-                DungeonProcedures.GenerateDungeon();
-                output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
-            }
-
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
             output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
@@ -635,7 +628,7 @@ namespace TT.Web.Controllers
             }
             else if (entering == "false")
             {
-                var overworldLocation = LocationsStatics.GetRandomLocation();
+                var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
                 PlayerProcedures.TeleportPlayer(me, overworldLocation, false);
                 TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labrynth of the dungeon.  ";
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
@@ -1802,7 +1795,7 @@ namespace TT.Web.Controllers
             else
             {
                 // in dungeon, have it drop in a random place in the overworld
-                var overworldLocation = LocationsStatics.GetRandomLocation();
+                var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
                 var resultmsg = ItemProcedures.DropItem(itemId, overworldLocation);
                 TempData["Result"] = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
             }

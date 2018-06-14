@@ -315,7 +315,7 @@ namespace TT.Domain.Procedures
                 // don't let the player spawn in the dungeon if they are not in PvP mode
                 if (dbPlayer.GameMode < GameModeStatics.PvP && dbPlayer.IsInDungeon())
                 {
-                    dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
+                    dbPlayer.dbLocationName = LocationsStatics.GetRandomLocationNotInDungeon();
                 }
 
                 dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffs(dbPlayer));

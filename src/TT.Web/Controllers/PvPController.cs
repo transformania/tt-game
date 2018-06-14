@@ -17,7 +17,6 @@ using TT.Web.CustomHtmlHelpers;
 using TT.Domain;
 using FeatureSwitch;
 using TT.Domain.Assets.Queries;
-using TT.Domain.Chat.Queries;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
@@ -2630,38 +2629,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.WorldMap, output);
         }
 
-        public virtual ActionResult Chat(string room)
-        {
-            return RedirectToAction(MVC.Chat.Index(room));
-        }
-
-        public virtual ActionResult PrivateChat()
-        {
-            var myMembershipId = User.Identity.GetUserId();
-            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName.IsNullOrEmpty() || me.LastName.IsNullOrEmpty())
-            {
-                return View(MVC.PvP.Views.MakeNewCharacter);
-            }
-            return View(MVC.PvP.Views.Chats.PrivateBegin);
-        }
-
-        public virtual ActionResult ChatLog(string room, string filter)
-        {
-            var model = new ChatLogViewModel
-            {
-                Room = room,
-                Filter = filter,
-                ChatLog = DomainRegistry.Repository.Find(new GetChatLogs {Room = room, Filter = filter})
-            };
-            return View(MVC.PvP.Views.Chats.ChatLog, model);
-        }
-
-        public virtual ActionResult ChatCommands()
-        {
-            return View(MVC.PvP.Views.Chats.ChatCommands);
-        }
-        
         public virtual ActionResult LevelupPerk()
         {
             var myMembershipId = User.Identity.GetUserId();

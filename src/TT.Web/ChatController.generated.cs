@@ -65,6 +65,18 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Chat()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Chat);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChatLog()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatLog);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ChatController Actions { get { return MVC.Chat; } }
@@ -82,6 +94,10 @@ namespace TT.Web.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = ("Index").ToLowerInvariant();
+            public readonly string Chat = ("Chat").ToLowerInvariant();
+            public readonly string PrivateChat = ("PrivateChat").ToLowerInvariant();
+            public readonly string ChatLog = ("ChatLog").ToLowerInvariant();
+            public readonly string ChatCommands = ("ChatCommands").ToLowerInvariant();
         }
 
 
@@ -92,6 +108,23 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_Index
         {
             public readonly string room = ("room").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_Chat s_params_Chat = new ActionParamsClass_Chat();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Chat ChatParams { get { return s_params_Chat; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Chat
+        {
+            public readonly string room = ("room").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChatLog s_params_ChatLog = new ActionParamsClass_ChatLog();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChatLog ChatLogParams { get { return s_params_ChatLog; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChatLog
+        {
+            public readonly string room = ("room").ToLowerInvariant();
+            public readonly string filter = ("filter").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -105,11 +138,17 @@ namespace TT.Web.Controllers
             {
                 public readonly string _ChatMenu = "_ChatMenu";
                 public readonly string Chat = "Chat";
+                public readonly string ChatCommands = "ChatCommands";
                 public readonly string ChatIndex = "ChatIndex";
+                public readonly string ChatLog = "ChatLog";
+                public readonly string PrivateBegin = "PrivateBegin";
             }
             public readonly string _ChatMenu = "~/Views/Chat/_ChatMenu.cshtml";
             public readonly string Chat = "~/Views/Chat/Chat.cshtml";
+            public readonly string ChatCommands = "~/Views/Chat/ChatCommands.cshtml";
             public readonly string ChatIndex = "~/Views/Chat/ChatIndex.cshtml";
+            public readonly string ChatLog = "~/Views/Chat/ChatLog.cshtml";
+            public readonly string PrivateBegin = "~/Views/Chat/PrivateBegin.cshtml";
         }
     }
 
@@ -127,6 +166,53 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
             IndexOverride(callInfo, room);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Chat(string room)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Chat);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
+            ChatOverride(callInfo, room);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PrivateChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult PrivateChat()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PrivateChat);
+            PrivateChatOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChatLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room, string filter);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChatLog(string room, string filter)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatLog);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filter", filter);
+            ChatLogOverride(callInfo, room, filter);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChatCommandsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChatCommands()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatCommands);
+            ChatCommandsOverride(callInfo);
             return callInfo;
         }
 

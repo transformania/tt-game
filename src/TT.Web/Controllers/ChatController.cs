@@ -1,8 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Chat.Queries;
 using TT.Domain.Players.Queries;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers
@@ -49,6 +53,38 @@ namespace TT.Web.Controllers
         private ActionResult ChatV2()
         {
             return View(MVC.Chat.Views.Chat);
+        }
+
+        public virtual ActionResult Chat(string room)
+        {
+            return RedirectToAction(MVC.Chat.Index(room));
+        }
+
+        public virtual ActionResult PrivateChat()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName.IsNullOrEmpty() || me.LastName.IsNullOrEmpty())
+            {
+                return View(MVC.PvP.Views.MakeNewCharacter);
+            }
+            return View(MVC.Chat.Views.PrivateBegin);
+        }
+
+        public virtual ActionResult ChatLog(string room, string filter)
+        {
+            var model = new ChatLogViewModel
+            {
+                Room = room,
+                Filter = filter,
+                ChatLog = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter })
+            };
+            return View(MVC.Chat.Views.ChatLog, model);
+        }
+
+        public virtual ActionResult ChatCommands()
+        {
+            return View(MVC.Chat.Views.ChatCommands);
         }
     }
 }

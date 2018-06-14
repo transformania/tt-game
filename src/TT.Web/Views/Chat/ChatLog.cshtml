@@ -18,34 +18,34 @@
     </li>
     <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
     <li>
-        <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
+        <a href="@Url.Action(MVC.Chat.PrivateChat())">Create/Join Private Room</a>
     </li>
-    <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatCommands())" target="_blank">Commands</a></li>
 }
 
 @section menubottom
 {
-    <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "lasth"))">Last Hour</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "lasth"))">Last Hour</a></li>
     <li>
-        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last4h"))">Last 4 Hours</a>
+        <a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "last4h"))">Last 4 Hours</a>
     </li>
     <li>
-        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last12h"))">Last 12 Hours</a>
+        <a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "last12h"))">Last 12 Hours</a>
     </li>
     <li>
-        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last24h"))">Last Day</a>
+        <a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "last24h"))">Last Day</a>
     </li>
     <li>
-        <a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last48h"))">Last 2 Days</a>
+        <a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "last48h"))">Last 2 Days</a>
     </li>
-    <li><a href="@Url.Action(MVC.PvP.ChatLog(Model.Room, "last72h"))">Last 3 Days</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatLog(Model.Room, "last72h"))">Last 3 Days</a></li>
 }
 
 <div class="containerInner">
     <h2>Chat Log for Room '@Model.Room'</h2>
     <p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
     <p>Chat log for private room:</p>
-    @using (Html.BeginForm(MVC.PvP.ChatLog(), FormMethod.Get))
+    @using (Html.BeginForm(MVC.Chat.ChatLog(), FormMethod.Get))
     {
         @Html.LabelFor(m => m.Room, "Room name:")
         <br>

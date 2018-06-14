@@ -169,18 +169,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Chat()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Chat);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ChatLog()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatLog);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ChoosePerk()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChoosePerk);
@@ -262,10 +250,6 @@ namespace TT.Web.Controllers
             public readonly string AddFriend = ("AddFriend").ToLowerInvariant();
             public readonly string RespondToFriendRequest = ("RespondToFriendRequest").ToLowerInvariant();
             public readonly string WorldMap = ("WorldMap").ToLowerInvariant();
-            public readonly string Chat = ("Chat").ToLowerInvariant();
-            public readonly string PrivateChat = ("PrivateChat").ToLowerInvariant();
-            public readonly string ChatLog = ("ChatLog").ToLowerInvariant();
-            public readonly string ChatCommands = ("ChatCommands").ToLowerInvariant();
             public readonly string LevelupPerk = ("LevelupPerk").ToLowerInvariant();
             public readonly string ChoosePerk = ("ChoosePerk").ToLowerInvariant();
             public readonly string MyPerks = ("MyPerks").ToLowerInvariant();
@@ -432,23 +416,6 @@ namespace TT.Web.Controllers
         {
             public readonly string showEnchant = ("showEnchant").ToLowerInvariant();
         }
-        static readonly ActionParamsClass_Chat s_params_Chat = new ActionParamsClass_Chat();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Chat ChatParams { get { return s_params_Chat; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Chat
-        {
-            public readonly string room = ("room").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_ChatLog s_params_ChatLog = new ActionParamsClass_ChatLog();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ChatLog ChatLogParams { get { return s_params_ChatLog; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ChatLog
-        {
-            public readonly string room = ("room").ToLowerInvariant();
-            public readonly string filter = ("filter").ToLowerInvariant();
-        }
         static readonly ActionParamsClass_ChoosePerk s_params_ChoosePerk = new ActionParamsClass_ChoosePerk();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ChoosePerk ChoosePerkParams { get { return s_params_ChoosePerk; } }
@@ -573,13 +540,7 @@ namespace TT.Web.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
-                    public readonly string ChatCommands = "ChatCommands";
-                    public readonly string ChatLog = "ChatLog";
-                    public readonly string PrivateBegin = "PrivateBegin";
                 }
-                public readonly string ChatCommands = "~/Views/PvP/Chats/ChatCommands.cshtml";
-                public readonly string ChatLog = "~/Views/PvP/Chats/ChatLog.cshtml";
-                public readonly string PrivateBegin = "~/Views/PvP/Chats/PrivateBegin.cshtml";
             }
             static readonly _partialClass s_partial = new _partialClass();
             public _partialClass partial { get { return s_partial; } }
@@ -978,53 +939,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WorldMap);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "showEnchant", showEnchant);
             WorldMapOverride(callInfo, showEnchant);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Chat(string room)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Chat);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
-            ChatOverride(callInfo, room);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void PrivateChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult PrivateChat()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PrivateChat);
-            PrivateChatOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ChatLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room, string filter);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ChatLog(string room, string filter)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatLog);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filter", filter);
-            ChatLogOverride(callInfo, room, filter);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ChatCommandsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ChatCommands()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatCommands);
-            ChatCommandsOverride(callInfo);
             return callInfo;
         }
 

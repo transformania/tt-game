@@ -531,17 +531,6 @@ namespace TT.Web.Controllers
             public readonly string ViewEffects = "~/Views/PvP/ViewEffects.cshtml";
             public readonly string ViewLog = "~/Views/PvP/ViewLog.cshtml";
             public readonly string WorldMap = "~/Views/PvP/WorldMap.cshtml";
-            static readonly _ChatsClass s_Chats = new _ChatsClass();
-            public _ChatsClass Chats { get { return s_Chats; } }
-            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-            public partial class _ChatsClass
-            {
-                static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-                public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-                public class _ViewNamesClass
-                {
-                }
-            }
             static readonly _partialClass s_partial = new _partialClass();
             public _partialClass partial { get { return s_partial; } }
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

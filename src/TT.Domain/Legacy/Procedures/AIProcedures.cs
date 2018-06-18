@@ -228,6 +228,8 @@ namespace TT.Domain.Procedures
                 try
                 {
 
+                    bot.LastActionTimestamp = DateTime.UtcNow;
+
                     // if bot is no longer fully animate or is null, skip them
                     if (bot == null || bot.Mobility != PvPStatics.MobilityFull)
                     {

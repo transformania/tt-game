@@ -295,14 +295,14 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var cutoff = DateTime.UtcNow.AddMinutes(PvPStatics.OfflineAfterXMinutes);
+            var cutoff = DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && 
                 p.LastActionTimestamp > cutoff && 
                 p.Form != RegularBimboFormDbName && 
                 !p.dbLocationName.Contains("dungeon_") &&
                 p.InDuel <= 0 &&
                 p.InQuest <= 0)
-                .GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
+                .GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key).ToList();
             return locs.First();
         }
 

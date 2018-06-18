@@ -79,34 +79,6 @@ namespace TT.Domain.Procedures
                 logs.AttackerLog = "You cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against you.</span>  ";
 
-                var attackerPronoun = "";
-                var victimPronoun = "";
-
-                if (me.Gender == PvPStatics.GenderMale)
-                {
-                    attackerPronoun = "his";
-                }
-                else if (me.Gender == PvPStatics.GenderFemale)
-                {
-                    attackerPronoun = "Her";
-                }
-                else
-                {
-                    attackerPronoun = "their";
-                }
-                if (targeted.Gender == PvPStatics.GenderMale)
-                {
-                    victimPronoun = "his";
-                }
-                else if (targeted.Gender == PvPStatics.GenderFemale)
-                {
-                    victimPronoun = "her";
-                }
-                else
-                {
-                    victimPronoun = "their";
-                }
-
                 var meBuffs = ItemProcedures.GetPlayerBuffs(me);
                 var targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
 
@@ -132,8 +104,8 @@ namespace TT.Domain.Procedures
                     if (skillBeingUsed.Skill.HealthDamageAmount > 0)
                     {
                         PlayerProcedures.DamagePlayerHealth(me.Id, skillBeingUsed.Skill.HealthDamageAmount * (1 + meBuffs.SpellExtraHealthDamagePercent() / 100));
-                        logs.AttackerLog += "Misfire!  Your spell accidentally lowered your own willpower by " + Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2) + ".  ";
-                        logs.VictimLog += "Misfire!  " + attackerPronoun + "'s spell accidentally lowered " + attackerPronoun + " own willpower by " +  Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2) + ".";
+                        logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2)}.  ";
+                        logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by " +  Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2) + ".";
                         result += logs.AttackerLog;
                     }
 
@@ -201,8 +173,8 @@ namespace TT.Domain.Procedures
                         // even though it's been done in the db, change the player health here as well
                         targeted.Health -= totalHealthDamage;
 
-                        logs.AttackerLog += "Your spell lowered " + victimPronoun + " willpower by " + Math.Round(totalHealthDamage,2) + ".  ";
-                        logs.VictimLog += attackerPronoun + " spell lowered your willpower by " + Math.Round(totalHealthDamage,2) + ".";
+                        logs.AttackerLog += $"Your spell lowered {GetPronoun_hisher(victim.Gender)} willpower by {Math.Round(totalHealthDamage,2)}.  ";
+                        logs.VictimLog += $"{GetPronoun_HisHer(attacker.Gender)} spell lowered your willpower by {Math.Round(totalHealthDamage,2)}.  ";
                         result += logs.AttackerLog;
                     }
 
@@ -264,10 +236,10 @@ namespace TT.Domain.Procedures
             return result;
         }
 
-        public static string Attack(Player attacker, Player victim, string skillBeingUsed)
+        public static void Attack(Player attacker, Player victim, string skillBeingUsed)
         {
             var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
-            return Attack(attacker, victim, vm);
+            Attack(attacker, victim, vm);
         }
 
         public static string ThrowGrenade(Player attacker, decimal damage, string orbStrengthName)
@@ -398,26 +370,15 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static decimal GetMiddleLevel(Player attacker, Player victim)
+        private static string GetPronoun_hisher(string sex)
         {
-            var lvlDiff = attacker.Level - victim.Level;
-
-            var lowerLevel = 0;
-
-            if (attacker.Level <= victim.Level)
-            {
-                lowerLevel = attacker.Level;
-            } else
-            {
-                lowerLevel = victim.Level;
-            }
-
-            var mid = (decimal)(Math.Round(lowerLevel + (lvlDiff * .5),1));
-
-            return mid;
+            return sex == PvPStatics.GenderMale ? "his" : "her";
         }
 
-
+        private static string GetPronoun_HisHer(string sex)
+        {
+            return sex == PvPStatics.GenderMale ? "His" : "Her";
+        }
 
     }
 }

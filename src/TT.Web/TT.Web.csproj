@@ -292,7 +292,6 @@
     <Compile Include="HubDispatchers\ScopableHubDispatcher.cs" />
     <Compile Include="HubDispatchers\ScopableHubDispatcherExtensions.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Hubs\DuelHub.cs" />
     <Compile Include="Hubs\NoticeHub.cs" />
     <Compile Include="InfoController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -537,6 +536,9 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_53.cshtml" />
     <Content Include="Views\Account\PrivacyPolicy.cshtml" />
     <Content Include="Views\Account\DeleteAccount.cshtml" />
+    <Content Include="Views\Chat\ChatCommands.cshtml" />
+    <Content Include="Views\Chat\ChatLog.cshtml" />
+    <Content Include="Views\Chat\PrivateBegin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />
@@ -734,8 +736,6 @@
     <Content Include="Views\Contribution\DMRoll.cshtml" />
     <Content Include="Views\Contribution\MyDMRolls.cshtml" />
     <Content Include="Views\Contribution\ReviewDMRolls.cshtml" />
-    <Content Include="Views\PvP\Chats\ChatLog.cshtml" />
-    <Content Include="Views\PvP\Chats\ChatCommands.cshtml" />
     <Content Include="Views\Duel\Duel.cshtml" />
     <Content Include="Views\Contribution\BalanceCalculator2.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_9.cshtml" />
@@ -767,7 +767,6 @@
     <Content Include="Views\Settings\Polls\Open\poll1.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll1.cshtml" />
-    <Content Include="Views\PvP\Chats\PrivateBegin.cshtml" />
     <Content Include="Views\Settings\WriteAuthorArtistBio.cshtml" />
     <Content Include="Views\Settings\AuthorArtistBio.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_13.cshtml" />

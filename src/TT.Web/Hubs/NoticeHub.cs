@@ -33,24 +33,17 @@ namespace TT.Web.Hubs
             DomainRegistry.AttackNotificationBroker.NotificationRaised += NotificationRaised;
 
             var me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
-
-            var minimumDonatorLevelForNotifications = 0;
-
-            if (me.DonatorLevel >= minimumDonatorLevelForNotifications)
-            {
-                var room = "_" + me.Id;
-                return Groups.Add(Context.ConnectionId, room);
-            }
-
-            // do nothing...
-            return Task.FromResult(0);
-           
+            return Groups.Add(Context.ConnectionId, GetPlayerRoomId(me.Id));
         }
 
         public void ReceiveNotice(int playerId, string message)
         {
-            var room = "_" + playerId;
-            Clients.Group(room).receiveNotice(message);
+            Clients.Group(GetPlayerRoomId(playerId)).receiveNotice(message);
+        }
+
+        private string GetPlayerRoomId(int playerId)
+        {
+            return $"_{playerId}";
         }
 
         

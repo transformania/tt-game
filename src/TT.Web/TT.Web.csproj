@@ -539,6 +539,7 @@
     <Content Include="Views\Chat\ChatCommands.cshtml" />
     <Content Include="Views\Chat\ChatLog.cshtml" />
     <Content Include="Views\Chat\PrivateBegin.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_54.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

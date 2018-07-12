@@ -15,11 +15,6 @@ namespace TT.Domain.Covenants.Mappings
                 .ToTable("Covenants")
                 .HasKey(e => e.Id);
 
-            modelBuilder.Entity<User>()
-                .HasOptional(p => p.CovenantFounded)
-                .WithRequired(d => d.Founder)
-                .Map(m => m.MapKey("FounderMembershipId"));
-
             modelBuilder.Entity<Player>()
                 .HasOptional(p => p.CovenantLed)
                 .WithRequired(d => d.Leader)

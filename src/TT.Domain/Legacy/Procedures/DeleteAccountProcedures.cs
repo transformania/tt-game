@@ -31,7 +31,6 @@ namespace TT.Domain.Legacy.Procedures
                     
                     UPDATE [dbo].[Contributions] SET OwnerMembershipId = NULL WHERE OwnerMembershipId = @membershipId;
                     UPDATE [dbo].[EffectContributions] SET OwnerMemberhipId = NULL WHERE OwnerMemberhipId = @membershipId;
-                    UPDATE [dbo].[Covenants] SET FounderMembershipId = NULL WHERE FounderMembershipId = @membershipId;
                     UPDATE [dbo].[DMRolls] SET MembershipOwnerId = NULL WHERE MembershipOwnerId = @membershipId;
                     
                     UPDATE [dbo].[Players] SET MembershipId = NULL WHERE MembershipId = @membershipId;

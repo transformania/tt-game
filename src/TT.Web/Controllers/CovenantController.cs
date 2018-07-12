@@ -326,7 +326,6 @@ namespace TT.Web.Controllers
 
             //input.FlagUrl = input.FlagUrl;
             input.FlagUrl = "generic.jpg";
-            input.FounderMembershipId = myMembershipId;
             input.LeaderId = me.Id;
             //input.IsPvP = me.InPvP;
             CovenantProcedures.StartNewCovenant(input);

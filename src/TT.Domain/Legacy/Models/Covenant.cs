@@ -23,8 +23,6 @@ namespace TT.Domain.Models
         public DateTime LastMemberAcceptance { get; set; }
         public int LeaderId { get; set; }
 
-        [StringLength(128)]
-        public string FounderMembershipId { get; set; }
         public bool IsPvP { get; set; }
 
         public string Captains { get; set; }

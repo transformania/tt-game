@@ -110,7 +110,6 @@ namespace TT.Domain.Procedures
             var dbCov = new Covenant();
           //  dbCov.IsPvP = newcov.IsPvP;
             dbCov.IsPvP = false;
-            dbCov.FounderMembershipId = newcov.FounderMembershipId;
             dbCov.FlagUrl = newcov.FlagUrl;
             dbCov.LastMemberAcceptance = DateTime.UtcNow;
             dbCov.Name = newcov.Name;

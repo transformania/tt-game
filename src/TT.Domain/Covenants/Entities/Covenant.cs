@@ -14,7 +14,6 @@ namespace TT.Domain.Covenants.Entities
         public string SelfDescription { get; protected set; }
         public DateTime LastMemberAcceptance { get; protected set; }
         public Player Leader { get; protected set; }
-        public User Founder { get; protected set; }
         public bool IsPvP { get; protected set; }
         public string Captains { get; protected set; } // TODO: convert to ICollection<Player> Captains
         public decimal Money { get; protected set; }

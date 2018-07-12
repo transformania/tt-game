@@ -22,7 +22,6 @@ namespace TT.Domain.Identity.Entities
         public ICollection<Strike> StrikesGiven { get; private set; } = new List<Strike>();
         public ICollection<Role> Roles { get; private set; } = new List<Role>();
         public Donator Donator { get; protected set; }
-        public Covenant CovenantFounded { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }
 

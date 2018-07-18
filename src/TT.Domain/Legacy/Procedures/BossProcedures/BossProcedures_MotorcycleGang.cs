@@ -231,6 +231,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
         public static void CounterAttack(Player victim, Player boss)
         {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
             // boss counterattacks once
             AttackProcedures.Attack(boss, victim, ChooseSpell(victim));
 
@@ -249,6 +251,16 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 {
                     AttackProcedures.Attack(follower, victim, ChooseSpell(victim));
                     PlayerLogProcedures.AddPlayerLog(follower.Id, $"<b>{BossFirstName} {BossLastName} orders you to attack {victim.GetFullName()}!</b>", true);
+
+                    // reset the last attack and online timestamp to before the attack, otherwise she bumps her followers online indefinitely...
+                    var player = playerRepo.Players.First(p => p.Id == follower.Id);
+                    player.LastActionTimestamp = follower.LastActionTimestamp;
+                    player.LastCombatTimestamp = follower.LastCombatTimestamp;
+                    playerRepo.SavePlayer(player);
+
+                    // remove this person from the list of eligible attackers so they don't do it more than once
+                    followersHere = followersHere.Where(f => f.Id != follower.Id).ToList();
+
                 }
             }
 

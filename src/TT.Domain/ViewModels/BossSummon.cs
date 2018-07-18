@@ -21,7 +21,7 @@ namespace TT.Domain.ViewModels
 
       { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossId = AIStatics.FaebossBotId, MinimumTurn = 3200, ActivationText = "" }},
 
-    { BossProcedures_MotorcycleGang.SpawnLocation, new BossSummon { BossId = AIStatics.MotorcycleGangLeaderBotId, MinimumTurn = 1, ActivationText = "" }},
+    { BossProcedures_MotorcycleGang.SpawnLocation, new BossSummon { BossId = AIStatics.MotorcycleGangLeaderBotId, MinimumTurn = 1000, ActivationText = "" }},
 
     };
 

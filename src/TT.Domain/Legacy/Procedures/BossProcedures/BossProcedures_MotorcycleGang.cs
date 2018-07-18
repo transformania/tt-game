@@ -16,7 +16,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public const string BossFirstName = "Road Queen Harley";
         public const string BossLastName = "Punksplitter";
         public const string BossForm = "form_Road_Queen_Judoo";
-        public const int BossFormId = 879;
+        public const int BossFormId = 934;
 
         public const string BikerFollowerSpellname = "skill_Hell_in_Heels_on_Wheels_Judoo";
         public const string BikerFollowerForm = "form_Road_Recruit_Judoo";
@@ -71,7 +71,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
                 for (var i = 0; i < 2; i++)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.MOTORCYCLE_RUNE, PlayerId = boss.Id });
+                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.MOTORCYCLE_RUNE, PlayerId = bossEF.Id });
                 }
 
             }
@@ -256,6 +256,10 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
         private static Player GetRandomFollower(List<Player> followers)
         {
+            if (followers.IsEmpty())
+            {
+                return null;
+            }
             return followers.ElementAt((int)Math.Floor(followers.Count * rand.NextDouble()));
         }
 

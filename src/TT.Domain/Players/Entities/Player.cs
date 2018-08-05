@@ -178,11 +178,14 @@ namespace TT.Domain.Players.Entities
             ForceWithinBounds();
         }
 
-        public void DropAllItems()
+        public void DropAllItems(bool ignoreRunes = false)
         {
             foreach (var i in Items)
             {
-                i.Drop(this);
+                if (!ignoreRunes || i.ItemSource.ItemType != PvPStatics.ItemType_Rune)
+                {
+                    i.Drop(this);
+                }
             }
         }
 

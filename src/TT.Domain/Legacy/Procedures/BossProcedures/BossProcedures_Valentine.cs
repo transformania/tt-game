@@ -296,7 +296,7 @@ namespace TT.Domain.Procedures.BossProcedures
             panties.OwnerId = newOwnerId;
             itemRepo.SaveItem(panties);
 
-            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = valentine.Id });
+            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = valentine.Id, IgnoreRunes = true});
             DomainRegistry.Repository.Execute(new DeletePlayer { PlayerId = valentine.Id });
 
             PvPWorldStatProcedures.Boss_EndValentine();

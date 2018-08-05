@@ -26,33 +26,87 @@ namespace TT.Tests.Players.Entities
                 .With(p => p.Id, 50)
                 .BuildAndSave();
 
-            var item1 = new ItemBuilder()
+            var runeItem = new ItemBuilder()
                 .With(i => i.Id, 1)
                 .With(i => i.Owner.Id, 50)
                 .With(i => i.IsEquipped, false)
+                .With(i => i.Owner, player)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave()
+                )
                 .BuildAndSave();
 
-            var item2 = new ItemBuilder()
+            var nonRuneItem = new ItemBuilder()
                 .With(i => i.Id, 2)
                 .With(i => i.Owner.Id, 50)
                 .With(i => i.IsEquipped, false)
+                .With(i => i.Owner, player)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Hat)
+                    .BuildAndSave()
+                )
                 .BuildAndSave();
 
-            player.Items.Add(item1);
-            player.Items.Add(item2);
+            player.Items.Add(runeItem);
+            player.Items.Add(nonRuneItem);
 
             player.DropAllItems();
 
-            item1.Owner.Should().BeNull();
-            item1.IsEquipped.Should().BeFalse();
-            item1.dbLocationName.Should().Be("street_70e9th");
+            runeItem.Owner.Should().BeNull();
+            runeItem.IsEquipped.Should().BeFalse();
+            runeItem.dbLocationName.Should().Be("street_70e9th");
 
-            item2.Owner.Should().BeNull();
-            item2.IsEquipped.Should().BeFalse();
-            item2.dbLocationName.Should().Be("street_70e9th");
+            nonRuneItem.Owner.Should().BeNull();
+            nonRuneItem.IsEquipped.Should().BeFalse();
+            nonRuneItem.dbLocationName.Should().Be("street_70e9th");
 
         }
-        
+
+        [Test]
+        public void player_should_drop_all_items_ignoring_runes()
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 50)
+                .BuildAndSave();
+
+            var runeItem = new ItemBuilder()
+                .With(i => i.Id, 1)
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.IsEquipped, true)
+                .With(i => i.Owner, player)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave()
+                )
+                .BuildAndSave();
+
+            var nonRuneItem = new ItemBuilder()
+                .With(i => i.Id, 2)
+                .With(i => i.Owner.Id, 50)
+                .With(i => i.IsEquipped, false)
+                .With(i => i.Owner, player)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Hat)
+                    .BuildAndSave()
+                )
+                .BuildAndSave();
+
+            player.Items.Add(runeItem);
+            player.Items.Add(nonRuneItem);
+
+            player.DropAllItems(true);
+
+            runeItem.Owner.Id.Should().Be(player.Id);
+            runeItem.IsEquipped.Should().Be(true);
+            runeItem.dbLocationName.Should().BeNull();
+
+            nonRuneItem.Owner.Should().BeNull();
+            nonRuneItem.IsEquipped.Should().BeFalse();
+            nonRuneItem.dbLocationName.Should().Be("street_70e9th");
+
+        }
+
         [Test]
         public void reducing_tf_energy_reduces_by_two_percent_without_buffs()
         {

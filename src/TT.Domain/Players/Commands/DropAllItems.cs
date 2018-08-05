@@ -10,6 +10,7 @@ namespace TT.Domain.Players.Commands
     {
 
         public int PlayerId { get; set; }
+        public bool IgnoreRunes { get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -19,12 +20,13 @@ namespace TT.Domain.Players.Commands
 
                 var player = ctx.AsQueryable<Player>()
                     .Include(i => i.Items)
+                    .Include(i => i.Items.Select(t => t.ItemSource))
                     .SingleOrDefault(p => p.Id == PlayerId);
 
                 if (player == null)
                     throw new DomainException($"player with ID {PlayerId} could not be found");
 
-                player.DropAllItems();
+                player.DropAllItems(IgnoreRunes);
                 ctx.Commit();
             };
 

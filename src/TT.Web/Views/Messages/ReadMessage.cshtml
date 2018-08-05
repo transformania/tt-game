@@ -26,11 +26,12 @@
         </div>
 
         @{
-            if (Model.ConversationId != null)
-            {
-                @Ajax.ActionLink("View full conversation", MVC.Messages.ReadConversation(Model.MessageId), new AjaxOptions {UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting"}, new {@id = "conversationLink"})
-                <br/>
-            }
+        if (Model.ConversationId != null)
+        {
+            @Ajax.ActionLink("View full conversation", MVC.Messages.ReadConversation(Model.MessageId, false), new AjaxOptions { UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @id = "conversationLink" })
+        <i class="timeago">@Ajax.ActionLink(" (reversed)", MVC.Messages.ReadConversation(Model.MessageId, true), new AjaxOptions { UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @id = "conversationLink" })</i>
+            <br />
+    }
         }
     </div>
 

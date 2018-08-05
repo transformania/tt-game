@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -114,7 +115,7 @@ namespace TT.Web.Controllers
             return View(MVC.Messages.Views.ReadMessage, message);
         }
 
-        public virtual ActionResult ReadConversation(int messageId)
+        public virtual ActionResult ReadConversation(int messageId, bool reversed = false)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -137,6 +138,12 @@ namespace TT.Web.Controllers
                     {
                         conversationId = message.ConversationId
                     });
+
+                if (reversed)
+                {
+                    messages = messages.Reverse();
+                }
+
                 return PartialView(MVC.Messages.Views.partial.Conversation, messages);
             }
             catch

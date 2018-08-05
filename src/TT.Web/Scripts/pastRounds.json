@@ -431,6 +431,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 55,
+      "name": "Alpha R55 (Era of Emily Hart)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

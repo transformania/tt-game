@@ -211,6 +211,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AllowChaosChanges()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowChaosChanges);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SetArtistBioVisibility()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetArtistBioVisibility);
@@ -266,6 +272,7 @@ namespace TT.Web.Controllers
             public readonly string RefreshRPClassifiedAd = ("RefreshRPClassifiedAd").ToLowerInvariant();
             public readonly string DeleteRPClassifiedAd = ("DeleteRPClassifiedAd").ToLowerInvariant();
             public readonly string ChaosRestoreBase = ("ChaosRestoreBase").ToLowerInvariant();
+            public readonly string AllowChaosChanges = ("AllowChaosChanges").ToLowerInvariant();
             public readonly string SetArtistBioVisibility = ("SetArtistBioVisibility").ToLowerInvariant();
         }
 
@@ -480,6 +487,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_DeleteRPClassifiedAd
         {
             public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_AllowChaosChanges s_params_AllowChaosChanges = new ActionParamsClass_AllowChaosChanges();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AllowChaosChanges AllowChaosChangesParams { get { return s_params_AllowChaosChanges; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AllowChaosChanges
+        {
+            public readonly string allowChanges = ("allowChanges").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetArtistBioVisibility s_params_SetArtistBioVisibility = new ActionParamsClass_SetArtistBioVisibility();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1050,6 +1065,18 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChaosRestoreBase);
             ChaosRestoreBaseOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AllowChaosChangesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool allowChanges);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AllowChaosChanges(bool allowChanges)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowChaosChanges);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "allowChanges", allowChanges);
+            AllowChaosChangesOverride(callInfo, allowChanges);
             return callInfo;
         }
 

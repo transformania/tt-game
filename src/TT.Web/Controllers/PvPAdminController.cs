@@ -14,6 +14,7 @@ using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.Exceptions.RPClassifiedAds;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
@@ -1324,6 +1325,13 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
+                var person = PlayerProcedures.GetPlayer(id);
+                if (!DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = person.MembershipId}))
+                {
+                    TempData["Error"] = "This player does not have chaos mode changes enabled.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
                 var output = new PlayerNameViewModel();
 
                 if (id != -1)
@@ -1362,8 +1370,12 @@ namespace TT.Web.Controllers
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
 
-                var origFirstName = player.FirstName;
-                var origLastName = player.LastName;
+                if (!DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
+                {
+                    TempData["Error"] = "This player does not have chaos mode changes enabled.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
                 string changed_name = null;
                 string changed_level = null;
                 string changed_money = null;

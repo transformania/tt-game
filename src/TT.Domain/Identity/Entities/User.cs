@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TT.Domain.Covenants.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Identity.CommandRequests;
@@ -24,6 +23,8 @@ namespace TT.Domain.Identity.Entities
         public Donator Donator { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }
+
+        public bool AllowChaosChanges { get; protected set; }
 
         private User() { }
 
@@ -48,6 +49,11 @@ namespace TT.Domain.Identity.Entities
             {
                 stat.AddAmount(amount);
             }
+        }
+
+        public void SetAllowChaosChanges(bool allowChaosChanges)
+        {
+            this.AllowChaosChanges = allowChaosChanges;
         }
     }
 

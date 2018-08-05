@@ -162,6 +162,7 @@
     <Compile Include="Effects\Commands\CreateEffectTests.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
+    <Compile Include="Identity\Commands\AllowChaosChangesTests.cs" />
     <Compile Include="Identity\Commands\ResetSecurityStampTest.cs" />
     <Compile Include="Identity\PropertyValidators\IsValidUserValidatorTests.cs" />
     <Compile Include="Identity\PropertyValidators\UserHasCorrectValidatorTests.cs" />

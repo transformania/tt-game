@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.ViewModels
@@ -9,5 +10,6 @@ namespace TT.Domain.ViewModels
         public double TimeUntilReroll { get; set; }
         public double TimeUntilLogout { get; set; }
         public IEnumerable<StrikeDetail> Strikes { get; set; }
+        public bool ChaosChangesEnabled { get; set; }
     }
 }

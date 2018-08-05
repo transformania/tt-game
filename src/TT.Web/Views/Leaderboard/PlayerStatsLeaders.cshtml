@@ -12,6 +12,9 @@
 <div class="containerInner">
 
     <h1>Statistics Leaders</h1>
+    
+    <button class="btn" id="expandAllBtn" onclick="expandAll()">Expand All</button> <br><br>
+
     <div class="row">
         @{
             foreach (var f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
@@ -52,7 +55,6 @@
 
 <script>
     function success(panel) {
-        //alert(panel);
         var button = $("#" + panel);
         button.parent().parent().css("height", "484px");
         button.replaceWith("<p>------------------</p>");
@@ -63,6 +65,13 @@
     }
 
     function waiting() {
+        // function must be present, intentionally blank
+    }
 
+    function expandAll() {
+        $(".attackLink").each(function() {
+            this.click();
+        });
+        $("#expandAllBtn").detach();
     }
 </script>

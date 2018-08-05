@@ -1105,7 +1105,14 @@ namespace TT.Web.Controllers
                     TempData["Error"] = "Your target seems immune from this kind of spell.";
                     TempData["SubError"] = "Maybe a different one would do...";
                     return RedirectToAction(MVC.PvP.Play());
-                } 
+                }
+
+                if ((AIStatics.IsABoss(targeted.BotId) || AIStatics.IsAMiniboss(targeted.BotId)) && (futureForm.MobilityType != PvPStatics.MobilityInanimate || futureForm.MobilityType != PvPStatics.MobilityPet))
+                {
+                    TempData["Error"] = "Your target seems immune from this kind of spell.";
+                    TempData["SubError"] = "Maybe a different one would do...";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
 
             }
             #endregion

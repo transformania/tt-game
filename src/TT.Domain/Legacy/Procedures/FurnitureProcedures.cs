@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Legacy.Services;
 using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
@@ -92,18 +93,12 @@ namespace TT.Domain.Procedures
                 var contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureContractVariation);
                 var basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureContractVariation;
 
-                var firstNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.FirstNames.xml");
-                var lastNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.LastNames.xml");
-                
-                var firstName = firstNames.ElementAt((int)Math.Floor(rand.NextDouble() * firstNames.Count));
-                var lastName = lastNames.ElementAt((int)Math.Floor(rand.NextDouble() * lastNames.Count));
-
                 var newfurn = new Furniture
                 {
                     dbType = furnitureType.dbType,
                     ContractTurnDuration = furnitureType.BaseContractTurnLength + contractTurnRandomOffset,
                     CovenantId = -1,
-                    HumanName = firstName + " " + lastName + " the " + furnitureType.FriendlyName,
+                    HumanName = $"{NameService.GetRandomFirstName()} {NameService.GetRandomLastName()} the {furnitureType.FriendlyName}",
                     Price = Math.Floor(furnitureType.BaseCost + basePriceRandomOffset),
                     LastUseTimestamp = DateTime.UtcNow,
                     ContractStartTurn = 0,

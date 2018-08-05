@@ -5,6 +5,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
+using TT.Domain.Legacy.Services;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
@@ -66,16 +67,9 @@ namespace TT.Domain.Procedures
         public static void SpawnAIPsychopaths(int count)
         {
 
-            // load up the random names XML
-            var lastNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.LastNames.xml");
-
             var rand = new Random();
-
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
-
             var turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-
             var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId);
 
             for (var i = (0 + botCount); i < (count + botCount); i++)
@@ -95,10 +89,7 @@ namespace TT.Domain.Procedures
                     Money = 100,
                 };
 
-                double lastNameMax = lastNames.Count();
-                var randLastNameIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * lastNameMax));
-
-                cmd.LastName = lastNames.ElementAt(randLastNameIndex);
+                cmd.LastName = NameService.GetRandomLastName();
                 cmd.Gender = i % 2 == 1 ? PvPStatics.GenderMale : PvPStatics.GenderFemale;
                 cmd.OriginalForm = cmd.Form;
 
@@ -531,6 +522,12 @@ namespace TT.Domain.Procedures
             else if (bot.BotId == AIStatics.DemonBotId)
             {
                 BossProcedures_DungeonDemon.CounterAttack(bot, personAttacking);
+            }
+
+            // miniboss counterattack
+            else if (AIStatics.IsAMiniboss(bot.BotId))
+            {
+                BossProcedures_Minibosses.CounterAttack(personAttacking, bot);
             }
 
 

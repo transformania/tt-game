@@ -784,6 +784,20 @@ namespace TT.Domain.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
 
+                // minibosses
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started miniboss actions");
+                serverLogRepo.SaveServerLog(log);
+
+                var minibossExceptions = BossProcedures_Minibosses.RunAll(worldStats.TurnNumber);
+
+                foreach (var e in minibossExceptions)
+                {
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running miniboss action", e));
+                }
+
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished miniboss actions");
+
 
                 PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
 

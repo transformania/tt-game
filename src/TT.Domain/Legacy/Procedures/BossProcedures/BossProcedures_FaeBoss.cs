@@ -148,7 +148,7 @@ namespace TT.Domain.Procedures.BossProcedures
             // have Narcissa periodically drop all of her pets/belongings so she doesn't get OP with them
             if (PvPWorldStatProcedures.GetWorldTurnNumber() % 12 == 0)
             {
-                DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = faeboss.Id});
+                DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = faeboss.Id, IgnoreRunes = true});
             }
 
             var faeBuffs = ItemProcedures.GetPlayerBuffs(faeboss);

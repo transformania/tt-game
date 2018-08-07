@@ -168,6 +168,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ReadConversation
         {
             public readonly string messageId = ("messageId").ToLowerInvariant();
+            public readonly string reversed = ("reversed").ToLowerInvariant();
         }
         static readonly ActionParamsClass_MarkReadStatus s_params_MarkReadStatus = new ActionParamsClass_MarkReadStatus();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -289,14 +290,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ReadConversationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int messageId);
+        partial void ReadConversationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int messageId, bool reversed);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ReadConversation(int messageId)
+        public override System.Web.Mvc.ActionResult ReadConversation(int messageId, bool reversed)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ReadConversation);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "messageId", messageId);
-            ReadConversationOverride(callInfo, messageId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reversed", reversed);
+            ReadConversationOverride(callInfo, messageId, reversed);
             return callInfo;
         }
 

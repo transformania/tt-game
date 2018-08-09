@@ -85,6 +85,7 @@
     <Compile Include="201608181243_TFMessageFK.cs" />
     <Compile Include="201608031909_AddRecaptchaEntry.cs" />
     <Compile Include="201804260056_RemoveVictimName.cs" />
+    <Compile Include="201808051328_AllowChaosChanges.cs" />
     <Compile Include="201807120100_NukeCovenantFounder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

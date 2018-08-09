@@ -175,14 +175,26 @@
     @{
         if (PvPStatics.ChaosMode)
         {
-            <p>
-                <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.PvP))">Enter PvP Mode</a><br />
-                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br />
-                <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br />
-            </p>
+    <p>
+        <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.PvP))">Enter PvP Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br />
+        
+        @{
+            if (Model.ChaosChangesEnabled)
+            {
+                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br />
+            }
+            else
+            {
+                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br />
+            }
+        }
+
+        <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br />
+    </p>
         }
     }
 

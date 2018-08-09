@@ -37,7 +37,8 @@ namespace TT.Web.Controllers
                 TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
                 TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
                 Player = me,
-                Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId })
+                Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
+                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId})
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -886,6 +887,35 @@ namespace TT.Web.Controllers
             PlayerProcedures.InstantRestoreToBase(me);
 
             TempData["Result"] = "You have been restored to your base form.";
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        public virtual ActionResult AllowChaosChanges(bool allowChanges)
+        {
+
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var myMembershipId = User.Identity.GetUserId();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new AllowChaosChanges
+                {
+                    UserId = myMembershipId,
+                    ChaosChangesEnabled = allowChanges
+                });
+                TempData["Result"] = $"Allowing chaos changes has been successfully set to {allowChanges}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change chaos changes enabled/disabled.";
+            }
+           
             return RedirectToAction(MVC.PvP.Play());
 
         }

@@ -10,7 +10,7 @@
 
     if (Model.TurnNumber >= PvPStatics.RoundDuration)
     {
-        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  <a href="@Url.Action(MVC.Info.HowToPlay())#chaosMode">Chaos mode</a> will start soon when an admin can save the round leaderboards. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos mode</a> will start soon when an admin can save the round leaderboards. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.InbetweenRoundsNonChaos)
@@ -20,7 +20,7 @@
 
     if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode)
     {
-        <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos Mode</a> in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.RoundStartsAt != null && Model.RoundStartsAt.Value.CompareTo(DateTime.UtcNow) > 0)

@@ -10,5 +10,10 @@
         public static int NARCISSA_RUNE = 517;
         public static int BIMBO_RUNE = 518;
         public static int MOTORCYCLE_RUNE = 557;
+
+        public static int MINIBOSS_SORORITY_MOTHER_RUNE = 564;
+        public static int MINIBOSS_POP_GODDESS_RUNE = 565;
+        public static int MINIBOSS_POSSESSED_MAID_RUNE = 566;
+        public static int MINIBOSS_SEAMSTRESS_RUNE = 567;
     }
 }

@@ -23,6 +23,11 @@ namespace TT.Domain.Statics
         public const int FaebossBotId = -16;
         public const int MotorcycleGangLeaderBotId = -17;
 
+        public const int MinibossSororityMotherId = -18;
+        public const int MinibossPopGoddessId = -19;
+        public const int MinibossPossessedMaidId = -20;
+        public const int MinibossSeamstressId = -21;
+
         public const int DungeonDemonFormId = 371;
 
         public const string ACTIVE = "active";
@@ -39,6 +44,14 @@ namespace TT.Domain.Statics
                    id == MouseBimboBotId ||
                    id == FaebossBotId ||
                    id == MotorcycleGangLeaderBotId;
+        }
+
+        public static bool IsAMiniboss(int id)
+        {
+            return id == MinibossSororityMotherId ||
+                   id == MinibossPopGoddessId ||
+                   id == MinibossPossessedMaidId ||
+                   id == MinibossSeamstressId;
         }
     }
 }

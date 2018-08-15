@@ -1107,7 +1107,7 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
-                if ((AIStatics.IsABoss(targeted.BotId) || AIStatics.IsAMiniboss(targeted.BotId)) && (futureForm.MobilityType != PvPStatics.MobilityInanimate || futureForm.MobilityType != PvPStatics.MobilityPet))
+                if (AIStatics.IsAMiniboss(targeted.BotId) && futureForm.MobilityType != PvPStatics.MobilityInanimate && futureForm.MobilityType != PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "Your target seems immune from this kind of spell.";
                     TempData["SubError"] = "Maybe a different one would do...";

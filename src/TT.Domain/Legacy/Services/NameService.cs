@@ -11,13 +11,13 @@ namespace TT.Domain.Legacy.Services
 
         public static string GetRandomLastName()
         {
-            var allLastNames = GetNames("FirstNames");
+            var allLastNames = GetNames("LastNames"); 
             return allLastNames.ElementAt((int)Math.Floor(rand.NextDouble() * allLastNames.Count));
         }
 
         public static string GetRandomFirstName()
         {
-            var allFirstNames = GetNames("LastNames");
+            var allFirstNames = GetNames("FirstNames");
             return allFirstNames.ElementAt((int)Math.Floor(rand.NextDouble() * allFirstNames.Count));
         }
 

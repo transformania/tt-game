@@ -76,7 +76,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Sanguine_Seamstress_Judoo",
                     Title = "Seamstress",
                     Region = "clothing",
-                    Spells = new List<string> { "skill_Soft_But_Wild_Lara_Ithilwen", "skill_So_Fluffy!_Gina_Victor_/_Rena", "skill_Ensoften_Frederika_Rein"},
+                    Spells = new List<string> { "skill_Soft_But_Wild_Lara_Ithilwen", "skill_So_Fluffy!_Gina_Victor_/_Rena_Kitsu", "skill_Ensoften_Frederika_Rein"},
                     BotId = AIStatics.MinibossSeamstressId,
                     RuneIdToGive = RuneStatics.MINIBOSS_SEAMSTRESS_RUNE,
                 }

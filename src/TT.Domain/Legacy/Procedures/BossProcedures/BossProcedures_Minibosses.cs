@@ -51,7 +51,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormSourceId = 956,
                     FormName = "form_Pop_Goddess_Judoo",
                     Title = "Pop Goddess",
-                    Region = "sorority",
+                    Region = "concert_hall",
                     Spells = new List<string> { "skill_Almost_A_Shirt_Kinello", "skill_Reflecius_Fabricos_Haretia", "skill_It's_Got_Ruffles!_Martiandawn"},
                     BotId = AIStatics.MinibossPopGoddessId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POP_GODDESS_RUNE,
@@ -142,7 +142,6 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = data.RuneIdToGive, PlayerId = minibossEF.Id });
                 }
 
-                EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl5", minibossEF.Id);
             }
 
             if (miniboss != null && miniboss.Mobility == PvPStatics.MobilityFull)
@@ -151,6 +150,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 var nextLocation = LocationsStatics.GetRandomLocation_InRegion(data.Region);
                 var actualNextLocation = AIProcedures.MoveTo(miniboss, nextLocation, 10);
                 miniboss.dbLocationName = actualNextLocation;
+                miniboss.Mana = miniboss.MaxMana;
                 playerRepo.SavePlayer(miniboss);
                 var playersHere = GetEligibleTargetsAtLocation(actualNextLocation);
                 foreach (var target in playersHere)

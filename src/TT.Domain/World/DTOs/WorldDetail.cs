@@ -98,7 +98,6 @@ namespace TT.Domain.World.DTOs
         public bool IsMotorCycleGangBossAvailable()
         {
             return !AnyBossIsActive() &&
-                   FeatureContext.IsEnabled<EnableMotorcycleBoss>() && 
                    this.Boss_MotorcycleGang == AIStatics.UNSTARTED &&
                    minimumTurnIsMet(AIStatics.MotorcycleGangLeaderBotId);
         }

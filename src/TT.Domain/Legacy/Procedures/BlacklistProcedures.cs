@@ -62,6 +62,7 @@ namespace TT.Domain.Procedures
                     CreatorMembershipId = creator.MembershipId,
                     TargetMembershipId = receiver.MembershipId,
                     Timestamp = DateTime.UtcNow,
+                    BlacklistLevel = 1
                 };
                 repo.SaveBlacklistEntry(newentry);
                 return receiver.GetFullName() + " has been ADDED to your blacklist.";

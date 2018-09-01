@@ -1326,7 +1326,7 @@ namespace TT.Web.Controllers
                 }
 
                 var person = PlayerProcedures.GetPlayer(id);
-                if (!DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = person.MembershipId}))
+                if (person.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = person.MembershipId}))
                 {
                     TempData["Error"] = "This player does not have chaos mode changes enabled.";
                     return RedirectToAction(MVC.PvP.Play());
@@ -1370,7 +1370,7 @@ namespace TT.Web.Controllers
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
 
-                if (!DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
+                if (player.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
                 {
                     TempData["Error"] = "This player does not have chaos mode changes enabled.";
                     return RedirectToAction(MVC.PvP.Play());

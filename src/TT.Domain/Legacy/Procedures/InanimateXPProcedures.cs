@@ -82,7 +82,6 @@ namespace TT.Domain.Procedures
             else
             {
 
-                //double timeBonus = Math.Floor(Math.Abs(Math.Floor(xp.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)) / 10);
                 double timeBonus = currentGameTurn - xp.LastActionTurnstamp;
 
                 if (timeBonus > InanimateXPStatics.ItemMaxTurnsBuildup)
@@ -95,11 +94,7 @@ namespace TT.Domain.Procedures
                     timeBonus = 0;
                 }
 
-
-
                 xpGain += Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
-
-
                 xpGain = xpGain / playerCount;
 
                 if (me.Mobility == PvPStatics.MobilityInanimate)
@@ -119,8 +114,6 @@ namespace TT.Domain.Procedures
 
             var resultMessage = "  ";
 
-
-
             if (xp.Amount >= Convert.ToDecimal(ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level)))
             {
                 xp.Amount -= Convert.ToDecimal(ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level));
@@ -130,7 +123,6 @@ namespace TT.Domain.Procedures
                 resultMessage += "  You have gained " + xpGain + " xp.  <b>Congratulations, you have gained a level!  Your owner will be so proud...</b>";
 
                 var wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.dbName).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
-
 
                 // now we need to change the owner's max health or mana based on this leveling
                 if (inanimateMe.OwnerId > 0)
@@ -163,9 +155,9 @@ namespace TT.Domain.Procedures
                             myowner.Health = myowner.MaxHealth;
                         }
 
-                        if (myowner.Mana > myowner.Mana)
+                        if (myowner.Mana > myowner.MaxMana)
                         {
-                            myowner.Mana = myowner.Mana;
+                            myowner.Mana = myowner.MaxMana;
                         }
 
                         playerRepo.SavePlayer(myowner);

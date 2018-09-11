@@ -275,6 +275,7 @@
     <Compile Include="Controllers\PvPController.cs" />
     <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Controllers\QuestWriterController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CovenantController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -324,6 +325,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="QuestWriterController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="RestockItemController.generated.cs">
@@ -542,6 +546,9 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_54.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_55.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_56.cshtml" />
+    <Content Include="Views\Report\Report.cshtml" />
+    <Content Include="Views\Moderator\ViewReports.cshtml" />
+    <Content Include="Views\Moderator\HandleReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.DTOs;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
@@ -60,6 +62,43 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+        }
+
+        public virtual ActionResult ViewReports()
+        {
+            var output = DomainRegistry.Repository.Find(new GetAllReports());
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.Moderator.Views.ViewReports, output);
+        }
+
+        public virtual ActionResult HandleReport(int reportId)
+        {
+            var output = DomainRegistry.Repository.FindSingle(new GetReport {ReportId = reportId});
+            return View(MVC.Moderator.Views.HandleReport, output);
+        }
+
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult HandleReportSend(ReportDetail input)
+        {
+            try
+            {
+                DomainRegistry.Repository.Execute(new HandleReport
+                {
+                    ModeratorResponse = input.ModeratorResponse,
+                    ReportId = input.Id
+                });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = "Error: " + e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            TempData["Result"] = "You have replied to this report.";
+            return RedirectToAction(MVC.Moderator.ViewReports());
         }
     }
 }

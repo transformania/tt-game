@@ -1,0 +1,49 @@
+﻿@model TT.Domain.Models.Player
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+
+
+<div class="containerInner listdots">
+
+    <h1>Report Player</h1>
+
+    <p>You may use this page to report suspicious activity from <b>@Model.GetFullName()</b>.  Please include a detailed reason why this report is being made.</p>
+    
+    <p>Valid reasons to report another player <span class="good">ARE:</span></p>
+    
+    <ul>
+        <li>Suspecting a player of multi-account abuse</li>
+        <li>Cheating or active exploit of a bug to give an unfair advantage</li>
+    </ul>
+    
+    <p>Valid reasons to report another player <span class="bad">ARE NOT:</span></p>
+    
+    <ul>
+        <li>Reporting a player who defeated you in PvP mode when you didn't want them to.  PvP mode is PvP mode, you may be attacked by anyone at anytime.</li>
+        <li>Reporting a bug in the game.  Reporting bugs should be done via the official Discord server.</li>
+        <li>Reporting harassing messages sent via the ingame messaging system.  Use the "Report this message as abusive" link when the offending message is open instead.</li>
+    </ul>
+
+    @using (Html.BeginForm(MVC.Report.SubmitReport(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form__panel">
+            <label>Reason for report:</label>
+            @Html.TextArea("reason")
+        </div>
+       
+
+        @Html.Hidden("reportedId", Model.MembershipId)
+
+        <br>
+
+        <input type="submit" class="btn btn-chat" value="Send" />
+    }
+
+
+</div>

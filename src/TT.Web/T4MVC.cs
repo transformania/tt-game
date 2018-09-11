@@ -45,6 +45,7 @@ public static partial class MVC
     public static TT.Web.Controllers.PvPController PvP = new TT.Web.Controllers.T4MVC_PvPController();
     public static TT.Web.Controllers.QuestController Quest = new TT.Web.Controllers.T4MVC_QuestController();
     public static TT.Web.Controllers.QuestWriterController QuestWriter = new TT.Web.Controllers.T4MVC_QuestWriterController();
+    public static TT.Web.Controllers.ReportController Report = new TT.Web.Controllers.T4MVC_ReportController();
     public static TT.Web.Controllers.SettingsController Settings = new TT.Web.Controllers.T4MVC_SettingsController();
     public static TT.Web.Controllers.TransformaniaTimeController TransformaniaTime = new TT.Web.Controllers.T4MVC_TransformaniaTimeController();
     public static TT.Web.Controllers.Generated.AdminController Admin = new TT.Web.Controllers.Generated.AdminController();

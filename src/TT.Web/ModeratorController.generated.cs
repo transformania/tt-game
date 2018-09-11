@@ -71,6 +71,18 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddStrike);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult HandleReport()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReport);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult HandleReportSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReportSend);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -91,6 +103,9 @@ namespace TT.Web.Controllers
             public readonly string ViewAbusiveMessages = ("ViewAbusiveMessages").ToLowerInvariant();
             public readonly string ViewStrikes = ("ViewStrikes").ToLowerInvariant();
             public readonly string AddStrike = ("AddStrike").ToLowerInvariant();
+            public readonly string ViewReports = ("ViewReports").ToLowerInvariant();
+            public readonly string HandleReport = ("HandleReport").ToLowerInvariant();
+            public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
         }
 
 
@@ -110,6 +125,22 @@ namespace TT.Web.Controllers
         {
             public readonly string input = ("input").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_HandleReport s_params_HandleReport = new ActionParamsClass_HandleReport();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_HandleReport HandleReportParams { get { return s_params_HandleReport; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_HandleReport
+        {
+            public readonly string reportId = ("reportId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_HandleReportSend s_params_HandleReportSend = new ActionParamsClass_HandleReportSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_HandleReportSend HandleReportSendParams { get { return s_params_HandleReportSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_HandleReportSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -120,12 +151,16 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string HandleReport = "HandleReport";
                 public readonly string Index = "Index";
                 public readonly string ViewAbusiveMessages = "ViewAbusiveMessages";
+                public readonly string ViewReports = "ViewReports";
                 public readonly string ViewStrikes = "ViewStrikes";
             }
+            public readonly string HandleReport = "~/Views/Moderator/HandleReport.cshtml";
             public readonly string Index = "~/Views/Moderator/Index.cshtml";
             public readonly string ViewAbusiveMessages = "~/Views/Moderator/ViewAbusiveMessages.cshtml";
+            public readonly string ViewReports = "~/Views/Moderator/ViewReports.cshtml";
             public readonly string ViewStrikes = "~/Views/Moderator/ViewStrikes.cshtml";
         }
     }
@@ -178,6 +213,41 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddStrike);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             AddStrikeOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ViewReportsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ViewReports()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewReports);
+            ViewReportsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void HandleReportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int reportId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult HandleReport(int reportId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReport);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reportId", reportId);
+            HandleReportOverride(callInfo, reportId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void HandleReportSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Identity.DTOs.ReportDetail input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult HandleReportSend(TT.Domain.Identity.DTOs.ReportDetail input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReportSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            HandleReportSendOverride(callInfo, input);
             return callInfo;
         }
 

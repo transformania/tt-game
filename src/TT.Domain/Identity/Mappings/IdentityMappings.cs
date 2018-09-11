@@ -55,6 +55,14 @@ namespace TT.Domain.Identity.Mappings
                .HasRequired(cr => cr.FromModerator)
                .WithMany(s => s.StrikesGiven).Map(m => m.MapKey("FromModerator"));
 
+            modelBuilder.Entity<Report>()
+                .HasRequired(cr => cr.Reporter)
+                .WithMany(s => s.ReportsGiven).Map(m => m.MapKey("Reporter"));
+
+            modelBuilder.Entity<Report>()
+                .HasRequired(cr => cr.Reported)
+                .WithMany(s => s.ReportsReceived).Map(m => m.MapKey("Reported"));
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Roles)
                 .WithMany(ur => ur.Users)
@@ -75,6 +83,7 @@ namespace TT.Domain.Identity.Mappings
             CreateMap<User, UserDonatorDetail>();
             CreateMap<Stat, StatDetail>();
             CreateMap<Strike, StrikeDetail>();
+            CreateMap<Report, ReportDetail>();
         }
     }
 }

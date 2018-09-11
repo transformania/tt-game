@@ -33,6 +33,12 @@
                         <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist player</a></li>
                     }
                     <li><a href="@Url.Action(MVC.PvP.ViewEffects(Model.PlayerForm.Player.Id))">View Effects</a></li>
+
+                    if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>
+                    }
+                  
                 }
             </p>
         }

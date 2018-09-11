@@ -36,7 +36,7 @@ namespace TT.Tests.Identity.Commands
                 .With(p => p.UserName, "Frank")
                 .BuildAndSave();
 
-            var cmd = new AddStrike() { UserId = user.Id, ModeratorId = moderator.Id, Reason = "Did stuff", Round = 50 };
+            var cmd = new AddStrike { UserId = user.Id, ModeratorId = moderator.Id, Reason = "Did stuff", Round = 50 };
             DomainRegistry.Repository.Execute(cmd);
 
             var strike = DataContext.AsQueryable<Strike>().First();

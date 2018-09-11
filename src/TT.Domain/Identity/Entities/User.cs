@@ -19,6 +19,8 @@ namespace TT.Domain.Identity.Entities
         public ICollection<Stat> Stats { get; private set; } = new List<Stat>();
         public ICollection<Strike> Strikes { get; private set; } = new List<Strike>();
         public ICollection<Strike> StrikesGiven { get; private set; } = new List<Strike>();
+        public ICollection<Report> ReportsReceived { get; private set; } = new List<Report>(); // reports this user has received from other players
+        public ICollection<Report> ReportsGiven { get; private set; } = new List<Report>(); // reports this user has assigned against other players
         public ICollection<Role> Roles { get; private set; } = new List<Role>();
         public Donator Donator { get; protected set; }
 

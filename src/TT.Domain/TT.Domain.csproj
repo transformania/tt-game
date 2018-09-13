@@ -105,9 +105,15 @@
     <Compile Include="CreationPolices\CreationPolicyAttribute.cs" />
     <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Identity\Commands\AllowChaosChanges.cs" />
+    <Compile Include="Identity\Commands\HandleReport.cs" />
+    <Compile Include="Identity\Commands\SubmitReport.cs" />
+    <Compile Include="Identity\DTOs\ReportDetail.cs" />
+    <Compile Include="Identity\Entities\Report.cs" />
     <Compile Include="Identity\Entities\Role.cs" />
     <Compile Include="Identity\PropertyValidators\IsValidUserValidator.cs" />
     <Compile Include="Identity\PropertyValidators\UserHasRoleValidator.cs" />
+    <Compile Include="Identity\Queries\GetAllReports.cs" />
+    <Compile Include="Identity\Queries\GetReport.cs" />
     <Compile Include="Identity\Queries\IsChaosChangesEnabled.cs" />
     <Compile Include="Identity\QueryRequestHandlers\UserHasRoleRequestHandler.cs" />
     <Compile Include="Identity\QueryRequests\IsValidUserRequest.cs" />

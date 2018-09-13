@@ -1,0 +1,39 @@
+﻿@model TT.Domain.Identity.DTOs.ReportDetail
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+
+
+<div class="containerInner">
+    <h1>Handle Report</h1>
+
+    Reason for report: <i>@Model.Reason</i>
+
+    <br><br>
+
+    @using (Html.BeginForm(MVC.Moderator.HandleReportSend(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <p>
+            This report was submitted by <a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.Reporter.Id))">@Model.Reporter.UserName</a> against <a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.Reported.Id))">@Model.Reported.UserName</a> on @Model.Timestamp.ToString("MMMM dd, yyyy") (Round @Model.Round).
+        </p>
+
+        <div class="form__panel">
+            <label>Moderator response:</label>
+            @Html.TextAreaFor(m => m.ModeratorResponse)
+        </div>
+
+
+        @Html.HiddenFor(m => m.Id)
+
+
+        <br>
+
+        <input type="submit" class="btn btn-chat" value="Send" />
+    }
+
+</div>

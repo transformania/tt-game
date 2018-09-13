@@ -22,6 +22,7 @@ namespace TT.Domain.Legacy.Procedures
                     DELETE FROM [dbo].[PollEntries] WHERE OwnerMembershipId = @membershipId;
                     DELETE FROM [dbo].[RPClassifiedAds] WHERE OwnerMembershipId = @membershipId;
                     DELETE FROM [dbo].[Strikes] WHERE UserMembershipId = @membershipId OR FromModerator = @membershipId;
+                    DELETE FROM [dbo].[Reports] WHERE Reporter = @membershipId OR Reported = @membershipId;
                     DELETE FROM [dbo].[Achievements] WHERE OwnerMembershipId = @membershipId;
                     DELETE FROM [dbo].[AchievementBadges] WHERE OwnerMembershipId = @membershipId;
                     DELETE FROM [dbo].[AspNetUserRoles] WHERE UserId = @membershipId;

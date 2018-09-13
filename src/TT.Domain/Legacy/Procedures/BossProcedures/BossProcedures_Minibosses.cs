@@ -165,7 +165,12 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         {
             var definition = bossData.SingleOrDefault(d => d.Value.BotId == boss.BotId);
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
-            AttackProcedures.Attack(boss, victim, ChooseSpell(world.TurnNumber, definition.Value.Spells));
+
+            var counterAttackTimes = GetCounterAttackTimes(boss.Health, boss.MaxHealth, world.TurnNumber); 
+            for (var i = 0; i < counterAttackTimes; i++)
+            {
+                AttackProcedures.Attack(boss, victim, ChooseSpell(world.TurnNumber, definition.Value.Spells));
+            }
         }
 
         private static List<Player> GetEligibleTargetsAtLocation(string location)
@@ -197,5 +202,27 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         {
             return turnNumber / 350 + 8;
         }
+
+        private static int GetCounterAttackTimes(decimal currentHealth, decimal maxHealth, int turnNumber)
+        {
+            decimal value = currentHealth / maxHealth;
+            var maxBonusAttackTimes = turnNumber / 1250;
+            var bonusAttackTimes = (int)(.5 + rand.NextDouble() * maxBonusAttackTimes);
+            if (value > .5m)
+            {
+                return  1 + bonusAttackTimes;
+            }
+            else if (value > .25m)
+            {
+                return 2 + bonusAttackTimes;
+            }
+            else if (value > .1m)
+            { 
+                return 3 + bonusAttackTimes;
+            }
+
+            return 4 + bonusAttackTimes;
+        }
+
     }
 }

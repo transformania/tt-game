@@ -819,7 +819,8 @@ namespace TT.Web.Controllers
                     dbName = form.dbName,
                     FriendlyName = form.FriendlyName,
                     Balance = balance,
-                    AbsolutePoints = absolute
+                    AbsolutePoints = absolute,
+                    IsUnique = form.IsUnique
                 };
                 output.Add(addme);
             }

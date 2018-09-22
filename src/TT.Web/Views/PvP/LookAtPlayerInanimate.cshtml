@@ -98,10 +98,88 @@
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
             <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
+            @if (User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
+            }
         }
     }
 }
 
+<script>
+    @functions{
+        public string TokenHeaderValue()
+        {
+            AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
+            return cookieToken + ":" + formToken;
+        }
+
+        public string GetUserId()
+        {
+            return Model.PlayerForm.Player.MembershipId;
+        }
+
+        public string GetApiUrl()
+        {
+            return "/api";
+        }
+    }
+
+    $(document).ready(function () {
+        // get current url that the page is on
+        var currentUrl = new URL(window.location);
+
+        $("#ForceUserLogout").on("click", function () {
+            $.ajax({
+                url: '@GetApiUrl()@Url.Action("Post", "AdminSignOut")',
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    TargetUserNameId: '@GetUserId()'
+                }),
+                dataType: "json",
+                headers: {
+                    RequestVerificationToken: '@TokenHeaderValue()'
+                },
+                complete: function (response, textStatus) {
+                    var redirectError = response.getResponseHeader("X-Responded-JSON");
+
+                    if (redirectError)
+                    {
+                        var redirectErrorJson = JSON.parse(redirectError);
+
+                        if (redirectErrorJson.status == 401)
+                        {
+                            // get the url that asp wants to redirect the page to after a login
+                            var redirectUrl = new URL(redirectErrorJson.headers.location);
+
+                            // set the query string that the login page will have to be the query string that the current page has because of silly "helpful" things
+                            redirectUrl.search = currentUrl.search;
+
+                            // append the ReturnUrl to be everything to the right of the hostname
+                            redirectUrl.searchParams.append("ReturnUrl", currentUrl.pathname + currentUrl.search + currentUrl.hash);
+
+                            window.location.href = redirectUrl;
+
+                            return;
+                        }
+                    }
+
+                    var resultContainer = $("#resultContainer");
+                    var errorContainer = $("#errorContainer");
+
+                    resultContainer.text(response.responseJSON.Result);
+                    errorContainer.text(response.responseJSON.Error);
+
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 500);
+                }
+            });
+        });
+    });
+
+</script>
 <style>
     .leftDisplay {
         background-size: 100% 100%;

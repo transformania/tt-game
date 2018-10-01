@@ -81,6 +81,54 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_SEAMSTRESS_RUNE,
                 }
             },
+            {
+                "disgruntledGroundskeeper",
+                new MinibossData {
+                    FormSourceId = 976,
+                    FormName = "form_Disgruntled_Groundskeeper_Judoo",
+                    Title = "Groundskeeper",
+                    Region = "park",
+                    Spells = new List<string> { "skill_Woodland's_Reach_Ai_Noai", "skill_Bewitching_Flight_Crystal_Moyer", "skill_Water_Water_Every_Who_Merp"},
+                    BotId = AIStatics.MinibossGroundskeeperId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_GROUNDSKEEPER_RUNE
+                }
+            },
+            {
+                "exchangeProfessor",
+                new MinibossData {
+                    FormSourceId = 979,
+                    FormName = "form__Exchange_Professor_Judoo",
+                    Title = "Professor",
+                    Region = "lab",
+                    Spells = new List<string> { "skill_Milkify_Soul", "skill_Liquefy_V2.0_GooGirl", "skill_Day_of_the_Tentacle_Varn"},
+                    BotId = AIStatics.MinibossExchangeProfessorId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE
+                }
+            },
+            {
+                "fiendishFarmhand",
+                new MinibossData {
+                    FormSourceId = 978,
+                    FormName = "form_Fiendish_Farmhand_Judoo",
+                    Title = "Farmhand",
+                    Region = "ranch_outside",
+                    Spells = new List<string> { "skill_Dairy_Factory_Sampleguy", "skill_Man's_Best_Friend_Soren_Reus", "skill_Pulling_Wool_Over_Their_Eyes_Kim_Steele"},
+                    BotId = AIStatics.MinibossFiendishFarmhandId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE
+                }
+            },
+            {
+                "lazyLifeguard",
+                new MinibossData {
+                    FormSourceId = 977,
+                    FormName = "form_Lazy_Lifeguard_Judoo",
+                    Title = "Lifeguard",
+                    Region = "pool",
+                    Spells = new List<string> { "skill_Game_on_the_Beach_Judoo", "skill_Slippery_Swimsuit_Illia_Malvusin", "skill_Summer_Fun_Alexander", "skill_Sink_or_Swim_Illia_Malvusin"},
+                    BotId = AIStatics.MinibossLazyLifeguardId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE
+                }
+            },
         };
 
         public static List<Exception> RunAll(int turnNumber)

@@ -27,6 +27,10 @@ namespace TT.Domain.Statics
         public const int MinibossPopGoddessId = -19;
         public const int MinibossPossessedMaidId = -20;
         public const int MinibossSeamstressId = -21;
+        public const int MinibossGroundskeeperId = -22;
+        public const int MinibossExchangeProfessorId = -23;
+        public const int MinibossFiendishFarmhandId = -24;
+        public const int MinibossLazyLifeguardId = -25;
 
         public const int DungeonDemonFormId = 371;
 
@@ -51,7 +55,11 @@ namespace TT.Domain.Statics
             return id == MinibossSororityMotherId ||
                    id == MinibossPopGoddessId ||
                    id == MinibossPossessedMaidId ||
-                   id == MinibossSeamstressId;
+                   id == MinibossSeamstressId ||
+                   id == MinibossGroundskeeperId ||
+                   id == MinibossFiendishFarmhandId ||
+                   id == MinibossLazyLifeguardId ||
+                   id == MinibossExchangeProfessorId;
         }
     }
 }

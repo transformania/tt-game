@@ -549,6 +549,7 @@
     <Content Include="Views\Report\Report.cshtml" />
     <Content Include="Views\Moderator\ViewReports.cshtml" />
     <Content Include="Views\Moderator\HandleReport.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_57.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

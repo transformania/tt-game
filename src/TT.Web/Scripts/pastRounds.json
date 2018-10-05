@@ -447,6 +447,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 57,
+      "name": "Alpha R57 (Era of Sorcha Primrose)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

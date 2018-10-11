@@ -15,5 +15,9 @@
         public static int MINIBOSS_POP_GODDESS_RUNE = 565;
         public static int MINIBOSS_POSSESSED_MAID_RUNE = 566;
         public static int MINIBOSS_SEAMSTRESS_RUNE = 567;
+        public static int MINIBOSS_GROUNDSKEEPER_RUNE = 573;
+        public static int MINIBOSS_PROFESSOR_RUNE = 574;
+        public static int MINIBOSS_FARMHAND_RUNE = 575;
+        public static int MINIBOSS_LIFEGUARD_RUNE = 576;
     }
 }

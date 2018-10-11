@@ -345,9 +345,9 @@ function setupWASDKeys() {
 
     var codes = {
         "w": "north",
-        "a": "east",
+        "a": "west",
         "s": "south",
-        "d": "west"
+        "d": "east"
     }
 
     document.onkeypress = function (e) {

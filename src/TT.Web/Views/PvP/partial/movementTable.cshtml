@@ -6,7 +6,7 @@
         <td>@{
                 if (Model.Location.Name_North != null)
                 {
-                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))">@Model.Location.FriendlyName_North</a>
+                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))" id="north">@Model.Location.FriendlyName_North</a>
                 }
             }</td>
         <td></td>
@@ -15,14 +15,14 @@
         <td>@{
                 if (Model.Location.Name_West != null)
                 {
-                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))">@Model.Location.FriendlyName_West</a>
+                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))" id="west">@Model.Location.FriendlyName_West</a>
                 }
             }</td>
         <td>@Model.Location.Name</td>
         <td>@{
                 if (Model.Location.Name_East != null)
                 {
-                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))">@Model.Location.FriendlyName_East</a>
+                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))" id="east">@Model.Location.FriendlyName_East</a>
                 }
             }</td>
     </tr>
@@ -31,7 +31,7 @@
         <td>@{
                 if (Model.Location.Name_South != null)
                 {
-                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))">@Model.Location.FriendlyName_South</a>
+                        <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))" id="south">@Model.Location.FriendlyName_South</a>
                 }
 
             }</td>

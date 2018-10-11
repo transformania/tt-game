@@ -51,11 +51,11 @@ namespace TT.Domain.Items.Commands
                      p.InQuest <= 0 &&
                      (p.FormSource.FriendlyName == "Regular Guy" || p.FormSource.FriendlyName == "Regular Girl") &&
                      p.LastActionTimestamp > cutoff
-                ).Include(p => p.FormSource);
+                ).Include(p => p.FormSource).ToList();
 
                 // TODO: Add a nullable FK on FormSource called SexSwapVersion that links to the swapped version, then do this all as a method on the entity
                 // TODO: Remove the ToList when the nested query is removed
-                foreach (var p in affectedPlayers.ToList())
+                foreach (var p in affectedPlayers)
                 {
                     var oldFormSplit = p.FormSource.dbName.Split('_');
                     var newFormName = "";

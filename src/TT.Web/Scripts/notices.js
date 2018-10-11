@@ -118,6 +118,11 @@ $(document).ready(function () {
            
 
         });
+
+        if (localStorage.getItem("play_keyMovement") !== null && localStorage.getItem("play_keyMovement") !== "false") {
+            setupWASDKeys();
+        }
+        
     }
 
     // javascript for ticking down clocks
@@ -145,9 +150,6 @@ $(document).ready(function () {
 
 
     }, 1000);
-
-    var myVa2r = setInterval(function () { titleToggle() }, 1000);
-
 
 });
 
@@ -336,5 +338,25 @@ function updateRoundCountdownTimer() {
         var timeAwayInSeconds = Math.floor((timestampUtc - now) / 1000);
         var displayTime = `<b>${Math.floor(timeAwayInSeconds / 86400)}</b> days, <b>${Math.floor(timeAwayInSeconds / 3600) % 24}</b> hours, and <b>${Math.floor(timeAwayInSeconds / 60) % 60}</b> minutes`;
         $("#nextRound").html(displayTime);
+    }
+}
+
+function setupWASDKeys() {
+
+    var codes = {
+        "w": "north",
+        "a": "east",
+        "s": "south",
+        "d": "west"
+    }
+
+    document.onkeypress = function (e) {
+        if (codes[e.key]) {
+            var cell = document.getElementById(codes[e.key]);
+            if (cell) {
+                var link = cell.getAttribute("href");
+                window.location.replace(link);
+            }
+        }
     }
 }

@@ -289,7 +289,10 @@
     <p id="toggleAudio_message"><a>Click here to toggle message audio notifications.</a>  This will play a short sound when you receive a new message from another player.</p>
 
     <h2>Chrome/Firefox push Notifications</h2>
-    <p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receieve a notice, even if the browsers is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+<p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receieve a notice, even if the browsers is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+
+<h2>Move with WASD Keys</h2>
+<p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</p>
 
 </div>
 
@@ -297,59 +300,39 @@
     $(document).ready(function () {
 
         $("#toggleAudio_update").click(function () {
-            var toggle = localStorage.getItem("play_updateSoundEnabled");
-
-            if (toggle == undefined || toggle == "false") {
-                var toggle = localStorage.setItem("play_updateSoundEnabled", "true");
-                alert("Update audio notifications ENABLED.");
-            } else {
-                var toggle = localStorage.setItem("play_updateSoundEnabled", "false");
-                alert("Update audio notifications DISABLED.");
-            }
-
+            toggleFeature("play_updateSoundEnabled", "Update audio notification");
         });
 
         $("#toggleAudio_attack").click(function () {
-            var toggle = localStorage.getItem("play_AttackSoundEnabled");
-
-            if (toggle == undefined || toggle == "false") {
-                var toggle = localStorage.setItem("play_AttackSoundEnabled", "true");
-                alert("Attack audio notifications ENABLED.");
-            } else {
-                var toggle = localStorage.setItem("play_AttackSoundEnabled", "false");
-                alert("Attack audio notifications DISABLED.");
-            }
-
+            toggleFeature("play_AttackSoundEnabled", "Attack audio notifications");
         });
 
         $("#toggleAudio_message").click(function () {
-            var toggle = localStorage.getItem("play_MessageSoundEnabled");
-
-            if (toggle == undefined || toggle == "false") {
-                var toggle = localStorage.setItem("play_MessageSoundEnabled", "true");
-                alert("Message audio notifications ENABLED.");
-            } else {
-                var toggle = localStorage.setItem("play_MessageSoundEnabled", "false");
-                alert("Message audio notifications DISABLED.");
-            }
-
+            toggleFeature("play_MessageSoundEnabled", "Message audio notifications");
         });
 
-
         $("#togglePush").click(function () {
-            var toggle = localStorage.getItem("play_html5PushEnabled");
+            toggleFeature("play_html5PushEnabled", "HTML Notifications");
+        });
 
-            if (toggle == undefined || toggle == "false") {
-                var toggle = localStorage.setItem("play_html5PushEnabled", "true");
-                alert("HTML Notifications ENABLED.");
-            } else {
-                var toggle = localStorage.setItem("play_html5PushEnabled", "false");
-                alert("HTML Notifications DISABLED");
-            }
-
+        $("#keyMovement").click(function () {
+            toggleFeature("play_keyMovement", "WASD key movement");
         });
 
     });
+
+    function toggleFeature(localStorageItem, message) {
+        var toggle = localStorage.getItem(localStorageItem);
+
+        if (toggle == undefined || toggle == "false") {
+            localStorage.setItem(localStorageItem, true);
+            alert(message + " ENABLED");
+        } else {
+            localStorage.setItem(localStorageItem, false);
+            alert(message + " DISABLED");
+        }
+    }
+
 </script>
 
 

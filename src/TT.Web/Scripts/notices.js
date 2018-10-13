@@ -122,7 +122,6 @@ $(document).ready(function () {
         if (localStorage.getItem("play_keyMovement") !== null && localStorage.getItem("play_keyMovement") !== "false") {
             setupWASDKeys();
         }
-        
     }
 
     // javascript for ticking down clocks
@@ -150,6 +149,8 @@ $(document).ready(function () {
 
 
     }, 1000);
+
+    setInterval(function () { titleToggle() }, 1000);
 
 });
 

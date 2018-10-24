@@ -2741,6 +2741,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert the location is a valid location
+            if (!LocationsStatics.LocationList.GetLocation.Select(s => s.dbName).Contains(to))
+            {
+                TempData["Error"] = "That is not an eligible location to teleport to.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
             ItemProcedures.DeleteItemOfName(me, "item_consumeable_teleportation_scroll");

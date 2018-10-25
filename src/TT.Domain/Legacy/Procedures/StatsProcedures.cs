@@ -647,8 +647,8 @@ namespace TT.Domain.Procedures
         public static void AddStat(string membershipId, string type, float amount)
         {
 
-            // don't do anything if the achivement is marked as inactive
-            if (!StatsProcedures.StatTypesMap[type].Active)
+            // don't do anything if the achievement is marked as inactive or blank membershipId
+            if (!StatsProcedures.StatTypesMap[type].Active || membershipId.IsNullOrEmpty())
             {
                 return;
             }

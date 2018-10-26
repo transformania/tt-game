@@ -97,7 +97,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 "exchangeProfessor",
                 new MinibossData {
                     FormSourceId = 979,
-                    FormName = "form__Exchange_Professor_Judoo",
+                    FormName = "form_Exchange_Professor_Judoo",
                     Title = "Professor",
                     Region = "lab",
                     Spells = new List<string> { "skill_Milkify_Soul", "skill_Liquefy_V2.0_GooGirl", "skill_Day_of_the_Tentacle_Varn"},

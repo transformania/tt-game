@@ -87,11 +87,10 @@ namespace TT.Domain.Procedures
                     UnusedLevelUpPerks = 0,
                     XP = 0,
                     Money = 100,
+                    LastName = NameService.GetRandomLastName(),
+                    Gender = i % 2 == 1 ? PvPStatics.GenderMale : PvPStatics.GenderFemale,
                 };
 
-                cmd.LastName = NameService.GetRandomLastName();
-                cmd.Gender = i % 2 == 1 ? PvPStatics.GenderMale : PvPStatics.GenderFemale;
-                cmd.OriginalForm = cmd.Form;
 
                 var strength = GetPsychopathLevel(turnNumber);
 
@@ -123,8 +122,7 @@ namespace TT.Domain.Procedures
                 var idAndFormName = GetPsychoFormFromLevelAndSex(cmd.Level, cmd.Gender);
                 cmd.FormSourceId = idAndFormName.Item1;
                 cmd.Form = idAndFormName.Item2;
-
-                var id = 0;
+                cmd.OriginalForm = cmd.Form;
 
                 // assert this name isn't already taken
                 var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == cmd.FirstName && p.LastName == cmd.LastName);
@@ -132,10 +130,8 @@ namespace TT.Domain.Procedures
                 {
                     continue;
                 }
-                else
-                {
-                    id = DomainRegistry.Repository.Execute(cmd);
-                }
+
+                var id = DomainRegistry.Repository.Execute(cmd);
 
                 // give this bot a random skill
                 var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();

@@ -122,7 +122,6 @@ namespace TT.Domain.Procedures
                 var idAndFormName = GetPsychoFormFromLevelAndSex(cmd.Level, cmd.Gender);
                 cmd.FormSourceId = idAndFormName.Item1;
                 cmd.Form = idAndFormName.Item2;
-                cmd.OriginalForm = cmd.Form;
 
                 // assert this name isn't already taken
                 var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == cmd.FirstName && p.LastName == cmd.LastName);

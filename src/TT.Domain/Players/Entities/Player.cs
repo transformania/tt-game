@@ -143,7 +143,7 @@ namespace TT.Domain.Players.Entities
                 CleansesMeditatesThisRound = cmd.CleansesMeditatesThisRound,
                 Money = cmd.Money,
                 Covenant = covenant,
-                OriginalForm = cmd.OriginalForm,
+                OriginalForm = cmd.Form,
                 PvPScore = cmd.PvPScore,
                 DonatorLevel = cmd.DonatorLevel,
                 Nickname = cmd.Nickname,

@@ -56,7 +56,6 @@ namespace TT.Domain.Players.Commands
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
         public int? Covenant { get; set; }
-        public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }

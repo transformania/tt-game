@@ -517,7 +517,6 @@ namespace TT.Domain.Procedures
                                 GameMode = 2,
                                 Health = 1000,
                                 Mana = 1000,
-                                OriginalForm = PvPStatics.DungeonDemon,
                                 Covenant = -1,
                                 Location = randDungeon,
                                 Level = level,

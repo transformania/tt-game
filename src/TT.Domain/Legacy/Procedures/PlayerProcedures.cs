@@ -635,17 +635,19 @@ namespace TT.Domain.Procedures
             player.LastName = cleanLastName + generationTitle;
 
 
-            var cmd = new CreatePlayer();
-
-            cmd.FirstName = player.FirstName;
-            cmd.LastName = player.LastName;
-            cmd.Gender = player.Gender;
-            cmd.Location = "coffee_shop";
-            cmd.UserId = membershipId;
-            cmd.Form = player.FormName;
+            var cmd = new CreatePlayer
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                Gender = player.Gender,
+                Location = "coffee_shop",
+                UserId = membershipId,
+                Form = player.FormName,
+                BotId = AIStatics.ActivePlayerBotId,
+                GameMode = player.StartGameMode,
+                InRP = player.StartInRP
+            };
             cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
-            cmd.OriginalForm = player.FormName;
-            cmd.BotId = AIStatics.ActivePlayerBotId;
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
             if (player.InanimateForm == null)
@@ -666,12 +668,6 @@ namespace TT.Domain.Procedures
                 cmd.ChatColor = oldplayer.ChatColor;
 
             }
-
-            // start player in PvP if they choose, otherwise put them in protection
-            cmd.GameMode = player.StartGameMode;
-
-
-            cmd.InRP = player.StartInRP;
 
             cmd.Location = LocationsStatics.GetRandomLocationNotInDungeon();
 

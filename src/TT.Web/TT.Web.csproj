@@ -280,7 +280,7 @@
     <Compile Include="CovenantController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="CustomHtmlHelpers\HtmlHelpers.cs" />
     <Compile Include="DependencyResolvers\SimpleInjectorSignalRDependencyResolver.cs" />
     <Compile Include="DonatorController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>

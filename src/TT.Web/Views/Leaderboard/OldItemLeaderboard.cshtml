@@ -37,10 +37,10 @@
             {
                 <tr>
                     <td>@entry.Rank</td>
-                    <td><b>@entry.PlayerName</b> @CharactersHere.PrintGenderIcon(entry.Sex) @CharactersHere.PrintItemTypeIcon(entry.ItemType)</td>
+                    <td><b>@entry.PlayerName</b> @HtmlHelpers.PrintGenderIcon(entry.Sex) @HtmlHelpers.PrintItemTypeIcon(entry.ItemType)</td>
                     <td>@entry.CovenantName</td>
                     <td>
-                        <img src="@CharactersHere.GetImageUrl(entry.ItemSource.PortraitUrl, entry.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true)" width="50px" height="50px" />
+                        <img src="@HtmlHelpers.GetImageUrl(entry.ItemSource.PortraitUrl, entry.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true)" width="50px" height="50px" />
                     </td>
                     <td>@entry.ItemName</td>
                     <td>@entry.Level</td>

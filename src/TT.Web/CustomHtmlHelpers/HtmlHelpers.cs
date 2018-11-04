@@ -12,7 +12,7 @@ using TT.Domain.World.Queries;
 
 namespace TT.Web.CustomHtmlHelpers
 {
-    public static class CharactersHere
+    public static class HtmlHelpers
     {
 
         public static MvcHtmlString PrintMCIcon(Player player)

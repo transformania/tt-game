@@ -45,10 +45,10 @@
                     <td>
                         <a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Id))">@p.GetFullName()</a>
                         <span class="icon icon-@p.Gender"></span>
-                        @CharactersHere.PrintPvPIcon(p)
+                        @HtmlHelpers.PrintPvPIcon(p)
                     </td>
                     <td class="mobile">
-                        @CharactersHere.GetCovenantInfoShort(p)
+                        @HtmlHelpers.GetCovenantInfoShort(p)
                     </td>
                     <td class="mobile">
                         @FormStatics.GetForm(p.Form).FriendlyName

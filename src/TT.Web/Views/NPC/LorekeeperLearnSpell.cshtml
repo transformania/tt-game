@@ -47,11 +47,11 @@
                 @{
                     if (s.MobilityType == PvPStatics.MobilityFull)
                     {
-                        <td><img src="@CharactersHere.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
+                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
                     }
                     else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
                     {
-                        <td><img src="@CharactersHere.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
+                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
                     }
                     else
                     {

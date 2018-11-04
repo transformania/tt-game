@@ -63,7 +63,7 @@
                     <img src="@l.PortraitUrl">
                     <strong style="color: @l.Color">@l.Name:</strong>
                     @l.Message
-                    <span class="timeago">@CharactersHere.DatetimeToTimeago(l.Timestamp)</span>
+                    <span class="timeago">@HtmlHelpers.DatetimeToTimeago(l.Timestamp)</span>
                 </li>
             }
         }

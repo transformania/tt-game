@@ -28,7 +28,7 @@
             <td>@Html.Raw(entry.dbName)</td>
             <td><b>@Html.Raw(entry.FriendlyName)</b></td>
             <td>@entry.IsUnique</td>
-            <td>@CharactersHere.WithinBalanceTarget(entry.Balance, ViewBag.Text)</td>
+            <td>@HtmlHelpers.WithinBalanceTarget(entry.Balance, ViewBag.Text)</td>
             <td>@Html.Raw(entry.AbsolutePoints)</td>
         </tr>
     }

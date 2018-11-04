@@ -98,7 +98,7 @@
                     }
                         }
 
-                        <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
+                        <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
                         <td>
                             @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
                             {
@@ -181,8 +181,8 @@
                 <tr>
                     <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Receiver.Id))">@msg.Receiver.GetFullName()</a></td>
                     <td>@msg.MessageText</td>
-                    <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
-                    <td>@CharactersHere.PrintMessageReadStatus(msg)</td>
+                    <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
+                    <td>@HtmlHelpers.PrintMessageReadStatus(msg)</td>
                 </tr>
             }
             }

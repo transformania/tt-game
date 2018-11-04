@@ -34,7 +34,7 @@
 
 
         <span>
-            <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.Name))" class="@CharactersHere.GetSpellTypeClass(s)" manacost="@s.Skill.ManaCost">@s.Skill.FriendlyName</a>
+            <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.Name))" class="@HtmlHelpers.GetSpellTypeClass(s)" manacost="@s.Skill.ManaCost">@s.Skill.FriendlyName</a>
         </span>
 
     }

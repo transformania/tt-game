@@ -72,15 +72,15 @@
             <span class="icon icon-level"><b>@Model.PlayerForm.Player.Level</b></span>
             <span class="icon icon-@Model.PlayerForm.Player.Gender" style="float:right;"></span>
             <span class="iconPortrait">
-                @CharactersHere.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
-                @CharactersHere.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
-                @CharactersHere.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
             </span>
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <center>
-                @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
                     if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}

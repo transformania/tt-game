@@ -14,15 +14,15 @@
 
             @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
         }
-        @CharactersHere.PrintItemTypeIcon(Model.ItemSource.ItemType)
-        @CharactersHere.PrintSouledIcon(Model)
+        @HtmlHelpers.PrintItemTypeIcon(Model.ItemSource.ItemType)
+        @HtmlHelpers.PrintSouledIcon(Model)
     </div>
 
     @{
             <div style="text-align: center;">
                 <p>@Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)</p>
 
-                @CharactersHere.PrintPvPIcon(Model)
+                @HtmlHelpers.PrintPvPIcon(Model)
                 <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
 
                 @{

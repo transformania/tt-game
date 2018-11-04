@@ -6,8 +6,8 @@
 @using TT.Web.CustomHtmlHelpers
 
 <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true));">
-    @CharactersHere.PrintItemTypeIcon(Model.ItemSource.ItemType)
-    @CharactersHere.PrintSouledIcon(Model)
+    @HtmlHelpers.PrintItemTypeIcon(Model.ItemSource.ItemType)
+    @HtmlHelpers.PrintSouledIcon(Model)
 </div>
 
 <b>
@@ -29,7 +29,7 @@
         if (Model.FormerPlayer != null)
         {
             <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.FormerPlayer.Id))">@Model.FormerPlayer.FullName</a></span>
-            @CharactersHere.PrintPermanencyIcon(Model.IsPermanent)
+            @HtmlHelpers.PrintPermanencyIcon(Model.IsPermanent)
         }
 
     }
@@ -46,7 +46,7 @@
         @{
             if (!Model.ItemSource.GivesEffect.IsNullOrEmpty())
             {
-                <li>Gives the @CharactersHere.GetEffectFriendlyName(Model.ItemSource.GivesEffect) effect</li>
+                <li>Gives the @HtmlHelpers.GetEffectFriendlyName(Model.ItemSource.GivesEffect) effect</li>
             }
         }
 

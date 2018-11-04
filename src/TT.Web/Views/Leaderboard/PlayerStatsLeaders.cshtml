@@ -24,7 +24,7 @@
                 {
                     <div class="col-md-4 stats-leader">
                         <img src="~/Images/PvP/achievements/@StatsProcedures.StatTypesMap[f].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:right;" />
-                        <img src="@TT.Web.CustomHtmlHelpers.CharactersHere.GetImageURL(ach.Player, true)" style="height:100px; width: 100px; margin: 3px; float:left;" />
+                        <img src="@TT.Web.CustomHtmlHelpers.HtmlHelpers.GetImageURL(ach.Player, true)" style="height:100px; width: 100px; margin: 3px; float:left;" />
                         <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[f].FriendlyName</h3>
                         <p><i>@StatsProcedures.StatTypesMap[f].Description:</i> <b>@String.Format("{0:n0}", ach.Achivement.Amount)</b></p>
                         <p>

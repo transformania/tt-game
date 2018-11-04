@@ -14,7 +14,7 @@
         foreach (var app in Model)
         {
             <p>
-                @app.dbPlayer.GetFullName() applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
+                @app.dbPlayer.GetFullName() applied @HtmlHelpers.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
                 <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "yes"))">Accept</a>
                 <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "no"))">Deny</a>
             </p>

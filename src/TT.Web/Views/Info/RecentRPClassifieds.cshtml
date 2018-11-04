@@ -52,8 +52,8 @@
                     @ad.RPClassifiedAd.PreferredTimezones
                 </p>
                 <p class="timeago">
-                    Created @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.CreationTimestamp)<br />
-                    Last Refreshed @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.RefreshTimestamp)
+                    Created @TT.Web.CustomHtmlHelpers.HtmlHelpers.DatetimeToTimeago(ad.RPClassifiedAd.CreationTimestamp)<br />
+                    Last Refreshed @TT.Web.CustomHtmlHelpers.HtmlHelpers.DatetimeToTimeago(ad.RPClassifiedAd.RefreshTimestamp)
                 </p>
 
                 @if (player != null)

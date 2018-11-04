@@ -68,7 +68,7 @@
         else
         {
             // show the option as usual
-            <p> @CharactersHere.PrintDiceIcon(connection)
+            <p> @HtmlHelpers.PrintDiceIcon(connection)
 
                 @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
             </p><br />

@@ -92,7 +92,7 @@
         foreach (var log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
-                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+                @Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span>
             </li>
         }
     }
@@ -104,23 +104,38 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
-                @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
+                @HtmlHelpers.PrintOwnerSubPortrait(Model.OwnedBy)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be. 
+                
+                @{
+                    if (!Model.IsPermanent)
+                    {
+                        <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But now for now you are a level @Model.You.Level <b>@Model.Form.FriendlyName</b>.</span>
+                    }
+                    else
+                    {
+                        <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
+                    }
+                }
+                
+            </p>
+            <br>
             <p>
 
                 @Model.Form.Description
+                <br>
                 @{
                     if (Model.YouItem.Owner == null)
                     {
-                        <span>You are feral and can move freely about the world until a new master tames you.</span>
+                        <br><span>You are feral and can move freely about the world until a new master tames you.</span>
                     }
                     else
                     {
                         <span>
-                            <br><br>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.
+                            <br>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.
 
                             @{
                                 if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
@@ -129,12 +144,7 @@
                                 }
                             }
 
-
-
                         </span>
-
-
-
                     }
                 }
                 @{
@@ -396,7 +406,7 @@
 
         $("#timerBox").click(function () {
 
-            alert("The last update was  @CharactersHere.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
+            alert("The last update was  @HtmlHelpers.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
 
 
         });

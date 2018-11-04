@@ -18,7 +18,7 @@
                 <span class="covMemberCount">(@c.MemberCount members)</span>
                 <span class="covLeader"><a href="@Url.Action(MVC.PvP.LookAtPlayer(c.Leader.Id))">Led by @c.Leader.GetFullName()</a></span>
 
-                <p>@c.dbCovenant.SelfDescription.  @CharactersHere.PrintCovenantSafeground(c.dbCovenant)</p>
+                <p>@c.dbCovenant.SelfDescription.  @HtmlHelpers.PrintCovenantSafeground(c.dbCovenant)</p>
 
                 <a href="@Url.Action(MVC.Covenant.ApplyToCovenant(c.dbCovenant.Id))">Apply</a>
             </div>

@@ -1715,7 +1715,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
             }
             // item is an animal, equip it automatically
             else if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Pet)
@@ -1723,7 +1723,7 @@ namespace TT.Web.Controllers
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.Id, true);
                 playerLogMessage = "You tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
 
                 var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
                 PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
@@ -1805,7 +1805,7 @@ namespace TT.Web.Controllers
             if (dropme.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(dropme) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
 
                 var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
                 PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
@@ -1816,7 +1816,7 @@ namespace TT.Web.Controllers
             else
             {
                 playerLogMessage = "You dropped a " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(dropme) + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
             }
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);

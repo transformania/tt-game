@@ -29,7 +29,7 @@
             <tr>
                 <td><b class="playerMediatingNotification">@s.SkillSource.FriendlyName</b></td>
                 <td><b>@s.SkillSource.FormSource.FriendlyName</b></td>
-                <td><img src="@CharactersHere.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"/></td>
+                <td><img src="@HtmlHelpers.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"/></td>
                 <td class="tableCellDescription">@s.SkillSource.FormSource.Description</td>
                 <td><a href="@Url.Action(MVC.Item.SelfCastSend(s.SkillSource.dbName))">Cast</a></td>
             </tr>

@@ -113,7 +113,7 @@
         foreach (var log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
-                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+                @Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span>
             </li>
         }
     }
@@ -332,7 +332,7 @@
                                     <span class="floorItemLevel"><b>@item.Level</b></span>
                                  }
                                 }
-                                @CharactersHere.PrintItemTypeIcon(item.ItemSource.ItemType)
+                                @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
                             </div>
 
                             <div>
@@ -347,7 +347,7 @@
 
                                 }
 
-                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br /></span>
+                                <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br /></span>
                                 @{
                 if (item.FormerPlayer != null)
                 {
@@ -418,7 +418,7 @@
         }
 
         $( "#timerBox" ).click(function() {
-            alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last 5 minutes.");
+            alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last 5 minutes.");
         });
 
 

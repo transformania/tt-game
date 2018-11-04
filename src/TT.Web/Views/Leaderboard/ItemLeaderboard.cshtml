@@ -44,12 +44,12 @@
                         @rank
                     </td>
                     <td>
-                        @CharactersHere.PrintPermanencyIcon(i.IsPermanent)
+                        @HtmlHelpers.PrintPermanencyIcon(i.IsPermanent)
                         <a href="@Url.Action(MVC.PvP.LookAtPlayer(i.FormerPlayer.Id))">@i.FormerPlayer.FullName</a>
-                        @CharactersHere.PrintGenderIcon(i.FormerPlayer.Gender)
-                        @CharactersHere.PrintItemTypeIcon(i.ItemSource.ItemType)
+                        @HtmlHelpers.PrintGenderIcon(i.FormerPlayer.Gender)
+                        @HtmlHelpers.PrintItemTypeIcon(i.ItemSource.ItemType)
                     </td>
-                    <td><img src="@CharactersHere.GetImageUrl(i.ItemSource.PortraitUrl, i.FormerPlayer.Mobility, true)" width="50x" height="50px;" /></td>
+                    <td><img src="@HtmlHelpers.GetImageUrl(i.ItemSource.PortraitUrl, i.FormerPlayer.Mobility, true)" width="50x" height="50px;" /></td>
                     <td class="mobile">
                         @i.ItemSource.FriendlyName
                     </td>

@@ -24,13 +24,13 @@
 
 }
 
-<div class="@CharactersHere.StyleIfBot(Model.Player.ToDbPlayer())" id="playnum-@Model.Player.Id">
+<div class="@HtmlHelpers.StyleIfBot(Model.Player.ToDbPlayer())" id="playnum-@Model.Player.Id">
     
-    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model, true));">
+    <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageURL(Model, true));">
         
         <span class="icon icon-@Model.Player.Gender" style="float:right;"></span>
         <span class="icon icon-level"><b>@Model.Player.Level</b></span>
-        <span class="portraitIconRP">@CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintMCIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())</span>
+        <span class="portraitIconRP">@HtmlHelpers.PrintRPIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintPvPIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintMCIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintDonatorIcon(Model.Player.ToDbPlayer())</span>
         @{
             if (PlayerProcedures.PlayerIsOffline(Model.Player))
             {
@@ -43,13 +43,13 @@
         <span class="name">
             <span style="color: @gendercolor">
                 <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>
-                @CharactersHere.PrintDuelIcon(Model.Player.ToDbPlayer())
-                @CharactersHere.PrintQuestIcon(Model.Player.ToDbPlayer())
+                @HtmlHelpers.PrintDuelIcon(Model.Player.ToDbPlayer())
+                @HtmlHelpers.PrintQuestIcon(Model.Player.ToDbPlayer())
                 <br />
                 <span class="playerDescription">@Model.Form.FriendlyName</span>
             </span>
         </span><br />
-        <span class="covBox">@CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())</span>
+        <span class="covBox">@HtmlHelpers.GetCovenantInfo(Model.Player.ToDbPlayer())</span>
         <div class="healthWrapper" title="@Model.Player.Health / @Model.Player.MaxHealth willpower">
             <div class="healthBar" style="width: @HealthWidth%"></div>
         </div>

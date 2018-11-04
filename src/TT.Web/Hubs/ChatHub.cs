@@ -61,7 +61,7 @@ namespace TT.Web.Hubs
                 return;
 
             // Get player picture and name
-            var pic = CharactersHere.GetImageURL(me, true).ToString();
+            var pic = HtmlHelpers.GetImageURL(me, true).ToString();
             var descriptor = me.Player.GetDescriptor();
 
             var name = descriptor.Item1;

@@ -89,7 +89,7 @@
         foreach (var log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
-                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+                @Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span>
             </li>
         }
     }
@@ -102,13 +102,26 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.ItemSource.PortraitUrl);">
-                @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
-                @CharactersHere.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
+                @HtmlHelpers.PrintOwnerSubPortrait(Model.WornBy)
+                @HtmlHelpers.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be. Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.
+            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be. 
+                
+                @{
+                    if (!Model.Item.IsPermanent)
+                    {
+                        <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But now for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
+                    }
+                    else
+                    {
+                        <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their belonging as a level <b>@Model.Item.Level @Model.Form.FriendlyName</b>.</span>
+                    }
+                }
+                
             </p>
+            <br>
 
             @{
                 if (Model.RenderCaptcha)
@@ -118,6 +131,7 @@
             }
 
             <p>@Model.Form.Description</p>
+            <br>
             @{
                 if (Model.Item.Owner == null)
                 {
@@ -266,7 +280,7 @@
 
 
     $( "#timerBox" ).click(function() {
-        alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
+        alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
     });
 
     function pingDone(data) {

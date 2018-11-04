@@ -702,7 +702,7 @@ namespace TT.Web.Controllers
             // only show Weaken for valentine
             if (target.BotId == AIStatics.ValentineBotId)
             {
-                output = output.Where(s => s.dbSkill.Name == "lowerHealth");
+                output = output.Where(s => s.dbSkill.Name == PvPStatics.Spell_Weaken);
             }
 
             // only bimbo spell works on nerd mouse boss
@@ -720,7 +720,7 @@ namespace TT.Web.Controllers
             // Vanquish and weaken only works against dungeon demons
             if (target.BotId == AIStatics.DemonBotId)
             {
-                output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
+                output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == PvPStatics.Spell_Weaken);
             }
 
             // Filter out Vanquish when attacking non-Dungeon Demon player
@@ -969,8 +969,6 @@ namespace TT.Web.Controllers
 
             }
 
-
-
             var skill = SkillStatics.GetStaticSkill(attackName);
             var futureForm = FormStatics.GetForm(skill.FormdbName);
 
@@ -1019,15 +1017,12 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
-                // Donna
-                if (targeted.BotId == AIStatics.DonnaBotId)
+                var npcAttackResult = DomainRegistry.Repository.FindSingle(new CanAttackNpcWithSpell { futureForm = futureForm, target = targeted, attacker = me, spellDbName = skill.dbName});
+
+                if (npcAttackResult != String.Empty)
                 {
-                    if (futureForm == null || futureForm.MobilityType == PvPStatics.MobilityFull)
-                    {
-                        TempData["Error"] = "You get the feeling this type of spell won't work against Donna.";
-                        TempData["SubError"] = "Maybe a different one would do...";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
+                    TempData["SubError"] = npcAttackResult;
+                    return RedirectToAction(MVC.PvP.Play());
                 }
 
                 // Valentine
@@ -1048,78 +1043,6 @@ namespace TT.Web.Controllers
                         TempData["SubError"] = "Maybe a different one would do...";
                         return RedirectToAction(MVC.PvP.Play());
                     }
-                }
-
-                // Bimbo Boss
-                if (targeted.BotId == AIStatics.BimboBossBotId)
-                {
-
-                    // disallow animate spells
-                    if (futureForm.MobilityType == PvPStatics.MobilityFull)
-                    {
-                        TempData["Error"] = "Your target seems immune from this kind of spell.";
-                        TempData["SubError"] = "Maybe a different one would do...";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-
-                }
-
-                // Thieves Boss
-                if (targeted.BotId == AIStatics.MaleRatBotId || targeted.BotId == AIStatics.FemaleRatBotId)
-                {
-
-                    // only allow inanimate spells
-                    if (futureForm.MobilityType != PvPStatics.MobilityInanimate)
-                    {
-                        TempData["Error"] = "Your target seems immune from this kind of spell.";
-                        TempData["SubError"] = "Maybe a different one would do...";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-
-                }
-
-                // Mouse Sisters Boss
-                if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
-                {
-                    var result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
-                    if (!result.IsNullOrEmpty())
-                    {
-                        TempData["Error"] = result;
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-                }
-
-                // Dungeon Demons can only be vanquished
-                if (targeted.BotId == AIStatics.DemonBotId && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
-                {
-                    TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
-                    return RedirectToAction(MVC.PvP.Play());
-                }
-
-                // Narcissa
-                if (targeted.BotId == AIStatics.FaebossBotId)
-                {
-                    var isValid = BossProcedures_FaeBoss.SpellIsValid(attackName, me);
-                    if (!isValid.Item1)
-                    {
-                        TempData["Error"] = isValid.Item2;
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-                }
-
-                // Motorcycle boss
-                if (targeted.BotId == AIStatics.MotorcycleGangLeaderBotId && !BossProcedures_MotorcycleGang.SpellIsValid(skill))
-                {
-                    TempData["Error"] = "Your target seems immune from this kind of spell.";
-                    TempData["SubError"] = "Maybe a different one would do...";
-                    return RedirectToAction(MVC.PvP.Play());
-                }
-
-                if (AIStatics.IsAMiniboss(targeted.BotId) && futureForm.MobilityType != PvPStatics.MobilityInanimate && futureForm.MobilityType != PvPStatics.MobilityPet)
-                {
-                    TempData["Error"] = "Your target seems immune from this kind of spell.";
-                    TempData["SubError"] = "Maybe a different one would do...";
-                    return RedirectToAction(MVC.PvP.Play());
                 }
 
             }
@@ -1152,7 +1075,7 @@ namespace TT.Web.Controllers
                     }
 
                     // no weaken between Protection mode players
-                    else if (skill.dbName == "lowerHealth")
+                    else if (skill.dbName == PvPStatics.Spell_Weaken)
                     {
                         TempData["Error"] = "You cannot cast Weaken against protection mode players unless they are your friend.";
                         return RedirectToAction(MVC.PvP.Play());

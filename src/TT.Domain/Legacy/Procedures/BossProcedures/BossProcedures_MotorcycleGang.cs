@@ -275,9 +275,9 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             return followers.ElementAt((int)Math.Floor(followers.Count * rand.NextDouble()));
         }
 
-        public static bool SpellIsValid(DbStaticSkill spell)
+        public static bool SpellIsValid(string mobilityType)
         {
-            return spell.MobilityType == PvPStatics.MobilityPet || spell.MobilityType == PvPStatics.MobilityInanimate;
+            return mobilityType == PvPStatics.MobilityPet || mobilityType == PvPStatics.MobilityInanimate;
         }
 
         /// <summary>

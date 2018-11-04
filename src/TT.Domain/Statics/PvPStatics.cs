@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using TT.Domain.Models;
-using TT.Domain.Procedures;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Statics
 {

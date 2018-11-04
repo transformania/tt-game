@@ -83,9 +83,9 @@ namespace TT.Domain.Players.Commands
             ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
             Gender = PvPStatics.GenderFemale;
             Mobility = PvPStatics.MobilityFull;
-            LastActionTimestamp = DateTime.UtcNow.AddHours(-1);
-            LastCombatTimestamp = DateTime.UtcNow.AddHours(-1);
-            LastCombatAttackedTimestamp = DateTime.UtcNow;
+            LastActionTimestamp = DateTime.UtcNow.AddHours(-PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling);
+            LastCombatTimestamp = DateTime.UtcNow.AddHours(-PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling);
+            LastCombatAttackedTimestamp = DateTime.UtcNow.AddHours(-PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling);
             GameMode = 1;
             OnlineActivityTimestamp = DateTime.UtcNow;
             Money = 0;

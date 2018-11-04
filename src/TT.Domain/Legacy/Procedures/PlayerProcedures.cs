@@ -539,11 +539,6 @@ namespace TT.Domain.Procedures
                 {
                     return "This name has gone through too many generations.  Choose another one.";
                 }
-
-
-
-
-
             }
 
             // check that the name has not been reserved by someone else with a different Membership Id
@@ -672,7 +667,6 @@ namespace TT.Domain.Procedures
             cmd.Location = LocationsStatics.GetRandomLocationNotInDungeon();
 
             var newPlayerId = DomainRegistry.Repository.Execute(cmd);
-           // playerRepo.SavePlayer(newplayer);
             RerollProcedures.AddRerollGeneration(cmd.UserId);
 
             if (oldplayer != null)

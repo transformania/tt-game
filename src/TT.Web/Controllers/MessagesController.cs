@@ -369,5 +369,25 @@ namespace TT.Web.Controllers
             }
 
         }
+
+        public virtual ActionResult MarkAsAbusivePreview(int id)
+        {
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            MessageDetail message;
+
+            try
+            {
+                message = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = id, OwnerId = me.Id });
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "You can't read this message.";
+                TempData["SubError"] = "It wasn't sent to you.";
+                return RedirectToAction(MVC.Messages.Index());
+            }
+
+            return View(MVC.Messages.Views.MarkAsAbusivePreview, message);
+        }
     }
 }

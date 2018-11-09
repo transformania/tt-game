@@ -1,0 +1,47 @@
+﻿@using TT.Web.CustomHtmlHelpers
+@model TT.Domain.Messages.DTOs.MessageDetail
+
+@{
+    ViewBag.Title = "Report Message as Abusive";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li></li>
+}
+
+
+<div class="containerInner">
+
+    <h1>!!! Report Message as Abusive !!!</h1>
+
+    <p>You may use this page to report a message sent to you by another player that you deem offensive.  You may review the game <a href="@Url.Action(MVC.Info.Rules())">Rules</a> if you are uncertain if this person's behavior violates the rules.  Do not report messages without a good cause.  Repeatedly reporting messages that are not offensive may result in a strike on your own account.  A moderator will review the reported message and distribute a strike to the offender if it is warranted.</p><br>
+
+    <p>This is the message you are reporting:</p><br>
+
+    <div>
+        <div class="messageInfoContainer clearfix">
+            <span class="messageNicknameContainer">@Model.Sender.GetFullName()</span>:
+            <span class="messageTimeContainer"> <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(Model.Timestamp)</span></span>
+        </div>
+        <div class="messageTextContainer">
+            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br/>"))</p>
+        </div>
+    </div>
+
+    <p id="confirmBtn" class="bad">Are you <b>SURE</b> you want to report this as abusive? <button onclick="confirm()" class="btn">Yes, I'm sure!</button></p>
+
+    <div id="actualSendLink" style="display: none;">
+        <a href="@Url.Action(MVC.Messages.MarkAsAbusive(Model.MessageId))" class="bad" onclick="return confirm('Are you sure you wish to mark this message as abusive?');">Click here to finish submitting the report.</a>
+    </div>
+
+</div>
+
+<script>
+    function confirm() {
+        $("#actualSendLink").show();
+        $("#confirmBtn").hide();
+    }
+
+</script>

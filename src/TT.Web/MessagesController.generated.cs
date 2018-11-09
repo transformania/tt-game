@@ -107,6 +107,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MarkAsAbusive);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult MarkAsAbusivePreview()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MarkAsAbusivePreview);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public MessagesController Actions { get { return MVC.Messages; } }
@@ -133,6 +139,7 @@ namespace TT.Web.Controllers
             public readonly string CovenantWideMessage = ("CovenantWideMessage").ToLowerInvariant();
             public readonly string SendCovenantWideMessage = ("SendCovenantWideMessage").ToLowerInvariant();
             public readonly string MarkAsAbusive = ("MarkAsAbusive").ToLowerInvariant();
+            public readonly string MarkAsAbusivePreview = ("MarkAsAbusivePreview").ToLowerInvariant();
         }
 
 
@@ -212,6 +219,14 @@ namespace TT.Web.Controllers
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_MarkAsAbusivePreview s_params_MarkAsAbusivePreview = new ActionParamsClass_MarkAsAbusivePreview();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_MarkAsAbusivePreview MarkAsAbusivePreviewParams { get { return s_params_MarkAsAbusivePreview; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_MarkAsAbusivePreview
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -223,11 +238,13 @@ namespace TT.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string CovenantWideMessage = "CovenantWideMessage";
+                public readonly string MarkAsAbusivePreview = "MarkAsAbusivePreview";
                 public readonly string Messages = "Messages";
                 public readonly string ReadMessage = "ReadMessage";
                 public readonly string Write = "Write";
             }
             public readonly string CovenantWideMessage = "~/Views/Messages/CovenantWideMessage.cshtml";
+            public readonly string MarkAsAbusivePreview = "~/Views/Messages/MarkAsAbusivePreview.cshtml";
             public readonly string Messages = "~/Views/Messages/Messages.cshtml";
             public readonly string ReadMessage = "~/Views/Messages/ReadMessage.cshtml";
             public readonly string Write = "~/Views/Messages/Write.cshtml";
@@ -372,6 +389,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MarkAsAbusive);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             MarkAsAbusiveOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void MarkAsAbusivePreviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult MarkAsAbusivePreview(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MarkAsAbusivePreview);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            MarkAsAbusivePreviewOverride(callInfo, id);
             return callInfo;
         }
 

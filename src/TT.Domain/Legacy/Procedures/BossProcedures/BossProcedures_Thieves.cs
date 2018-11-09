@@ -286,8 +286,8 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);
-                        AttackProcedures.Attack(attackingThief, target, "lowerHealth");
-                        AttackProcedures.Attack(attackingThief, target, "lowerHealth");
+                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_Weaken);
+                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_Weaken);
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
@@ -356,7 +356,7 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 if (malethief.Mobility == PvPStatics.MobilityFull)
                 {
-                    AttackProcedures.Attack(malethief, attacker, "lowerHealth");
+                    AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_Weaken);
                     AIProcedures.DealBossDamage(malethief, attacker, true, 1);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
                 }
@@ -395,7 +395,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(malethief, attacker, "lowerHealth");
+                        AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_Weaken);
                         AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
@@ -404,7 +404,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(femalethief, attacker, "lowerHealth");
+                        AttackProcedures.Attack(femalethief, attacker, PvPStatics.Spell_Weaken);
                         AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(femalethief, attacker, false, 2);
                     }

@@ -288,7 +288,7 @@ namespace TT.Domain.Procedures
         public static void TransferAllPlayerSkills(int oldPlayerId, int newPlayerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.Name != "lowerHealth").ToList();
+            IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.Name != PvPStatics.Spell_Weaken).ToList();
 
             foreach (var s in skillsToDelete)
             {
@@ -296,7 +296,7 @@ namespace TT.Domain.Procedures
                 skillRepo.SaveSkill(s);
             }
 
-            var weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == "lowerHealth");
+            var weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == PvPStatics.Spell_Weaken);
             if (weakenSkill != null)
             {
                 skillRepo.DeleteSkill(weakenSkill.Id);

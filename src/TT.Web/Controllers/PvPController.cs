@@ -741,6 +741,14 @@ namespace TT.Web.Controllers
                 output = output.Where(s => s.Skill.dbName != BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
             }
 
+            // only inanimate and animal spells work on minibosses, donna, and lovebringer
+            if (AIStatics.IsAMiniboss(target.BotId) ||
+                target.BotId == AIStatics.MotorcycleGangLeaderBotId ||
+                target.BotId == AIStatics.BimboBossBotId)
+            {
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet);
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;

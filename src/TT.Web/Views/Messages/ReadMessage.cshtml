@@ -16,7 +16,7 @@
 
 <div class="containerInner">
     <div id="originalMessage">
-        <a href="@Url.Action(MVC.Messages.MarkAsAbusive(Model.MessageId))" class="bad" onclick="return confirm('Are you sure you wish to mark this message as abusive?');">Report this message as abusive</a>
+        <a href="@Url.Action(MVC.Messages.MarkAsAbusivePreview(Model.MessageId))" class="bad">Report this message as abusive</a>
         <div class="messageInfoContainer clearfix">
             <span class="messageNicknameContainer">@Model.Sender.GetFullName()</span>:
             <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(Model.Timestamp)</span>

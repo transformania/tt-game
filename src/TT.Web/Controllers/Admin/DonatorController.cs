@@ -31,7 +31,8 @@ namespace TT.Web.Controllers.Admin
 
         public virtual ActionResult EditSend(UpdateDonator input)
         {
-
+            input.UserId = input.UserId.Trim();
+            input.PatreonName = input.PatreonName.Trim();
             try
             {
                 DomainRegistry.Repository.Execute(input);
@@ -62,7 +63,8 @@ namespace TT.Web.Controllers.Admin
 
         public virtual ActionResult CreateSend(CreateDonator input)
         {
-
+            input.UserId = input.UserId.Trim();
+            input.PatreonName = input.PatreonName.Trim();
             try
             {
                 DomainRegistry.Repository.Execute(input);

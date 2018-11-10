@@ -209,6 +209,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.JsonResult GetMembershipIdFromUsername()
+        {
+            return new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.GetMembershipIdFromUsername);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PvPAdminController Actions { get { return MVC.PvPAdmin; } }
@@ -286,6 +292,7 @@ namespace TT.Web.Controllers
             public readonly string EditNewsPost = ("EditNewsPost").ToLowerInvariant();
             public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
             public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
+            public readonly string GetMembershipIdFromUsername = ("GetMembershipIdFromUsername").ToLowerInvariant();
         }
 
 
@@ -488,6 +495,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_DeleteNewsPost
         {
             public readonly string Id = ("Id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_GetMembershipIdFromUsername s_params_GetMembershipIdFromUsername = new ActionParamsClass_GetMembershipIdFromUsername();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GetMembershipIdFromUsername GetMembershipIdFromUsernameParams { get { return s_params_GetMembershipIdFromUsername; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GetMembershipIdFromUsername
+        {
+            public readonly string name = ("name").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1249,6 +1264,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             DeleteNewsPostOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetMembershipIdFromUsernameOverride(T4MVC_System_Web_Mvc_JsonResult callInfo, string name);
+
+        [NonAction]
+        public override System.Web.Mvc.JsonResult GetMembershipIdFromUsername(string name)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.GetMembershipIdFromUsername);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            GetMembershipIdFromUsernameOverride(callInfo, name);
             return callInfo;
         }
 

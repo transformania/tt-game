@@ -39,5 +39,33 @@
 
         <input type="submit" value="Save" />
     }
+    
+    <hr>
+    
+    <div>
+        Account Id lookup <input id ="lookupName" type="text" placeholder="account name"/> <button class="btn" onclick="lookup()">Find</button><br/>
+        <b id="answer" class="copyable" data-clipboard-text=""></b>
+    </div>
 
 </div>
+
+<script>
+   
+    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+        .done(function () {
+            new Clipboard('.copyable');
+        })
+        .fail(function () {
+            alert("Failed to load clipboard.");
+        });
+
+    function lookup() {
+        $.ajax({
+            url: "/PvPAdmin/GetMembershipIdFromUsername?name=" + $("#lookupName").val(),
+        }).done(function (data) {
+            $("#answer").html(data);
+            $('#answer').attr('data-clipboard-text', data);
+        });
+    }
+
+</script>

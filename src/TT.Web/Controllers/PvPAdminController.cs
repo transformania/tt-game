@@ -19,6 +19,7 @@ using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Commands;
+using TT.Domain.Players.Queries;
 using TT.Domain.World.Commands;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
@@ -1924,6 +1925,19 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "News Post " + Id + " deleted successfully!";
             return RedirectToAction(MVC.PvPAdmin.ListNewsPosts());
+        }
+
+        public virtual JsonResult GetMembershipIdFromUsername(string name)
+        {
+            // assert only admins can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return Json("Admin permissions required", JsonRequestBehavior.AllowGet);
+            }
+
+            var id = DomainRegistry.Repository.FindSingle(new GetMembershipIdFromUsername { Username = name.Trim() });
+            return Json(id, JsonRequestBehavior.AllowGet);
+
         }
     }
 }

@@ -455,6 +455,15 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 58,
+      "name": "Alpha R58 (Second Era of Abigail Jasione)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
+
   ]
 }

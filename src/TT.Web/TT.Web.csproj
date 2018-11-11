@@ -551,7 +551,7 @@
     <Content Include="Views\Moderator\HandleReport.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_57.cshtml" />
     <Content Include="Views\Messages\MarkAsAbusivePreview.cshtml" />
-    <Content Include="Views\PvPAdmin\GetMembershipIdFromUsername.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_58.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

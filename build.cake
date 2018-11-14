@@ -340,6 +340,10 @@ Task("Seed-Images")
 
 Task("Download-JS")
     .Does(() => {
+        var directories = GetSubDirectories("./src/TT.Web/js");
+        DeleteDirectories(directories, new DeleteDirectorySettings {
+            Recursive = true
+        });
         var jsArchive = DownloadFile(jsUrl);
         Unzip(jsArchive, "./src/TT.Web/js");
         DeleteFile(jsArchive);

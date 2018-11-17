@@ -352,7 +352,7 @@ function setupWASDKeys() {
     }
 
     document.onkeypress = function (e) {
-        if (codes[e.key]) {
+        if (document.getElementById('attack-search-box') !== document.activeElement && codes[e.key]) {
             var cell = document.getElementById(codes[e.key]);
             if (cell) {
                 var link = cell.getAttribute("href");

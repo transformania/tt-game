@@ -172,7 +172,7 @@ namespace TT.Domain.Procedures
                   {
                 Stat__CovenantNetDonation,
                     new StatsDetailsMap{
-                        FriendlyName = "Covenent Benefactor",
+                        FriendlyName = "Covenant Benefactor",
                         Description="Net Arpyjis donated to covenant",
                         ImageUrl="trophy.jpg",
                         Active = true

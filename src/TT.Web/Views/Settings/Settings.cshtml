@@ -149,7 +149,7 @@
     <h2>Update Your Biography</h2>
 
     <p>
-        You can write a short bio of yourself or this player here.  You can also select RP tags which will indicate to others what your roleplaying theme intersts include or exclude.<br /><br />
+        You can write a short bio of yourself or this player here.  You can also select RP tags which will indicate to others what your roleplaying theme interests include or exclude.<br /><br />
         <a href="@Url.Action(MVC.Settings.SetBio())">Update My Bio</a>
     </p>
 
@@ -202,7 +202,7 @@
     <h2>Protection Mode</h2>
 
     <p>
-        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competative manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br /><br />
+        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competetive manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br /><br />
 
         @{
             if (Model.Player.GameMode == GameModeStatics.Protection)
@@ -282,14 +282,14 @@
 
     <p>You can toggle audio notifications here.  Audio notifications will play short, sometimes repeating sounds when certain events happen in game.  (This does not work across all browers, particularly mobile OSes.)</p>
 
-    <p id="toggleAudio_update"><a>Click here to toggle update audio notifications for turn updates.</a>  This will play a chiming soon when a turn has ended.</p>
+    <p id="toggleAudio_update"><a>Click here to toggle update audio notifications for turn updates.</a>  This will play a chiming sound when a turn has ended.</p>
 
     <p id="toggleAudio_attack"><a>Click here to toggle attack notifications.</a>  This will play a short when you are attacked ingame.</p>
 
     <p id="toggleAudio_message"><a>Click here to toggle message audio notifications.</a>  This will play a short sound when you receive a new message from another player.</p>
 
     <h2>Chrome/Firefox push Notifications</h2>
-<p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receieve a notice, even if the browsers is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+<p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receive a notice, even if the browsers is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
 
 <h2>Move with WASD Keys</h2>
 <p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</a></p>

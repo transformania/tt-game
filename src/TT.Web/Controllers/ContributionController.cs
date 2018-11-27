@@ -904,12 +904,21 @@ namespace TT.Web.Controllers
 
             if (!contribution.AdditionalSubmitterNames.IsNullOrEmpty())
             {
-                output += "  Additional credits go to " + contribution.AdditionalSubmitterNames + ".";
+                output += "  Additional credits go to " + contribution.AdditionalSubmitterNames + ".  ";
             }
 
             if (!contribution.AssignedToArtist.IsNullOrEmpty())
             {
-                output += "  .  Graphic is by " + contribution.AssignedToArtist + ".";
+                output += " Graphic is by " + contribution.AssignedToArtist + ".  ";
+            }
+
+            if (contribution.Form_MobilityType == PvPStatics.MobilityFull && !contribution.Form_FriendlyName.IsNullOrEmpty())
+            {
+                output += $"This spell turns its victim into a {contribution.Form_FriendlyName}!";
+            }
+            else if ((contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet) && !contribution.Item_FriendlyName.IsNullOrEmpty())
+            {
+                output += $"This spell turns its victim into a {contribution.Item_FriendlyName}!";
             }
 
             message += output;

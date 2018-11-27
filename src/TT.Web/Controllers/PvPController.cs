@@ -1132,6 +1132,10 @@ namespace TT.Web.Controllers
                 {
                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
                 }
+                else if (AIStatics.IsAMiniboss(targeted.BotId))
+                {
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MinibossAttacks, 1);
+                }
 
             }
             catch (Exception e)

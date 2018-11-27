@@ -87,6 +87,8 @@ namespace TT.Domain.Procedures
         public const string Stat__MouseSisterAttacks = "boss_mouseSisterAttacks";
         public const string Stat__MotorcycleGangAttacks = "boss_motorcycleGangAttacks";
 
+        public const string Stat__MinibossAttacks = "boss_minibossAttacks";
+
         // Dungeon
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
@@ -635,6 +637,17 @@ namespace TT.Domain.Procedures
                 new StatsDetailsMap{
                     FriendlyName="This Town Ain't Big Enough",
                     Description="Times attacking Harley the Road Queen",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__MinibossAttacks,
+                new StatsDetailsMap{
+                    FriendlyName="A Change in Management",
+                    Description="Times attacking any mini-boss",
                     ImageUrl="trophy.jpg",
                     Active = true,
                     ResetsOnReroll = true

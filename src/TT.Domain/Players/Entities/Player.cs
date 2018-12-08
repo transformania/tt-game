@@ -528,6 +528,7 @@ namespace TT.Domain.Players.Entities
             var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
 
             this.Location = nextLocation.dbName;
+            this.Item.SetLocation(nextLocation.dbName);
 
             var leavingMessage = this.GetFullName() + " (feral) left toward " + nextLocation.Name;
             var enteringMessage = this.GetFullName() + " (feral) entered from " + currentLocation.Name;

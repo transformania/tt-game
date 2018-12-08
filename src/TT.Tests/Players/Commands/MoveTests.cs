@@ -112,6 +112,11 @@ namespace TT.Tests.Players.Commands
                     .BuildAndSave())
                 .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
                 .With(p => p.Mobility, PvPStatics.MobilityPet)
+                .With(p => p.Item, new ItemBuilder()
+                    .With(i => i.Id, 500)
+                    .With(i => i.dbLocationName, "someplace")
+                    .BuildAndSave()
+                )
                 .BuildAndSave();
 
             DomainRegistry.Repository.Execute(new Move { PlayerId = 55, Buffs = buffs, destination = destination });
@@ -129,6 +134,8 @@ namespace TT.Tests.Players.Commands
             var playerLogs = DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 55);
             playerLogs.Message.Should().Be("You moved from <b>Street: 200 Main Street</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
 
+            player.Location.Should().Be(destination);
+            player.Item.dbLocationName.Should().Be(destination);
             player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
                 .Be(89);
 

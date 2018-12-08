@@ -443,6 +443,10 @@ namespace TT.Tests.Players.Entities
                 .With(p => p.User, new UserBuilder()
                     .With(u => u.Stats, stats)
                     .BuildAndSave())
+                .With(p => p.Item, new ItemBuilder()
+                    .With(i => i.dbLocationName, "someplace")
+                    .BuildAndSave()
+                )
                 .BuildAndSave();
 
             var destinationLogs = player.MoveToAsAnimal("coffee_shop_patio");

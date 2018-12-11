@@ -267,4 +267,140 @@ INSERT [dbo].[JewdewfaeEncounters] ([Id], [dbLocationName], [IntroText], [Correc
 [p]You feel her body tremble and begin to grow at an alarming rate and leap off of her, landing gracefully a few feet away.  You take a few steps back as she grows from five feet to six, seven, ten, fifteen, thirty!  What little remains of her cheerleader outfit stretches and snaps away around the growing giantess, leaving her naked and towers up above you the size of an oak tree.  Your heart races and you try to scamper away as she takes a swipe at you, grabbing you in her giant hands around your hair and antennae, lifting you up into the air and dangling you a story above the ground.  [fae]"Counter-attack of the fifty foot woman!"[/fae] she giggles, licking the entire front of your body and drenching your blue fur with one stroke of her giant pink tongue![/p]
 
 [p]You mewl and squirm your way out of her hands, leaping at the nearest tree and catching a branch in the way only a feline can.  When you turn back to look, the giant Jewdewfae has vanished, presumably shrunk back down into her normal fae body and off to look for more fun elsewhere.  You groom your fur, feeling a tingle of magic from Jewdewfae''s saliva strengthening your arcane abilities as you clean and align your fur with your own tongue.[/p]', N'[p][fae]"Oh, wait a second.  Laaame!  ''Yer not one of those [b]Alien Catgirls[/b] at all!  I''m notta ''fraid of you at all, silly Biggie!"[/fae]', N'form_Alien_Catgirl_Medli', 1)
+INSERT [dbo].[JewdewfaeEncounters] ([Id], [dbLocationName], [IntroText], [CorrectFormText], [FailureText], [RequiredForm], [IsLive]) VALUES (26, N'gym_cardio', N'[p]Ah, the Sweater Girls gym. Home to toned, well-muscled body-builders and fit women in shorts and tank tops. Today is no different! Entering the cardio-hallway, you are greeted by the scent of sweat and the sight of people working out on the various different kinds of machines. There’s two female kitsune running on the treadmill. There’s a man in a suit doing some cycling exercises while his secretary is filming him. There’s a fire elemental getting frustrated at the fact that she’s accidentally burning the machine she’s on while a water elemental keeps putting it out again. Only in Sunnyglade would you see this sort of thing. You wander about, trying to find a free machine for yourself when you happen upon an unused treadmill. What’s interesting about this treadmill though is that it is turned on, yet there is no-one around using it. It seems rather strange but that’s when you look down and see that its user is actually a small fairy. Clad in blue, the fairy has blonde hair, pointed ears and blue symbols on her body. You recognize her of course as one of the most famous (or infamous, if you’ve fallen to one of her pranks!) people around town, the fairy Jewdewfae. It seems that she is jumping around on the machine and using her wings to twirl around in the air. Whatever she’s doing, she’s not exactly using the treadmill for its intended purpose. After a few more hops, skips and jumps, it seems she finally notices your presence. She halts mid twirl and hovers in front of your face.[/p]
+
+[p][fae]“Sorry, Biggie, this one’s taken,”[/fae] she says with a grin. You can’t help but laugh now.[/p]
+
+[p][fae]“Something funny?”[/fae] she asks, tilting her head curiously. [fae]“Even fairies need to work out from time to time, ya know.”[/fae][/p]
+
+[p]“Sorry,” you tell her, “but that’s not how you use a treadmill.”[/p]
+
+[p][fae]“Is that so, huh?”[/fae] she looks down at the apparatus. [fae]“I did think it looked quite odd for a trampoline… So I take it ‘ya know how to use this thing properly then, huh? Huh? Huh?”[/fae] the fairy is all up in your face, a huge smile plastered across her face.[/p]', N'[p]“Why yes!” You tell Jewdewfae excitedly. Your fit, furry body stands as an example to anyone working out in the gym. When someone needs any help with exercises, you’re their squirrel. You like helping them out after all![/p]
+
+[p][fae]“Great!”[/fae] The fairy says excitedly before fluttering down, looking up expectantly.[/p]
+
+[p]“So… this is a treadmill. You run on it, like a hamster,” you explain.[/p]
+
+[p][fae]“Like this?[/fae]” she asks and she starts running forwards on the black belt. Of course, she’s not actually making any progress since the belt is constantly moving backwards.[/p]
+
+[p]“That’s it, you’re doing it,” you tell her but it seems that Jewdewfae isn’t really all that into it.[/p]
+
+[p][fae]“What’s the point… of this thing… Biggie?”[/fae] she says in between some pants. [fae]“I’m… not moving forwards at all!”[/fae] She must not be into shape at all, considering she has only been running for a few seconds now. Makes you wonder how she managed to stay so slim.  No doubt magic.[/p]
+
+[p]“Well no,” you reply, “the point of a treadmill is the running itself.”[/p]
+
+[p][fae]“What?!”[/fae] she asks hysterically and she halts her movements, only for her to be sent flying off the belt and onto the floor, tumbling until she strikes your shin with a loud oof and some words that sound like swearing in an ancient forgotten tongue. You tilt your head. [/p]
+
+[p]“You wanted to work out, didn’t you?” you ask her. Why was this such a shock to the fairy?[/p]
+
+[p][fae]“But this isn’t fun!”[/fae] she pouts, [fae]“I thought ‘ya knew how to have fun.”[/fae][/p]
+
+[p]“Working out IS fun though,” you say with a smile. “You see this body? I didn’t just get this from a transformation. I worked hard for this!” You hope that you sound inspiring enough for her, even if it is a lie.[/p]
+
+[p][fae]“But,”[/fae] she says as she flutters up again, [fae]“‘ya could also just transform… that’s way easier, right?”[/fae][/p]
+
+[p]“Ah, but can you run a marathon and still feel fit enough to run another one afterwards? Because I sure can!” you proudly proclaim. [/p]
+
+[p][fae]“Wow,”[/fae] she says. It seems she’s impressed by that. A good sign! [fae]“Alright, show me!”[/fae][/p]
+
+[p]“Sure!” you say. It has after all been at least an hour since your last exercise and you’re eager as ever to get back into it. You set the treadmill at the highest setting. Easy peasy! Thus you start running. Your fluffy tail bobs up and down with each step, as do your breasts but none of that slows you down. Meanwhile, Jewdewfae is cheering you on from the sidelines.[/p]
+
+[p][fae]“Whooooh!”[/fae] She shouts excitedly, [fae]“Go Biggie!”[/fae] You simply keep on running. Before long, you’ve already run a mile. And another one! And another one! That’s when you notice that the shouts from Jewdewfae have gone silent for a while… looking to your right, you can see that the fairy is lying there on her side on one of the bars with a tiny bag of crisps![/p]
+
+[p]“Oi!” you shout, unable to believe what you’re seeing.[/p]
+
+[p][fae]“Well, keep going, Biggie!”[/fae] she says as she takes a bite of her snack. [fae]“A marathon is much longer than that!”[/fae][/p]
+
+[p]“You’re snacking! In a gym!” you say exasperated. You keep on running still causing you to sweat profusely but that doesn’t matter right now.[/p]
+
+[p][fae]“So?”[/fae] she asks, tilting her head.[/p]
+
+[p]“So?!” you get a bit irritated now. You never get irritated at anyone, but this fairy is simply unbelievable. “You don’t snack in a gym! That’s like turning on a fan in a sauna. It’s the exact opposite of what you’re supposed to be doing here!”[/p]
+
+[p][fae]“Sheesh, gyms are no fun,”[/fae] the fairy pouts before fluttering up again. [fae]“I’ll find some other Biggie to toy with.”[/fae][/p]
+
+[p]“Why you--” you protest and you hop off the treadmill, trying to grab at the fairy. Jewdewfae surprises you though and flies up rather swiftly.[/p]
+
+[p][fae]“Catch me if ''ya can,”[/fae] she says, sticking her tongue out at you with a grin. You can’t let her get you like that! Thus you give chase. For a fairy that’s not fit, she’s quite fast alright! Faster than you had imagined, but she’s still no match for a trained squirrel like you. Before long, you managed to snatch her out of the air. You plan on having her go through your most rigorous training program now. To your surprise though, the fairy is actually laughing.[/p]
+
+[p][fae]“That’s more like it,”[/fae] she cheers. “Again! Again!”[/p]
+
+[p]“That’s enough of you!” you say, getting really quite tired now, “I should turn you into my sweatband!” You start using your magic to do just that. To your surprise, she is not struggling at all. Her arms stretch out, as do her legs. Her hands and feet connect as a result as her body turns into fabric. Her wings retreat back into her body and her bodily features vanish as she transform. Soon, you have in your hands a blue sweatband with a fairy print on it. Smiling at your handiwork, you instantly put her on your head and decide to go back to the treadmill.[/p]
+
+[p]“Now I’ll put you to good use!” you say with a grin as you start running again, on your way to finishing up that marathon. All that time, it feels as if you are actually even more energetic than before. With each new mile, you even more invigorated than before. Is this because of your new headband? Whatever the case, you’ve never felt so alive before! After finishing the marathon distance, you turn of the treadmill.[/p]
+
+[p]“Whew, that was fun!” you say out loud. That’s when you feel the headband turning itself back again. In just a few moments, Jewdewfae managed to turn back to her old body again, with little trouble.[/p]
+
+[p][fae]“Agreed!”[/fae] she says with a broad smile, [fae]“but now I’ll go do something else. Thanks, Biggie! I’ll see ‘ya around!”[/fae]  Before you can even react to that though, the fairy already zips off, on her way to her next playmate. You’re not really sure what to make of that fairy. At least you got a good workout out of it...[/p]', N'[p][fae]“Hrmpf,”[/fae] Jewdewfae grunts, folds her arms and turns around. [fae]“Ya don’t really look like someone that knows anything about that sorta thing. Come back when ya found someone more sporty… like one of those [b]Squirrel Trainers[/b]!”[/fae][/p]', N'form_Squirrel_Trainer_Sammi_"Sleepy_Puppy"_Wells', 1)
+INSERT [dbo].[JewdewfaeEncounters] ([Id], [dbLocationName], [IntroText], [CorrectFormText], [FailureText], [RequiredForm], [IsLive]) VALUES (27, N'mansion_chapel', N'[p]As you walk around the otherwise lonely chapel in the Erie Estate, you hear the sound of a woman sniffling.  At first you’re unable to find the source, spotting no other humans (or animals, or combination thereof) amongst the old wooden pews or at the altar--not even inside the confessional booths.  Something warm and wet suddenly drops on your arm and you look up.  Finally you spot the source of the crying--a tiny winged woman perched atop a bell hanging from the ceiling.  Jewdewfae.[/p]
+
+[p][fae]”Oh, hiya down there,”[/fae] Jewdewfae sighs glumly, sliding down the slope of the bell, growing to the body of a full sized woman as she falls, landing lightly on the ground in front of you.  She wears a long white wedding dress instead of her regular sky-blue one, its ruffled skirt trailing on the floor, the fabric spotless and pristine.  She carries a fresh bouquet of roses in her gloved hands, the flowers still wet from the morning’s dew. [fae] “Tell me, have you ever been married before?  From the looks of it--probably not.  No offense, Biggie.  We Elder Fae, we don’t have any tradition of marriage.  I’m missin’ out!  To have someone to hold and love for your whole life long…”[/fae]  Jewdewfae begins to sniffle again.  [fae]“Hey, if you spot one of those [b]Blushing Brides[/b], send her my way, wontcha?”[/fae]”[/p]
+', N'[p][fae]”You came!”[/fae]  Jewdewfae gasps, her eyes lighting up, her pure enthusiasm so adorable that it melts your heart.  She wipes away the tears from her cheek with the back of her gloved hands.  [fae]”My beautiful fiancee!  I’ve been waiting for so long for you to come, oh lightta’ my life, jewel of my eyes,  fire of my lions!  Or is that loins?  Doesn’t matter!  Come on!”[/fae][/p]
+
+[p]Jewdewfae grabs your hand and drags you up to the altar, both of your wedding dresses dragging on the ground behind you, gathering dust balls and grime in the process (someone really needs to clean this place… the first thing you’ll do with your new wife is to insist on hiring a maid, that’s for certain!).  Your veil and tiara nearly slip off your head in the fairy’s rush and your breasts nearly pop out of your dress, but you hardly mind--this is the big moment you’ve been waiting for![/p]
+
+[p][fae]“Do you, um… Mrs. Biggie, take me to be your lawfully wedded wife?”[/fae] Jewdewfae asks, gazing deep into your eyes.  Your cheeks tingle with your intense blush, your heart racing a mile a minute, your panties already soaking wet with the anticipation of your first bedding.[/p]
+
+[p]“I do,” you answer, scarcely able to withhold your intense joy.[/p]
+
+[p][fae]“Do you… me… Jewdewfae, take this Biggie to me your… my… lawfully wedded wife?”[/fae] Jewdewfae continues.  [fae]“Yes!  Yes, I do!  I may now kiss the bride!”[/fae][/p]
+
+[p]You shut your eyes and lean in, waiting to feel your new wife’s sweet lips against your own, the kiss that will forever confirm your love.  Your mind is already racing to plan out your honeymoon--a sunny beach down in the tropics?  A ski resort high up in the mountains?  Maybe a tour around the entire world.  And then you’ll settle down in a nice mansion with white paint, servants and maids, a giant feather bed… and then there will be children… a lot of children!  The mansion will echo with their laughter, and together you and your wife will watch them grow up and move out and retire to--[/p]
+
+[p][b]Squish.[/b][/p]
+
+[p]You jolt backwards, your face suddenly covered with icing, globs of chocolate breading face tumbling down and soiling your wedding dress, crumbs falling down between your breasts.  You wipe the icing off your face in disbelief, your hopes and dreams shattered… shattered by a slice of chocolate cake.  You stand there with your mouth agape, paralyzed.[/p]
+
+[p][fae]“Gotcha!”[/fae] Jewdewfae laughs, her tiny tongue licking some icing off your cheek.  Her white wedding dress lies empty on the ground and she is back in her regular fairy body, flying back up to the bell as she nibbles on an icing flower. [fae] “‘Yer funny, Biggie!  Shame we didn’t hire a photographer, that look on your face is simply [i]hilarious![/i]”[/fae][/p]
+
+[p]You sigh.  Evidently marriage will have to wait…[p]
+', N'[p] [fae]“Don’t tell me you’re gonna attend my wedding like [i]that[/i], are ya, Biggie?[/fae]”[/p]', N'form_Blushing_Bride_rubberfrills', 1)
+INSERT [dbo].[JewdewfaeEncounters] ([Id], [dbLocationName], [IntroText], [CorrectFormText], [FailureText], [RequiredForm], [IsLive]) VALUES (28, N'coffee_shop_patio', N'[p]As you walk past the tables and chairs out on the patio of Carolyne''s Coffee Shop you spot a woman wearing dark sunglasses and a black trenchcoat eyeing you suspiciously as you move by.  Her gaze lingers on you and your first assumption is that she’s readying a spell to turn you into her panties, but she doesn’t make any aggressive moves--just watches.  You’re about to turn to the corner out of her sight when you suddenly hear her speak.[/p]
+
+[p][fae]“Psssst!  Hey you!”[/fae]  The woman suddenly jumps to her feet, knocking her chair backward, and pulls open her trench coat to reveal that she’s wearing nothing underneath.  Based on the faintly glowing blue tattoos on her body, you figure that she’s Jewdewfae in disguise.[/p]
+
+[p]“...yes?” you ask.  “What is it?”[/p]
+
+[p]Jewdewfae looks down at her body, then back at you.  [fae]“Arentcha’ surprised, Biggie?  I’m not wearing any clothes!  I’m in the buff!  I’m wearin’ my birthday outfit!”[/fae][/p]
+
+[p]“...and?”[/p]
+
+[p]Jewdewfae shakes her head.  [fae]“Prankin’ people’s so hard these days.  Maybe we need something even more shocking!  Like… a girl with a cock!  Find me one of those [b]Futanari Flashers[/b], wontcha’, Biggie?”[/fae][/p]
+', N'[p][fae]“Yes!  Perfect!”[/fae] Jewdewfae claps her hands together in delight.  [fae]“We’ll scandalize the entire town!  Jaws will gape!  Trousers will bulge!  Panties will drop!  Well, almost perfect… I can’t be seen with ‘ya or the jig’ll be up, so… this might feel a tad bit funny…”[/fae][/p]
+
+[p]Jewdewfae shrinks down to her fairy size and zooms right at you, a blue blur heading straight for your crotch.  Before you have time to react, you feel something warm and wet slip around your cock and vanish, a sudden jolt of pleasure that nearly brings you to orgasm.  You peer down past your breasts and watch your cock grow out a half dozen centimeters more, pulsing with waves of sensitivity that keep it as erect as an iron bar, your balls itching to release some of your pent up cum.  Already you feel your thighs quiver, aching for a man or woman between them, someone to plant your meaty cock into.  But you know you no matter how hard you try, you simply won’t be able to get off without the look of genuine surprise on someone’s face.[/p]
+
+[p][fae]“Okay, Biggie!  Let’s go!”[/fae] you hear your Jewdewfae-cock speak to you… somehow.  You fold your trench coat over you, concealing your member as best you can, and take to the streets.[/p]
+
+[p]In just a few minutes of walking you’re at the Pump-N-Dash (Car Wash) where a couple of tired girls with their t-shirts discarded due to the day’s insufferable heat are washing a red sports car by hand.  “Pssst!” you hiss, throwing open your trench coat with a shit-eating grin.[/p]
+
+[p]The two girls shrug and one turns back to her work.  “Are you here for the three o’ clock?” the other girl asks.[/p]
+
+[p]“I… erm… no…” you stammer, folding your trench coat back up, feeling a bit silly.[/p]
+
+[p][fae]“Damn!  Okay, let’s try again…”[/fae] [/p]
+
+[p]You follow Jewdewfae’s instructions and wander until you arrive at the lobby of Henryson Medical Clinic and stumble in the front door where a man is typing on the his computer.[/p]
+
+[p]“Doctor, you gotta help me!” you interrupt.[/p]
+
+[p]“What’s the problem?” he asks, pushing his glasses up.[/p]
+
+[p]“This!”  You throw open your trench coat and begin to giggle.[/p]
+
+[p]The man calmly pulls out a pen and takes a business card from on the desk, scribbling down a telephone number.  “Ah.  Well, if you’re truly unhappy,  I’m afraid we can’t help you with that here, but I can refer you to a--”[/p]
+
+[p][fae]“Ugh!  What’s wrong with people?”[/fae] Jewdewfae groans.  [fae]“One more try!  There’s this one old lady who lives in the Oldoak Apartment Building; let’s go try her!  She’s sure ‘ta scream!”[/fae][/p]
+
+[p]You trot back up the road until you arrive at the apartments.  Sure enough, there is an elderly woman feeding the pigeons outside at the dog park, her yippy little chihuahua snapping at the birds without actually deterring them in the slightest.  “Hey, old lady!” you shout.[/p]
+
+[p]“Yes, dearie?”[/p]
+
+[p]You throw open your trench coat, grinning ear to ear.[/p]
+
+[p]“Oh, how nice.  But it’s nothing compared to [i]MINE[/i]...” she replies, standing up.  She lifts up her home-knitted cotton skirt and a cock of her own flops out, hanging down nearly to her knees, no indication that it has aged a day since she turned eighteen.  There’s no denying it; she has you beat!  You gulp, feeling your Jewdewfae-cock finally cum, splattering some angry pigeons before you’re dry.  Evidently your [i]own[/i] shock works to get you off too.[/p]
+
+[p]Fluids spent, you shiver as you feel Jewdewfae slip out from your manhood, retaking fairy form and landing on your shoulder.  She sighs. ” [fae]“Well I guess that works...  Kids these days…  Thanks for tryin’, Biggie.  Let’s go home.”[/fae][/p]
+', N'[p][fae]“Eh… not quite what I’m looking for,”[/fae] Jewdewfae answers.  [fae]“Come back later.”[/fae][/p]
+', N'form_Futanari_Flasher_Dangelo_Pleasant', 1)
 SET IDENTITY_INSERT [dbo].[JewdewfaeEncounters] OFF

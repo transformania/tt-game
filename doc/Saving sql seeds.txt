@@ -3,11 +3,22 @@ How to create .sql seed files from database
 Tasks -> Generate Scripts
 
 Select specific database objects
-Expand Tables and select all tables to add to the seed file
+Expand Tables and select the desired tables to add to the seed file.
+
+
+
+JewdewfaeEncounters
+TFMessages
+Tomes
+
 Next
-Save to file.  Overwrite the existing file.
+
 Click "Advanced"
 At bottom of General, set "types of data to script" to "Data only"
+Click OK
+
+Save to file in directory TT\tt-game\src\SeedData.  Overwrite the existing file.
+
 Click Next
 Click Finish
 
@@ -16,3 +27,23 @@ Make sure to set this at the top of the .sql file:
 SET NOCOUNT ON;
 
 Ensure that the encoding of the file is set to UTF-8.
+
+----------------------
+
+Do this for these files/tables:
+
+-- 01_InitialStatics.sql --
+DbStaticEffects
+DbStaticForms
+DbStaticFurnitures
+DbStaticItems
+DbStaticSkills
+
+-- InitialJewdewfaeEncounters.sql --
+JewdewfaeEncounters
+
+-- InitialTFMessages.sql --
+TFMessages
+
+-- InitialRestockItems.sql --
+RestockItems

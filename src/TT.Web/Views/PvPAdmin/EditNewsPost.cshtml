@@ -15,7 +15,7 @@
         @Html.TextBoxFor(n => n.Timestamp)
 
         <label>Message:</label>
-        @Html.TextAreaFor(n => n.Text)
+        @Html.TextAreaFor(n => n.Text, new { autofocus = true })
 
         <label>Archived?</label>
         @Html.DropDownListFor(n => n.ViewState, new SelectList(

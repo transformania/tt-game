@@ -18,7 +18,7 @@
     @using (Html.BeginForm(MVC.Settings.SetFriendNicknameSend(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.TextBoxFor(m => m.Nickname)<br />
+        @Html.TextBoxFor(m => m.Nickname, new { autofocus = true })<br />
         @Html.HiddenFor(m => m.FriendshipId)
 
         <br />

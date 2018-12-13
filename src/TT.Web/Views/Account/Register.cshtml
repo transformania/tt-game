@@ -33,7 +33,7 @@
                 <fieldset>
 
                     @Html.LabelFor(m => m.UserName)
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username", autofocus = true })
 
                     @Html.LabelFor(m => m.Email) <b><i>(Optional but encouraged)</i></b>
                     @Html.TextBoxFor(m => m.Email, new {  @class = "form-control frontForm", placeholder = "Email" })

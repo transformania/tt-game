@@ -27,7 +27,7 @@
             Writing to <span class="messageNicknameContainer">@Model.SendingToName</span>:
             <span class="charCounter" id="textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000" })<br />
+        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000", autofocus = true })<br />
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)

@@ -16,7 +16,7 @@
     @using (Html.BeginForm(MVC.PvP.PlayerLookupSend()))
     {
         <p>Partial name<br /></p>
-        @Html.EditorFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { autofocus = true })
 
 
         <br />

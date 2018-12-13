@@ -26,7 +26,7 @@
                 <fieldset>
 
 
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username", autofocus = true })
                     @Html.ValidationMessageFor(m => m.UserName)
 
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control frontForm", placeholder = "Password" })

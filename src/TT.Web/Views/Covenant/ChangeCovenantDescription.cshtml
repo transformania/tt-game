@@ -12,7 +12,7 @@
 
     @using (Html.BeginForm(MVC.Covenant.ChangeCovenantDescriptionSubmit(), FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea"})
+        @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea", autofocus = true })
         
         <hr />
         

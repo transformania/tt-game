@@ -19,7 +19,7 @@
     @using (Html.BeginForm(MVC.Messages.SendCovenantWideMessage(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.TextArea("Message")
+        @Html.TextArea("Message", "", new { autofocus = true })
         <br />
         <input type="submit" value="Send" />
     }

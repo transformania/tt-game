@@ -5,7 +5,7 @@
 
     @using (Html.BeginForm(MVC.PvPAdmin.ChangeGameDateSend(), FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.Message)
+        @Html.TextAreaFor(m => m.Message, new { autofocus = true })
         <br />
         <input type="submit" class="btn btn-chat" value="Send" />
     }

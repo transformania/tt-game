@@ -387,6 +387,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_57.cshtml" />
     <Content Include="Views\Messages\MarkAsAbusivePreview.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_58.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_59.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

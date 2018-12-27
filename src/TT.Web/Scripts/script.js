@@ -924,7 +924,11 @@ function showCharacterDescriptions() {
     }
     document.getElementById("selectedPlayerDesc").innerHTML = p.description + "<br><br>Intelligence:  " + p.intelligence + "<br>Reflex:  " + p.reflex + "<br>Prediction:  " + p.prediction + "<br><br>";
     //$("#selectedPlayerDesc").html()
-    document.getElementById("selectedPlayerAuthor").innerHTML = 'Character created by <a href="' + p.authorHome + '"target="_blank">' + p.author + '</a>. ~~~ Tags:  ' + p.tags;
+
+    console.log(p);
+
+    var pAuthorLink = p.authorHome ? '<a href="' + p.authorHome + '"target="_blank">' + p.author + '</a>' : p.author;
+    document.getElementById("selectedPlayerAuthor").innerHTML = 'Character created by ' + pAuthorLink +'. ~~~ Tags:  ' + p.tags;
 
     if (c.startGender == "male") {
         document.getElementById("selectedOpponentInfo").innerHTML = "<blue>" + c.firstName + " " + c.lastName + "</blue> : " + c.maxTFPoints + " stages.";
@@ -932,7 +936,9 @@ function showCharacterDescriptions() {
         document.getElementById("selectedOpponentInfo").innerHTML = "<pink>" + c.firstName + " " + c.lastName + "</pink> : " + c.maxTFPoints + " stages.";
     }
     document.getElementById("selectedOpponentDesc").innerHTML = c.description + "<br><br>Intelligence:  " + c.intelligence + "<br>Reflex:  " + c.reflex + "<br>Prediction:  " + c.prediction + "<br><br>";
-    document.getElementById("selectedOpponentAuthor").innerHTML = 'Character created by <a href="' + c.authorHome + '"target="_blank">' + c.author + '</a>. ~~~ Tags:  ' + c.tags;
+
+    var cAuthorLink = c.authorHome ? '<a href="' + c.authorHome + '"target="_blank">' + c.author + '</a>' : c.author;
+    document.getElementById("selectedOpponentAuthor").innerHTML = 'Character created by ' + cAuthorLink + '. ~~~ Tags:  ' + c.tags;
 
 }
 
@@ -1130,7 +1136,7 @@ function showHelp() {
 
 function loadAllCharactersWithAjax() {
     $.ajax({
-        url: "../Characters/All Characters (43).txt",
+        url: "../Characters/All Characters (51).txt",
         dataType: "text",
         success: function (data) {
             sorter.loadData(data);

@@ -1,5 +1,4 @@
-﻿@section head
-{
+﻿<head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.css">
 
@@ -11,7 +10,7 @@
             background-color: white;
         }
     </style>
-}
+</head>
 
 <p>@Ajax.ActionLink("View Logs", MVC.QuestWriter.ShowQuestWriterLogs((int)ViewBag.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", MVC.QuestWriter.ShowAllQuestStates((int)ViewBag.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>

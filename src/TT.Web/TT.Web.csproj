@@ -199,29 +199,14 @@
     <Compile Include="TomeController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="TransformaniaTimeController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\MySkillsViewModel.cs" />
     <Compile Include="ViewModels\SetNicknameViewModel.cs" />
-    <Content Include="Characters\Brianne Smith.txt" />
-    <Content Include="Characters\Carrie McCarthy.txt" />
-    <Content Include="Characters\Chandler Jacobson.txt" />
-    <Content Include="Characters\Deryl Grungrot.txt" />
-    <Content Include="Characters\Dominic Jones.txt" />
-    <Content Include="Characters\Jenny and Janny Talbot.txt" />
-    <Content Include="Characters\Luke Silver.txt" />
-    <Content Include="Characters\Maxwell Slim.txt" />
-    <Content Include="Characters\Morgan Faye.txt" />
-    <Content Include="Characters\Nigel Whitfeld.txt" />
-    <Content Include="Characters\Portia Mason.txt" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.min.css">
       <DependentUpon>custom.css</DependentUpon>
     </Content>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\TransformaniaTimeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -390,20 +375,6 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_59.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Characters\Caroline Plessica.txt" />
-    <Content Include="Characters\Charles Killjoy.txt" />
-    <Content Include="Characters\Dave Muster.txt" />
-    <Content Include="Characters\James Lensfester.txt" />
-    <Content Include="Characters\Jimmy Stoddert.txt" />
-    <Content Include="Characters\Johnny Toogood.txt" />
-    <Content Include="Characters\Kara Hoovester.txt" />
-    <Content Include="Characters\Lillian Desmond.txt" />
-    <Content Include="Characters\Mike Thebes.txt" />
-    <Content Include="Characters\Nikk Sethis.txt" />
-    <Content Include="Characters\Niko Katsaros.txt" />
-    <Content Include="Characters\Richard Carlisle.txt" />
-    <Content Include="Characters\Robert Scope.txt" />
-    <Content Include="Characters\Will Strong.txt" />
     <Content Include="Content\PvP.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -471,23 +442,11 @@
     <Content Include="Images\wallpaperDefault.jpg" />
     <Content Include="Images\wallPaperDefault_2.jpg" />
     <Content Include="Content\mystyle.css" />
-    <Content Include="Scripts\Character.js" />
-    <Content Include="Scripts\CharacterLoader.js" />
-    <Content Include="Scripts\game_discus.js" />
-    <Content Include="Scripts\game_dpong.js" />
-    <Content Include="Scripts\game_memory.js" />
-    <Content Include="Scripts\game_popup.js" />
-    <Content Include="Scripts\game_reflex.js" />
-    <Content Include="Scripts\game_roulette.js" />
-    <Content Include="Scripts\game_sequence.js" />
-    <Content Include="Scripts\GenericCharData.js" />
-    <Content Include="Scripts\GenericPlayerData.js" />
     <None Include="Properties\PublishProfiles\transformaniatime.com.pubxml" />
     <Content Include="Scripts\jquery.animate-color.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.mobile.doubletap.js" />
     <Content Include="Scripts\jQueryRotate.js" />
-    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\tt.chat.userList.js" />
     <Content Include="Scripts\tt.chat.messages.js" />
     <Content Include="Views\HtmlPage1.html" />
@@ -511,7 +470,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\TransformaniaTime\Play.cshtml" />
     <Content Include="Views\PvP\Game.cshtml" />
     <Content Include="Views\PvP\Play.cshtml" />
     <Content Include="Views\PvP\MakeNewCharacter.cshtml" />

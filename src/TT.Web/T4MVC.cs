@@ -47,7 +47,6 @@ public static partial class MVC
     public static TT.Web.Controllers.QuestWriterController QuestWriter = new TT.Web.Controllers.T4MVC_QuestWriterController();
     public static TT.Web.Controllers.ReportController Report = new TT.Web.Controllers.T4MVC_ReportController();
     public static TT.Web.Controllers.SettingsController Settings = new TT.Web.Controllers.T4MVC_SettingsController();
-    public static TT.Web.Controllers.TransformaniaTimeController TransformaniaTime = new TT.Web.Controllers.T4MVC_TransformaniaTimeController();
     public static TT.Web.Controllers.Generated.AdminController Admin = new TT.Web.Controllers.Generated.AdminController();
     public static TT.Web.Controllers.Generated.SharedController Shared = new TT.Web.Controllers.Generated.SharedController();
 }
@@ -108,17 +107,6 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
         public static readonly string boxesResize_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/boxesResize.min.js") ? Url("boxesResize.min.js") : Url("boxesResize.js");
-        public static readonly string Character_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Character.min.js") ? Url("Character.min.js") : Url("Character.js");
-        public static readonly string CharacterLoader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/CharacterLoader.min.js") ? Url("CharacterLoader.min.js") : Url("CharacterLoader.js");
-        public static readonly string game_discus_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_discus.min.js") ? Url("game_discus.min.js") : Url("game_discus.js");
-        public static readonly string game_dpong_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_dpong.min.js") ? Url("game_dpong.min.js") : Url("game_dpong.js");
-        public static readonly string game_memory_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_memory.min.js") ? Url("game_memory.min.js") : Url("game_memory.js");
-        public static readonly string game_popup_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_popup.min.js") ? Url("game_popup.min.js") : Url("game_popup.js");
-        public static readonly string game_reflex_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_reflex.min.js") ? Url("game_reflex.min.js") : Url("game_reflex.js");
-        public static readonly string game_roulette_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_roulette.min.js") ? Url("game_roulette.min.js") : Url("game_roulette.js");
-        public static readonly string game_sequence_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/game_sequence.min.js") ? Url("game_sequence.min.js") : Url("game_sequence.js");
-        public static readonly string GenericCharData_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/GenericCharData.min.js") ? Url("GenericCharData.min.js") : Url("GenericCharData.js");
-        public static readonly string GenericPlayerData_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/GenericPlayerData.min.js") ? Url("GenericPlayerData.min.js") : Url("GenericPlayerData.js");
         public static readonly string jquery_2_1_0_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.0.intellisense.min.js") ? Url("jquery-2.1.0.intellisense.min.js") : Url("jquery-2.1.0.intellisense.js");
         public static readonly string jquery_2_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.0.min.js") ? Url("jquery-2.1.0.min.js") : Url("jquery-2.1.0.js");
         public static readonly string jquery_2_1_0_min_js = Url("jquery-2.1.0.min.js");
@@ -149,7 +137,6 @@ namespace Links
         public static readonly string notices_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/notices.min.js") ? Url("notices.min.js") : Url("notices.js");
         public static readonly string pastRounds_json = Url("pastRounds.json");
         public static readonly string randomFirstLastNames_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/randomFirstLastNames.min.js") ? Url("randomFirstLastNames.min.js") : Url("randomFirstLastNames.js");
-        public static readonly string script_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/script.min.js") ? Url("script.min.js") : Url("script.js");
         public static readonly string suggestedLength_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/suggestedLength.min.js") ? Url("suggestedLength.min.js") : Url("suggestedLength.js");
         public static readonly string tt_api_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tt.api.min.js") ? Url("tt.api.min.js") : Url("tt.api.js");
         public static readonly string tt_chat_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tt.chat.min.js") ? Url("tt.chat.min.js") : Url("tt.chat.js");
@@ -281,17 +268,6 @@ namespace Links
             {
                 public static readonly string _references_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/_references.js"); 
                 public static readonly string boxesResize_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/boxesResize.js"); 
-                public static readonly string Character_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/Character.js"); 
-                public static readonly string CharacterLoader_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/CharacterLoader.js"); 
-                public static readonly string game_discus_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_discus.js"); 
-                public static readonly string game_dpong_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_dpong.js"); 
-                public static readonly string game_memory_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_memory.js"); 
-                public static readonly string game_popup_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_popup.js"); 
-                public static readonly string game_reflex_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_reflex.js"); 
-                public static readonly string game_roulette_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_roulette.js"); 
-                public static readonly string game_sequence_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/game_sequence.js"); 
-                public static readonly string GenericCharData_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/GenericCharData.js"); 
-                public static readonly string GenericPlayerData_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/GenericPlayerData.js"); 
                 public static readonly string jquery_2_1_0_intellisense_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.intellisense.js"); 
                 public static readonly string jquery_2_1_0_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.js"); 
                 public static readonly string jquery_2_1_0_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.min.js"); 
@@ -320,7 +296,6 @@ namespace Links
                 public static readonly string newCharacter_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/newCharacter.js"); 
                 public static readonly string notices_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/notices.js"); 
                 public static readonly string randomFirstLastNames_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/randomFirstLastNames.js"); 
-                public static readonly string script_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/script.js"); 
                 public static readonly string suggestedLength_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/suggestedLength.js"); 
                 public static readonly string tt_api_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.api.js"); 
                 public static readonly string tt_chat_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/tt.chat.js"); 

@@ -932,7 +932,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string SearchLocation(Player player, string dbLocationName)
+        public static string SearchLocation(Player player, string dbLocationName, bool findSpellsOnly)
         {
 
             var rand = new Random();
@@ -1030,7 +1030,7 @@ namespace TT.Domain.Procedures
 
 
             // learn a new skill
-            if (roll < 30)
+            if (roll < 30 || findSpellsOnly)
             {
 
                 IEnumerable<DbStaticSkill> eligibleSkills;

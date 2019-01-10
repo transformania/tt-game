@@ -544,6 +544,10 @@ namespace TT.Domain.Procedures
                     output.HasSearchDiscount = true;
                     //break;
                 }
+                else if (eff.dbEffect.dbName == "effect_Spellsleuth_Judoo")
+                {
+                    output.FindSpellsOnly = true;
+                }
                 else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_1_lvl")
                 {
                     if (output.EnchantmentBoost < 1)

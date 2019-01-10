@@ -1505,7 +1505,7 @@ namespace TT.Web.Controllers
             }
 
 
-            TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName);
+            TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName, mybuffs.FindSpellsOnly);
 
             // write to logs
             var locationLogMessage = "<span class='playerSearchingNotification'>" + me.GetFullName() + " searched here.</span>";

@@ -149,6 +149,7 @@ namespace TT.Domain.ViewModels
         public float FromEffects_Chaos_Order { get; set; }
 
         public bool HasSearchDiscount;
+        public bool FindSpellsOnly;
         public int EnchantmentBoost;
 
         public float Discipline() { return FromItems_Discipline + FromForm_Discipline + FromEffects_Discipline; }

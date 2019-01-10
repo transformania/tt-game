@@ -184,24 +184,24 @@
                     @Html.TextAreaFor(m => m.Skill_Description, new { @data_suggested_length = "125" })
                 </div>
 
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Skill_FormFriendlyName)
                     @Html.TextBoxFor(m => m.Skill_FormFriendlyName)
                 </div>
 
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Skill_ManaCost)
-                    @Html.TextBoxFor(m => m.Skill_ManaCost, new { @readonly = "readonly" })
+                    @Html.TextBoxFor(m => m.Skill_ManaCost)
                 </div>
 
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Skill_TFPointsAmount)
-                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount, new { @readonly = "readonly" })
+                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount)
                 </div>
 
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Skill_HealthDamageAmount)
-                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount, new { @readonly = "readonly" })
+                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount)
                 </div>
 
                 <div class="form__panel">
@@ -218,8 +218,9 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_LearnedAtRegion)
-                    @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                    @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "skillLearnedAt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
                     @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
+                    <div id="skillLearnedAt"></div>
                 </div>
 
                 <div class="form__panel">
@@ -249,9 +250,9 @@
                     @Html.LabelFor(m => m.Form_Description)
                     @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.", @data_suggested_length = "450" })
                 </div>
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Form_TFEnergyRequired)
-                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired, new { @readonly = "readonly" })
+                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired)
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_Gender)
@@ -277,13 +278,13 @@
                   "text",
                    2))
                 </div>
-                <div class="form__panel" id="Form_BecomesItemPanel">
+                <div class="form__panel deprecated" id="Form_BecomesItemPanel" >
                     @Html.LabelFor(m => m.Form_BecomesItemDbName)
                     @Html.TextBoxFor(m => m.Form_BecomesItemDbName)
                 </div>
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Form_Bonuses)
-                    @Html.TextAreaFor(m => m.Form_Bonuses, new { @readonly = "readonly" })
+                    @Html.TextAreaFor(m => m.Form_Bonuses)
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -521,9 +522,9 @@
                 </div>
 
                
-                <div class="form__panel">
+                <div class="form__panel deprecated">
                     @Html.LabelFor(m => m.Item_Bonuses)
-                    @Html.TextAreaFor(m => m.Item_Bonuses, new { @readonly = "readonly" })
+                    @Html.TextAreaFor(m => m.Item_Bonuses)
                 </div>
 
 
@@ -532,8 +533,9 @@
                 </div>
 
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.CursedTF_FormdbName) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
-                    @Html.TextBoxFor(m => m.CursedTF_FormdbName, new {  })
+                    @Html.LabelFor(m => m.CursedTF_FormdbName) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                    @Html.TextBoxFor(m => m.CursedTF_FormdbName, new { })
+                    <div id="curseFormModal"></div>
                 </div>
 
                 <div class="form__panel">
@@ -616,12 +618,12 @@
                     @Html.TextAreaFor(m => m.AssignedToArtist)
                 </div>
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.IsReadyForReview)
-                    @Html.CheckBoxFor(m => m.IsReadyForReview)
-                </div>
-                <div class="form__panel">
                     @Html.LabelFor(m => m.Notes)
                     @Html.TextAreaFor(m => m.Notes)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.IsReadyForReview, new {@class="biglabel"})
+                    @Html.CheckBoxFor(m => m.IsReadyForReview)
                 </div>
             </div>
 
@@ -846,8 +848,8 @@
 
             $("#disableReadonly").click(function() {
                 alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
-                $("[readonly='readonly']").each(function() {
-                    $(this).removeAttr("readonly");
+                $(".deprecated").each(function() {
+                    $(this).show();
                 });
             });
 
@@ -866,7 +868,6 @@
 
         function displayForInanimate() {
             $("#itemCreatedPanel").show();
-            $("#Form_BecomesItemPanel").show();
             $("#itemCreatedPanelNotPresent").hide();
             $("#Form_Description").attr("placeholder", "Ex) You are inanimate, a _______.  Although you can't move or talk, you enjoy your new existance in your owner's hands and every time they touch you, you feel a surge of love and affection for your new master.  PLEASE NOTE:  This changes for animate forms.");
 
@@ -874,7 +875,6 @@
 
         function displayForAnimate() {
             $("#itemCreatedPanel").hide();
-            $("#Form_BecomesItemPanel").hide();
             $("#itemCreatedPanelNotPresent").show();
 
             $("#Form_Description").attr("placeholder", "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.");
@@ -951,6 +951,12 @@
         background-color: lightgray;
     }
 
-       
+    .deprecated {
+        display: none;
+    }
+
+    .biglabel {
+        font-size: x-large;
+    }
 
     </style>

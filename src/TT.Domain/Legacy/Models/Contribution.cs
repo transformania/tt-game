@@ -209,7 +209,7 @@ namespace TT.Domain.Models
         // item fields
         #region item
 
-         [Display(Name = "Name of this item")]
+         [Display(Name = "Name of this item.  This MUST match the form name.")]
         public string Item_FriendlyName { get; set; }
 
          [Display(Name = "Description of this item.  Write this in the third person perspective, ie:  'This item gives its owner...'")]

@@ -19,11 +19,12 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string LastName = "Milton";
         private const int DonnaSpellCount = 5;
         public const string DonnaDbForm = "form_Mythical_Sorceress_LexamTheGemFox";
-        public const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
-        public const string Spell2 = "skill_Donna's_Cow_LexamtheGemFox";
-        public const string Spell3 = "skill_Donna's_Pig_LexamtheGemFox";
-        public const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
-        public const string Spell5 = "skill_Donna's_Chicken_LexamtheGemFox";
+
+        public const int Spell1 = 465;
+        public const int Spell2 = 595;
+        public const int Spell3 = 596;
+        public const int Spell4 = 597;
+        public const int Spell5 = 649;
 
         private const int DonnaFormId = 287;
 
@@ -227,7 +228,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
         }
 
-        public static string ChooseSpell(int turnNumber)
+        public static int ChooseSpell(int turnNumber)
         {
 
             var mod = turnNumber % (3*DonnaSpellCount);

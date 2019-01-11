@@ -34,9 +34,9 @@ namespace TT.Domain.Concrete
                 var editMe = context.Skills.Find(Skill.Id);
                 if (editMe != null)
                 {
-                    // dbEntry.Name = Skill.Name;
-                    // dbEntry.Message = Skill.Message;
-                    // dbEntry.TimeStamp = Skill.TimeStamp;
+                    // dbEntry.Name = StaticSkill.Name;
+                    // dbEntry.Message = StaticSkill.Message;
+                    // dbEntry.TimeStamp = StaticSkill.TimeStamp;
 
                 }
             }

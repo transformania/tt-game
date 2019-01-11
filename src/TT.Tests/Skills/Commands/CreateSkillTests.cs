@@ -40,7 +40,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new CreateSkill { ownerId = 100, skillSourceId = 55 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("Skill Source with Id 55 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("StaticSkill Source with Id 55 could not be found");
         }
 
         [Test]

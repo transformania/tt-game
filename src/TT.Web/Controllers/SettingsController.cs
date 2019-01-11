@@ -569,12 +569,12 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult ArchiveSpell(string name)
+        public virtual ActionResult ArchiveSpell(int skillSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert that player does own this skill
-            var skill = SkillProcedures.GetSkillViewModel(name, me.Id);
+            var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
 
             if (skill == null)
             {
@@ -586,11 +586,11 @@ namespace TT.Web.Controllers
 
             if (!skill.dbSkill.IsArchived)
             {
-                ViewBag.Message = "You have successfully archived " + skill.Skill.FriendlyName + ".";
+                ViewBag.Message = "You have successfully archived " + skill.StaticSkill.FriendlyName + ".";
             }
             else
             {
-                ViewBag.Message = "You have successfully restored " + skill.Skill.FriendlyName + " from your spell archive.";
+                ViewBag.Message = "You have successfully restored " + skill.StaticSkill.FriendlyName + " from your spell archive.";
             }
             ViewBag.Number = skill.dbSkill.Id;
             return PartialView(MVC.Settings.Views.partial.ArchiveNotice);

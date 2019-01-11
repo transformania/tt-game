@@ -86,23 +86,12 @@ namespace TT.Domain.Models
         public float Luck { get; set; }
         public float Chaos_Order { get; set; }
 
+        public int? SkillSourceId { get; set; }
+
         public string GetEffectDbName()
         {
             return "effect_" + this.Effect_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
         }
-
-        public string GetSkillDbName()
-        {
-            if (!this.Skill_FriendlyName.IsNullOrEmpty())
-            {
-                return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
-            }
-            else
-            {
-                return "";
-            }
-        }
-
 
     }
 }

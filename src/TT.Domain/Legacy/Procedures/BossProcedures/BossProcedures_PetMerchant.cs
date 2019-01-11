@@ -47,18 +47,6 @@ namespace TT.Domain.Procedures.BossProcedures
             }
         }
 
-        public static void CounterAttack(Player attacker)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
-
-            if (petMerchant.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
-            {
-                AttackProcedures.Attack(petMerchant, attacker, "skill_Sarmoti_Zatur");
-            }
-
-        }
-
         public static void RunPetMerchantActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

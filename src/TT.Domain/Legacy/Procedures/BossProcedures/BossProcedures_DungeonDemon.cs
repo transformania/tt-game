@@ -33,9 +33,9 @@ namespace TT.Domain.Procedures.BossProcedures
             }
             else if (dbDemon != null && dbDemon.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
             {
-                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
-                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
-                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
             }
 
         }

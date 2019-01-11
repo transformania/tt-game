@@ -11,10 +11,10 @@ namespace TT.Domain.Statics
 
         public const int WeakenSkillSourceId = 312;
 
-        public static DbStaticSkill GetStaticSkill(string name)
+        public static DbStaticSkill GetStaticSkill(int skillSourceId)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == name);
+            return statSkillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == skillSourceId);
         }
 
         public static IEnumerable<DbStaticSkill> GetAllStaticSkills()
@@ -26,7 +26,7 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticSkill> GetLearnablePsychopathSkills()
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.dbName != "" && s.dbName != PvPStatics.Spell_Weaken && s.ExclusiveToForm == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
+            return statSkillRepo.DbStaticSkills.Where(s => s.Id != PvPStatics.Spell_WeakenId && s.ExclusiveToForm == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
         }
 
         public static IEnumerable<DbStaticSkill> GetFormSpecificSkills(string formdbName)

@@ -1092,7 +1092,7 @@ namespace TT.Web.Controllers
             return View(MVC.NPC.Views.LorekeeperLearnSpell, output);
         }
 
-        public virtual ActionResult LorekeeperLearnSpellSend(string spell)
+        public virtual ActionResult LorekeeperLearnSpellSend(int spellSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1118,30 +1118,30 @@ namespace TT.Web.Controllers
             }
 
             // assert player does not already have that spell
-            var spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spell);
+            var spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spellSourceId);
 
             var playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(me.Id);
 
-            if (playerExistingSpells.Select(s => s.Name).Contains(spell))
+            if (playerExistingSpells.Select(s => s.SkillSourceId).Contains(spellSourceId))
             {
                 TempData["Error"] = "You already know that spell.";
                 return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // assert spells is learnable
-            if ((spellViewModel.Skill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.Skill.LearnedAtRegion.IsNullOrEmpty()) || !spellViewModel.Skill.IsPlayerLearnable)
+            if ((spellViewModel.StaticSkill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.StaticSkill.LearnedAtRegion.IsNullOrEmpty()) || !spellViewModel.StaticSkill.IsPlayerLearnable)
             {
                 TempData["Error"] = "You cannot learn that spell.";
                 return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // all checks passed; give the player the spell
-            SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.Skill.dbName);
+            SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.StaticSkill.Id);
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned, 1);
 
-            TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
+            TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.StaticSkill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());
         }
 

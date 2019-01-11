@@ -139,7 +139,7 @@ namespace TT.Domain.Procedures
                 var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 var skillToLearn = eligibleSkills.ElementAt(randIndex);
-                SkillProcedures.GiveSkillToPlayer(id, skillToLearn);
+                SkillProcedures.GiveSkillToPlayer(id, skillToLearn.Id);
 
                 // give this bot the Psychpathic perk
                 if (strength == 1)
@@ -301,8 +301,8 @@ namespace TT.Domain.Procedures
 
                     var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                     var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s =>
-                        s.dbSkill.Name != PvPStatics.Spell_Weaken && s.Skill.ExclusiveToForm == null &&
-                        s.Skill.ExclusiveToItem == null);
+                        s.dbSkill.SkillSourceId != PvPStatics.Spell_WeakenId && s.StaticSkill.ExclusiveToForm == null &&
+                        s.StaticSkill.ExclusiveToItem == null);
 
                     // the bot has an attack target, so go chase it
                     if (directive.State == "attack")
@@ -313,7 +313,7 @@ namespace TT.Domain.Procedures
                         if (PlayerProcedures.PlayerIsOffline(myTarget) ||
                             myTarget.Mobility != PvPStatics.MobilityFull ||
                             skill == null ||
-                            myTarget.Form == skill.Skill.FormdbName ||
+                            myTarget.Form == skill.StaticSkill.FormdbName ||
                             myTarget.IsInDungeon() ||
                             myTarget.InDuel > 0 ||
                             myTarget.InQuest > 0)

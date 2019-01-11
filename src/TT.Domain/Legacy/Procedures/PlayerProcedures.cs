@@ -1040,8 +1040,8 @@ namespace TT.Domain.Procedures
                 // get all the skills that are found in THIS EXACT LOCATION
                 var skillsAtThisLocation = SkillStatics.GetSkillsLearnedAtLocation(here.dbName);
                 eligibleSkills = from s in skillsAtThisLocation
-                                 let sx = myKnownSkills.Select(r => r.dbName)
-                                 where !sx.Contains(s.dbName)
+                                 let sx = myKnownSkills.Select(r => r.Id)
+                                 where !sx.Contains(s.Id)
                                  select s;
 
                 // get all the skills that are found in the region this location is in
@@ -1049,8 +1049,8 @@ namespace TT.Domain.Procedures
                 {
                     var skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
                     eligibleSkills = from s in skillsAtThisRegion
-                                     let sx = myKnownSkills.Select(r => r.dbName)
-                                     where !sx.Contains(s.dbName)
+                                     let sx = myKnownSkills.Select(r => r.Id)
+                                     where !sx.Contains(s.Id)
                                      select s;
                 }
 
@@ -1065,7 +1065,7 @@ namespace TT.Domain.Procedures
                 var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 var skillToLearn = eligibleSkills.ElementAt(randIndex);
-                var output = SkillProcedures.GiveSkillToPlayer(player.Id, skillToLearn);
+                var output = SkillProcedures.GiveSkillToPlayer(player.Id, skillToLearn.Id);
 
                 return output;
 

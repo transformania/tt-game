@@ -271,8 +271,8 @@ namespace TT.Domain.Procedures
                     // spell gain
                     else if (q.RewardType == (int)QuestStatics.RewardType.Spell)
                     {
-                        var spell = SkillStatics.GetStaticSkill(q.RewardAmount);
-                        SkillProcedures.GiveSkillToPlayer(player.Id, q.RewardAmount);
+                        var spell = SkillStatics.GetStaticSkill(System.Convert.ToInt32(q.RewardAmount));
+                        SkillProcedures.GiveSkillToPlayer(player.Id, spell.Id);
                         message += "<br/>You learned the spell <b>" + spell.FriendlyName + "</b>.";
                     }
 

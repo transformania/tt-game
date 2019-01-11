@@ -307,7 +307,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_Attack
         {
             public readonly string targetId = ("targetId").ToLowerInvariant();
-            public readonly string attackName = ("attackName").ToLowerInvariant();
+            public readonly string spellSourceId = ("spellSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_Take s_params_Take = new ActionParamsClass_Take();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -652,15 +652,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void AttackOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int targetId, string attackName);
+        partial void AttackOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int targetId, int spellSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Attack(int targetId, string attackName)
+        public override System.Web.Mvc.ActionResult Attack(int targetId, int spellSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attack);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "attackName", attackName);
-            AttackOverride(callInfo, targetId, attackName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "spellSourceId", spellSourceId);
+            AttackOverride(callInfo, targetId, spellSourceId);
             return callInfo;
         }
 

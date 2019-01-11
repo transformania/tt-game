@@ -18,12 +18,13 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string ValentineLastName = "Valentine";
 
         public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
-        public const string SwordSpell = "skill_The_Dance_of_Blades_Ashley_Valentine";
+        public const int SwordSpellSourceId = 501;
 
-        public const string BloodyCurseSpell = "skill_A_Bloody_Kiss_Lilith";
+        public const int BloodyCurseSpellSourceId = 727;
         private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
 
         public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
+        public const int ValentinesPresenceSpellSourceId = 839;
         private const string ValentinesPresenceEffect = "effect_Valentine’s_Presence_Lilith";
 
         public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
@@ -34,19 +35,19 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string NightStance = "nightstance";
 
         // NIGHT -- male
-        public const string NightVampireMaleSpell = "skill_Wisdom_of_the_Nightkin._Leia_Valentine";
+        public const int NightVampireMaleSpellSourceId = 813;
         public const string NightVampireMaleForm = "form_Child_of_the_Night_Leia_Valentine";
 
         // NIGHT -- female
-        public const string NightVampireFemaleSpell = "skill_Elegance_of_the_Nightkin_Leia_Valentine";
+        public const int NightVampireFemaleSpellSourceId = 814;
         public const string NightVampireFemaleForm = "form_Disciple_of_the_Night_Leia_Valentine";
 
         // DAY -- male
-        public const string DayVampireMaleSpell = "skill_Strength_of_the_Nightkin_Leia_Valentine";
+        public const int DayVampireMaleSpellSourceId = 815;
         public const string DayVampireMaleForm = "form_Vampire_Fighter_Leia_Valentine";
 
         // DAY -- female
-        public const string DayVampireFemaleSpell = "skill_Prowess_of_the_Nightkin_Leia_Valentine";
+        public const int DayVampireFemaleSpellSourceId = 816;
         public const string DayVampireFemaleForm = "form_Vampire_Duelist_Leia_Valentine";
 
         private const int ValentineFormId = 207;
@@ -142,8 +143,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 // regular counterattacks, not berserk
                 if (valentine.Health > valentine.MaxHealth / 4)
                 {
-                    AttackProcedures.Attack(valentine, human, SwordSpell);
-                    AttackProcedures.Attack(valentine, human, SwordSpell);
+                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
+                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
                     AIProcedures.DealBossDamage(valentine, human, false, 2);
                 }
 
@@ -152,8 +153,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
 
                     // counterattack twice against original attacker
-                    AttackProcedures.Attack(valentine, human, SwordSpell);
-                    AttackProcedures.Attack(valentine, human, SwordSpell);
+                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
+                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
                     AIProcedures.DealBossDamage(valentine, human, false, 1);
 
                     // attack everyone else with 1 cast
@@ -169,7 +170,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     foreach (var p in playersHere)
                     {
-                        AttackProcedures.Attack(valentine, p, SwordSpell);
+                        AttackProcedures.Attack(valentine, p, SwordSpellSourceId);
                         AIProcedures.DealBossDamage(valentine, p, false, 1);
                     }
                 }
@@ -209,14 +210,14 @@ namespace TT.Domain.Procedures.BossProcedures
                 // give this player the vampire curse if they do not yet have it
                 if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffect))
                 {
-                    AttackProcedures.Attack(valentine, p, BloodyCurseSpell);
+                    AttackProcedures.Attack(valentine, p, BloodyCurseSpellSourceId);
                     AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
                 // give this player the immobility curse if they do not yet have it
                 if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect))
                 {
-                    AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
+                    AttackProcedures.Attack(valentine, p, ValentinesPresenceSpellSourceId);
                 }
 
             }
@@ -260,11 +261,11 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     if (player.Gender == PvPStatics.GenderMale)
                     {
-                        AttackProcedures.Attack(valentine, player, DayVampireFemaleSpell);
+                        AttackProcedures.Attack(valentine, player, DayVampireFemaleSpellSourceId);
                     }
                     else
                     {
-                        AttackProcedures.Attack(valentine, player, DayVampireMaleSpell);
+                        AttackProcedures.Attack(valentine, player, DayVampireMaleSpellSourceId);
                     }
                 }
             }
@@ -274,11 +275,11 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     if (player.Gender == PvPStatics.GenderMale)
                     {
-                        AttackProcedures.Attack(valentine, player, NightVampireFemaleSpell);
+                        AttackProcedures.Attack(valentine, player, NightVampireFemaleSpellSourceId);
                     }
                     else
                     {
-                        AttackProcedures.Attack(valentine, player, NightVampireMaleSpell);
+                        AttackProcedures.Attack(valentine, player, NightVampireMaleSpellSourceId);
                     }
                 }
             }

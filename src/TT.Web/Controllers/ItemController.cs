@@ -88,7 +88,7 @@ namespace TT.Web.Controllers
             return View(MVC.Item.Views.SelfCast, output);
         }
 
-        public virtual ActionResult SelfCastSend(string spell)
+        public virtual ActionResult SelfCastSend(int skillSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -131,7 +131,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player does own this skill
-            var skill = SkillProcedures.GetSkillViewModel(spell, me.Id);
+            var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
             if (skill == null)
             {
                 TempData["Error"] = "You do not own this spell.";
@@ -146,19 +146,19 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not already in the form of the spell
-            if (me.Form == skill.Skill.FormdbName)
+            if (me.Form == skill.StaticSkill.FormdbName)
             {
                 TempData["Error"] = "You are already in the target form of that spell, so doing this would do you no good.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            PlayerProcedures.InstantChangeToForm(me, skill.Skill.FormdbName);
+            PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormdbName);
             ItemProcedures.DeleteItemOfName(me, itemToUse.dbItem.dbName);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
-            var form = FormStatics.GetForm(skill.Skill.FormdbName);
+            var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1);

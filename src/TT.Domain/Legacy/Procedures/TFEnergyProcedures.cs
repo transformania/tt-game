@@ -31,7 +31,7 @@ namespace TT.Domain.Procedures
 
             
             // crunch down any old TF Energies into one public energy
-            var energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName).ToList();
+            var energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.StaticSkill.FormdbName).ToList();
 
             var energiesEligibleForDelete = new List<TFEnergy>();
             decimal mergeUpEnergyAmt = 0;
@@ -61,14 +61,14 @@ namespace TT.Domain.Procedures
                     PlayerId = victim.Id,
                     Amount = mergeUpEnergyAmt,
                     CasterId = null,
-                    FormName = skill.Skill.FormdbName
+                    FormName = skill.StaticSkill.FormdbName
                 };
 
-                var form = FormStatics.GetForm(skill.Skill.FormdbName);
+                var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
 
                 if (form != null)
                 {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.Skill.FormdbName).Id;
+                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormdbName).Id;
                 }
 
                 DomainRegistry.Repository.Execute(cmd);
@@ -82,7 +82,7 @@ namespace TT.Domain.Procedures
             }
 
             // get the amount of TF Energy the attacker has on the player
-            var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId == attacker.Id);
+            var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.StaticSkill.FormdbName && e.CasterId == attacker.Id);
 
             if (energyFromMe == null)
             {
@@ -90,16 +90,16 @@ namespace TT.Domain.Procedures
                 var cmd = new CreateTFEnergy
                 {
                     PlayerId = victim.Id,
-                    Amount = skill.Skill.TFPointsAmount*modifier,
+                    Amount = skill.StaticSkill.TFPointsAmount*modifier,
                     CasterId = attacker.Id,
-                    FormName = skill.Skill.FormdbName
+                    FormName = skill.StaticSkill.FormdbName
                 };
 
-                var form = FormStatics.GetForm(skill.Skill.FormdbName);
+                var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
 
                 if (form != null)
                 {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.Skill.FormdbName).Id;
+                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormdbName).Id;
                 }
 
                 DomainRegistry.Repository.Execute(cmd);
@@ -108,15 +108,15 @@ namespace TT.Domain.Procedures
                 energyFromMe = new TFEnergy
                 {
                     PlayerId = victim.Id,
-                    FormName = skill.Skill.FormdbName,
+                    FormName = skill.StaticSkill.FormdbName,
                     CasterId = attacker.Id,
-                    Amount = skill.Skill.TFPointsAmount * modifier
+                    Amount = skill.StaticSkill.TFPointsAmount * modifier
                 };
 
             }
             else
             {
-                energyFromMe.Amount += skill.Skill.TFPointsAmount * modifier;
+                energyFromMe.Amount += skill.StaticSkill.TFPointsAmount * modifier;
                 energyFromMe.Timestamp = DateTime.UtcNow;
                 repo.SaveTFEnergy(energyFromMe);
             }
@@ -125,7 +125,7 @@ namespace TT.Domain.Procedures
 
             var totalEnergy = energyFromMe.Amount + sharedEnergyAmt + mergeUpEnergyAmt;
 
-            var eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
+            var eventualForm = FormStatics.GetForm(skill.StaticSkill.FormdbName);
 
             output.AttackerLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
             output.VictimLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
@@ -248,7 +248,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static LogBox RunFormChangeLogic(Player victim, string skilldbName, int attackerId)
+        public static LogBox RunFormChangeLogic(Player victim, int skillSourceId, int attackerId)
         {
 
             var output = new LogBox();
@@ -262,7 +262,7 @@ namespace TT.Domain.Procedures
             ITFEnergyRepository repo = new EFTFEnergyRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            var skill = SkillStatics.GetStaticSkill(skilldbName);
+            var skill = SkillStatics.GetStaticSkill(skillSourceId);
 
             var pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == null);
             var myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
@@ -483,7 +483,7 @@ namespace TT.Domain.Procedures
                        var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                        var skillToLearn = eligibleSkills.ElementAt(randIndex);
-                       SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn);
+                       SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn.Id);
 
                         // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
                        var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();

@@ -13,10 +13,10 @@
     @{
         if (ViewBag.BotId == AIStatics.ValentineBotId)
         {
-            foreach (var s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
+            foreach (var s in Model.Skills.OrderBy(s => s.StaticSkill.FriendlyName))
             {
                 <span>
-                @Html.ActionLink(s.Skill.FriendlyName + " (" + s.Skill.ManaCost + ")", "Attack", "PvP", new {targetId = "XXX", attackName = s.dbSkill.Name}, new {@class = HtmlHelpers.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost})
+                @Html.ActionLink(s.StaticSkill.FriendlyName + " (" + s.StaticSkill.ManaCost + ")", "Attack", "PvP", new {targetId = "XXX", spellSourceId = s.dbSkill.SkillSourceId}, new {@class = HtmlHelpers.GetSpellTypeClass(s), @manacost = s.StaticSkill.ManaCost})
             </span>
             }
         }

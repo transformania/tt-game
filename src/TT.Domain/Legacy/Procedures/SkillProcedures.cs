@@ -20,49 +20,49 @@ namespace TT.Domain.Procedures
 
         public static IEnumerable<StaticSkill> GetStaticSkillsOwnedByPlayer(int playerId)
         {
-            return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.Skill).ToList();
+            return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.StaticSkill).ToList();
         }
 
         public static IEnumerable<SkillViewModel> GetSkillViewModelsOwnedByPlayer(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
-                                                  where ds.OwnerId == playerId
-                                                  join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
+            IEnumerable<SkillViewModel> output = from skill in skillRepo.Skills
+                                                  where skill.OwnerId == playerId
+                                                  join skillSource in skillRepo.DbStaticSkills on skill.SkillSourceId equals skillSource.Id
 
 
                                                   select new SkillViewModel
                                                  {
 
-                                                     MobilityType = ss.MobilityType,
+                                                     MobilityType = skillSource.MobilityType,
                                                      dbSkill = new Skill_VM
                                                      {
-                                                         Id = ds.Id,
-                                                         OwnerId = ds.OwnerId,
-                                                         Name = ds.Name,
-                                                         Charge = ds.Charge,
-                                                         Duration = ds.Duration,
-                                                         TurnStamp = ds.TurnStamp,
-                                                         IsArchived = ds.IsArchived,
+                                                         Id = skill.Id,
+                                                         OwnerId = skill.OwnerId,
+                                                         SkillSourceId = skill.SkillSourceId,
+                                                         Charge = skill.Charge,
+                                                         Duration = skill.Duration,
+                                                         TurnStamp = skill.TurnStamp,
+                                                         IsArchived = skill.IsArchived,
 
                                                      },
-                                                     Skill = new StaticSkill
+                                                     StaticSkill = new StaticSkill
                                                      {
-                                                         dbName = ss.dbName,
-                                                         FriendlyName = ss.FriendlyName,
-                                                         FormdbName = ss.FormdbName,
-                                                         Description = ss.Description,
-                                                         DiscoveryMessage = ss.DiscoveryMessage,
-                                                         ManaCost = ss.ManaCost,
-                                                         HealthDamageAmount = ss.HealthDamageAmount,
-                                                         LearnedAtLocation = ss.LearnedAtLocation,
-                                                         LearnedAtRegion = ss.LearnedAtLocation,
-                                                         TFPointsAmount = ss.TFPointsAmount,
-                                                         ExclusiveToForm = ss.ExclusiveToForm,
-                                                         ExclusiveToItem = ss.ExclusiveToItem,
-                                                         GivesEffect = ss.GivesEffect,
-                                                         IsPlayerLearnable = ss.IsPlayerLearnable,
+                                                         Id = skillSource.Id,
+                                                         FriendlyName = skillSource.FriendlyName,
+                                                         FormdbName = skillSource.FormdbName,
+                                                         Description = skillSource.Description,
+                                                         DiscoveryMessage = skillSource.DiscoveryMessage,
+                                                         ManaCost = skillSource.ManaCost,
+                                                         HealthDamageAmount = skillSource.HealthDamageAmount,
+                                                         LearnedAtLocation = skillSource.LearnedAtLocation,
+                                                         LearnedAtRegion = skillSource.LearnedAtLocation,
+                                                         TFPointsAmount = skillSource.TFPointsAmount,
+                                                         ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                         ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                         GivesEffect = skillSource.GivesEffect,
+                                                         IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                      }
 
                                                  };
@@ -75,43 +75,43 @@ namespace TT.Domain.Procedures
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
+            IEnumerable<SkillViewModel> output = from skill in skillRepo.Skills
                                                   
-                                                  join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
-                                                  where ds.OwnerId == playerId && ss.MobilityType == "curse"
+                                                  join skillSource in skillRepo.DbStaticSkills on skill.SkillSourceId equals skillSource.Id
+                                                  where skill.OwnerId == playerId && skillSource.MobilityType == "curse"
 
 
                                                   select new SkillViewModel
                                                   {
 
-                                                      MobilityType = ss.MobilityType,
+                                                      MobilityType = skillSource.MobilityType,
                                                       dbSkill = new Skill_VM
                                                       {
-                                                          Id = ds.Id,
-                                                          OwnerId = ds.OwnerId,
-                                                          Name = ds.Name,
-                                                          Charge = ds.Charge,
-                                                          Duration = ds.Duration,
-                                                          TurnStamp = ds.TurnStamp,
-                                                          IsArchived = ds.IsArchived,
+                                                          Id = skill.Id,
+                                                          OwnerId = skill.OwnerId,
+                                                          SkillSourceId = skill.SkillSourceId,
+                                                          Charge = skill.Charge,
+                                                          Duration = skill.Duration,
+                                                          TurnStamp = skill.TurnStamp,
+                                                          IsArchived = skill.IsArchived,
 
                                                       },
-                                                      Skill = new StaticSkill
+                                                      StaticSkill = new StaticSkill
                                                       {
-                                                          dbName = ss.dbName,
-                                                          FriendlyName = ss.FriendlyName,
-                                                          FormdbName = ss.FormdbName,
-                                                          Description = ss.Description,
-                                                          DiscoveryMessage = ss.DiscoveryMessage,
-                                                          ManaCost = ss.ManaCost,
-                                                          HealthDamageAmount = ss.HealthDamageAmount,
-                                                          LearnedAtLocation = ss.LearnedAtLocation,
-                                                          LearnedAtRegion = ss.LearnedAtLocation,
-                                                          TFPointsAmount = ss.TFPointsAmount,
-                                                          ExclusiveToForm = ss.ExclusiveToForm,
-                                                          ExclusiveToItem = ss.ExclusiveToItem,
-                                                          GivesEffect = ss.GivesEffect,
-                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
+                                                          Id = skillSource.Id,
+                                                          FriendlyName = skillSource.FriendlyName,
+                                                          FormdbName = skillSource.FormdbName,
+                                                          Description = skillSource.Description,
+                                                          DiscoveryMessage = skillSource.DiscoveryMessage,
+                                                          ManaCost = skillSource.ManaCost,
+                                                          HealthDamageAmount = skillSource.HealthDamageAmount,
+                                                          LearnedAtLocation = skillSource.LearnedAtLocation,
+                                                          LearnedAtRegion = skillSource.LearnedAtLocation,
+                                                          TFPointsAmount = skillSource.TFPointsAmount,
+                                                          ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                          GivesEffect = skillSource.GivesEffect,
+                                                          IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -120,44 +120,44 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static SkillViewModel GetSkillViewModel(string skilldbName, int playerId)
+        public static SkillViewModel GetSkillViewModel(int skillSourceId, int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
-                                                  where ds.OwnerId == playerId && ds.Name == skilldbName
-                                                  join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
+            IEnumerable<SkillViewModel> output = from skill in skillRepo.Skills
+                                                  where skill.OwnerId == playerId && skill.SkillSourceId == skillSourceId
+                                                 join skillSource in skillRepo.DbStaticSkills on skill.SkillSourceId equals skillSource.Id
 
 
                                                   select new SkillViewModel
                                                   {
-                                                      MobilityType = ss.MobilityType,
+                                                      MobilityType = skillSource.MobilityType,
                                                       dbSkill = new Skill_VM
                                                       {
-                                                          Id = ds.Id,
-                                                          OwnerId = ds.OwnerId,
-                                                          Name = ds.Name,
-                                                          Charge = ds.Charge,
-                                                          Duration = ds.Duration,
-                                                          TurnStamp = ds.TurnStamp,
-                                                          IsArchived = ds.IsArchived,
+                                                          Id = skill.Id,
+                                                          OwnerId = skill.OwnerId,
+                                                          SkillSourceId = skill.SkillSourceId,
+                                                          Charge = skill.Charge,
+                                                          Duration = skill.Duration,
+                                                          TurnStamp = skill.TurnStamp,
+                                                          IsArchived = skill.IsArchived,
                                                       },
-                                                      Skill = new StaticSkill
+                                                      StaticSkill = new StaticSkill
                                                       {
-                                                          dbName = ss.dbName,
-                                                          FriendlyName = ss.FriendlyName,
-                                                          FormdbName = ss.FormdbName,
-                                                          Description = ss.Description,
-                                                          DiscoveryMessage = ss.DiscoveryMessage,
-                                                          ManaCost = ss.ManaCost,
-                                                          HealthDamageAmount = ss.HealthDamageAmount,
-                                                          LearnedAtLocation = ss.LearnedAtLocation,
-                                                          LearnedAtRegion = ss.LearnedAtLocation,
-                                                          TFPointsAmount = ss.TFPointsAmount,
-                                                          ExclusiveToForm = ss.ExclusiveToForm,
-                                                          ExclusiveToItem = ss.ExclusiveToItem,
-                                                          GivesEffect = ss.GivesEffect,
-                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
+                                                          Id = skillSource.Id,
+                                                          FriendlyName = skillSource.FriendlyName,
+                                                          FormdbName = skillSource.FormdbName,
+                                                          Description = skillSource.Description,
+                                                          DiscoveryMessage = skillSource.DiscoveryMessage,
+                                                          ManaCost = skillSource.ManaCost,
+                                                          HealthDamageAmount = skillSource.HealthDamageAmount,
+                                                          LearnedAtLocation = skillSource.LearnedAtLocation,
+                                                          LearnedAtRegion = skillSource.LearnedAtLocation,
+                                                          TFPointsAmount = skillSource.TFPointsAmount,
+                                                          ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                          GivesEffect = skillSource.GivesEffect,
+                                                          IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -165,20 +165,20 @@ namespace TT.Domain.Procedures
             return output.FirstOrDefault();
         }
 
-        public static SkillViewModel GetSkillViewModel_NotOwned(string skilldbName)
+        public static SkillViewModel GetSkillViewModel_NotOwned(int skillSourceId)
         {
 
             ISkillRepository skillRepo = new EFSkillRepository();
 
             var tempskill = new Skill_VM
             {
-                Name = skilldbName,
+                Id = skillSourceId
             };
 
-            var dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
+            var dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == skillSourceId);
             var tempstatic = new StaticSkill
             {
-                dbName = dbstatic.dbName,
+                Id = dbstatic.Id,
                 FriendlyName = dbstatic.FriendlyName,
                 GivesEffect = dbstatic.GivesEffect,
                 Description = dbstatic.Description,
@@ -197,25 +197,20 @@ namespace TT.Domain.Procedures
             var output = new SkillViewModel
             {
                 dbSkill = tempskill,
-                Skill = tempstatic,
+                StaticSkill = tempstatic,
                 
             };
 
             return output;
         }
 
-        public static string GiveSkillToPlayer(int playerId, string skilldbName)
+        public static string GiveSkillToPlayer(int playerId, int skillSourceId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            var skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
-            return GiveSkillToPlayer(playerId, skill);
-        }
+            IDbStaticSkillRepository skillSourceRepo = new EFDbStaticSkillRepository();
+            DbStaticSkill skill = skillSourceRepo.DbStaticSkills.SingleOrDefault(s => s.Id == skillSourceId);
 
-        public static string GiveSkillToPlayer(int playerId, DbStaticSkill skill)
-        {
-            ISkillRepository skillRepo = new EFSkillRepository();
-
-            var ghost = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == playerId && s.Name == skill.dbName);
+            var ghost = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == playerId && s.SkillSourceId == skill.Id);
             if (ghost == null) //player does not have this skill yet; add it
             {
                 DomainRegistry.Repository.Execute(new CreateSkill {ownerId = playerId, skillSourceId = skill.Id});
@@ -235,13 +230,13 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
             var output = new List<string>();
 
-            IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
-            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.dbName).ToList();
+            IEnumerable<int> playerSkillSourceIds = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.SkillSourceId.Value).ToList();
+            IEnumerable<int> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.Id).ToList();
 
 
             var eligibleSkills = from s in learnableSkills
-                                                 let sx = playerSkills
-                                     where !sx.Contains(s)
+                                                 let sx = playerSkillSourceIds
+                                 where !sx.Contains(s)
                                      select s;
 
             eligibleSkills = eligibleSkills.ToList();
@@ -265,7 +260,7 @@ namespace TT.Domain.Procedures
                     var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
                     var skillToGive = eligibleSkills.ElementAt(randIndex);
                     var staticSkill = SkillStatics.GetStaticSkill(skillToGive);
-                    GiveSkillToPlayer(player.Id, staticSkill);
+                    GiveSkillToPlayer(player.Id, staticSkill.Id);
                     eligibleSkills = eligibleSkills.Where(s => s != skillToGive);
                     output.Add(staticSkill.FriendlyName);
                 }
@@ -288,7 +283,7 @@ namespace TT.Domain.Procedures
         public static void TransferAllPlayerSkills(int oldPlayerId, int newPlayerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.Name != PvPStatics.Spell_Weaken).ToList();
+            IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.SkillSourceId != PvPStatics.Spell_WeakenId).ToList();
 
             foreach (var s in skillsToDelete)
             {
@@ -296,7 +291,7 @@ namespace TT.Domain.Procedures
                 skillRepo.SaveSkill(s);
             }
 
-            var weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == PvPStatics.Spell_Weaken);
+            var weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Id == PvPStatics.Spell_WeakenId);
             if (weakenSkill != null)
             {
                 skillRepo.DeleteSkill(weakenSkill.Id);
@@ -315,7 +310,7 @@ namespace TT.Domain.Procedures
 
             // delete all of the old form specific skills
             IEnumerable<SkillViewModel> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
-            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.Skill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
+            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.StaticSkill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
 
             foreach (var id in formSpecificSkillIds)
             {
@@ -328,7 +323,7 @@ namespace TT.Domain.Procedures
             {
 
                 // make sure player does not already have this skill due to some bug or othher
-                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.Name == skill.dbName);
+                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.SkillSourceId == skill.Id);
 
                 if (possibledbSkill == null)
                 {
@@ -359,7 +354,7 @@ namespace TT.Domain.Procedures
 
             foreach (var s in itemSpecificSkills)
             {
-                if (!s.Skill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
+                if (!s.StaticSkill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.StaticSkill.ExclusiveToItem))
                 {
                     itemSpecificSkillsIds.Add(s.dbSkill.Id);
                 }
@@ -382,7 +377,7 @@ namespace TT.Domain.Procedures
             {
 
                 // make sure player does not already have this skill due to some bug or othher
-                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.Name == skill.dbName);
+                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.SkillSourceId == skill.Id);
 
                 if (possibledbSkill == null)
                 {

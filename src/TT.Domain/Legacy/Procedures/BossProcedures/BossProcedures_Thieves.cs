@@ -20,7 +20,10 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string FemaleBossFirstName = "Sister Lujienne";
         private const string FemaleBossLastName = "Seekshadow";
         public const string FemaleBossFormDbName = "form_Master_Seekshadow_Thief_Judoo";
-        public const string GoldenTrophySpellDbName = "skill_Seekshadow's_Triumph_Judoo";
+
+        public const int GoldenTrophySpellSourceId = 609;
+
+        public const int StunSpellSourceId = 588;
 
         private const int MaleBossFormId = 278;
         private const int FemaleBossFormId = 279;
@@ -204,7 +207,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     playerRepo.SavePlayer(malethief);
                     playerRepo.SavePlayer(femalethief);
 
-                    AttackProcedures.Attack(femalethief, target, "skill_Seekshadow's_Silence_Judoo");
+                    AttackProcedures.Attack(femalethief, target, StunSpellSourceId);
                     AIProcedures.DealBossDamage(femalethief, target, false, 1);
 
                     var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
@@ -286,10 +289,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);
-                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_Weaken);
-                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_Weaken);
-                        AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
-                        AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
+                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_WeakenId);
+                        AttackProcedures.Attack(attackingThief, target, PvPStatics.Spell_WeakenId);
+                        AttackProcedures.Attack(attackingThief, target, GoldenTrophySpellSourceId);
+                        AttackProcedures.Attack(attackingThief, target, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
                         target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.Owner.Id && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
 
@@ -356,15 +359,15 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 if (malethief.Mobility == PvPStatics.MobilityFull)
                 {
-                    AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_Weaken);
+                    AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_WeakenId);
                     AIProcedures.DealBossDamage(malethief, attacker, true, 1);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.MaleRatBotId);
                 }
 
                 if (femalethief.Mobility == PvPStatics.MobilityFull)
                 {
-                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
-                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                    AttackProcedures.Attack(femalethief, attacker, GoldenTrophySpellSourceId);
+                    AttackProcedures.Attack(femalethief, attacker, GoldenTrophySpellSourceId);
                     AIProcedures.DealBossDamage(femalethief, attacker, true, 2);
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FemaleRatBotId);
                 }
@@ -375,7 +378,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // random chance of moving to a new random location
                 if (roll < .166)
                 {
-                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
+                    AttackProcedures.Attack(femalethief, attacker, StunSpellSourceId);
                     AIProcedures.DealBossDamage(femalethief, attacker, false, 1);
                     var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.</b>";
                     LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage);
@@ -395,8 +398,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_Weaken);
-                        AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                        AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_WeakenId);
+                        AttackProcedures.Attack(malethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
                 }
@@ -404,8 +407,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(femalethief, attacker, PvPStatics.Spell_Weaken);
-                        AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                        AttackProcedures.Attack(femalethief, attacker, PvPStatics.Spell_WeakenId);
+                        AttackProcedures.Attack(femalethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(femalethief, attacker, false, 2);
                     }
                 }

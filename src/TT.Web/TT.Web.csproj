@@ -294,6 +294,7 @@
     <Content Include="js\web.config" />
     <Content Include="cake\web.config" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\itemDetailModal.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
@@ -373,6 +374,7 @@
     <Content Include="Views\Messages\MarkAsAbusivePreview.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_58.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_59.cshtml" />
+    <Content Include="Views\PvP\partial\partial_ItemDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

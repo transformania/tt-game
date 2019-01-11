@@ -107,6 +107,7 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
         public static readonly string boxesResize_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/boxesResize.min.js") ? Url("boxesResize.min.js") : Url("boxesResize.js");
+        public static readonly string itemDetailModal_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/itemDetailModal.min.js") ? Url("itemDetailModal.min.js") : Url("itemDetailModal.js");
         public static readonly string jquery_2_1_0_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.0.intellisense.min.js") ? Url("jquery-2.1.0.intellisense.min.js") : Url("jquery-2.1.0.intellisense.js");
         public static readonly string jquery_2_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.0.min.js") ? Url("jquery-2.1.0.min.js") : Url("jquery-2.1.0.js");
         public static readonly string jquery_2_1_0_min_js = Url("jquery-2.1.0.min.js");
@@ -268,6 +269,7 @@ namespace Links
             {
                 public static readonly string _references_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/_references.js"); 
                 public static readonly string boxesResize_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/boxesResize.js"); 
+                public static readonly string itemDetailModal_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/itemDetailModal.js"); 
                 public static readonly string jquery_2_1_0_intellisense_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.intellisense.js"); 
                 public static readonly string jquery_2_1_0_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.js"); 
                 public static readonly string jquery_2_1_0_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-2.1.0.min.js"); 

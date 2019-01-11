@@ -546,6 +546,7 @@ namespace TT.Web.Controllers
                     public readonly string movementTable = "movementTable";
                     public readonly string OldLeaderboardLinks = "OldLeaderboardLinks";
                     public readonly string partial_AllBuffsTable = "partial_AllBuffsTable";
+                    public readonly string partial_ItemDetail = "partial_ItemDetail";
                     public readonly string partial_perkBonus = "partial_perkBonus";
                     public readonly string partial_recentActivity = "partial_recentActivity";
                     public readonly string RoundStatus = "RoundStatus";
@@ -556,6 +557,7 @@ namespace TT.Web.Controllers
                 public readonly string movementTable = "~/Views/PvP/partial/movementTable.cshtml";
                 public readonly string OldLeaderboardLinks = "~/Views/PvP/partial/OldLeaderboardLinks.cshtml";
                 public readonly string partial_AllBuffsTable = "~/Views/PvP/partial/partial_AllBuffsTable.cshtml";
+                public readonly string partial_ItemDetail = "~/Views/PvP/partial/partial_ItemDetail.cshtml";
                 public readonly string partial_perkBonus = "~/Views/PvP/partial/partial_perkBonus.cshtml";
                 public readonly string partial_recentActivity = "~/Views/PvP/partial/partial_recentActivity.cshtml";
                 public readonly string RoundStatus = "~/Views/PvP/partial/RoundStatus.cshtml";

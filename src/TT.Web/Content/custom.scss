@@ -1504,3 +1504,30 @@ strong {
   padding: 1px;
   background-color: palevioletred;
 }
+
+.itemName {
+    font-size: 20px;
+}
+
+.WasPerson {
+    font-size: 15px;
+    color: chocolate;
+    font-style: italic;
+}
+
+.avatarBars {
+    display: -moz-box !important;
+}
+
+.price {
+    margin-bottom: 15px;
+    color: darkblue;
+    font-weight: 700;
+}
+
+
+#fullDetails {
+    height: 200px;
+    resize: vertical;
+    overflow-y: scroll;
+}

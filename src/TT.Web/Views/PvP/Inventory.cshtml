@@ -9,6 +9,11 @@
     <li><a href="@Url.Action(MVC.Item.UnembedRunesList())">Unembed Runes</a></li>
 }
 
+@section head
+{
+    <script src="/Scripts/itemDetailModal.js"></script>
+}
+
 @{
 
     var HealthWidth = Convert.ToInt32(Model.Health / Model.MaxHealth * 100);
@@ -79,39 +84,3 @@
         </div>
     </div>
 </div>
-
-
-
-<script>
-
-    function detail_success() {
-        //$('#itemDetailModal').modal('show');
-    }
-
-    function detail_failure() {
-        $("#fullDetails").html("Failed to load details");
-    }
-
-    function detail_wait() {
-        $("#fullDetails").html("Loading details...");
-    }
-
-</script>
-
-
-
-<style>
-    .itemName {
-        font-size: 20px;
-    }
-
-    .WasPerson {
-        font-size: 15px;
-        color: chocolate;
-        font-style: italic;
-    }
-
-    .avatarBars {
-        display: -moz-box !important;
-    }
-</style>

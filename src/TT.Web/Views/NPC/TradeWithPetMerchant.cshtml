@@ -3,6 +3,11 @@
     ViewBag.Title = "Buy Pet";
 }
 
+@section head
+{
+    <script src="/Scripts/itemDetailModal.js"></script>
+}
+
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
@@ -19,7 +24,7 @@
         }
     }
 
-  <h3>You currently have @Model.Money <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+    <h3>You currently have @Model.Money <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
 
     <span>Jump to page:</span>
 
@@ -35,7 +40,7 @@
 
     <div id="fullDetails">
 
-    </div> 
+    </div>
     <div class="row boxContainer">
         @{
             foreach (var i in Model.Pets.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
@@ -45,35 +50,3 @@
         }
     </div>
 </div>
-
-
-<script>
-
-    function detail_success() {
-        //$('#itemDetailModal').modal('show');
-    }
-
-    function detail_failure() {
-        $("#fullDetails").html("Failed to load details");
-    }
-
-    function detail_wait() {
-        $("#fullDetails").html("Loading details...");
-    }
-
-</script>
-
-<style>
-    .price {
-        margin-bottom: 15px;
-        color: darkblue;
-        font-weight: 700;
-    }
-
-    
-        #fullDetails{
-            height: 200px;
-            resize:vertical;
-            overflow-y: scroll;
-        }
-</style>

@@ -1,6 +1,12 @@
-﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+﻿@using TT.Web.CustomHtmlHelpers
+@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
 @{
     ViewBag.Title = "Sell Pet";
+}
+
+@section head
+{
+    <script src="/Scripts/itemDetailModal.js"></script>
 }
 
 @section menu
@@ -10,7 +16,8 @@
 }
 
 <div class="containerInner">
-    
+
+    <h1>Sell to Wüffie</h1>
 
     @{
         if (Model.Any() && Model.First().IsPermanent)
@@ -27,35 +34,30 @@
         }
     }
 
-
     <hr />
 
     @{
-        foreach (var item in Model.OrderByDescending(i => i.Level))
+
+        foreach (var i in Model.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
         {
-            <h3>
-                @{
-            if (item.Level > 0)
-            {
-                <span>Level @item.Level</span>
-            }
-                }
+            <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
 
-                @item.ItemSource.FriendlyName
-                @if (item.FormerPlayer != null)
-                {
-                    <span> (@item.FormerPlayer.FullName)</span>
-                }
-            </h3>
-            <p>
-                You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-                <a href="@Url.Action(MVC.NPC.SellPet(item.Id))">Sell</a>
-            </p>
+                @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, i)
 
-            <hr />
+                <div style="text-align: center;">
+                    <p>@i.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, i)</p>
+
+                    @HtmlHelpers.PrintPvPIcon(i)
+                    <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(i, "sell") Arpeyjis</span>
+
+                    <a href="@Url.Action(MVC.NPC.SellPet(i.Id))" class="attackLink">Sell</a>
+
+                </div>
+
+            </div>
         }
     }
 
+    <div id="fullDetails"></div>
+
 </div>
-
-

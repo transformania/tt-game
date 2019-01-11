@@ -1,0 +1,16 @@
+﻿
+@model TT.Domain.Items.DTOs.ItemDetail
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.Statics
+
+<div class="portrait" style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true));">
+    @if (Model.Level > 0 && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
+    {
+        <span class="icon icon-level"><b>@Model.Level</b></span>
+    }
+
+    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+
+    @HtmlHelpers.PrintItemTypeIcon(Model.ItemSource.ItemType)
+    @HtmlHelpers.PrintSouledIcon(Model)
+</div>

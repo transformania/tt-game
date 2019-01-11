@@ -1,40 +1,55 @@
-﻿@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
+﻿@using TT.Web.CustomHtmlHelpers
+@model IEnumerable<TT.Domain.Items.DTOs.ItemDetail>
 
 @{
     ViewBag.Title = "Sell Item";
 }
 
+@section head
+{
+    <script src="/Scripts/itemDetailModal.js"></script>
+}
+
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Back to Purchase List</a></li>
+    <li><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Purchase Something</a></li>
 }
-<p>You can sell your items to Lindella here.</p>
 
-<hr />
+<div class="containerInner">
 
-@{
-    foreach (var item in Model.OrderByDescending(i => i.Level))
-    {
-        <h3>
-            @{
-        if (item.Level > 0)
+    <h1>Sell to Lindella</h1>
+
+    <p>Overencumbered?  Tired of those annoying panties that keep whining about how wet you get them?  Need some Arpeyjis, fast?  You can sell most items to Lindella who will in turn make sure they find a new owner.  Be aware she won't accept any transformed mages who aren't currently locked into their new inanimate bodies, and she won't offer you the same number of Arpeyjis as she would if you were buying it off of her instead.</p>
+
+    <br />
+
+    <p><b><a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))">Purchase Something</a></b></p>
+
+    <hr />
+
+    @{
+
+        foreach (var i in Model.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
         {
-            <span>Level @item.Level</span>
+            <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
+
+                @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, i)
+
+                <div style="text-align: center;">
+                    <p>@i.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, i)</p>
+
+                    @HtmlHelpers.PrintPvPIcon(i)
+                    <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(i, "sell") Arpeyjis</span>
+
+                    <a href="@Url.Action(MVC.NPC.Sell(i.Id))" class="attackLink">Sell</a>
+
+                </div>
+
+            </div>
         }
-            }
-
-            @item.ItemSource.FriendlyName
-            @if (item.FormerPlayer != null)
-            {
-                <span> (@item.FormerPlayer.FullName)</span>
-            }
-        </h3>
-        <p>
-            You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-            <a href="@Url.Action(MVC.NPC.Sell(item.Id))">Sell</a>
-        </p>
-
-        <hr />
     }
-}
+
+    <div id="fullDetails"></div>
+
+</div>

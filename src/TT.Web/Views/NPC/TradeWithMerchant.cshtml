@@ -4,19 +4,31 @@
     ViewBag.Title = "Buy Item";
 }
 
+@section head
+{
+    <script src="/Scripts/itemDetailModal.js"></script>
+}
+
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.NPC.SellList())">Sell Something</a></li>
 }
 
 <div class="containerInner">
-    <p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies.  Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough.  No refunds!</p>
 
-    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+    <h1>Purchase from Lindella</h1>
 
-    <p><a href="@Url.Action(MVC.NPC.SellList())" class="attackLink">Sell Something</a></p>
+    <p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies. Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough. No refunds!</p>
 
-    <p style="text-align: center;"><br />
+    <p>You currently have <b>@ViewBag.MyMoney</b> <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</p>
+
+    <br />
+
+    <p><b><a href="@Url.Action(MVC.NPC.SellList())">Sell Something</a></b></p>
+
+    <p style="text-align: center;">
+        <br />
         Show by type:<br />
         <table style="width: 100%; text-align: center;">
             <tr style="width: 25%;">
@@ -56,35 +68,4 @@
             }
         }
     </div>
-    </div>
-
-<script>
-
-    function detail_success() {
-        //$('#itemDetailModal').modal('show');
-    }
-
-    function detail_failure() {
-        $("#fullDetails").html("Failed to load details");
-    }
-
-    function detail_wait() {
-        $("#fullDetails").html("Loading details...");
-    }
-
-</script>
-
-<style>
-    .price {
-        margin-bottom: 15px;
-        color: darkblue;
-        font-weight: 700;
-    }
-
-    
-        #fullDetails{
-            height: 200px;
-            resize:vertical;
-            overflow-y: scroll;
-        }
-</style>
+</div>

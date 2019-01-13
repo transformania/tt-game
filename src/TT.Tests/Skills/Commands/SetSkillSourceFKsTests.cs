@@ -36,12 +36,10 @@ namespace TT.Tests.Skills.Commands
 
             form = new FormSourceBuilder()
                 .With(f => f.Id, 3)
-                .With(f => f.dbName, "bobform")
                 .BuildAndSave();
 
             exclusiveToForm = new FormSourceBuilder()
                 .With(f => f.Id, 7)
-                .With(f => f.dbName, "exclusiveForm")
                 .BuildAndSave();
 
             exlusiveToItem = new ItemSourceBuilder()
@@ -63,8 +61,8 @@ namespace TT.Tests.Skills.Commands
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = 55,
-                FormSource = form.dbName, 
-                ExclusiveToFormSource = exclusiveToForm.dbName,
+                FormSourceId = form.Id, 
+                ExclusiveToFormSourceId = exclusiveToForm.Id,
                 ExclusiveToItemSource = exlusiveToItem.DbName,
                 GivesEffectSource = givesEffect.dbName
             });
@@ -72,10 +70,8 @@ namespace TT.Tests.Skills.Commands
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
 
             skillSource.FormSource.Id.Should().Be(3);
-            skillSource.FormSource.dbName.Should().Be("bobform");
 
             skillSource.ExclusiveToFormSource.Id.Should().Be(7);
-            skillSource.ExclusiveToFormSource.dbName.Should().Be("exclusiveForm");
 
             skillSource.ExclusiveToItemSource.Id.Should().Be(100);
             skillSource.ExclusiveToItemSource.DbName.Should().Be("exclusiveToItem");
@@ -92,8 +88,8 @@ namespace TT.Tests.Skills.Commands
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = 55,
-                FormSource = null,
-                ExclusiveToFormSource = null,
+                FormSourceId = null,
+                ExclusiveToFormSourceId = null,
                 ExclusiveToItemSource = null,
                 GivesEffectSource = null
             });
@@ -109,20 +105,20 @@ namespace TT.Tests.Skills.Commands
         [Test]
         public void should_throw_error_if_form_source_submitted_but_not_found()
         {
-            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSource = "fake"};
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSourceId = 99999 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found.  Does it need to be published first?");
+            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource Source with id '99999' could not be found.  Does it need to be published first?");
         }
 
         [Test]
         public void should_throw_error_if_exclusive_to_form_source_submitted_but_not_found()
         {
 
-            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToFormSource = "fake"};
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToFormSourceId = 99999};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToFormSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToFormSourceId with id '99999' could not be found");
         }
 
         [Test]

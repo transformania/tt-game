@@ -2,7 +2,7 @@
 {
     public class Form
     {
-        public string dbName { get; set; }
+        public string dbName { get; set; } // Don't remove yet, mind control needs this
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public string TFEnergyType { get; set; }

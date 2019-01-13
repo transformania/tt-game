@@ -187,12 +187,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult StaticsExist()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StaticsExist);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult DMRoll()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DMRoll);
@@ -249,7 +243,6 @@ namespace TT.Web.Controllers
             public readonly string MarkAsLive = ("MarkAsLive").ToLowerInvariant();
             public readonly string MarkEffectAsLive = ("MarkEffectAsLive").ToLowerInvariant();
             public readonly string SetSpellAsLive = ("SetSpellAsLive").ToLowerInvariant();
-            public readonly string StaticsExist = ("StaticsExist").ToLowerInvariant();
             public readonly string MyDMRolls = ("MyDMRolls").ToLowerInvariant();
             public readonly string DMRoll = ("DMRoll").ToLowerInvariant();
             public readonly string SendDMRoll = ("SendDMRoll").ToLowerInvariant();
@@ -432,14 +425,6 @@ namespace TT.Web.Controllers
         public ActionParamsClass_SetSpellAsLive SetSpellAsLiveParams { get { return s_params_SetSpellAsLive; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SetSpellAsLive
-        {
-            public readonly string id = ("id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_StaticsExist s_params_StaticsExist = new ActionParamsClass_StaticsExist();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_StaticsExist StaticsExistParams { get { return s_params_StaticsExist; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_StaticsExist
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
@@ -804,18 +789,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetSpellAsLive);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             SetSpellAsLiveOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void StaticsExistOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult StaticsExist(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StaticsExist);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            StaticsExistOverride(callInfo, id);
             return callInfo;
         }
 

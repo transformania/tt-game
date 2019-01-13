@@ -19,7 +19,6 @@ namespace TT.Domain.Players.Commands
         public string LastName { get; set; }
         public string UserId { get; set; }
         public string Location { get; set; }
-        public string Form { get; set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public decimal Health { get; set; }
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }
@@ -136,8 +135,8 @@ namespace TT.Domain.Players.Commands
             if (string.IsNullOrWhiteSpace(Location))
                 throw new DomainException("Location is required");
 
-            if (string.IsNullOrWhiteSpace(Form))
-                throw new DomainException("Form is required");
+            if (FormSourceId <= 0)
+                throw new DomainException("FormSourceId is required");
 
             if (Health <= 0)
                 throw new DomainException("Willpower must be greater than 0");

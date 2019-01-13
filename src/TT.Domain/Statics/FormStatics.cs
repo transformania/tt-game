@@ -9,10 +9,10 @@ namespace TT.Domain.Statics
     public static class FormStatics
     {
 
-        public static DbStaticForm GetForm(string dbFormName)
+        public static DbStaticForm GetForm(int formSourceId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.DbStaticForms.FirstOrDefault(s => s.dbName == dbFormName);
+            return playerRepo.DbStaticForms.FirstOrDefault(s => s.Id == formSourceId);
         }
 
         public static IEnumerable<DbStaticForm> GetAllAnimateForms()

@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TT.Domain;
-using TT.Domain.Identity.Entities;
 using TT.Domain.Players.Entities;
 
 namespace TT.IntegrationTests.BasicTests

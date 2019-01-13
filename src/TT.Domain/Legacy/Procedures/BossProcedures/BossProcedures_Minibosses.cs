@@ -172,7 +172,6 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = data.FormName,
                     FormSourceId = data.FormSourceId,
                     Money = 2000,
                     Mobility = PvPStatics.MobilityFull,

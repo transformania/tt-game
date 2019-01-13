@@ -129,9 +129,6 @@ namespace TT.Web.Controllers
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
                 IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
 
-                //var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-                var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-
                 var itemdbname = "";
 
                 if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
@@ -144,7 +141,7 @@ namespace TT.Web.Controllers
                 }
 
                 var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
-                var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+                var staticForm = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == contribution.FormSourceId);
                 var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
 
                 if (staticSkill == null)
@@ -153,16 +150,16 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found:  " + staticSkill.FriendlyName + "</p>";
+                    ViewBag.StaticSkillExists += $"<p class='good'>Static skill found: {staticSkill.FriendlyName} </p>";
                 }
 
-                if (sform == null)
+                if (staticForm == null)
                 {
-                    ViewBag.StaticFormExists = "<p class='bad'>No static form found:  " + formdbname + "</p>";
+                    ViewBag.StaticFormExists = "<p class='bad'>No static form found.</p>";
                 }
                 else
                 {
-                    ViewBag.StaticFormExists = "<p class='good'>Static form found:  " + formdbname + "</p>";
+                    ViewBag.StaticFormExists = $"<p class='good'>Static form found: {staticForm.FriendlyName}</p>";
                 }
 
                 if (sitem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
@@ -545,7 +542,7 @@ namespace TT.Web.Controllers
             SaveMe.Form_TFMessage_100_Percent_3rd_F = input.Form_TFMessage_100_Percent_3rd_F;
             SaveMe.Form_TFMessage_Completed_3rd_F = input.Form_TFMessage_Completed_3rd_F;
 
-            SaveMe.CursedTF_FormdbName = input.CursedTF_FormdbName;
+            SaveMe.CursedTF_FormSourceId = input.CursedTF_FormSourceId;
             SaveMe.CursedTF_Fail = input.CursedTF_Fail;
             SaveMe.CursedTF_Fail_M = input.CursedTF_Fail_M;
             SaveMe.CursedTF_Fail_F = input.CursedTF_Fail_F;
@@ -561,29 +558,6 @@ namespace TT.Web.Controllers
 
             SaveMe.Item_UsageMessage_Item = input.Item_UsageMessage_Item;
             SaveMe.Item_UsageMessage_Player = input.Item_UsageMessage_Player;
-
-            //SaveMe.HealthBonusPercent = input.HealthBonusPercent;
-            //SaveMe.ManaBonusPercent = input.ManaBonusPercent;
-            //SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
-            //SaveMe.HealthRecoveryPerUpdate = input.HealthRecoveryPerUpdate;
-            //SaveMe.ManaRecoveryPerUpdate = input.ManaRecoveryPerUpdate;
-            //SaveMe.SneakPercent = input.SneakPercent;
-            //SaveMe.EvasionPercent = input.EvasionPercent;
-            //SaveMe.EvasionNegationPercent = input.EvasionNegationPercent;
-            //SaveMe.MeditationExtraMana = input.MeditationExtraMana;
-            //SaveMe.CleanseExtraHealth = input.CleanseExtraHealth;
-            //SaveMe.MoveActionPointDiscount = input.MoveActionPointDiscount;
-            //SaveMe.SpellExtraTFEnergyPercent = input.SpellExtraTFEnergyPercent;
-            //SaveMe.SpellExtraHealthDamagePercent = input.SpellExtraHealthDamagePercent;
-            //SaveMe.CleanseExtraTFEnergyRemovalPercent = input.CleanseExtraTFEnergyRemovalPercent;
-            //SaveMe.SpellMisfireChanceReduction = input.SpellMisfireChanceReduction;
-            //SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
-            //SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
-            //SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
-
-
-
-
 
             SaveMe.SubmitterName = input.SubmitterName;
             SaveMe.SubmitterUrl = input.SubmitterUrl;
@@ -778,7 +752,7 @@ namespace TT.Web.Controllers
             saveme.ReadyForReview = input.ReadyForReview;
 
             saveme.Skill_FriendlyName = input.Skill_FriendlyName;
-            saveme.Skill_UniqueToForm = input.Skill_UniqueToForm;
+            saveme.Skill_UniqueToFormSourceId = input.Skill_UniqueToFormSourceId;
             saveme.Skill_UniqueToItem = input.Skill_UniqueToItem;
             saveme.Skill_UniqueToLocation = input.Skill_UniqueToLocation;
             saveme.Skill_Description = input.Skill_Description;
@@ -845,18 +819,16 @@ namespace TT.Web.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            //var skilldbname = contribution.GetSkillDbName();
-            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-
             var spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
+            var form = formRepo.DbStaticForms.FirstOrDefault(s => s.Id == contribution.FormSourceId);
 
             if (spell == null)
             {
                 spell = new DbStaticSkill();
-                //spell.dbName = skilldbname;
-                spell.FormdbName = formdbname;
+                spell.FormSourceId = form.Id;
                 message += "<p class='bad'>Made new spell.</p>";
             }
             else
@@ -954,9 +926,9 @@ namespace TT.Web.Controllers
                 {
                     SkillSourceId = spell.Id,
                     ExclusiveToItemSource = spell.ExclusiveToItem,
-                    ExclusiveToFormSource = spell.ExclusiveToForm,
+                    ExclusiveToFormSourceId = spell.ExclusiveToFormSourceId,
                     GivesEffectSource = spell.GivesEffect,
-                    FormSource = spell.FormdbName
+                    FormSourceId = spell.FormSourceId
                 });
             }
             catch (DomainException e)
@@ -984,9 +956,6 @@ namespace TT.Web.Controllers
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             ITFMessageRepository tfRepo = new EFTFMessageRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
-
-            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-
             var itemdbname = "";
 
             if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
@@ -998,11 +967,11 @@ namespace TT.Web.Controllers
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
 
-            var form = formRepo.DbStaticForms.FirstOrDefault(s => s.dbName == formdbname);
+            var form = formRepo.DbStaticForms.FirstOrDefault(s => s.Id == contribution.FormSourceId);
             if (form == null)
             {
                 form = new DbStaticForm();
-                form.dbName = formdbname;
+                formRepo.SaveDbStaticForm(form); // need to get the id of this new form
                 message += "<p class='bad'>Wrote NEW form to database.</p>";
             }
             else
@@ -1010,12 +979,12 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing form from database.</p>";
             }
 
-            var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == formdbname);
+            var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == form.Id);
 
             if (tf == null)
             {
                 tf = new TFMessage();
-                tf.FormDbName = formdbname;
+                tf.FormSourceId = form.Id;
                 message += "<p class='bad'>Wrote NEW tf message object to database.</p>";
             }
             else
@@ -1115,14 +1084,15 @@ namespace TT.Web.Controllers
             tf.TFMessage_100_Percent_3rd_F = contribution.Form_TFMessage_100_Percent_3rd_F;
             tf.TFMessage_Completed_3rd_F = contribution.Form_TFMessage_Completed_3rd_F;
 
+            tf.FormSourceId = form.Id;
+
             tfRepo.SaveTFMessage(tf);
             formRepo.SaveDbStaticForm(form);
+            contribution.FormSourceId = form.Id;
             ViewBag.Message = message;
 
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
-
-            DomainRegistry.Repository.Execute(new SetTFMessageFKs { TFMessageId = tf.Id, FormSource = formdbname });
 
             if (!String.IsNullOrEmpty(form.BecomesItemDbName))
                 DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceName = form.BecomesItemDbName });
@@ -1229,25 +1199,16 @@ namespace TT.Web.Controllers
             item.Luck = contribution.Luck;
             item.Chaos_Order = contribution.Chaos_Order;
 
-            item.CurseTFFormdbName = contribution.CursedTF_FormdbName;
+            item.CurseTFFormSourceId = contribution.CursedTF_FormSourceId;
 
-            //           public decimal InstantHealthRestore { get; set; }
-            //public decimal InstantManaRestore { get; set; }
-            //public decimal ReuseableHealthRestore { get; set; }
-            //public decimal ReuseableManaRestore { get; set; }
-
-            //item.InstantHealthRestore = contribution.Item_
-
-            // write the form to
-            // string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            if (item.CurseTFFormdbName != null && item.CurseTFFormdbName.Length > 0)
+            if (item.CurseTFFormSourceId != null)
             {
                 ITFMessageRepository tfRepo = new EFTFMessageRepository();
-                var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == item.CurseTFFormdbName);
+                var tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == item.CurseTFFormSourceId);
 
                 if (tf == null)
                 {
-                    message += "<p class='bad'>Unable to locate TF message " + item.CurseTFFormdbName + ".  Not writing curse text.  Make sure to publish the form first if needed.</p>";
+                    message += $"<p class='bad'>Unable to locate TF message id '{item.CurseTFFormSourceId}'.  Not writing curse text.  Make sure to publish the form first if needed.</p>";
                 }
                 else
                 {
@@ -1407,7 +1368,7 @@ namespace TT.Web.Controllers
             staticSkill.ManaCost = contribution.Skill_ManaCost;
             staticSkill.MobilityType = "curse";
 
-            staticSkill.ExclusiveToForm = contribution.Skill_UniqueToForm;
+            staticSkill.ExclusiveToFormSourceId = contribution.Skill_UniqueToFormSourceId;
             staticSkill.ExclusiveToItem = contribution.Skill_UniqueToItem;
 
             skillRepo.SaveDbStaticSkill(staticSkill);
@@ -1422,9 +1383,9 @@ namespace TT.Web.Controllers
             {
                 SkillSourceId = staticSkill.Id,
                 ExclusiveToItemSource = staticSkill.ExclusiveToItem,
-                ExclusiveToFormSource = staticSkill.ExclusiveToForm,
+                ExclusiveToFormSourceId = staticSkill.ExclusiveToFormSourceId,
                 GivesEffectSource = staticSkill.GivesEffect,
-                FormSource = staticSkill.FormdbName
+                FormSourceId = staticSkill.Id
             });
 
             ViewBag.Message = message;
@@ -1510,72 +1471,6 @@ namespace TT.Web.Controllers
             sskill.IsLive = "live";
             skillRepo.SaveDbStaticSkill(sskill);
             ViewBag.Message = "Set to live.";
-
-            return View(MVC.Contribution.Views.Publish);
-
-        }
-
-        public virtual ActionResult StaticsExist(int id)
-        {
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
-            {
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            IContributionRepository contributionRepo = new EFContributionRepository();
-            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
-
-            //var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-
-            var itemdbname = "";
-
-            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
-            {
-                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
-            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
-            {
-                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
-
-            var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
-            var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
-            var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
-
-            var message = "";
-
-            if (staticSkill == null)
-            {
-                message += "<p class='bad'>No static skill found.</p>";
-            }
-            else
-            {
-                message += $"<p class='good'>Static skill found: {staticSkill.FriendlyName}</p>";
-            }
-
-            if (sform == null)
-            {
-                message += "<p class='bad'>No static form found:  " + formdbname + "</p>";
-            }
-            else
-            {
-                message += "<p class='good'>Static form found.</p>";
-            }
-
-            if (sitem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
-            {
-                message += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
-            }
-            else if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
-            {
-                message += "<p class='good'>Static item/pet found.</p>";
-            }
-
-            ViewBag.Message = message;
 
             return View(MVC.Contribution.Views.Publish);
 

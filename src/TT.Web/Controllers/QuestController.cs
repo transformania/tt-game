@@ -311,7 +311,7 @@ namespace TT.Web.Controllers
                 }
                 else if (!restore)
                 {
-                    var newform = FormStatics.GetForm(me.Form);
+                    var newform = FormStatics.GetForm(me.FormSourceId);
                     ItemProcedures.PlayerBecomesItem(me, newform, null);
                 }
             }

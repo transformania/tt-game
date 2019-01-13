@@ -57,7 +57,7 @@
         public decimal ReuseableHealthRestore { get; set; }
         public decimal ReuseableManaRestore { get; set; }
 
-        public string CurseTFFormdbName { get; set; }
+        public int? CurseTFFormSourceId { get; set; }
 
     }
 }

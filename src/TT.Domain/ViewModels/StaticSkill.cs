@@ -5,7 +5,7 @@
         //this class stores all of the skills as available to everyone.  It has absolutely nothing to do with what an individual player has.
         public int Id { get; set; }
         public string FriendlyName { get; set; }
-        public string FormdbName { get; set; }
+        public int? FormSourceId { get; set; }
         public string Description { get; set; }
         public decimal ManaCost { get; set; }
         public decimal TFPointsAmount { get; set; }
@@ -18,7 +18,7 @@
 
         public string GivesEffect { get; set; }
 
-        public string ExclusiveToForm { get; set; }
+        public int? ExclusiveToFormSourceId { get; set; }
         public string ExclusiveToItem { get; set; }
     }
 }

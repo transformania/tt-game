@@ -288,7 +288,7 @@ namespace TT.Domain.Procedures
                 DomainRegistry.Repository.Execute(new ChangeForm
                 {
                     PlayerId = dbPlayer.Id,
-                    FormName = dbPlayer.OriginalForm
+                    FormSourceId = dbPlayer.OriginalFormSourceId
                 });
 
                 dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
@@ -384,7 +384,7 @@ namespace TT.Domain.Procedures
             double chanceOfSuccess = (gameTurn - xp.LastActionTurnstamp);
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
-            var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItem.ItemSource.CurseTFFormdbName);
+            var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == playerItem.ItemSource.CurseTFFormSourceId);
 
             var ownerMessage = "";
             var playerMessage = "";
@@ -395,14 +395,14 @@ namespace TT.Domain.Procedures
             if (roll < chanceOfSuccess)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var newForm = FormStatics.GetForm(playerItem.ItemSource.CurseTFFormdbName);
+                var newForm = FormStatics.GetForm(playerItem.ItemSource.CurseTFFormSourceId.Value);
 
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
                         PlayerId = playerItem.Owner.Id,
-                        FormName = playerItem.ItemSource.CurseTFFormdbName
+                        FormSourceId = playerItem.ItemSource.CurseTFFormSourceId.Value
                     });
 
                     var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == playerItem.Owner.Id);

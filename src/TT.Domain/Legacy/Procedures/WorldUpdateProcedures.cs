@@ -477,7 +477,7 @@ namespace TT.Domain.Procedures
                         }
 
 
-                        IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
+                        IEnumerable<Player> demons = playerRepo.Players.Where(i => i.FormSourceId == PvPStatics.DungeonDemonFormSourceId);
                         var dungeonDemonCount = demons.Count();
 
                         var randLevel = new Random(Guid.NewGuid().GetHashCode());
@@ -511,7 +511,6 @@ namespace TT.Domain.Procedures
                                 FirstName = "Spirit of ",
                                 LastName = demonlastName,
                                 Mobility = PvPStatics.MobilityFull,
-                                Form = PvPStatics.DungeonDemon,
                                 FormSourceId = AIStatics.DungeonDemonFormId,
                                 Gender = PvPStatics.GenderFemale,
                                 GameMode = 2,
@@ -812,6 +811,7 @@ namespace TT.Domain.Procedures
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand(
                         $"UPDATE [Stats].[dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
                 }

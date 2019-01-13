@@ -17,7 +17,7 @@
         public double FindWeight { get; set; }
         public string GivesEffect { get; set; }
         public bool IsUnique { get; set; }
-        public string CurseTFFormdbName { get; set; }
+        public int? CurseTFFormSourceId { get; set; }
 
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }

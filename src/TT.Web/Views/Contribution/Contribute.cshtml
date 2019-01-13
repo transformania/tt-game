@@ -533,8 +533,8 @@
                 </div>
 
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.CursedTF_FormdbName) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
-                    @Html.TextBoxFor(m => m.CursedTF_FormdbName, new { })
+                    @Html.LabelFor(m => m.CursedTF_FormSourceId) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                    @Html.TextBoxFor(m => m.CursedTF_FormSourceId, new { })
                     <div id="curseFormModal"></div>
                 </div>
 
@@ -701,7 +701,6 @@
             {
                 <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br />
                 <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br />
-                <a href="@Url.Action(MVC.Contribution.StaticsExist(Model.Id))">Check if statics exist</a><br />
             }
 
 }

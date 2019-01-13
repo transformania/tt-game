@@ -228,7 +228,7 @@ namespace TT.Domain.Models
          public string Item_Bonuses { get; set; }
 
         [Display(Name = "(Optional) Target animate form of this item/pet's transformation curse")]
-        public string CursedTF_FormdbName { get; set; }
+        public int? CursedTF_FormSourceId { get; set; }
 
         [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Gender-neutral.")]
         public string CursedTF_Fail { get; set; }
@@ -323,11 +323,7 @@ namespace TT.Domain.Models
         public float Chaos_Order { get; set; }
 
         public int? SkillSourceId { get; set; }
-
-        public string GetSkillDbName()
-        {
-            return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
-        }
+        public int? FormSourceId { get; set; }
 
         /// <summary>
         /// Returns the name of the folder after Images/PvP to look inside to find the appropriate graphic

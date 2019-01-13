@@ -121,7 +121,6 @@ namespace TT.Domain.Procedures
 
                 var idAndFormName = GetPsychoFormFromLevelAndSex(cmd.Level, cmd.Gender);
                 cmd.FormSourceId = idAndFormName.Item1;
-                cmd.Form = idAndFormName.Item2;
 
                 // assert this name isn't already taken
                 var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == cmd.FirstName && p.LastName == cmd.LastName);
@@ -301,7 +300,7 @@ namespace TT.Domain.Procedures
 
                     var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                     var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s =>
-                        s.dbSkill.SkillSourceId != PvPStatics.Spell_WeakenId && s.StaticSkill.ExclusiveToForm == null &&
+                        s.dbSkill.SkillSourceId != PvPStatics.Spell_WeakenId && s.StaticSkill.ExclusiveToFormSourceId == null &&
                         s.StaticSkill.ExclusiveToItem == null);
 
                     // the bot has an attack target, so go chase it
@@ -313,7 +312,7 @@ namespace TT.Domain.Procedures
                         if (PlayerProcedures.PlayerIsOffline(myTarget) ||
                             myTarget.Mobility != PvPStatics.MobilityFull ||
                             skill == null ||
-                            myTarget.Form == skill.StaticSkill.FormdbName ||
+                            myTarget.FormSourceId == skill.StaticSkill.FormSourceId ||
                             myTarget.IsInDungeon() ||
                             myTarget.InDuel > 0 ||
                             myTarget.InQuest > 0)
@@ -732,7 +731,7 @@ namespace TT.Domain.Procedures
 
         private static bool CanMove(WorldDetail world, Player bot)
         {
-            if (world.Boss_MotorcycleGang == AIStatics.ACTIVE && bot.Form == BossProcedures_MotorcycleGang.BikerFollowerForm)
+            if (world.Boss_MotorcycleGang == AIStatics.ACTIVE && bot.FormSourceId == BossProcedures_MotorcycleGang.BikerFollowerFormSourceId)
             {
                 return false;
             }
@@ -749,8 +748,8 @@ namespace TT.Domain.Procedures
             }
 
             if (world.Boss_MotorcycleGang == AIStatics.ACTIVE &&
-                bot.Form == BossProcedures_MotorcycleGang.BikerFollowerForm &&
-                victim.Form == BossProcedures_MotorcycleGang.BikerFollowerForm &&
+                bot.FormSourceId == BossProcedures_MotorcycleGang.BikerFollowerFormSourceId &&
+                victim.FormSourceId == BossProcedures_MotorcycleGang.BikerFollowerFormSourceId &&
                 victim.BotId == AIStatics.PsychopathBotId
                 )
             {

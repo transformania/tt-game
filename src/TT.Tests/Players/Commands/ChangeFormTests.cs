@@ -25,13 +25,11 @@ namespace TT.Tests.Players.Commands
                 .With(n => n.Id, 3)
                 .With(p => p.FriendlyName, "werewolf")
                 .With(p => p.Gender, PvPStatics.GenderFemale)
-                .With(p => p.dbName, "dbWerewolf")
                 .BuildAndSave();
 
             new PlayerBuilder()
                 .With(p => p.Id, 23)
                 .With(p => p.FormSource, form)
-                .With(p => p.Form, "catgirl")
                 .With(p => p.Gender, PvPStatics.GenderMale)
                 .BuildAndSave();
 
@@ -43,8 +41,7 @@ namespace TT.Tests.Players.Commands
                p.Id == 23 &&
                p.Gender == PvPStatics.GenderFemale &&
                p.FormSource.Id == 3 &&
-               p.FormSource.FriendlyName == "werewolf" &&
-               p.Form == "dbWerewolf")
+               p.FormSource.FriendlyName == "werewolf")
            .Should().Be(1);
 
         }

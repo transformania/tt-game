@@ -7,21 +7,21 @@ $(document).ready(function () {
     }).done(function (response) {
         startingForms = shuffle(response);
 
-        $("#FormName").val(startingForms[0].dbName);
+        $("#FormSourceId").val(startingForms[0].Id);
 
         var selectionsBox = $('#selections');
 
         // load form dropdown
         for (var i = 0; i < startingForms.length; i++) {
             var form = startingForms[i];
-            selectionsBox.append("<img src='../Images/PvP/portraits/Thumbnails/100/" + form.PortraitUrl + "' class='selectable' onclick='setForm(\"" + form.dbName + "\")'></img>");
+            selectionsBox.append("<img src='../Images/PvP/portraits/Thumbnails/100/" + form.PortraitUrl + "' class='selectable' onclick='setForm(\"" + form.Id + "\")'></img>");
         }
 
 
         if ($("#oldFirstName").val() !== "") {
             $("#FirstName").val($("#oldFirstName").val());
             $("#LastName").val($("#oldLastName").val());
-            $("#FormName").val($("#oldForm").val());
+            $("#FormSourceId").val($("#oldFormSourceId").val());
         } else {
             randomize();
         }
@@ -45,7 +45,7 @@ $(document).ready(function () {
         renderPortrait();
     });
 
-    $("#FormName").change(function () {
+    $("#FormSourceId").change(function () {
         renderPortrait();
     });
 
@@ -54,17 +54,17 @@ $(document).ready(function () {
     $("#MigrateLetters").prop('checked', true);
 });
 
-function setForm(formName) {
-    $("#FormName").val(formName);
+function setForm(formSourceId) {
+    $("#FormSourceId").val(formSourceId);
     renderPortrait();
 }
 
 
 function renderPortrait() {
-    var x = $("#FormName").val();
+    var x = $("#FormSourceId").val();
 
     var form = startingForms.find(function (element) {
-        return element.dbName === x;
+        return element.Id == x;
     });
 
     $("#portrait").attr("src", "../Images/PvP/portraits/" + form.PortraitUrl);
@@ -85,9 +85,13 @@ function shuffle(array) {
 function randomize() {
 
     var gender;
-    setForm(startingForms[Math.floor(Math.random() * startingForms.length)].dbName);
+    setForm(startingForms[Math.floor(Math.random() * startingForms.length)].Id);
 
-    if ($("#FormName").val().indexOf("woman_") !== -1) {
+    var form = startingForms.find(function (element) {
+        return element.Id == $("#FormSourceId").val();
+    });
+
+    if (form.FriendlyName == "Regular Girl") {
         gender = "female";
     } else {
         gender = "male";

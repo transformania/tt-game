@@ -57,12 +57,12 @@ namespace TT.Tests.Players.Queries
             bimboMouse.BotId = AIStatics.MouseBimboBotId;
             bimboMouse.FirstName = "Adrianna";
             bimboMouse.LastName = "mouse";
-            bimboMouse.Form = BossProcedures_Sisters.BimboBossForm;
+            bimboMouse.FormSourceId = BossProcedures_Sisters.BimboBossFormSourceId;
 
             nerdMouse.BotId = AIStatics.MouseNerdBotId;
             nerdMouse.FirstName = "Candice";
             nerdMouse.LastName = "mouse";
-            nerdMouse.Form = BossProcedures_Sisters.NerdBossForm;
+            nerdMouse.FormSourceId = BossProcedures_Sisters.NerdBossFormSourceId;
 
             dungeonDemon.BotId = AIStatics.DemonBotId;
 
@@ -251,13 +251,13 @@ namespace TT.Tests.Players.Queries
         }
 
         [Test]
-        [TestCase(BossProcedures_FaeBoss.GreatFaeForm)]
-        [TestCase(BossProcedures_FaeBoss.DarkFaeForm)]
-        [TestCase(BossProcedures_FaeBoss.EnchantedTreeForm)]
-        public void should_return_emptystring_for_correct_spell_on_narcissa_with_invalid_form(string form)
+        [TestCase(BossProcedures_FaeBoss.GreatFaeFormSourceId)]
+        [TestCase(BossProcedures_FaeBoss.DarkFaeFormSourceId)]
+        [TestCase(BossProcedures_FaeBoss.EnchantedTreeFormSourceId)]
+        public void should_return_emptystring_for_correct_spell_on_narcissa_with_invalid_form(int formSourceId)
         {
             var player = new Player();
-            player.Form = form;
+            player.FormSourceId = formSourceId;
             var cmd = new CanAttackNpcWithSpell { target = narcissa, spellSourceId = BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId, attacker = player };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be("You try to cast upon Narcissa, but the fae's mastery over your current form is overwhelming and you find that you cannot!");
@@ -279,7 +279,7 @@ namespace TT.Tests.Players.Queries
         public void should_return_emptystring_for_correct_spell_and_form_on_bimbo_mouse()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.NerdSpellForm;
+            player.FormSourceId = BossProcedures_Sisters.NerdSpellFormSourceId;
             var cmd = new CanAttackNpcWithSpell { target = bimboMouse, attacker = player, spellSourceId = BossProcedures_Sisters.NerdSpellSourceId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be(String.Empty);
@@ -289,7 +289,7 @@ namespace TT.Tests.Players.Queries
         public void should_return_emptystring_for_correct_spell_and_form_on_nerd_mouse()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.BimboSpellForm;
+            player.FormSourceId = BossProcedures_Sisters.BimboSpellFormSourceId;
             var cmd = new CanAttackNpcWithSpell { target = nerdMouse, attacker = player, spellSourceId = BossProcedures_Sisters.BimboSpellSourceId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be(String.Empty);
@@ -317,7 +317,7 @@ namespace TT.Tests.Players.Queries
         public void should_return_message_for_incorrect_spell_and_correct_form_on_bimbo_mouse()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.NerdSpellForm;
+            player.FormSourceId = BossProcedures_Sisters.NerdSpellFormSourceId;
             var cmd = new CanAttackNpcWithSpell { target = bimboMouse, attacker = player, spellSourceId = PvPStatics.Spell_WeakenId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be("This spell won't work against Candice.");
@@ -327,7 +327,7 @@ namespace TT.Tests.Players.Queries
         public void should_return_message_for_incorrect_spell_and_correct_form_on_nerd_mouse()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.BimboSpellForm;
+            player.FormSourceId = BossProcedures_Sisters.BimboSpellFormSourceId;
             var cmd = new CanAttackNpcWithSpell { target = nerdMouse, attacker = player, spellSourceId = PvPStatics.Spell_WeakenId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be("This spell won't work against Adrianna.");
@@ -337,8 +337,8 @@ namespace TT.Tests.Players.Queries
         public void should_return_message_when_bimbo_mouse_transformed()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.NerdSpellForm;
-            bimboMouse.Form = "something";
+            player.FormSourceId = BossProcedures_Sisters.NerdSpellFormSourceId;
+            bimboMouse.FormSourceId = -123;
             var cmd = new CanAttackNpcWithSpell { target = bimboMouse, attacker = player, spellSourceId = BossProcedures_Sisters.NerdSpellSourceId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be("One of the Brisby sisters have already been transformed; there's no need to attack them any further.");
@@ -348,8 +348,8 @@ namespace TT.Tests.Players.Queries
         public void should_return_message_when_nerd_mouse_transformed()
         {
             var player = new Player();
-            player.Form = BossProcedures_Sisters.BimboSpellForm;
-            nerdMouse.Form = "something";
+            player.FormSourceId = BossProcedures_Sisters.BimboSpellFormSourceId;
+            nerdMouse.FormSourceId = -123;
             var cmd = new CanAttackNpcWithSpell { target = nerdMouse, attacker = player, spellSourceId = BossProcedures_Sisters.BimboSpellSourceId };
             var result = DomainRegistry.Repository.FindSingle(cmd);
             result.Should().Be("One of the Brisby sisters have already been transformed; there's no need to attack them any further.");

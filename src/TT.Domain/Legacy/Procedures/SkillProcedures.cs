@@ -51,7 +51,7 @@ namespace TT.Domain.Procedures
                                                      {
                                                          Id = skillSource.Id,
                                                          FriendlyName = skillSource.FriendlyName,
-                                                         FormdbName = skillSource.FormdbName,
+                                                         FormSourceId = skillSource.FormSourceId,
                                                          Description = skillSource.Description,
                                                          DiscoveryMessage = skillSource.DiscoveryMessage,
                                                          ManaCost = skillSource.ManaCost,
@@ -59,7 +59,7 @@ namespace TT.Domain.Procedures
                                                          LearnedAtLocation = skillSource.LearnedAtLocation,
                                                          LearnedAtRegion = skillSource.LearnedAtLocation,
                                                          TFPointsAmount = skillSource.TFPointsAmount,
-                                                         ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                         ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
                                                          GivesEffect = skillSource.GivesEffect,
                                                          IsPlayerLearnable = skillSource.IsPlayerLearnable,
@@ -100,7 +100,7 @@ namespace TT.Domain.Procedures
                                                       {
                                                           Id = skillSource.Id,
                                                           FriendlyName = skillSource.FriendlyName,
-                                                          FormdbName = skillSource.FormdbName,
+                                                          FormSourceId = skillSource.FormSourceId,
                                                           Description = skillSource.Description,
                                                           DiscoveryMessage = skillSource.DiscoveryMessage,
                                                           ManaCost = skillSource.ManaCost,
@@ -108,7 +108,7 @@ namespace TT.Domain.Procedures
                                                           LearnedAtLocation = skillSource.LearnedAtLocation,
                                                           LearnedAtRegion = skillSource.LearnedAtLocation,
                                                           TFPointsAmount = skillSource.TFPointsAmount,
-                                                          ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                          ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                           ExclusiveToItem = skillSource.ExclusiveToItem,
                                                           GivesEffect = skillSource.GivesEffect,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
@@ -146,7 +146,7 @@ namespace TT.Domain.Procedures
                                                       {
                                                           Id = skillSource.Id,
                                                           FriendlyName = skillSource.FriendlyName,
-                                                          FormdbName = skillSource.FormdbName,
+                                                          FormSourceId = skillSource.FormSourceId,
                                                           Description = skillSource.Description,
                                                           DiscoveryMessage = skillSource.DiscoveryMessage,
                                                           ManaCost = skillSource.ManaCost,
@@ -154,7 +154,7 @@ namespace TT.Domain.Procedures
                                                           LearnedAtLocation = skillSource.LearnedAtLocation,
                                                           LearnedAtRegion = skillSource.LearnedAtLocation,
                                                           TFPointsAmount = skillSource.TFPointsAmount,
-                                                          ExclusiveToForm = skillSource.ExclusiveToForm,
+                                                          ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                           ExclusiveToItem = skillSource.ExclusiveToItem,
                                                           GivesEffect = skillSource.GivesEffect,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
@@ -182,12 +182,12 @@ namespace TT.Domain.Procedures
                 FriendlyName = dbstatic.FriendlyName,
                 GivesEffect = dbstatic.GivesEffect,
                 Description = dbstatic.Description,
-                FormdbName = dbstatic.FormdbName,
+                FormSourceId = dbstatic.FormSourceId,
                 ManaCost = dbstatic.ManaCost,
                 HealthDamageAmount = dbstatic.HealthDamageAmount,
                 TFPointsAmount = dbstatic.TFPointsAmount,
                 DiscoveryMessage = dbstatic.DiscoveryMessage,
-                ExclusiveToForm = dbstatic.ExclusiveToForm,
+                ExclusiveToFormSourceId = dbstatic.ExclusiveToFormSourceId,
                 ExclusiveToItem = dbstatic.ExclusiveToItem,
                 LearnedAtLocation = dbstatic.LearnedAtLocation,
                 LearnedAtRegion = dbstatic.LearnedAtRegion,
@@ -298,7 +298,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static void UpdateFormSpecificSkillsToPlayer(Player player, string oldFormDbName, string newFormDbName)
+        public static void UpdateFormSpecificSkillsToPlayer(Player player, int newFormSourceId)
         {
             // don't care about bots
             if (player.BotId < AIStatics.ActivePlayerBotId)
@@ -310,7 +310,7 @@ namespace TT.Domain.Procedures
 
             // delete all of the old form specific skills
             IEnumerable<SkillViewModel> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
-            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.StaticSkill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
+            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.StaticSkill.ExclusiveToFormSourceId != newFormSourceId).Select(s => s.dbSkill.Id).ToList();
 
             foreach (var id in formSpecificSkillIds)
             {
@@ -318,7 +318,7 @@ namespace TT.Domain.Procedures
             }
 
             // now give the player the new form specific skills
-            var formSpecificSkillsToGive = SkillStatics.GetFormSpecificSkills(newFormDbName).ToList();
+            var formSpecificSkillsToGive = SkillStatics.GetFormSpecificSkills(newFormSourceId).ToList();
             foreach (var skill in formSpecificSkillsToGive)
             {
 

@@ -6,9 +6,9 @@ namespace TT.Domain.Abstract
     public interface ITFEnergyRepository
     {
 
-        IQueryable<TFEnergy> TFEnergies { get; }
+        IQueryable<Models.TFEnergy> TFEnergies { get; }
 
-        void SaveTFEnergy(TFEnergy TFEnergy);
+        void SaveTFEnergy(Models.TFEnergy TFEnergy);
 
         void DeleteTFEnergy(int TFEnergyId);
 

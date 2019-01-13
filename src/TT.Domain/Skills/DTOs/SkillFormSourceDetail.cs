@@ -13,7 +13,6 @@ namespace TT.Domain.Skills.DTOs
     public class FormSourceNameDetail
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public EffectSourceDetail GivesEffectSource { get; set; }
@@ -24,7 +23,6 @@ namespace TT.Domain.Skills.DTOs
     public class LearnableSkillsDetail
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string MobilityType { get; set; }
         public FormNameDescriptionDetail FormSource { get; set; }

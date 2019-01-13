@@ -3,12 +3,14 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
+using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Tests.Builders.Identity;
 using TT.Domain.Statics;
 using TT.Tests.Builders.AI;
+using TT.Tests.Builders.Form;
 
 namespace TT.Tests.Players.Commands
 {
@@ -17,6 +19,7 @@ namespace TT.Tests.Players.Commands
 
         CreatePlayer cmd;
         User user;
+        private FormSource formSource;
 
         [SetUp]
         public void Init()
@@ -27,15 +30,20 @@ namespace TT.Tests.Players.Commands
                     .BuildAndSave())
                 .BuildAndSave();
 
+            formSource = new FormSourceBuilder()
+                .With(f => f.Id, 100)
+                .With(f => f.FriendlyName, "Some Form")
+                .BuildAndSave();
+
             cmd = new CreatePlayer();
             cmd.FirstName = "Bob";
             cmd.LastName = "McBobbinson";
             cmd.UserId = user.Id;
-            cmd.Form = "werewolf";
             cmd.Health = 100;
             cmd.MaxHealth = 100;
             cmd.Location = "now here is nowhere";
             cmd.Gender = PvPStatics.GenderMale;
+            cmd.FormSourceId = formSource.Id;
         }
 
 

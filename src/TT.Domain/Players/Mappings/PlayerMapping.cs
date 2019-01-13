@@ -25,6 +25,10 @@ namespace TT.Domain.Players.Mappings
                 .WithMany().Map(p => p.MapKey("FormSourceId"));
 
             modelBuilder.Entity<Player>()
+                .HasRequired(p => p.OriginalFormSource)
+                .WithMany().Map(p => p.MapKey("OriginalFormSourceId"));
+
+            modelBuilder.Entity<Player>()
                .HasOptional(i => i.ItemXP)
                .WithOptionalPrincipal(p => p.Owner).Map(m => m.MapKey("OwnerId"));
 

@@ -146,19 +146,19 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not already in the form of the spell
-            if (me.Form == skill.StaticSkill.FormdbName)
+            if (me.FormSourceId == skill.StaticSkill.FormSourceId)
             {
                 TempData["Error"] = "You are already in the target form of that spell, so doing this would do you no good.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormdbName);
+            PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormSourceId.Value);
             ItemProcedures.DeleteItemOfName(me, itemToUse.dbItem.dbName);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
-            var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
+            var form = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1);

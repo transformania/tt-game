@@ -15,19 +15,18 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public const string FirstName = "Narcissa";
         public const string LastName = "the Exiled";
-        public const string Form = "form_Corrupted_Lunar_Fae_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
         public const string SpawnLocation = "fairygrove_greathall";
 
         public const int GreatFaeSpellSourceId = 565;
-        public const string GreatFaeForm = "form_Great_Fairy_Vivien_Gemai";
+        public const int GreatFaeFormSourceId = 257;
 
         public const int DarkFaeSpellSourceId = 879;
 
 
-        public const string DarkFaeForm = "form_Dark_Fae_Larissa_Fay";
+        public const int DarkFaeFormSourceId = 531;
 
         public const int EnchantedTreeSpellSourceId = 344;
-        public const string EnchantedTreeForm = "form_Enchanted_Tree_Sherry_Gray";
+        public const int EnchantedTreeFormSourceId = 50;
 
         /// <summary>
         /// A list of all the animate spells Narcissa can cast
@@ -86,7 +85,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = Form,
                     FormSourceId = FaeBossFormId,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
@@ -119,7 +117,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static Tuple<bool, string> SpellIsValid(int spellSourceId, Player caster)
         {
 
-            if (caster.Form == GreatFaeForm || caster.Form == DarkFaeForm || caster.Form == EnchantedTreeForm)
+            if (caster.FormSourceId == GreatFaeFormSourceId || caster.FormSourceId == DarkFaeFormSourceId || caster.FormSourceId == EnchantedTreeFormSourceId)
             {
                 return new Tuple<bool, string>(false, "You try to cast upon " + FirstName + ", " + "but the fae's mastery over your current form is overwhelming and you find that you cannot!");
             }
@@ -335,7 +333,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var cutoff = DateTime.UtcNow.AddMinutes(-30);
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
             p.LastActionTimestamp > cutoff &&
-            p.Form != GreatFaeForm &&
+            p.FormSourceId != GreatFaeFormSourceId &&
             !p.dbLocationName.Contains("dungeon_") &&
             p.InDuel <= 0 &&
             p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);

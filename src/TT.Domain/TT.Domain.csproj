@@ -49,6 +49,8 @@
     <Compile Include="Covenants\Mappings\CovenantMappings.cs" />
     <Compile Include="CreationPolices\CreationPolicy.cs" />
     <Compile Include="CreationPolices\CreationPolicyAttribute.cs" />
+    <Compile Include="TFEnergy\Commands\SelfRestoreToBase.cs" />
+    <Compile Include="TFEnergy\Entities\SelfRestoreEnergy.cs" />
     <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Identity\Commands\AllowChaosChanges.cs" />
     <Compile Include="Identity\Commands\HandleReport.cs" />
@@ -150,7 +152,6 @@
     <Compile Include="Chat\Commands\CreateChatRoom.cs" />
     <Compile Include="Effects\Commands\CreateEffect.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFK.cs" />
-    <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
     <Compile Include="Identity\CommandHandlers\ResetSecurityStampHandler.cs" />
     <Compile Include="Identity\CommandRequests\ResetSecurityStamp.cs" />
     <Compile Include="Legacy\Procedures\BossProcedures\BossProcedures_Minibosses.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Statics\LocationStatics.cs" />
     <Compile Include="Statics\PortraitHelper.cs" />
     <Compile Include="Statics\RuneStatics.cs" />
+    <Compile Include="TFEnergy\Mappings\SelfRestoreMapping.cs" />
     <Compile Include="Validation\RuleSets.cs" />
     <Compile Include="ValidatorSelectors\IntersectRulesetValidatorSelector.cs" />
     <Compile Include="Validation\NullValidator.cs" />
@@ -224,7 +226,7 @@
     <Compile Include="ClassifiedAds\Commands\RefreshRPClassifiedAd.cs" />
     <Compile Include="ClassifiedAds\Commands\UpdateRPClassifiedAd.cs" />
     <Compile Include="Skills\Commands\SetSkillSourceFKs.cs" />
-    <Compile Include="Combat\Commands\CreateTFEnergy.cs" />
+    <Compile Include="TFEnergy\Commands\CreateTFEnergy.cs" />
     <Compile Include="Legacy\Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Legacy\Concrete\EFAchievementRepository.cs" />
     <Compile Include="Legacy\Concrete\EFAIDirectiveRepository.cs" />
@@ -297,7 +299,7 @@
     <Compile Include="Players\DTOs\PlayerBusDetail.cs" />
     <Compile Include="Players\DTOs\PlayerUserStrikesDetail.cs" />
     <Compile Include="Skills\DTOs\SkillFormSourceDetail.cs" />
-    <Compile Include="Combat\DTOs\TFEnergyDetail.cs" />
+    <Compile Include="TFEnergy\DTOs\TFEnergyDetail.cs" />
     <Compile Include="Chat\Entities\ChatLog.cs" />
     <Compile Include="Forms\Entities\TFMessage.cs" />
     <Compile Include="World\DTOs\ItemLeaderboardEntryDetail.cs" />
@@ -313,7 +315,7 @@
     <Compile Include="Identity\Entities\Strike.cs" />
     <Compile Include="Items\Entities\InanimateXP.cs" />
     <Compile Include="Entities\MindControl\VictimMindControl.cs" />
-    <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
+    <Compile Include="TFEnergy\Entities\TFEnergy.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
     <Compile Include="DomainQuerySingle.cs" />
@@ -398,7 +400,7 @@
     <Compile Include="Skills\Mappings\SkillMappings.cs" />
     <Compile Include="Skills\Mappings\SkillSourceMappings.cs" />
     <Compile Include="ClassifiedAds\Mappings\RPClassifiedAdMappings.cs" />
-    <Compile Include="Combat\Mappings\TFEnergyMapping.cs" />
+    <Compile Include="TFEnergy\Mappings\TFEnergyMapping.cs" />
     <Compile Include="Legacy\Models\AchevementBadge.cs" />
     <Compile Include="Legacy\Models\Achievement.cs" />
     <Compile Include="Legacy\Models\AIDirective.cs" />
@@ -638,6 +640,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Combat\Commands\" />
     <Folder Include="Effects\Queries\" />
     <Folder Include="Forms\Queries\" />
   </ItemGroup>

@@ -541,7 +541,7 @@ namespace TT.Web.Controllers
             var index = 0;
             foreach (var c in customForms)
             {
-                if (me.OriginalForm == c.CustomForm.dbName)
+                if (me.OriginalFormSourceId == c.CustomForm.Id)
                 {
                     if (index + 1 < customForms.Count())
                     {
@@ -553,15 +553,15 @@ namespace TT.Web.Controllers
             }
 
             // player is already in their original form so change them instantly.  Otherwise they'll have to find a way to be restored themselves
-            if (me.Form == me.OriginalForm)
+            if (me.FormSourceId == me.OriginalFormSourceId)
             {
-                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
-                me.OriginalForm = newForm.CustomForm.dbName;
+                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.Id);
+                me.OriginalFormSourceId = newForm.CustomForm.Id;
                 PlayerProcedures.InstantRestoreToBase(me);
             }
             else
             {
-                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
+                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.Id);
             }
 
 
@@ -878,7 +878,7 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (me.Form == me.OriginalForm)
+            if (me.FormSourceId == me.OriginalFormSourceId)
             {
                 TempData["Error"] = "You are already in your original form.";
                 return RedirectToAction(MVC.PvP.Play());

@@ -17,13 +17,13 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string ValentineFirstName = "Lord 'Teaserael'";
         private const string ValentineLastName = "Valentine";
 
-        public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
+        public const int ValentineFormSourceId = 207;
+
         public const int SwordSpellSourceId = 501;
 
         public const int BloodyCurseSpellSourceId = 727;
         private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
 
-        public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
         public const int ValentinesPresenceSpellSourceId = 839;
         private const string ValentinesPresenceEffect = "effect_Valentine’s_Presence_Lilith";
 
@@ -36,21 +36,19 @@ namespace TT.Domain.Procedures.BossProcedures
 
         // NIGHT -- male
         public const int NightVampireMaleSpellSourceId = 813;
-        public const string NightVampireMaleForm = "form_Child_of_the_Night_Leia_Valentine";
+        public const int NightVampireMaleFormSourceId = 463;
 
         // NIGHT -- female
         public const int NightVampireFemaleSpellSourceId = 814;
-        public const string NightVampireFemaleForm = "form_Disciple_of_the_Night_Leia_Valentine";
+        public const int NightVampireFemaleFormSourceId = 464;
 
         // DAY -- male
         public const int DayVampireMaleSpellSourceId = 815;
-        public const string DayVampireMaleForm = "form_Vampire_Fighter_Leia_Valentine";
+        public const int DayVampireMaleFormSourceId = 465;
 
         // DAY -- female
         public const int DayVampireFemaleSpellSourceId = 816;
-        public const string DayVampireFemaleForm = "form_Vampire_Duelist_Leia_Valentine";
-
-        private const int ValentineFormId = 207;
+        public const int DayVampireFemaleFormSourceId = 466;
 
         public static void SpawnValentine()
         {
@@ -69,8 +67,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = ValentineFormDbName,
-                    FormSourceId = ValentineFormId,
+                    FormSourceId = ValentineFormSourceId,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 10,
@@ -257,7 +254,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             if (stance == BossProcedures_Valentine.DayStance)
             {
-                if (player.Form != DayVampireFemaleForm && player.Form != DayVampireMaleForm)
+                if (player.FormSourceId != DayVampireFemaleFormSourceId && player.FormSourceId != DayVampireMaleFormSourceId)
                 {
                     if (player.Gender == PvPStatics.GenderMale)
                     {
@@ -271,7 +268,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
             else if (stance == BossProcedures_Valentine.NightStance)
             {
-                if (player.Form != NightVampireFemaleForm && player.Form != NightVampireMaleForm)
+                if (player.FormSourceId != NightVampireFemaleFormSourceId && player.FormSourceId != NightVampireMaleFormSourceId)
                 {
                     if (player.Gender == PvPStatics.GenderMale)
                     {
@@ -359,14 +356,14 @@ namespace TT.Domain.Procedures.BossProcedures
             }
         }
 
-        public static bool IsAttackableInForm(Player attacker, Player valentine)
+        public static bool IsAttackableInForm(Player attacker)
         {
             var stance = GetStance();
 
             // Day stance:  Only day vampires can attack Valentine
             if (stance == DayStance)
             {
-                if (attacker.Form == DayVampireMaleForm || attacker.Form == DayVampireFemaleForm)
+                if (attacker.FormSourceId == DayVampireMaleFormSourceId || attacker.FormSourceId == DayVampireFemaleFormSourceId)
                 {
                     return true;
                 }
@@ -379,7 +376,7 @@ namespace TT.Domain.Procedures.BossProcedures
             // Night stance:  Only night vampires can attack Valentine
             else
             {
-                if (attacker.Form == NightVampireMaleForm || attacker.Form == NightVampireFemaleForm)
+                if (attacker.FormSourceId == NightVampireMaleFormSourceId || attacker.FormSourceId == NightVampireFemaleFormSourceId)
                 {
                     return true;
                 }

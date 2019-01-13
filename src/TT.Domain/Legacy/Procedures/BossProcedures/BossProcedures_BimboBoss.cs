@@ -17,16 +17,14 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private const string BossFirstName = "Lady";
         private const string BossLastName = "Lovebringer, PHD";
-        public const string BossFormDbName = "form_Bimbonic_Plague_Mother_Judoo";
         public const string KissEffectdbName = "curse_bimboboss_kiss";
         public const int KissSkillSourceId = 528;
         public const string CureEffectdbName = "blessing_bimboboss_cure";
-        //public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
         public const int RegularTFSpellSourceId = 532;
-        private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
+        private const int RegularBimboFormSourceId = 232;
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
         public const int CureItemSourceId = 143;
-        private const int BimboBossFormId = 233;
+        public const int BimboBossFormSourceId = 233;
 
         public static void SpawnBimboBoss()
         {
@@ -44,8 +42,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = BossFormDbName,
-                    FormSourceId = BimboBossFormId,
+                    FormSourceId = BimboBossFormSourceId,
                     Money = 2500,
                     Level = 15,
                     BotId = AIStatics.BimboBossBotId,
@@ -101,7 +98,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // otherwise run the regular trasformation
-            else if (human.Form != RegularBimboFormDbName)
+            else if (human.FormSourceId != RegularBimboFormSourceId)
             {
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 var attackCount = (int)Math.Floor(rand.NextDouble() * 2 + 1);
@@ -178,7 +175,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
 
                 // otherwise run the regular trasformation
-                else if (p.Form != RegularBimboFormDbName)
+                else if (p.FormSourceId != RegularBimboFormSourceId)
                 {
                     AttackProcedures.Attack(bimboBoss, p, RegularTFSpellSourceId);
                     AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
@@ -203,7 +200,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var roll = rand.NextDouble();
 
                 // random chance of spontaneously transforming
-                if (infectee.Form != RegularBimboFormDbName && !PlayerProcedures.PlayerIsOffline(infectee))
+                if (infectee.FormSourceId != RegularBimboFormSourceId && !PlayerProcedures.PlayerIsOffline(infectee))
                 {
                     if (roll < .16 && infectee.InDuel <= 0 && infectee.InQuest <= 0)
                     {
@@ -211,7 +208,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         DomainRegistry.Repository.Execute(new ChangeForm
                         {
                             PlayerId = infectee.Id,
-                            FormName = RegularBimboFormDbName
+                            FormSourceId = RegularBimboFormSourceId
                         });
 
                         DomainRegistry.Repository.Execute(new ReadjustMaxes
@@ -231,7 +228,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 // spread the kiss so long as the player is not offline
-                if (infectee.Form == RegularBimboFormDbName && !PlayerProcedures.PlayerIsOffline(infectee))
+                if (infectee.FormSourceId == RegularBimboFormSourceId && !PlayerProcedures.PlayerIsOffline(infectee))
                 {
                     // back up the last action timestamp since we don't want these attacks to count against their offline timer
                     var lastActionBackup = infectee.LastActionTimestamp;
@@ -299,7 +296,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var cutoff = DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && 
                 p.LastActionTimestamp > cutoff && 
-                p.Form != RegularBimboFormDbName && 
+                p.FormSourceId != RegularBimboFormSourceId && 
                 !p.dbLocationName.Contains("dungeon_") &&
                 p.InDuel <= 0 &&
                 p.InQuest <= 0)
@@ -335,7 +332,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var message = "Your body suddenly returns to normal as the bimbonic virus in your body suddenly goes into submission, the psychic link between you and your plague mother separated for good.  Due to the bravery of your fellow mages the Bimbocalypse has been thwarted... for now.";
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var infected = playerRepo.Players.Where(p => p.Form == RegularBimboFormDbName).ToList();
+            var infected = playerRepo.Players.Where(p => p.FormSourceId == RegularBimboFormSourceId).ToList();
             
             foreach (var p in infected)
             {
@@ -379,7 +376,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var cutoff = DateTime.UtcNow.AddHours(-1);
             var playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull && 
             m.Id != attacker.Id && 
-            m.Form != RegularBimboFormDbName && 
+            m.FormSourceId != RegularBimboFormSourceId && 
             m.BotId >= AIStatics.PsychopathBotId && 
             m.LastActionTimestamp > cutoff && 
             m.BotId != AIStatics.BimboBossBotId && 

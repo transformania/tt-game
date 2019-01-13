@@ -267,7 +267,7 @@ namespace TT.Web.Controllers
             ProofreadCopy.ReadyForReview = OldCopy.ReadyForReview;
 
             ProofreadCopy.Skill_FriendlyName = OldCopy.Skill_FriendlyName;
-            ProofreadCopy.Skill_UniqueToForm = OldCopy.Skill_UniqueToForm;
+            ProofreadCopy.Skill_UniqueToFormSourceId = OldCopy.Skill_UniqueToFormSourceId;
             ProofreadCopy.Skill_UniqueToItem = OldCopy.Skill_UniqueToItem;
             ProofreadCopy.Skill_UniqueToLocation = OldCopy.Skill_UniqueToLocation;
             ProofreadCopy.Skill_Description = OldCopy.Skill_Description;
@@ -440,6 +440,8 @@ namespace TT.Web.Controllers
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
+
+            AIProcedures.RunPsychopathActions(DomainRegistry.Repository.FindSingle(new GetWorld()));
 
             return RedirectToAction(MVC.PvPAdmin.Index());
         }
@@ -702,7 +704,7 @@ namespace TT.Web.Controllers
             ProofreadCopy.Form_TFMessage_100_Percent_3rd_F = OldCopy.Form_TFMessage_100_Percent_3rd_F;
             ProofreadCopy.Form_TFMessage_Completed_3rd_F = OldCopy.Form_TFMessage_Completed_3rd_F;
 
-            ProofreadCopy.CursedTF_FormdbName = OldCopy.CursedTF_FormdbName;
+            ProofreadCopy.CursedTF_FormSourceId = OldCopy.CursedTF_FormSourceId;
             ProofreadCopy.CursedTF_Fail = OldCopy.CursedTF_Fail;
             ProofreadCopy.CursedTF_Fail_M = OldCopy.CursedTF_Fail_M;
             ProofreadCopy.CursedTF_Fail_F = OldCopy.CursedTF_Fail_F;
@@ -816,7 +818,7 @@ namespace TT.Web.Controllers
                 var absolute = bbox.GetPointTotal();
                 var addme = new BalancePageViewModel
                 {
-                    dbName = form.dbName,
+                    Id = form.Id,
                     FriendlyName = form.FriendlyName,
                     Balance = balance,
                     AbsolutePoints = absolute,
@@ -842,7 +844,7 @@ namespace TT.Web.Controllers
                 var absolute = bbox.GetPointTotal();
                 var addme = new BalancePageViewModel
                 {
-                    dbName = item.dbName,
+                    Id = item.Id,
                     FriendlyName = item.FriendlyName,
                     Balance = balance,
                     AbsolutePoints = absolute
@@ -867,7 +869,7 @@ namespace TT.Web.Controllers
                 var absolute = bbox.GetPointTotal();
                 var addme = new BalancePageViewModel
                 {
-                    dbName = item.dbName,
+                    Id = item.Id,
                     FriendlyName = item.FriendlyName,
                     Balance = balance,
                     AbsolutePoints = absolute
@@ -895,7 +897,7 @@ namespace TT.Web.Controllers
                 var absolute = bbox.GetPointTotal();
                 var addme = new BalancePageViewModel
                 {
-                    dbName = effect.GetEffectDbName(),
+                    Id = effect.Id,
                     FriendlyName = effect.Effect_FriendlyName,
                     Balance = balance,
                     AbsolutePoints = absolute
@@ -990,17 +992,6 @@ namespace TT.Web.Controllers
                 ViewBag.LocationExists = "<span class='good'>LOCATION " + encounter.dbLocationName + " EXISTs.</span>";
             }
 
-            var form = FormStatics.GetForm(encounter.RequiredForm);
-
-            if (form == null)
-            {
-                ViewBag.FormExists = "<span class='bad'>FORM " + encounter.RequiredForm + " DOES NOT EXIST.</span>";
-            }
-            else
-            {
-                ViewBag.FormExists = "<span class='good'>FORM " + encounter.RequiredForm + " EXISTs.</span>";
-            }
-
             return View(MVC.PvPAdmin.Views.WriteFae, encounter);
         }
 
@@ -1015,7 +1006,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            input.RequiredForm = input.RequiredForm.Trim();
             input.dbLocationName = input.dbLocationName.Trim();
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
@@ -1029,7 +1019,7 @@ namespace TT.Web.Controllers
 
             //  encounter.Id = input.Id;
             encounter.dbLocationName = input.dbLocationName;
-            encounter.RequiredForm = input.RequiredForm;
+            encounter.RequiredFormSourceId = input.RequiredFormSourceId;
             encounter.IsLive = input.IsLive;
             encounter.FailureText = input.FailureText;
             encounter.IntroText = input.IntroText;
@@ -1341,7 +1331,7 @@ namespace TT.Web.Controllers
                     output.Id = id;
                     output.NewFirstName = pm.Player.FirstName;
                     output.NewLastName = pm.Player.LastName;
-                    output.NewForm = pm.Player.Form;
+                    output.NewFormSourceId = person.FormSourceId;
                     output.Level = pm.Player.Level;
                     output.Money = pm.Player.Money;
                 }
@@ -1409,21 +1399,20 @@ namespace TT.Web.Controllers
                     player.Money = input.Money;
                 }
 
-                if (!string.IsNullOrEmpty(input.NewForm) && input.NewForm != player.Form)
+                if (input.NewFormSourceId > 0 && input.NewFormSourceId != player.FormSourceId)
                 {
                     changed_form = " form,";
                     IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
-                    var form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
+                    var form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.Id == input.NewFormSourceId);
 
                     if (form != null && form.MobilityType == PvPStatics.MobilityFull)
                     {
                         DomainRegistry.Repository.Execute(new ChangeForm
                         {
                             PlayerId = player.Id,
-                            FormName = form.dbName
+                            FormSourceId = form.Id
                         });
 
-                        player.Form = form.dbName; //TODO: Legacy code
                         player.Health = 99999;
                         player.MaxHealth = 99999;
                     }
@@ -1439,7 +1428,7 @@ namespace TT.Web.Controllers
                 playerRepo.SavePlayer(player);
 
                 // if Donna, give player her spells
-                if (player.Form == BossProcedures_Donna.DonnaDbForm)
+                if (player.FormSourceId == BossProcedures_Donna.DonnaFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell1);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell2);
@@ -1449,7 +1438,7 @@ namespace TT.Web.Controllers
                 }
 
                 // if Valentine, give player his spells
-                else if (player.Form == BossProcedures_Valentine.ValentineFormDbName)
+                else if (player.FormSourceId == BossProcedures_Valentine.ValentineFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpellSourceId);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpellSourceId);
@@ -1461,24 +1450,24 @@ namespace TT.Web.Controllers
                 }
 
                 // if plague mother, give player her spells
-                else if (player.Form == BossProcedures_BimboBoss.BossFormDbName)
+                else if (player.FormSourceId == BossProcedures_BimboBoss.BimboBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellSourceId);
                 }
 
                 // if master rat thief, give player her spells
-                else if (player.Form == BossProcedures_Thieves.FemaleBossFormDbName)
+                else if (player.FormSourceId == BossProcedures_Thieves.FemaleBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellSourceId);
                 }
 
                 // if it's mouse sisters, then give them spells as well
-                else if (player.Form == BossProcedures_Sisters.BimboBossForm)
+                else if (player.FormSourceId == BossProcedures_Sisters.BimboBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MakeupKitSpellSourceId);
                 }
 
-                else if (player.Form == BossProcedures_Sisters.NerdBossForm)
+                else if (player.FormSourceId == BossProcedures_Sisters.NerdBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpellSourceId);
                 }
@@ -1546,7 +1535,7 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
-                FormName = "form_Flirty_Three-Tiered_Skirt_Martiandawn"
+                FormSourceId = 137 // Flirty 3-tiered skirt
             });
 
             // delete old item you are if you are one
@@ -1596,7 +1585,7 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
-                FormName = "form_Cuddly_Pocket_Goo_Girl_GooGirl"
+                FormSourceId = 152 // Cuddly pocket goo girl
             });
 
             // delete old item you are if you are one
@@ -1645,7 +1634,7 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = me.Id,
-                FormName = me.OriginalForm
+                FormSourceId = me.OriginalFormSourceId
             });
 
             // delete old item you are if you are one

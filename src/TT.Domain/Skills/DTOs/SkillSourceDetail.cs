@@ -7,9 +7,7 @@ namespace TT.Domain.Skills.DTOs
     public class SkillSourceDetail
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
-        public string FormdbName { get; set; }
         public FormSourceDetail FormSource { get; set; }
         public string Description { get; set; }
         public decimal ManaCost { get; set; }

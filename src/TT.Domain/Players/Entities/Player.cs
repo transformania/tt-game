@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using TT.Domain.AI.Entities;
-using TT.Domain.Covenants.Entities;
-using TT.Domain.Effects.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Entities.MindControl;
-using TT.Domain.Entities.Skills;
 using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.Entities;
@@ -16,6 +13,11 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using Covenant = TT.Domain.Covenants.Entities.Covenant;
+using Effect = TT.Domain.Effects.Entities.Effect;
+using InanimateXP = TT.Domain.Items.Entities.InanimateXP;
+using Item = TT.Domain.Items.Entities.Item;
+using Skill = TT.Domain.Entities.Skills.Skill;
 
 namespace TT.Domain.Players.Entities
 {
@@ -28,15 +30,17 @@ namespace TT.Domain.Players.Entities
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
 
+        public string Form { get; protected set; } // TODO: get rid of this shit
+
         [Column("dbLocationName")]
         public string Location { get; protected set; }
-        public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public ICollection<Item> Items { get; protected set; } 
         public ICollection<Effect> Effects { get; protected set; }
         public ICollection<Skill> Skills { get; protected set; }
         public ICollection<PlayerLog> PlayerLogs { get; protected set; }
-        public ICollection<TFEnergy> TFEnergies { get; protected set; }
-        public ICollection<TFEnergy> TFEnergiesCast { get; protected set; }
+        public ICollection<TFEnergies.Entities.TFEnergy> TFEnergies { get; protected set; }
+        public ICollection<TFEnergies.Entities.TFEnergy> TFEnergiesCast { get; protected set; }
+        public SelfRestoreEnergy SelfRestoreEnergy { get; protected set; }
 
         public ICollection<VictimMindControl> VictimMindControls { get; protected set; }
 
@@ -79,7 +83,7 @@ namespace TT.Domain.Players.Entities
         public int CleansesMeditatesThisRound { get; protected set; }
         public decimal Money { get; protected set; }
         public Covenant Covenant { get; protected set; }
-        public string OriginalForm { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
+        public FormSource OriginalFormSource { get; protected set; }
 
         public decimal PvPScore { get; protected set; }
         public int DonatorLevel { get; protected set; }
@@ -101,8 +105,8 @@ namespace TT.Domain.Players.Entities
         {
             Items = new List<Item>();
             Skills = new List<Skill>();
-            TFEnergies = new List<TFEnergy>();
-            TFEnergiesCast = new List<TFEnergy>();
+            TFEnergies = new List<TFEnergies.Entities.TFEnergy>();
+            TFEnergiesCast = new List<TFEnergies.Entities.TFEnergy>();
             PlayerLogs = new List<PlayerLog>();
             Effects = new List<Effect>();
             VictimMindControls = new List<VictimMindControl>();
@@ -116,7 +120,7 @@ namespace TT.Domain.Players.Entities
                 FirstName = cmd.FirstName,
                 LastName = cmd.LastName,
                 Location = cmd.Location,
-                Form = cmd.Form,
+                //Form = cmd.Form,
                 FormSource = form,
                 Health = cmd.Health,
                 MaxHealth = cmd.MaxHealth,
@@ -143,7 +147,7 @@ namespace TT.Domain.Players.Entities
                 CleansesMeditatesThisRound = cmd.CleansesMeditatesThisRound,
                 Money = cmd.Money,
                 Covenant = covenant,
-                OriginalForm = cmd.Form,
+                OriginalFormSource = form,
                 PvPScore = cmd.PvPScore,
                 DonatorLevel = cmd.DonatorLevel,
                 Nickname = cmd.Nickname,
@@ -192,7 +196,6 @@ namespace TT.Domain.Players.Entities
         public void ChangeForm(FormSource form)
         {
             FormSource = form;
-            Form = form.dbName; // keep here for legacy purposes
             Gender = form.Gender;
             Mobility = form.MobilityType;
             ForceWithinBounds();
@@ -632,6 +635,43 @@ namespace TT.Domain.Players.Entities
         {
             return this.Items.Count(i => i.ItemSource.ItemType != PvPStatics.ItemType_Rune && !i.IsEquipped ||
                 i.ItemSource.ItemType == PvPStatics.ItemType_Rune && i.EmbeddedOnItem == null);
+        }
+
+        public string AddSelfRestoreEnergy(BuffBox buffs)
+        {
+
+            var actualAmount = 10 + (float) Math.Floor(buffs.Allure() / 10);
+
+            if (this.SelfRestoreEnergy == null)
+            {
+                this.SelfRestoreEnergy = SelfRestoreEnergy.Create(this, actualAmount);
+            }
+            else
+            {
+                this.SelfRestoreEnergy.AddAmount(actualAmount);
+            }
+
+            this.CleansesMeditatesThisRound++;
+            this.ActionPoints -= (decimal)PvPStatics.SelfRestoreAPCost;
+            this.Mana -= (decimal) PvPStatics.SelfRestoreManaCost;
+            this.LastActionTimestamp = DateTime.UtcNow;
+
+            if (this.SelfRestoreEnergy.Amount < PvPStatics.SelfRestoreTFnergyRequirement)
+            {
+                var output = $"You rest and attempt to restore yourself to your base form.  [+{(int)actualAmount}, {(int)this.SelfRestoreEnergy.Amount}/{PvPStatics.SelfRestoreTFnergyRequirement}].  Keep trying and you'll find yourself in a familiar form in no time...";
+                this.AddLog(output, true);
+                return output;
+            }
+            else
+            {
+                this.SelfRestoreEnergy.Reset();
+                this.FormSource = this.OriginalFormSource;
+                this.Gender = this.OriginalFormSource.Gender;
+                var output = "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + OriginalFormSource.FriendlyName + "</b>!<span>";
+                this.AddLog(output, true);
+                return output;
+            }
+
         }
 
     }

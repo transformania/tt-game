@@ -23,104 +23,103 @@ namespace TT.Domain.Procedures
         public static PlayerFormViewModel GetPlayerFormViewModel(int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.Id == playerId
-                                                      join f in playerRepo.DbStaticForms on p.Form equals f.dbName
+            IEnumerable<PlayerFormViewModel> output = from player in playerRepo.Players
+                                                      where player.Id == playerId
+                                                      join form in playerRepo.DbStaticForms on player.FormSourceId equals form.Id
                                                       select new PlayerFormViewModel
                                                       {
                                                           Player = new Player_VM
                                                           {
-                                                              Id = p.Id,
-                                                              MembershipId = p.MembershipId,
-                                                              FirstName = p.FirstName,
-                                                              LastName = p.LastName,
-                                                              dbLocationName = p.dbLocationName,
-                                                              Form = p.Form,
-                                                              Health = p.Health,
-                                                              MaxHealth = p.MaxHealth,
-                                                              Mana = p.Mana,
-                                                              MaxMana = p.MaxMana,
-                                                              ActionPoints = p.ActionPoints,
-                                                              ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              Gender = p.Gender,
-                                                              Mobility = p.Mobility,
-                                                              BotId = p.BotId,
-                                                              MindControlIsActive = p.MindControlIsActive,
-                                                              XP = p.XP,
-                                                              Level = p.Level,
-                                                              TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
-                                                              IpAddress = p.IpAddress,
-                                                              LastActionTimestamp = p.LastActionTimestamp,
-                                                              LastCombatTimestamp = p.LastCombatTimestamp,
-                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
-                                                              FlaggedForAbuse = p.FlaggedForAbuse,
-                                                              UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              GameMode = p.GameMode,
-                                                              InRP = p.InRP,
-                                                              CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
-                                                              Money = p.Money,
-                                                              Covenant = p.Covenant,
-                                                              OriginalForm = p.OriginalForm,
-                                                              PvPScore = p.PvPScore,
-                                                              DonatorLevel = p.DonatorLevel,
-                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
-                                                              Nickname = p.Nickname,
-                                                              ShoutsRemaining = p.ShoutsRemaining,
-                                                              ChatColor = p.ChatColor,
-                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
-                                                              InDuel = p.InDuel,
-                                                              InQuest = p.InQuest,
-                                                              InQuestState = p.InQuestState,
+                                                              Id = player.Id,
+                                                              MembershipId = player.MembershipId,
+                                                              FirstName = player.FirstName,
+                                                              LastName = player.LastName,
+                                                              dbLocationName = player.dbLocationName,
+                                                              FormSourceId = player.FormSourceId,
+                                                              Health = player.Health,
+                                                              MaxHealth = player.MaxHealth,
+                                                              Mana = player.Mana,
+                                                              MaxMana = player.MaxMana,
+                                                              ActionPoints = player.ActionPoints,
+                                                              ActionPoints_Refill = player.ActionPoints_Refill,
+                                                              Gender = player.Gender,
+                                                              Mobility = player.Mobility,
+                                                              BotId = player.BotId,
+                                                              MindControlIsActive = player.MindControlIsActive,
+                                                              XP = player.XP,
+                                                              Level = player.Level,
+                                                              TimesAttackingThisUpdate = player.TimesAttackingThisUpdate,
+                                                              IpAddress = player.IpAddress,
+                                                              LastActionTimestamp = player.LastActionTimestamp,
+                                                              LastCombatTimestamp = player.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = player.LastCombatAttackedTimestamp,
+                                                              FlaggedForAbuse = player.FlaggedForAbuse,
+                                                              UnusedLevelUpPerks = player.UnusedLevelUpPerks,
+                                                              GameMode = player.GameMode,
+                                                              InRP = player.InRP,
+                                                              CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
+                                                              Money = player.Money,
+                                                              Covenant = player.Covenant,
+                                                              OriginalFormSourceId = player.OriginalFormSourceId,
+                                                              PvPScore = player.PvPScore,
+                                                              DonatorLevel = player.DonatorLevel,
+                                                              OnlineActivityTimestamp = player.OnlineActivityTimestamp,
+                                                              Nickname = player.Nickname,
+                                                              ShoutsRemaining = player.ShoutsRemaining,
+                                                              ChatColor = player.ChatColor,
+                                                              IsBannedFromGlobalChat = player.IsBannedFromGlobalChat,
+                                                              InDuel = player.InDuel,
+                                                              InQuest = player.InQuest,
+                                                              InQuestState = player.InQuestState,
 
 
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = f.dbName,
-                                                              FriendlyName = f.FriendlyName,
-                                                              Description = f.Description,
-                                                              TFEnergyType = f.TFEnergyType,
-                                                              TFEnergyRequired = f.TFEnergyRequired,
-                                                              Gender = f.Gender,
-                                                              MobilityType = f.MobilityType,
-                                                              BecomesItemDbName = f.BecomesItemDbName,
-                                                              PortraitUrl = f.PortraitUrl,
-                                                              IsUnique = f.IsUnique,
+                                                              FriendlyName = form.FriendlyName,
+                                                              Description = form.Description,
+                                                              TFEnergyType = form.TFEnergyType,
+                                                              TFEnergyRequired = form.TFEnergyRequired,
+                                                              Gender = form.Gender,
+                                                              MobilityType = form.MobilityType,
+                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              PortraitUrl = form.PortraitUrl,
+                                                              IsUnique = form.IsUnique,
 
-                                                              HealthBonusPercent = f.HealthBonusPercent,
-                                                              ManaBonusPercent = f.ManaBonusPercent,
-                                                              ExtraSkillCriticalPercent = f.ExtraSkillCriticalPercent,
-                                                              HealthRecoveryPerUpdate = f.HealthRecoveryPerUpdate,
-                                                              ManaRecoveryPerUpdate = f.ManaRecoveryPerUpdate,
-                                                              SneakPercent = f.SneakPercent,
-                                                              EvasionPercent = f.EvasionPercent,
-                                                              EvasionNegationPercent = f.EvasionNegationPercent,
-                                                              MeditationExtraMana = f.MeditationExtraMana,
-                                                              CleanseExtraHealth = f.CleanseExtraHealth,
-                                                              MoveActionPointDiscount = f.MoveActionPointDiscount,
-                                                              SpellExtraHealthDamagePercent = f.SpellExtraHealthDamagePercent,
-                                                              SpellExtraTFEnergyPercent = f.SpellExtraTFEnergyPercent,
-                                                              CleanseExtraTFEnergyRemovalPercent = f.CleanseExtraTFEnergyRemovalPercent,
-                                                              SpellMisfireChanceReduction = f.SpellMisfireChanceReduction,
-                                                              SpellHealthDamageResistance = f.SpellHealthDamageResistance,
-                                                              SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
-                                                              ExtraInventorySpace = f.ExtraInventorySpace,
+                                                              HealthBonusPercent = form.HealthBonusPercent,
+                                                              ManaBonusPercent = form.ManaBonusPercent,
+                                                              ExtraSkillCriticalPercent = form.ExtraSkillCriticalPercent,
+                                                              HealthRecoveryPerUpdate = form.HealthRecoveryPerUpdate,
+                                                              ManaRecoveryPerUpdate = form.ManaRecoveryPerUpdate,
+                                                              SneakPercent = form.SneakPercent,
+                                                              EvasionPercent = form.EvasionPercent,
+                                                              EvasionNegationPercent = form.EvasionNegationPercent,
+                                                              MeditationExtraMana = form.MeditationExtraMana,
+                                                              CleanseExtraHealth = form.CleanseExtraHealth,
+                                                              MoveActionPointDiscount = form.MoveActionPointDiscount,
+                                                              SpellExtraHealthDamagePercent = form.SpellExtraHealthDamagePercent,
+                                                              SpellExtraTFEnergyPercent = form.SpellExtraTFEnergyPercent,
+                                                              CleanseExtraTFEnergyRemovalPercent = form.CleanseExtraTFEnergyRemovalPercent,
+                                                              SpellMisfireChanceReduction = form.SpellMisfireChanceReduction,
+                                                              SpellHealthDamageResistance = form.SpellHealthDamageResistance,
+                                                              SpellTFEnergyDamageResistance = form.SpellTFEnergyDamageResistance,
+                                                              ExtraInventorySpace = form.ExtraInventorySpace,
 
-                                                              Discipline = f.Discipline,
-                                                              Perception = f.Perception,
-                                                              Charisma = f.Charisma,
-                                                              Submission_Dominance = f.Submission_Dominance,
+                                                              Discipline = form.Discipline,
+                                                              Perception = form.Perception,
+                                                              Charisma = form.Charisma,
+                                                              Submission_Dominance = form.Submission_Dominance,
 
-                                                              Fortitude = f.Fortitude,
-                                                              Agility = f.Agility,
-                                                              Allure = f.Allure,
-                                                              Corruption_Purity = f.Corruption_Purity,
+                                                              Fortitude = form.Fortitude,
+                                                              Agility = form.Agility,
+                                                              Allure = form.Allure,
+                                                              Corruption_Purity = form.Corruption_Purity,
 
-                                                              Magicka = f.Magicka,
-                                                              Succour = f.Succour,
-                                                              Luck = f.Luck,
-                                                              Chaos_Order = f.Chaos_Order,
+                                                              Magicka = form.Magicka,
+                                                              Succour = form.Succour,
+                                                              Luck = form.Luck,
+                                                              Chaos_Order = form.Chaos_Order,
                                                           }
 
                                                       };
@@ -131,102 +130,102 @@ namespace TT.Domain.Procedures
         public static PlayerFormViewModel GetPlayerFormViewModel_FromMembership(string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.MembershipId == membershipId
-                                                      join f in playerRepo.DbStaticForms on p.Form equals f.dbName
+            IEnumerable<PlayerFormViewModel> output = from player in playerRepo.Players
+                                                      where player.MembershipId == membershipId
+                                                      join form in playerRepo.DbStaticForms on player.FormSourceId equals form.Id
                                                       select new PlayerFormViewModel
                                                       {
                                                           Player = new Player_VM
                                                           {
-                                                              Id = p.Id,
-                                                              MembershipId = p.MembershipId,
-                                                              FirstName = p.FirstName,
-                                                              LastName = p.LastName,
-                                                              dbLocationName = p.dbLocationName,
-                                                              Form = p.Form,
-                                                              Health = p.Health,
-                                                              MaxHealth = p.MaxHealth,
-                                                              Mana = p.Mana,
-                                                              MaxMana = p.MaxMana,
-                                                              ActionPoints = p.ActionPoints,
-                                                              ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              Gender = p.Gender,
-                                                              Mobility = p.Mobility,
-                                                              BotId = p.BotId,
-                                                              MindControlIsActive = p.MindControlIsActive,
-                                                              XP = p.XP,
-                                                              Level = p.Level,
-                                                              TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
-                                                              IpAddress = p.IpAddress,
-                                                              LastActionTimestamp = p.LastActionTimestamp,
-                                                              LastCombatTimestamp = p.LastCombatTimestamp,
-                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
-                                                              FlaggedForAbuse = p.FlaggedForAbuse,
-                                                              UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              GameMode = p.GameMode,
-                                                              InRP = p.InRP,
-                                                              CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
-                                                              Money = p.Money,
-                                                              Covenant = p.Covenant,
-                                                              OriginalForm = p.OriginalForm,
-                                                              PvPScore = p.PvPScore,
-                                                              DonatorLevel = p.DonatorLevel,
-                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
-                                                              Nickname = p.Nickname,
-                                                              ShoutsRemaining = p.ShoutsRemaining,
-                                                              ChatColor = p.ChatColor,
-                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
-                                                              InDuel = p.InDuel,
-                                                              InQuest = p.InQuest,
-                                                              InQuestState = p.InQuestState,
+                                                              Id = player.Id,
+                                                              MembershipId = player.MembershipId,
+                                                              FirstName = player.FirstName,
+                                                              LastName = player.LastName,
+                                                              dbLocationName = player.dbLocationName,
+                                                              FormSourceId = player.FormSourceId,
+                                                              Health = player.Health,
+                                                              MaxHealth = player.MaxHealth,
+                                                              Mana = player.Mana,
+                                                              MaxMana = player.MaxMana,
+                                                              ActionPoints = player.ActionPoints,
+                                                              ActionPoints_Refill = player.ActionPoints_Refill,
+                                                              Gender = player.Gender,
+                                                              Mobility = player.Mobility,
+                                                              BotId = player.BotId,
+                                                              MindControlIsActive = player.MindControlIsActive,
+                                                              XP = player.XP,
+                                                              Level = player.Level,
+                                                              TimesAttackingThisUpdate = player.TimesAttackingThisUpdate,
+                                                              IpAddress = player.IpAddress,
+                                                              LastActionTimestamp = player.LastActionTimestamp,
+                                                              LastCombatTimestamp = player.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = player.LastCombatAttackedTimestamp,
+                                                              FlaggedForAbuse = player.FlaggedForAbuse,
+                                                              UnusedLevelUpPerks = player.UnusedLevelUpPerks,
+                                                              GameMode = player.GameMode,
+                                                              InRP = player.InRP,
+                                                              CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
+                                                              Money = player.Money,
+                                                              Covenant = player.Covenant,
+                                                              OriginalFormSourceId = player.OriginalFormSourceId,
+                                                              PvPScore = player.PvPScore,
+                                                              DonatorLevel = player.DonatorLevel,
+                                                              OnlineActivityTimestamp = player.OnlineActivityTimestamp,
+                                                              Nickname = player.Nickname,
+                                                              ShoutsRemaining = player.ShoutsRemaining,
+                                                              ChatColor = player.ChatColor,
+                                                              IsBannedFromGlobalChat = player.IsBannedFromGlobalChat,
+                                                              InDuel = player.InDuel,
+                                                              InQuest = player.InQuest,
+                                                              InQuestState = player.InQuestState,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = f.dbName,
-                                                              FriendlyName = f.FriendlyName,
-                                                              Description = f.Description,
-                                                              TFEnergyType = f.TFEnergyType,
-                                                              TFEnergyRequired = f.TFEnergyRequired,
-                                                              Gender = f.Gender,
-                                                              MobilityType = f.MobilityType,
-                                                              BecomesItemDbName = f.BecomesItemDbName,
-                                                              PortraitUrl = f.PortraitUrl,
-                                                              IsUnique = f.IsUnique,
+                                                              dbName = form.dbName,
+                                                              FriendlyName = form.FriendlyName,
+                                                              Description = form.Description,
+                                                              TFEnergyType = form.TFEnergyType,
+                                                              TFEnergyRequired = form.TFEnergyRequired,
+                                                              Gender = form.Gender,
+                                                              MobilityType = form.MobilityType,
+                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              PortraitUrl = form.PortraitUrl,
+                                                              IsUnique = form.IsUnique,
 
-                                                              HealthBonusPercent = f.HealthBonusPercent,
-                                                              ManaBonusPercent = f.ManaBonusPercent,
-                                                              ExtraSkillCriticalPercent = f.ExtraSkillCriticalPercent,
-                                                              HealthRecoveryPerUpdate = f.HealthRecoveryPerUpdate,
-                                                              ManaRecoveryPerUpdate = f.ManaRecoveryPerUpdate,
-                                                              SneakPercent = f.SneakPercent,
-                                                              EvasionPercent = f.EvasionPercent,
-                                                              EvasionNegationPercent = f.EvasionNegationPercent,
-                                                              MeditationExtraMana = f.MeditationExtraMana,
-                                                              CleanseExtraHealth = f.CleanseExtraHealth,
-                                                              MoveActionPointDiscount = f.MoveActionPointDiscount,
-                                                              SpellExtraHealthDamagePercent = f.SpellExtraHealthDamagePercent,
-                                                              SpellExtraTFEnergyPercent = f.SpellExtraTFEnergyPercent,
-                                                              CleanseExtraTFEnergyRemovalPercent = f.CleanseExtraTFEnergyRemovalPercent,
-                                                              SpellMisfireChanceReduction = f.SpellMisfireChanceReduction,
-                                                              SpellHealthDamageResistance = f.SpellHealthDamageResistance,
-                                                              SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
-                                                              ExtraInventorySpace = f.ExtraInventorySpace,
+                                                              HealthBonusPercent = form.HealthBonusPercent,
+                                                              ManaBonusPercent = form.ManaBonusPercent,
+                                                              ExtraSkillCriticalPercent = form.ExtraSkillCriticalPercent,
+                                                              HealthRecoveryPerUpdate = form.HealthRecoveryPerUpdate,
+                                                              ManaRecoveryPerUpdate = form.ManaRecoveryPerUpdate,
+                                                              SneakPercent = form.SneakPercent,
+                                                              EvasionPercent = form.EvasionPercent,
+                                                              EvasionNegationPercent = form.EvasionNegationPercent,
+                                                              MeditationExtraMana = form.MeditationExtraMana,
+                                                              CleanseExtraHealth = form.CleanseExtraHealth,
+                                                              MoveActionPointDiscount = form.MoveActionPointDiscount,
+                                                              SpellExtraHealthDamagePercent = form.SpellExtraHealthDamagePercent,
+                                                              SpellExtraTFEnergyPercent = form.SpellExtraTFEnergyPercent,
+                                                              CleanseExtraTFEnergyRemovalPercent = form.CleanseExtraTFEnergyRemovalPercent,
+                                                              SpellMisfireChanceReduction = form.SpellMisfireChanceReduction,
+                                                              SpellHealthDamageResistance = form.SpellHealthDamageResistance,
+                                                              SpellTFEnergyDamageResistance = form.SpellTFEnergyDamageResistance,
+                                                              ExtraInventorySpace = form.ExtraInventorySpace,
 
-                                                              Discipline = f.Discipline,
-                                                              Perception = f.Perception,
-                                                              Charisma = f.Charisma,
-                                                              Submission_Dominance = f.Submission_Dominance,
+                                                              Discipline = form.Discipline,
+                                                              Perception = form.Perception,
+                                                              Charisma = form.Charisma,
+                                                              Submission_Dominance = form.Submission_Dominance,
 
-                                                              Fortitude = f.Fortitude,
-                                                              Agility = f.Agility,
-                                                              Allure = f.Allure,
-                                                              Corruption_Purity = f.Corruption_Purity,
+                                                              Fortitude = form.Fortitude,
+                                                              Agility = form.Agility,
+                                                              Allure = form.Allure,
+                                                              Corruption_Purity = form.Corruption_Purity,
 
-                                                              Magicka = f.Magicka,
-                                                              Succour = f.Succour,
-                                                              Luck = f.Luck,
-                                                              Chaos_Order = f.Chaos_Order,
+                                                              Magicka = form.Magicka,
+                                                              Succour = form.Succour,
+                                                              Luck = form.Luck,
+                                                              Chaos_Order = form.Chaos_Order,
                                                           }
 
                                                       };
@@ -237,103 +236,103 @@ namespace TT.Domain.Procedures
         public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsAtLocation(string destinationDbName, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.dbLocationName == destinationDbName && p.MembershipId != membershipId
-                                                      join f in playerRepo.DbStaticForms on p.Form equals f.dbName
+            IEnumerable<PlayerFormViewModel> output = from player in playerRepo.Players
+                                                      where player.dbLocationName == destinationDbName && player.MembershipId != membershipId
+                                                      join form in playerRepo.DbStaticForms on player.FormSourceId equals form.Id
                                                       select new PlayerFormViewModel
                                                       {
                                                           Player = new Player_VM
                                                           {
-                                                              Id = p.Id,
-                                                              MembershipId = p.MembershipId,
-                                                              FirstName = p.FirstName,
-                                                              LastName = p.LastName,
-                                                              dbLocationName = p.dbLocationName,
-                                                              Form = p.Form,
-                                                              Health = p.Health,
-                                                              MaxHealth = p.MaxHealth,
-                                                              Mana = p.Mana,
-                                                              MaxMana = p.MaxMana,
-                                                              ActionPoints = p.ActionPoints,
-                                                              ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              Gender = p.Gender,
-                                                              Mobility = p.Mobility,
-                                                              BotId = p.BotId,
-                                                              MindControlIsActive = p.MindControlIsActive,
+                                                              Id = player.Id,
+                                                              MembershipId = player.MembershipId,
+                                                              FirstName = player.FirstName,
+                                                              LastName = player.LastName,
+                                                              dbLocationName = player.dbLocationName,
+                                                              FormSourceId = player.FormSourceId,
+                                                              Health = player.Health,
+                                                              MaxHealth = player.MaxHealth,
+                                                              Mana = player.Mana,
+                                                              MaxMana = player.MaxMana,
+                                                              ActionPoints = player.ActionPoints,
+                                                              ActionPoints_Refill = player.ActionPoints_Refill,
+                                                              Gender = player.Gender,
+                                                              Mobility = player.Mobility,
+                                                              BotId = player.BotId,
+                                                              MindControlIsActive = player.MindControlIsActive,
 
-                                                              XP = p.XP,
-                                                              Level = p.Level,
-                                                              TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
-                                                              IpAddress = p.IpAddress,
-                                                              LastActionTimestamp = p.LastActionTimestamp,
-                                                              LastCombatTimestamp = p.LastCombatTimestamp,
-                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
-                                                              FlaggedForAbuse = p.FlaggedForAbuse,
-                                                              UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              GameMode = p.GameMode,
-                                                              InRP = p.InRP,
-                                                              CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
-                                                              Money = p.Money,
-                                                              Covenant = p.Covenant,
-                                                              OriginalForm = p.OriginalForm,
-                                                              PvPScore = p.PvPScore,
-                                                              DonatorLevel = p.DonatorLevel,
-                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
-                                                              Nickname = p.Nickname,
-                                                              ShoutsRemaining = p.ShoutsRemaining,
-                                                              ChatColor = p.ChatColor,
-                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
-                                                              InDuel = p.InDuel,
-                                                              InQuest = p.InQuest,
-                                                              InQuestState = p.InQuestState,
+                                                              XP = player.XP,
+                                                              Level = player.Level,
+                                                              TimesAttackingThisUpdate = player.TimesAttackingThisUpdate,
+                                                              IpAddress = player.IpAddress,
+                                                              LastActionTimestamp = player.LastActionTimestamp,
+                                                              LastCombatTimestamp = player.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = player.LastCombatAttackedTimestamp,
+                                                              FlaggedForAbuse = player.FlaggedForAbuse,
+                                                              UnusedLevelUpPerks = player.UnusedLevelUpPerks,
+                                                              GameMode = player.GameMode,
+                                                              InRP = player.InRP,
+                                                              CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
+                                                              Money = player.Money,
+                                                              Covenant = player.Covenant,
+                                                              OriginalFormSourceId = player.OriginalFormSourceId,
+                                                              PvPScore = player.PvPScore,
+                                                              DonatorLevel = player.DonatorLevel,
+                                                              OnlineActivityTimestamp = player.OnlineActivityTimestamp,
+                                                              Nickname = player.Nickname,
+                                                              ShoutsRemaining = player.ShoutsRemaining,
+                                                              ChatColor = player.ChatColor,
+                                                              IsBannedFromGlobalChat = player.IsBannedFromGlobalChat,
+                                                              InDuel = player.InDuel,
+                                                              InQuest = player.InQuest,
+                                                              InQuestState = player.InQuestState,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = f.dbName,
-                                                              FriendlyName = f.FriendlyName,
-                                                              Description = f.Description,
-                                                              TFEnergyType = f.TFEnergyType,
-                                                              TFEnergyRequired = f.TFEnergyRequired,
-                                                              Gender = f.Gender,
-                                                              MobilityType = f.MobilityType,
-                                                              BecomesItemDbName = f.BecomesItemDbName,
-                                                              PortraitUrl = f.PortraitUrl,
-                                                              IsUnique = f.IsUnique,
+                                                              dbName = form.dbName,
+                                                              FriendlyName = form.FriendlyName,
+                                                              Description = form.Description,
+                                                              TFEnergyType = form.TFEnergyType,
+                                                              TFEnergyRequired = form.TFEnergyRequired,
+                                                              Gender = form.Gender,
+                                                              MobilityType = form.MobilityType,
+                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              PortraitUrl = form.PortraitUrl,
+                                                              IsUnique = form.IsUnique,
 
-                                                              HealthBonusPercent = f.HealthBonusPercent,
-                                                              ManaBonusPercent = f.ManaBonusPercent,
-                                                              ExtraSkillCriticalPercent = f.ExtraSkillCriticalPercent,
-                                                              HealthRecoveryPerUpdate = f.HealthRecoveryPerUpdate,
-                                                              ManaRecoveryPerUpdate = f.ManaRecoveryPerUpdate,
-                                                              SneakPercent = f.SneakPercent,
-                                                              EvasionPercent = f.EvasionPercent,
-                                                              EvasionNegationPercent = f.EvasionNegationPercent,
-                                                              MeditationExtraMana = f.MeditationExtraMana,
-                                                              CleanseExtraHealth = f.CleanseExtraHealth,
-                                                              MoveActionPointDiscount = f.MoveActionPointDiscount,
-                                                              SpellExtraHealthDamagePercent = f.SpellExtraHealthDamagePercent,
-                                                              SpellExtraTFEnergyPercent = f.SpellExtraTFEnergyPercent,
-                                                              CleanseExtraTFEnergyRemovalPercent = f.CleanseExtraTFEnergyRemovalPercent,
-                                                              SpellMisfireChanceReduction = f.SpellMisfireChanceReduction,
-                                                              SpellHealthDamageResistance = f.SpellHealthDamageResistance,
-                                                              SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
-                                                              ExtraInventorySpace = f.ExtraInventorySpace,
+                                                              HealthBonusPercent = form.HealthBonusPercent,
+                                                              ManaBonusPercent = form.ManaBonusPercent,
+                                                              ExtraSkillCriticalPercent = form.ExtraSkillCriticalPercent,
+                                                              HealthRecoveryPerUpdate = form.HealthRecoveryPerUpdate,
+                                                              ManaRecoveryPerUpdate = form.ManaRecoveryPerUpdate,
+                                                              SneakPercent = form.SneakPercent,
+                                                              EvasionPercent = form.EvasionPercent,
+                                                              EvasionNegationPercent = form.EvasionNegationPercent,
+                                                              MeditationExtraMana = form.MeditationExtraMana,
+                                                              CleanseExtraHealth = form.CleanseExtraHealth,
+                                                              MoveActionPointDiscount = form.MoveActionPointDiscount,
+                                                              SpellExtraHealthDamagePercent = form.SpellExtraHealthDamagePercent,
+                                                              SpellExtraTFEnergyPercent = form.SpellExtraTFEnergyPercent,
+                                                              CleanseExtraTFEnergyRemovalPercent = form.CleanseExtraTFEnergyRemovalPercent,
+                                                              SpellMisfireChanceReduction = form.SpellMisfireChanceReduction,
+                                                              SpellHealthDamageResistance = form.SpellHealthDamageResistance,
+                                                              SpellTFEnergyDamageResistance = form.SpellTFEnergyDamageResistance,
+                                                              ExtraInventorySpace = form.ExtraInventorySpace,
 
-                                                              Discipline = f.Discipline,
-                                                              Perception = f.Perception,
-                                                              Charisma = f.Charisma,
-                                                              Submission_Dominance = f.Submission_Dominance,
+                                                              Discipline = form.Discipline,
+                                                              Perception = form.Perception,
+                                                              Charisma = form.Charisma,
+                                                              Submission_Dominance = form.Submission_Dominance,
 
-                                                              Fortitude = f.Fortitude,
-                                                              Agility = f.Agility,
-                                                              Allure = f.Allure,
-                                                              Corruption_Purity = f.Corruption_Purity,
+                                                              Fortitude = form.Fortitude,
+                                                              Agility = form.Agility,
+                                                              Allure = form.Allure,
+                                                              Corruption_Purity = form.Corruption_Purity,
 
-                                                              Magicka = f.Magicka,
-                                                              Succour = f.Succour,
-                                                              Luck = f.Luck,
-                                                              Chaos_Order = f.Chaos_Order,
+                                                              Magicka = form.Magicka,
+                                                              Succour = form.Succour,
+                                                              Luck = form.Luck,
+                                                              Chaos_Order = form.Chaos_Order,
 
                                                           }
 
@@ -345,103 +344,103 @@ namespace TT.Domain.Procedures
         public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsInCovenant(int covenantId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.Covenant == covenantId
-                                                      join f in playerRepo.DbStaticForms on p.Form equals f.dbName
+            IEnumerable<PlayerFormViewModel> output = from player in playerRepo.Players
+                                                      where player.Covenant == covenantId
+                                                      join form in playerRepo.DbStaticForms on player.FormSourceId equals form.Id
                                                       select new PlayerFormViewModel
                                                       {
                                                           Player = new Player_VM
                                                           {
-                                                              Id = p.Id,
-                                                              MembershipId = p.MembershipId,
-                                                              FirstName = p.FirstName,
-                                                              LastName = p.LastName,
-                                                              dbLocationName = p.dbLocationName,
-                                                              Form = p.Form,
-                                                              Health = p.Health,
-                                                              MaxHealth = p.MaxHealth,
-                                                              Mana = p.Mana,
-                                                              MaxMana = p.MaxMana,
-                                                              ActionPoints = p.ActionPoints,
-                                                              ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              Gender = p.Gender,
-                                                              Mobility = p.Mobility,
-                                                              BotId = p.BotId,
-                                                              MindControlIsActive = p.MindControlIsActive,
+                                                              Id = player.Id,
+                                                              MembershipId = player.MembershipId,
+                                                              FirstName = player.FirstName,
+                                                              LastName = player.LastName,
+                                                              dbLocationName = player.dbLocationName,
+                                                              FormSourceId = player.FormSourceId,
+                                                              Health = player.Health,
+                                                              MaxHealth = player.MaxHealth,
+                                                              Mana = player.Mana,
+                                                              MaxMana = player.MaxMana,
+                                                              ActionPoints = player.ActionPoints,
+                                                              ActionPoints_Refill = player.ActionPoints_Refill,
+                                                              Gender = player.Gender,
+                                                              Mobility = player.Mobility,
+                                                              BotId = player.BotId,
+                                                              MindControlIsActive = player.MindControlIsActive,
 
-                                                              XP = p.XP,
-                                                              Level = p.Level,
-                                                              TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
-                                                              IpAddress = p.IpAddress,
-                                                              LastActionTimestamp = p.LastActionTimestamp,
-                                                              LastCombatTimestamp = p.LastCombatTimestamp,
-                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
-                                                              FlaggedForAbuse = p.FlaggedForAbuse,
-                                                              UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              GameMode = p.GameMode,
-                                                              InRP = p.InRP,
-                                                              CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
-                                                              Money = p.Money,
-                                                              Covenant = p.Covenant,
-                                                              OriginalForm = p.OriginalForm,
-                                                              PvPScore = p.PvPScore,
-                                                              DonatorLevel = p.DonatorLevel,
-                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
-                                                              Nickname = p.Nickname,
-                                                              ShoutsRemaining = p.ShoutsRemaining,
-                                                              ChatColor = p.ChatColor,
-                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
-                                                              InDuel = p.InDuel,
-                                                              InQuest = p.InQuest,
-                                                              InQuestState = p.InQuestState,
+                                                              XP = player.XP,
+                                                              Level = player.Level,
+                                                              TimesAttackingThisUpdate = player.TimesAttackingThisUpdate,
+                                                              IpAddress = player.IpAddress,
+                                                              LastActionTimestamp = player.LastActionTimestamp,
+                                                              LastCombatTimestamp = player.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = player.LastCombatAttackedTimestamp,
+                                                              FlaggedForAbuse = player.FlaggedForAbuse,
+                                                              UnusedLevelUpPerks = player.UnusedLevelUpPerks,
+                                                              GameMode = player.GameMode,
+                                                              InRP = player.InRP,
+                                                              CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
+                                                              Money = player.Money,
+                                                              Covenant = player.Covenant,
+                                                              OriginalFormSourceId = player.OriginalFormSourceId,
+                                                              PvPScore = player.PvPScore,
+                                                              DonatorLevel = player.DonatorLevel,
+                                                              OnlineActivityTimestamp = player.OnlineActivityTimestamp,
+                                                              Nickname = player.Nickname,
+                                                              ShoutsRemaining = player.ShoutsRemaining,
+                                                              ChatColor = player.ChatColor,
+                                                              IsBannedFromGlobalChat = player.IsBannedFromGlobalChat,
+                                                              InDuel = player.InDuel,
+                                                              InQuest = player.InQuest,
+                                                              InQuestState = player.InQuestState,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = f.dbName,
-                                                              FriendlyName = f.FriendlyName,
-                                                              Description = f.Description,
-                                                              TFEnergyType = f.TFEnergyType,
-                                                              TFEnergyRequired = f.TFEnergyRequired,
-                                                              Gender = f.Gender,
-                                                              MobilityType = f.MobilityType,
-                                                              BecomesItemDbName = f.BecomesItemDbName,
-                                                              PortraitUrl = f.PortraitUrl,
-                                                              IsUnique = f.IsUnique,
+                                                              dbName = form.dbName,
+                                                              FriendlyName = form.FriendlyName,
+                                                              Description = form.Description,
+                                                              TFEnergyType = form.TFEnergyType,
+                                                              TFEnergyRequired = form.TFEnergyRequired,
+                                                              Gender = form.Gender,
+                                                              MobilityType = form.MobilityType,
+                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              PortraitUrl = form.PortraitUrl,
+                                                              IsUnique = form.IsUnique,
 
-                                                              HealthBonusPercent = f.HealthBonusPercent,
-                                                              ManaBonusPercent = f.ManaBonusPercent,
-                                                              ExtraSkillCriticalPercent = f.ExtraSkillCriticalPercent,
-                                                              HealthRecoveryPerUpdate = f.HealthRecoveryPerUpdate,
-                                                              ManaRecoveryPerUpdate = f.ManaRecoveryPerUpdate,
-                                                              SneakPercent = f.SneakPercent,
-                                                              EvasionPercent = f.EvasionPercent,
-                                                              EvasionNegationPercent = f.EvasionNegationPercent,
-                                                              MeditationExtraMana = f.MeditationExtraMana,
-                                                              CleanseExtraHealth = f.CleanseExtraHealth,
-                                                              MoveActionPointDiscount = f.MoveActionPointDiscount,
-                                                              SpellExtraHealthDamagePercent = f.SpellExtraHealthDamagePercent,
-                                                              SpellExtraTFEnergyPercent = f.SpellExtraTFEnergyPercent,
-                                                              CleanseExtraTFEnergyRemovalPercent = f.CleanseExtraTFEnergyRemovalPercent,
-                                                              SpellMisfireChanceReduction = f.SpellMisfireChanceReduction,
-                                                              SpellHealthDamageResistance = f.SpellHealthDamageResistance,
-                                                              SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
-                                                              ExtraInventorySpace = f.ExtraInventorySpace,
+                                                              HealthBonusPercent = form.HealthBonusPercent,
+                                                              ManaBonusPercent = form.ManaBonusPercent,
+                                                              ExtraSkillCriticalPercent = form.ExtraSkillCriticalPercent,
+                                                              HealthRecoveryPerUpdate = form.HealthRecoveryPerUpdate,
+                                                              ManaRecoveryPerUpdate = form.ManaRecoveryPerUpdate,
+                                                              SneakPercent = form.SneakPercent,
+                                                              EvasionPercent = form.EvasionPercent,
+                                                              EvasionNegationPercent = form.EvasionNegationPercent,
+                                                              MeditationExtraMana = form.MeditationExtraMana,
+                                                              CleanseExtraHealth = form.CleanseExtraHealth,
+                                                              MoveActionPointDiscount = form.MoveActionPointDiscount,
+                                                              SpellExtraHealthDamagePercent = form.SpellExtraHealthDamagePercent,
+                                                              SpellExtraTFEnergyPercent = form.SpellExtraTFEnergyPercent,
+                                                              CleanseExtraTFEnergyRemovalPercent = form.CleanseExtraTFEnergyRemovalPercent,
+                                                              SpellMisfireChanceReduction = form.SpellMisfireChanceReduction,
+                                                              SpellHealthDamageResistance = form.SpellHealthDamageResistance,
+                                                              SpellTFEnergyDamageResistance = form.SpellTFEnergyDamageResistance,
+                                                              ExtraInventorySpace = form.ExtraInventorySpace,
 
-                                                              Discipline = f.Discipline,
-                                                              Perception = f.Perception,
-                                                              Charisma = f.Charisma,
-                                                              Submission_Dominance = f.Submission_Dominance,
+                                                              Discipline = form.Discipline,
+                                                              Perception = form.Perception,
+                                                              Charisma = form.Charisma,
+                                                              Submission_Dominance = form.Submission_Dominance,
 
-                                                              Fortitude = f.Fortitude,
-                                                              Agility = f.Agility,
-                                                              Allure = f.Allure,
-                                                              Corruption_Purity = f.Corruption_Purity,
+                                                              Fortitude = form.Fortitude,
+                                                              Agility = form.Agility,
+                                                              Allure = form.Allure,
+                                                              Corruption_Purity = form.Corruption_Purity,
 
-                                                              Magicka = f.Magicka,
-                                                              Succour = f.Succour,
-                                                              Luck = f.Luck,
-                                                              Chaos_Order = f.Chaos_Order,
+                                                              Magicka = form.Magicka,
+                                                              Succour = form.Succour,
+                                                              Luck = form.Luck,
+                                                              Chaos_Order = form.Chaos_Order,
                                                           }
 
                                                       };
@@ -475,14 +474,14 @@ namespace TT.Domain.Procedures
             return player;
         }
 
-        public static string SaveNewPlayer(NewCharacterViewModel player, string membershipId)
+        public static string SaveNewPlayer(NewCharacterViewModel newCharacterViewModel, string membershipId)
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            var noGenerationLastName = player.LastName.Split(' ')[0];
+            var noGenerationLastName = newCharacterViewModel.LastName.Split(' ')[0];
 
-            var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
+            var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == noGenerationLastName);
 
             if (ghost != null && ghost.BotId != AIStatics.RerolledPlayerBotId && ghost.MembershipId != membershipId)
             {
@@ -491,47 +490,47 @@ namespace TT.Domain.Procedures
 
             var generationTitle = "";
 
-            if (ghost != null && (ghost.BotId == AIStatics.RerolledPlayerBotId || ghost.MembershipId == membershipId) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+            if (ghost != null && (ghost.BotId == AIStatics.RerolledPlayerBotId || ghost.MembershipId == membershipId) && ghost.FirstName == newCharacterViewModel.FirstName && ghost.LastName == newCharacterViewModel.LastName)
             {
 
-                var possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
+                var possibleOldGens = playerRepo.Players.Where(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName.Contains(newCharacterViewModel.LastName)).ToList();
 
-                if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName) == null)
+                if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName) == null)
                 {
                     generationTitle = " II";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " II") == null) {
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " II") == null) {
                     generationTitle = " II";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " III") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " III") == null)
                 {
                     generationTitle = " III";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IV") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " IV") == null)
                 {
                     generationTitle = " IV";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " V") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " V") == null)
                 {
                     generationTitle = " V";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VI") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " VI") == null)
                 {
                     generationTitle = " VI";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VII") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " VII") == null)
                 {
                     generationTitle = " VII";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VIII") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " VIII") == null)
                 {
                     generationTitle = " VIII";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IX") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " IX") == null)
                 {
                     generationTitle = " IX";
                 }
-                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " X") == null)
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == newCharacterViewModel.FirstName && p.LastName == newCharacterViewModel.LastName + " X") == null)
                 {
                     generationTitle = " X";
                 }
@@ -544,7 +543,7 @@ namespace TT.Domain.Procedures
             // check that the name has not been reserved by someone else with a different Membership Id
 
             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
-            var resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == player.FirstName + " " + player.LastName);
+            var resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == newCharacterViewModel.FirstName + " " + newCharacterViewModel.LastName);
 
             if (resNameGhost != null && resNameGhost.MembershipId != membershipId)
             {
@@ -552,17 +551,15 @@ namespace TT.Domain.Procedures
             }
 
             // assert that the form is a valid staring form
-            var x = player.FormName;
-
-            if (!DomainRegistry.Repository.FindSingle(new IsBaseForm {form = x}))
+            if (!DomainRegistry.Repository.FindSingle(new IsBaseForm {formSourceId = newCharacterViewModel.FormSourceId}))
             {
                 return "That is not a valid starting form.";
             }
 
             Player vendor = null;
-            if (player.InanimateForm != null && player.StartAsInanimate)
+            if (newCharacterViewModel.InanimateForm != null && newCharacterViewModel.StartAsInanimate)
             {
-                if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
+                if (newCharacterViewModel.InanimateForm.ToString() == "pet" || newCharacterViewModel.InanimateForm.ToString() == "random")
                 {
                     vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                     if (vendor == null)
@@ -570,7 +567,7 @@ namespace TT.Domain.Procedures
                         return "Wüffie is not currently available to accept new pets. Please try again later.";
                     }
                 }
-                if (player.InanimateForm.ToString() != "pet")
+                if (newCharacterViewModel.InanimateForm.ToString() != "pet")
                 {
                     vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                     if (vendor == null)
@@ -593,7 +590,7 @@ namespace TT.Domain.Procedures
                     return "It is too soon for you to start again. Please try again in " + rerollTime.ToString(@"hh\:mm\:ss") + ".";
                 }
 
-                // remove all of the old player's player logs
+                // remove all of the old player's logs
                 PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
 
                 // delete the achivements for that player that get reset upon reroll, such as reading tomes or passing quests
@@ -623,29 +620,29 @@ namespace TT.Domain.Procedures
 
 
             // clean the name entered by the player, capitalize first letter and downcase the rest
-            var cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
-            var cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
+            var cleanFirstName = char.ToUpper(newCharacterViewModel.FirstName[0]) + newCharacterViewModel.FirstName.Substring(1).ToLower();
+            var cleanLastName = char.ToUpper(newCharacterViewModel.LastName[0]) + newCharacterViewModel.LastName.Substring(1).ToLower();
 
-            player.FirstName = cleanFirstName;
-            player.LastName = cleanLastName + generationTitle;
+            newCharacterViewModel.FirstName = cleanFirstName;
+            newCharacterViewModel.LastName = cleanLastName + generationTitle;
 
 
             var cmd = new CreatePlayer
             {
-                FirstName = player.FirstName,
-                LastName = player.LastName,
-                Gender = player.Gender,
+                FirstName = newCharacterViewModel.FirstName,
+                LastName = newCharacterViewModel.LastName,
+                Gender = newCharacterViewModel.Gender,
                 Location = "coffee_shop",
                 UserId = membershipId,
-                Form = player.FormName,
                 BotId = AIStatics.ActivePlayerBotId,
-                GameMode = player.StartGameMode,
-                InRP = player.StartInRP
+                GameMode = newCharacterViewModel.StartGameMode,
+                InRP = newCharacterViewModel.StartInRP,
+                FormSourceId = newCharacterViewModel.FormSourceId
             };
-            cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
+            //cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
-            if (player.InanimateForm == null)
+            if (newCharacterViewModel.InanimateForm == null)
             {
                 cmd.InQuest = 6; // Welcome to Sunnyglade quest
                 cmd.InQuestState = 93; // first stage of Welcome to Sunnyglade
@@ -675,7 +672,7 @@ namespace TT.Domain.Procedures
                 SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newPlayerId);
 
                 // transfer their old messages to new account
-                if (player.MigrateLetters)
+                if (newCharacterViewModel.MigrateLetters)
                 {
                     using (var context = new StatsContext())
                     {
@@ -706,15 +703,15 @@ namespace TT.Domain.Procedures
 
             DomainRegistry.Repository.Execute(new CreateSkill {ownerId = newPlayerId, skillSourceId = SkillStatics.WeakenSkillSourceId });
 
-            if (player.InanimateForm != null)
+            if (newCharacterViewModel.InanimateForm != null)
             {
-                var startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
-                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
+                var startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(newCharacterViewModel.InanimateForm.ToString()));
+                if (newCharacterViewModel.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
                 DomainRegistry.Repository.Execute(new ChangeForm
                 {
                     PlayerId = newPlayerId,
-                    FormName = startform.dbName
+                    FormSourceId = startform.Id
                 });
 
                 var newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
@@ -730,17 +727,17 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void SetCustomBase(Player player, string newFormName)
+        public static void SetCustomBase(Player player, int newFormSourceId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.OriginalForm = newFormName;
+            dbPlayer.OriginalFormSourceId = newFormSourceId;
             playerRepo.SavePlayer(dbPlayer);
         }
 
         public static void InstantRestoreToBase(Player player)
         {
-            var oldForm = player.Form;
+            var oldFormSourceId = player.FormSourceId;
 
             if (player.Mobility != PvPStatics.MobilityFull)
             {
@@ -748,7 +745,7 @@ namespace TT.Domain.Procedures
 
                 if (itemMe != null)
                 {
-                    // drop any runes embedded on the player-item, or return them to the former owner's inventory
+                    // drop any runes embedded on the newCharacterViewModel-item, or return them to the former owner's inventory
                     DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
                     DomainRegistry.Repository.Execute(new DeleteItem {ItemId = itemMe.Id});
                 }
@@ -756,22 +753,22 @@ namespace TT.Domain.Procedures
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = player.Id,
-                FormName = player.OriginalForm
+                FormSourceId = player.OriginalFormSourceId
             });
 
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, oldForm, player.OriginalForm);
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
 
         }
 
-        public static void InstantChangeToForm(Player player, string formName)
+        public static void InstantChangeToForm(Player player, int formSourceId)
         {
-            var oldForm = player.Form;
+            var oldFormSourceId = player.FormSourceId;
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = player.Id,
-                FormName = formName
+                FormSourceId = formSourceId
             });
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, oldForm, formName);
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, formSourceId);
         }
 
         public static void MarkOnlineActivityTimestamp(Player player)
@@ -1422,77 +1419,6 @@ namespace TT.Domain.Procedures
 
             return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
-        }
-
-        /// <summary>
-        /// Allow a player to attempt to restore themself back to their own base form
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="buffs"></param>
-        /// <returns></returns>
-        public static string SelfRestoreToBase(Player player, BuffBox buffs)
-        {
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.ActionPoints -= (decimal)PvPStatics.SelfRestoreAPCost;
-            dbPlayer.Mana -= (decimal)PvPStatics.SelfRestoreManaCost;
-            dbPlayer.CleansesMeditatesThisRound++;
-            playerRepo.SavePlayer(dbPlayer);
-
-            ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
-            var restoreEnergy = energyRepo.TFEnergies.FirstOrDefault(e => e.PlayerId == player.Id && e.FormName == "selfrestore");
-
-            if (restoreEnergy==null)
-            {
-                restoreEnergy = new TFEnergy
-                {
-                    Amount = 0,
-                    CasterId = null,
-                    Timestamp = DateTime.UtcNow,
-                    FormName = "selfrestore",
-                    PlayerId = player.Id
-                };
-            }
-
-            var output = "";
-
-            // build up some restoration energy
-
-            var restoreAmount = PvPStatics.SelfRestoreBaseTFEnergyPerCast;
-            var restoreBonus = (float)Math.Floor(buffs.Allure() / 10 );
-            restoreAmount += restoreBonus;
-
-            restoreEnergy.Amount += (decimal)restoreAmount;
-            if (restoreEnergy.Amount > (decimal)PvPStatics.SelfRestoreTFnergyRequirement)
-            {
-                restoreEnergy.Amount = (decimal)PvPStatics.SelfRestoreTFnergyRequirement;
-            }
-
-            output += "You rest and attempt to restore yourself to your base form.  [+" + (int)restoreAmount + ", " + (int)restoreEnergy.Amount + "/" + PvPStatics.SelfRestoreTFnergyRequirement + "]";
-
-            // enough energy built up for restore to be successful
-            if (restoreEnergy.Amount >= (decimal)PvPStatics.SelfRestoreTFnergyRequirement)
-            {
-               
-                PlayerProcedures.InstantRestoreToBase(player);
-                PlayerProcedures.SetTimestampToNow(player);
-                energyRepo.DeleteTFEnergy(restoreEnergy.Id);
-                var newform = FormStatics.GetForm(dbPlayer.OriginalForm);
-
-                output += "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + newform.FriendlyName + "</b>!<span>";
-
-                PlayerLogProcedures.AddPlayerLog(player.Id, output, true);
-            }
-
-            // player does not have enough energy built up.
-            else
-            {
-                output += "  Keep trying and you'll find yourself in a familiar form in no time...";
-                energyRepo.SaveTFEnergy(restoreEnergy);
-            }
-
-            return output;
         }
 
         public static string DeMeditate(Player player, Player mindcontroller, BuffBox buffs) {

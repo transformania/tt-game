@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Entities.TFEnergies;
+using TT.Domain.TFEnergies.Entities;
 
 namespace TT.Tests.Builders.TFEnergies
 {

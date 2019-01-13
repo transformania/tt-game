@@ -23,9 +23,9 @@ namespace TT.Tests.Items.Commands
 
         private const string RegularGuy = "Regular Guy";
         private const string RegularGirl = "Regular Girl";
-        private const string BaseMaleForm = "man_01";
-        private const string BaseFemaleForm = "woman_01";
         private const string TavernLocation = "tavern_bar";
+        private const string BaseMaleForm = "man_01"; // TODO: remove this shit
+        private const string BaseFemaleForm = "woman_01"; // TODO: remove this shit
 
         [Test]
         public void can_throw_tg_bomb()
@@ -73,20 +73,21 @@ namespace TT.Tests.Items.Commands
                .With(p => p.Location, TavernLocation)
                .With(p => p.Gender, PvPStatics.GenderFemale)
                .With(p => p.FormSource, regularGirlForm)
-               .With(p => p.Form, BaseFemaleForm)
                .With(p => p.PlayerLogs, new List<PlayerLog>())
+               .With(p => p.Form, BaseFemaleForm)
                .BuildAndSave();
 
             // should get hit and turned into Regular Girl
             var maleBystander = new PlayerBuilder()
               .With(p => p.Id, 7)
+              .With(p => p.Form, BaseFemaleForm)
               .With(p => p.Location, TavernLocation)
               .With(p => p.FirstName, "Albert")
               .With(p => p.FirstName, "Smith")
               .With(p => p.Gender, PvPStatics.GenderMale)
               .With(p => p.FormSource, regularGuyForm)
-              .With(p => p.Form, BaseMaleForm)
               .With(p => p.PlayerLogs, new List<PlayerLog>())
+              .With(p => p.Form, BaseMaleForm)
               .BuildAndSave();
 
             // shouldn't get hit, in SuperProtection mode
@@ -94,10 +95,10 @@ namespace TT.Tests.Items.Commands
              .With(p => p.Id, 8)
              .With(p => p.Location, TavernLocation)
              .With(p => p.Gender, PvPStatics.GenderMale)
-             .With(p => p.Form, BaseMaleForm)
              .With(p => p.FormSource, regularGuyForm)
              .With(p => p.GameMode, GameModeStatics.SuperProtection)
              .With(p => p.PlayerLogs, new List<PlayerLog>())
+             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             // shouldn't get hit, offline
@@ -105,10 +106,10 @@ namespace TT.Tests.Items.Commands
              .With(p => p.Id, 9)
              .With(p => p.Location, TavernLocation)
              .With(p => p.Gender, PvPStatics.GenderMale)
-             .With(p => p.Form, BaseMaleForm)
              .With(p => p.FormSource, regularGuyForm)
              .With(p => p.LastActionTimestamp, DateTime.UtcNow.AddHours(-5))
              .With(p => p.PlayerLogs, new List<PlayerLog>())
+             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             // shouldn't get hit, not in a base form
@@ -116,10 +117,10 @@ namespace TT.Tests.Items.Commands
              .With(p => p.Id, 10)
              .With(p => p.Location, TavernLocation)
              .With(p => p.Gender, PvPStatics.GenderMale)
-             .With(p => p.Form, "otherform")
              .With(p => p.FormSource, nonBaseForm)
              .With(p => p.LastActionTimestamp, DateTime.UtcNow.AddHours(-5))
              .With(p => p.PlayerLogs, new List<PlayerLog>())
+             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             var result = Repository.Execute(new ThrowTGBomb { ItemId = bomb.Id, PlayerId = thrower.Id });
@@ -162,7 +163,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.Id, 5)
                 .BuildAndSave();
 
-            var cmd = new ThrowTGBomb {ItemId = bomb.Id, PlayerId = 12};
+            var cmd = new ThrowTGBomb { ItemId = bomb.Id, PlayerId = 12 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.Should().ThrowExactly<DomainException>().WithMessage("player with ID 12 could not be found.");

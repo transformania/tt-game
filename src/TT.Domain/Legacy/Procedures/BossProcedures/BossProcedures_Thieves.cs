@@ -16,17 +16,15 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private const string MaleBossFirstName = "Brother Lujako";
         private const string MaleBossLastName = "Seekshadow";
-        public const string MaleBossFormDbName = "form_Apprentice_Seekshadow_Thief_Judoo";
         private const string FemaleBossFirstName = "Sister Lujienne";
         private const string FemaleBossLastName = "Seekshadow";
-        public const string FemaleBossFormDbName = "form_Master_Seekshadow_Thief_Judoo";
 
         public const int GoldenTrophySpellSourceId = 609;
 
         public const int StunSpellSourceId = 588;
 
-        private const int MaleBossFormId = 278;
-        private const int FemaleBossFormId = 279;
+        public const int MaleBossFormSourceId = 278;
+        public const int FemaleBossFormSourceId = 279;
 
         public static void SpawnThieves()
         {
@@ -45,8 +43,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = MaleBossFormDbName,
-                    FormSourceId = MaleBossFormId,
+                    FormSourceId = MaleBossFormSourceId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 5,
@@ -96,8 +93,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = FemaleBossFormDbName,
-                    FormSourceId = FemaleBossFormId,
+                    FormSourceId = FemaleBossFormSourceId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 7,

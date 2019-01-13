@@ -12,7 +12,7 @@ namespace TT.Domain.Players.Commands
 
         public int PlayerId { get; set; }
         public int? FormId { get; set; }
-        public string FormName { get; set; }
+        public int FormSourceId { get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -24,7 +24,7 @@ namespace TT.Domain.Players.Commands
                     throw new DomainException($"Player with ID {PlayerId} could not be found");
 
                 FormSource form;
-                if (FormName.IsNullOrEmpty())
+                if (FormSourceId <= 0)
                 {
                     if (FormId == null)
                         throw new DomainException("FormId or FormName are required");
@@ -35,9 +35,9 @@ namespace TT.Domain.Players.Commands
                 }
                 else
                 {
-                    form = ctx.AsQueryable<FormSource>().SingleOrDefault(cr => cr.dbName == FormName);
+                    form = ctx.AsQueryable<FormSource>().SingleOrDefault(cr => cr.Id == FormSourceId);
                     if (form == null)
-                        throw new DomainException($"FormSource with name {FormName} could not be found");
+                        throw new DomainException($"FormSource with id '{FormSourceId}' could not be found");
                 }
                 player.ChangeForm(form);
                 ctx.Commit();

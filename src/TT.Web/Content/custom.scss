@@ -292,8 +292,6 @@ li {
   height: 100px;
   width: 100px;
   background-size: 100% 100%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .charInfoWrapper {
@@ -400,6 +398,11 @@ li {
 
 .icon-quest {
   background-image: url("../Images/PvP/Icons/icon-quest.png");
+}
+
+.icon-ai {
+    background-image: url("../Images/PvP/Icons/icon-ai.png");
+    float: right;
 }
 
 .icon-turn {
@@ -1530,4 +1533,23 @@ strong {
     height: 200px;
     resize: vertical;
     overflow-y: scroll;
+}
+
+.portraitBorder {
+    width: 103px;
+    height: 103px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.border-bot {
+    background-color: red;
+}
+
+.border-npc {
+    background-color: blue;
+}
+
+.border-player {
+    background-color: green;
 }

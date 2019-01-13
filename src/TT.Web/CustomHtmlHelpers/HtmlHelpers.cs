@@ -69,16 +69,6 @@ namespace TT.Web.CustomHtmlHelpers
             return player.DonatorLevel >= 1 ? new MvcHtmlString("<span class='icon icon-donate' title='This player supports this game on Patreon monthly.'></span>") : new MvcHtmlString("");
         }
 
-        public static MvcHtmlString PrintPvPIcon(Item_VM item)
-        {
-
-            if (item.PvPEnabled == 2)
-            {
-                return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
-            }
-            return item.PvPEnabled == 1 ? new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>") : new MvcHtmlString("");
-        }
-
         public static MvcHtmlString PrintPvPIcon(ItemDetail item)
         {
 
@@ -452,6 +442,15 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString PrintQuestIcon(Player player)
         {
             return player.InQuest > 0 ? new MvcHtmlString("<span class='icon icon-quest' title='This player is in a quest.'></span>") : new MvcHtmlString("");
+        }
+
+        public static MvcHtmlString GetPortraitBorderClass(int botId)
+        {
+            if (botId == AIStatics.ActivePlayerBotId)
+                return new MvcHtmlString("border-player");
+            if (new [] {AIStatics.LoremasterBotId, AIStatics.LindellaBotId, AIStatics.WuffieBotId, AIStatics.LoremasterBotId, AIStatics.BartenderBotId }.Contains(botId))
+                return new MvcHtmlString("border-npc");
+            return new MvcHtmlString("border-bot");
         }
 
         public static MvcHtmlString PrintMessageReadStatus(MessageDetail msg)

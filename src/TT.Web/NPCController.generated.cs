@@ -297,7 +297,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_LorekeeperLearnSpellSend
         {
-            public readonly string spell = ("spell").ToLowerInvariant();
+            public readonly string spellSourceId = ("spellSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_TalkToValentine s_params_TalkToValentine = new ActionParamsClass_TalkToValentine();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -624,14 +624,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void LorekeeperLearnSpellSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string spell);
+        partial void LorekeeperLearnSpellSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int spellSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult LorekeeperLearnSpellSend(string spell)
+        public override System.Web.Mvc.ActionResult LorekeeperLearnSpellSend(int spellSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LorekeeperLearnSpellSend);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "spell", spell);
-            LorekeeperLearnSpellSendOverride(callInfo, spell);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "spellSourceId", spellSourceId);
+            LorekeeperLearnSpellSendOverride(callInfo, spellSourceId);
             return callInfo;
         }
 

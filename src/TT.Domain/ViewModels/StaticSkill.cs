@@ -3,8 +3,7 @@
     public class StaticSkill
     {
         //this class stores all of the skills as available to everyone.  It has absolutely nothing to do with what an individual player has.
-
-        public string dbName { get; set; }
+        public int Id { get; set; }
         public string FriendlyName { get; set; }
         public string FormdbName { get; set; }
         public string Description { get; set; }

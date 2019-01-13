@@ -18,32 +18,35 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string Form = "form_Corrupted_Lunar_Fae_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
         public const string SpawnLocation = "fairygrove_greathall";
 
-        public const string GreatFaeSpell = "skill_Midsummer's_Eve_Vivien_Gemai";
+        public const int GreatFaeSpellSourceId = 565;
         public const string GreatFaeForm = "form_Great_Fairy_Vivien_Gemai";
 
-        public const string DarkFaeSpell = "skill_Darkness_My_Old_Friend_Larissa_Fay";
+        public const int DarkFaeSpellSourceId = 879;
+
+
         public const string DarkFaeForm = "form_Dark_Fae_Larissa_Fay";
 
-        public const string EnchantedTreeSpell = "skill_Take_Root_Sherry_Gray";
+        public const int EnchantedTreeSpellSourceId = 344;
         public const string EnchantedTreeForm = "form_Enchanted_Tree_Sherry_Gray";
 
         /// <summary>
         /// A list of all the animate spells Narcissa can cast
         /// </summary>
-        public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
+        public static readonly int[] animateSpellsToCast = { GreatFaeSpellSourceId, DarkFaeSpellSourceId, EnchantedTreeSpellSourceId };
 
-        public const string FlowerSpell = "skill_Tainted_Flower_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
-        public const string ServantOfLunarFaeSpell = "skill_Touch_of_the_Moon_Roxanne246810(Rachael_Victor/Yuki_Kitsu)"; // NOT YET READY FOR RELEASE
+        public const int FlowerSpellSourceId = 929;
+
+        public const int ServantOfLunarFaeSpellSourceId = 930;
 
         /// <summary>
         /// This is the only spell players can cast against Narcissa.
         /// </summary>
-        public const string SpellUsedAgainstNarcissa = "skill_The_Cheekiest_of_Counterspells_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
+        public const int SpellUsedAgainstNarcissaSourceId = 931;
 
         /// <summary>
         /// A list of the inanimate and pet spells Narcissa can cast
         /// </summary>
-        public static readonly string[] inanimateSpellsToCast = { FlowerSpell, ServantOfLunarFaeSpell };
+        public static readonly int[] inanimateSpellsToCast = { FlowerSpellSourceId, ServantOfLunarFaeSpellSourceId };
 
         /// <summary>
         /// Probability of drawing Narcissa's aggro when she already has a target set
@@ -110,10 +113,10 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <summary>
         /// Returns whether the spell is valid against Narcissa.
         /// </summary>
-        /// <param name="spellName">db name of the spell whose cast is being attempted</param>
+        /// <param name="spellSourceId">source id of the spell whose cast is being attempted</param>
         /// <param name="caster">Player attempting to cast the spell</param>
         /// <returns></returns>
-        public static Tuple<bool, string> SpellIsValid(string spellName, Player caster)
+        public static Tuple<bool, string> SpellIsValid(int spellSourceId, Player caster)
         {
 
             if (caster.Form == GreatFaeForm || caster.Form == DarkFaeForm || caster.Form == EnchantedTreeForm)
@@ -121,7 +124,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 return new Tuple<bool, string>(false, "You try to cast upon " + FirstName + ", " + "but the fae's mastery over your current form is overwhelming and you find that you cannot!");
             }
 
-            if (spellName != SpellUsedAgainstNarcissa)
+            if (spellSourceId != SpellUsedAgainstNarcissaSourceId)
             {
                 return new Tuple<bool, string>(false, "This spell has no effect on " + FirstName + "!  Maybe you should talk to Rusty at the bar and get some advice...");
             }
@@ -196,7 +199,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 if (faeboss.dbLocationName == target.dbLocationName)
                 {
-                    var spell = ChooseSpell(target, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
+                    var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
 
                     for (var i = 0; i < 4; i++)
                     {
@@ -222,7 +225,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             AIProcedures.DealBossDamage(faeboss, attacker, true, 1); // log attack for human on boss
 
-            var spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityInanimate);
+            var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityInanimate);
 
             for (var i = 0; i < 3; i++)
             {
@@ -250,11 +253,10 @@ namespace TT.Domain.Procedures.BossProcedures
         /// Calculate which spell for Narcissa to cast depending on the attacking player.  Narcissa will change spells every now and then based on the world turn
         /// number.
         /// </summary>
-        /// <param name="attacker">The attacking player</param>
         /// <param name="turnNumber">World turn number</param>
         /// <param name="spellMobilityType">The spell type to cast with.  Narcissa targets neutral players with animate spells and her targets with inanimate/pet spells</param>
         /// <returns></returns>
-        public static string ChooseSpell(Player attacker, int turnNumber, string spellMobilityType)
+        public static int ChooseSpell(int turnNumber, string spellMobilityType)
         {
 
             // index = Math.Floor(turn_number / spell_swap_frequeny) % spell_counts
@@ -403,7 +405,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (var p in playersHere)
             {
-                var spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
+                var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
                 AttackProcedures.Attack(faeboss, p, spell);
                 AIProcedures.DealBossDamage(faeboss, p, false, 1); // log attack for human on boss
             }

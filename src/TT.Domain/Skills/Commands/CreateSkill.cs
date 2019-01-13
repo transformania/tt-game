@@ -19,7 +19,7 @@ namespace TT.Domain.Skills.Commands
             {
                 var skillSource = ctx.AsQueryable<SkillSource>().SingleOrDefault(t => t.Id == skillSourceId);
                 if (skillSource == null)
-                    throw new DomainException($"Skill Source with Id {skillSourceId} could not be found");
+                    throw new DomainException($"StaticSkill Source with Id {skillSourceId} could not be found");
 
                 var player = ctx.AsQueryable<Player>().SingleOrDefault(t => t.Id == ownerId);
 

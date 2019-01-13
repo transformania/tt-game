@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public string Name { get; set; }
+        public int? SkillSourceId { get; set; }
         public decimal Duration { get; set; }
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
@@ -16,7 +16,7 @@
     {
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public string Name { get; set; }
+        public int? SkillSourceId { get; set; }
         public decimal Duration { get; set; }
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }

@@ -21,7 +21,7 @@ namespace TT.Domain.Models
         [Display(Name = "Do you have a website whose URL you'd like to have listed along with your name when being credited?  If so, enter the URL, otherwise leave empty.")]
         public string SubmitterUrl { get; set; }
 
-        // Skill fields
+        // StaticSkill fields
         #region skill
         
         [Display(Name = "Name of spell")]
@@ -321,6 +321,8 @@ namespace TT.Domain.Models
         public float Succour { get; set; }
         public float Luck { get; set; }
         public float Chaos_Order { get; set; }
+
+        public int? SkillSourceId { get; set; }
 
         public string GetSkillDbName()
         {

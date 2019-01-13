@@ -139,7 +139,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SelfCastSend
         {
-            public readonly string spell = ("spell").ToLowerInvariant();
+            public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_RemoveCurseSend s_params_RemoveCurseSend = new ActionParamsClass_RemoveCurseSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -264,14 +264,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SelfCastSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string spell);
+        partial void SelfCastSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skillSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SelfCastSend(string spell)
+        public override System.Web.Mvc.ActionResult SelfCastSend(int skillSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCastSend);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "spell", spell);
-            SelfCastSendOverride(callInfo, spell);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skillSourceId", skillSourceId);
+            SelfCastSendOverride(callInfo, skillSourceId);
             return callInfo;
         }
 

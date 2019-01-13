@@ -93,7 +93,7 @@
                         <td>N/A</td>
                     }
                 }
-                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.SkillSource.dbName), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
+                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.SkillSource.Id), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
                 </tr>
                         }
         }

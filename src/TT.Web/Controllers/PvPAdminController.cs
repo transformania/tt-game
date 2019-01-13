@@ -1451,36 +1451,36 @@ namespace TT.Web.Controllers
                 // if Valentine, give player his spells
                 else if (player.Form == BossProcedures_Valentine.ValentineFormDbName)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireFemaleSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireFemaleSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireMaleSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireMaleSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireFemaleSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireFemaleSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireMaleSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireMaleSpellSourceId);
                 }
 
                 // if plague mother, give player her spells
                 else if (player.Form == BossProcedures_BimboBoss.BossFormDbName)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellDbName);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellSourceId);
                 }
 
                 // if master rat thief, give player her spells
                 else if (player.Form == BossProcedures_Thieves.FemaleBossFormDbName)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellDbName);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellSourceId);
                 }
 
                 // if it's mouse sisters, then give them spells as well
                 else if (player.Form == BossProcedures_Sisters.BimboBossForm)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MakeupKitSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MakeupKitSpellSourceId);
                 }
 
                 else if (player.Form == BossProcedures_Sisters.NerdBossForm)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpellSourceId);
                 }
 
                 var cm = changed_name + changed_form + changed_level + changed_money;

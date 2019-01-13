@@ -24,7 +24,7 @@ namespace TT.Domain.Skills.Commands
             {
                 var skillSource = ctx.AsQueryable<SkillSource>().SingleOrDefault(t => t.Id == SkillSourceId);
                 if (skillSource == null)
-                    throw new DomainException($"Skill Source with Id {SkillSourceId} could not be found");
+                    throw new DomainException($"StaticSkill Source with Id {SkillSourceId} could not be found");
 
                 FormSource formSource = null;
                 EffectSource givesEffectSource = null;

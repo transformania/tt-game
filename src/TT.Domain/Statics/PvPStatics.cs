@@ -149,7 +149,7 @@ namespace TT.Domain.Statics
         public const string DungeonDemon = "form_Dark_Demonic_Guardian_Judoo";
         public const int DungeonDemon_Limit = 5;
 
-        public const string Dungeon_VanquishSpell = "skill_Vanquish_Judoo";
+        public const int Dungeon_VanquishSpellSourceId = 686;
 
         public const string ItemType_TGBomb = "item_consumable_tg_bomb";
 
@@ -168,7 +168,7 @@ namespace TT.Domain.Statics
 
         public const int FriendNicknameMaxLength = 100;
 
-        public const string Spell_Weaken = "lowerHealth";
+        public const int Spell_WeakenId = 312;
     }
 
     public static class MindControlStatics

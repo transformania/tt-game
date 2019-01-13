@@ -10,7 +10,7 @@ namespace TT.Domain.Players.Queries
     public class CanAttackNpcWithSpell : DomainQuerySingle<string>
     {
         public DbStaticForm futureForm { get; set; }
-        public string spellDbName { get; set; }
+        public int spellSourceId { get; set; }
         public Player target { get; set; }
         public Player attacker { get; set; }
 
@@ -64,7 +64,7 @@ namespace TT.Domain.Players.Queries
                 // Narcissa
                 if (target.BotId == AIStatics.FaebossBotId)
                 {
-                    var isValid = BossProcedures_FaeBoss.SpellIsValid(spellDbName, attacker);
+                    var isValid = BossProcedures_FaeBoss.SpellIsValid(spellSourceId, attacker);
                     if (!isValid.Item1)
                     {
                         return isValid.Item2;
@@ -74,7 +74,7 @@ namespace TT.Domain.Players.Queries
                 // Mouse Sisters Boss
                 if (target.BotId == AIStatics.MouseNerdBotId || target.BotId == AIStatics.MouseBimboBotId)
                 {
-                    string result = BossProcedures_Sisters.SpellIsValid(attacker, target, spellDbName);
+                    string result = BossProcedures_Sisters.SpellIsValid(attacker, target, spellSourceId);
                     if (!result.IsNullOrEmpty())
                     {
                         return result;
@@ -87,7 +87,7 @@ namespace TT.Domain.Players.Queries
                 }
 
                 // Dungeon Demons can only be vanquished
-                if (target.BotId == AIStatics.DemonBotId && spellDbName != PvPStatics.Dungeon_VanquishSpell && spellDbName != PvPStatics.Spell_Weaken)
+                if (target.BotId == AIStatics.DemonBotId && spellSourceId != PvPStatics.Dungeon_VanquishSpellSourceId && spellSourceId != PvPStatics.Spell_WeakenId)
                 {
                     return "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                 }

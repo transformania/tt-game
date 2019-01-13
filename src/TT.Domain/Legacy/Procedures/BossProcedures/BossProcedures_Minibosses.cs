@@ -20,7 +20,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public string FormName { get; set; }
         public int RuneIdToGive { get; set; }
         public string Region { get; set; }
-        public List<string> Spells { get; set; }
+        public List<int> Spells { get; set; }
         public int BotId { get; set; }
     }
 
@@ -40,7 +40,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Sorority_House_Mother_Judoo",
                     Title = "Sorority House Mother",
                     Region = "sorority",
-                    Spells = new List<string> { "skill_Naughty_Knitted_Nethers_Duhad", "skill_Lingerie_Inveigh__PsychoticPie", "skill_Floral_Upholding_Passerby"},
+                    Spells = new List<int> { 522, 354, 678},
                     RuneIdToGive = RuneStatics.MINIBOSS_SORORITY_MOTHER_RUNE,
                     BotId = AIStatics.MinibossSororityMotherId
 ,                }
@@ -52,7 +52,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Pop_Goddess_Judoo",
                     Title = "Pop Goddess",
                     Region = "concert_hall",
-                    Spells = new List<string> { "skill_Almost_A_Shirt_Kinello", "skill_Reflecius_Fabricos_Haretia", "skill_It's_Got_Ruffles!_Martiandawn"},
+                    Spells = new List<int> { 1102, 363, 431},
                     BotId = AIStatics.MinibossPopGoddessId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POP_GODDESS_RUNE,
                 }
@@ -64,7 +64,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Possessed_Maid_Judoo",
                     Title = "Maid",
                     Region = "mansion",
-                    Spells = new List<string> { "skill_Haute_Couture_Hanna", "skill_Dusty_Hanna", "skill_Crown_of_Order_Hanna"},
+                    Spells = new List<int> { 361, 390, 376},
                     BotId = AIStatics.MinibossPossessedMaidId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POSSESSED_MAID_RUNE,
                 }
@@ -76,7 +76,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Sanguine_Seamstress_Judoo",
                     Title = "Seamstress",
                     Region = "clothing",
-                    Spells = new List<string> { "skill_Soft_But_Wild_Lara_Ithilwen", "skill_So_Fluffy!_Gina_Victor_/_Rena_Kitsu", "skill_Ensoften_Frederika_Rein"},
+                    Spells = new List<int> { 976, 1037, 1061},
                     BotId = AIStatics.MinibossSeamstressId,
                     RuneIdToGive = RuneStatics.MINIBOSS_SEAMSTRESS_RUNE,
                 }
@@ -88,7 +88,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Disgruntled_Groundskeeper_Judoo",
                     Title = "Groundskeeper",
                     Region = "park",
-                    Spells = new List<string> { "skill_Woodland's_Reach_Ai_Noai", "skill_Bewitching_Flight_Crystal_Moyer", "skill_Water_Water_Every_Who_Merp"},
+                    Spells = new List<int> { 947, 1049, 791},
                     BotId = AIStatics.MinibossGroundskeeperId,
                     RuneIdToGive = RuneStatics.MINIBOSS_GROUNDSKEEPER_RUNE
                 }
@@ -100,7 +100,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Exchange_Professor_Judoo",
                     Title = "Professor",
                     Region = "lab",
-                    Spells = new List<string> { "skill_Milkify_Soul", "skill_Liquefy_V2.0_GooGirl", "skill_Day_of_the_Tentacle_Varn"},
+                    Spells = new List<int> { 891, 446, 420},
                     BotId = AIStatics.MinibossExchangeProfessorId,
                     RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE
                 }
@@ -240,7 +240,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             return DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
         }
 
-        private static string ChooseSpell(int turnNumber, List<string> spells)
+        private static int ChooseSpell(int turnNumber, List<int> spells)
         {
             var index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % spells.Count;
             return spells[index];

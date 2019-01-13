@@ -18,7 +18,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public const string BossForm = "form_Road_Queen_Judoo";
         public const int BossFormId = 934;
 
-        public const string BikerFollowerSpellname = "skill_Hell_in_Heels_on_Wheels_Judoo";
+        public const int BikerFollowerSpellSourceId = 1198;
         public const string BikerFollowerForm = "form_Road_Recruit_Judoo";
 
         public const string EffectLevelOne = "effect_Harley's_Displeasure_Judoo";
@@ -27,7 +27,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public const string EffectLevelFour = "effect_Harley's_Fury_Judoo";
         public const string EffectLevelFive = "effect_Harley's_Wrath_Judoo";
 
-        public const string LeatherJacketSpellName = "skill_Welcome_To_The_Club_Breenarox";
+        public const int LeatherJacketSpellSourceId = 1197;
 
         private const int SummonToBossAPPenalty = 5;
 
@@ -78,9 +78,9 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
         }
 
-        private static string ChooseSpell(Player attacker)
+        private static int ChooseSpell(Player attacker)
         {
-            return attacker.Form == BikerFollowerForm ? LeatherJacketSpellName : BikerFollowerSpellname;
+            return attacker.Form == BikerFollowerForm ? LeatherJacketSpellSourceId : BikerFollowerSpellSourceId;
         }
 
         public static void RunTurnLogic()
@@ -149,9 +149,9 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             // try and turn everyone there into biker gang followers
             foreach (var victim in victims)
             {
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellname);
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellname);
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellname);
+                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
             }
 
         }

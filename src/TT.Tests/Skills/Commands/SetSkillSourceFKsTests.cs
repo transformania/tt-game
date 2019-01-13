@@ -151,7 +151,7 @@ namespace TT.Tests.Skills.Commands
             var cmd = new SetSkillSourceFKs { SkillSourceId = 3457};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("Skill Source with Id 3457 could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("StaticSkill Source with Id 3457 could not be found");
         }
 
     }

@@ -413,7 +413,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ArchiveSpell
         {
-            public readonly string name = ("name").ToLowerInvariant();
+            public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ArchiveAllMySpells s_params_ArchiveAllMySpells = new ActionParamsClass_ArchiveAllMySpells();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -904,14 +904,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ArchiveSpellOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string name);
+        partial void ArchiveSpellOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skillSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ArchiveSpell(string name)
+        public override System.Web.Mvc.ActionResult ArchiveSpell(int skillSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ArchiveSpell);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
-            ArchiveSpellOverride(callInfo, name);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skillSourceId", skillSourceId);
+            ArchiveSpellOverride(callInfo, skillSourceId);
             return callInfo;
         }
 

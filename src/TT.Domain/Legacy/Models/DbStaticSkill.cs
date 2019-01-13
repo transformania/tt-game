@@ -3,7 +3,6 @@
     public class DbStaticSkill
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string FormdbName { get; set; }
         public string Description { get; set; }

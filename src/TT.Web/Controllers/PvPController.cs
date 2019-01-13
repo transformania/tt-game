@@ -616,7 +616,7 @@ namespace TT.Web.Controllers
             {
 
                 // give player the Vanquish spell if they don't already know it
-                SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpell);
+                SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
 
                 var dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
                 PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
@@ -702,43 +702,43 @@ namespace TT.Web.Controllers
             // only show Weaken for valentine
             if (target.BotId == AIStatics.ValentineBotId)
             {
-                output = output.Where(s => s.dbSkill.Name == PvPStatics.Spell_Weaken);
+                output = output.Where(s => s.dbSkill.SkillSourceId == PvPStatics.Spell_WeakenId);
             }
 
             // only bimbo spell works on nerd mouse boss
             if (target.BotId == AIStatics.MouseNerdBotId)
             {
-                output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.BimboSpellSourceId);
             }
 
             // only nerd spell works on nerd bimbo boss
             if (target.BotId == AIStatics.MouseBimboBotId)
             {
-                output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.NerdSpellSourceId);
             }
 
             // Vanquish and weaken only works against dungeon demons
             if (target.BotId == AIStatics.DemonBotId)
             {
-                output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == PvPStatics.Spell_Weaken);
+                output = output.Where(s => s.StaticSkill.Id == PvPStatics.Dungeon_VanquishSpellSourceId || s.StaticSkill.Id == PvPStatics.Spell_WeakenId);
             }
 
             // Filter out Vanquish when attacking non-Dungeon Demon player
             if (target.BotId != AIStatics.DemonBotId)
             {
-                output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
+                output = output.Where(s => s.StaticSkill.Id != PvPStatics.Dungeon_VanquishSpellSourceId);
             }
 
             // Fae-In-A-Bottle only works against Narcissa
             if (target.BotId == AIStatics.FaebossBotId)
             {
-                output = output.Where(s => s.Skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
             }
 
             // Filter out Fae-In-A-Bottle when attacking non-Narcissa player
             if (target.BotId != AIStatics.FaebossBotId)
             {
-                output = output.Where(s => s.Skill.dbName != BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
+                output = output.Where(s => s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
             }
 
             // only inanimate and animal spells work on minibosses, donna, and lovebringer
@@ -755,7 +755,7 @@ namespace TT.Web.Controllers
             return PartialView(MVC.PvP.Views.partial.AjaxAttackModal, output);
         }
 
-        public virtual ActionResult Attack(int targetId, string attackName)
+        public virtual ActionResult Attack(int targetId, int spellSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
@@ -824,7 +824,7 @@ namespace TT.Web.Controllers
 
 
             // assert that this player does have this skill
-            var skillBeingUsed = SkillProcedures.GetSkillViewModel(attackName, me.Id);
+            var skillBeingUsed = SkillProcedures.GetSkillViewModel(spellSourceId, me.Id);
             if (skillBeingUsed == null)
             {
                 TempData["Error"] = "You don't seem to have this spell.";
@@ -929,9 +929,9 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is a curse, check that the target doesn't already have the effect
-            if (skillBeingUsed.Skill.GivesEffect != null)
+            if (skillBeingUsed.StaticSkill.GivesEffect != null)
             {
-                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.Skill.GivesEffect))
+                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.StaticSkill.GivesEffect))
                 {
                     TempData["Error"] = "This target is already afflicted with this curse or else is still in the immune cooldown period of it.";
                     TempData["SubError"] = "You can always try again later...";
@@ -969,8 +969,8 @@ namespace TT.Web.Controllers
 
             }
 
-            var skill = SkillStatics.GetStaticSkill(attackName);
-            var futureForm = FormStatics.GetForm(skill.FormdbName);
+            var skillSource = SkillStatics.GetStaticSkill(spellSourceId);
+            var futureForm = FormStatics.GetForm(skillSource.FormdbName);
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
             if (me.MindControlIsActive && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
@@ -981,14 +981,14 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is Vanquish, only have it work against demons
-            if (skill.dbName == PvPStatics.Dungeon_VanquishSpell && targeted.Form != PvPStatics.DungeonDemon)
+            if (skillSource.Id == PvPStatics.Dungeon_VanquishSpellSourceId && targeted.Form != PvPStatics.DungeonDemon)
             {
                 TempData["Error"] = "Vanquish can only be cast against the Dark Demonic Guardians in the dungoen.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // if the spell is Fae-in-a-Bottle, only have it work against Narcissa
-            if (skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa && targeted.BotId != AIStatics.FaebossBotId)
+            if (skillSource.Id == BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId && targeted.BotId != AIStatics.FaebossBotId)
             {
                 TempData["Error"] = "This spell can only be cast against " + BossProcedures_FaeBoss.FirstName;
                 return RedirectToAction(MVC.PvP.Play());
@@ -1017,7 +1017,7 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
-                var npcAttackResult = DomainRegistry.Repository.FindSingle(new CanAttackNpcWithSpell { futureForm = futureForm, target = targeted, attacker = me, spellDbName = skill.dbName});
+                var npcAttackResult = DomainRegistry.Repository.FindSingle(new CanAttackNpcWithSpell { futureForm = futureForm, target = targeted, attacker = me, spellSourceId = skillSource.Id});
 
                 if (npcAttackResult != String.Empty)
                 {
@@ -1075,7 +1075,7 @@ namespace TT.Web.Controllers
                     }
 
                     // no weaken between Protection mode players
-                    else if (skill.dbName == PvPStatics.Spell_Weaken)
+                    else if (skillSource.Id == PvPStatics.Spell_WeakenId)
                     {
                         TempData["Error"] = "You cannot cast Weaken against protection mode players unless they are your friend.";
                         return RedirectToAction(MVC.PvP.Play());

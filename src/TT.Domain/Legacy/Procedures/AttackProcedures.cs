@@ -40,11 +40,11 @@ namespace TT.Domain.Procedures
             var victimFullName = targeted.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
-            if (skillBeingUsed.Skill.GivesEffect != null)
+            if (skillBeingUsed.StaticSkill.GivesEffect != null)
             {
-                var effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.Skill.GivesEffect);
+                var effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.StaticSkill.GivesEffect);
 
-                EffectProcedures.GivePerkToPlayer(skillBeingUsed.Skill.GivesEffect, victim);
+                EffectProcedures.GivePerkToPlayer(skillBeingUsed.StaticSkill.GivesEffect, victim);
 
                 if (attacker.Gender == PvPStatics.GenderMale && !effectBeingGiven.AttackerWhenHit_M.IsNullOrEmpty())
                 {
@@ -61,12 +61,12 @@ namespace TT.Domain.Procedures
 
                 logs.AttackerLog += "<br><br>";
 
-                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName + ".</span>";
-                logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName +".";
+                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".</span>";
+                logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName +".";
                 logs.AttackerLog += "  (+1 XP)  ";
                 logs.AttackerLog += PlayerProcedures.GiveXP(attacker, 1);
                 logs.VictimLog = effectBeingGiven.MessageWhenHit;
-                logs.VictimLog += "  <span class='playerAttackNotification'>" + attackerFullName + " cursed you with <b>" + skillBeingUsed.Skill.FriendlyName + "</b>.</b></span>  ";
+                logs.VictimLog += "  <span class='playerAttackNotification'>" + attackerFullName + " cursed you with <b>" + skillBeingUsed.StaticSkill.FriendlyName + "</b>.</b></span>  ";
                 result = logs.AttackerLog;
                 
             }
@@ -75,9 +75,9 @@ namespace TT.Domain.Procedures
             else
             {
 
-                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".</span>";
-                logs.AttackerLog = "You cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".  ";
-                logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against you.</span>  ";
+                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".</span>";
+                logs.AttackerLog = "You cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".  ";
+                logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against you.</span>  ";
 
                 var meBuffs = ItemProcedures.GetPlayerBuffs(me);
                 var targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
@@ -101,11 +101,11 @@ namespace TT.Domain.Procedures
                 if (basehitChance < (double)criticalMissPercentChance)
                 {
                     // check if there is a health damage aspect to this spell
-                    if (skillBeingUsed.Skill.HealthDamageAmount > 0)
+                    if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
-                        PlayerProcedures.DamagePlayerHealth(me.Id, skillBeingUsed.Skill.HealthDamageAmount * (1 + meBuffs.SpellExtraHealthDamagePercent() / 100));
-                        logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2)}.  ";
-                        logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by " +  Math.Round(skillBeingUsed.Skill.HealthDamageAmount, 2) + ".";
+                        PlayerProcedures.DamagePlayerHealth(me.Id, skillBeingUsed.StaticSkill.HealthDamageAmount * (1 + meBuffs.SpellExtraHealthDamagePercent() / 100));
+                        logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {Math.Round(skillBeingUsed.StaticSkill.HealthDamageAmount, 2)}.  ";
+                        logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by " +  Math.Round(skillBeingUsed.StaticSkill.HealthDamageAmount, 2) + ".";
                         result += logs.AttackerLog;
                     }
 
@@ -137,11 +137,11 @@ namespace TT.Domain.Procedures
 
 
                     // check if there is a health damage aspect to this spell
-                    if (skillBeingUsed.Skill.HealthDamageAmount > 0)
+                    if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
 
                         // add even more damage if the spell is "weaken"
-                        var extraDamageFromWeaken = (skillBeingUsed.Skill.dbName == WEAKEN) ? skillBeingUsed.Skill.HealthDamageAmount*1.5M : 0;
+                        var extraDamageFromWeaken = (skillBeingUsed.StaticSkill.Id == PvPStatics.Spell_WeakenId) ? skillBeingUsed.StaticSkill.HealthDamageAmount*1.5M : 0;
 
                         var extraDamageFromLevel = .75M*me.Level;
 
@@ -160,7 +160,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = 2;
                         }
 
-                        var totalHealthDamage = (skillBeingUsed.Skill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
+                        var totalHealthDamage = (skillBeingUsed.StaticSkill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
 
                         // make sure damage is never in the negatives (which would heal instead)
                         if (totalHealthDamage < 0)
@@ -179,7 +179,7 @@ namespace TT.Domain.Procedures
                     }
 
                     // if this skill has any TF power, add energy and check for form change
-                    if (skillBeingUsed.Skill.TFPointsAmount > 0)
+                    if (skillBeingUsed.StaticSkill.TFPointsAmount > 0)
                     {
 
                         var TFEnergyDmg = meBuffs.SpellExtraTFEnergyPercent();
@@ -206,7 +206,7 @@ namespace TT.Domain.Procedures
 
 
                         logs.Add(tfEnergyResult);
-                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(targeted, skillBeingUsed.Skill.dbName, me.Id);
+                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(targeted, skillBeingUsed.StaticSkill.Id, me.Id);
                         logs.Add(formChangeLog);
                         result = logs.AttackerLog;
 
@@ -236,9 +236,9 @@ namespace TT.Domain.Procedures
             return result;
         }
 
-        public static void Attack(Player attacker, Player victim, string skillBeingUsed)
+        public static void Attack(Player attacker, Player victim, int skillSourceId)
         {
-            var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
+            var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillSourceId);
             Attack(attacker, victim, vm);
         }
 

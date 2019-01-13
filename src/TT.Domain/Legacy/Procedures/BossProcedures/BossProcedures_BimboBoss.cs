@@ -19,9 +19,10 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string BossLastName = "Lovebringer, PHD";
         public const string BossFormDbName = "form_Bimbonic_Plague_Mother_Judoo";
         public const string KissEffectdbName = "curse_bimboboss_kiss";
-        public const string KissSkilldbName = "skill_bimboboss_kiss";
+        public const int KissSkillSourceId = 528;
         public const string CureEffectdbName = "blessing_bimboboss_cure";
-        public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
+        //public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
+        public const int RegularTFSpellSourceId = 532;
         private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
         public const int CureItemSourceId = 143;
@@ -95,7 +96,7 @@ namespace TT.Domain.Procedures.BossProcedures
             // if the player doesn't currently have it, give them the infection kiss
             if (!EffectProcedures.PlayerHasEffect(human, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(human, CureEffectdbName))
             {
-                AttackProcedures.Attack(bimboss, human, KissSkilldbName);
+                AttackProcedures.Attack(bimboss, human, KissSkillSourceId);
                 AIProcedures.DealBossDamage(bimboss, human, false, 1);
             }
 
@@ -105,7 +106,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 var attackCount = (int)Math.Floor(rand.NextDouble() * 2 + 1);
                 for (var i = 0; i < attackCount; i++) {
-                    AttackProcedures.Attack(bimboss, human, RegularTFSpellDbName);
+                    AttackProcedures.Attack(bimboss, human, KissSkillSourceId);
                 }
                 AIProcedures.DealBossDamage(bimboss, human, false, attackCount);
             }
@@ -171,7 +172,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // if the player doesn't currently have it, give them the infection kiss
                 if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName))
                 {
-                    AttackProcedures.Attack(bimboBoss, p, KissSkilldbName);
+                    AttackProcedures.Attack(bimboBoss, p, KissSkillSourceId);
                     AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
 
@@ -179,7 +180,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // otherwise run the regular trasformation
                 else if (p.Form != RegularBimboFormDbName)
                 {
-                    AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
+                    AttackProcedures.Attack(bimboBoss, p, RegularTFSpellSourceId);
                     AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
             }
@@ -243,11 +244,11 @@ namespace TT.Domain.Procedures.BossProcedures
                         if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName) && attacksMadeCount < 3)
                         {
                             attacksMadeCount++;
-                            AttackProcedures.Attack(infectee, p, KissSkilldbName);
+                            AttackProcedures.Attack(infectee, p, KissSkillSourceId);
                         }
                         else if (attacksMadeCount < 3)
                         {
-                            AttackProcedures.Attack(infectee, p, RegularTFSpellDbName);
+                            AttackProcedures.Attack(infectee, p, RegularTFSpellSourceId);
                             attacksMadeCount++;
                         }
                     }

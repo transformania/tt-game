@@ -129,7 +129,7 @@ namespace TT.Web.Controllers
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
                 IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
 
-                var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                //var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
                 var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
                 var itemdbname = "";
@@ -143,17 +143,17 @@ namespace TT.Web.Controllers
                     itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
                 }
 
-                var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+                var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
                 var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
                 var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
 
-                if (sskill == null)
+                if (staticSkill == null)
                 {
-                    ViewBag.StaticSkillExists = "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
+                    ViewBag.StaticSkillExists = "<p class='bad'>No static skill found.</p>";
                 }
                 else
                 {
-                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found:  " + skilldbname + "</p>";
+                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found:  " + staticSkill.FriendlyName + "</p>";
                 }
 
                 if (sform == null)
@@ -645,6 +645,7 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             // get all of this players effect contributions
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
+            IDbStaticSkillRepository staticSkillRepository = new EFDbStaticSkillRepository();
 
             IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == myMembershipId);
             ViewBag.OtherEffectContributions = myEffectContributions;
@@ -701,14 +702,11 @@ namespace TT.Web.Controllers
             {
 
                 var effectDbName = output.GetEffectDbName();
-                var spellDbName = output.GetSkillDbName();
-                if (spellDbName.IsNullOrEmpty())
-                {
-                    spellDbName = "NO SKILL NAME SET";
-                }
+                var staticSkill =
+                    staticSkillRepository.DbStaticSkills.FirstOrDefault(s => s.Id == output.SkillSourceId.Value);
 
-                ViewBag.StaticEffectExists = "<span class = 'bad'>Static effect for " + effectDbName + " not found!</span>";
-                ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell for " + spellDbName + " not found!<span>";
+                ViewBag.StaticEffectExists = $"<span class = 'bad'>Static effect for '{effectDbName}' not found!</span>";
+                ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell not found!<span>";
 
                 IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
                 var possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
@@ -718,10 +716,10 @@ namespace TT.Web.Controllers
                 }
 
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-                var possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.dbName == spellDbName);
+                var possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.Id == output.SkillSourceId);
                 if (possibleSkill != null)
                 {
-                    ViewBag.StaticSpellExists = "<span class = 'good'>Static spell " + spellDbName + " exists!</span>";
+                    ViewBag.StaticSpellExists = $"<span class = 'good'>Static spell '{staticSkill.FriendlyName}' exists!</span>";
                 }
 
             }
@@ -849,15 +847,15 @@ namespace TT.Web.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            var skilldbname = contribution.GetSkillDbName();
+            //var skilldbname = contribution.GetSkillDbName();
             var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
-            var spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
 
             if (spell == null)
             {
                 spell = new DbStaticSkill();
-                spell.dbName = skilldbname;
+                //spell.dbName = skilldbname;
                 spell.FormdbName = formdbname;
                 message += "<p class='bad'>Made new spell.</p>";
             }
@@ -926,6 +924,7 @@ namespace TT.Web.Controllers
             #endregion
 
             skillRepo.SaveDbStaticSkill(spell);
+            contribution.SkillSourceId = spell.Id;
 
             if (contribution.Skill_LearnedAtLocationOrRegion == "location")
             {
@@ -1386,14 +1385,14 @@ namespace TT.Web.Controllers
 
             var contribution = contRepo.EffectContributions.First(e => e.Id == id);
             var effectDbName = contribution.GetEffectDbName();
-            var skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
+            var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
 
             var message = "";
 
-            if (skill == null)
+            if (staticSkill == null)
             {
-                skill = new DbStaticSkill();
-                skill.dbName = contribution.GetSkillDbName();
+                staticSkill = new DbStaticSkill();
+               // skill = contribution.GetSkillDbName();
                 message += "<p class='bad'>Made new spell.</p>";
             }
             else
@@ -1401,17 +1400,19 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing spell.</p>";
             }
 
-            skill.GivesEffect = contribution.GetEffectDbName();
-            skill.Description = contribution.Skill_Description;
-            skill.FriendlyName = contribution.Skill_FriendlyName;
+            staticSkill.GivesEffect = contribution.GetEffectDbName();
+            staticSkill.Description = contribution.Skill_Description;
+            staticSkill.FriendlyName = contribution.Skill_FriendlyName;
 
-            skill.ManaCost = contribution.Skill_ManaCost;
-            skill.MobilityType = "curse";
+            staticSkill.ManaCost = contribution.Skill_ManaCost;
+            staticSkill.MobilityType = "curse";
 
-            skill.ExclusiveToForm = contribution.Skill_UniqueToForm;
-            skill.ExclusiveToItem = contribution.Skill_UniqueToItem;
+            staticSkill.ExclusiveToForm = contribution.Skill_UniqueToForm;
+            staticSkill.ExclusiveToItem = contribution.Skill_UniqueToItem;
 
-            skillRepo.SaveDbStaticSkill(skill);
+            skillRepo.SaveDbStaticSkill(staticSkill);
+
+            contribution.SkillSourceId = staticSkill.Id;
 
             contribution.History += "Published spell on " + DateTime.UtcNow + ".<br>";
             contRepo.SaveEffectContribution(contribution);
@@ -1419,11 +1420,11 @@ namespace TT.Web.Controllers
             // add in any missing FKs for this spell
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
-                SkillSourceId = skill.Id,
-                ExclusiveToItemSource = skill.ExclusiveToItem,
-                ExclusiveToFormSource = skill.ExclusiveToForm,
-                GivesEffectSource = skill.GivesEffect,
-                FormSource = skill.FormdbName
+                SkillSourceId = staticSkill.Id,
+                ExclusiveToItemSource = staticSkill.ExclusiveToItem,
+                ExclusiveToFormSource = staticSkill.ExclusiveToForm,
+                GivesEffectSource = staticSkill.GivesEffect,
+                FormSource = staticSkill.FormdbName
             });
 
             ViewBag.Message = message;
@@ -1505,10 +1506,7 @@ namespace TT.Web.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-
-
-            var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
             sskill.IsLive = "live";
             skillRepo.SaveDbStaticSkill(sskill);
             ViewBag.Message = "Set to live.";
@@ -1530,7 +1528,7 @@ namespace TT.Web.Controllers
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            //var skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             var formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
             var itemdbname = "";
@@ -1544,19 +1542,19 @@ namespace TT.Web.Controllers
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
 
-            var sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
             var sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
             var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
 
             var message = "";
 
-            if (sskill == null)
+            if (staticSkill == null)
             {
-                message += "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
+                message += "<p class='bad'>No static skill found.</p>";
             }
             else
             {
-                message += "<p class='good'>Static skill found.</p>";
+                message += $"<p class='good'>Static skill found: {staticSkill.FriendlyName}</p>";
             }
 
             if (sform == null)

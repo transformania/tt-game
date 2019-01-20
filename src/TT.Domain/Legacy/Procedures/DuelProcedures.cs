@@ -100,7 +100,7 @@ namespace TT.Domain.Procedures
         
             foreach (var p in members)
             {
-                duel.Combatants.FirstOrDefault(f => f.PlayerId == p.Player.Id).StartForm = p.Player.Form;
+                duel.Combatants.FirstOrDefault(f => f.PlayerId == p.Player.Id).StartFormSourceId = p.Player.FormSourceId;
                 PlayerProcedures.EnterDuel(p.Player.Id, duel.Id);
                 var playerMessage = "<b>Your duel between " + memberNames + " has begun!</b>";
                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, playerMessage, true);

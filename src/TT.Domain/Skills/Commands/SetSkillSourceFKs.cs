@@ -12,9 +12,9 @@ namespace TT.Domain.Skills.Commands
     public class SetSkillSourceFKs : DomainCommand
     {
         public int SkillSourceId { get; set; }
-        public string FormSource { get; set; }
+        public int? FormSourceId { get; set; }
         public string GivesEffectSource { get; set; }
-        public string ExclusiveToFormSource { get; set; }
+        public int? ExclusiveToFormSourceId { get; set; }
         public string ExclusiveToItemSource { get; set; }
 
         public override void Execute(IDataContext context)
@@ -31,12 +31,12 @@ namespace TT.Domain.Skills.Commands
                 FormSource exclusiveToFormSource = null;
                 ItemSource exclusiveToItemSource = null;
 
-                if (!FormSource.IsNullOrEmpty()) { 
-                    formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
+                if (FormSourceId != null || FormSourceId > 0) { 
+                    formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == FormSourceId);
                     if (formSource == null)
                     {
                         throw new DomainException(
-                            $"FormSource Source with name '{FormSource}' could not be found.  Does it need to be published first?");
+                            $"FormSource Source with id '{FormSourceId}' could not be found.  Does it need to be published first?");
                     }
                 }
 
@@ -49,13 +49,13 @@ namespace TT.Domain.Skills.Commands
                     }
                 }
 
-                if (!ExclusiveToFormSource.IsNullOrEmpty())
+                if (ExclusiveToFormSourceId != null && ExclusiveToFormSourceId.Value > 0)
                 {
-                    exclusiveToFormSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == ExclusiveToFormSource);
+                    exclusiveToFormSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == ExclusiveToFormSourceId);
                     if (exclusiveToFormSource == null)
                     {
                         throw new DomainException(
-                            $"ExclusiveToFormSource with name '{ExclusiveToFormSource}' could not be found");
+                            $"ExclusiveToFormSourceId with id '{ExclusiveToFormSourceId}' could not be found");
                     }
                 }
 

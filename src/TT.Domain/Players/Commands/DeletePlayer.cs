@@ -6,6 +6,7 @@ using TT.Domain.Entities.Skills;
 using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Exceptions;
 using TT.Domain.Players.Entities;
+using TT.Domain.TFEnergies.Entities;
 
 namespace TT.Domain.Players.Commands
 {
@@ -28,8 +29,8 @@ namespace TT.Domain.Players.Commands
                 var spells = ctx.AsQueryable<Skill>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var effects = ctx.AsQueryable<Effect>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var playerLogs = ctx.AsQueryable<PlayerLog>().Where(i => i.Owner.Id == PlayerId).ToList();
-                var tfTenergies = ctx.AsQueryable<TFEnergy>().Where(i => i.Owner.Id == PlayerId).ToList();
-                var tfTenergiesCast = ctx.AsQueryable<TFEnergy>().Where(i => i.Caster.Id == PlayerId).ToList();
+                var tfTenergies = ctx.AsQueryable<TFEnergies.Entities.TFEnergy>().Where(i => i.Owner.Id == PlayerId).ToList();
+                var tfTenergiesCast = ctx.AsQueryable<TFEnergies.Entities.TFEnergy>().Where(i => i.Caster.Id == PlayerId).ToList();
 
                 foreach (var s in spells)
                 {

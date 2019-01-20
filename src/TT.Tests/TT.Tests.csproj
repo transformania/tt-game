@@ -81,6 +81,7 @@
     <Compile Include="Builders\Players\PlayerBuilder.cs" />
     <Compile Include="Builders\Skills\SkillBuilder.cs" />
     <Compile Include="Builders\Skills\SkillSourceBuilder.cs" />
+    <Compile Include="Builders\TFEnergies\SelfRestoreEnergyBuilder.cs" />
     <Compile Include="Builders\TFEnergies\TFEnergyBuilder.cs" />
     <Compile Include="AI\Commands\CreateNPCTests.cs" />
     <Compile Include="AI\Commands\DeleteNPCTests.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Domain\Mapper\AutoMapperTests.cs" />
     <Compile Include="Effects\Commands\CreateEffectTests.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
-    <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
     <Compile Include="Identity\Commands\AllowChaosChangesTests.cs" />
     <Compile Include="Identity\Commands\HandleReportTests.cs" />
     <Compile Include="Identity\Commands\ResetSecurityStampTest.cs" />
@@ -126,6 +126,7 @@
     <Compile Include="Players\Commands\MoveTests.cs" />
     <Compile Include="Players\Queries\CanAttackNpcWithSpellTests.cs" />
     <Compile Include="Players\Queries\CanInteractWithTests.cs" />
+    <Compile Include="TFEnergies\Commands\SelfRestoreToBaseTests.cs" />
     <Compile Include="Utilities\MapBuilder.cs" />
     <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
     <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />

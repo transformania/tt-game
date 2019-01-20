@@ -3,9 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Combat.Commands;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Exceptions;
+using TT.Domain.TFEnergies.Commands;
+using TT.Domain.TFEnergies.Entities;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Players;
 
@@ -29,7 +29,6 @@ namespace TT.Tests.Combat.Commands
 
             var form = new FormSourceBuilder()
                 .With(i => i.Id, 13)
-                .With(f => f.dbName, "kittygirl")
                 .BuildAndSave();
 
             DomainRegistry.Repository.Execute(new CreateTFEnergy
@@ -37,7 +36,6 @@ namespace TT.Tests.Combat.Commands
                 PlayerId = player.Id,
                 Amount = 100,
                 FormSourceId = form.Id,
-                FormName = form.dbName,
                 CasterId = caster.Id
             });
 

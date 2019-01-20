@@ -36,6 +36,8 @@ namespace TT.Domain.Items.DTOs
         public string GivesEffect { get; set; }
         public string CurseTFFormdbName { get; set; }
 
+        public int? CurseTFFormSourceId { get; set; }
+
         public float Discipline { get; set; }
         public float Perception { get; set; }
         public float Charisma { get; set; }

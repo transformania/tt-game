@@ -25,7 +25,7 @@
     @foreach (var entry in Model)
     {
         <tr>
-            <td>@Html.Raw(entry.dbName)</td>
+            <td>@Html.Raw(entry.Id)</td>
             <td><b>@Html.Raw(entry.FriendlyName)</b></td>
             <td>@entry.IsUnique</td>
             <td>@HtmlHelpers.WithinBalanceTarget(entry.Balance, ViewBag.Text)</td>

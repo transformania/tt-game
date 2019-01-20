@@ -14,15 +14,15 @@ namespace TT.Tests.Players.Queries
         public void should_return_base_forms()
         {
 
-            new FormSourceBuilder().With(u => u.dbName, "man_01")
+            new FormSourceBuilder()
                 .With(u => u.FriendlyName, "Regular Guy")
                 .BuildAndSave();
 
-            new FormSourceBuilder().With(u => u.dbName, "woman_01")
+            new FormSourceBuilder()
                .With(u => u.FriendlyName, "Regular Girl")
                .BuildAndSave();
 
-            new FormSourceBuilder().With(u => u.dbName, "tempest")
+            new FormSourceBuilder()
                .With(u => u.FriendlyName, "Is A Big Fat Troll")
                .BuildAndSave();
 

@@ -15,11 +15,10 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
     {
         public const string BossFirstName = "Road Queen Harley";
         public const string BossLastName = "Punksplitter";
-        public const string BossForm = "form_Road_Queen_Judoo";
         public const int BossFormId = 934;
 
         public const int BikerFollowerSpellSourceId = 1198;
-        public const string BikerFollowerForm = "form_Road_Recruit_Judoo";
+        public const int BikerFollowerFormSourceId = 935;
 
         public const string EffectLevelOne = "effect_Harley's_Displeasure_Judoo";
         public const string EffectLevelTwo = "effect_Harley's_Annoyance_Judoo";
@@ -55,7 +54,6 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = BossForm,
                     FormSourceId = BossFormId,
                     Money = 2000,
                     Mobility = PvPStatics.MobilityFull,
@@ -80,7 +78,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
         private static int ChooseSpell(Player attacker)
         {
-            return attacker.Form == BikerFollowerForm ? LeatherJacketSpellSourceId : BikerFollowerSpellSourceId;
+            return attacker.FormSourceId == BikerFollowerFormSourceId ? LeatherJacketSpellSourceId : BikerFollowerSpellSourceId;
         }
 
         public static void RunTurnLogic()
@@ -162,7 +160,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             var cutoff = GetOnlineCutoffTime();
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                                                                      p.LastActionTimestamp > cutoff &&
-                                                                     p.Form != BikerFollowerForm &&
+                                                                     p.FormSourceId != BikerFollowerFormSourceId &&
                                                                      (p.BotId == AIStatics.ActivePlayerBotId ||
                                                                       p.BotId == AIStatics.PsychopathBotId) &&
                                                                      p.BotId != AIStatics.MotorcycleGangLeaderBotId &&
@@ -178,7 +176,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             var cutoff = GetOnlineCutoffTime();
             return playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                                                  p.LastActionTimestamp > cutoff &&
-                                                 p.Form != BikerFollowerForm &&
+                                                 p.FormSourceId != BikerFollowerFormSourceId &&
                                                  (p.BotId == AIStatics.ActivePlayerBotId ||
                                                  p.BotId == AIStatics.PsychopathBotId) &&
                                                  p.BotId != AIStatics.MotorcycleGangLeaderBotId &&
@@ -192,7 +190,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var cutoff = GetOnlineCutoffTime();
-            return playerRepo.Players.Where(p => p.Form == BikerFollowerForm &&
+            return playerRepo.Players.Where(p => p.FormSourceId == BikerFollowerFormSourceId &&
                                                  p.Mobility == PvPStatics.MobilityFull &&
                                                  (p.BotId == AIStatics.ActivePlayerBotId || p.BotId == AIStatics.PsychopathBotId) &&
                                                  p.LastActionTimestamp > cutoff &&

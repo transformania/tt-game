@@ -7,7 +7,7 @@
         public string IntroText { get; set; }
         public string CorrectFormText { get; set; }
         public string FailureText { get; set; }
-        public string RequiredForm { get; set; }
+        public int RequiredFormSourceId { get; set; }
         public bool IsLive { get; set; }
     }
 }

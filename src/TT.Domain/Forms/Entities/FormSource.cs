@@ -5,7 +5,7 @@ namespace TT.Domain.Forms.Entities
 {
     public class FormSource : Entity<int>
     {
-        public string dbName { get; protected set; }
+        public string dbName { get; protected set; } // TODO: remove after fixing ThrowTGBomb logic
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public string TFEnergyType { get; protected set; }

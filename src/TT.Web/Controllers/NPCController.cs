@@ -809,7 +809,7 @@ namespace TT.Web.Controllers
 
             output.IsInWrongForm = false;
 
-            if (me.Form != output.JewdewfaeEncounter.RequiredForm)
+            if (me.FormSourceId != output.JewdewfaeEncounter.RequiredFormSourceId)
             {
                 output.IsInWrongForm = true;
             }
@@ -869,7 +869,7 @@ namespace TT.Web.Controllers
             output.JewdewfaeEncounter.CorrectFormText = output.JewdewfaeEncounter.CorrectFormText.Replace("[", "<").Replace("]", ">");
             output.JewdewfaeEncounter.FailureText = output.JewdewfaeEncounter.FailureText.Replace("[", "<").Replace("]", ">");
 
-            if (me.Form == output.JewdewfaeEncounter.RequiredForm)
+            if (me.FormSourceId == output.JewdewfaeEncounter.RequiredFormSourceId)
             {
                 var xpGained = BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
@@ -922,7 +922,7 @@ namespace TT.Web.Controllers
             }
 
             // assert bimbo is still in base form
-            if (bimbo.Form != BossProcedures_Sisters.BimboBossForm)
+            if (bimbo.FormSourceId != BossProcedures_Sisters.BimboBossFormSourceId)
             {
                 TempData["Error"] = BossProcedures_Sisters.BimboBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -950,7 +950,7 @@ namespace TT.Web.Controllers
             }
 
             // assert nerd is still in base form
-            if (nerd.Form != BossProcedures_Sisters.NerdBossForm)
+            if (nerd.FormSourceId != BossProcedures_Sisters.NerdBossFormSourceId)
             {
                 TempData["Error"] = BossProcedures_Sisters.NerdBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
                 return RedirectToAction(MVC.PvP.Play());

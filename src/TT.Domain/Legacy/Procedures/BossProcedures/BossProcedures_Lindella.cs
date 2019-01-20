@@ -31,7 +31,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 500,
                     Mobility = PvPStatics.MobilityFull,
                     Money = 1000,
-                    Form = "form_Soul_Item_Vendor_Judoo",
                     FormSourceId = LindellaFormId,
                     Location = "270_west_9th_ave", // Lindella starts her rounds here
                     Gender = PvPStatics.GenderFemale,

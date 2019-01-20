@@ -34,7 +34,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = FaeFormDbName,
                     FormSourceId = FaeFormId,
                     Money = 1000,
                     Level = 7,

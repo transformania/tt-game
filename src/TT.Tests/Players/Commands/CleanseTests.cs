@@ -12,6 +12,7 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.TFEnergies.Entities;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Players;

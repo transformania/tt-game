@@ -233,7 +233,6 @@ namespace TT.Tests.Services
                 BotId = AIStatics.ActivePlayerBotId,
                 FirstName = "FirstName",
                 LastName = "Lastname",
-                Form = "fakeForm",
                 Level = 1,
                 ActionPoints = PvPStatics.MaximumStoreableActionPoints,
                 Id = 1,

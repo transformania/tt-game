@@ -23,87 +23,87 @@ namespace TT.Domain.Procedures
         public static IEnumerable<ItemViewModel> GetAllPlayerItems(int playerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> output = from i in itemRepo.Items
-                                                      where i.OwnerId == playerId
-                                                      join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
+            IEnumerable<ItemViewModel> output = from item in itemRepo.Items
+                                                      where item.OwnerId == playerId
+                                                      join staticItem in itemRepo.DbStaticItems on item.dbName equals staticItem.dbName
                                                       select new ItemViewModel
                                                       {
                                                           dbItem = new Item_VM
                                                           {
-                                                             Id = i.Id,
-                                                             dbName = i.dbName,
-                                                             dbLocationName = i.dbLocationName,
-                                                             EquippedThisTurn = i.EquippedThisTurn,
-                                                             IsEquipped = i.IsEquipped,
-                                                             IsPermanent = i.IsPermanent,
-                                                             Level = i.Level,
-                                                             OwnerId = i.OwnerId,
-                                                             PvPEnabled = i.PvPEnabled,
-                                                             TimeDropped = i.TimeDropped,
-                                                             TurnsUntilUse = i.TurnsUntilUse,
-                                                             LastSouledTimestamp = i.LastSouledTimestamp,
-                                                             EmbeddedOnItemId = i.EmbeddedOnItemId
+                                                             Id = item.Id,
+                                                             dbName = item.dbName,
+                                                             dbLocationName = item.dbLocationName,
+                                                             EquippedThisTurn = item.EquippedThisTurn,
+                                                             IsEquipped = item.IsEquipped,
+                                                             IsPermanent = item.IsPermanent,
+                                                             Level = item.Level,
+                                                             OwnerId = item.OwnerId,
+                                                             PvPEnabled = item.PvPEnabled,
+                                                             TimeDropped = item.TimeDropped,
+                                                             TurnsUntilUse = item.TurnsUntilUse,
+                                                             LastSouledTimestamp = item.LastSouledTimestamp,
+                                                             EmbeddedOnItemId = item.EmbeddedOnItemId
                                                           },
 
 
 
                                                           Item = new TT.Domain.ViewModels.StaticItem
                                                           {
-                                                            dbName = si.dbName,
-                                                            FriendlyName = si.FriendlyName,
-                                                            Description = si.Description,
-                                                            PortraitUrl = si.PortraitUrl,
-                                                            MoneyValue = si.MoneyValue,
-                                                            MoneyValueSell = si.MoneyValueSell,
-                                                            ItemType = si.ItemType,
-                                                            UseCooldown = si.UseCooldown,
-                                                            UsageMessage_Item = si.UsageMessage_Item,
-                                                            UsageMessage_Player = si.UsageMessage_Player,
-                                                            Findable = si.Findable,
-                                                            FindWeight = si.FindWeight,
-                                                            GivesEffect = si.GivesEffect,
+                                                            dbName = staticItem.dbName,
+                                                            FriendlyName = staticItem.FriendlyName,
+                                                            Description = staticItem.Description,
+                                                            PortraitUrl = staticItem.PortraitUrl,
+                                                            MoneyValue = staticItem.MoneyValue,
+                                                            MoneyValueSell = staticItem.MoneyValueSell,
+                                                            ItemType = staticItem.ItemType,
+                                                            UseCooldown = staticItem.UseCooldown,
+                                                            UsageMessage_Item = staticItem.UsageMessage_Item,
+                                                            UsageMessage_Player = staticItem.UsageMessage_Player,
+                                                            Findable = staticItem.Findable,
+                                                            FindWeight = staticItem.FindWeight,
+                                                            GivesEffect = staticItem.GivesEffect,
 
-                                                            HealthBonusPercent = si.HealthBonusPercent,
-                                                            ManaBonusPercent = si.ManaBonusPercent,
-                                                            ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
-                                                            HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
-                                                            ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
-                                                            SneakPercent = si.SneakPercent,
-                                                            EvasionPercent = si.EvasionPercent,
-                                                            EvasionNegationPercent = si.EvasionNegationPercent,
-                                                            MeditationExtraMana = si.MeditationExtraMana,
-                                                            CleanseExtraHealth = si.CleanseExtraHealth,
-                                                            MoveActionPointDiscount = si.MoveActionPointDiscount,
-                                                            SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
-                                                            SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
-                                                            CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
-                                                            SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
-                                                            SpellHealthDamageResistance = si.SpellHealthDamageResistance,
-                                                            SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
-                                                            ExtraInventorySpace = si.ExtraInventorySpace,
+                                                            HealthBonusPercent = staticItem.HealthBonusPercent,
+                                                            ManaBonusPercent = staticItem.ManaBonusPercent,
+                                                            ExtraSkillCriticalPercent = staticItem.ExtraSkillCriticalPercent,
+                                                            HealthRecoveryPerUpdate = staticItem.HealthRecoveryPerUpdate,
+                                                            ManaRecoveryPerUpdate = staticItem.ManaRecoveryPerUpdate,
+                                                            SneakPercent = staticItem.SneakPercent,
+                                                            EvasionPercent = staticItem.EvasionPercent,
+                                                            EvasionNegationPercent = staticItem.EvasionNegationPercent,
+                                                            MeditationExtraMana = staticItem.MeditationExtraMana,
+                                                            CleanseExtraHealth = staticItem.CleanseExtraHealth,
+                                                            MoveActionPointDiscount = staticItem.MoveActionPointDiscount,
+                                                            SpellExtraHealthDamagePercent = staticItem.SpellExtraHealthDamagePercent,
+                                                            SpellExtraTFEnergyPercent = staticItem.SpellExtraTFEnergyPercent,
+                                                            CleanseExtraTFEnergyRemovalPercent = staticItem.CleanseExtraTFEnergyRemovalPercent,
+                                                            SpellMisfireChanceReduction = staticItem.SpellMisfireChanceReduction,
+                                                            SpellHealthDamageResistance = staticItem.SpellHealthDamageResistance,
+                                                            SpellTFEnergyDamageResistance = staticItem.SpellTFEnergyDamageResistance,
+                                                            ExtraInventorySpace = staticItem.ExtraInventorySpace,
 
-                                                            Discipline = si.Discipline,
-                                                            Perception = si.Perception,
-                                                            Charisma = si.Charisma,
-                                                            Submission_Dominance = si.Submission_Dominance,
+                                                            Discipline = staticItem.Discipline,
+                                                            Perception = staticItem.Perception,
+                                                            Charisma = staticItem.Charisma,
+                                                            Submission_Dominance = staticItem.Submission_Dominance,
 
-                                                            Fortitude = si.Fortitude,
-                                                            Agility = si.Agility,
-                                                            Allure = si.Allure,
-                                                            Corruption_Purity  = si.Corruption_Purity,
+                                                            Fortitude = staticItem.Fortitude,
+                                                            Agility = staticItem.Agility,
+                                                            Allure = staticItem.Allure,
+                                                            Corruption_Purity  = staticItem.Corruption_Purity,
 
-                                                            Magicka = si.Magicka,
-                                                            Succour = si.Succour,
-                                                            Luck = si.Luck,
-                                                            Chaos_Order = si.Chaos_Order,
+                                                            Magicka = staticItem.Magicka,
+                                                            Succour = staticItem.Succour,
+                                                            Luck = staticItem.Luck,
+                                                            Chaos_Order = staticItem.Chaos_Order,
 
 
-                                                            InstantHealthRestore = si.InstantHealthRestore,
-                                                            InstantManaRestore = si.InstantManaRestore,
-                                                            ReuseableHealthRestore = si.ReuseableHealthRestore,
-                                                            ReuseableManaRestore = si.ReuseableManaRestore,
+                                                            InstantHealthRestore = staticItem.InstantHealthRestore,
+                                                            InstantManaRestore = staticItem.InstantManaRestore,
+                                                            ReuseableHealthRestore = staticItem.ReuseableHealthRestore,
+                                                            ReuseableManaRestore = staticItem.ReuseableManaRestore,
 
-                                                            CurseTFFormdbName = si.CurseTFFormdbName,
+                                                            CurseTFFormSourceId = staticItem.CurseTFFormSourceId
 
 
                                                           }
@@ -201,7 +201,7 @@ namespace TT.Domain.Procedures
                                                          ReuseableHealthRestore = si.ReuseableHealthRestore,
                                                          ReuseableManaRestore = si.ReuseableManaRestore,
 
-                                                         CurseTFFormdbName = si.CurseTFFormdbName,
+                                                         CurseTFFormSourceId = si.CurseTFFormSourceId,
                                                      }
 
                                                  };
@@ -846,7 +846,7 @@ namespace TT.Domain.Procedures
                 if (itemPlus.Item.dbName == "item_consumeable_ClassicMeLotion")
                 {
 
-                    if (owner.Form == owner.OriginalForm)
+                    if (owner.FormSourceId == owner.OriginalFormSourceId)
                     {
                         return "You could use this lotion, but as you are already in your base form it wouldn't do you any good.";
                     }

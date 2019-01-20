@@ -13,15 +13,18 @@ namespace TT.Tests.Players.Queries
         [SetUp]
         public void Init()
         {
-            new FormSourceBuilder().With(u => u.dbName, "man_01")
+            new FormSourceBuilder()
+                .With(u => u.Id, 1)
                 .With(u => u.FriendlyName, "Regular Guy")
                 .BuildAndSave();
 
-            new FormSourceBuilder().With(u => u.dbName, "woman_01")
+            new FormSourceBuilder()
+                .With(u => u.Id, 2)
                 .With(u => u.FriendlyName, "Regular Girl")
                 .BuildAndSave();
 
-            new FormSourceBuilder().With(u => u.dbName, "derp")
+            new FormSourceBuilder()
+                .With(u => u.Id, 3)
                 .With(u => u.FriendlyName, "Random form")
                 .BuildAndSave();
         }
@@ -29,28 +32,28 @@ namespace TT.Tests.Players.Queries
         [Test]
         public void should_return_true_if_form_is_valid_male()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm {form="man_01"});
+            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 1 });
             isValid.Should().Be(true);
         }
 
         [Test]
         public void should_return_true_if_form_is_valid_female()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { form = "woman_01" });
+            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 2 });
             isValid.Should().Be(true);
         }
 
         [Test]
         public void should_return_false_if_form_is_invalid()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { form = "derp" });
+            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 3 });
             isValid.Should().Be(false);
         }
 
         [Test]
         public void should_return_false_if_form_is_not_present()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { form = "nonexistant!" });
+            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 999 });
             isValid.Should().Be(false);
         }
 

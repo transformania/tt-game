@@ -15,13 +15,10 @@ namespace TT.Domain.ViewModels
         [Required(ErrorMessage = "You need a last name.")]
         public string LastName { get; set; }
 
-        //[Required(ErrorMessage = "Your gender must be 'male' or 'female'.")]
         public string Gender { get; set; }
 
         [Required(ErrorMessage = "You must choose a character form.")]
-        public string FormName { get; set; }
-
-        //public bool StartInPVP { get; set; }
+        public int FormSourceId { get; set; }
 
         public int StartGameMode { get; set; }
 

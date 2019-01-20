@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using TT.Domain.Abstract;
-using TT.Domain.Combat.Commands;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
+using TT.Domain.TFEnergies.Commands;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -31,9 +30,9 @@ namespace TT.Domain.Procedures
 
             
             // crunch down any old TF Energies into one public energy
-            var energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.StaticSkill.FormdbName).ToList();
+            var energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormSourceId == skill.StaticSkill.FormSourceId).ToList();
 
-            var energiesEligibleForDelete = new List<TFEnergy>();
+            var energiesEligibleForDelete = new List<Models.TFEnergy>();
             decimal mergeUpEnergyAmt = 0;
             decimal sharedEnergyAmt = 0;
 
@@ -61,14 +60,14 @@ namespace TT.Domain.Procedures
                     PlayerId = victim.Id,
                     Amount = mergeUpEnergyAmt,
                     CasterId = null,
-                    FormName = skill.StaticSkill.FormdbName
+                    FormSourceId = skill.StaticSkill.FormSourceId
                 };
 
-                var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
+                var form = FormStatics.GetForm(skill.StaticSkill.Id);
 
                 if (form != null)
                 {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormdbName).Id;
+                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.Id).Id;
                 }
 
                 DomainRegistry.Repository.Execute(cmd);
@@ -82,7 +81,7 @@ namespace TT.Domain.Procedures
             }
 
             // get the amount of TF Energy the attacker has on the player
-            var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.StaticSkill.FormdbName && e.CasterId == attacker.Id);
+            var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.StaticSkill.FormSourceId && e.CasterId == attacker.Id);
 
             if (energyFromMe == null)
             {
@@ -92,23 +91,23 @@ namespace TT.Domain.Procedures
                     PlayerId = victim.Id,
                     Amount = skill.StaticSkill.TFPointsAmount*modifier,
                     CasterId = attacker.Id,
-                    FormName = skill.StaticSkill.FormdbName
+                    FormSourceId = skill.StaticSkill.FormSourceId
                 };
 
-                var form = FormStatics.GetForm(skill.StaticSkill.FormdbName);
+                var form = FormStatics.GetForm(skill.StaticSkill.Id);
 
                 if (form != null)
                 {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormdbName).Id;
+                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value).Id;
                 }
 
                 DomainRegistry.Repository.Execute(cmd);
 
                 // create an old entity just so it doesn't break functionality below
-                energyFromMe = new TFEnergy
+                energyFromMe = new Models.TFEnergy
                 {
                     PlayerId = victim.Id,
-                    FormName = skill.StaticSkill.FormdbName,
+                    FormSourceId = skill.StaticSkill.FormSourceId.Value,
                     CasterId = attacker.Id,
                     Amount = skill.StaticSkill.TFPointsAmount * modifier
                 };
@@ -125,12 +124,12 @@ namespace TT.Domain.Procedures
 
             var totalEnergy = energyFromMe.Amount + sharedEnergyAmt + mergeUpEnergyAmt;
 
-            var eventualForm = FormStatics.GetForm(skill.StaticSkill.FormdbName);
+            var eventualForm = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
 
             output.AttackerLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
             output.VictimLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
 
-            if (victim.Form == eventualForm.dbName)
+            if (victim.FormSourceId == eventualForm.Id)
             {
                 output.AttackerLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
                 output.VictimLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
@@ -264,10 +263,10 @@ namespace TT.Domain.Procedures
 
             var skill = SkillStatics.GetStaticSkill(skillSourceId);
 
-            var pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == null);
-            var myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
+            var pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.FormSourceId && e.CasterId == null);
+            var myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.FormSourceId && e.CasterId == attackerId);
 
-            var targetForm = FormStatics.GetForm(skill.FormdbName);
+            var targetForm = FormStatics.GetForm(skill.FormSourceId.Value);
 
             decimal energyAccumulated = 0;
             if (pooledEnergy != null)
@@ -315,18 +314,16 @@ namespace TT.Domain.Procedures
                 playerRepo.SavePlayer(target);
             }
 
-                var oldForm = FormStatics.GetForm(target.Form);
-
                 #region animate transformation
                 // target is turning into an animate form
                 if (targetForm.MobilityType == PvPStatics.MobilityFull && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
                 {
 
-                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
+                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, targetForm.Id);
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
                         PlayerId = target.Id,
-                        FormName = targetForm.dbName
+                        FormSourceId = targetForm.Id
                     });
 
                     // wipe out half of the target's mana
@@ -349,7 +346,7 @@ namespace TT.Domain.Procedures
                     output.AttackerLog = "<br><b>You fully transformed " + target.GetFullName() + " into a " + targetForm.FriendlyName + "</b>!";
                     output.VictimLog = "<br><b>You have been fully transformed into a " + targetForm.FriendlyName + "!</b>";
 
-                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
                     StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1);
 
@@ -363,11 +360,11 @@ namespace TT.Domain.Procedures
                 else if ((targetForm.MobilityType == PvPStatics.MobilityInanimate && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowInanimateFormTF) || (targetForm.MobilityType == "animal" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowAnimalFormTF))
                 {
 
-                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
+                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, targetForm.Id);
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
                         PlayerId = target.Id,
-                        FormName = targetForm.dbName
+                        FormSourceId = targetForm.Id
                     });
 
                     if (targetForm.MobilityType == PvPStatics.MobilityInanimate)
@@ -469,7 +466,7 @@ namespace TT.Domain.Procedures
                         PlayerLogProcedures.ClearPlayerLog(victim.Id);
                     }
 
-                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
                     // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
                     if (attacker.BotId == AIStatics.PsychopathBotId)
@@ -511,7 +508,7 @@ namespace TT.Domain.Procedures
                     output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into forming certain actions.";
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 
-                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
                     // give curse debuff
                     if (targetForm.dbName == MindControlStatics.MindControl__Movement)
@@ -541,7 +538,7 @@ namespace TT.Domain.Procedures
 
                     foreach (var p in duelParticipants)
                     {
-                        if (p.Player.Form != duel.Combatants.FirstOrDefault(dp => dp.PlayerId == p.Player.Id).StartForm)
+                        if (p.Player.FormSourceId != duel.Combatants.FirstOrDefault(dp => dp.PlayerId == p.Player.Id).StartFormSourceId)
                         {
                             remainders--;
                         }
@@ -562,7 +559,7 @@ namespace TT.Domain.Procedures
         public static void CleanseTFEnergies(Player player, decimal bonusPercentageFromBuffs)
         {
             ITFEnergyRepository repo = new EFTFEnergyRepository();
-            IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == player.Id).ToList();
+            IEnumerable<Models.TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == player.Id).ToList();
 
             foreach (var energy in mydbEnergies)
             {
@@ -575,7 +572,7 @@ namespace TT.Domain.Procedures
         public static void DeleteAllPlayerTFEnergies(int playerId)
         {
             ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
-            IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId).ToList();
+            IEnumerable<Models.TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId).ToList();
 
             foreach (var s in energiesToDelete)
             {
@@ -583,10 +580,10 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static void DeleteAllPlayerTFEnergiesOfType(int playerId, string spellType)
+        public static void DeleteAllPlayerTFEnergiesOfFormSourceId(int playerId, int formSourceId)
         {
             ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
-            IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId && s.FormName == spellType).ToList();
+            IEnumerable<Models.TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId && s.FormSourceId == formSourceId).ToList();
 
             foreach (var s in energiesToDelete)
             {
@@ -610,7 +607,7 @@ namespace TT.Domain.Procedures
         {
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
-            var tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == form.dbName);
+            var tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == form.Id);
 
             if (tfMessage == null)
             {

@@ -21,7 +21,6 @@ namespace TT.Domain.Entities.Skills
             {
                 Owner = player,
                 SkillSource = skillSource,
-                Name = skillSource.dbName,
                 IsArchived = false,
             };
             return newSkill;

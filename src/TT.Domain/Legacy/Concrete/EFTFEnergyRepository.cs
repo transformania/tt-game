@@ -9,12 +9,12 @@ namespace TT.Domain.Concrete
     {
         private StatsContext context = new StatsContext();
 
-        public IQueryable<TFEnergy> TFEnergies
+        public IQueryable<Models.TFEnergy> TFEnergies
         {
             get { return context.TFEnergies; }
         }
 
-        public void SaveTFEnergy(TFEnergy TFEnergy)
+        public void SaveTFEnergy(Models.TFEnergy TFEnergy)
         {
             if (TFEnergy.Id == 0)
             {

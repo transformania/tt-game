@@ -2,7 +2,7 @@
 {
     public class BaseFormDetail
     {
-        public string dbName { get; set; }
+        public int Id { get; set; }
         public string FriendlyName { get; set; }
         public string PortraitUrl { get; set; }
     }

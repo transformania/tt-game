@@ -25,7 +25,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_The_Perfect_Barman_Judoo",
                     FormSourceId = BartenderFormId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,

@@ -6,7 +6,6 @@ namespace TT.Domain.Entities.Skills
 {
     public class SkillSource : Entity<int>
     {
-        public string dbName { get; protected set; }
         public string FriendlyName { get; protected set; }
 
         public string FormdbName { get; protected set; }

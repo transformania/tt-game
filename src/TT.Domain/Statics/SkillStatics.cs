@@ -26,13 +26,13 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticSkill> GetLearnablePsychopathSkills()
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.Id != PvPStatics.Spell_WeakenId && s.ExclusiveToForm == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
+            return statSkillRepo.DbStaticSkills.Where(s => s.Id != PvPStatics.Spell_WeakenId && s.ExclusiveToFormSourceId == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
         }
 
-        public static IEnumerable<DbStaticSkill> GetFormSpecificSkills(string formdbName)
+        public static IEnumerable<DbStaticSkill> GetFormSpecificSkills(int formSourceId)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == formdbName);
+            return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToFormSourceId == formSourceId);
         }
 
         public static IEnumerable<DbStaticSkill> GetItemSpecificSkills(string itemdbaName)

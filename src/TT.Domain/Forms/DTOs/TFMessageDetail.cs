@@ -3,7 +3,6 @@
     public class TFMessageDetail
     {
         public int Id { get; set; }
-        public string FormDbName { get;  set; }
 
         public string TFMessage_20_Percent_1st { get;  set; }
         public string TFMessage_40_Percent_1st { get;  set; }

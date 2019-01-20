@@ -204,7 +204,7 @@
             <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
                 <label for="Skill_FriendlyName">What is the name of the form that grants this spell?</label>
                 @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
-                @Html.TextBoxFor(e => e.Skill_UniqueToForm)
+                @Html.TextBoxFor(e => e.Skill_UniqueToFormSourceId)
             </div>
 
             <div id="modal"></div>
@@ -447,7 +447,7 @@
         });
 
         var startLocation = "@Model.Skill_UniqueToLocation";
-        var startForm = "@Model.Skill_UniqueToForm";
+        var startForm = "@Model.Skill_UniqueToFormSourceId";
         var startItem = "@Model.Skill_UniqueToItem";
 
         if (startLocation!="") {

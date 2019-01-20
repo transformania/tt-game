@@ -21,7 +21,7 @@ namespace TT.Domain.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string dbLocationName { get; set; }
-        public string Form { get; set; }
+        public int FormSourceId { get; set; }
 
         public decimal Health { get; set; }
         public decimal MaxHealth { get; set; }
@@ -33,7 +33,6 @@ namespace TT.Domain.Models
         public string Mobility { get; set; }
 
         public int BotId { get; set; }
-        public int? IsPetToId { get; set; } // TODO:  Delete
         public bool MindControlIsActive { get; set; }
 
         public decimal XP { get; set; }
@@ -52,7 +51,7 @@ namespace TT.Domain.Models
         public decimal Money { get; set; }
         [Index("IX_MembershipIdAndCovenant", 2)]
         public int? Covenant { get; set; }
-        public string OriginalForm { get; set; }
+        public int OriginalFormSourceId { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
@@ -176,7 +175,7 @@ namespace TT.Domain.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string dbLocationName { get; set; }
-        public string Form { get; set; }
+        public int FormSourceId { get; set; }
         public decimal Health { get; set; }
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }
@@ -203,7 +202,7 @@ namespace TT.Domain.Models
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
         public int? Covenant { get; set; }
-        public string OriginalForm { get; set; }
+        public int OriginalFormSourceId { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
@@ -284,7 +283,6 @@ namespace TT.Domain.Models
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 dbLocationName = this.dbLocationName,
-                Form = this.Form,
                 Health = this.Health,
                 MaxHealth = this.MaxHealth,
                 Mana = this.Mana,
@@ -311,7 +309,7 @@ namespace TT.Domain.Models
                 CleansesMeditatesThisRound = this.CleansesMeditatesThisRound,
                 Money = this.Money,
                 Covenant = this.Covenant,
-                OriginalForm = this.OriginalForm,
+                OriginalFormSourceId = this.OriginalFormSourceId,
                 PvPScore = this.PvPScore,
                 DonatorLevel = this.DonatorLevel,
                 Nickname = this.Nickname,

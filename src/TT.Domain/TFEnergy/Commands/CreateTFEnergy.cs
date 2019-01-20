@@ -4,14 +4,13 @@ using TT.Domain.Exceptions;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Players.Entities;
 
-namespace TT.Domain.Combat.Commands
+namespace TT.Domain.TFEnergies.Commands
 {
     public class CreateTFEnergy : DomainCommand<int>
     {
         public int PlayerId { get; set; }
         public int? FormSourceId { get; set; }
         public decimal Amount { get; set; }
-        public string FormName { get; set; }
         public int? CasterId { get; set; }
 
         public override int Execute(IDataContext context)
@@ -37,7 +36,7 @@ namespace TT.Domain.Combat.Commands
                     form = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == FormSourceId);
                 }
 
-                var energy = Entities.TFEnergies.TFEnergy.Create(player, caster, form, this);
+                var energy = Entities.TFEnergy.Create(player, caster, form, this);
 
                 ctx.Add(energy);
                 ctx.Commit();

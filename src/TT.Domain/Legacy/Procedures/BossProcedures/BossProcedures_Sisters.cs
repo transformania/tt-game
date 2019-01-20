@@ -12,20 +12,20 @@ namespace TT.Domain.Procedures.BossProcedures
     public static class BossProcedures_Sisters
     {
         public const string NerdBossFirstName = "Headmistress Adrianna";
-        public const string NerdBossForm = "form_Headmistress_of_SCCC_Elyn_and_Judoo";
+        public const int NerdBossFormSourceId = 317;
 
         public const string BimboBossFirstName = "Beautician Candice";
-        public const string BimboBossForm = "form_Head_Beautician_of_Blazes_and_Glamour_Judoo_and_Elyn";
-        
+        public const int BimboBossFormSourceId = 522;
+
         public const string BossesLastName = "Brisby";
 
         public const int BimboSpellSourceId = 627;
 
-        public const string BimboSpellForm = "form_Bimbo_Mousegirl_Judoo";
+        public const int BimboSpellFormSourceId = 318;
 
         public const int NerdSpellSourceId = 628;
 
-        public const string NerdSpellForm = "form_Nerdy_Mousegirl_Elynsynos";
+        public const int NerdSpellFormSourceId = 319;
 
         public const int MakeupKitSpellSourceId = 1177;
         public const int MicroscopeSpellSourceId = 1183;
@@ -50,7 +50,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = NerdBossForm,
                     FormSourceId = NerdBossFormId,
                     Money = 2000,
                     Mobility = PvPStatics.MobilityFull,
@@ -79,7 +78,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = BimboBossForm,
                     FormSourceId = BimboBossFormId,
                     Money = 6000,
                     Mobility = PvPStatics.MobilityFull,
@@ -101,30 +99,30 @@ namespace TT.Domain.Procedures.BossProcedures
         {
 
             // only allow nerd mouse girls to attack bimbo boss
-            if (target.BotId == AIStatics.MouseNerdBotId && attacker.Form != BimboSpellForm)
+            if (target.BotId == AIStatics.MouseNerdBotId && attacker.FormSourceId != BimboSpellFormSourceId)
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Adrianna.  Maybe you'd have better luck if you were casting magic against her as a Bimbo Mousegirl...";
             }
 
             // only allow nerd mouse girls to attack bimbo boss
-            if (target.BotId == AIStatics.MouseBimboBotId && attacker.Form != NerdSpellForm)
+            if (target.BotId == AIStatics.MouseBimboBotId && attacker.FormSourceId != NerdSpellFormSourceId)
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Candice.  Maybe you'd have better luck if you were casting magic against her as a Nerdy Mousegirl...";
             }
             // only allow bimbo mouse girls to attack nerd boss
 
             // only allow bimbo spell against nerd boss
-            if (target.Form == NerdBossForm && spellSourceId != BimboSpellSourceId)
+            if (target.FormSourceId == NerdBossFormSourceId && spellSourceId != BimboSpellSourceId)
             {
                 return "This spell won't work against Adrianna.";
             }
-            else if (target.Form == BimboBossForm && spellSourceId != NerdSpellSourceId)
+            else if (target.FormSourceId == BimboBossFormSourceId && spellSourceId != NerdSpellSourceId)
             {
                 return "This spell won't work against Candice.";
             }
 
             //disallow spells cast against the bosses if they have changed animate forms
-            if ((target.BotId == AIStatics.MouseNerdBotId && target.Form != NerdBossForm) || (target.BotId == AIStatics.MouseBimboBotId && target.Form != BimboBossForm))
+            if ((target.BotId == AIStatics.MouseNerdBotId && target.FormSourceId != NerdBossFormSourceId) || (target.BotId == AIStatics.MouseBimboBotId && target.FormSourceId != BimboBossFormSourceId))
             {
                 return "One of the Brisby sisters have already been transformed; there's no need to attack them any further.";
             }
@@ -141,7 +139,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var spell = ChooseSpell(bossTarget);
 
             // nerd counters with nerd spell unless she has changed form
-            if (bossTarget.BotId == AIStatics.MouseNerdBotId && bossTarget.Form == NerdBossForm || bossTarget.BotId == AIStatics.MouseBimboBotId && bossTarget.Form == BimboBossForm)
+            if (bossTarget.BotId == AIStatics.MouseNerdBotId && bossTarget.FormSourceId == NerdBossFormSourceId || bossTarget.BotId == AIStatics.MouseBimboBotId && bossTarget.FormSourceId == BimboBossFormSourceId)
             {
                 AttackProcedures.Attack(bossTarget, attacker, spell);
                 AttackProcedures.Attack(bossTarget, attacker, spell);
@@ -172,7 +170,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             // check to see if a sister has been TFed and the event should end
-            if (nerdBoss == null || nerdBoss.Form != NerdBossForm || bimboBoss == null || bimboBoss.Form != BimboBossForm)
+            if (nerdBoss == null || nerdBoss.FormSourceId != NerdBossFormSourceId || bimboBoss == null || bimboBoss.FormSourceId != BimboBossFormSourceId)
             {
                 EndEvent();
             }
@@ -184,7 +182,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
-                    p.Form != NerdSpellForm &&
+                    p.FormSourceId != NerdSpellFormSourceId &&
                     p.InDuel <= 0  &&
                     p.InQuest <= 0).ToList();
 
@@ -195,7 +193,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&
-                    p.Form != BimboSpellForm &&
+                    p.FormSourceId != BimboSpellFormSourceId &&
                     p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
 
@@ -231,9 +229,9 @@ namespace TT.Domain.Procedures.BossProcedures
 
             var winner = "";
 
-            if (nerdBoss.Form != NerdBossForm) {
+            if (nerdBoss.FormSourceId != NerdBossFormSourceId) {
                 winner = "bimbo";
-            } else if (bimboBoss.Form != BimboBossForm) {
+            } else if (bimboBoss.FormSourceId != BimboBossFormSourceId) {
                 winner = "nerd";
             } else {
                 return;

@@ -52,9 +52,9 @@
     @using (Html.BeginForm(MVC.PvP.NewCharacter(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-    <input id="oldFirstName" type="hidden" value="@ViewBag.OldFirstName">
-    <input id="oldLastName" type="hidden" value="@ViewBag.OldLastName">
-    <input id="oldForm" type="hidden" value="@ViewBag.OldForm">
+        <input id="oldFirstName" type="hidden" value="@ViewBag.OldFirstName">
+        <input id="oldLastName" type="hidden" value="@ViewBag.OldLastName">
+        <input id="oldFormSourceId" type="hidden" value="@ViewBag.OldFormSourceId">
 
         <text>First name:  </text>
         @Html.EditorFor(x => x.FirstName)
@@ -72,25 +72,25 @@
         <p class="good">Start in Roleplaying (RP) mode?</p>
         @Html.CheckBoxFor(x => x.StartInRP)
 
-    <p class="good">Which game mode should this character start in?</p>
+        <p class="good">Which game mode should this character start in?</p>
         @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class=""> SuperProtection</span><br />
-     @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br />
-    @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="bad"> PvP</span>
+        @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br />
+        @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="bad"> PvP</span>
 
         <br /><br />
-        
-           <p class="good">Migrate any old messages to this character?  <br />(Note:This will not work inbetween rounds.)</p>
+
+        <p class="good">Migrate any old messages to this character?  <br />(Note:This will not work inbetween rounds.)</p>
         @Html.CheckBoxFor(x => x.MigrateLetters)
 
         <br /><br />
-        
+
         <p class="good">Start as an inanimate object or pet?</p>
         <p>This option immediately starts the character off as a locked object or pet.</p>
-        <p>Click on the checkbox only if you want this to happen @Html.CheckBoxFor(x => x.StartAsInanimate, new { id = "itemBox" })</p> 
+        <p>Click on the checkbox only if you want this to happen @Html.CheckBoxFor(x => x.StartAsInanimate, new { id = "itemBox" })</p>
         @Html.EnumDropDownListFor(model => model.InanimateForm, new { id = "itemForm", disabled = "disabled", @class = "disabled" })
 
         <br /><br />
-        
+
         <p>Original Form:</p>
 
         <img id="portrait" src="../Images/PvP/portraits/woman_01_mtwof.png" style="width: 300px; height:  300px;"><br>
@@ -99,13 +99,13 @@
 
         <div id="selections"></div>
 
-        @Html.HiddenFor(i => i.FormName)
+        @Html.HiddenFor(i => i.FormSourceId)
 
         <br /><br />
 
-       
+
         <br /><br />
-    <input class="btn btn-danger" type="submit" value="Begin" />
+        <input class="btn btn-danger" type="submit" value="Begin" />
 
     }
 </div>

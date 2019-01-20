@@ -24,7 +24,7 @@ namespace TT.Domain.Models
         public int DuelId { get; set; }
         public int PlayerId { get; set; }
         public int Team { get; set; }
-        public string StartForm { get; set; }
+        public int? StartFormSourceId { get; set; }
     }
 
     public class DuelRules

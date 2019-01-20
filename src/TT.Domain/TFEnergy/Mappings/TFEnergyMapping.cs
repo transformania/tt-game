@@ -1,29 +1,29 @@
 ﻿using System.Data.Entity;
 using AutoMapper;
 using Highway.Data;
-using TT.Domain.Combat.DTOs;
-using TT.Domain.Entities.TFEnergies;
+using TT.Domain.TFEnergies.DTOs;
 
-namespace TT.Domain.Combat.Mappings
+
+namespace TT.Domain.TFEnergies.Mappings
 {
     public class TFEnergyMappings : Profile, IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<TFEnergy>()
+            modelBuilder.Entity<Entities.TFEnergy>()
                             .ToTable("TFEnergies")
                             .HasKey(cr => cr.Id);
 
-            modelBuilder.Entity<TFEnergy>()
+            modelBuilder.Entity<Entities.TFEnergy>()
                 .HasRequired(p => p.Owner)
                 .WithMany(p => p.TFEnergies).Map(p => p.MapKey("PlayerId"));
 
-            modelBuilder.Entity<TFEnergy>()
+            modelBuilder.Entity<Entities.TFEnergy>()
                 .HasOptional(p => p.Caster)
                 .WithMany(p => p.TFEnergiesCast).Map(p => p.MapKey("CasterId"));
 
-            modelBuilder.Entity<TFEnergy>()
+            modelBuilder.Entity<Entities.TFEnergy>()
                 .HasRequired(p => p.FormSource)
                 .WithMany().Map(p => p.MapKey("FormSourceId"));
 
@@ -31,7 +31,7 @@ namespace TT.Domain.Combat.Mappings
 
         public TFEnergyMappings()
         {
-            CreateMap<TFEnergy, TFEnergyDetail>();
+            CreateMap<Entities.TFEnergy, TFEnergyDetail>();
         }
     }
 }

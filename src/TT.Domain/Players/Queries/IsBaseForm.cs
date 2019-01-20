@@ -7,7 +7,7 @@ namespace TT.Domain.Players.Queries
     public class IsBaseForm : DomainQuerySingle<bool>
     {
 
-        public string form { get; set; }
+        public int formSourceId { get; set; }
 
         public override bool Execute(IDataContext context)
         {
@@ -15,7 +15,7 @@ namespace TT.Domain.Players.Queries
             ContextQuery = ctx =>
             {
                 var formSource = ctx.AsQueryable<FormSource>()
-                    .FirstOrDefault(m => m.dbName == form);
+                    .FirstOrDefault(m => m.Id == formSourceId);
                
                 if (formSource == null)
                     return false;

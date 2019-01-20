@@ -14,7 +14,6 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public const string FirstName = "Skaldrlyr";
         public const string LastName = "the Forbidden";
-        public const string FormDbName = "form_Exiled_Lorekeeper_Judoo";
 
         private const int LoremasterFormId = 467;
 
@@ -36,7 +35,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 500,
                     Mobility = PvPStatics.MobilityFull,
                     Money = 1000,
-                    Form = FormDbName,
                     FormSourceId = LoremasterFormId,
                     Location = "bookstore_back",
                     Gender = PvPStatics.GenderMale,

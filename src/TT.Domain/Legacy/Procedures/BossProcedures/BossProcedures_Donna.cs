@@ -18,7 +18,6 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string FirstName = "'Aunt' Donna";
         private const string LastName = "Milton";
         private const int DonnaSpellCount = 5;
-        public const string DonnaDbForm = "form_Mythical_Sorceress_LexamTheGemFox";
 
         public const int Spell1 = 465;
         public const int Spell2 = 595;
@@ -26,7 +25,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int Spell4 = 597;
         public const int Spell5 = 649;
 
-        private const int DonnaFormId = 287;
+        public const int DonnaFormSourceId = 287;
 
         public static void SpawnDonna()
         {
@@ -44,8 +43,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = DonnaDbForm,
-                    FormSourceId = DonnaFormId,
+                    FormSourceId = DonnaFormSourceId,
                     Money = 1000,
                     Level = 20,
                     BotId = AIStatics.DonnaBotId,

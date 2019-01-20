@@ -45,7 +45,6 @@ namespace TT.Tests.Forms.Commands
         {
             var formSource = new FormSourceBuilder()
                  .With(f => f.Id, 33)
-                 .With(f => f.dbName, "bobform")
                  .BuildAndSave();
 
             Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = formSource.Id, ItemSourceName = "fake"});

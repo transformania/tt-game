@@ -274,7 +274,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_NewCharacter
         {
-            public readonly string player = ("player").ToLowerInvariant();
+            public readonly string newCharacterViewModel = ("newCharacterViewModel").ToLowerInvariant();
         }
         static readonly ActionParamsClass_MoveTo s_params_MoveTo = new ActionParamsClass_MoveTo();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -593,14 +593,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void NewCharacterOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.NewCharacterViewModel player);
+        partial void NewCharacterOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.NewCharacterViewModel newCharacterViewModel);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult NewCharacter(TT.Domain.ViewModels.NewCharacterViewModel player)
+        public override System.Web.Mvc.ActionResult NewCharacter(TT.Domain.ViewModels.NewCharacterViewModel newCharacterViewModel)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.NewCharacter);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
-            NewCharacterOverride(callInfo, player);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newCharacterViewModel", newCharacterViewModel);
+            NewCharacterOverride(callInfo, newCharacterViewModel);
             return callInfo;
         }
 

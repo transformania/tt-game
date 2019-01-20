@@ -4,7 +4,6 @@ namespace TT.Domain.Forms.Entities
 {
     public class TFMessage : Entity<int>
     {
-        public string FormDbName { get; protected set; }
 
         public string TFMessage_20_Percent_1st { get; protected set; }
         public string TFMessage_40_Percent_1st { get; protected set; }

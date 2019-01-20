@@ -22,7 +22,7 @@ namespace TT.Domain.Concrete
         public DbSet<LocationLog> LocationLogs { get; set;}
         public DbSet<PlayerLog> PlayerLogs { get; set; }
         public DbSet<Skill> Skills { get; set; }
-        public DbSet<TFEnergy> TFEnergies { get; set; }
+        public DbSet<Models.TFEnergy> TFEnergies { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Contribution> Contributions { get; set; }
         public DbSet<PvPWorldStat> PvPWorldStats { get; set; }

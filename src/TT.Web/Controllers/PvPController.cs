@@ -27,6 +27,7 @@ using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Skills.Queries;
+using TT.Domain.TFEnergy.Commands;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
 using TT.Web.Extensions;
@@ -62,7 +63,7 @@ namespace TT.Web.Controllers
             ViewBag.MyMembershipId = myMembershipId;
             ViewBag.MaxLogSize = PvPStatics.MaxLogMessagesPerLocation;
 
-            // if the player is logged in but has no character, go to a player creation screen
+            // if the player is logged in but has no character, go to a playercreation screen
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me == null)
             {
@@ -152,7 +153,7 @@ namespace TT.Web.Controllers
                     WorldStats = PlayerProcedures.GetWorldPlayerStats(),
                     World = world,
                     Player = me,
-                    Form = FormStatics.GetForm(me.Form),
+                    Form = FormStatics.GetForm(me.FormSourceId),
                     Item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
                     {
                         PlayerId = me.Id
@@ -214,7 +215,7 @@ namespace TT.Web.Controllers
                 animalOutput.World = world;
                 animalOutput.RenderCaptcha = renderCaptcha;
 
-                animalOutput.Form = FormStatics.GetForm(me.Form);
+                animalOutput.Form = FormStatics.GetForm(me.FormSourceId);
 
                 animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
                 if (animalOutput.YouItem.Owner != null)
@@ -315,9 +316,9 @@ namespace TT.Web.Controllers
             output.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = me.dbLocationName, ConcealmentLevel = (int)myBuffs.Perception() });
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            loadtime += "Start get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            loadtime += "Start get playerlogs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
-            loadtime += "End get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            loadtime += "End get playerlogs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant);
 
@@ -381,7 +382,7 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult NewCharacter(NewCharacterViewModel player)
+        public virtual ActionResult NewCharacter(NewCharacterViewModel newCharacterViewModel)
         {
 
             ViewBag.IsRerolling = false;
@@ -393,38 +394,45 @@ namespace TT.Web.Controllers
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
-            if (player.StartGameMode != 0 && player.StartGameMode != 1 && player.StartGameMode != 2)
+            if (newCharacterViewModel.StartGameMode != 0 && newCharacterViewModel.StartGameMode != 1 && newCharacterViewModel.StartGameMode != 2)
             {
                 ViewBag.ErrorMessage = "That is not a valid game mode.";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
-            if (player.FormName.Contains("woman_"))
+            DbStaticForm staticForm = FormStatics.GetForm(newCharacterViewModel.FormSourceId);
+
+            if (staticForm.FriendlyName == "Regular Girl")
             {
-                player.Gender = PvPStatics.GenderFemale;
+                newCharacterViewModel.Gender = PvPStatics.GenderFemale;
+            }
+            else if (staticForm.FriendlyName == "Regular Guy")
+            {
+                newCharacterViewModel.Gender = PvPStatics.GenderMale;
             }
             else
             {
-                player.Gender = PvPStatics.GenderMale;
+                ViewBag.ErrorMessage = "That is not a valid starting form.";
+                return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
             // assert that the first name is not reserved by the system
-            var fnamecheck = TrustStatics.NameIsReserved(player.FirstName);
+            var fnamecheck = TrustStatics.NameIsReserved(newCharacterViewModel.FirstName);
             if (!fnamecheck.IsNullOrEmpty())
             {
-                ViewBag.ErrorMessage = "You can't use the first name '" + player.FirstName + "'.  It is reserved.";
+                ViewBag.ErrorMessage = "You can't use the first name '" + newCharacterViewModel.FirstName + "'.  It is reserved.";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
             // assert that the last name is not reserved by the system
-            var lnamecheck = TrustStatics.NameIsReserved(player.LastName);
+            var lnamecheck = TrustStatics.NameIsReserved(newCharacterViewModel.LastName);
             if (!lnamecheck.IsNullOrEmpty())
             {
-                ViewBag.ErrorMessage = "You can't use the last name '" + player.LastName + "'.  It is reserved or else not allowed.";
+                ViewBag.ErrorMessage = "You can't use the last name '" + newCharacterViewModel.LastName + "'.  It is reserved or else not allowed.";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
-            // assert player does not currently have an animate player
+            // assert player does not currently have an animate character
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me != null && me.Mobility == PvPStatics.MobilityFull)
             {
@@ -436,14 +444,14 @@ namespace TT.Web.Controllers
 
             var iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
-            if (!iAmWhitelisted && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.GetRealUserHostAddress()))
+            if (!iAmWhitelisted && newCharacterViewModel.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.GetRealUserHostAddress()))
             {
 
                 ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.GetRealUserHostAddress() + "</b> already has 1 animate character in this world, and the current limit is 1. ";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
-            var result = PlayerProcedures.SaveNewPlayer(player, myMembershipId);
+            var result = PlayerProcedures.SaveNewPlayer(newCharacterViewModel, myMembershipId);
 
             if (result != "saved")
             {
@@ -471,14 +479,14 @@ namespace TT.Web.Controllers
             ViewBag.IsRerolling = false;
             ViewBag.OldFirstName = "";
             ViewBag.OldLastName = "";
-            ViewBag.OldForm = "";
+            ViewBag.OldFormSourceId = 2;
 
             if (me != null)
             {
                 ViewBag.IsRerolling = true;
                 ViewBag.OldFirstName = me.FirstName;
                 ViewBag.OldLastName = me.LastName.Split(' ')[0];
-                ViewBag.OldForm = me.OriginalForm;
+                ViewBag.OldFormSourceId = me.OriginalFormSourceId;
             }
 
             // find the reserved name if there is one
@@ -490,7 +498,6 @@ namespace TT.Web.Controllers
                 {
                     ViewBag.OldFirstName = reservedName.FullName.Split(' ')[0];
                     ViewBag.OldLastName = reservedName.FullName.Split(' ')[1];
-                    ViewBag.OldForm = "woman_01";
                 }
             }
 
@@ -970,7 +977,7 @@ namespace TT.Web.Controllers
             }
 
             var skillSource = SkillStatics.GetStaticSkill(spellSourceId);
-            var futureForm = FormStatics.GetForm(skillSource.FormdbName);
+            var futureForm = FormStatics.GetForm(skillSource.FormSourceId.Value);
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
             if (me.MindControlIsActive && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
@@ -981,7 +988,7 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is Vanquish, only have it work against demons
-            if (skillSource.Id == PvPStatics.Dungeon_VanquishSpellSourceId && targeted.Form != PvPStatics.DungeonDemon)
+            if (skillSource.Id == PvPStatics.Dungeon_VanquishSpellSourceId && targeted.FormSourceId != PvPStatics.DungeonDemonFormSourceId)
             {
                 TempData["Error"] = "Vanquish can only be cast against the Dark Demonic Guardians in the dungoen.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -1029,7 +1036,7 @@ namespace TT.Web.Controllers
                 if (targeted.BotId == AIStatics.ValentineBotId)
                 {
 
-                    if (!BossProcedures_Valentine.IsAttackableInForm(me, targeted))
+                    if (!BossProcedures_Valentine.IsAttackableInForm(me))
                     {
                         TempData["Error"] = BossProcedures_Valentine.GetWrongFormText();
                         TempData["SubError"] = "You will need to attack while in a different form.";
@@ -1342,40 +1349,24 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player has enough AP
-            if ((float)me.ActionPoints < PvPStatics.SelfRestoreAPCost)
-            {
-                TempData["Error"] = "You don't have enough action points in order to attempt to restore yourself to your base form.";
-                TempData["SubError"] = "You need <b>" + (PvPStatics.SelfRestoreAPCost - (float)me.ActionPoints) + "</b>more AP in order to do this.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player has enough mana
-            if ((float)me.Mana < PvPStatics.SelfRestoreManaCost)
-            {
-                TempData["Error"] = "You don't have enough mana points in order to attempt to restore yourself to your base form.";
-                TempData["SubError"] = "You need <b>" + (PvPStatics.SelfRestoreManaCost - (float)me.Mana) + "</b>more mana in order to do this.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player has remaining cleanses/meditates
-            if ((float)me.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
-            {
-                TempData["Error"] = "You have already cleansed or meditated too many times this turn.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // assert player is not already in their base form
-            if (me.Form == me.OriginalForm)
+            if (me.FormSourceId == me.OriginalFormSourceId)
             {
                 TempData["Error"] = "You are already in your base form!";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var buffs = ItemProcedures.GetPlayerBuffs(me);
-            var output = PlayerProcedures.SelfRestoreToBase(me, buffs);
 
-            TempData["Result"] = output;
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SelfRestoreToBase { PlayerId = me.Id, Buffs = buffs });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
             return RedirectToAction(MVC.PvP.Play());
         }
 
@@ -2371,7 +2362,7 @@ namespace TT.Web.Controllers
         private bool PlayerCanPerformAction(Player me, string actionType)
         {
 
-            var myform = FormStatics.GetForm(me.Form);
+            var myform = FormStatics.GetForm(me.FormSourceId);
 
             if (myform.MobilityType == PvPStatics.MobilityFull)
             {
@@ -2807,7 +2798,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the form does exist
-            var form = FormStatics.GetForm(itemMe.ItemSource.CurseTFFormdbName);
+            var form = FormStatics.GetForm(itemMe.ItemSource.CurseTFFormSourceId.Value);
             if (form == null || form.IsUnique)
             {
                 TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";

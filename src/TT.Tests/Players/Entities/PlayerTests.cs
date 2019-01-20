@@ -8,6 +8,7 @@ using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.TFEnergies.Entities;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;

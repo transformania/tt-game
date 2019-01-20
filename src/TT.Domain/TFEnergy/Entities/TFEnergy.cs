@@ -1,18 +1,17 @@
 ﻿using System;
-using TT.Domain.Combat.Commands;
+using TT.Domain.Entities;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Players.Entities;
+using TT.Domain.TFEnergies.Commands;
 
-namespace TT.Domain.Entities.TFEnergies
+namespace TT.Domain.TFEnergies.Entities
 {
     public class TFEnergy : Entity<int>
     {
         public Player Owner { get; protected set; }
-        public string FormName { get; protected set; }
         public FormSource FormSource { get; protected set; }
         public decimal Amount { get; protected set; }
         public Player Caster { get; protected set; }
-        //public int CasterId { get; protected set; }
         public DateTime Timestamp { get; protected set; }
 
         private TFEnergy()
@@ -28,10 +27,8 @@ namespace TT.Domain.Entities.TFEnergies
                 Caster = caster,
                 FormSource = form,
                 Amount = cmd.Amount,
-                FormName = cmd.FormName,
                 Timestamp = DateTime.UtcNow
             };
-
 
             return newEnergy;
         }
@@ -41,10 +38,4 @@ namespace TT.Domain.Entities.TFEnergies
             this.Amount = amount;
         }
     }
-
-    
-
-
-
-
 }

@@ -618,7 +618,7 @@ namespace TT.Domain.Procedures
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
                         PlayerId = dbPlayer.Id,
-                        FormName = p.ActionValue
+                        FormSourceId = System.Convert.ToInt32(p.ActionValue)
                     });
                 }
 

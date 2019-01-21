@@ -17,6 +17,7 @@ using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.World.Commands;
@@ -440,8 +441,6 @@ namespace TT.Web.Controllers
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
-
-            AIProcedures.RunPsychopathActions(DomainRegistry.Repository.FindSingle(new GetWorld()));
 
             return RedirectToAction(MVC.PvPAdmin.Index());
         }

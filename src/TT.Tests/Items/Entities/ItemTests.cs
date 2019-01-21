@@ -207,14 +207,14 @@ namespace TT.Tests.Items.Entities
 
             var pet = new ItemBuilder()
                 .With(i => i.Id, 100)
-                .With(i => i.PvPEnabled, GameModeStatics.SuperProtection)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Superprotection)
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Pet)
                     .BuildAndSave())
                 .BuildAndSave();
 
-            pet.ChangeOwner(newOwner, GameModeStatics.PvP);
-            pet.PvPEnabled.Should().Be(GameModeStatics.PvP);
+            pet.ChangeOwner(newOwner, (int)GameModeStatics.GameModes.PvP);
+            pet.PvPEnabled.Should().Be((int)GameModeStatics.GameModes.PvP);
         }
     }
 }

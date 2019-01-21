@@ -177,9 +177,9 @@
         {
     <p>
         <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.PvP))">Enter PvP Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.PvP))">Enter PvP Mode</a><br />
         <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br />
         
         @{
@@ -205,15 +205,15 @@
         There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competetive manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br /><br />
 
         @{
-            if (Model.Player.GameMode == GameModeStatics.Protection)
+            if (Model.Player.GameMode == (int)GameModeStatics.GameModes.Protection)
             {
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br />
             }
-            else if (Model.Player.GameMode == GameModeStatics.SuperProtection)
+            else if (Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br />
             }
-            else if (Model.Player.GameMode == GameModeStatics.PvP && !PvPStatics.ChaosMode)
+            else if (Model.Player.GameMode == (int)GameModeStatics.GameModes.PvP && !PvPStatics.ChaosMode)
             {
                 <span class="bad">You cannot leave PvP mode in regular round gameplay.</span>
             }

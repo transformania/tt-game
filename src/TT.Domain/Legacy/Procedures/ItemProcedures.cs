@@ -223,15 +223,15 @@ namespace TT.Domain.Procedures
             var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
             var owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
+                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == (int)GameModeStatics.GameModes.Any)
                 {
-                    if (owner.GameMode == GameModeStatics.PvP)
+                    if (owner.GameMode == (int)GameModeStatics.GameModes.PvP)
                     {
-                        item.PvPEnabled = GameModeStatics.PvP;
+                        item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
                     }
                     else
                     {
-                        item.PvPEnabled = GameModeStatics.Protection;
+                        item.PvPEnabled = (int)GameModeStatics.GameModes.Protection;
                     }
                 }
                 DomainRegistry.Repository.Execute(new ChangeItemOwner {ItemId = item.Id, OwnerId = newOwnerId, GameMode = item.PvPEnabled});
@@ -267,13 +267,13 @@ namespace TT.Domain.Procedures
             }
             else
             {
-                if (player.GameMode == GameModeStatics.PvP)
+                if (player.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
-                    cmd.PvPEnabled = GameModeStatics.PvP;
+                    cmd.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
                 }
                 else
                 {
-                    cmd.PvPEnabled = GameModeStatics.Protection;
+                    cmd.PvPEnabled = (int)GameModeStatics.GameModes.Protection;
                 }
             }
             var newItemId = DomainRegistry.Repository.Execute(cmd);
@@ -619,15 +619,15 @@ namespace TT.Domain.Procedures
             }
 
             // turn victim into attacker's game mode, PvP
-            else if (attacker.GameMode == GameModeStatics.PvP)
+            else if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
-                cmd.PvPEnabled = GameModeStatics.PvP;
+                cmd.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
             }
 
             // turn victim into attacker's game mode, Protection
             else
             {
-                cmd.PvPEnabled = GameModeStatics.Protection;
+                cmd.PvPEnabled = (int)GameModeStatics.GameModes.Protection;
             }
 
             // victim is a bot; make them permanent immediately

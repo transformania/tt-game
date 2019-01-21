@@ -17,12 +17,12 @@ namespace TT.Domain.Items.Queries
         {
 
             // treat SuperProtection same as Protection
-            if (gameMode == GameModeStatics.SuperProtection)
-                gameMode = GameModeStatics.Protection;
+            if (gameMode == (int)GameModeStatics.GameModes.Superprotection)
+                gameMode = (int)GameModeStatics.GameModes.Protection;
 
             ContextQuery = ctx => ctx.AsQueryable<Item>().ProjectToQueryable<PlayPageItemDetail>()
                 .Where(i => i.dbLocationName == dbLocationName &&
-                (i.PvPEnabled == GameModeStatics.Any || i.PvPEnabled == gameMode));
+                (i.PvPEnabled == (int)GameModeStatics.GameModes.Any || i.PvPEnabled == gameMode));
 
             return ExecuteInternal(context);
         }

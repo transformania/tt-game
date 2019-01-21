@@ -28,7 +28,7 @@ namespace TT.Tests.Builders.Players
             With(p => p.MaxHealth, 100 );
             With(p => p.Mana, 100);
             With(p => p.MaxMana, 100);
-            With(p => p.GameMode, GameModeStatics.Protection);
+            With(p => p.GameMode, (int)GameModeStatics.GameModes.Protection);
             With(p => p.XP, 0);
             With(p => p.Level, 1);
             With(p => p.Gender, PvPStatics.GenderMale);

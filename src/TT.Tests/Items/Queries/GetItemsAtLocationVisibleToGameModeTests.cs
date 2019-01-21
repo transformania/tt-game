@@ -20,7 +20,7 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.Protection)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Protection)
                 .BuildAndSave();
 
             // visible
@@ -28,7 +28,7 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.PvP)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.PvP)
                 .BuildAndSave();
 
             // visible
@@ -36,10 +36,10 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.Any)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Any)
                 .BuildAndSave();
 
-            var cmd = new GetItemsAtLocationVisibleToGameMode() {dbLocationName = "swamps", gameMode = GameModeStatics.PvP};
+            var cmd = new GetItemsAtLocationVisibleToGameMode() {dbLocationName = "swamps", gameMode = (int)GameModeStatics.GameModes.PvP };
 
             var items = DomainRegistry.Repository.Find(cmd);
 
@@ -52,8 +52,8 @@ namespace TT.Tests.Items.Queries
         }
 
         [Test]
-        [TestCase(GameModeStatics.Protection)]
-        [TestCase(GameModeStatics.SuperProtection)]
+        [TestCase(GameModeStatics.GameModes.Protection)]
+        [TestCase((int)GameModeStatics.GameModes.Superprotection)]
         public void get_all_items_at_location_visible_to_Protection(int gameMode)
         {
 
@@ -62,7 +62,7 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.Protection)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Protection)
                 .BuildAndSave();
 
             // invisible
@@ -70,7 +70,7 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.PvP)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.PvP)
                 .BuildAndSave();
 
             // visible
@@ -78,7 +78,7 @@ namespace TT.Tests.Items.Queries
                 .With(cr => cr.Owner, null)
                 .With(cr => cr.dbLocationName, "swamps")
                 .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
-                .With(i => i.PvPEnabled, GameModeStatics.Any)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Any)
                 .BuildAndSave();
 
             var cmd = new GetItemsAtLocationVisibleToGameMode() { dbLocationName = "swamps", gameMode = gameMode };

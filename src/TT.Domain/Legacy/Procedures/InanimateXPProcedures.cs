@@ -297,7 +297,7 @@ namespace TT.Domain.Procedures
                 dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
 
                 // don't let the player spawn in the dungeon if they are not in PvP mode
-                if (dbPlayer.GameMode < GameModeStatics.PvP && dbPlayer.IsInDungeon())
+                if (dbPlayer.GameMode < (int)GameModeStatics.GameModes.PvP && dbPlayer.IsInDungeon())
                 {
                     dbPlayer.dbLocationName = LocationsStatics.GetRandomLocationNotInDungeon();
                 }

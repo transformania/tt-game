@@ -392,7 +392,7 @@ namespace TT.Domain.Procedures
                                 1);
                         }
 
-                        if (target.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)PvPStatics.GameModes.PvP && victim.GameMode == (int)PvPStatics.GameModes.PvP)
+                        if (target.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)GameModeStatics.GameModes.PvP && victim.GameMode == (int)GameModeStatics.GameModes.PvP)
                         {
                             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerNumberTakedowns, 1);
                             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerLevelTakedowns, victim.Level);

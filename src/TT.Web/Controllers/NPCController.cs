@@ -58,7 +58,7 @@ namespace TT.Web.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
-            if (me.GameMode == GameModeStatics.PvP)
+            if (me.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
                 return View(MVC.NPC.Views.TradeWithMerchant, output.Where(i => i.PvPEnabled == 2 || i.PvPEnabled == -1));
             }
@@ -120,7 +120,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is in the same game mode as the player, if the item's game mode is locked
-            if ((purchased.PvPEnabled == GameModeStatics.PvP && me.GameMode != GameModeStatics.PvP || purchased.PvPEnabled == GameModeStatics.Protection && me.GameMode == GameModeStatics.PvP))
+            if ((purchased.PvPEnabled == (int)GameModeStatics.GameModes.PvP && me.GameMode != (int)GameModeStatics.GameModes.PvP || purchased.PvPEnabled == (int)GameModeStatics.GameModes.Protection && me.GameMode == (int)GameModeStatics.GameModes.PvP))
             {
                 TempData["Error"] = "This item is the wrong mode.";
                 TempData["SubError"] = "You cannot buy this item. It does not match your gameplay mode.";

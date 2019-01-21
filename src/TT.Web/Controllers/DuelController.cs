@@ -113,14 +113,14 @@ namespace TT.Web.Controllers
             if (!weAreFriends)
             {
                 // player is in PvP; target is not
-                if (me.GameMode == GameModeStatics.PvP && duelTarget.GameMode < GameModeStatics.PvP)
+                if (me.GameMode == (int)GameModeStatics.GameModes.PvP && duelTarget.GameMode < (int)GameModeStatics.GameModes.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
                 // player is not in PvP; target is
-                else if (me.GameMode < GameModeStatics.PvP && duelTarget.GameMode == GameModeStatics.PvP)
+                else if (me.GameMode < (int)GameModeStatics.GameModes.PvP && duelTarget.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
                     return RedirectToAction(MVC.PvP.Play());
@@ -215,13 +215,13 @@ namespace TT.Web.Controllers
                 if (!weAreFriends)
                 {
                     // player is in PvP; target is not
-                    if (me.GameMode == GameModeStatics.PvP && p.Player.GameMode < GameModeStatics.PvP)
+                    if (me.GameMode == (int)GameModeStatics.GameModes.PvP && p.Player.GameMode < (int)GameModeStatics.GameModes.PvP)
                     {
                         errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }
 
                     // player is not in PvP; target is
-                    else if (me.GameMode < GameModeStatics.PvP && p.Player.GameMode == GameModeStatics.PvP)
+                    else if (me.GameMode < (int)GameModeStatics.GameModes.PvP && p.Player.GameMode == (int)GameModeStatics.GameModes.PvP)
                     {
                         errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }

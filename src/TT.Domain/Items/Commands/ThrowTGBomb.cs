@@ -46,7 +46,7 @@ namespace TT.Domain.Items.Commands
                 var affectedPlayers = ctx.AsQueryable<Player>()
                     .Where(p => p.Location == player.Location &&
                      p.Id != PlayerId &&
-                     p.GameMode != GameModeStatics.SuperProtection &&
+                     p.GameMode != (int)GameModeStatics.GameModes.Superprotection &&
                      p.InDuel <= 0 &&
                      p.InQuest <= 0 &&
                      (p.FormSource.FriendlyName == "Regular Guy" || p.FormSource.FriendlyName == "Regular Girl") &&

@@ -53,11 +53,11 @@ namespace TT.Web.CustomHtmlHelpers
                 return new MvcHtmlString("");
             }
 
-            if (player.GameMode == GameModeStatics.SuperProtection)
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
                 return new MvcHtmlString("<span class='icon icon-superprotection' title='This player is in SuperProtection mode.'></span>");
             }
-            if (player.GameMode == GameModeStatics.Protection)
+            if (player.GameMode == (int)GameModeStatics.GameModes.Protection)
             {
                 return new MvcHtmlString("<span class='icon icon-protection' title='This player is in Protection mode.'></span>");
             }

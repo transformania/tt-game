@@ -96,7 +96,7 @@ namespace TT.Tests.Items.Commands
              .With(p => p.Location, TavernLocation)
              .With(p => p.Gender, PvPStatics.GenderMale)
              .With(p => p.FormSource, regularGuyForm)
-             .With(p => p.GameMode, GameModeStatics.SuperProtection)
+             .With(p => p.GameMode, (int)GameModeStatics.GameModes.Superprotection)
              .With(p => p.PlayerLogs, new List<PlayerLog>())
              .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();

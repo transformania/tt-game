@@ -37,7 +37,7 @@ namespace TT.Domain.World.Commands
                 var pvpPlayers = ctx.AsQueryable<Players.Entities.Player>()
                     .Include(p => p.FormSource)
                     .Include(p => p.Covenant)
-                    .Where(p => p.GameMode == (int)PvPStatics.GameModes.PvP &&
+                    .Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
                         p.BotId == AIStatics.ActivePlayerBotId)
                     .OrderByDescending(p => p.PvPScore)
                     .ThenByDescending(p => p.Level)

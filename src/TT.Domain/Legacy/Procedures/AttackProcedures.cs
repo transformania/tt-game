@@ -251,15 +251,15 @@ namespace TT.Domain.Procedures
 
             var playersHere = new List<Player>();
             var playersHereOnline = new List<Player>();
-            if (attacker.GameMode == GameModeStatics.PvP)
+            if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == GameModeStatics.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
+                    (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == PvPStatics.MobilityFull &&
                      p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
             }
-            else if (attacker.GameMode == GameModeStatics.Protection || attacker.GameMode == GameModeStatics.SuperProtection)
+            else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection || attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
                     p.BotId < AIStatics.RerolledPlayerBotId &&

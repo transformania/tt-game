@@ -83,10 +83,8 @@ namespace TT.Domain.Statics
         public const decimal LevelUpHealthMaxIncreaseBase = 10;
         public const decimal LevelUpManaMaxIncreaseBase = 10;
         public const decimal LevelUpHealthMaxIncreasePerLevel = 10;
-        public const decimal LevelUpManaMaxIncreasePerLevel = 5;
 
         public const decimal Item_LevelBonusModifier = .1M;
-        public const int ItemTurnBuildupMaximum = 48;
 
         public const int MaxAttacksPerUpdate = 3;
         public const int NoMovingAfterAttackSeconds = 45;
@@ -98,7 +96,6 @@ namespace TT.Domain.Statics
         public const float SelfRestoreAPCost = 3;
         public const float SelfRestoreManaCost = 10;
         public const float SelfRestoreTFnergyRequirement = 100;
-        public const float SelfRestoreBaseTFEnergyPerCast = 10;
 
         public const decimal CleanseManaCost = 3M;
         public const decimal CleanseTFEnergyPercentDecrease = 2.0M;
@@ -111,21 +108,14 @@ namespace TT.Domain.Statics
 
         public const decimal MaximumStoreableActionPoints = 120;
         public const decimal MaximumStoreableActionPoints_Refill = 360;
-        public const decimal APRestoredPerUpdate = 10;
-        public const decimal APRestoredPerUpdateRefillBonus = 20;
 
         public const decimal CriticalMissPercentChance = 8;
         public const decimal CriticalHitPercentChance = 8;
-
-        public const string NoActionPointsErrorMessage = "Wait a while; you will receive more action points every half hour.";
-
 
         public const decimal PercentHealthToAllowFullMobilityFormTF = 0.50m;
         public const decimal PercentHealthToAllowMindControlTF = 0.25m;
         public const decimal PercentHealthToAllowAnimalFormTF = 0;
         public const decimal PercentHealthToAllowInanimateFormTF = 0;
-
-        public const decimal NonPvPXPGainModifier = .5M;
 
         public const string ItemType_Accessory = "accessory";
         public const string ItemType_Consumable = "consumable";
@@ -153,7 +143,7 @@ namespace TT.Domain.Statics
 
         public const string ItemType_TGBomb = "item_consumable_tg_bomb";
 
-        public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
+        
 
         public const int PsychopathDefaultAmount = 15;
         public const int Covenant_MaximumAnimatePlayerCount = 25;

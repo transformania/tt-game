@@ -28,10 +28,10 @@ namespace TT.Domain.Players.Commands
 
                 if (!InChaos)
                 {
-                    if (player.GameMode == GameModeStatics.PvP && (GameMode == GameModeStatics.SuperProtection || GameMode == GameModeStatics.Protection))
+                    if (player.GameMode == (int)GameModeStatics.GameModes.PvP && (GameMode == (int)GameModeStatics.GameModes.Superprotection || GameMode == (int)GameModeStatics.GameModes.Protection))
                         throw new DomainException("You cannot leave PvP mode during regular gameplay.");
 
-                    if ((player.GameMode == GameModeStatics.Protection || player.GameMode == GameModeStatics.SuperProtection) && GameMode == GameModeStatics.PvP)
+                    if ((player.GameMode == (int)GameModeStatics.GameModes.Protection || player.GameMode == (int)GameModeStatics.GameModes.Superprotection) && GameMode == (int)GameModeStatics.GameModes.PvP)
                         throw new DomainException("You cannot enter PvP mode during regular gameplay.");
                 }
 
@@ -47,7 +47,7 @@ namespace TT.Domain.Players.Commands
             if (MembershipId == null)
                 throw new DomainException("MembershipID is required!");
 
-            if (GameMode != GameModeStatics.SuperProtection && GameMode != GameModeStatics.Protection && GameMode != GameModeStatics.PvP)
+            if (GameMode != (int)GameModeStatics.GameModes.Superprotection && GameMode != (int)GameModeStatics.GameModes.Protection && GameMode != (int)GameModeStatics.GameModes.PvP)
                 throw new DomainException("Game mode selection is invalid");
 
         }

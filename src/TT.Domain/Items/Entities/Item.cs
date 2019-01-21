@@ -75,7 +75,7 @@ namespace TT.Domain.Items.Entities
                 IsPermanent = itemSource.IsPermanentFromCreation(),
                 ItemSource = itemSource,
                 dbName = itemSource.DbName,
-                PvPEnabled = GameModeStatics.Any,
+                PvPEnabled = (int)GameModeStatics.GameModes.Any,
                 TimeDropped = DateTime.UtcNow,
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                 LastSold = DateTime.UtcNow

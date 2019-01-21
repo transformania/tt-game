@@ -57,11 +57,11 @@ namespace TT.Web.Controllers
                 });
 
                 var modeName = "";
-                if (mode == GameModeStatics.SuperProtection)
+                if (mode == (int)GameModeStatics.GameModes.Superprotection)
                     modeName = "SuperProtection";
-                else if (mode == GameModeStatics.Protection)
+                else if (mode == (int)GameModeStatics.GameModes.Protection)
                     modeName = "Protection";
-                if (mode == GameModeStatics.PvP)
+                if (mode == (int)GameModeStatics.GameModes.PvP)
                     modeName = "PvP";
 
                 TempData["Result"] = $"You have successfully change your game to {modeName} mode.";
@@ -231,7 +231,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (me.GameMode == GameModeStatics.PvP)
+            if (me.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
                 TempData["Error"] = "You must be fully animate and in Protection or SuperProtection mode in order to drop your willpower.";
                 return RedirectToAction(MVC.PvP.Play());

@@ -111,6 +111,9 @@ namespace TT.Web
             var data = repo.PvPWorldStats.FirstOrDefault();
             PvPStatics.ChaosMode = data != null ? data.ChaosMode : false;
             PvPStatics.RoundDuration = data != null ? data.RoundDuration : 5000;
+
+            TurnTimesStatics.ActiveConfiguration = data != null && TurnTimesStatics.IsValidConfiguration(data.TurnTimeConfiguration) ? data.TurnTimeConfiguration : TurnTimesStatics.FiveMinuteTurns;
+
             PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber;
         }
     }

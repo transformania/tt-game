@@ -406,7 +406,7 @@
 
         $("#timerBox").click(function () {
 
-            alert("The last update was  @HtmlHelpers.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
+            alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last " + @TurnTimesStatics.GetTurnLengthInSeconds() + " seconds.");
 
 
         });

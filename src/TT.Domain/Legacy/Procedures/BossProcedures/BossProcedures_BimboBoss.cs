@@ -293,7 +293,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var cutoff = DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && 
                 p.LastActionTimestamp > cutoff && 
                 p.FormSourceId != RegularBimboFormSourceId && 

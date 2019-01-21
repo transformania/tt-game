@@ -393,6 +393,7 @@
     var attackCap = @PvPStatics.MaxAttacksPerUpdate;
 
     var donatorTier = @Model.You.Player.DonatorLevel;
+    var turnLengthInSeconds = @TurnTimesStatics.GetTurnLengthInSeconds();
 
     var playUpdateSound = false;
     var playAttackSound = false;
@@ -418,7 +419,7 @@
         }
 
         $( "#timerBox" ).click(function() {
-            alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last 5 minutes.");
+            alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last " + turnLengthInSeconds + " seconds.");
         });
 
 

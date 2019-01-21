@@ -208,11 +208,24 @@ namespace TT.Web.Controllers
             data.ChaosMode = input.ChaosMode;
             data.TestServer = input.TestServer;
             data.RoundStartsAt = input.RoundStartsAt;
+            data.TurnTimeConfiguration = input.TurnTimeConfiguration;
 
             repo.SavePvPWorldStat(data);
 
             PvPStatics.ChaosMode = data.ChaosMode;
             PvPStatics.RoundDuration = data.RoundDuration;
+
+            if (TurnTimesStatics.IsValidConfiguration(data.TurnTimeConfiguration))
+            {
+                TurnTimesStatics.ActiveConfiguration = data.TurnTimeConfiguration;
+            }
+            else
+            {
+                TurnTimesStatics.ActiveConfiguration = TurnTimesStatics.FiveMinuteTurns;
+                TempData["Error"] = $"'{data.TurnTimeConfiguration}' is not a valid configuration.  Falling back to five minute turns.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            
 
             TempData["Result"] = "World Data Saved!";
             return RedirectToAction(MVC.PvP.Play());

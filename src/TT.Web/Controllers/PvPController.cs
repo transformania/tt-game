@@ -977,10 +977,14 @@ namespace TT.Web.Controllers
             }
 
             var skillSource = SkillStatics.GetStaticSkill(spellSourceId);
-            var futureForm = FormStatics.GetForm(skillSource.FormSourceId.Value);
+            DbStaticForm futureForm = null;
+            if (spellSourceId != PvPStatics.Spell_WeakenId)
+            {
+                futureForm = FormStatics.GetForm(skillSource.FormSourceId.Value);
+            }
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
-            if (me.MindControlIsActive && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
+            if (me.MindControlIsActive && futureForm != null && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
             {
                 TempData["Error"] = "This player is already under the influence of this type of mind control.";
                 TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";

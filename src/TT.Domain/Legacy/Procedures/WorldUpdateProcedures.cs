@@ -180,7 +180,7 @@ namespace TT.Domain.Procedures
 
                         if (PvPStatics.ChaosMode)
                         {
-                            context.Database.ExecuteSqlCommand("Update [dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
+                            context.Database.ExecuteSqlCommand("Update [dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana, CleansesMeditatesThisRound = -999");
                         }
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");

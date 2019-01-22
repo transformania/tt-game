@@ -35,7 +35,7 @@ namespace TT.Web.Controllers
             var output = new SettingsPageViewModel
             {
                 TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
-                TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
+                TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
                 Player = me,
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
                 ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId})

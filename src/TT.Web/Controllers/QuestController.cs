@@ -54,10 +54,10 @@ namespace TT.Web.Controllers
 
             // assert player has not been in combat recently
             var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (lastAttackTimeAgo < PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling)
+            if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
             {
                 TempData["Error"] = "You have been in combat too recently in order to begin this quest.";
-                TempData["SubError"] = "You must stay out of combat for another " + (PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling - lastAttackTimeAgo) + " minutes.";
+                TempData["SubError"] = "You must stay out of combat for another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - lastAttackTimeAgo) + " minutes.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

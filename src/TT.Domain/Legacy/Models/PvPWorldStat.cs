@@ -25,6 +25,6 @@ namespace TT.Domain.Models
         public int RoundDuration { get; set; }
         public bool InbetweenRoundsNonChaos { get; set; }
         public DateTime? RoundStartsAt { get; set; }
-
+        public string TurnTimeConfiguration { get; set; }
     }
 }

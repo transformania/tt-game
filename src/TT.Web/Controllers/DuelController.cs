@@ -48,9 +48,9 @@ namespace TT.Web.Controllers
 
             // assert that the player has not been in recent combat
             var minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (minutesAgo < PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling)
+            if (minutesAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
             {
-                TempData["Error"] = "You must wait another " + (PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling - minutesAgo) + " minutes without being in combat in order to challenge this opponent to a duel.";
+                TempData["Error"] = "You must wait another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - minutesAgo) + " minutes without being in combat in order to challenge this opponent to a duel.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -95,7 +95,7 @@ namespace TT.Web.Controllers
 
             // assert that the target has not been in recent combat
             minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (minutesAgo < PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling)
+            if (minutesAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
             {
                 TempData["Error"] = "Your target must wait longer without being in combat in order to duel you.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -229,16 +229,16 @@ namespace TT.Web.Controllers
 
                 // assert that the player has not been in recent combat
                 var minutesAgo = Math.Abs(Math.Floor(p.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-                if (minutesAgo < PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling)
+                if (minutesAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
                 {
-                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must wait another " + (PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling - minutesAgo) + " minutes without being in combat in order accept this challenge to a duel.");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must wait another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - minutesAgo) + " minutes without being in combat in order accept this challenge to a duel.");
                 }
 
                 // assert that both players are still online 
                 minutesAgo = Math.Abs(Math.Floor(p.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-                if (minutesAgo > PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling)
+                if (minutesAgo > TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
                 {
-                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " has been inactive for " + (PvPStatics.MinutesSinceLastCombatBeforeQuestingOrDuelling - minutesAgo) + " minutes.  " + p.Player.GetFullName() + " can become active again and eligible for the duel performing any action which takes AP.  Do not attack as this will reset their no combat timer.");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " has been inactive for " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - minutesAgo) + " minutes.  " + p.Player.GetFullName() + " can become active again and eligible for the duel performing any action which takes AP.  Do not attack as this will reset their no combat timer.");
                 }
 
             }

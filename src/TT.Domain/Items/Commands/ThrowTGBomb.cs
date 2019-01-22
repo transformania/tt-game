@@ -41,7 +41,7 @@ namespace TT.Domain.Items.Commands
                 if (item == null)
                     throw new DomainException($"Item with ID {ItemId} could not be found or does not belong to you.");
 
-                var cutoff = DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
+                var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
 
                 var affectedPlayers = ctx.AsQueryable<Player>()
                     .Where(p => p.Location == player.Location &&

@@ -72,6 +72,14 @@ namespace TT.Web.Controllers.API
             // Don't do a turn update if the round is over or we're still in an update
             if (world.TurnNumber >= PvPStatics.RoundDuration || world.WorldIsUpdating) return BadRequest();
 
+            // Don't do a turn update if it hasn't been long enough yet
+            var gracePeriodSeconds = 10; // account for delays in fetching the URL
+            var secondsElapsed = DateTime.UtcNow.Subtract(world.LastUpdateTimestamp).TotalSeconds + gracePeriodSeconds;
+            if (secondsElapsed < TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                return BadRequest();
+            }
+
             world.TurnNumber++;
             world.WorldIsUpdating = true;
             world.LastUpdateTimestamp = DateTime.UtcNow;

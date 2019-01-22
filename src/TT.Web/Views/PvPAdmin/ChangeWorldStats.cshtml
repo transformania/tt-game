@@ -37,6 +37,19 @@
 
     <br /><br />
 
+    <label>Turn speed configuration:</label>
+
+    @Html.DropDownListFor(i => i.TurnTimeConfiguration, new SelectList(
+        new List<Object>{
+            new { value = "5min"  , text = "5 minutes"  },
+            new { value = "3min"  , text = "3 minutes"  }
+        },
+        "value",
+        "text",
+        2))
+
+    <br /><br />
+
 
         <input type="submit" value="Save" />
 

@@ -99,7 +99,7 @@ namespace TT.Web.Controllers
             ViewBag.UpdateInProgress = false;
 
             var secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength - (int)secondsSinceUpdate;
+            ViewBag.SecondsUntilUpdate = TurnTimesStatics.GetTurnLengthInSeconds() - (int)secondsSinceUpdate;
 
             // turn off world update toggle if it's simply been too long
             if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || world.WorldIsUpdating))
@@ -815,17 +815,17 @@ namespace TT.Web.Controllers
             var lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             var secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && !PvPStatics.ChaosMode)
+            if (secondsAgo > (TurnTimesStatics.GetTurnLengthInSeconds() - TurnTimesStatics.GetEndTurnNoAttackSeconds()) && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "It is too late into this turn to attack.";
-                TempData["SubError"] = "You can't attack in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
+                TempData["SubError"] = "You can't attack in the last " + TurnTimesStatics.GetEndTurnNoAttackSeconds() + " seconds of a turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
+            if (secondsAgo < TurnTimesStatics.GetStartTurnNoAttackSeconds())
             {
                 TempData["Error"] = "It is too early into this turn to attack.";
-                TempData["SubError"] = "You can't attack in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
+                TempData["SubError"] = "You can't attack in the first " + TurnTimesStatics.GetStartTurnNoAttackSeconds() + " seconds of a turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1268,20 +1268,20 @@ namespace TT.Web.Controllers
             var lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             var secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && !PvPStatics.ChaosMode)
+            if (secondsAgo > (TurnTimesStatics.GetTurnLengthInSeconds() - TurnTimesStatics.GetEndTurnNoAttackSeconds()) && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "It is too late into this turn to enchant.";
-                TempData["SubError"] = "You can't enchant in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
+                TempData["SubError"] = "You can't enchant in the last " + TurnTimesStatics.GetEndTurnNoAttackSeconds() + " seconds of a turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that it is not too EARLY in the round for this attack to happen
             var secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
+            if (secondsAgo < TurnTimesStatics.GetStartTurnNoAttackSeconds())
             {
                 TempData["Error"] = "It is too early into this turn to enchant.";
-                TempData["SubError"] = "You can't enchant in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
+                TempData["SubError"] = "You can't enchant in the first " + TurnTimesStatics.GetStartTurnNoAttackSeconds() + " seconds of a turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -2036,7 +2036,7 @@ namespace TT.Web.Controllers
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
 
-            ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
             {

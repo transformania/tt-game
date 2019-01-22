@@ -1356,7 +1356,7 @@ namespace TT.Domain.Procedures
 
             var minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            if (minutesAgo > TurnTimesStatics.GetOfflineAfterXMinutes())
             {
                 return true;
             }
@@ -1375,7 +1375,7 @@ namespace TT.Domain.Procedures
 
             var minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            if (minutesAgo > TurnTimesStatics.GetOfflineAfterXMinutes())
             {
                 return true;
             }

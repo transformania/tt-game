@@ -12,10 +12,6 @@ namespace TT.Domain.Statics
 
         public static int RoundDuration = 4000;
 
-        public const int TurnSecondLength = 300;
-        public const int StartTurnNoAttackSeconds = 30;
-        public const int EndTurnNoAttackSeconds = 30;
-
         public static string AlphaRound = "Alpha Round 39";
         public const string LastTosUpdate = "May 25, 2018";
         public const string LastPrivacyPolicyUpdate = "May 25, 2018";
@@ -48,8 +44,6 @@ namespace TT.Domain.Statics
         public const decimal XP__EndgameTFCompletionLevelBase = 8;
         public const decimal XP__EnchantmentMaxXP = 3;
 
-        public const double OfflineAfterXMinutes = 30;
-        public const int MinutesSinceLastCombatBeforeQuestingOrDuelling = 30;
         public const int MaximumDuelTurnLength = 10;
 
         public const string Permissions_Admin = "admin";

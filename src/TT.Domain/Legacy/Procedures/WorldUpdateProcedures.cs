@@ -11,7 +11,6 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
-using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
 
 namespace TT.Domain.Procedures
@@ -40,7 +39,7 @@ namespace TT.Domain.Procedures
                     FullLog = "",
                     Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
                 };
-                log.AddLog("Started new log for turn " + turnNo + ".");
+                log.AddLog($"Started new log for turn {turnNo} at <b>{DateTime.UtcNow}</b>.");
                 serverLogRepo.SaveServerLog(log);
                 var updateTimer = new Stopwatch();
                 updateTimer.Start();

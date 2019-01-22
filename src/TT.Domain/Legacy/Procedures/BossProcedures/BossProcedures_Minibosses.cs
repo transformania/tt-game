@@ -236,7 +236,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
         private static DateTime GetOnlineCutoffTime()
         {
-            return DateTime.UtcNow.AddMinutes(-PvPStatics.OfflineAfterXMinutes);
+            return DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
         }
 
         private static int ChooseSpell(int turnNumber, List<int> spells)

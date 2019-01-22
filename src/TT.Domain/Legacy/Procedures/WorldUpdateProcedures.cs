@@ -794,28 +794,59 @@ namespace TT.Domain.Procedures
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Error running miniboss action", e));
                 }
 
+                serverLogRepo.SaveServerLog(log);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished miniboss actions");
 
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");
-                using (var context = new StatsContext())
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting setting update status to done");
+                try
                 {
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Amount < .5");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand(
-                        $"UPDATE [Stats].[dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
+                    PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished setting update status to done");
                 }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
+                catch (Exception e)
+                {
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR setting update status to done: ", e));
+                    log.Errors++;
+                }
+
+                serverLogRepo.SaveServerLog(log);
+
+                try
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");
+                    using (var context = new StatsContext())
+                    {
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
+                        context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Amount < .5");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            "DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
+                        context.Database.ExecuteSqlCommand(
+                            $"UPDATE [dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running stored procedure maintenance: ", e));
+                    log.Errors++;
+                }
+               
+                serverLogRepo.SaveServerLog(log);
 
                 #region regenerate dungeon
                 if (turnNo % 30 == 7)
@@ -831,6 +862,7 @@ namespace TT.Domain.Procedures
                         log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Dungeon generation FAILED", e));
                     }
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation completed.");
+                    serverLogRepo.SaveServerLog(log);
                 }
                 #endregion
 

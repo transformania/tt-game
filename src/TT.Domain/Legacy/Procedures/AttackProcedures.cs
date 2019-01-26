@@ -59,7 +59,10 @@ namespace TT.Domain.Procedures
                     logs.AttackerLog += effectBeingGiven.AttackerWhenHit;
                 }
 
-                logs.AttackerLog += "<br><br>";
+                if (!String.IsNullOrEmpty(logs.AttackerLog))
+                {
+                    logs.AttackerLog += "<br><br>";
+                }
 
                 logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".</span>";
                 logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName +".";

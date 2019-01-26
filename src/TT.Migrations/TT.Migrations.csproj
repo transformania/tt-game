@@ -82,6 +82,7 @@
     <Compile Include="201608181243_TFMessageFK.cs" />
     <Compile Include="201608031909_AddRecaptchaEntry.cs" />
     <Compile Include="201804260056_RemoveVictimName.cs" />
+    <Compile Include="201901251339_QuestSetFormMigration.cs" />
     <Compile Include="201901211044_AddTurnTimeStatics.cs" />
     <Compile Include="201901201303_IncreaseReportCharLimit.cs" />
     <Compile Include="201901131059_RemoveFakeFormFKs.cs" />

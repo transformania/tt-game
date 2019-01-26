@@ -471,6 +471,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 60,
+      "name": "Alpha 60 (Second Era of Lara Ithilwen)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
 
   ]

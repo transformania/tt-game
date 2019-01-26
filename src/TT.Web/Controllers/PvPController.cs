@@ -978,7 +978,7 @@ namespace TT.Web.Controllers
 
             var skillSource = SkillStatics.GetStaticSkill(spellSourceId);
             DbStaticForm futureForm = null;
-            if (spellSourceId != PvPStatics.Spell_WeakenId)
+            if (skillSource.FormSourceId != null)
             {
                 futureForm = FormStatics.GetForm(skillSource.FormSourceId.Value);
             }

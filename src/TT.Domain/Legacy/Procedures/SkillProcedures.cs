@@ -414,7 +414,7 @@ namespace TT.Domain.Procedures
             }
             using (var context = new StatsContext())
             {
-                context.Database.ExecuteSqlCommand("UPDATE [dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId + " AND Name != 'lowerHealth'");
+                context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Skills] SET IsArchived = {archiveBool} WHERE OwnerId = {playerId} AND SkillSourceId != {PvPStatics.Spell_WeakenId}");
             }
         }
 

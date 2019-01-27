@@ -157,15 +157,15 @@ namespace TT.Domain.Statics
 
     public static class MindControlStatics
     {
-        public const string MindControl__Movement = "form_(MC-Movement)_Judoo";
+        public const int MindControl__MovementFormSourceId = 293;
         public const int MindControl__Movement_Limit = 2;
         public const string MindControl__Movement_DebuffEffect = "effect_Mind_Controlled_-_Movement_Judoo";
 
-        public const string MindControl__Strip = "form_(MC-Strip)_Martiandawn";
+        public const int MindControl__StripFormSourceId = 358;
         public const int MindControl__Strip_Limit = 1;
         public const string MindControl__Strip_DebuffEffect = "effect_Mind_Control_-_Strip_Judoo";
 
-        public const string MindControl__Meditate = "form_(MC-Meditation)_Duhad";
+        public const int MindControl__MeditateFormSourceId = 370;
         public const int MindControl__Meditate_Limit = 2;
     }
 

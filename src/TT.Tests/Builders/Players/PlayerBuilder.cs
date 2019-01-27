@@ -13,7 +13,6 @@ namespace TT.Tests.Builders.Players
         {
             Instance = Create();
             With(u => u.Id, 3);
-            With(u => u.Form, "some form");
             With(u => u.Mobility, PvPStatics.MobilityFull);
             With(u => u.Location, LocationsStatics.STREET_70_EAST_9TH_AVE);
             With(p => p.ActionPoints, PvPStatics.MaximumStoreableActionPoints);

@@ -30,8 +30,6 @@ namespace TT.Domain.Players.Entities
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
 
-        public string Form { get; protected set; } // TODO: get rid of this shit
-
         [Column("dbLocationName")]
         public string Location { get; protected set; }
         public ICollection<Item> Items { get; protected set; } 
@@ -409,16 +407,6 @@ namespace TT.Domain.Players.Entities
         public int GetCarriedItemCount()
         {
             return this.Items.Count(i => !i.IsEquipped);
-        }
-
-        /// <summary>
-        /// Returns whether or not this player is not allowed to move due to having the Forced March mind control active on them.
-        /// </summary>
-        /// <returns></returns>
-        public bool CantMoveBecauseOfForcedMarch()
-        {
-            return VictimMindControls.Any(v =>
-                v.TurnsRemaining > 0 && v.Type == MindControlStatics.MindControl__Movement);
         }
 
         /// <summary>

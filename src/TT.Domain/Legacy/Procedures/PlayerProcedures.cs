@@ -182,7 +182,6 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = form.dbName,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -289,7 +288,6 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = form.dbName,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -397,7 +395,6 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
-                                                              dbName = form.dbName,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -1627,7 +1624,7 @@ namespace TT.Domain.Procedures
         public static IEnumerable<DbStaticForm> GetAllDbStaticForms()
         {
             IDbStaticFormRepository repo = new EFDbStaticFormRepository();
-            return repo.DbStaticForms.Where(f => f.dbName != "");
+            return repo.DbStaticForms;
         }
 
         public static void AddItemUses(int playerId, int amount)

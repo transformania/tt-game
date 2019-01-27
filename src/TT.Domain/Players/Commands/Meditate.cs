@@ -47,9 +47,9 @@ namespace TT.Domain.Players.Commands
                     if (player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
                         throw new DomainException("You have cleansed and meditated the maximum number of times this update.");
 
-                    var mcs = player.VictimMindControls.Select(m => m.Type);
+                    var mcs = player.VictimMindControls.Select(m => m.FormSourceId);
 
-                    if (mcs.Contains(MindControlStatics.MindControl__Meditate))
+                    if (mcs.Contains(MindControlStatics.MindControl__MeditateFormSourceId))
                         throw new DomainException("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
 
                 }

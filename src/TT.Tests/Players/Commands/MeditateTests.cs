@@ -72,7 +72,7 @@ namespace TT.Tests.Players.Commands
 
             var mcs = new List<VictimMindControl>()
             {
-                new VictimMindControlBuilder().With(t => t.Type, MindControlStatics.MindControl__Meditate).BuildAndSave()
+                new VictimMindControlBuilder().With(t => t.FormSourceId, MindControlStatics.MindControl__MeditateFormSourceId).BuildAndSave()
             };
 
             var player = new PlayerBuilder()

@@ -5,7 +5,6 @@ namespace TT.Domain.Forms.Entities
 {
     public class FormSource : Entity<int>
     {
-        public string dbName { get; protected set; } // TODO: remove after fixing ThrowTGBomb logic
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public string TFEnergyType { get; protected set; }
@@ -48,6 +47,8 @@ namespace TT.Domain.Forms.Entities
         public float Magicka { get; protected set; }
         public float Succour { get; protected set; }
         public float Luck { get; protected set; }
+
+        public FormSource AltSexFormSource { get; protected set; }
 
         public TFMessage TfMessage { get; protected set; }
 

@@ -3,7 +3,6 @@
     public class FormSourceDetail
     {
         public int Id { get; set; }
-        public string dbName { get;  set; }
         public string FriendlyName { get;  set; }
         public string Description { get;  set; }
         public string TFEnergyType { get;  set; }

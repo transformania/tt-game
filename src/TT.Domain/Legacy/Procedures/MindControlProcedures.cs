@@ -12,14 +12,13 @@ namespace TT.Domain.Procedures
     public class MindControlProcedures
     {
 
-        public static void AddMindControl(Player attacker, Player victim, string type)
+        public static void AddMindControl(Player attacker, Player victim, int formSourceId)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
             var dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-            var mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id && m.Type == type);
+            var mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id && m.FormSourceId == formSourceId);
 
             if (mc == null)
             {
@@ -28,7 +27,7 @@ namespace TT.Domain.Procedures
                     TurnsRemaining = 6,
                     MasterId = attacker.Id,
                     VictimId = victim.Id,
-                    Type = type,
+                    FormSourceId = formSourceId
                 };
             }
             else
@@ -58,9 +57,6 @@ namespace TT.Domain.Procedures
             var mcs = mcRepo.MindControls.Where(m => m.MasterId == player.Id || m.VictimId == player.Id).ToList();
 
             var output = new List<MindControlViewModel>();
-
-            var basePlayer = PlayerProcedures.GetPlayerFormViewModel(player.Id);
-
             foreach (var mc in mcs)
             {
                 var addme = new MindControlViewModel
@@ -68,7 +64,7 @@ namespace TT.Domain.Procedures
                     MindControl = mc,
                     Victim = PlayerProcedures.GetPlayerFormViewModel(mc.VictimId),
                     Master = PlayerProcedures.GetPlayerFormViewModel(mc.MasterId),
-                    TypeFriendlyName = GetMCFriendlyName(mc.Type),
+                    TypeFriendlyName = GetMCFriendlyName(mc.Id),
                 };
                 output.Add(addme);
             }
@@ -76,16 +72,19 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string GetMCFriendlyName(string input)
+        public static string GetMCFriendlyName(int id)
         {
-            if (input == MindControlStatics.MindControl__Movement) {
+            var formRepo = new EFDbStaticFormRepository();
+            var form = formRepo.DbStaticForms.SingleOrDefault(f => f.Id == id);
+
+            if (form.Id == MindControlStatics.MindControl__MovementFormSourceId) {
                 return "Forced March";
             }
-            else if (input == MindControlStatics.MindControl__Strip)
+            else if (form.Id == MindControlStatics.MindControl__StripFormSourceId)
             {
                 return "Take a Load Off!";
             }
-            else if (input == MindControlStatics.MindControl__Meditate)
+            else if (form.Id == MindControlStatics.MindControl__MeditateFormSourceId)
             {
                 return "Am I Bugging You?";
             }
@@ -101,7 +100,7 @@ namespace TT.Domain.Procedures
             return mcRepo.MindControls.Where(m => m.MasterId == master.Id && m.VictimId == victim.Id);
         }
 
-        public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim, string mcType)
+        public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim, int formSourceId)
         {
             var output = new ErrorBox();
             output.HasError = true;
@@ -132,7 +131,7 @@ namespace TT.Domain.Procedures
             // assert that there is indeed a mind control between these two players
             var mcs = MindControlProcedures.GetMindControlsBetweenPlayers(master, victim);
 
-            var mc = mcs.FirstOrDefault(m => m.Type == mcType);
+            var mc = mcs.FirstOrDefault(m => m.FormSourceId == formSourceId);
 
             if (mc == null)
             {
@@ -155,7 +154,7 @@ namespace TT.Domain.Procedures
             }
 
             // assert that this mind control has not reached its limit
-            if (mc.TimesUsedThisTurn >= GetCommandLimitOfType(mc.Type))
+            if (mc.TimesUsedThisTurn >= GetCommandLimitOfType(formSourceId))
             {
                 output.Error = "You've issued this command too many times this turn.";
                 output.SubError = "Wait until next turn to issue your next command.";
@@ -181,17 +180,17 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static int GetCommandLimitOfType(string type)
+        public static int GetCommandLimitOfType(int formSourceId)
         {
-            if (type == MindControlStatics.MindControl__Movement)
+            if (formSourceId == MindControlStatics.MindControl__MovementFormSourceId)
             {
                 return MindControlStatics.MindControl__Movement_Limit;
             }
-            else if (type == MindControlStatics.MindControl__Strip)
+            else if (formSourceId == MindControlStatics.MindControl__StripFormSourceId)
             {
                 return MindControlStatics.MindControl__Strip_Limit;
             }
-            else if (type == MindControlStatics.MindControl__Meditate)
+            else if (formSourceId == MindControlStatics.MindControl__MeditateFormSourceId)
             {
                 return MindControlStatics.MindControl__Meditate_Limit;
             }
@@ -222,15 +221,15 @@ namespace TT.Domain.Procedures
             return true;
         }
 
-        public static bool PlayerIsMindControlledWithType(Player player, string type)
+        public static bool PlayerIsMindControlledWithType(Player player, int formSourceId)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            return mcRepo.MindControls.Any(p => p.VictimId == player.Id && p.Type == type);
+            return mcRepo.MindControls.Any(p => p.VictimId == player.Id && p.FormSourceId == formSourceId);
         }
 
-        public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, string type)
+        public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, int formSourceId)
         {
-            return controls.Any(p => p.VictimId == player.Id && p.Type == type);
+            return controls.Any(p => p.VictimId == player.Id && p.FormSourceId == formSourceId);
         }
 
         public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
@@ -238,10 +237,10 @@ namespace TT.Domain.Procedures
             return controls.Any(p => p.VictimId == player.Id);
         }
 
-        public static void AddCommandUsedToMindControl(Player master, Player victim, string type)
+        public static void AddCommandUsedToMindControl(Player master, Player victim, int formSourceId)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            var mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id && m.Type == type);
+            var mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id && m.FormSourceId == formSourceId);
             mc.TimesUsedThisTurn++;
             mcRepo.SaveMindControl(mc);
         }

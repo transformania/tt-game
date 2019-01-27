@@ -22,13 +22,15 @@ namespace TT.Domain.Forms.Mappings
                 .HasOptional(cr => cr.ItemSource)
                 .WithMany().Map(m => m.MapKey("ItemSourceId"));
 
-            // TODO:  TFMessage should require having a FormSource in the future, but for now
-            // because forms are produced by an old publish that can't set the FK immediately,
-            // TF messages need to have an optional mapping to FormSource.
             modelBuilder.Entity<FormSource>()
                 .HasOptional(p => p.TfMessage)
                 .WithOptionalPrincipal(d => d.FormSource)
                 .Map(m => m.MapKey("FormSourceId"));
+
+            modelBuilder.Entity<FormSource>()
+                .HasOptional(i => i.AltSexFormSource)
+                .WithOptionalPrincipal()
+               .Map(m => m.MapKey("AltSexFormSourceId"));
 
         }
 

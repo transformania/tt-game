@@ -29,6 +29,7 @@ namespace TT.Domain.Items.Commands
                     .Include(p => p.Items)
                     .Include(p => p.Item.ItemSource)
                     .Include(p => p.FormSource)
+                    .Include(p => p.FormSource.AltSexFormSource)
                     .Include(p => p.User)
                     .Include(p => p.User.Stats)
                     .FirstOrDefault(p => p.Id == PlayerId);
@@ -49,27 +50,13 @@ namespace TT.Domain.Items.Commands
                      p.GameMode != (int)GameModeStatics.GameModes.Superprotection &&
                      p.InDuel <= 0 &&
                      p.InQuest <= 0 &&
-                     (p.FormSource.FriendlyName == "Regular Guy" || p.FormSource.FriendlyName == "Regular Girl") &&
+                     p.FormSource.AltSexFormSource != null &&
                      p.LastActionTimestamp > cutoff
                 ).Include(p => p.FormSource).ToList();
 
-                // TODO: Add a nullable FK on FormSource called SexSwapVersion that links to the swapped version, then do this all as a method on the entity
-                // TODO: Remove the ToList when the nested query is removed
                 foreach (var p in affectedPlayers)
                 {
-                    var oldFormSplit = p.FormSource.dbName.Split('_');
-                    var newFormName = "";
-
-                    if (oldFormSplit[0] == "woman")
-                    {
-                        newFormName = "man_" + oldFormSplit[1];
-                    }
-                    else
-                    {
-                        newFormName = "woman_" + oldFormSplit[1];
-                    }
-                    var newsource = ctx.AsQueryable<FormSource>().FirstOrDefault(f => f.dbName == newFormName);
-                    p.ChangeForm(newsource);
+                    p.ChangeForm(p.FormSource.AltSexFormSource);
                     p.AddLog($"You yelp and feel your body change to that of the opposite sex from <b>{player.GetFullName()}</b>'s use of a TG Splash Orb in your location!", true);
                 }
 

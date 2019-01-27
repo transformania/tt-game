@@ -8,7 +8,7 @@ namespace TT.Domain.Combat.DTOs
         public int Id { get; set; }
         public PlayerDetail Victim { get; set; }
         public int TurnsRemaining { get; set; }
-        public string Type { get; set; }
+        public int FormSourceId { get; set; }
         public int TimesUsedThisTurn { get; set; }
 
     }

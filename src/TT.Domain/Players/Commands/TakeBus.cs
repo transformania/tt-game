@@ -64,7 +64,7 @@ namespace TT.Domain.Players.Commands
                 if (player.Money < ticketPrice)
                     throw new DomainException("You can't afford this bus ticket!");
 
-                if (player.Effects.FirstOrDefault(e => e.dbName == MindControlStatics.MindControl__Movement) != null)
+                if (player.Effects.FirstOrDefault(e => e.dbName == MindControlStatics.MindControl__Movement_DebuffEffect) != null)
                     throw new DomainException("You can't ride the bus while under the Forced March! mind control spell.");
 
                 var buffs = ItemProcedures.GetPlayerBuffs(player.Id);

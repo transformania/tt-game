@@ -25,7 +25,7 @@
                 <tr>
                     <td>@c.Id</td>
                     <td><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(c.OwnerMembershipId))" target="_blank">@c.OwnerMembershipId</a></td>
-                    <td><b>@c.CustomForm.FriendlyName</b> (@c.CustomForm.dbName)</td>
+                    <td><b>@c.CustomForm.FriendlyName</b></td>
                     <td><a href="@Url.Action(MVC.PvPAdmin.EditCustomForm(c.Id))">Edit</a></td>
                     <td><a href="@Url.Action(MVC.PvPAdmin.DeleteCustomForm(c.Id))" onclick="return confirm('Are you sure you want to delete this?')" class="">[X]</a></td>
                 </tr>

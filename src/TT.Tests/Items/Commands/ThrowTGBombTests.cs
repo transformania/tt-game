@@ -24,27 +24,31 @@ namespace TT.Tests.Items.Commands
         private const string RegularGuy = "Regular Guy";
         private const string RegularGirl = "Regular Girl";
         private const string TavernLocation = "tavern_bar";
-        private const string BaseMaleForm = "man_01"; // TODO: remove this shit
-        private const string BaseFemaleForm = "woman_01"; // TODO: remove this shit
 
         [Test]
         public void can_throw_tg_bomb()
         {
 
             var regularGuyForm = new FormSourceBuilder()
-                .With(p => p.dbName, BaseMaleForm)
+                .With(p => p.AltSexFormSource, new FormSourceBuilder()
+                    .With(p => p.FriendlyName, "Alt Sex Regular Guy -> Regular Girl Form")
+                    .With(p => p.Gender, PvPStatics.GenderFemale)
+                    .BuildAndSave())
                 .With(p => p.FriendlyName, RegularGuy)
                 .With(p => p.Gender, PvPStatics.GenderMale)
                 .BuildAndSave();
 
             var regularGirlForm = new FormSourceBuilder()
-                .With(p => p.dbName, BaseFemaleForm)
+                .With(p => p.AltSexFormSource, new FormSourceBuilder()
+                    .With(p => p.FriendlyName, "Alt Sex Regular Girl -> Regular Guy Form")
+                    .With(p => p.Gender, PvPStatics.GenderMale)
+                    .BuildAndSave())
                 .With(p => p.FriendlyName, RegularGirl)
-                .With(p => p.Gender, PvPStatics.GenderFemale)
+                .With(p => p.Gender, PvPStatics.GenderMale)
                 .BuildAndSave();
 
             var nonBaseForm = new FormSourceBuilder()
-                .With(p => p.dbName, "nonbaseForm")
+                .With(p => p.AltSexFormSource, null)
                 .With(p => p.FriendlyName, "Some Other Form")
                 .BuildAndSave();
 
@@ -74,20 +78,17 @@ namespace TT.Tests.Items.Commands
                .With(p => p.Gender, PvPStatics.GenderFemale)
                .With(p => p.FormSource, regularGirlForm)
                .With(p => p.PlayerLogs, new List<PlayerLog>())
-               .With(p => p.Form, BaseFemaleForm)
                .BuildAndSave();
 
             // should get hit and turned into Regular Girl
             var maleBystander = new PlayerBuilder()
               .With(p => p.Id, 7)
-              .With(p => p.Form, BaseFemaleForm)
               .With(p => p.Location, TavernLocation)
               .With(p => p.FirstName, "Albert")
               .With(p => p.FirstName, "Smith")
               .With(p => p.Gender, PvPStatics.GenderMale)
               .With(p => p.FormSource, regularGuyForm)
               .With(p => p.PlayerLogs, new List<PlayerLog>())
-              .With(p => p.Form, BaseMaleForm)
               .BuildAndSave();
 
             // shouldn't get hit, in SuperProtection mode
@@ -98,7 +99,6 @@ namespace TT.Tests.Items.Commands
              .With(p => p.FormSource, regularGuyForm)
              .With(p => p.GameMode, (int)GameModeStatics.GameModes.Superprotection)
              .With(p => p.PlayerLogs, new List<PlayerLog>())
-             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             // shouldn't get hit, offline
@@ -109,7 +109,6 @@ namespace TT.Tests.Items.Commands
              .With(p => p.FormSource, regularGuyForm)
              .With(p => p.LastActionTimestamp, DateTime.UtcNow.AddHours(-5))
              .With(p => p.PlayerLogs, new List<PlayerLog>())
-             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             // shouldn't get hit, not in a base form
@@ -120,7 +119,6 @@ namespace TT.Tests.Items.Commands
              .With(p => p.FormSource, nonBaseForm)
              .With(p => p.LastActionTimestamp, DateTime.UtcNow.AddHours(-5))
              .With(p => p.PlayerLogs, new List<PlayerLog>())
-             .With(p => p.Form, BaseMaleForm)
              .BuildAndSave();
 
             var result = Repository.Execute(new ThrowTGBomb { ItemId = bomb.Id, PlayerId = thrower.Id });
@@ -134,12 +132,12 @@ namespace TT.Tests.Items.Commands
             loadedThrower.User.Stats.First().Amount.Should().Be(2);
 
             var loadedfemaleBystander = players.First(p => p.Id == femaleBystander.Id);
-            loadedfemaleBystander.FormSource.FriendlyName.Should().Be("Regular Guy");
+            loadedfemaleBystander.FormSource.FriendlyName.Should().Be("Alt Sex Regular Girl -> Regular Guy Form");
             loadedfemaleBystander.Gender.Should().Be(PvPStatics.GenderMale);
             loadedfemaleBystander.PlayerLogs.First().Message.Should().Be("You yelp and feel your body change to that of the opposite sex from <b>John Doe</b>'s use of a TG Splash Orb in your location!");
 
             var loadedMaleBystander = players.First(p => p.Id == maleBystander.Id);
-            loadedMaleBystander.FormSource.FriendlyName.Should().Be("Regular Girl");
+            loadedMaleBystander.FormSource.FriendlyName.Should().Be("Alt Sex Regular Guy -> Regular Girl Form");
             loadedMaleBystander.Gender.Should().Be(PvPStatics.GenderFemale);
             loadedMaleBystander.PlayerLogs.First().Message.Should().Be("You yelp and feel your body change to that of the opposite sex from <b>John Doe</b>'s use of a TG Splash Orb in your location!");
 

@@ -434,7 +434,7 @@ namespace TT.Web.Controllers
             var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__MovementFormSourceId);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -464,7 +464,7 @@ namespace TT.Web.Controllers
             var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Strip);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__StripFormSourceId);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -483,7 +483,7 @@ namespace TT.Web.Controllers
                 var index = Convert.ToInt32(Math.Floor(num * max));
                 var itemToDrop = victimItems.ElementAt(index);
 
-                MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Strip);
+                MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__StripFormSourceId);
 
                 var attackerMessage = "";
 
@@ -534,7 +534,7 @@ namespace TT.Web.Controllers
             var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Meditate);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__MeditateFormSourceId);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -545,7 +545,7 @@ namespace TT.Web.Controllers
             var buffs = ItemProcedures.GetPlayerBuffs(victim);
             var result = PlayerProcedures.DeMeditate(victim, me, buffs);
 
-            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Meditate);
+            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__MeditateFormSourceId);
 
 
             TempData["Result"] = "You force " + victim.GetFullName() + " to meditate while filling their mind with nonsense instead of relaxation, lowering their mana instead of increasing it!";
@@ -559,7 +559,7 @@ namespace TT.Web.Controllers
             var victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
+            var errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__MovementFormSourceId);
             if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -616,7 +616,7 @@ namespace TT.Web.Controllers
 
             // success; move the victim.
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
-            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Movement);
+            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__MovementFormSourceId);
 
             var attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);

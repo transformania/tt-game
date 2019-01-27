@@ -261,7 +261,7 @@ namespace TT.Tests.Players.Commands
         {
 
             var mindControl = new VictimMindControlBuilder()
-                .With(v => v.Type, MindControlStatics.MindControl__Movement)
+                .With(v => v.FormSourceId, MindControlStatics.MindControl__MovementFormSourceId)
                 .With(v => v.TurnsRemaining, 3)
                 .BuildAndSave();
 

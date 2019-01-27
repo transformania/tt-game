@@ -6,7 +6,7 @@ namespace TT.Domain.Entities.MindControl
     {
         public Player Victim { get; protected set; }
         public int TurnsRemaining { get; protected set; }
-        public string Type { get; protected set; }
+        public int FormSourceId { get; protected set; }
         public int TimesUsedThisTurn { get; protected set; }
 
         private VictimMindControl() { }

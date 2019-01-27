@@ -502,7 +502,7 @@ namespace TT.Domain.Procedures
                 else if (targetForm.MobilityType == PvPStatics.MobilityMindControl && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowMindControlTF)
                 {
                     //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
-                    MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);
+                    MindControlProcedures.AddMindControl(attacker, victim, targetForm.Id);
 
                     output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + attacker.GetFullName() + " here.</b>";
                     output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into forming certain actions.";
@@ -511,15 +511,15 @@ namespace TT.Domain.Procedures
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
                     // give curse debuff
-                    if (targetForm.dbName == MindControlStatics.MindControl__Movement)
+                    if (targetForm.Id == MindControlStatics.MindControl__MovementFormSourceId)
                     {
                         EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffect, target);
                     }
-                    else if (targetForm.dbName == MindControlStatics.MindControl__Strip)
+                    else if (targetForm.Id == MindControlStatics.MindControl__StripFormSourceId)
                     {
                         EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
                     }
-                    else if (targetForm.dbName == MindControlStatics.MindControl__Meditate)
+                    else if (targetForm.Id == MindControlStatics.MindControl__MeditateFormSourceId)
                     {
                         // TODO
                         //EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);

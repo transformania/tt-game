@@ -1,15 +1,15 @@
 ﻿@model TT.Domain.ViewModels.MindControlViewModel
 
 @{
-    if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Movement)
+    if (Model.MindControl.FormSourceId == TT.Domain.Statics.MindControlStatics.MindControl__MovementFormSourceId)
     {
         <a href="@Url.Action(MVC.NPC.MoveVictim(Model.Victim.Player.Id))">Command Movement</a>
     }
-    if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Strip)
+    if (Model.MindControl.FormSourceId == TT.Domain.Statics.MindControlStatics.MindControl__StripFormSourceId)
     {
         <a href="@Url.Action(MVC.NPC.StripVictim(Model.Victim.Player.Id))">Command Strip</a>
     }
-      if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Meditate)
+      if (Model.MindControl.FormSourceId == TT.Domain.Statics.MindControlStatics.MindControl__MeditateFormSourceId)
     {
         <a href="@Url.Action(MVC.NPC.DeMeditateVictim(Model.Victim.Player.Id))">Command Demeditation</a>
     }

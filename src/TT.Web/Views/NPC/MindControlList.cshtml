@@ -32,7 +32,7 @@
                         <div>
                             <p>
                                 @Html.Partial(MVC.PvP.Views.Player_Partial, m.Victim)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.FormSourceId) this turn.)</span>
                                 <span>@Html.Partial(MVC.NPC.Views.partial.CommandLinks, m)</span>
                             </p>
                         </div>
@@ -55,7 +55,7 @@
                         <div>
                             <p>
                                 @Html.Partial(MVC.PvP.Views.Player_Partial, m.Master)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.FormSourceId) this turn.)</span>
                             </p>
                         </div>
                     </div>

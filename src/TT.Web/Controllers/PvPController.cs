@@ -524,7 +524,7 @@ namespace TT.Web.Controllers
 
                 var myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement))
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__MovementFormSourceId))
                 {
                     TempData["Error"] = "You try to move but discover you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
@@ -984,7 +984,7 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
-            if (me.MindControlIsActive && futureForm != null && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
+            if (me.MindControlIsActive && futureForm != null && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.Id))
             {
                 TempData["Error"] = "This player is already under the influence of this type of mind control.";
                 TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";
@@ -1572,7 +1572,7 @@ namespace TT.Web.Controllers
 
                 var myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip))
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__StripFormSourceId))
                 {
                     TempData["Error"] = "You try to take it but find you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to pick anything up off the ground or tame any pets!";

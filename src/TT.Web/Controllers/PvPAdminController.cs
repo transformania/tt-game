@@ -926,11 +926,22 @@ namespace TT.Web.Controllers
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             var log = serverLogRepo.ServerLogs.FirstOrDefault(t => t.TurnNumber == turn);
+
+            if (log == null)
+            {
+                TempData["Error"] = "Turn log does not exist.";
+                return RedirectToAction(MVC.PvPAdmin.ViewUpdateLogs());
+            }
+
             return View(MVC.PvPAdmin.Views.ViewServerLog, log);
         }
 
         public virtual ActionResult ViewUpdateLogs()
         {
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             return View(MVC.PvPAdmin.Views.ViewUpdateLogs, serverLogRepo.ServerLogs);
         }

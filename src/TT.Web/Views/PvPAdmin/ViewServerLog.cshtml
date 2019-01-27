@@ -1,3 +1,24 @@
-﻿@model TT.Domain.Models.ServerLog
+﻿@using TT.Domain.Statics
+@model TT.Domain.Models.ServerLog
 
-@Html.Raw(Model.FullLog)
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Back to Admin</a></li>
+    <li><a href="@Url.Action(MVC.PvPAdmin.ViewUpdateLogs())">All Logs</a></li>
+}
+
+<div class="specialBox specialBox2">
+    @if (Model.TurnNumber > 1)
+    {
+        <a class="btn" href="@Url.Action(MVC.PvPAdmin.ViewServerLog(Model.TurnNumber - 1))">Previous</a>
+    }
+    @if (Model.TurnNumber < PvPStatics.RoundDuration)
+    {
+        <a class="btn" href="@Url.Action(MVC.PvPAdmin.ViewServerLog(Model.TurnNumber + 1))">Next</a>
+    }
+</div>
+
+<div class="containerInner">
+    @Html.Raw(Model.FullLog)
+</div>

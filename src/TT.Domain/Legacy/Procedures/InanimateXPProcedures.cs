@@ -84,9 +84,9 @@ namespace TT.Domain.Procedures
 
                 double timeBonus = currentGameTurn - xp.LastActionTurnstamp;
 
-                if (timeBonus > InanimateXPStatics.ItemMaxTurnsBuildup)
+                if (timeBonus > TurnTimesStatics.GetItemMaxTurnsBuildup())
                 {
-                    timeBonus = InanimateXPStatics.ItemMaxTurnsBuildup;
+                    timeBonus = TurnTimesStatics.GetItemMaxTurnsBuildup();
                 }
 
                 if (timeBonus < 0)
@@ -222,9 +222,9 @@ namespace TT.Domain.Procedures
 
             double strugglebonus = currentGameTurn - inanimXP.LastActionTurnstamp;
 
-            if (strugglebonus > InanimateXPStatics.ItemMaxTurnsBuildup)
+            if (strugglebonus > TurnTimesStatics.GetItemMaxTurnsBuildup())
             {
-                strugglebonus = InanimateXPStatics.ItemMaxTurnsBuildup;
+                strugglebonus = TurnTimesStatics.GetItemMaxTurnsBuildup();
             }
 
             if (strugglebonus < 0)

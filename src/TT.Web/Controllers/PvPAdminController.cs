@@ -1440,7 +1440,7 @@ namespace TT.Web.Controllers
                 playerRepo.SavePlayer(player);
 
                 // if Donna, give player her spells
-                if (player.FormSourceId == BossProcedures_Donna.DonnaFormSourceId)
+                if (input.NewFormSourceId == BossProcedures_Donna.DonnaFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell1);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell2);
@@ -1450,7 +1450,7 @@ namespace TT.Web.Controllers
                 }
 
                 // if Valentine, give player his spells
-                else if (player.FormSourceId == BossProcedures_Valentine.ValentineFormSourceId)
+                else if (input.NewFormSourceId == BossProcedures_Valentine.ValentineFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpellSourceId);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpellSourceId);
@@ -1462,24 +1462,24 @@ namespace TT.Web.Controllers
                 }
 
                 // if plague mother, give player her spells
-                else if (player.FormSourceId == BossProcedures_BimboBoss.BimboBossFormSourceId)
+                else if (input.NewFormSourceId == BossProcedures_BimboBoss.BimboBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellSourceId);
                 }
 
                 // if master rat thief, give player her spells
-                else if (player.FormSourceId == BossProcedures_Thieves.FemaleBossFormSourceId)
+                else if (input.NewFormSourceId == BossProcedures_Thieves.FemaleBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellSourceId);
                 }
 
                 // if it's mouse sisters, then give them spells as well
-                else if (player.FormSourceId == BossProcedures_Sisters.BimboBossFormSourceId)
+                else if (input.NewFormSourceId == BossProcedures_Sisters.BimboBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MakeupKitSpellSourceId);
                 }
 
-                else if (player.FormSourceId == BossProcedures_Sisters.NerdBossFormSourceId)
+                else if (input.NewFormSourceId == BossProcedures_Sisters.NerdBossFormSourceId)
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpellSourceId);
                 }

@@ -82,19 +82,19 @@ namespace TT.Domain.Procedures
             else
             {
 
-                double timeBonus = currentGameTurn - xp.LastActionTurnstamp;
+                double turnsSinceLastAction = currentGameTurn - xp.LastActionTurnstamp;
 
-                if (timeBonus > TurnTimesStatics.GetItemMaxTurnsBuildup())
+                if (turnsSinceLastAction > TurnTimesStatics.GetItemMaxTurnsBuildup())
                 {
-                    timeBonus = TurnTimesStatics.GetItemMaxTurnsBuildup();
+                    turnsSinceLastAction = TurnTimesStatics.GetItemMaxTurnsBuildup();
                 }
 
-                if (timeBonus < 0)
+                if (turnsSinceLastAction < 0)
                 {
-                    timeBonus = 0;
+                    turnsSinceLastAction = 0;
                 }
 
-                xpGain += Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
+                xpGain += Convert.ToDecimal(turnsSinceLastAction) * InanimateXPStatics.XPGainPerInanimateAction;
                 xpGain = xpGain / playerCount;
 
                 if (me.Mobility == PvPStatics.MobilityInanimate)
@@ -107,7 +107,7 @@ namespace TT.Domain.Procedures
                 }
 
                 xp.Amount += xpGain;
-                xp.TimesStruggled -= 2 * Convert.ToInt32(timeBonus);
+                xp.TimesStruggled -= 2 * Convert.ToInt32(turnsSinceLastAction);
                 xp.LastActionTimestamp = DateTime.UtcNow;
                 xp.LastActionTurnstamp = currentGameTurn;
             }
@@ -177,12 +177,12 @@ namespace TT.Domain.Procedures
             inanimXpRepo.SaveInanimateXP(xp);
 
             // lock the player into their fate if their inanimate XP gets too high
-            if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160 && !inanimateMe.IsPermanent)
+            if (xp.TimesStruggled <= TurnTimesStatics.GetStruggleXPBeforeItemPermanentLock() * .5 && xp.TimesStruggled > TurnTimesStatics.GetStruggleXPBeforeItemPermanentLock() && !inanimateMe.IsPermanent)
             {
                 resultMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
             }
 
-            if (xp.TimesStruggled <= -160 && !inanimateMe.IsPermanent)
+            if (xp.TimesStruggled <= TurnTimesStatics.GetStruggleXPBeforeItemPermanentLock() && !inanimateMe.IsPermanent)
             {
                 inanimateMe.IsPermanent = true;
                 itemRep.SaveItem(inanimateMe);

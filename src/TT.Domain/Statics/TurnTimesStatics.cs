@@ -22,7 +22,8 @@ namespace TT.Domain.Statics
                         EndTurnNoAttackSeconds = 30,
                         OfflineAfterXMinutes = 30,
                         MinutesSinceLastCombatBeforeQuestingOrDuelling = 30,
-                        ItemMaxTurnsBuildup = 96
+                        ItemMaxTurnsBuildup = 96,
+                        StruggleXPBeforeItemPermanentLock = -320
                     }
                 },
                 {
@@ -34,7 +35,8 @@ namespace TT.Domain.Statics
                         EndTurnNoAttackSeconds = 15,
                         OfflineAfterXMinutes = 18,
                         MinutesSinceLastCombatBeforeQuestingOrDuelling = 18,
-                        ItemMaxTurnsBuildup = 160
+                        ItemMaxTurnsBuildup = 160,
+                        StruggleXPBeforeItemPermanentLock = -600
                     }
                 }
             };
@@ -69,6 +71,11 @@ namespace TT.Domain.Statics
             return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.ItemMaxTurnsBuildup;
         }
 
+        public static int GetStruggleXPBeforeItemPermanentLock()
+        {
+            return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.StruggleXPBeforeItemPermanentLock;
+        }
+
         public static bool IsValidConfiguration(string configuration)
         {
             return TurnTimeConfigurations.ContainsKey(configuration);
@@ -84,5 +91,6 @@ namespace TT.Domain.Statics
         public int OfflineAfterXMinutes { get; set; }
         public int MinutesSinceLastCombatBeforeQuestingOrDuelling { get; set; }
         public int ItemMaxTurnsBuildup { get; set; }
+        public int StruggleXPBeforeItemPermanentLock { get; set; }
     }
 }

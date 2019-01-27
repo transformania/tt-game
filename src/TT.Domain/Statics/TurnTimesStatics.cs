@@ -21,7 +21,8 @@ namespace TT.Domain.Statics
                         StartTurnNoAttackSeconds = 30,
                         EndTurnNoAttackSeconds = 30,
                         OfflineAfterXMinutes = 30,
-                        MinutesSinceLastCombatBeforeQuestingOrDuelling = 30
+                        MinutesSinceLastCombatBeforeQuestingOrDuelling = 30,
+                        ItemMaxTurnsBuildup = 96
                     }
                 },
                 {
@@ -32,7 +33,8 @@ namespace TT.Domain.Statics
                         StartTurnNoAttackSeconds = 15,
                         EndTurnNoAttackSeconds = 15,
                         OfflineAfterXMinutes = 18,
-                        MinutesSinceLastCombatBeforeQuestingOrDuelling = 18
+                        MinutesSinceLastCombatBeforeQuestingOrDuelling = 18,
+                        ItemMaxTurnsBuildup = 160
                     }
                 }
             };
@@ -62,6 +64,11 @@ namespace TT.Domain.Statics
             return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.MinutesSinceLastCombatBeforeQuestingOrDuelling;
         }
 
+        public static int GetItemMaxTurnsBuildup()
+        {
+            return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.ItemMaxTurnsBuildup;
+        }
+
         public static bool IsValidConfiguration(string configuration)
         {
             return TurnTimeConfigurations.ContainsKey(configuration);
@@ -76,5 +83,6 @@ namespace TT.Domain.Statics
         public int EndTurnNoAttackSeconds { get; set; }
         public int OfflineAfterXMinutes { get; set; }
         public int MinutesSinceLastCombatBeforeQuestingOrDuelling { get; set; }
+        public int ItemMaxTurnsBuildup { get; set; }
     }
 }

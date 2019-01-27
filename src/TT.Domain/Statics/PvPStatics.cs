@@ -172,7 +172,6 @@ namespace TT.Domain.Statics
     public static class InanimateXPStatics
     {
         public const decimal XPGainPerInanimateAction = 5M;
-        public const int ItemMaxTurnsBuildup = 96;
     }
 
     public static class ChatStatics

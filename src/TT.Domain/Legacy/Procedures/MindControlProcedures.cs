@@ -64,7 +64,7 @@ namespace TT.Domain.Procedures
                     MindControl = mc,
                     Victim = PlayerProcedures.GetPlayerFormViewModel(mc.VictimId),
                     Master = PlayerProcedures.GetPlayerFormViewModel(mc.MasterId),
-                    TypeFriendlyName = GetMCFriendlyName(mc.Id),
+                    TypeFriendlyName = GetMCFriendlyName(mc.FormSourceId),
                 };
                 output.Add(addme);
             }

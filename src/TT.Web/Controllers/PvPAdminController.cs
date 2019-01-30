@@ -1444,6 +1444,7 @@ namespace TT.Web.Controllers
                     {
                         var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
                         player.Mobility = PvPStatics.MobilityFull;
+                        DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = item.Id });
                         DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
                     }
                 }
@@ -1565,6 +1566,7 @@ namespace TT.Web.Controllers
             var possibleMeItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
             if (possibleMeItem != null)
             {
+                DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = possibleMeItem.Id });
                 DomainRegistry.Repository.Execute(new DeleteItem {ItemId = possibleMeItem.Id});
             }
 
@@ -1615,6 +1617,7 @@ namespace TT.Web.Controllers
             var possibleMeItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
             if (possibleMeItem != null)
             {
+                DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = possibleMeItem.Id });
                 DomainRegistry.Repository.Execute(new DeleteItem {ItemId = possibleMeItem.Id});
             }
 
@@ -1664,6 +1667,7 @@ namespace TT.Web.Controllers
             var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
             if (item != null)
             {
+                DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = item.Id });
                 DomainRegistry.Repository.Execute(new DeleteItem { ItemId = item.Id });
             }
 

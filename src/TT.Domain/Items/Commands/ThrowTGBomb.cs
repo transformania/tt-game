@@ -28,8 +28,6 @@ namespace TT.Domain.Items.Commands
                 var player = ctx.AsQueryable<Player>()
                     .Include(p => p.Items)
                     .Include(p => p.Item.ItemSource)
-                    .Include(p => p.FormSource)
-                    .Include(p => p.FormSource.AltSexFormSource)
                     .Include(p => p.User)
                     .Include(p => p.User.Stats)
                     .FirstOrDefault(p => p.Id == PlayerId);
@@ -52,7 +50,9 @@ namespace TT.Domain.Items.Commands
                      p.InQuest <= 0 &&
                      p.FormSource.AltSexFormSource != null &&
                      p.LastActionTimestamp > cutoff
-                ).Include(p => p.FormSource).ToList();
+                ).Include(p => p.FormSource)
+                .Include(p => p.FormSource.AltSexFormSource)
+                .ToList();
 
                 foreach (var p in affectedPlayers)
                 {

@@ -513,11 +513,11 @@ namespace TT.Domain.Procedures
                     // give curse debuff
                     if (targetForm.Id == MindControlStatics.MindControl__MovementFormSourceId)
                     {
-                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffect, target);
+                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffectSourceId, target);
                     }
                     else if (targetForm.Id == MindControlStatics.MindControl__StripFormSourceId)
                     {
-                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
+                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffectSourceId, target);
                     }
                     else if (targetForm.Id == MindControlStatics.MindControl__MeditateFormSourceId)
                     {

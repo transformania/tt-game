@@ -40,6 +40,12 @@ namespace TT.Domain.Procedures
         private const int Psycho9MId = 843;
         private const int Psycho9FId = 844;
 
+        private const int PsychopathicForLevelOneEffectSourceId = 19;
+        private const int PsychopathicForLevelThreeEffectSourceId = 20;
+        private const int PsychopathicForLevelFiveEffectSourceId = 21;
+        private const int PsychopathicForLevelSevenEffectSourceId = 22;
+        private const int PsychopathicForLevelNineEffectSourceId = 23;
+
         private static Tuple<int,string> GetPsychoFormFromLevelAndSex(int level, string sex)
         {
             if (level == 1)
@@ -143,23 +149,23 @@ namespace TT.Domain.Procedures
                 // give this bot the Psychpathic perk
                 if (strength == 1)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic", id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelOneEffectSourceId, id);
                 }
                 else if (strength == 3)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl3", id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelThreeEffectSourceId, id);
                 }
                 else if (strength == 5)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl5", id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelFiveEffectSourceId, id);
                 }
                 else if (strength == 7)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl7", id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelSevenEffectSourceId, id);
                 }
                 else if (strength == 9)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl9", id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
                 }
 
                 // give this psycho a new rune with some random chance it is a higher level than they are, to a max of level 13

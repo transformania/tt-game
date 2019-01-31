@@ -263,8 +263,8 @@ namespace TT.Domain.Procedures
                     // effect gain
                     else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
                     {
-                        var effect = EffectStatics.GetEffect(q.RewardAmount);
-                        EffectProcedures.GivePerkToPlayer(effect.dbName, player.Id);
+                        var effect = EffectStatics.GetDbStaticEffect(System.Convert.ToInt32(q.RewardAmount));
+                        EffectProcedures.GivePerkToPlayer(effect.Id, player.Id);
                         message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
                     }
 

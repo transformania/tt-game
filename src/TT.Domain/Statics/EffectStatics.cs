@@ -8,11 +8,6 @@ namespace TT.Domain.Statics
 {
     public static class EffectStatics
     {
-        public static DbStaticEffect GetStaticEffect2(string dbEffectName)
-        {
-            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-            return effectRepo.DbStaticEffects.FirstOrDefault(s => s.dbName == dbEffectName);
-        }
 
         public static IEnumerable<DbStaticEffect> GetEffectGainedAtLocation(string location)
         {
@@ -23,13 +18,13 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticEffect> GetAllStaticEffects()
         {
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-            return effectRepo.DbStaticEffects.Where(e => e.dbName != null && e.dbName != "");
+            return effectRepo.DbStaticEffects;
         }
 
-        public static DbStaticEffect GetEffect(string dbFormName)
+        public static DbStaticEffect GetDbStaticEffect(int effectSourceId)
         {
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-            return effectRepo.DbStaticEffects.FirstOrDefault(s => s.dbName == dbFormName);
+            return effectRepo.DbStaticEffects.FirstOrDefault(s => s.Id == effectSourceId);
         }
 
     }

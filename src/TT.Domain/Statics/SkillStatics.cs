@@ -26,7 +26,7 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticSkill> GetLearnablePsychopathSkills()
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.Id != PvPStatics.Spell_WeakenId && s.ExclusiveToFormSourceId == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
+            return statSkillRepo.DbStaticSkills.Where(s => s.Id != PvPStatics.Spell_WeakenId && s.ExclusiveToFormSourceId == null && s.GivesEffectSourceId == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != PvPStatics.MobilityFull && s.MobilityType != PvPStatics.MobilityMindControl && s.IsLive == "live");
         }
 
         public static IEnumerable<DbStaticSkill> GetFormSpecificSkills(int formSourceId)
@@ -44,13 +44,13 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticSkill> GetSkillsLearnedAtLocation(string locationName)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtLocation == locationName && s.GivesEffect == null && s.IsLive == "live").ToList();
+            return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtLocation == locationName && s.GivesEffectSourceId == null && s.IsLive == "live").ToList();
         }
 
         public static IEnumerable<DbStaticSkill> GetSkillsLearnedAtRegion(string regionName)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtRegion == regionName && s.GivesEffect == null && s.IsLive == "live").ToList();
+            return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtRegion == regionName && s.GivesEffectSourceId == null && s.IsLive == "live").ToList();
         }
 
     }

@@ -191,7 +191,7 @@ namespace TT.Web.Controllers
             return View(MVC.Item.Views.RemoveCurse, output);
         }
 
-        public virtual ActionResult RemoveCurseSend(string curse, int id)
+        public virtual ActionResult RemoveCurseSend(int curseEffectSourceId, int id)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -217,7 +217,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var curseToRemove = EffectStatics.GetEffect(curse);
+            var curseToRemove = EffectStatics.GetDbStaticEffect(curseEffectSourceId);
 
             // assert this curse is removable
             if (!curseToRemove.IsRemovable)
@@ -227,15 +227,15 @@ namespace TT.Web.Controllers
             }
 
             // back on your feet curse/buff -- just delete outright
-            if (curseToRemove.dbName == EffectProcedures.BackOnYourFeetEffect)
+            if (curseToRemove.Id == PvPStatics.Effect_BackOnYourFeetSourceId)
             {
-                EffectProcedures.RemovePerkFromPlayer(curseToRemove.dbName, me);
+                EffectProcedures.RemovePerkFromPlayer(curseToRemove.Id, me);
             }
 
             // regular curse; set duration to 0 but keep cooldown
             else
             {
-                EffectProcedures.SetPerkDurationToZero(curseToRemove.dbName, me);
+                EffectProcedures.SetPerkDurationToZero(curseToRemove.Id, me);
             }
 
             // if the item is a consumable type, delete it.  Otherwise reset its cooldown

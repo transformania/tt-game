@@ -12,85 +12,82 @@ namespace TT.Domain.Procedures
 {
     public static class EffectProcedures
     {
-
-        public const string BackOnYourFeetEffect = "help_animate_recovery";
-
         public static IEnumerable<EffectViewModel2> GetPlayerEffects2(int playerId)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
-            IEnumerable<EffectViewModel2> output = from i in effectRepo.Effects
-                                                   where i.OwnerId == playerId
-                                                   join si in effectRepo.DbStaticEffects on i.dbName equals si.dbName
+            IEnumerable<EffectViewModel2> output = from effect in effectRepo.Effects
+                                                   where effect.OwnerId == playerId
+                                                   join dbStaticEffect in effectRepo.DbStaticEffects on effect.EffectSourceId equals dbStaticEffect.Id
                                                    select new EffectViewModel2
                                                    {
                                                        dbEffect = new Effect_VM
                                                        {
-                                                           Id = i.Id,
-                                                           OwnerId = i.OwnerId,
-                                                           Duration = i.Duration,
-                                                           IsPermanent = i.IsPermanent,
-                                                           Level = i.Level,
-                                                           Cooldown = i.Cooldown,
-                                                           dbName = i.dbName,
+                                                           Id = effect.Id,
+                                                           OwnerId = effect.OwnerId,
+                                                           Duration = effect.Duration,
+                                                           IsPermanent = effect.IsPermanent,
+                                                           Level = effect.Level,
+                                                           Cooldown = effect.Cooldown,
+                                                           EffectSourceId = effect.Id
 
 
                                                        },
 
                                                        Effect = new TT.Domain.ViewModels.StaticEffect
                                                        {
-                                                           dbName = si.dbName,
-                                                           FriendlyName = si.FriendlyName,
-                                                           Description = si.Description,
-                                                           AvailableAtLevel = si.AvailableAtLevel,
-                                                           PreRequesite = si.PreRequesite,
-                                                           isLevelUpPerk = si.isLevelUpPerk,
-                                                           Duration = si.Duration,
-                                                           Cooldown = si.Cooldown,
-                                                           ObtainedAtLocation = si.ObtainedAtLocation,
-                                                           IsRemovable = si.IsRemovable,
-                                                           BlessingCurseStatus = si.BlessingCurseStatus,
                                                           
-                                                           MessageWhenHit = si.MessageWhenHit,
-                                                           MessageWhenHit_M = si.MessageWhenHit_M,
-                                                           MessageWhenHit_F = si.MessageWhenHit_F,
-                                                           AttackerWhenHit = si.AttackerWhenHit,
-                                                           AttackerWhenHit_M = si.AttackerWhenHit_M,
-                                                           AttackerWhenHit_F = si.AttackerWhenHit_F,
+                                                           FriendlyName = dbStaticEffect.FriendlyName,
+                                                           Description = dbStaticEffect.Description,
+                                                           AvailableAtLevel = dbStaticEffect.AvailableAtLevel,
+                                                           PreRequisiteEffectSourceId = dbStaticEffect.PreRequisiteEffectSourceId,
+                                                           isLevelUpPerk = dbStaticEffect.isLevelUpPerk,
+                                                           Duration = dbStaticEffect.Duration,
+                                                           Cooldown = dbStaticEffect.Cooldown,
+                                                           ObtainedAtLocation = dbStaticEffect.ObtainedAtLocation,
+                                                           IsRemovable = dbStaticEffect.IsRemovable,
+                                                           BlessingCurseStatus = dbStaticEffect.BlessingCurseStatus,
+                                                          
+                                                           MessageWhenHit = dbStaticEffect.MessageWhenHit,
+                                                           MessageWhenHit_M = dbStaticEffect.MessageWhenHit_M,
+                                                           MessageWhenHit_F = dbStaticEffect.MessageWhenHit_F,
+                                                           AttackerWhenHit = dbStaticEffect.AttackerWhenHit,
+                                                           AttackerWhenHit_M = dbStaticEffect.AttackerWhenHit_M,
+                                                           AttackerWhenHit_F = dbStaticEffect.AttackerWhenHit_F,
 
-                                                           HealthBonusPercent = si.HealthBonusPercent,
-                                                           ManaBonusPercent = si.ManaBonusPercent,
-                                                           ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
-                                                           HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
-                                                           ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
-                                                           SneakPercent = si.SneakPercent,
-                                                           EvasionPercent = si.EvasionPercent,
-                                                           EvasionNegationPercent = si.EvasionNegationPercent,
-                                                           MeditationExtraMana = si.MeditationExtraMana,
-                                                           CleanseExtraHealth = si.CleanseExtraHealth,
-                                                           MoveActionPointDiscount = si.MoveActionPointDiscount,
-                                                           SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
-                                                           SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
-                                                           CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
-                                                           SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
-                                                           SpellHealthDamageResistance = si.SpellHealthDamageResistance,
-                                                           SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
-                                                           ExtraInventorySpace = si.ExtraInventorySpace,
+                                                           HealthBonusPercent = dbStaticEffect.HealthBonusPercent,
+                                                           ManaBonusPercent = dbStaticEffect.ManaBonusPercent,
+                                                           ExtraSkillCriticalPercent = dbStaticEffect.ExtraSkillCriticalPercent,
+                                                           HealthRecoveryPerUpdate = dbStaticEffect.HealthRecoveryPerUpdate,
+                                                           ManaRecoveryPerUpdate = dbStaticEffect.ManaRecoveryPerUpdate,
+                                                           SneakPercent = dbStaticEffect.SneakPercent,
+                                                           EvasionPercent = dbStaticEffect.EvasionPercent,
+                                                           EvasionNegationPercent = dbStaticEffect.EvasionNegationPercent,
+                                                           MeditationExtraMana = dbStaticEffect.MeditationExtraMana,
+                                                           CleanseExtraHealth = dbStaticEffect.CleanseExtraHealth,
+                                                           MoveActionPointDiscount = dbStaticEffect.MoveActionPointDiscount,
+                                                           SpellExtraHealthDamagePercent = dbStaticEffect.SpellExtraHealthDamagePercent,
+                                                           SpellExtraTFEnergyPercent = dbStaticEffect.SpellExtraTFEnergyPercent,
+                                                           CleanseExtraTFEnergyRemovalPercent = dbStaticEffect.CleanseExtraTFEnergyRemovalPercent,
+                                                           SpellMisfireChanceReduction = dbStaticEffect.SpellMisfireChanceReduction,
+                                                           SpellHealthDamageResistance = dbStaticEffect.SpellHealthDamageResistance,
+                                                           SpellTFEnergyDamageResistance = dbStaticEffect.SpellTFEnergyDamageResistance,
+                                                           ExtraInventorySpace = dbStaticEffect.ExtraInventorySpace,
 
-                                                           Discipline = si.Discipline,
-                                                           Perception = si.Perception,
-                                                           Charisma = si.Charisma,
-                                                           Submission_Dominance = si.Submission_Dominance,
+                                                           Discipline = dbStaticEffect.Discipline,
+                                                           Perception = dbStaticEffect.Perception,
+                                                           Charisma = dbStaticEffect.Charisma,
+                                                           Submission_Dominance = dbStaticEffect.Submission_Dominance,
 
-                                                           Fortitude = si.Fortitude,
-                                                           Agility = si.Agility,
-                                                           Allure = si.Allure,
-                                                           Corruption_Purity = si.Corruption_Purity,
+                                                           Fortitude = dbStaticEffect.Fortitude,
+                                                           Agility = dbStaticEffect.Agility,
+                                                           Allure = dbStaticEffect.Allure,
+                                                           Corruption_Purity = dbStaticEffect.Corruption_Purity,
 
-                                                           Magicka = si.Magicka,
-                                                           Succour = si.Succour,
-                                                           Luck = si.Luck,
-                                                           Chaos_Order = si.Chaos_Order,
+                                                           Magicka = dbStaticEffect.Magicka,
+                                                           Succour = dbStaticEffect.Succour,
+                                                           Luck = dbStaticEffect.Luck,
+                                                           Chaos_Order = dbStaticEffect.Chaos_Order,
 
 
                                                        }
@@ -107,7 +104,7 @@ namespace TT.Domain.Procedures
 
             // see what perks the player already has
             IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent);
-            var playerEffectsString = playerEffects.Select(e => e.dbName).ToList();
+            var playerEffectSourceIds = playerEffects.Select(e => e.EffectSourceId).ToList();
 
 
              var availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk).ToList();
@@ -120,13 +117,13 @@ namespace TT.Domain.Procedures
                 var available = true;
 
                 // if the player already has this effect, it is not available
-                if (playerEffectsString.Contains(effect.dbName))
+                if (playerEffectSourceIds.Contains(effect.Id))
                 {
                     continue;
                 }
 
                 // filter out any effects that have a prerequisite that the player does not yet have
-                if (!effect.PreRequesite.IsNullOrEmpty() && !playerEffectsString.Contains(effect.PreRequesite))
+                if (effect.PreRequisiteEffectSourceId != null && !playerEffectSourceIds.Contains(effect.PreRequisiteEffectSourceId.Value))
                 {
                     continue;
                 }
@@ -141,20 +138,20 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string GivePerkToPlayer(string perkName, int playerId)
+        public static string GivePerkToPlayer(int effectSourceId, int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            return GivePerkToPlayer(perkName, dbPlayer);
+            return GivePerkToPlayer(effectSourceId, dbPlayer);
         }
 
-        public static string GivePerkToPlayer(string perkName, Player player)
+        public static string GivePerkToPlayer(int effectSourceId, Player player)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
             
             // see if this player already has this perk.  If so, reject it
-            var possibleSamePerk = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var possibleSamePerk = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
 
             if (possibleSamePerk != null)
             {
@@ -162,7 +159,7 @@ namespace TT.Domain.Procedures
             }
 
             // grab the static part of this effect
-            var effectPlus = EffectStatics.GetStaticEffect2(perkName);
+            var effectPlus = EffectStatics.GetDbStaticEffect(effectSourceId);
 
 
             if (effectPlus.isLevelUpPerk)
@@ -174,12 +171,12 @@ namespace TT.Domain.Procedures
                 }
 
                 // assert that the perk doesn't require a prerequisite that the player does not yet have
-                if (!effectPlus.PreRequesite.IsNullOrEmpty())
+                if (effectPlus.PreRequisiteEffectSourceId != null)
                 {
-                    var requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectPlus.PreRequesite);
+                    var requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.Id == effectPlus.PreRequisiteEffectSourceId);
                     if (requiredPrerequisite == null)
                     {
-                        return "This perk requires the <b>" + EffectStatics.GetStaticEffect2(effectPlus.PreRequesite).FriendlyName + "</b> prerequisite perk which you do not have.";
+                        return "This perk requires the <b>" + EffectStatics.GetDbStaticEffect(effectPlus.PreRequisiteEffectSourceId.Value).FriendlyName + "</b> prerequisite perk which you do not have.";
                     }
                 }
 
@@ -187,7 +184,7 @@ namespace TT.Domain.Procedures
 
             var cmd = new CreateEffect();
 
-            cmd.EffectSourceId = EffectStatics.GetEffect(perkName).Id;
+            cmd.EffectSourceId = EffectStatics.GetDbStaticEffect(effectSourceId).Id;
             cmd.OwnerId = player.Id;
 
             // this effect is a permanent levelup perk
@@ -255,19 +252,19 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void RemovePerkFromPlayer(string perkName, Player player)
+        public static void RemovePerkFromPlayer(int effectSourceId, Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            var effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var effect = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
             effectRepo.DeleteEffect(effect.Id);
         }
 
-        public static void SetPerkDurationToZero(string perkName, Player player)
+        public static void SetPerkDurationToZero(int effectSourceId, Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            var effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            var effect = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
             effect.Duration = 0;
             effectRepo.SaveEffect(effect);
         }
@@ -284,12 +281,12 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static bool PlayerHasEffect(Player player, string effectName)
+        public static bool PlayerHasEffect(Player player, int effectSourceId)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            var possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectName);
+            var possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.EffectSourceId == effectSourceId);
 
             if (possibleEffect == null)
             {

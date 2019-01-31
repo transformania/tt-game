@@ -318,7 +318,7 @@ namespace TT.Domain.Procedures
                 inanimXpRepo.DeleteInanimateXP(inanimXP.Id);
 
                 // give the player the recovery buff
-                EffectProcedures.GivePerkToPlayer(PvPStatics.Effect_Back_On_Your_Feet, dbPlayer);
+                EffectProcedures.GivePerkToPlayer(PvPStatics.Effect_BackOnYourFeetSourceId, dbPlayer);
 
                 var msg = "You have managed to break free from your form as " + itemPlus.FriendlyName + " and occupy an animate body once again!";
 

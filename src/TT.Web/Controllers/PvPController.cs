@@ -661,12 +661,12 @@ namespace TT.Web.Controllers
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) && target.BotId == AIStatics.ActivePlayerBotId)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId) && target.BotId == AIStatics.ActivePlayerBotId)
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack as you have the <b>Back On Your Feet</b> effect, preventing you from attacking another human-controlled player.";
             }
-            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_Back_On_Your_Feet))
+            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack <b>" + target.GetFullName() + "</b> since they have the <b>Back On Your Feet</b> effect, preventing human-controlled players from attacking them until the effect expires.";
@@ -867,7 +867,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the player does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) && targeted.BotId == AIStatics.ActivePlayerBotId)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId) && targeted.BotId == AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
                 TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
@@ -875,7 +875,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the target does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_Back_On_Your_Feet))
+            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 TempData["Error"] = "The protective aura from your target's Back On Your Feet effect prevents you from casting this spell.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -936,9 +936,9 @@ namespace TT.Web.Controllers
             }
 
             // if the spell is a curse, check that the target doesn't already have the effect
-            if (skillBeingUsed.StaticSkill.GivesEffect != null)
+            if (skillBeingUsed.StaticSkill.GivesEffectSourceId != null)
             {
-                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.StaticSkill.GivesEffect))
+                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.StaticSkill.GivesEffectSourceId.Value))
                 {
                     TempData["Error"] = "This target is already afflicted with this curse or else is still in the immune cooldown period of it.";
                     TempData["SubError"] = "You can always try again later...";
@@ -1248,7 +1248,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the player does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet))
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
                 TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
@@ -1636,7 +1636,7 @@ namespace TT.Web.Controllers
 
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1);
 
-                EffectProcedures.GivePerkToPlayer(PvPStatics.Dungeon_ArtifactCurse, me);
+                EffectProcedures.GivePerkToPlayer(PvPStatics.Dungeon_ArtifactCurseEffectSourceId, me);
 
             }
 
@@ -2586,7 +2586,7 @@ namespace TT.Web.Controllers
 
         }
 
-        public virtual ActionResult ChoosePerk(string perk)
+        public virtual ActionResult ChoosePerk(int effectSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2599,7 +2599,7 @@ namespace TT.Web.Controllers
             }
 
             //give perk to player
-            TempData["Result"] = EffectProcedures.GivePerkToPlayer(perk, me);
+            TempData["Result"] = EffectProcedures.GivePerkToPlayer(effectSourceId, me);
 
 
             return RedirectToAction(MVC.PvP.Play());

@@ -14,7 +14,7 @@
         foreach (var effect in Model.OrderBy(x => x.Effect.FriendlyName))
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
-            <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.dbName, (int)ViewBag.itemToUseId))">Remove this curse</a>
+            <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.EffectSourceId, (int)ViewBag.itemToUseId))">Remove this curse</a>
             <hr />
         }
     }

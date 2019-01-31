@@ -22,10 +22,10 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int SwordSpellSourceId = 501;
 
         public const int BloodyCurseSpellSourceId = 727;
-        private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
+        private const int BloodyKissEffectSourceId = 140;
 
         public const int ValentinesPresenceSpellSourceId = 839;
-        private const string ValentinesPresenceEffect = "effect_Valentine’s_Presence_Lilith";
+        private const int ValentinesPresenceEffectSourceId = 143;
 
         public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
 
@@ -205,14 +205,14 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 
                 // give this player the vampire curse if they do not yet have it
-                if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffect))
+                if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffectSourceId))
                 {
                     AttackProcedures.Attack(valentine, p, BloodyCurseSpellSourceId);
                     AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
                 // give this player the immobility curse if they do not yet have it
-                if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect))
+                if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffectSourceId))
                 {
                     AttackProcedures.Attack(valentine, p, ValentinesPresenceSpellSourceId);
                 }

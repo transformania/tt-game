@@ -19,7 +19,13 @@ namespace TT.Domain.Procedures
 {
     public class ItemProcedures
     {
-     
+
+        private const int Effect_SharpEyeSourceId = 18;
+        private const int Effect_Spellsleuth = 194;
+        private const int Effect_ApprenticeEnchanterLvl1 = 97;
+        private const int Effect_ApprenticeEnchanterLvl2 = 98;
+        private const int Effect_ApprenticeEnchanterLvl3 = 99;
+
         public static IEnumerable<ItemViewModel> GetAllPlayerItems(int playerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -61,7 +67,7 @@ namespace TT.Domain.Procedures
                                                             UsageMessage_Player = staticItem.UsageMessage_Player,
                                                             Findable = staticItem.Findable,
                                                             FindWeight = staticItem.FindWeight,
-                                                            GivesEffect = staticItem.GivesEffect,
+                                                            GivesEffectSourceId = staticItem.GivesEffectSourceId,
 
                                                             HealthBonusPercent = staticItem.HealthBonusPercent,
                                                             ManaBonusPercent = staticItem.ManaBonusPercent,
@@ -159,7 +165,7 @@ namespace TT.Domain.Procedures
                                                          UsageMessage_Player = si.UsageMessage_Player,
                                                          Findable = si.Findable,
                                                          FindWeight = si.FindWeight,
-                                                         GivesEffect = si.GivesEffect,
+                                                         GivesEffectSourceId = si.GivesEffectSourceId,
 
                                                          HealthBonusPercent = si.HealthBonusPercent,
                                                          ManaBonusPercent = si.ManaBonusPercent,
@@ -539,16 +545,16 @@ namespace TT.Domain.Procedures
             output.HasSearchDiscount = false;
             foreach (var eff in myEffects)
             {
-                if (eff.dbEffect.dbName == "perk_sharp_eye")
+                if (eff.dbEffect.Id == Effect_SharpEyeSourceId)
                 {
                     output.HasSearchDiscount = true;
                     //break;
                 }
-                else if (eff.dbEffect.dbName == "effect_Spellsleuth_Judoo")
+                else if (eff.dbEffect.Id == Effect_Spellsleuth)
                 {
                     output.FindSpellsOnly = true;
                 }
-                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_1_lvl")
+                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl1)
                 {
                     if (output.EnchantmentBoost < 1)
                     {
@@ -556,14 +562,14 @@ namespace TT.Domain.Procedures
                     }
 
                 }
-                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_2_lvl")
+                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl2)
                 {
                     if (output.EnchantmentBoost < 2)
                     {
                         output.EnchantmentBoost = 2;
                     }
                 }
-                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_3_lvl")
+                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl3)
                 {
                     if (output.EnchantmentBoost < 3)
                     {
@@ -794,10 +800,10 @@ namespace TT.Domain.Procedures
                 }
 
                 // if this item has an effect it grants, give that effect to the player
-                if (!itemPlus.Item.GivesEffect.IsNullOrEmpty())
+                if (itemPlus.Item.GivesEffectSourceId != null)
                 {
                     // check if the player already has this effect or has it in cooldown.  If so, reject usage
-                    if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect))
+                    if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
                     {
                         return "You can't use this yet as you already have its effects active on you, or else the effect's cooldown has not expired.";
                     }
@@ -805,7 +811,7 @@ namespace TT.Domain.Procedures
                     {
                         itemRepo.DeleteItem(itemPlus.dbItem.Id);
                         LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-                        return EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
+                        return EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner);
                     }
                 }
                 
@@ -881,13 +887,13 @@ namespace TT.Domain.Procedures
                 if (itemPlus.Item.dbName == BossProcedures.BossProcedures_BimboBoss.CureItemDbName)
                 {
 
-                    if (!EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectdbName)) {
+                    if (!EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId)) {
                         return "Since you are not infected with the bimbonic virus there's no need for you to use this right now.";
                     }
 
                     PlayerProcedures.InstantRestoreToBase(owner);
-                    EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectdbName, owner);
-                    EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectdbName, owner);
+                    EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId, owner);
+                    EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectSourceId, owner);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return "You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...";
                 }
@@ -976,7 +982,7 @@ namespace TT.Domain.Procedures
                 {
                     return "You have to wait longer before you can use this item agin.";
                 }
-                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect))
+                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
                 {
                     return "You can't use this yet as you already have the effect active or on cooldown.";
                 }
@@ -1072,11 +1078,11 @@ namespace TT.Domain.Procedures
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                     }
 
-                    else if (!itemPlus.Item.GivesEffect.IsNullOrEmpty())
+                    else if (itemPlus.Item.GivesEffectSourceId != null)
                     {
                         itemRepo.SaveItem(thisdbItem);
-                        EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
-                        var effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
+                        EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner);
+                        var effectPlus = EffectStatics.GetDbStaticEffect(itemPlus.Item.GivesEffectSourceId.Value);
                         if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;

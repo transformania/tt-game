@@ -202,9 +202,9 @@
             </div>
 
             <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
-                <label for="Skill_FriendlyName">What is the name of the form that grants this spell?</label>
+                <label for="Skill_FriendlyName">What is the Id of the form that grants this spell?</label>
                 @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
-                @Html.TextBoxFor(e => e.Skill_UniqueToFormSourceId)
+                @Html.TextBoxFor(e => e.Skill_UniqueToFormSourceId, new { @type = "number", @min = "0" })
             </div>
 
             <div id="modal"></div>
@@ -253,6 +253,8 @@
         <div class="form__panel" id="Skill_UniqueToLocation_Panel" style="display: none;">
             <label for="Skill_UniqueToLocation">What is the name of the location where this curse can be obtained when searching?</label>
             @Html.TextBoxFor(e => e.Skill_UniqueToLocation)
+            @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "locationsModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+            <div id="locationsModal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
         </div>
 
         <div class="form__panel">
@@ -277,7 +279,7 @@
 
         <div class="form__panel">
             <label for="Effect_Bonuses">Abilities affected by this curse.  The current balance score is:  <b>@ViewBag.BalanceScore</b>  Please use the bonus calculator <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculatorEffect())" target="_blank">which can be opened in a new tab by clicking here</a> as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules but may be changed by the admins as seen fit.</label>
-            @Html.TextAreaFor(e => e.Effect_Bonuses)
+            @Html.TextAreaFor(e => e.Effect_Bonuses, new {@disabled="disabled"})
         </div>
 
         <div class="form__panel externalMessage">
@@ -411,6 +413,10 @@
 
 <script>
 
+    function launchModal() {
+        $("#locationsModal").show();
+    }
+
     $(document).ready(function () {
         $('#YourContributions').dataTable({
             "order": [[1, "asc"], [2, "asc"]],
@@ -460,14 +466,14 @@
             $("#curseorigin").val("form");
         }
 
-       else if (startItem!="") {
+        else if (startItem!="") {
             showForItemCurse();
             $("#curseorigin").val("item");
-       }
-       else {
-           showForFormCurse();
-           $("#curseorigin").val("form");
-       }
+        }
+        else {
+            showForFormCurse();
+            $("#curseorigin").val("form");
+        }
 
         
         if ($("#Id").val() == -1) {

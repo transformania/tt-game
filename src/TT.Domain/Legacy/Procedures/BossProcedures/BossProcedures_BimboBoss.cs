@@ -17,9 +17,9 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private const string BossFirstName = "Lady";
         private const string BossLastName = "Lovebringer, PHD";
-        public const string KissEffectdbName = "curse_bimboboss_kiss";
+        public const int KissEffectSourceId = 32;
         public const int KissSkillSourceId = 528;
-        public const string CureEffectdbName = "blessing_bimboboss_cure";
+        public const int CureEffectSourceId = 33;
         public const int RegularTFSpellSourceId = 532;
         private const int RegularBimboFormSourceId = 232;
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
@@ -91,7 +91,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // if the player doesn't currently have it, give them the infection kiss
-            if (!EffectProcedures.PlayerHasEffect(human, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(human, CureEffectdbName))
+            if (!EffectProcedures.PlayerHasEffect(human, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(human, KissEffectSourceId))
             {
                 AttackProcedures.Attack(bimboss, human, KissSkillSourceId);
                 AIProcedures.DealBossDamage(bimboss, human, false, 1);
@@ -167,7 +167,7 @@ namespace TT.Domain.Procedures.BossProcedures
             foreach (var p in playersHere)
             {
                 // if the player doesn't currently have it, give them the infection kiss
-                if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName))
+                if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId))
                 {
                     AttackProcedures.Attack(bimboBoss, p, KissSkillSourceId);
                     AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
@@ -184,7 +184,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             // have a random chance that infected players spontaneously transform
             IEffectRepository effectRepo = new EFEffectRepository();
-            var ownerIds = effectRepo.Effects.Where(e => e.dbName == KissEffectdbName).Select(e => e.OwnerId).ToList();
+            var ownerIds = effectRepo.Effects.Where(e => e.EffectSourceId == KissEffectSourceId).Select(e => e.OwnerId).ToList();
 
             foreach (var effectId in ownerIds)
             {
@@ -238,7 +238,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     foreach (var p in eligibleTargets)
                     {
-                        if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName) && attacksMadeCount < 3)
+                        if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId) && attacksMadeCount < 3)
                         {
                             attacksMadeCount++;
                             AttackProcedures.Attack(infectee, p, KissSkillSourceId);
@@ -276,7 +276,7 @@ namespace TT.Domain.Procedures.BossProcedures
             if (ShouldHeal(bimboBoss, turnNumber))
             {
                 
-                var activeCurses = effectRepo.Effects.Count(eff => eff.dbName == KissEffectdbName)*3;
+                var activeCurses = effectRepo.Effects.Count(eff => eff.EffectSourceId == CureEffectSourceId) *3;
                 activeCurses = activeCurses > 75 ? 75 : activeCurses;
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);
@@ -310,7 +310,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             // delete all bimbo effects, both the kiss and the cure
             IEffectRepository effectRepo = new EFEffectRepository();
-            var effectsToDelete = effectRepo.Effects.Where(e => e.dbName == KissEffectdbName || e.dbName == CureEffectdbName).ToList();
+            var effectsToDelete = effectRepo.Effects.Where(e => e.EffectSourceId == KissEffectSourceId || e.EffectSourceId == CureEffectSourceId).ToList();
 
             foreach (var e in effectsToDelete)
             {

@@ -51,7 +51,7 @@ namespace TT.Domain.Procedures
                                                              APReserveRefillAmount = sf.APReserveRefillAmount,
                                                              BaseContractTurnLength = sf.BaseContractTurnLength,
                                                              BaseCost = sf.BaseCost,
-                                                             GivesEffect = sf.GivesEffect,
+                                                             GivesEffectSourceId = sf.GivesEffectSourceId,
                                                              GivesItem = sf.GivesItem,
                                                              MinutesUntilReuse = sf.MinutesUntilReuse,
                                                              Description = sf.Description,
@@ -179,11 +179,11 @@ namespace TT.Domain.Procedures
             }
 
             // furniture gives effect
-            else if (!furnitureStatic.GivesEffect.IsNullOrEmpty())
+            else if (furnitureStatic.GivesEffectSourceId != null)
             {
-                EffectProcedures.GivePerkToPlayer(furnitureStatic.GivesEffect, user);
+                EffectProcedures.GivePerkToPlayer(furnitureStatic.GivesEffectSourceId.Value, user);
                 PlayerProcedures.SetTimestampToNow(user);
-                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the " + EffectStatics.GetStaticEffect2(furnitureStatic.GivesEffect).FriendlyName + " effect.";
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the " + EffectStatics.GetDbStaticEffect(furnitureStatic.GivesEffectSourceId.Value).FriendlyName + " effect.";
             }
 
             //furniture gives item

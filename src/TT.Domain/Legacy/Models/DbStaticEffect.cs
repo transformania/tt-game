@@ -6,11 +6,10 @@ namespace TT.Domain.Models
     {
         public int Id { get; set; }
 
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public int AvailableAtLevel { get; set; }
-        public string PreRequesite { get; set; }
+        public int? PreRequisiteEffectSourceId { get; set; }
 
         public bool isLevelUpPerk { get; set; }
         public int Duration { get; set; }
@@ -69,11 +68,11 @@ namespace TT.Domain.Models
         {
             var output = new StaticEffect
             {
-                dbName = this.dbName,
+                Id = this.Id,
                 FriendlyName = this.FriendlyName,
                 Description = this.Description,
                 AvailableAtLevel = this.AvailableAtLevel,
-                PreRequesite = this.PreRequesite,
+                PreRequisiteEffectSourceId = this.PreRequisiteEffectSourceId,
                 isLevelUpPerk = this.isLevelUpPerk,
                 Duration = this.Duration,
                 Cooldown = this.Cooldown,

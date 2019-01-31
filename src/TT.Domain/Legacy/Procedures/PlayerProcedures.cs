@@ -1131,13 +1131,13 @@ namespace TT.Domain.Procedures
                     var effectToGet = effectsHere.ElementAt(randIndex);
 
                     // assert that the player doesn't already have this effect.  IF they do, break out
-                    if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName))
+                    if (EffectProcedures.PlayerHasEffect(player, effectToGet.Id))
                     {
                         PlayerProcedures.GiveXP(player, 1.5M);
                         return "Although you didn't find anything or learn any new spells, you feel as though you know this town a little better, which may come in useful in the future.  (+1.5 XP)";
                     }
 
-                    return EffectProcedures.GivePerkToPlayer(effectToGet.dbName, player);
+                    return EffectProcedures.GivePerkToPlayer(effectToGet.Id, player);
 
                 }
 

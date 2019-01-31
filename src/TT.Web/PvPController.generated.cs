@@ -422,7 +422,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ChoosePerk
         {
-            public readonly string perk = ("perk").ToLowerInvariant();
+            public readonly string effectSourceId = ("effectSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ViewEffects s_params_ViewEffects = new ActionParamsClass_ViewEffects();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -945,14 +945,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ChoosePerkOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string perk);
+        partial void ChoosePerkOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int effectSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ChoosePerk(string perk)
+        public override System.Web.Mvc.ActionResult ChoosePerk(int effectSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChoosePerk);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "perk", perk);
-            ChoosePerkOverride(callInfo, perk);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "effectSourceId", effectSourceId);
+            ChoosePerkOverride(callInfo, effectSourceId);
             return callInfo;
         }
 

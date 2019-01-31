@@ -16,7 +16,7 @@
 
         public bool IsPlayerLearnable { get; set; }
 
-        public string GivesEffect { get; set; }
+        public int? GivesEffectSourceId { get; set; }
 
         public int? ExclusiveToFormSourceId { get; set; }
         public string ExclusiveToItem { get; set; }

@@ -291,8 +291,8 @@ namespace TT.Domain.Procedures
                     FormSourceId = dbPlayer.OriginalFormSourceId
                 });
 
-                dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-                dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                dbPlayer.ActionPoints = TurnTimesStatics.GetActionPointLimit();
+                dbPlayer.ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit();
                 dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
                 dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
 

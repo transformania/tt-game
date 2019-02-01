@@ -28,7 +28,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.User, new UserBuilder().BuildAndSave())
                 .With(p => p.Money, 1000)
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
-                .With(p => p.ActionPoints, 120)
+                .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-3))
                 .BuildAndSave();
@@ -193,7 +193,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.User, new UserBuilder().BuildAndSave())
                 .With(p => p.Money, 3)
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
-                .With(p => p.ActionPoints, 120)
+                .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-3))

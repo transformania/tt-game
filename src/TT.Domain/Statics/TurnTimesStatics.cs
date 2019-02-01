@@ -23,7 +23,10 @@ namespace TT.Domain.Statics
                         OfflineAfterXMinutes = 30,
                         MinutesSinceLastCombatBeforeQuestingOrDuelling = 30,
                         ItemMaxTurnsBuildup = 96,
-                        StruggleXPBeforeItemPermanentLock = -320
+                        StruggleXPBeforeItemPermanentLock = -320,
+                        NoMovingAfterAttackSeconds = 45,
+                        ActionPointLimit = 120,
+                        ActionPointReserveLimit = 360
                     }
                 },
                 {
@@ -36,7 +39,10 @@ namespace TT.Domain.Statics
                         OfflineAfterXMinutes = 18,
                         MinutesSinceLastCombatBeforeQuestingOrDuelling = 18,
                         ItemMaxTurnsBuildup = 160,
-                        StruggleXPBeforeItemPermanentLock = -600
+                        StruggleXPBeforeItemPermanentLock = -600,
+                        NoMovingAfterAttackSeconds = 27,
+                        ActionPointLimit = 200,
+                        ActionPointReserveLimit = 600
                     }
                 }
             };
@@ -76,10 +82,26 @@ namespace TT.Domain.Statics
             return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.StruggleXPBeforeItemPermanentLock;
         }
 
+        public static int GetNoMovingAfterAttackSeconds()
+        {
+            return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.NoMovingAfterAttackSeconds;
+        }
+
+        public static int GetActionPointLimit()
+        {
+            return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.ActionPointLimit;
+        }
+
+        public static int GetActionPointReserveLimit()
+        {
+            return TurnTimeConfigurations.SingleOrDefault(c => c.Key == ActiveConfiguration).Value.ActionPointReserveLimit;
+        }
+
         public static bool IsValidConfiguration(string configuration)
         {
             return TurnTimeConfigurations.ContainsKey(configuration);
         }
+
 
     }
 
@@ -92,5 +114,8 @@ namespace TT.Domain.Statics
         public int MinutesSinceLastCombatBeforeQuestingOrDuelling { get; set; }
         public int ItemMaxTurnsBuildup { get; set; }
         public int StruggleXPBeforeItemPermanentLock { get; set; }
+        public int NoMovingAfterAttackSeconds { get; set; }
+        public int ActionPointLimit { get; set; }
+        public int ActionPointReserveLimit { get; set; }
     }
 }

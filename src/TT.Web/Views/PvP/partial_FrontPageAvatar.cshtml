@@ -9,7 +9,7 @@
     if (HealthWidth > 100) { HealthWidth = 100; }
     var ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
     if (ManaWidth > 100) { ManaWidth = 100; }
-    var ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / PvPStatics.MaximumStoreableActionPoints * 100);
+    var ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / TurnTimesStatics.GetActionPointLimit() * 100);
 
 }
 <div class="row">
@@ -54,7 +54,7 @@
 
 
         <div class="barWrapper">
-            <div class="barText" style="font-size: 12px;">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (res: @Model.Player.ActionPoints_Refill) </div>
+            <div class="barText" style="font-size: 12px;">@Model.Player.ActionPoints / @TurnTimesStatics.GetActionPointLimit() AP (res: @Model.Player.ActionPoints_Refill) </div>
             <div class="barData barAP" style="width: @ActionWidth%"></div>
         </div>
 
@@ -104,7 +104,7 @@
 
 
                 <div class="barWrapper">
-                    <div class="barText">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in reserve) </div>
+                    <div class="barText">@Model.Player.ActionPoints / @TurnTimesStatics.GetActionPointLimit() AP (@Model.Player.ActionPoints_Refill in reserve) </div>
                     <div id="mn_amt" class="barData barAP" style="width: @ActionWidth%"></div>
                 </div>
 

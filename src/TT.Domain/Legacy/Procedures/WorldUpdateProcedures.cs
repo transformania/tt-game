@@ -169,17 +169,17 @@ namespace TT.Domain.Procedures
                     {
                         context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10, ItemsUsedThisTurn = 0 WHERE Mobility='full'" +
 
-                        "UPDATE [dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" +
+                        $"UPDATE [dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % {TurnTimesStatics.GetActionPointLimit()} / 2) WHERE ActionPoints >= {TurnTimesStatics.GetActionPointLimit()} AND Mobility='full'" +
 
-                        "UPDATE [dbo].[Players] SET ActionPoints = 120 WHERE ActionPoints > 120 AND Mobility='full'" +
+                        $"UPDATE [dbo].[Players] SET ActionPoints = {TurnTimesStatics.GetActionPointLimit()} WHERE ActionPoints > {TurnTimesStatics.GetActionPointLimit()} AND Mobility='full'" +
 
-                        "UPDATE [dbo].[Players] SET ActionPoints_Refill = 360 WHERE ActionPoints_Refill > 360 AND Mobility='full'" +
+                        $"UPDATE [dbo].[Players] SET ActionPoints_Refill = {TurnTimesStatics.GetActionPointReserveLimit()} WHERE ActionPoints_Refill > {TurnTimesStatics.GetActionPointReserveLimit()} AND Mobility='full'" +
 
-                        "UPDATE [dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
+                        $"UPDATE [dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= {TurnTimesStatics.GetActionPointLimit()-20} AND ActionPoints_Refill >= 20 AND Mobility='full'");
 
                         if (PvPStatics.ChaosMode)
                         {
-                            context.Database.ExecuteSqlCommand("Update [dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana, CleansesMeditatesThisRound = -999");
+                            context.Database.ExecuteSqlCommand($"Update [dbo].[Players] SET ActionPoints = {TurnTimesStatics.GetActionPointLimit()}, ActionPoints_Refill = {TurnTimesStatics.GetActionPointReserveLimit()}, TimesAttackingThisUpdate = -999, Mana = MaxMana, CleansesMeditatesThisRound = -999");
                         }
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");
@@ -247,9 +247,9 @@ namespace TT.Domain.Procedures
                         }
 
                         // make sure AP reserve stays within maximum amount
-                        if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                        if (player.ActionPoints_Refill > TurnTimesStatics.GetActionPointReserveLimit())
                         {
-                            player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                            player.ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit();
                         }
 
 

@@ -81,7 +81,6 @@ namespace TT.Domain.Statics
         public const decimal Item_LevelBonusModifier = .1M;
 
         public const int MaxAttacksPerUpdate = 3;
-        public const int NoMovingAfterAttackSeconds = 45;
         public const decimal LocationMoveCost = 1.0M;
         public const decimal AttackCost = 3.0M;
         public const decimal MeditateCost = 4.0M;
@@ -99,9 +98,6 @@ namespace TT.Domain.Statics
 
         public const int MaxCarryableItemCountBase = 6;
         public const int MaxCleansesMeditatesPerUpdate = 3;
-
-        public const decimal MaximumStoreableActionPoints = 120;
-        public const decimal MaximumStoreableActionPoints_Refill = 360;
 
         public const decimal CriticalMissPercentChance = 8;
         public const decimal CriticalHitPercentChance = 8;

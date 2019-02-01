@@ -234,7 +234,7 @@ namespace TT.Tests.Services
                 FirstName = "FirstName",
                 LastName = "Lastname",
                 Level = 1,
-                ActionPoints = PvPStatics.MaximumStoreableActionPoints,
+                ActionPoints = TurnTimesStatics.GetActionPointLimit(),
                 Id = 1,
                 LastActionTimestamp = DateTime.UtcNow.AddYears(-1),
                 GameMode  = 0,

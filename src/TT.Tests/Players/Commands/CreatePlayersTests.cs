@@ -224,7 +224,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be less than " + PvPStatics.MaximumStoreableActionPoints));
+            action.Should().ThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be less than " + TurnTimesStatics.GetActionPointLimit()));
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace TT.Tests.Players.Commands
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be less than " + PvPStatics.MaximumStoreableActionPoints_Refill);
+            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be less than " + TurnTimesStatics.GetActionPointReserveLimit());
         }
 
         [Test]

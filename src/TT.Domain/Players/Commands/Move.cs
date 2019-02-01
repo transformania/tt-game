@@ -41,7 +41,7 @@ namespace TT.Domain.Players.Commands
                 if (LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination) == null)
                     throw new DomainException($"Location with dbName '{destination}' could not be found");
 
-                if (Buffs.MoveActionPointDiscount() < -120)
+                if (Buffs.MoveActionPointDiscount() < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't move since you have been immobilized!");
 
                 if (player.ActionPoints < PvPStatics.LocationMoveCost)
@@ -51,8 +51,8 @@ namespace TT.Domain.Players.Commands
                     throw new DomainException("You can't move because you are currently inanimate!");
 
                 var lastAttackTimeAgo = Math.Abs(Math.Floor(player.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-                if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
-                    throw new DomainException($"You are resting from a recent attack.  You must wait {Math.Ceiling(PvPStatics.NoMovingAfterAttackSeconds - lastAttackTimeAgo)} more seconds before moving.");
+                if (lastAttackTimeAgo < TurnTimesStatics.GetNoMovingAfterAttackSeconds())
+                    throw new DomainException($"You are resting from a recent attack.  You must wait {Math.Ceiling(TurnTimesStatics.GetNoMovingAfterAttackSeconds() - lastAttackTimeAgo)} more seconds before moving.");
 
                 if (player.Mobility == PvPStatics.MobilityPet && player.Item != null)
                 {

@@ -15,8 +15,8 @@ namespace TT.Tests.Builders.Players
             With(u => u.Id, 3);
             With(u => u.Mobility, PvPStatics.MobilityFull);
             With(u => u.Location, LocationsStatics.STREET_70_EAST_9TH_AVE);
-            With(p => p.ActionPoints, PvPStatics.MaximumStoreableActionPoints);
-            With(p => p.ActionPoints_Refill, PvPStatics.MaximumStoreableActionPoints_Refill);
+            With(p => p.ActionPoints, TurnTimesStatics.GetActionPointLimit());
+            With(p => p.ActionPoints_Refill, TurnTimesStatics.GetActionPointReserveLimit());
             With(p => p.FirstName, "John");
             With(p => p.LastName, "Doe" );
             With(p => p.LastActionTimestamp, DateTime.UtcNow.AddMinutes(-10) );

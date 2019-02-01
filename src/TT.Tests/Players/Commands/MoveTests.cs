@@ -61,7 +61,7 @@ namespace TT.Tests.Players.Commands
 
             player = new PlayerBuilder()
                 .With(p => p.Id, 50)
-                .With(p => p.ActionPoints, 120)
+                .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
                 .With(p => p.User, new UserBuilder()
                     .With(u => u.Id, "abcde")
                     .With(u => u.Stats, stats)
@@ -106,7 +106,7 @@ namespace TT.Tests.Players.Commands
 
             player = new PlayerBuilder()
                 .With(p => p.Id, 55)
-                .With(p => p.ActionPoints, 120)
+                .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
                 .With(p => p.User, new UserBuilder()
                     .With(u => u.Stats, stats)
                     .BuildAndSave())
@@ -289,7 +289,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait 4? more seconds before moving."); // 44 or 45, depending on speed of the test
+            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait ?? more seconds before moving.");
         }
 
         [Test]

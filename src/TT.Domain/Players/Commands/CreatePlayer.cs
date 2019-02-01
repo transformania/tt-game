@@ -78,8 +78,8 @@ namespace TT.Domain.Players.Commands
             Level = 1;
             XP = 0;
             TimesAttackingThisUpdate = 0;
-            ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-            ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+            ActionPoints = TurnTimesStatics.GetActionPointLimit();
+            ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit();
             Gender = PvPStatics.GenderFemale;
             Mobility = PvPStatics.MobilityFull;
             LastActionTimestamp = DateTime.UtcNow.AddHours(-TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling());
@@ -171,11 +171,11 @@ namespace TT.Domain.Players.Commands
             if (ActionPoints_Refill < 0)
                 throw new DomainException("ActionPoints_Refill must be at least 0");
 
-            if (ActionPoints > PvPStatics.MaximumStoreableActionPoints)
-                throw new DomainException("ActionPoints must be less than " + PvPStatics.MaximumStoreableActionPoints);
+            if (ActionPoints > TurnTimesStatics.GetActionPointLimit())
+                throw new DomainException("ActionPoints must be less than " + TurnTimesStatics.GetActionPointLimit());
 
-            if (ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                throw new DomainException("ActionPoints_Refill must be less than " + PvPStatics.MaximumStoreableActionPoints_Refill);
+            if (ActionPoints_Refill > TurnTimesStatics.GetActionPointReserveLimit())
+                throw new DomainException("ActionPoints_Refill must be less than " + TurnTimesStatics.GetActionPointReserveLimit());
 
             if (Gender != PvPStatics.GenderFemale && Gender != PvPStatics.GenderMale)
                 throw new DomainException("Gender must be either " + PvPStatics.GenderMale + " or " + PvPStatics.GenderFemale);

@@ -714,7 +714,7 @@ namespace TT.Domain.Procedures
                 var newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
                 newplayer.Health = 0;
                 newplayer.Mana = 0;
-                newplayer.ActionPoints = 120;
+                newplayer.ActionPoints = TurnTimesStatics.GetActionPointLimit();
 
                 playerRepo.SavePlayer(newplayer);
                 ItemProcedures.PlayerBecomesItem(newplayer, startform, vendor);

@@ -168,9 +168,9 @@ namespace TT.Domain.Procedures
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == user.Id);
                 dbPlayer.ActionPoints_Refill += furnitureStatic.APReserveRefillAmount;
-                if (dbPlayer.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                if (dbPlayer.ActionPoints_Refill > TurnTimesStatics.GetActionPointReserveLimit())
                 {
-                    dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                    dbPlayer.ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit();
                 }
                 dbPlayer.LastActionTimestamp = DateTime.UtcNow;
                 playerRepo.SavePlayer(dbPlayer);

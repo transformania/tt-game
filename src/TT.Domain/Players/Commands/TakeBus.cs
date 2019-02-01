@@ -69,7 +69,7 @@ namespace TT.Domain.Players.Commands
 
                 var buffs = ItemProcedures.GetPlayerBuffs(player.Id);
 
-                if (buffs.MoveActionPointDiscount() < -120)
+                if (buffs.MoveActionPointDiscount() < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't ride the bus while immobilized.");
 
                 output = $"You took the bus from <b>{originLocation.Name}</b> to <b>{destinationLocation.Name}</b> for <b>{ticketPrice}</b> Arpeyjis.";

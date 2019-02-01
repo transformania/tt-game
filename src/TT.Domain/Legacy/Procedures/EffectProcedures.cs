@@ -173,7 +173,7 @@ namespace TT.Domain.Procedures
                 // assert that the perk doesn't require a prerequisite that the player does not yet have
                 if (effectPlus.PreRequisiteEffectSourceId != null)
                 {
-                    var requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.Id == effectPlus.PreRequisiteEffectSourceId);
+                    var requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.EffectSourceId == effectPlus.PreRequisiteEffectSourceId);
                     if (requiredPrerequisite == null)
                     {
                         return "This perk requires the <b>" + EffectStatics.GetDbStaticEffect(effectPlus.PreRequisiteEffectSourceId.Value).FriendlyName + "</b> prerequisite perk which you do not have.";

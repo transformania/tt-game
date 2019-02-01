@@ -40,11 +40,11 @@ namespace TT.Domain.Procedures
             var victimFullName = targeted.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
-            if (skillBeingUsed.StaticSkill.GivesEffect != null)
+            if (skillBeingUsed.StaticSkill.GivesEffectSourceId != null)
             {
-                var effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.StaticSkill.GivesEffect);
+                var effectBeingGiven = EffectStatics.GetDbStaticEffect(skillBeingUsed.StaticSkill.GivesEffectSourceId.Value);
 
-                EffectProcedures.GivePerkToPlayer(skillBeingUsed.StaticSkill.GivesEffect, victim);
+                EffectProcedures.GivePerkToPlayer(skillBeingUsed.StaticSkill.GivesEffectSourceId.Value, victim);
 
                 if (attacker.Gender == PvPStatics.GenderMale && !effectBeingGiven.AttackerWhenHit_M.IsNullOrEmpty())
                 {

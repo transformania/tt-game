@@ -17,7 +17,7 @@ namespace TT.Domain.Procedures
         public const string TIMEOUT = "timeout";
         public const string REJECTED = "rejected";
 
-        public const string TIMEOUT_CURSE = "effect_Disappointing_Duelist_Judoo";
+        public const int TimeoutCurseEffectSourceId = 156;
 
         public static void SendDuelChallenge(Player challenger, Player target)
         {
@@ -161,7 +161,7 @@ namespace TT.Domain.Procedures
 
                 if (endStatus==TIMEOUT) {
                     message = "<b class='bad'>Your duel has timed out, ending in a disappointing draw.  You feel as if some frustrated spirits have left you weakened by a curse...</b>";
-                    EffectProcedures.GivePerkToPlayer(TIMEOUT_CURSE, d.PlayerId);
+                    EffectProcedures.GivePerkToPlayer(TimeoutCurseEffectSourceId, d.PlayerId);
                 } else {
                     message = "<b>Your duel has ended.</b>";
                 }

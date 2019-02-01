@@ -240,9 +240,9 @@ namespace TT.Web.CustomHtmlHelpers
             return player.BotId <= AIStatics.PsychopathBotId ? new MvcHtmlString("bot") : new MvcHtmlString("");
         }
 
-        public static MvcHtmlString GetEffectFriendlyName(string effect)
+        public static MvcHtmlString GetEffectFriendlyName(int effectSourceId)
         {
-            return new MvcHtmlString(EffectStatics.GetStaticEffect2(effect).FriendlyName);
+            return new MvcHtmlString(EffectStatics.GetDbStaticEffect(effectSourceId).FriendlyName);
         }
 
         public static MvcHtmlString GetSpellTypeClass(SkillViewModel skill)

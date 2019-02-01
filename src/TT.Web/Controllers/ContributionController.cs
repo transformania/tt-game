@@ -675,18 +675,17 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin) && output.ProofreadingCopy)
             {
 
-                var effectDbName = output.GetEffectDbName();
                 var staticSkill =
                     staticSkillRepository.DbStaticSkills.FirstOrDefault(s => s.Id == output.SkillSourceId.Value);
 
-                ViewBag.StaticEffectExists = $"<span class = 'bad'>Static effect for '{effectDbName}' not found!</span>";
+                ViewBag.StaticEffectExists = $"<span class = 'bad'>Static effect not found!</span>";
                 ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell not found!<span>";
 
                 IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-                var possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+                var possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.Id == output.EffectSourceId);
                 if (possibleEffect != null)
                 {
-                    ViewBag.StaticEffectExists = "<span class = 'good'>Static effect " + effectDbName + " exists!</span>";
+                    ViewBag.StaticEffectExists = $"<span class = 'good'>Static effect '{possibleEffect.FriendlyName}' exists!</span>";
                 }
 
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
@@ -927,7 +926,7 @@ namespace TT.Web.Controllers
                     SkillSourceId = spell.Id,
                     ExclusiveToItemSource = spell.ExclusiveToItem,
                     ExclusiveToFormSourceId = spell.ExclusiveToFormSourceId,
-                    GivesEffectSource = spell.GivesEffect,
+                    GivesEffectSourceId = spell.GivesEffectSourceId,
                     FormSourceId = spell.FormSourceId
                 });
             }
@@ -1250,16 +1249,13 @@ namespace TT.Web.Controllers
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
 
             var contribution = contRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
-            var effectDbName = contribution.GetEffectDbName();
-            var effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+            var effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.Id == contribution.EffectSourceId);
 
 
             if (effect == null)
             {
-                effect = new DbStaticEffect
-                {
-                    dbName = contribution.GetEffectDbName(),
-                };
+                effect = new DbStaticEffect();
+                
                 message += "<p class='bad'>Made new effect.</p>";
             }
             else
@@ -1269,10 +1265,6 @@ namespace TT.Web.Controllers
 
             effect.FriendlyName = contribution.Effect_FriendlyName;
             effect.Description = contribution.Effect_Description;
-            // effect.AvailableAtLevel = 0;
-            // effect.PreRequesite = contribution.Effect_Pre
-
-            //  effect.isLevelUpPerk = contribution.;
             effect.Duration = contribution.Effect_Duration;
             effect.Cooldown = contribution.Effect_Cooldown;
 
@@ -1325,6 +1317,7 @@ namespace TT.Web.Controllers
             effectRepo.SaveDbStaticEffect(effect);
 
             contribution.History += "Published effect on " + DateTime.UtcNow + ".<br>";
+            contribution.EffectSourceId = effect.Id;
             contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;
@@ -1345,15 +1338,20 @@ namespace TT.Web.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
 
             var contribution = contRepo.EffectContributions.First(e => e.Id == id);
-            var effectDbName = contribution.GetEffectDbName();
-            var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
+
+            if (String.IsNullOrEmpty(contribution.Skill_FriendlyName))
+            {
+                TempData["Error"] = "There is no spell name set.  Do you mean to publish this?";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffectSourceId == contribution.EffectSourceId);
 
             var message = "";
 
             if (staticSkill == null)
             {
                 staticSkill = new DbStaticSkill();
-               // skill = contribution.GetSkillDbName();
                 message += "<p class='bad'>Made new spell.</p>";
             }
             else
@@ -1361,7 +1359,6 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing spell.</p>";
             }
 
-            staticSkill.GivesEffect = contribution.GetEffectDbName();
             staticSkill.Description = contribution.Skill_Description;
             staticSkill.FriendlyName = contribution.Skill_FriendlyName;
 
@@ -1384,8 +1381,8 @@ namespace TT.Web.Controllers
                 SkillSourceId = staticSkill.Id,
                 ExclusiveToItemSource = staticSkill.ExclusiveToItem,
                 ExclusiveToFormSourceId = staticSkill.ExclusiveToFormSourceId,
-                GivesEffectSource = staticSkill.GivesEffect,
-                FormSourceId = staticSkill.Id
+                GivesEffectSourceId = contribution.EffectSourceId,
+                FormSourceId = staticSkill.FormSourceId
             });
 
             ViewBag.Message = message;

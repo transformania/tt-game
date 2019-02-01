@@ -2,11 +2,11 @@
 {
     public class StaticEffect
     {
-        public string dbName { get; set; }
+        public int Id { get; set; }
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public int AvailableAtLevel { get; set; }
-        public string PreRequesite { get; set; }
+        public int? PreRequisiteEffectSourceId { get; set; }
 
         public bool isLevelUpPerk { get; set; }
         public int Duration { get; set; }

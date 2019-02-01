@@ -147,7 +147,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_RemoveCurseSend
         {
-            public readonly string curse = ("curse").ToLowerInvariant();
+            public readonly string curseEffectSourceId = ("curseEffectSourceId").ToLowerInvariant();
             public readonly string id = ("id").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ReadSkillBook s_params_ReadSkillBook = new ActionParamsClass_ReadSkillBook();
@@ -287,15 +287,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void RemoveCurseSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string curse, int id);
+        partial void RemoveCurseSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int curseEffectSourceId, int id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult RemoveCurseSend(string curse, int id)
+        public override System.Web.Mvc.ActionResult RemoveCurseSend(int curseEffectSourceId, int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveCurseSend);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "curse", curse);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "curseEffectSourceId", curseEffectSourceId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            RemoveCurseSendOverride(callInfo, curse, id);
+            RemoveCurseSendOverride(callInfo, curseEffectSourceId, id);
             return callInfo;
         }
 

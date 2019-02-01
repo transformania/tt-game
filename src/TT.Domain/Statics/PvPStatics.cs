@@ -126,7 +126,7 @@ namespace TT.Domain.Statics
         public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
         public const int ItemType_DungeonArtifact_Id = 218;
 
-        public const string Dungeon_ArtifactCurse = "effect_Dark_Transfixation_Judoo";
+        public const int Dungeon_ArtifactCurseEffectSourceId = 102;
 
         public const decimal DungeonArtifact_Value = 2;
         public const int DungeonArtifact_SpawnLimit = 3;
@@ -146,7 +146,7 @@ namespace TT.Domain.Statics
 
         public const int LorekeeperSpellPrice = 50;
 
-        public const string Effect_Back_On_Your_Feet = "help_animate_recovery";
+        public const int Effect_BackOnYourFeetSourceId = 34; // TODO: duplicate of constant in EffectProcedures?
 
         public const int PaginationPageSize = 100;
 
@@ -159,11 +159,11 @@ namespace TT.Domain.Statics
     {
         public const int MindControl__MovementFormSourceId = 293;
         public const int MindControl__Movement_Limit = 2;
-        public const string MindControl__Movement_DebuffEffect = "effect_Mind_Controlled_-_Movement_Judoo";
+        public const int MindControl__Movement_DebuffEffectSourceId = 83;
 
         public const int MindControl__StripFormSourceId = 358;
         public const int MindControl__Strip_Limit = 1;
-        public const string MindControl__Strip_DebuffEffect = "effect_Mind_Control_-_Strip_Judoo";
+        public const int MindControl__Strip_DebuffEffectSourceId = 100;
 
         public const int MindControl__MeditateFormSourceId = 370;
         public const int MindControl__Meditate_Limit = 2;

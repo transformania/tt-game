@@ -13,7 +13,7 @@ namespace TT.Domain.Skills.Commands
     {
         public int SkillSourceId { get; set; }
         public int? FormSourceId { get; set; }
-        public string GivesEffectSource { get; set; }
+        public int? GivesEffectSourceId { get; set; }
         public int? ExclusiveToFormSourceId { get; set; }
         public string ExclusiveToItemSource { get; set; }
 
@@ -40,12 +40,12 @@ namespace TT.Domain.Skills.Commands
                     }
                 }
 
-                if (!GivesEffectSource.IsNullOrEmpty())
+                if (GivesEffectSourceId != null)
                 {
-                    givesEffectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.dbName == GivesEffectSource);
+                    givesEffectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.Id == GivesEffectSourceId);
                     if (givesEffectSource == null)
                     {
-                        throw new DomainException($"EffectSource with name '{GivesEffectSource}' could not be found");
+                        throw new DomainException($"EffectSource with Id '{GivesEffectSourceId}' could not be found");
                     }
                 }
 

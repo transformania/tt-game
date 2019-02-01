@@ -13,6 +13,10 @@ namespace TT.Domain.Items.Mappings
             modelBuilder.Entity<ItemSource>()
                 .ToTable("DbStaticItems")
                 .HasKey(cr => cr.Id);
+
+            modelBuilder.Entity<ItemSource>()
+                .HasOptional(cr => cr.GivesEffectSource)
+                .WithMany().Map(m => m.MapKey("GivesEffectSourceId"));
         }
 
         public ItemSourceMappings()

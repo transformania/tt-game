@@ -88,10 +88,7 @@ namespace TT.Domain.Models
 
         public int? SkillSourceId { get; set; }
 
-        public string GetEffectDbName()
-        {
-            return "effect_" + this.Effect_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
-        }
+        public int? EffectSourceId { get; set; }
 
     }
 }

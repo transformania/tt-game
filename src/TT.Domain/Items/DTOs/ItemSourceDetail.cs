@@ -1,4 +1,6 @@
-﻿namespace TT.Domain.Items.DTOs
+﻿using TT.Domain.Effects.DTOs;
+
+namespace TT.Domain.Items.DTOs
 {
     public class ItemSourceDetail
     {
@@ -15,7 +17,7 @@
         public string UsageMessage_Player { get; set; }
         public bool Findable { get; set; }
         public double FindWeight { get; set; }
-        public string GivesEffect { get; set; }
+        public EffectSourceDetail GivesEffectSource { get; set; }
         public bool IsUnique { get; set; }
         public string CurseTFFormdbName { get; set; }
 

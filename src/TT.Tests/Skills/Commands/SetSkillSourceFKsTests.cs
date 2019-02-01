@@ -64,7 +64,7 @@ namespace TT.Tests.Skills.Commands
                 FormSourceId = form.Id, 
                 ExclusiveToFormSourceId = exclusiveToForm.Id,
                 ExclusiveToItemSource = exlusiveToItem.DbName,
-                GivesEffectSource = givesEffect.dbName
+                GivesEffectSourceId = givesEffect.Id
             });
 
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
@@ -91,7 +91,7 @@ namespace TT.Tests.Skills.Commands
                 FormSourceId = null,
                 ExclusiveToFormSourceId = null,
                 ExclusiveToItemSource = null,
-                GivesEffectSource = null
+                GivesEffectSourceId = null
             });
 
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
@@ -125,10 +125,10 @@ namespace TT.Tests.Skills.Commands
         public void should_throw_error_if_gives_effect_source_submitted_but_not_found()
         {
 
-            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, GivesEffectSource = "fake"};
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, GivesEffectSourceId = -999};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("EffectSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("EffectSource with Id '-999' could not be found");
         }
 
         [Test]

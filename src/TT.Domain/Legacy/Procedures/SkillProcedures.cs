@@ -61,8 +61,8 @@ namespace TT.Domain.Procedures
                                                          TFPointsAmount = skillSource.TFPointsAmount,
                                                          ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
-                                                         GivesEffect = skillSource.GivesEffect,
-                                                         IsPlayerLearnable = skillSource.IsPlayerLearnable,
+                                                         GivesEffectSourceId = skillSource.GivesEffectSourceId,
+                                                         IsPlayerLearnable = skillSource.IsPlayerLearnable
                                                      }
 
                                                  };
@@ -110,7 +110,7 @@ namespace TT.Domain.Procedures
                                                           TFPointsAmount = skillSource.TFPointsAmount,
                                                           ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                           ExclusiveToItem = skillSource.ExclusiveToItem,
-                                                          GivesEffect = skillSource.GivesEffect,
+                                                          GivesEffectSourceId = skillSource.GivesEffectSourceId,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
 
@@ -156,7 +156,7 @@ namespace TT.Domain.Procedures
                                                           TFPointsAmount = skillSource.TFPointsAmount,
                                                           ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
                                                           ExclusiveToItem = skillSource.ExclusiveToItem,
-                                                          GivesEffect = skillSource.GivesEffect,
+                                                          GivesEffectSourceId = skillSource.GivesEffectSourceId,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
 
@@ -180,7 +180,7 @@ namespace TT.Domain.Procedures
             {
                 Id = dbstatic.Id,
                 FriendlyName = dbstatic.FriendlyName,
-                GivesEffect = dbstatic.GivesEffect,
+                GivesEffectSourceId = dbstatic.GivesEffectSourceId,
                 Description = dbstatic.Description,
                 FormSourceId = dbstatic.FormSourceId,
                 ManaCost = dbstatic.ManaCost,

@@ -1,4 +1,5 @@
 ﻿
+using TT.Domain.Effects.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Statics;
 
@@ -19,7 +20,7 @@ namespace TT.Domain.Items.Entities
         public string UsageMessage_Player { get; protected set; }
         public bool Findable { get; protected set; }
         public double FindWeight { get; protected set; }
-        public string GivesEffect { get; protected set; }
+        public EffectSource GivesEffectSource { get; protected set; }
         public bool IsUnique { get; protected set; }
         public string CurseTFFormdbName { get; protected set; }
         public int? CurseTFFormSourceId { get; protected set; } // TODO: Use FormSource entity here instead

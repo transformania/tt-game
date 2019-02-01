@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string dbType { get; set; }
         public string FriendlyName { get; set; }
-        public string GivesEffect { get; set; }
+        public int? GivesEffectSourceId { get; set; }
         public decimal APReserveRefillAmount { get; set; }
         public decimal BaseCost { get; set; }
         public int BaseContractTurnLength { get; set; }

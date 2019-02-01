@@ -19,7 +19,7 @@
                     <h3>@e.FriendlyName</h3>
                     <p>@e.Description</p>
                     @Html.Partial(MVC.PvP.Views.partial.partial_perkBonus, e.ToStaticEffect())
-                    <a href="@Url.Action(MVC.PvP.ChoosePerk(e.dbName))">Choose this perk!</a>
+                    <a href="@Url.Action(MVC.PvP.ChoosePerk(e.Id))">Choose this perk!</a>
                 </div>
             }
         }

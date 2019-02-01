@@ -20,11 +20,11 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public const int BikerFollowerSpellSourceId = 1198;
         public const int BikerFollowerFormSourceId = 935;
 
-        public const string EffectLevelOne = "effect_Harley's_Displeasure_Judoo";
-        public const string EffectLevelTwo = "effect_Harley's_Annoyance_Judoo";
-        public const string EffectLevelThree = "effect_Harley's_Anger_Judoo";
-        public const string EffectLevelFour = "effect_Harley's_Fury_Judoo";
-        public const string EffectLevelFive = "effect_Harley's_Wrath_Judoo";
+        public const int EffectLevelOneSourceId = 187;
+        public const int EffectLevelTwoSourceId = 188;
+        public const int EffectLevelThreeSourceId = 189;
+        public const int EffectLevelFourSourceId = 190;
+        public const int EffectLevelFiveSourceId = 191;
 
         public const int LeatherJacketSpellSourceId = 1197;
 
@@ -139,7 +139,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             }
 
             // Step 2:  Give the boss the appropriate effect, determined by how many followers she has.
-            EffectProcedures.GivePerkToPlayer(GetPerkToGive(followers.Count), boss);
+            EffectProcedures.GivePerkToPlayer(GetPerkSourceIdToGive(followers.Count), boss);
 
             // Step 3:  Attack everyone in the region 2-3 times with the biker follower spell if they are not already that form.
             var victims = GetEligibleTargetsAtLocation(newlocation);
@@ -203,27 +203,27 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             return DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
         }
 
-        private static string GetPerkToGive(int followerCount)
+        private static int GetPerkSourceIdToGive(int followerCount)
         {
             if (followerCount >= 9)
             {
-                return EffectLevelFive;
+                return EffectLevelFiveSourceId;
             }
             else if (followerCount >= 6)
             {
-                return EffectLevelFour;
+                return EffectLevelFourSourceId;
             }
             else if (followerCount >= 4)
             {
-                return EffectLevelThree;
+                return EffectLevelThreeSourceId;
             }
             else if (followerCount >= 2)
             {
-                return EffectLevelTwo;
+                return EffectLevelTwoSourceId;
             }
             else 
             {
-                return EffectLevelOne;
+                return EffectLevelOneSourceId;
             }
         }
 

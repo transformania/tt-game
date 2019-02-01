@@ -15,8 +15,7 @@
         public string UsageMessage_Player { get; set; }
         public bool Findable { get; set; }
         public double FindWeight { get; set; }
-        public string GivesEffect { get; set; }
-
+        public int? GivesEffectSourceId { get; set; }
 
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }

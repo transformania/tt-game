@@ -15,7 +15,7 @@
         public string UsageMessage_Player { get; set; }
         public bool Findable { get; set; }
         public double FindWeight { get; set; }
-        public string GivesEffect { get; set; }
+        public int? GivesEffectSourceId { get; set; }
         public bool IsUnique { get; set; }
         public int? CurseTFFormSourceId { get; set; }
 

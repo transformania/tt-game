@@ -477,9 +477,9 @@ namespace TT.Web.Controllers
 
             // assert that the player has not been in recent combat
             var minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (minutesAgo < 30)
+            if (minutesAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
             {
-                TempData["Error"] = "You must wait another " + (30 - minutesAgo) + " minutes without being in combat in order to do this.";
+                TempData["Error"] = "You must wait another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - minutesAgo) + " minutes without being in combat in order to do this.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

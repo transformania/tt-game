@@ -9,19 +9,19 @@ namespace TT.Domain.ViewModels
     public static class BossSummonDictionary
     {
         public static Dictionary<string, BossSummon> GlobalBossSummonDictionary = new Dictionary<string, BossSummon> {
-    { "ranch_bedroom", new BossSummon { BossId = AIStatics.DonnaBotId, MinimumTurn = 2600, ActivationText = "" }},
+    { "ranch_bedroom", new BossSummon { BossId = AIStatics.DonnaBotId, MinimumTurn = TurnTimesStatics.GetDonnaMinSpawnTurn(), ActivationText = "" }},
 
-     { "castle_armory", new BossSummon { BossId = AIStatics.ValentineBotId, MinimumTurn = 99999, ActivationText = "" }},
+     { "castle_armory", new BossSummon { BossId = AIStatics.ValentineBotId, MinimumTurn = TurnTimesStatics.GetValentineMinSpawnTurn(), ActivationText = "" }},
 
-     { "stripclub_bar_seats", new BossSummon { BossId = AIStatics.BimboBossBotId, MinimumTurn = 1800, ActivationText = "" }},
+     { "stripclub_bar_seats", new BossSummon { BossId = AIStatics.BimboBossBotId, MinimumTurn = TurnTimesStatics.GetBimboBossMinSpawnTurn(), ActivationText = "" }},
 
-     { "tavern_pool", new BossSummon { BossId = AIStatics.FemaleRatBotId, MinimumTurn = 144, ActivationText = "" }},
+     { "tavern_pool", new BossSummon { BossId = AIStatics.FemaleRatBotId, MinimumTurn = TurnTimesStatics.GetRatThievesMinSpawnTurn(), ActivationText = "" }},
 
-     { "college_foyer", new BossSummon { BossId = AIStatics.MouseNerdBotId, MinimumTurn = 3800, ActivationText = "" }},
+     { "college_foyer", new BossSummon { BossId = AIStatics.MouseNerdBotId, MinimumTurn = TurnTimesStatics.GetMouseSistersMinSpawnTurn(), ActivationText = "" }},
 
-      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossId = AIStatics.FaebossBotId, MinimumTurn = 3200, ActivationText = "" }},
+      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossId = AIStatics.FaebossBotId, MinimumTurn = TurnTimesStatics.GetFaeBossMinSpawnTurn(), ActivationText = "" }},
 
-    { BossProcedures_MotorcycleGang.SpawnLocation, new BossSummon { BossId = AIStatics.MotorcycleGangLeaderBotId, MinimumTurn = 1000, ActivationText = "" }},
+    { BossProcedures_MotorcycleGang.SpawnLocation, new BossSummon { BossId = AIStatics.MotorcycleGangLeaderBotId, MinimumTurn = TurnTimesStatics.GetMotorcycleGangMinSpawnTurn(), ActivationText = "" }},
 
     };
 
@@ -38,7 +38,6 @@ namespace TT.Domain.ViewModels
             {
                 return new StreamReader(stream).ReadToEnd();
             }
-            
         }
 
     }

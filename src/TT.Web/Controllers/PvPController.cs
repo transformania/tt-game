@@ -615,7 +615,7 @@ namespace TT.Web.Controllers
             if (lastAttackTimeAgo < 30)
             {
                 TempData["Error"] = "You have been in combat too recently in order to enter or leave the dungeon right now.";
-                TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes.";
+                TempData["SubError"] = "You must stay out of combat for another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - lastAttackTimeAgo) + " minutes.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

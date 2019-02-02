@@ -26,7 +26,7 @@
         {
             <li>Gives effect:  @TT.Domain.Statics.EffectStatics.GetDbStaticEffect(Model.FurnitureType.GivesEffectSourceId.Value).FriendlyName</li>
         }
-        if (Model.FurnitureType.GivesItem.IsNullOrEmpty())
+        if (!Model.FurnitureType.GivesItem.IsNullOrEmpty())
         {
             <li>Gives item:  @TT.Domain.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
         }

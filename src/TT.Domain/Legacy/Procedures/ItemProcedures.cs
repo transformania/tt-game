@@ -545,16 +545,16 @@ namespace TT.Domain.Procedures
             output.HasSearchDiscount = false;
             foreach (var eff in myEffects)
             {
-                if (eff.dbEffect.Id == Effect_SharpEyeSourceId)
+                if (eff.dbEffect.EffectSourceId == Effect_SharpEyeSourceId)
                 {
                     output.HasSearchDiscount = true;
                     //break;
                 }
-                else if (eff.dbEffect.Id == Effect_Spellsleuth)
+                else if (eff.dbEffect.EffectSourceId == Effect_Spellsleuth)
                 {
                     output.FindSpellsOnly = true;
                 }
-                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl1)
+                else if (eff.dbEffect.EffectSourceId == Effect_ApprenticeEnchanterLvl1)
                 {
                     if (output.EnchantmentBoost < 1)
                     {
@@ -562,14 +562,14 @@ namespace TT.Domain.Procedures
                     }
 
                 }
-                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl2)
+                else if (eff.dbEffect.EffectSourceId == Effect_ApprenticeEnchanterLvl2)
                 {
                     if (output.EnchantmentBoost < 2)
                     {
                         output.EnchantmentBoost = 2;
                     }
                 }
-                else if (eff.dbEffect.Id == Effect_ApprenticeEnchanterLvl3)
+                else if (eff.dbEffect.EffectSourceId == Effect_ApprenticeEnchanterLvl3)
                 {
                     if (output.EnchantmentBoost < 3)
                     {

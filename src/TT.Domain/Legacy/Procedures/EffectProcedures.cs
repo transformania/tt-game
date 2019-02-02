@@ -29,7 +29,7 @@ namespace TT.Domain.Procedures
                                                            IsPermanent = effect.IsPermanent,
                                                            Level = effect.Level,
                                                            Cooldown = effect.Cooldown,
-                                                           EffectSourceId = effect.Id
+                                                           EffectSourceId = effect.EffectSourceId
 
 
                                                        },

@@ -1972,7 +1972,7 @@ namespace TT.Web.Controllers
 
             if (item.dbItem.dbName == "item_consumable_curselifter" || item.dbItem.dbName == "item_Butt_Plug_Hanna")
             {
-                return RedirectToAction(MVC.Item.RemoveCurse());
+                return RedirectToAction(MVC.Item.RemoveCurse(item.dbItem.Id));
             }
 
             if (item.dbItem.dbName == PvPStatics.ItemType_TGBomb)

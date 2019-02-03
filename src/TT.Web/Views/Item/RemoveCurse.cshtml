@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
+﻿@model TT.Domain.ViewModels.RemoveCurseViewModel
 
 @section menu
 {
@@ -7,14 +7,17 @@
 }
 
 <div class="containerInner">
-    <h1>Remove a curse</h1>
-    <p>You can use your Hex-B-Gone Moisturizer to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
+    <h1>Remove a Curse</h1>
+    
+    <p><img src="/Images/PvP/itemsPortraits/Thumbnails/100/@Model.Item.Item.PortraitUrl" class="portrait" style="float: left; margin-right: 15px; border: 1px solid black;" /><br><br>You can use your <b>@Model.Item.Item.FriendlyName</b> to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
+
+    <br><hr>
 
     @{
-        foreach (var effect in Model.OrderBy(x => x.Effect.FriendlyName))
+        foreach (var effect in Model.Effects.OrderBy(x => x.Effect.FriendlyName))
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
-            <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.EffectSourceId, (int)ViewBag.itemToUseId))">Remove this curse</a>
+            <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.EffectSourceId, Model.Item.dbItem.Id))">Remove this curse</a>
             <hr />
         }
     }

@@ -21,8 +21,6 @@ namespace TT.Migrations
 
             Alter.Table("DbStaticItems").AddColumn("GivesEffectSourceId").AsInt32().Nullable().ForeignKey("DbStaticEffects", "Id");
             Execute.Sql("UPDATE DbStaticItems SET GivesEffectSourceId = DbStaticEffects.Id FROM DbStaticEffects WHERE DbStaticItems.GivesEffect = DbStaticEffects.dbName");
-
-            Execute.Sql("UPDATE QuestStatePreactions SET ActionValue = DbStaticEffects.Id FROM DbStaticEffects WHERE QuestStatePreactions.ActionValue = DbStaticEffects.dbName");
         }
     }
 }

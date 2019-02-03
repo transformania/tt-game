@@ -920,7 +920,7 @@ namespace TT.Domain.Procedures
                     }
                     // assert owner has not been in combat recently
                     var minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-                    if (minutesSinceCombat < 30)
+                    if (minutesSinceCombat < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
                     {
                         return "Unfortunately you have been in combat too recently for the crystal to work.";
                     }

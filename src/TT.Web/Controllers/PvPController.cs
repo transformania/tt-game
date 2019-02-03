@@ -612,7 +612,7 @@ namespace TT.Web.Controllers
 
             // assert player has not been in combat recently if trying to enter OR leave the dungeon
             var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (lastAttackTimeAgo < 30)
+            if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
             {
                 TempData["Error"] = "You have been in combat too recently in order to enter or leave the dungeon right now.";
                 TempData["SubError"] = "You must stay out of combat for another " + (TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling() - lastAttackTimeAgo) + " minutes.";
@@ -636,7 +636,7 @@ namespace TT.Web.Controllers
             {
                 var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
                 PlayerProcedures.TeleportPlayer(me, overworldLocation, false);
-                TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labrynth of the dungeon.  ";
+                TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labyrinth of the dungeon.  ";
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " cast an earthmoving spell, tunneling back up to the town.");
                 LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");

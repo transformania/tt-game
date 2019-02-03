@@ -890,7 +890,8 @@ namespace TT.Web.Controllers
             }
 
             // assert no blacklist exists if player is in protection mode
-            if (me.GameMode < (int)GameModeStatics.GameModes.PvP && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack"))
+            var blacklistExists = BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack");
+            if ((me.GameMode < (int)GameModeStatics.GameModes.PvP && blacklistExists) || (PvPStatics.ChaosMode && blacklistExists))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";

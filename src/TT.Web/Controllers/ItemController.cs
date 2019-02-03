@@ -166,7 +166,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult RemoveCurse()
+        public virtual ActionResult RemoveCurse(int itemId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -178,15 +178,27 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns at least one of the type of item needed
-            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_curselifter" || i.dbItem.dbName == "item_Butt_Plug_Hanna");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.Id == itemId);
+
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToList();
-            ViewBag.itemToUseId = itemToUse.dbItem.Id;
+            if (itemToUse.dbItem.dbName != "item_consumable_curselifter" && itemToUse.dbItem.dbName != "item_Butt_Plug_Hanna")
+            {
+                TempData["Error"] = "This type of item cannot lift curses.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            IEnumerable<EffectViewModel2> effects = EffectProcedures.GetPlayerEffects2(me.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToList();
+           
+            RemoveCurseViewModel output = new RemoveCurseViewModel
+            {
+                Effects = effects,
+                Item = itemToUse
+            };
 
             return View(MVC.Item.Views.RemoveCurse, output);
         }

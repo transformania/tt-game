@@ -67,6 +67,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RemoveCurse()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveCurse);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult RemoveCurseSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveCurseSend);
@@ -140,6 +146,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SelfCastSend
         {
             public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_RemoveCurse s_params_RemoveCurse = new ActionParamsClass_RemoveCurse();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RemoveCurse RemoveCurseParams { get { return s_params_RemoveCurse; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RemoveCurse
+        {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_RemoveCurseSend s_params_RemoveCurseSend = new ActionParamsClass_RemoveCurseSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -276,13 +290,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void RemoveCurseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void RemoveCurseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult RemoveCurse()
+        public override System.Web.Mvc.ActionResult RemoveCurse(int itemId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveCurse);
-            RemoveCurseOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            RemoveCurseOverride(callInfo, itemId);
             return callInfo;
         }
 

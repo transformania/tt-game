@@ -107,6 +107,7 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LeaderboardController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\MindControlController.cs" />
     <Compile Include="Controllers\ModeratorController.cs" />
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
@@ -144,6 +145,9 @@
     <Compile Include="LifestyleSelectionBehaviors\AttributeBasedLifestyleSelectionBehavior.cs" />
     <Compile Include="LifestyleSelectionBehaviors\CreationPolicyExtensions.cs" />
     <Compile Include="MessagesController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MindControlController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
@@ -547,9 +551,9 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_14.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Items\Alpha_14.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\XP\Alpha_14.cshtml" />
-    <Content Include="Views\NPC\MindControlList.cshtml" />
+    <Content Include="Views\MindControl\MindControlList.cshtml" />
     <Content Include="Views\NPC\partial\CommandLinks.cshtml" />
-    <Content Include="Views\NPC\MoveVictim.cshtml" />
+    <Content Include="Views\MindControl\MoveVictim.cshtml" />
     <Content Include="Views\Item\RemoveCurse.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_15.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\XP\Alpha_15.cshtml" />

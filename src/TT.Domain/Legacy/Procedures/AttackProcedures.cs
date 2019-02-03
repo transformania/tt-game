@@ -12,8 +12,6 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
-        private const string WEAKEN = "weaken";
-
         public static string Attack(Player attacker, Player victim, SkillViewModel skillBeingUsed)
         {
 

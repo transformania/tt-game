@@ -1954,5 +1954,29 @@ namespace TT.Web.Controllers
             return Json(id, JsonRequestBehavior.AllowGet);
 
         }
+
+        [Authorize]
+        public virtual ActionResult SetEveryoneToSP()
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+            if (!world.TestServer && !PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            using (var context = new StatsContext())
+            {
+                context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Players] SET GameMode = {(int)GameModeStatics.GameModes.Superprotection} WHERE BotId = 0");
+            }
+
+            TempData["Result"] = "All human players have been set to SuperProtection game mode.";
+            return RedirectToAction(MVC.PvP.Play());
+        }
     }
 }

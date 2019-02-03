@@ -293,6 +293,7 @@ namespace TT.Web.Controllers
             public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
             public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
             public readonly string GetMembershipIdFromUsername = ("GetMembershipIdFromUsername").ToLowerInvariant();
+            public readonly string SetEveryoneToSP = ("SetEveryoneToSP").ToLowerInvariant();
         }
 
 
@@ -1276,6 +1277,17 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.GetMembershipIdFromUsername);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
             GetMembershipIdFromUsernameOverride(callInfo, name);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetEveryoneToSPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetEveryoneToSP()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetEveryoneToSP);
+            SetEveryoneToSPOverride(callInfo);
             return callInfo;
         }
 

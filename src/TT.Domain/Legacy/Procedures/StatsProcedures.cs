@@ -47,6 +47,8 @@ namespace TT.Domain.Procedures
 
         public const string Stat__PsychopathsDefeated = "psychos_defeated";
 
+        public const string Stat__MindControlCommandsIssued = "mind_control_commands_issued";
+
         // Items Used
         public const string Stat__TimesTeleported_Scroll = "times_teleported_scroll";
         public const string Stat__TransmogsUsed = "transmogs_used";
@@ -648,6 +650,17 @@ namespace TT.Domain.Procedures
                 new StatsDetailsMap{
                     FriendlyName="A Change in Management",
                     Description="Times attacking any mini-boss",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__MindControlCommandsIssued,
+                new StatsDetailsMap{
+                    FriendlyName="Would You Kindly...?",
+                    Description="Number of mind control commands issued",
                     ImageUrl="trophy.jpg",
                     Active = true,
                     ResetsOnReroll = true

@@ -91,24 +91,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult MoveVictim()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MoveVictim);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult StripVictim()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StripVictim);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult DeMeditateVictim()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeMeditateVictim);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult MoveVictimSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MoveVictimSend);
@@ -167,10 +149,6 @@ namespace TT.Web.Controllers
             public readonly string PurchasePet = ("PurchasePet").ToLowerInvariant();
             public readonly string SellPetList = ("SellPetList").ToLowerInvariant();
             public readonly string SellPet = ("SellPet").ToLowerInvariant();
-            public readonly string MindControlList = ("MindControlList").ToLowerInvariant();
-            public readonly string MoveVictim = ("MoveVictim").ToLowerInvariant();
-            public readonly string StripVictim = ("StripVictim").ToLowerInvariant();
-            public readonly string DeMeditateVictim = ("DeMeditateVictim").ToLowerInvariant();
             public readonly string MoveVictimSend = ("MoveVictimSend").ToLowerInvariant();
             public readonly string TalkToBartender = ("TalkToBartender").ToLowerInvariant();
             public readonly string TalkWithJewdewfae = ("TalkWithJewdewfae").ToLowerInvariant();
@@ -231,30 +209,6 @@ namespace TT.Web.Controllers
         public ActionParamsClass_SellPet SellPetParams { get { return s_params_SellPet; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SellPet
-        {
-            public readonly string id = ("id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_MoveVictim s_params_MoveVictim = new ActionParamsClass_MoveVictim();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_MoveVictim MoveVictimParams { get { return s_params_MoveVictim; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_MoveVictim
-        {
-            public readonly string id = ("id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_StripVictim s_params_StripVictim = new ActionParamsClass_StripVictim();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_StripVictim StripVictimParams { get { return s_params_StripVictim; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_StripVictim
-        {
-            public readonly string id = ("id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_DeMeditateVictim s_params_DeMeditateVictim = new ActionParamsClass_DeMeditateVictim();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_DeMeditateVictim DeMeditateVictimParams { get { return s_params_DeMeditateVictim; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_DeMeditateVictim
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
@@ -319,8 +273,6 @@ namespace TT.Web.Controllers
             {
                 public readonly string LorekeeperLearnSpell = "LorekeeperLearnSpell";
                 public readonly string LorekeeperPurchaseBook = "LorekeeperPurchaseBook";
-                public readonly string MindControlList = "MindControlList";
-                public readonly string MoveVictim = "MoveVictim";
                 public readonly string SellList = "SellList";
                 public readonly string SellPetList = "SellPetList";
                 public readonly string TalkToAdrianna = "TalkToAdrianna";
@@ -334,8 +286,6 @@ namespace TT.Web.Controllers
             }
             public readonly string LorekeeperLearnSpell = "~/Views/NPC/LorekeeperLearnSpell.cshtml";
             public readonly string LorekeeperPurchaseBook = "~/Views/NPC/LorekeeperPurchaseBook.cshtml";
-            public readonly string MindControlList = "~/Views/NPC/MindControlList.cshtml";
-            public readonly string MoveVictim = "~/Views/NPC/MoveVictim.cshtml";
             public readonly string SellList = "~/Views/NPC/SellList.cshtml";
             public readonly string SellPetList = "~/Views/NPC/SellPetList.cshtml";
             public readonly string TalkToAdrianna = "~/Views/NPC/TalkToAdrianna.cshtml";
@@ -458,53 +408,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SellPet);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             SellPetOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void MindControlListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult MindControlList()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MindControlList);
-            MindControlListOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void MoveVictimOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult MoveVictim(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MoveVictim);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            MoveVictimOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void StripVictimOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult StripVictim(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StripVictim);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            StripVictimOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void DeMeditateVictimOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult DeMeditateVictim(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeMeditateVictim);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DeMeditateVictimOverride(callInfo, id);
             return callInfo;
         }
 

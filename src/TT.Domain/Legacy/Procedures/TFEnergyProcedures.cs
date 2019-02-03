@@ -505,7 +505,7 @@ namespace TT.Domain.Procedures
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.Id);
 
                     output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + attacker.GetFullName() + " here.</b>";
-                    output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into forming certain actions.";
+                    output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into performing certain actions.</b>";
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);

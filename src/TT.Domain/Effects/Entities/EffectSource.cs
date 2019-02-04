@@ -10,6 +10,7 @@ namespace TT.Domain.Effects.Entities
         public string Description { get; protected set; }
         public int AvailableAtLevel { get; protected set; }
         public string PreRequesite { get; protected set; }
+        public int RequiredGameMode { get; protected set; }
 
         public bool isLevelUpPerk { get; protected set; }
         public int Duration { get; protected set; }

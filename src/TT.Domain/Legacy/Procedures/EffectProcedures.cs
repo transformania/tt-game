@@ -41,6 +41,7 @@ namespace TT.Domain.Procedures
                                                            Description = dbStaticEffect.Description,
                                                            AvailableAtLevel = dbStaticEffect.AvailableAtLevel,
                                                            PreRequisiteEffectSourceId = dbStaticEffect.PreRequisiteEffectSourceId,
+                                                           RequiredGameMode = dbStaticEffect.RequiredGameMode,
                                                            isLevelUpPerk = dbStaticEffect.isLevelUpPerk,
                                                            Duration = dbStaticEffect.Duration,
                                                            Cooldown = dbStaticEffect.Cooldown,
@@ -113,9 +114,6 @@ namespace TT.Domain.Procedures
 
             foreach (var effect in availablePerks)
             {
-
-                var available = true;
-
                 // if the player already has this effect, it is not available
                 if (playerEffectSourceIds.Contains(effect.Id))
                 {
@@ -128,10 +126,12 @@ namespace TT.Domain.Procedures
                     continue;
                 }
 
-                if (available)
+                if (effect.RequiredGameMode != null && effect.RequiredGameMode != player.GameMode)
                 {
-                    availablePerksFinal.Add(effect);
+                    continue;
                 }
+
+               availablePerksFinal.Add(effect);
             }
 
             return availablePerksFinal;

@@ -10,7 +10,7 @@
 <div class="containerInner">
 
     <h1>Delete Account</h1>
-    <p class="bad">You may delete your account here if you no longer wish to have an account or withdraw your consent to Transformania Time's <a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a>.  Please by aware that deleting your account is <b>PERMANENT</b> and <b>IRREVERSIBLE</b>.</p><br/>
+    <p class="bad">You may delete your account here if you no longer wish to have an account or withdraw your consent to Transformania Time's <a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a>.  Please by aware that deleting your account is <b>PERMANENT</b> and <b>IRREVERSIBLE</b>.</p><br>
 
     <p>The following data will be deleted immediately along with your account:</p>
 
@@ -41,7 +41,7 @@
     <p>After deleting your account, you will be redirected to the Register page.  It may take several months for all IIS logs and database backups with your information to be deleted as outlined in the <a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a>.  This does <b>NOT</b> mean we will honor requests to restore your information after deleting your account.</p><br>
     
     
-    <input type="checkbox" id="confirmBox" onclick="toggleButton()"/> <b>Check here to enable the delete button</b> <br><br>
+    <input type="checkbox" id="confirmBox" onclick="toggleButton()"> <b>Check here to enable the delete button</b> <br><br>
 
     @using (Html.BeginForm(MVC.Account.DeleteAccountConfirm(), FormMethod.Post))
     {

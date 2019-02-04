@@ -13,7 +13,7 @@
     }
 }
 
-<hr />
+<hr>
 
 @using (Ajax.BeginForm(MVC.QuestWriter.QuestStatePreactionSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
@@ -24,12 +24,12 @@
     @Html.HiddenFor(m => m.QuestStatePreaction.Id)
 
 
-    <label>Name (used for internal purposes):</label>    <br />
+    <label>Name (used for internal purposes):</label>    <br>
     @Html.TextBoxFor(m => m.QuestStatePreaction.QuestStatePreactionName)
 
-    <br /><br />
+    <br><br>
 
-    <label>Action Type:</label>    <br />
+    <label>Action Type:</label>    <br>
     @Html.DropDownListFor(m => m.QuestStatePreaction.ActionType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.PreactionType.Variable, text = "Set/Update Variable"  },
@@ -42,7 +42,7 @@
                   "text",
                    2))
 
-    <br /><br />
+    <br><br>
 
     <btn class="glyphicon glyphicon-question-sign helpButton">
         @Ajax.ActionLink("Click here to show list of all forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
@@ -54,15 +54,15 @@
 
         <div id="locationsBox" style="background-color: #cdcdff"></div>
 
-    <label>Value:</label>    <br />
+    <label>Value:</label>    <br>
     @Html.TextBoxFor(m => m.QuestStatePreaction.ActionValue)
 
-    <br /><br />
+    <br><br>
 
-    <label>Variable name (will be converted to all caps):</label>    <br />
+    <label>Variable name (will be converted to all caps):</label>    <br>
     @Html.TextBoxFor(m => m.QuestStatePreaction.VariableName)
 
-    <br /><br />
+    <br><br>
 
     <div id="allVariables">
         <btn class="glyphicon glyphicon-question-sign helpButton">
@@ -70,9 +70,9 @@
         </btn>
     </div>
 
-    <br /><br />
+    <br><br>
 
-    <label>Add/Subtract or Set?</label>    <br />
+    <label>Add/Subtract or Set?</label>    <br>
     @Html.DropDownListFor(m => m.QuestStatePreaction.AddOrSet, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
@@ -83,9 +83,9 @@
                   "text",
                    2))
 
-    <br /><br />
+    <br><br>
 
-    <input type="submit" class="btn btn-chat" value="Send" />
+    <input type="submit" class="btn btn-chat" value="Send">
 
 }
 

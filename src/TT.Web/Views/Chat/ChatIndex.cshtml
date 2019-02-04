@@ -16,7 +16,7 @@
     <div id="ignoreDiv" style="display: none;" class="center-block">
         <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.  
             Your entries will are now saved in local storage which means this setting should not be forgotten even if close your browser (unless your cache is cleared).</p>
-        <input type="text" id="ignore" /><br />
+        <input type="text" id="ignore"><br>
         <button id="ignoreAdd" class="btn btn-danger btn-xs">Add to Ignore</button>
         <button id="ignoreReset" class="btn btn-success btn-xs">Reset Ignore</button>
         <button id="ignoreView" class="btn btn-alert btn-xs">View Ignored</button>
@@ -32,9 +32,9 @@
     </div>
 
     <div class="roomName">Room:  @Model.RoomName <span id="autoScrollToggle">Autoscroll ON</span></div>
-    <input type="text" id="message" maxlength="500" class="chatInput" autofocus />
-    <input class="btn btn-chat center-block" type="button" id="sendmessage" value="Send" />
-    <input type="hidden" id="displayname" />
+    <input type="text" id="message" maxlength="500" class="chatInput" autofocus>
+    <input class="btn btn-chat center-block" type="button" id="sendmessage" value="Send">
+    <input type="hidden" id="displayname">
 </div>
 
 @section scripts

@@ -32,7 +32,7 @@
 
 	            var roomCount = data.length;
 	            for (var i = 0; i < roomCount; i++) {
-	                list.append('<li><strong>' + data[i].Name + '</strong><span>' + data[i].UserCount + '</span><br />' + data[i].Topic + '</li>');
+	                list.append('<li><strong>' + data[i].Name + '</strong><span>' + data[i].UserCount + '</span><br>' + data[i].Topic + '</li>');
 	            }
 
 	            roomList.html(list);

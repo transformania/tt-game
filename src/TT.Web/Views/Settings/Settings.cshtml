@@ -99,12 +99,12 @@
 
         if (User.IsInRole(PvPStatics.Permissions_Previewer))
         {
-            <p class="good">You are on the contribution previewer list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br /></p>
+            <p class="good">You are on the contribution previewer list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br></p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_SpellApprover))
         {
-            <p class="good">You are on the spell approvers list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br /></p>
+            <p class="good">You are on the spell approvers list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br></p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_Artist))
@@ -140,8 +140,8 @@
     <h2>Reserve this Name</h2>
     <p>
         You can reserve your name so that no other players take it at the start of a new round and steal your identity.
-        You must be level 3 or higher in order to do this.<br /><br />
-        <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br />
+        You must be level 3 or higher in order to do this.<br><br>
+        <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <a href="@Url.Action(MVC.Settings.UseMyCustomForm())">Use my custom starting form (if available)</a>
     </p>
 
@@ -149,7 +149,7 @@
     <h2>Update Your Biography</h2>
 
     <p>
-        You can write a short bio of yourself or this player here.  You can also select RP tags which will indicate to others what your roleplaying theme interests include or exclude.<br /><br />
+        You can write a short bio of yourself or this player here.  You can also select RP tags which will indicate to others what your roleplaying theme interests include or exclude.<br><br>
         <a href="@Url.Action(MVC.Settings.SetBio())">Update My Bio</a>
     </p>
 
@@ -158,7 +158,7 @@
 
     <p>
         If you choose to enter RP mode, you are publicly indicated to other players that you enjoy roleplaying.
-        You can enable and disable this at any time you want.  Click on the link below to enter RP mode.<br /><br />
+        You can enable and disable this at any time you want.  Click on the link below to enter RP mode.<br><br>
         @{
             if (Model.Player.InRP)
             {
@@ -177,23 +177,23 @@
         {
     <p>
         <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br />
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br />
-        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.PvP))">Enter PvP Mode</a><br />
-        <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br />
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br>
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br>
+        <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.PvP))">Enter PvP Mode</a><br>
+        <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br>
         
         @{
             if (Model.ChaosChangesEnabled)
             {
-                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br />
+                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br>
             }
             else
             {
-                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br />
+                <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br>
             }
         }
 
-        <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br />
+        <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br>
     </p>
         }
     }
@@ -202,16 +202,16 @@
     <h2>Protection Mode</h2>
 
     <p>
-        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competetive manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br /><br />
+        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competetive manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br><br>
 
         @{
             if (Model.Player.GameMode == (int)GameModeStatics.GameModes.Protection)
             {
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Superprotection))">Enter SuperProtection Mode</a><br>
             }
             else if (Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
-                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode((int)GameModeStatics.GameModes.Protection))">Enter Protection Mode</a><br>
             }
             else if (Model.Player.GameMode == (int)GameModeStatics.GameModes.PvP && !PvPStatics.ChaosMode)
             {
@@ -226,9 +226,9 @@
             <h2>Lower your WP (Protection Mode only)</h2>
 
             <p>
-                You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br /><br />
+                You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br><br>
 
-                <a href="@Url.Action(MVC.Settings.DumpWillpower("half"))">Decrease Willpower to Half</a><br /><br />
+                <a href="@Url.Action(MVC.Settings.DumpWillpower("half"))">Decrease Willpower to Half</a><br><br>
                 <a href="@Url.Action(MVC.Settings.DumpWillpower("full"))">Decrease Willpower to Zero</a>
             </p>
 
@@ -239,13 +239,13 @@
     <h2>Change your Chat Color</h2>
 
     <p>
-        You can change the color that your name appears in the game's chats below.<br /><br />
+        You can change the color that your name appears in the game's chats below.<br><br>
         <b>
             <span style="color:black;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("black"))">Black</a></span>
             <span style="color:blueviolet !important;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("blueviolet"))">Blue Violet</a></span>
             <span style="color:cadetblue;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("cadetblue"))">Cadet Blue</a></span>
             <span style="color:darkcyan;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("darkcyan"))">Dark Cyan</a></span>
-            <span style="color:darkolivegreen;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("darkolivegreen"))">Dark Olive Green</a></span><br />
+            <span style="color:darkolivegreen;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("darkolivegreen"))">Dark Olive Green</a></span><br>
             <span style="color:#A1770F;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#A1770F"))">COLOR</a></span>
             <span style="color:green;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("green"))">Green</a></span>
             <span style="color:indigo;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("indigo"))">Indigo</a></span>
@@ -268,9 +268,9 @@
 
     <h2>Set your Nickname (Donation Feature)</h2>
     <p>
-        Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br /><br />
+        Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br><br>
 
-        <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br /><br />
+        <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br><br>
     </p>
 
     <h2>Player Blacklist</h2>

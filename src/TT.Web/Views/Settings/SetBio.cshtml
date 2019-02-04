@@ -14,7 +14,7 @@
 
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
-        <a href="@Url.Action(MVC.Settings.SetBioDelete())">Yes, DELETE my bio</a><br />
+        <a href="@Url.Action(MVC.Settings.SetBioDelete())">Yes, DELETE my bio</a><br>
     </div>
 
     <h1>Update Your Bio</h1>
@@ -44,8 +44,8 @@
         @Html.Partial(MVC.Settings.Views.partial.rptags);
         <br>
 
-        <input id="resetTags" type="button" value="Click here to reset tags" class="btn" />
-        <input type="submit" value="Send" class="btn" />
+        <input id="resetTags" type="button" value="Click here to reset tags" class="btn">
+        <input type="submit" value="Send" class="btn">
         <br>
 
         <p>Last updated @Model.Timestamp</p>

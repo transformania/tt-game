@@ -47,10 +47,10 @@
                 <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>
                 @HtmlHelpers.PrintDuelIcon(Model.Player.ToDbPlayer())
                 @HtmlHelpers.PrintQuestIcon(Model.Player.ToDbPlayer())
-                <br />
+                <br>
                 <span class="playerDescription">@Model.Form.FriendlyName</span>
             </span>
-        </span><br />
+        </span><br>
         <span class="covBox">@HtmlHelpers.GetCovenantInfo(Model.Player.ToDbPlayer())</span>
         <div class="healthWrapper" title="@Model.Player.Health / @Model.Player.MaxHealth willpower">
             <div class="healthBar" style="width: @HealthWidth%"></div>

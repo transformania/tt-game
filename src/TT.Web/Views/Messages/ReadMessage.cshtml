@@ -22,7 +22,7 @@
             <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(Model.Timestamp)</span>
         </div>
         <div class="messageTextContainer">
-            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br/>"))</p>
+            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br>"))</p>
         </div>
 
         @{
@@ -30,7 +30,7 @@
         {
             @Ajax.ActionLink("View full conversation", MVC.Messages.ReadConversation(Model.MessageId, false), new AjaxOptions { UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @id = "conversationLink" })
         <i class="timeago">@Ajax.ActionLink(" (reversed)", MVC.Messages.ReadConversation(Model.MessageId, true), new AjaxOptions { UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @id = "conversationLink" })</i>
-            <br />
+            <br>
     }
         }
     </div>
@@ -49,7 +49,7 @@
             <a id="FormDeleteLink" href="javascript:void(0)">Yes, I want to delete this message</a>
         }
     </div>
-    <br/>
+    <br>
 </div>
 
 @section Scripts

@@ -10,7 +10,7 @@
 <div class="containerInner">
     <h1>Autoselftransmogrification Deflector Device</h1>
     <p>As the owner of a Autoselftransmogrification Deflector Device you can cast any animate spell at the device and have it cast straight back at you with enough power to transform you instantly! Which of your spells would you like to cast?</p>
-    <hr/>
+    <hr>
 
     <table id="Spells" class="table table-hover messageTable dt-responsive">
         <thead>
@@ -29,7 +29,7 @@
             <tr>
                 <td><b class="playerMediatingNotification">@s.SkillSource.FriendlyName</b></td>
                 <td><b>@s.SkillSource.FormSource.FriendlyName</b></td>
-                <td><img src="@HtmlHelpers.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"/></td>
+                <td><img src="@HtmlHelpers.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
                 <td class="tableCellDescription">@s.SkillSource.FormSource.Description</td>
                 <td><a href="@Url.Action(MVC.Item.SelfCastSend(s.SkillSource.Id))">Cast</a></td>
             </tr>

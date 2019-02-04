@@ -13,7 +13,7 @@
 
     <p>For the sake of this poll, the term "met" included any face-to-face interaction or ongoing webcam chats in which all participants were on camera.</p>
 
-    <hr />
+    <hr>
 
     @using (Html.BeginForm(MVC.Settings.ReplyToPoll(), FormMethod.Post))
     {
@@ -33,7 +33,7 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>Would you / have you met up with someone in real life whom you met from Transformania Time or another adult/fetish site?</p>
         @Html.DropDownListFor(i => i.Num2, new SelectList(
@@ -49,25 +49,25 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>Tell about the first time you talked to a friend or family member about your transformation interests, if any.</p>
         @Html.ValidationMessageFor(m => m.String1)
         @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>If you <b class="good">DO</b> want or <b class="good">ALREADY HAVE</b> met with anyone from TT or another adult/fetish site, what are/were your reasons?</p>
         @Html.ValidationMessageFor(m => m.String2)
         @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>If you <b class="bad">DO NOT</b> want to meet with anyone from TT or another adult/fetish site, what are your reasons?</p>
         @Html.ValidationMessageFor(m => m.String3)
         @Html.TextAreaFor(m => m.String3, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>Leave any other thoughts you think might be relevant to this poll.</p>
         @Html.ValidationMessageFor(m => m.String4)
@@ -75,7 +75,7 @@
 
 
 
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Submit">
     }
 
 </div>

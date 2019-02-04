@@ -8,14 +8,14 @@
 
 <div class="containerInner">
 
-    <p>Where would you like to command your victim, @ViewBag.Victim.GetFullName(), to move to?  Your victim has @ViewBag.Victim.ActionPoints AP available.</p><br />
+    <p>Where would you like to command your victim, @ViewBag.Victim.GetFullName(), to move to?  Your victim has @ViewBag.Victim.ActionPoints AP available.</p><br>
 
     @{
 
         foreach (var loc in Model)
         {
             <a href="@Url.Action(MVC.NPC.MoveVictimSend((int)ViewBag.Victim.Id, loc.dbName))">@loc.Name</a>
-            <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
+            <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br>
         }
 
     }

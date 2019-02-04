@@ -5,50 +5,50 @@
     <h3>Location</h3>
     @Html.TextBoxFor(m => m.dbLocationName)
     
-    <br /><br />
+    <br><br>
     
       <h3>Form</h3>
     @Html.TextBoxFor(m => m.RequiredForm)
     
-    <br /><br />
+    <br><br>
     
       <h3>Intro Text</h3>
     @Html.TextAreaFor(m => m.IntroText)
     
-       <br /><br />
+       <br><br>
       <h3>Failure Text</h3>
     @Html.TextAreaFor(m => m.FailureText)
     
-    <br /><br />
+    <br><br>
     
       <h3>Success Text</h3>
     @Html.TextAreaFor(m => m.CorrectFormText)
 
-    <br /><br />
+    <br><br>
 
    
     if (ViewBag.IntroText != null)
     {
         
-        <div>@Html.Raw(ViewBag.IntroText)</div> <hr />
+        <div>@Html.Raw(ViewBag.IntroText)</div> <hr>
     }
 
     if (ViewBag.FailureText != null)
     {
         
-         <div>@Html.Raw(ViewBag.FailureText)</div> <hr />
+         <div>@Html.Raw(ViewBag.FailureText)</div> <hr>
     }
 
     if (ViewBag.CorrectFormText != null)
     {
         
-         <div>@Html.Raw(ViewBag.CorrectFormText)</div> <hr />
+         <div>@Html.Raw(ViewBag.CorrectFormText)</div> <hr>
     }
     
 
 
 
-     <input type="submit" value="Save" />
+     <input type="submit" value="Save">
 }
 
 <style>

@@ -11,7 +11,7 @@
 
     <p>All questions are optional and all responses are anonymous.  Text inputs have a maximum of 500 characters.</p>
 
-    <hr />
+    <hr>
 
     @using (Html.BeginForm(MVC.Settings.ReplyToPoll(), FormMethod.Post))
     {
@@ -32,22 +32,22 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>Explain the reasoning behind your choice.</p>
         @Html.ValidationMessageFor(m => m.String1)
         @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>You may leave any comments or concerns related to turn or round lengths here.</p>
         @Html.ValidationMessageFor(m => m.String2)
         @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
 
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Submit">
     }
 
 </div>

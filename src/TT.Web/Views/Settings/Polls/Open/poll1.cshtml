@@ -31,7 +31,7 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>What game mechanic would you like to see added first?  (Second preference).  Please do not duplicate the answer selected above.</p>
         @Html.DropDownListFor(i => i.Num2, new SelectList(
@@ -50,7 +50,7 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>What game mechanic would you like to see added first?  (Third preference).  Please do not duplicate either answer selected above.</p>
         @Html.DropDownListFor(i => i.Num3, new SelectList(
@@ -72,13 +72,13 @@
 
 
 
-        <hr />
+        <hr>
 
         <p>What other new features would you like to see in the game not listed above?</p>
         @Html.ValidationMessageFor(m => m.String1)
         @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>How did you feel about the 3000 turn round?</p>
         @Html.DropDownListFor(i => i.Num4, new SelectList(
@@ -96,8 +96,8 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit">
     }
 </div>

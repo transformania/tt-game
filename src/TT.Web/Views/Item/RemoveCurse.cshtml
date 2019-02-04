@@ -9,7 +9,7 @@
 <div class="containerInner">
     <h1>Remove a Curse</h1>
     
-    <p><img src="/Images/PvP/itemsPortraits/Thumbnails/100/@Model.Item.Item.PortraitUrl" class="portrait" style="float: left; margin-right: 15px; border: 1px solid black;" /><br><br>You can use your <b>@Model.Item.Item.FriendlyName</b> to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
+    <p><img src="/Images/PvP/itemsPortraits/Thumbnails/100/@Model.Item.Item.PortraitUrl" class="portrait" style="float: left; margin-right: 15px; border: 1px solid black;"><br><br>You can use your <b>@Model.Item.Item.FriendlyName</b> to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
 
     <br><hr>
 
@@ -18,7 +18,7 @@
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
             <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.EffectSourceId, Model.Item.dbItem.Id))">Remove this curse</a>
-            <hr />
+            <hr>
         }
     }
 

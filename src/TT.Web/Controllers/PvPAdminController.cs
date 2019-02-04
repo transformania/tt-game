@@ -384,7 +384,7 @@ namespace TT.Web.Controllers
                     }
                     catch (Exception e)
                     {
-                        errors += "<p>" + p.GetFullName() + "encountered:  " + e.ToString() + "</p><br/>";
+                        errors += "<p>" + p.GetFullName() + "encountered:  " + e.ToString() + "</p><br>";
                     }
                 }
 

@@ -2,7 +2,7 @@
 
 <h1>Review DM Encounter Contributions</h1>
 
-<hr />
+<hr>
 
 
 @foreach (var roll in Model.OrderBy(r => r.Tags))
@@ -16,7 +16,7 @@
     <a href="@Url.Action(MVC.Contribution.ApproveDMRoll(roll.Id))">Approve</a>
     <a href="@Url.Action(MVC.Contribution.DMRoll(roll.Id))">Edit</a>
 
-    <hr />
+    <hr>
 
 
 }

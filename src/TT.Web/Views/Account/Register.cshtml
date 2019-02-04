@@ -20,7 +20,7 @@
 
     <div class="row">
         <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
-            <img src="~/Images/login-left.png" />
+            <img src="~/Images/login-left.png">
         </div>
 
         <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
@@ -45,14 +45,14 @@
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control frontForm", placeholder = "Confirm Password" })
 
                     <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">Terms of Service</a>. <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
-                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent" /></p><br>
+                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent"></p><br>
 
                     @if (FeatureContext.IsEnabled<UseCaptcha>())
                     {
                         @Html.Recaptcha()
                     }
 
-                    <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled" />
+                    <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled">
                 </fieldset>
             }
 
@@ -63,7 +63,7 @@
         </div>
 
         <div class="col-md-4 hidden-sm hidden-xs">
-            <img src="~/Images/login-right.png" />
+            <img src="~/Images/login-right.png">
         </div>
     </div>
 

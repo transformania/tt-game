@@ -19,7 +19,7 @@
 
             @if (ViewBag.IsRerolling)
             {
-                <br /><br />
+                <br><br>
                 <span class="tldr">You currently have an character named @ViewBag.OldFirstName @ViewBag.OldLastName.  If you start over you will no longer be able to perform any actions with them anymore.</span>
             }
 
@@ -60,36 +60,36 @@
         @Html.EditorFor(x => x.FirstName)
         @Html.ValidationMessageFor(x => x.FirstName)
 
-        <br />
+        <br>
 
         <text>Last name:</text>
         @Html.EditorFor(x => x.LastName)
         @Html.ValidationMessageFor(x => x.LastName)
 
-        <br />
-        <br />
+        <br>
+        <br>
 
         <p class="good">Start in Roleplaying (RP) mode?</p>
         @Html.CheckBoxFor(x => x.StartInRP)
 
         <p class="good">Which game mode should this character start in?</p>
-        @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class=""> SuperProtection</span><br />
-        @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br />
+        @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class=""> SuperProtection</span><br>
+        @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br>
         @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="bad"> PvP</span>
 
-        <br /><br />
+        <br><br>
 
-        <p class="good">Migrate any old messages to this character?  <br />(Note:This will not work inbetween rounds.)</p>
+        <p class="good">Migrate any old messages to this character?  <br>(Note:This will not work inbetween rounds.)</p>
         @Html.CheckBoxFor(x => x.MigrateLetters)
 
-        <br /><br />
+        <br><br>
 
         <p class="good">Start as an inanimate object or pet?</p>
         <p>This option immediately starts the character off as a locked object or pet.</p>
         <p>Click on the checkbox only if you want this to happen @Html.CheckBoxFor(x => x.StartAsInanimate, new { id = "itemBox" })</p>
         @Html.EnumDropDownListFor(model => model.InanimateForm, new { id = "itemForm", disabled = "disabled", @class = "disabled" })
 
-        <br /><br />
+        <br><br>
 
         <p>Original Form:</p>
 
@@ -101,11 +101,11 @@
 
         @Html.HiddenFor(i => i.FormSourceId)
 
-        <br /><br />
+        <br><br>
 
 
-        <br /><br />
-        <input class="btn btn-danger" type="submit" value="Begin" />
+        <br><br>
+        <input class="btn btn-danger" type="submit" value="Begin">
 
     }
 </div>

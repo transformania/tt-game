@@ -176,7 +176,7 @@
             }
         </div>
         <div class="col-md-6 covenDescription">
-            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br /> </span>
+            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
 
 
             @Model.Location.GetDescription()
@@ -338,16 +338,16 @@
                             <div>
                                 @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
-                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br />
+                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
                                 }
                                 else
                                 {
-                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br />
+                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
                                 }
 
                                 }
 
-                                <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br /></span>
+                                <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
                                 @{
                 if (item.FormerPlayer != null)
                 {

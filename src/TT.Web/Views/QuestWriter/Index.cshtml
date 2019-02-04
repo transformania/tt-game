@@ -9,11 +9,11 @@
 
 <div class="containerInner">
 
-    <br />
+    <br>
     <div id="loadNotice">
         <div id="loading" class="good"></div>
     </div>
-    <br />
+    <br>
 
     <div id="swapMe">
 
@@ -27,7 +27,7 @@
 
         }
 
-        <br />
+        <br>
 
         <p>
             @Ajax.ActionLink("-- New Quest --", MVC.QuestWriter.QuestStart(-1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })

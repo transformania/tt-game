@@ -16,38 +16,38 @@
 
     <div id="help"></div>
 
-    @Html.Raw(ViewBag.LocationExists)<br />
-    @Html.Raw(ViewBag.FormExists)<br />
+    @Html.Raw(ViewBag.LocationExists)<br>
+    @Html.Raw(ViewBag.FormExists)<br>
 
-    <span>Location</span><br />
-    @Html.TextBoxFor(m => m.dbLocationName)<br />
+    <span>Location</span><br>
+    @Html.TextBoxFor(m => m.dbLocationName)<br>
 
 
-    <span>Required Form Source Id</span><br />
-    @Html.TextBoxFor(m => m.RequiredFormSourceId)<br />
+    <span>Required Form Source Id</span><br>
+    @Html.TextBoxFor(m => m.RequiredFormSourceId)<br>
 
-    <span>Intro text:</span><br />
-    @Html.TextAreaFor(m => m.IntroText)<br />
+    <span>Intro text:</span><br>
+    @Html.TextAreaFor(m => m.IntroText)<br>
 
-    <span>Failure text:</span><br />
-    @Html.TextAreaFor(m => m.FailureText)<br />
+    <span>Failure text:</span><br>
+    @Html.TextAreaFor(m => m.FailureText)<br>
 
-    <span>Completion text:</span><br />
-    @Html.TextAreaFor(m => m.CorrectFormText)<br />
+    <span>Completion text:</span><br>
+    @Html.TextAreaFor(m => m.CorrectFormText)<br>
 
     <span>Is live:</span>
-    @Html.CheckBoxFor(m => m.IsLive)<br />
+    @Html.CheckBoxFor(m => m.IsLive)<br>
 
     @Html.HiddenFor(m => m.Id)
 
-    <br />
-    <input type="submit" class="btn btn-chat" value="Send" />
+    <br>
+    <input type="submit" class="btn btn-chat" value="Send">
 
 }
 
 <div class="textSpaced">
 
-    <hr />
+    <hr>
     <h3>Intro</h3>
     @Html.Raw(ViewBag.IntroText)
 

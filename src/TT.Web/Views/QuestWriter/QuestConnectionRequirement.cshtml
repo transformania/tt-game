@@ -10,7 +10,7 @@
 
 
 
-<hr />
+<hr>
 
 @using (Ajax.BeginForm(MVC.QuestWriter.QuestConnectionRequirementSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
@@ -21,12 +21,12 @@
     @Html.HiddenFor(m => m.QuestConnectionRequirement.QuestId)
     @Html.HiddenFor(m => m.QuestConnection.Id)
 
-    <label>Name (used for internal purposes):</label>    <br />
+    <label>Name (used for internal purposes):</label>    <br>
         @Html.TextBoxFor(m => m.QuestConnectionRequirement.QuestConnectionRequirementName)
 
-    <br /><br />
+    <br><br>
 
-    <label>Requirement Type:</label>    <br />
+    <label>Requirement Type:</label>    <br>
     @Html.DropDownListFor(m => m.QuestConnectionRequirement.RequirementType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.RequirementType.Agility, text = "Agility"  },
@@ -46,9 +46,9 @@
                   "text",
                    2))
 
-    <br /><br />
+    <br><br>
 
-    <label>Operator:</label>    <br />
+    <label>Operator:</label>    <br>
     @Html.DropDownListFor(m => m.QuestConnectionRequirement.Operator, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.Operator.Less_Than, text = "< (less than)"  },
@@ -63,36 +63,36 @@
                   "text",
                    2))
 
-    <br /><br />
+    <br><br>
 
-    <label>Requirement Value:</label>    <br />
+    <label>Requirement Value:</label>    <br>
     @Html.TextBoxFor(m => m.QuestConnectionRequirement.RequirementValue)
 
-    <br /><br />
+    <br><br>
 
     <p>The random roll modifier and offset are used if the player is making a probability-based dice roll to see if the action is successful or fails.  Random roll modifier multiples the given requirement value by itself to give a weighted probability.  For example, a roll with a player's Luck (50) times the modifier (.5) creates a 50*.5 = 25% chance of success.  The offset adds a base percent chance for a pass or fail, so an offset of 10 creates the formula 10 + 50 * .5 = 35% chance of success.</p>
 
-    <br /><br />
+    <br><br>
 
-     <label>Is this requirement a chance-based roll?</label>    <br />
+     <label>Is this requirement a chance-based roll?</label>    <br>
     @Html.CheckBoxFor(m => m.QuestConnectionRequirement.IsRandomRoll)
 
-    <br /><br />
+    <br><br>
 
-    <label>Roll modifier:</label>    <br />
+    <label>Roll modifier:</label>    <br>
     @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollModifier)
 
-    <br /><br />
+    <br><br>
 
-    <label>Roll offset:</label>    <br />
+    <label>Roll offset:</label>    <br>
     @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollOffset)
 
-    <br /><br />
+    <br><br>
 
-    <label>Variable used (will be converted to all caps):</label>    <br />
+    <label>Variable used (will be converted to all caps):</label>    <br>
     @Html.TextBoxFor(m => m.QuestConnectionRequirement.VariabledbName)
 
-    <br /><br />
+    <br><br>
 
     <div id="allVariables">
         <btn class="glyphicon glyphicon-question-sign helpButton">
@@ -100,9 +100,9 @@
         </btn>
     </div>
 
-    <br /><br />
+    <br><br>
 
-    <input type="submit" class="btn btn-chat" value="Send" />
+    <input type="submit" class="btn btn-chat" value="Send">
 
 }
 

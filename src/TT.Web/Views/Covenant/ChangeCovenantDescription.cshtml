@@ -14,7 +14,7 @@
     {
         @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea", autofocus = true })
         
-        <hr />
+        <hr>
         
         <p>Choose a flag for your covenant from the options below.</p>
         
@@ -28,14 +28,14 @@
                   "text",
                    2))*@
         
-        <img src="../Images/PvP/CovenantFlags/bars1.jpg" width="150px" width="150px" id="choice"/>
+        <img src="../Images/PvP/CovenantFlags/bars1.jpg" width="150px" width="150px" id="choice">
         
         foreach (string s in ViewBag.FlagURLS)
         {
             <img src="../Images/PvP/CovenantFlags/@s" height="50px" width="50px" class="selectable" filename="@s">
         }
         
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save">
 
         @Html.HiddenFor(m => m.Name)
         @Html.HiddenFor(m => m.Id)

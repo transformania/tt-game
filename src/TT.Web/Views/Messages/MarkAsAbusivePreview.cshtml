@@ -26,7 +26,7 @@
             <span class="messageTimeContainer"> <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(Model.Timestamp)</span></span>
         </div>
         <div class="messageTextContainer">
-            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br/>"))</p>
+            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br>"))</p>
         </div>
     </div>
 

@@ -25,7 +25,7 @@
     @Html.Partial(MVC.PvP.Views.partial_FrontPageAvatar, Model.Player)
 </div>
 
-<hr />
+<hr>
 
 <div id="textBody">
 
@@ -49,7 +49,7 @@
     @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
 </div>
 
-<hr />
+<hr>
 
 @{
 
@@ -63,7 +63,7 @@
         else if (!isAvailable && !connection.HideIfRequirementsNotMet)
         {
             // show the option but give it disabled style indicating it is not open currently
-            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br>
         }
         else
         {
@@ -71,7 +71,7 @@
             <p> @HtmlHelpers.PrintDiceIcon(connection)
 
                 @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
-            </p><br />
+            </p><br>
         }
 
     }
@@ -93,7 +93,7 @@
     if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
     {
 
-        <br /><br /><br />
+        <br><br><br>
         <div id="listVariables" style="background-color: lightgreen" onclick="loadShowVariables()">
             <p><b class="bad">QUEST WRITER ONLY:  Click here to view all variables and their values in this playthrough of this quest.</b></p>
         </div>

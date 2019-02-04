@@ -3,10 +3,10 @@
 
 <p>Are you sure you want to abandon this quest?</p>
 
-<br />
+<br>
 
 <a href="@Url.Action(MVC.Quest.AbandonConfirm())">Yes, abandon this quest</a>
 
-<br /><br />
+<br><br>
 
 @Ajax.ActionLink("No!  Resume Quest", MVC.Quest.Quest(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })

@@ -27,14 +27,14 @@
             Writing to <span class="messageNicknameContainer">@Model.SendingToName</span>:
             <span class="charCounter" id="textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000", autofocus = true })<br />
+        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000", autofocus = true })<br>
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)
         @Html.HiddenFor(m => m.responseToId)
 
         <br>
-        <input type="submit" class="btn btn-chat" value="Send" />
+        <input type="submit" class="btn btn-chat" value="Send">
     }
 </div>
 

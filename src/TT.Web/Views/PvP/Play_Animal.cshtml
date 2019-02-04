@@ -159,7 +159,7 @@
                     if (Model.OwnedBy != null)
                     {
                         <p>
-                            <br />
+                            <br>
                             <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
                         </p>
                     }
@@ -179,7 +179,7 @@
             @*                  This needs to be rewritten !!!                 *@
 
             <p>
-                <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span></center>
+                <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br> </span></center>
                 <span class="locationDescription">@Model.Location.Description</span>
             </p>
             <table class="tableLines">
@@ -373,7 +373,7 @@
                     <div class="modal-body">
                         <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0))" class="btn petActionLink">Lick (+WP)</a>
                         <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0))" class="btn petActionLink">Nuzzle (+MP)</a>
-                        <hr />
+                        <hr>
                         <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0))" class="btn petActionLink">Headbutt (-WP)</a>
                         <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0))" class="btn petActionLink">Snarl (-MP)</a>
                     </div>

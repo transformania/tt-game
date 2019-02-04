@@ -12,7 +12,7 @@
 
     <p>You can update or remove the entries for players on your blacklist here.</p>
 
-    <hr />
+    <hr>
 
     @foreach (var m in Model)
     {
@@ -30,11 +30,11 @@
                 <span>No attacking or messaging</span>
             }
 
-            <br />
+            <br>
             <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOrMessage"))">Set No attacking OR messaging</a>
-            <br />
+            <br>
             <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOnly"))">Set No attacking but ALLOW messaging</a>
-            <br />
+            <br>
 
             if (m.PlayerId > 0)
             {
@@ -52,7 +52,7 @@
 
 
 
-        <hr />
+        <hr>
     }
 
 </div>

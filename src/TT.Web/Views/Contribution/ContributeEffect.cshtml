@@ -21,7 +21,7 @@
 
 
 <p>
-    Click below to load one of your existing curse contributions (save first before navigating away if you need to!):<br />
+    Click below to load one of your existing curse contributions (save first before navigating away if you need to!):<br>
     <table id="YourContributions" class="table table-hover messageTable dt-responsive">
         <thead>
         <tr>
@@ -184,7 +184,7 @@
             <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
     }
 
-    <br /><br />
+    <br><br>
     <p><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMemberhipId))">Look at this author's player profile</a></p>
 
     @Html.HiddenFor(e => e.Id)
@@ -238,7 +238,7 @@
         }
 
     <p>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save">
     </p>
 
     <h2>Curse</h2>
@@ -328,14 +328,14 @@
         {
             <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
         }
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save">
     
     <div class="form__panel group" style="background-color: #82ffe0; ">
 
         <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.  Curses can have a score of -400 or more.</div>
 
         <p>
-            <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculatorEffect(Model.Id))">Use calculator (save contribution before doing this!)</a><br /></p>
+            <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculatorEffect(Model.Id))">Use calculator (save contribution before doing this!)</a><br></p>
     </div>
 
     <h2>Finishing up</h2>
@@ -384,8 +384,8 @@
 
 
 
-    <br /><br />
-    <input type="submit" value="Save" />
+    <br><br>
+    <input type="submit" value="Save">
     
     if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Proofreader))
         {
@@ -396,10 +396,10 @@
     if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) && Model.ProofreadingCopy)
     {
         <p>
-            <a href="@Url.Action(MVC.Contribution.PublishSpell_Effect(Model.Id))">Publish Skill</a><br />
-            <a href="@Url.Action(MVC.Contribution.PublishEffect(Model.Id))">Publish Effect</a><br />
-            <a href="@Url.Action(MVC.Contribution.MarkEffectAsLive(Model.Id))">Mark Effect as Live</a><br />
-            <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Mark Spell as live</a><br />
+            <a href="@Url.Action(MVC.Contribution.PublishSpell_Effect(Model.Id))">Publish Skill</a><br>
+            <a href="@Url.Action(MVC.Contribution.PublishEffect(Model.Id))">Publish Effect</a><br>
+            <a href="@Url.Action(MVC.Contribution.MarkEffectAsLive(Model.Id))">Mark Effect as Live</a><br>
+            <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Mark Spell as live</a><br>
         </p>
 
     <p>@Html.Raw(ViewBag.StaticEffectExists)</p>

@@ -257,7 +257,7 @@ namespace TT.Domain.Procedures
                     {
                         var item = ItemStatics.GetStaticItem(q.RewardAmount);
                         ItemProcedures.GiveNewItemToPlayer(player, item);
-                        message += " < br/>You received a <b>" + item.FriendlyName + "</b>.";
+                        message += " <br>You received a <b>" + item.FriendlyName + "</b>.";
                     }
 
                     // effect gain
@@ -265,7 +265,7 @@ namespace TT.Domain.Procedures
                     {
                         var effect = EffectStatics.GetDbStaticEffect(System.Convert.ToInt32(q.RewardAmount));
                         EffectProcedures.GivePerkToPlayer(effect.Id, player.Id);
-                        message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
+                        message += "<br>You received the effect <b>" + effect.FriendlyName + "</b>.";
                     }
 
                     // spell gain
@@ -273,14 +273,14 @@ namespace TT.Domain.Procedures
                     {
                         var spell = SkillStatics.GetStaticSkill(System.Convert.ToInt32(q.RewardAmount));
                         SkillProcedures.GiveSkillToPlayer(player.Id, spell.Id);
-                        message += "<br/>You learned the spell <b>" + spell.FriendlyName + "</b>.";
+                        message += "<br>You learned the spell <b>" + spell.FriendlyName + "</b>.";
                     }
 
                 }
 
                 if (xpGain > 0)
                 {
-                    message += "<br/>You earned <b>" + xpGain + "</b> XP.";
+                    message += "<br>You earned <b>" + xpGain + "</b> XP.";
                 }
 
                 PlayerProcedures.GiveXP(player, xpGain);
@@ -574,7 +574,7 @@ namespace TT.Domain.Procedures
             var imgName = match.Groups[1].Value;
 
             var rgx = new Regex(ImageRegexPattern);
-            input = Regex.Replace(input, ImageRegexPattern, "<img src='/Images/PvP/quests/" + imgName + "' />");
+            input = Regex.Replace(input, ImageRegexPattern, "<img src='/Images/PvP/quests/" + imgName + "'>");
 
             return input;
         }

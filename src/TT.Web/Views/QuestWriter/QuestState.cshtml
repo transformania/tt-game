@@ -54,7 +54,7 @@
     <p>@Ajax.ActionLink("Add New", MVC.QuestWriter.QuestConnection(-1, Model.QuestState.QuestId, Model.QuestState.Id, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
 }
 
-<hr />
+<hr>
 
 @using (Ajax.BeginForm(MVC.QuestWriter.QuestStateSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
@@ -68,20 +68,20 @@
     <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
     @Html.TextBoxFor(m => m.QuestState.QuestStateName)
 
-    <br /><br />
+    <br><br>
 
-    <label>Text (the text the player sees when having first entered this state):</label>    <br />
+    <label>Text (the text the player sees when having first entered this state):</label>    <br>
     @Html.TextAreaFor(m => m.QuestState.Text)
 
-    <br /><br />
+    <br><br>
 
 
-    <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br />
+    <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br>
     @Html.TextAreaFor(m => m.QuestState.Notes, new { @class = "short" })
 
-    <br /><br />
+    <br><br>
 
-    <input type="submit" class="btn btn-chat" value="Send" />
+    <input type="submit" class="btn btn-chat" value="Send">
 
 }
 
@@ -147,7 +147,7 @@
             @Ajax.ActionLink(q.QuestStateName, MVC.QuestWriter.QuestState(q.Id, Model.QuestState.QuestId, Model.QuestState.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", }, new { @class = "editButton" })
 
             @Ajax.ActionLink("[DELETE]", MVC.QuestWriter.QuestStateDelete(q.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state?" }, new { @class = "deleteButton" })
-            <br /><br />
+            <br><br>
         }
 
         if (Model.QuestState.Id > 0)

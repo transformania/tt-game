@@ -24,12 +24,12 @@
     }
     <h1>How open are you about your transformation or fetish interests to friends and family?</h1>
 
-    <hr />
+    <hr>
     <h3>This poll received @Model.Count() responses.</h3>
 
     <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
 
-    <hr />
+    <hr>
 
     <p><b>How open are you about your transformation or general fetish interests to friends and family?<</b></p>
 
@@ -45,7 +45,7 @@
 
 
 
-    <hr />
+    <hr>
 
     <p><b>Would you / have you met up with someone in real life whom you met from Transformania Time or another adult/fetish site?</b></p>
 
@@ -60,7 +60,7 @@
     <p>I have not met anyone and would never meet anyone:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
 
 
-    <hr />
+    <hr>
 
 
     <p><b>Tell about the first time you talked to a friend or family member about your transformation interests, if any.</b></p>
@@ -68,18 +68,18 @@
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String1)))
         {
-            <p>"@e.String1"</p><br />
+            <p>"@e.String1"</p><br>
         }
     }
 
-    <hr />
+    <hr>
 
     <p><b>If you <b class="good">DO</b> want or <b class="good">ALREADY HAVE</b> met with anyone from TT or another adult/fetish site, what are/were your reasons?</b></p>
 
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String2)))
         {
-            <p>"@e.String2"</p><br />
+            <p>"@e.String2"</p><br>
         }
     }
 
@@ -88,7 +88,7 @@
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String3)))
         {
-            <p>"@e.String3"</p><br />
+            <p>"@e.String3"</p><br>
         }
     }
 
@@ -97,7 +97,7 @@
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String4)))
         {
-            <p>"@e.String4"</p><br />
+            <p>"@e.String4"</p><br>
         }
     }
 

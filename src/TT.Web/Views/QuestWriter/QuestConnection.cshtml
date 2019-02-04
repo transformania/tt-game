@@ -7,7 +7,7 @@
 
 
 
-<br />
+<br>
 
 @using (Ajax.BeginForm(MVC.QuestWriter.QuestConnectionSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
@@ -16,7 +16,7 @@
 
     <h1>Quest Connection</h1>
 
-    <label>FROM Quest State:</label>    <br />
+    <label>FROM Quest State:</label>    <br>
     @Html.DropDownListFor(m => m.QuestConnection.QuestStateFromId, new SelectList(
                               new List<Object>{
                       new { value = 0, text = "--none--"  },
@@ -34,9 +34,9 @@
         <p class="bad">NOT SET</p>
     }
 
-    <br /><br />
+    <br><br>
 
-    <label>TO Quest State:</label>    <br />
+    <label>TO Quest State:</label>    <br>
         @Html.DropDownListFor(m => m.QuestConnection.QuestStateToId, new SelectList(
                               new List<Object>{
                       new { value = 0, text = "--none--"  },
@@ -57,8 +57,8 @@
 
     if (Model.QuestConnection.RequiresRolls())
     {
-        <br /><br />
-        <label>TO Quest State <span class="bad">(when rolls failed)</span>:</label>    <br />
+        <br><br>
+        <label>TO Quest State <span class="bad">(when rolls failed)</span>:</label>    <br>
         @Html.DropDownListFor(m => m.QuestConnection.QuestStateFailToId, new SelectList(
                               new List<Object>{
                       new { value = 0, text = "--none--"  },
@@ -83,43 +83,43 @@
         @Html.HiddenFor(m => m.QuestConnection.QuestStateFailToId)
     }
 
-    <br />    <br />
+    <br>    <br>
 
-    <label>Optional text displayed when the player passes through this quest connection</label>    <br />
+    <label>Optional text displayed when the player passes through this quest connection</label>    <br>
     @Html.TextAreaFor(m => m.QuestConnection.Text, new { @placeholder = "Example:  You raise your torch and walk down the narrow passageway." })
 
-    <br/>    <br/>
+    <br>    <br>
 
 
-    <label> Name of this connection(for internal purposes only):</label>    <br />
+    <label> Name of this connection(for internal purposes only):</label>    <br>
             @Html.TextBoxFor(m => m.QuestConnection.ConnectionName)
 
-            <br />    <br />
+            <br>    <br>
 
-            <label>Choice text:</label>    <br />
+            <label>Choice text:</label>    <br>
             @Html.TextBoxFor(m => m.QuestConnection.ActionName)
 
 
-            <br />    <br />
+            <br>    <br>
 
-            <label>Hide option of requirement is not met?  Check if yes.</label>    <br />
+            <label>Hide option of requirement is not met?  Check if yes.</label>    <br>
             @Html.CheckBoxFor(m => m.QuestConnection.HideIfRequirementsNotMet)
 
-            <br />    <br />
+            <br>    <br>
 
 
-            <label>Rank in list.</label>    <br />
+            <label>Rank in list.</label>    <br>
             @Html.TextBoxFor(m => m.QuestConnection.RankInList)
 
 
-            <br />    <br />
+            <br>    <br>
 
-            <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br />
+            <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br>
             @Html.TextAreaFor(m => m.QuestConnection.Notes, new { @class = "short" })
 
-    <br /><br />
+    <br><br>
 
-            <input type="submit" class="btn btn-chat" value="Send" />
+            <input type="submit" class="btn btn-chat" value="Send">
 
 }
 

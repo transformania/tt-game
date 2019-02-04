@@ -25,12 +25,12 @@
     }
     <h1>How do you feel about the new stats system and the double turn speed?</h1>
 
-    <hr />
+    <hr>
     <h3>This poll received @Model.Count() responses.</h3>
 
     <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
 
-    <hr />
+    <hr>
 
     <p><b>How do you feel about the new stats system (commonly known as the Holistic system) that recently went into effect?<</b></p>
 
@@ -48,7 +48,7 @@
 
 
 
-    <hr />
+    <hr>
 
     <p><b>How do you feel about turns taking 5 minutes to update instead of 10 minutes?</b></p>
 
@@ -63,7 +63,7 @@
     <p>I strongly dislike 5 minute turns:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
 
 
-    <hr />
+    <hr>
 
 
     <p><b>Leave any comments on the new stats system here.</b></p>
@@ -71,18 +71,18 @@
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String1)))
         {
-            <p>"@e.String1"</p><br />
+            <p>"@e.String1"</p><br>
         }
     }
 
-    <hr />
+    <hr>
 
     <p><b>Leave any comments on the 5 minute turns here.</b></p>
 
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String2)))
         {
-            <p>"@e.String2"</p><br />
+            <p>"@e.String2"</p><br>
         }
     }
 

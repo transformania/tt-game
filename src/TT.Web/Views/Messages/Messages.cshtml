@@ -24,7 +24,7 @@
 </script>
 
 <div id="realLink" class="specialBox specialBox2" style="display: none;">
-    <span style="color:red;">Do you really want to delete all the messages? If yes then please click link below:</span><br />
+    <span style="color:red;">Do you really want to delete all the messages? If yes then please click link below:</span><br>
     @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()

@@ -21,7 +21,7 @@
 
 		output.doubleTap(function (e) { ChatModule.onUserDoubleTapped($(this).text(), e); });
 
-		return output.append("<br />");
+		return output.append("<br>");
 	}
 
 	function renderUserList() {

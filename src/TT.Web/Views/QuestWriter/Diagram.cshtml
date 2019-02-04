@@ -22,12 +22,12 @@
 
 <p>This page can be used to help visualize the quest states and connections in a quest.</p><p id="loadingMsg" class="bad">Loading...</p>
 <p><input id="springChange" type="text" value="300">Spring size</p>
-<br />
+<br>
 <p>Animate<input id="animate" type="checkbox" checked></p>
 
-<span>Id:  <input id="Id" class="tiny" type="text" readonly /></span>
-<span>X:  <input id="X" class="tiny" type="text" readonly /></span>
-<span>Y:  <input id="Y" class="tiny" type="text" readonly /></span>
+<span>Id:  <input id="Id" class="tiny" type="text" readonly></span>
+<span>X:  <input id="X" class="tiny" type="text" readonly></span>
+<span>Y:  <input id="Y" class="tiny" type="text" readonly></span>
 <a id="editState" class="editButton" data-ajax="true" data-ajax-begin="waiting" data-ajax-failure="fail" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-success="success" data-ajax-update="#swapMe" href="/QuestWriter/QuestState/-1?QuestId=18&amp;ParentStateId=-1" style="display:none;">Load state</a>
 <span class="good" id="pinMeSuccess"></span>
 <div id="mynetwork" data-ajax="true"></div>

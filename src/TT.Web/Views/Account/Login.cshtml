@@ -15,7 +15,7 @@
 <div class="onlinePlayersWrapperBG containerInner text-center">
     <div class="row">
         <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
-            <img src="~/Images/login-left.png" /></div>
+            <img src="~/Images/login-left.png"></div>
 
         <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
             @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
@@ -32,26 +32,26 @@
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control frontForm", placeholder = "Password" })
                     @Html.ValidationMessageFor(m => m.Password)
 
-                    @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe) <br/>
+                    @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe) <br>
                     
                     <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">Terms of Service</a>. <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
-                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent" /></p><br>
+                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent"></p><br>
 
                     @if (FeatureContext.IsEnabled<UseCaptcha>())
                     {
                         @Html.Recaptcha()
                     }
 
-                    <input type="submit" class="btn" value="Login" id="submitBtn" disabled="disabled" />
+                    <input type="submit" class="btn" value="Login" id="submitBtn" disabled="disabled">
                 </fieldset>
 
                 <p style="margin-top: 50px;">
-                    <a href="@Url.Action(MVC.Account.Register())">Register</a> <br />if you don't have an account.
+                    <a href="@Url.Action(MVC.Account.Register())">Register</a> <br>if you don't have an account.
                 </p>
             }
             @if (ViewBag.ReturnUrl == "/" || String.IsNullOrEmpty(ViewBag.ReturnUrl))
             {
-            <br /><br />
+            <br><br>
 
             <p>
                 Or did you want to play single player javascript game -
@@ -62,7 +62,7 @@
 
 
         <div class="col-md-4 hidden-sm hidden-xs">
-            <img src="~/Images/login-right.png" /></div>
+            <img src="~/Images/login-right.png"></div>
     </div>
 </div>
     <section id="loginForm">

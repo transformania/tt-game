@@ -26,7 +26,7 @@
         <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityMindControl))">Other</a></li>
     </ul>
 
-    <hr />
+    <hr>
     
     <table id="Spells" class="table table-hover messageTable dt-responsive">
         <thead>
@@ -47,11 +47,11 @@
                 @{
                     if (s.MobilityType == PvPStatics.MobilityFull)
                     {
-                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
+                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
                     }
                     else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
                     {
-                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;" /></td>
+                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
                     }
                     else
                     {

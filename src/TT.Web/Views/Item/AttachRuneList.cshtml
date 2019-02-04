@@ -30,7 +30,7 @@
             foreach (var i in Model.items)
             {
                 <tr>
-                    <td><img width="100px" height="100px" src="@PortraitHelper.GetGraphicByItemType(i.ItemSource.ItemType, i.ItemSource.PortraitUrl, true)"/></td>
+                    <td><img width="100px" height="100px" src="@PortraitHelper.GetGraphicByItemType(i.ItemSource.ItemType, i.ItemSource.PortraitUrl, true)"></td>
                     <td><b>@i.ItemSource.FriendlyName @i.PrintVictimName()</b></td>
                     <td>@i.Level</td>
                     <td>

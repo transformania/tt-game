@@ -14,7 +14,7 @@
 }
 
 <div class="specialBox">
-    <b>Item Leaderboard -- @PvPStatics.AlphaRound</b><br />
+    <b>Item Leaderboard -- @PvPStatics.AlphaRound</b><br>
     These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!
 </div>
 
@@ -49,7 +49,7 @@
                         @HtmlHelpers.PrintGenderIcon(i.FormerPlayer.Gender)
                         @HtmlHelpers.PrintItemTypeIcon(i.ItemSource.ItemType)
                     </td>
-                    <td><img src="@HtmlHelpers.GetImageUrl(i.ItemSource.PortraitUrl, i.FormerPlayer.Mobility, true)" width="50x" height="50px;" /></td>
+                    <td><img src="@HtmlHelpers.GetImageUrl(i.ItemSource.PortraitUrl, i.FormerPlayer.Mobility, true)" width="50x" height="50px;"></td>
                     <td class="mobile">
                         @i.ItemSource.FriendlyName
                     </td>

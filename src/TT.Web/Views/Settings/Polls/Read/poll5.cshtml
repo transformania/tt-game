@@ -20,14 +20,14 @@
     }
     <h1>Would you like to have 3 minute turns?</h1>
 
-    <hr />
+    <hr>
     <h3>This poll received @Model.Count() responses.</h3>
 
     <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
 
-    <hr />
+    <hr>
 
-    <p><b>Would you like for TT to have 3 minute turns instead of 5 minute turns?</b>  Note:  Other timers would be proprtionally shortened as well, such as decreasing the amount of time before a player goes offline.  The number of turns in a round would also increase to 7000 so that a round still takes roughly 2.5 weeks.</p><br/>
+    <p><b>Would you like for TT to have 3 minute turns instead of 5 minute turns?</b>  Note:  Other timers would be proprtionally shortened as well, such as decreasing the amount of time before a player goes offline.  The number of turns in a round would also increase to 7000 so that a round still takes roughly 2.5 weeks.</p><br>
     
 
     <p>I strongly DO want to have 3 minute turns:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
@@ -36,25 +36,25 @@
     <p>I slightly DO NOT want to have 3 minute turns or even shorter turns:  <b>@Math.Round(Num1_Choice4, 4) %</b></p>
     <p>I strongly DO NOT want to have 3 minute turns:  <b>@Math.Round(Num1_Choice5, 5) %</b></p>
 
-    <hr />
+    <hr>
 
     <p><b>Explain the reasoning behind your choice.</b></p>
 
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String1)))
         {
-            <p>"@e.String1"</p><br />
+            <p>"@e.String1"</p><br>
         }
     }
 
-    <hr />
+    <hr>
 
     <p><b>You may leave any comments or concerns related to turn or round lengths here.</b></p>
 
     @{
         foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String2)))
         {
-            <p>"@e.String2"</p><br />
+            <p>"@e.String2"</p><br>
         }
     }
 

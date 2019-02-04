@@ -10,7 +10,7 @@
 
     <p>All questions are optional and all responses are anonymous.  There are many more possibilities for some of the dropdown questions here; if you feel one is missing please post in the forums and we will add it in.You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
 
-    <hr />
+    <hr>
 
     @using (Html.BeginForm(MVC.Settings.ReplyToPoll(), FormMethod.Post))
     {
@@ -32,7 +32,7 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
         <p>How do you feel about turns taking 5 minutes to update instead of 10 minutes?</p>
         @Html.DropDownListFor(i => i.Num2, new SelectList(
@@ -49,25 +49,25 @@
                   "text",
                    2))
 
-        <hr />
+        <hr>
 
        
 
-        <hr />
+        <hr>
 
         <p>Leave any comments on the new stats system here.</p>
         @Html.ValidationMessageFor(m => m.String1)
         @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
         <p>Leave any comments on the 5 minute turns here.</p>
         @Html.ValidationMessageFor(m => m.String2)
         @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
 
-        <hr />
+        <hr>
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit">
     }
 
 </div>

@@ -29,7 +29,7 @@
 
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to leave your covenant? If yes then please click link below:</span>
-        <a href="@Url.Action(MVC.Covenant.LeaveCovenant())">Leave this Covenant</a><br />
+        <a href="@Url.Action(MVC.Covenant.LeaveCovenant())">Leave this Covenant</a><br>
     </div>
 
     @{
@@ -55,9 +55,9 @@
 
             <p style="margin-bottom:-15px;">Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon icon-money"></span></p>
 
-            <br /><p>
+            <br><p>
                 You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send?
-                <br />You have <b>@ViewBag.MyMoney</b> Arpeyjis.
+                <br>You have <b>@ViewBag.MyMoney</b> Arpeyjis.
             </p>
 
             <a href="@Url.Action(MVC.Covenant.AddToCovenantChest(20))">20</a><span title="Arpeyjis" class="icon icon-money"></span>

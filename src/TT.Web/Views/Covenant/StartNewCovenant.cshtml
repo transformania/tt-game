@@ -15,12 +15,12 @@
     @using (Html.BeginForm(MVC.Covenant.StartNewCovenantSubmit(), FormMethod.Post))
     {
         <p>Name</p>
-        @Html.TextBoxFor(m => m.Name, new { autofocus = true })<br />
+        @Html.TextBoxFor(m => m.Name, new { autofocus = true })<br>
         @Html.ValidationMessageFor(m => m.Name)
         <p>A short description of this covenant:</p>
-        @Html.TextBoxFor(m => m.SelfDescription)<br />
+        @Html.TextBoxFor(m => m.SelfDescription)<br>
         @Html.ValidationMessageFor(m => m.SelfDescription)
-        <br />
-        <input type="submit" value="Save" />
+        <br>
+        <input type="submit" value="Save">
     }
 </div>

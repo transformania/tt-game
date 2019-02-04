@@ -31,26 +31,26 @@
 
                         <p><i>@ad.Text</i></p>
                         <p>
-                            <span class="good">Desired themes</span><br />
+                            <span class="good">Desired themes</span><br>
                             @ad.YesThemes
                         </p>
                         <p>
-                            <span class="bad">Undesired themes</span><br />
+                            <span class="bad">Undesired themes</span><br>
                             @ad.NoThemes
                         </p>
                         <p>
-                            <span class="timeago">Availability / Timezones</span><br />
+                            <span class="timeago">Availability / Timezones</span><br>
                             @ad.PreferredTimezones
                         </p>
                         <p class="timeago">
-                            Created @TT.Web.CustomHtmlHelpers.HtmlHelpers.DatetimeToTimeago(ad.CreationTimestamp)<br />
+                            Created @TT.Web.CustomHtmlHelpers.HtmlHelpers.DatetimeToTimeago(ad.CreationTimestamp)<br>
                             Last Refreshed @TT.Web.CustomHtmlHelpers.HtmlHelpers.DatetimeToTimeago(ad.RefreshTimestamp)
                         </p>
 
                         <p>
-                            <a href="@Url.Action(MVC.Settings.UpdateRPClassifiedAd(ad.Id))">Edit Ad</a><br />
-                            <a href="@Url.Action(MVC.Settings.RefreshRPClassifiedAd(ad.Id))">Refresh Ad</a><br />
-                            <a href="@Url.Action(MVC.Settings.DeleteRPClassifiedAd(ad.Id))" onclick="return confirm('Are you sure you want to delete this RP ad?')">Delete Ad</a><br />
+                            <a href="@Url.Action(MVC.Settings.UpdateRPClassifiedAd(ad.Id))">Edit Ad</a><br>
+                            <a href="@Url.Action(MVC.Settings.RefreshRPClassifiedAd(ad.Id))">Refresh Ad</a><br>
+                            <a href="@Url.Action(MVC.Settings.DeleteRPClassifiedAd(ad.Id))" onclick="return confirm('Are you sure you want to delete this RP ad?')">Delete Ad</a><br>
                         </p>
                     </div>
                 }

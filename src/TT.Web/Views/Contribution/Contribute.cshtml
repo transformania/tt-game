@@ -20,7 +20,7 @@
 
 <div class="containerInner">
         <p>
-            Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
+            Click below to load one of your existing contributions (save first before navigating away if you need to!):<br>
             @{
 
                 if (ViewBag.DisableLinks == null)
@@ -94,7 +94,7 @@
 
                 }
             }
-            <br />
+            <br>
             @{
 
 
@@ -237,7 +237,7 @@
 
             if (ViewBag.DisableLinks == null)
             {
-                <input type="submit" value="Save" />
+                <input type="submit" value="Save">
             }
             
             <h2>Form</h2>
@@ -288,7 +288,7 @@
                 </div>
 
                 <div class="form__panel externalMessage">
-                    <b class="tldr">NOTE TO AUTHORS:</b>  If you want the victim's name to appear in the text, write $VICTIM_NAME$ and it will be replaced with the victim's actual name when displayed.  Similarly, if you write $ATTACKER_NAME$ it will be replaced with the attacker's full name.<br /><br />
+                    <b class="tldr">NOTE TO AUTHORS:</b>  If you want the victim's name to appear in the text, write $VICTIM_NAME$ and it will be replaced with the victim's actual name when displayed.  Similarly, if you write $ATTACKER_NAME$ it will be replaced with the attacker's full name.<br><br>
                     This will work for any of the transformation description texts.
                 </div>
 
@@ -474,7 +474,7 @@
             </div>
               if (ViewBag.DisableLinks == null)
             {
-                <input type="submit" value="Save" />
+                <input type="submit" value="Save">
             }
 
             <h2>Item or Pet Created by a Completed Transformation</h2>
@@ -588,7 +588,7 @@
                 <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score of 0.  Items should have a balance scoreof 10 and pets should have a balance score close to 20.</div>
 
                 <p>
-                    <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculator2(Model.Id))">Use calculator (save contribution before doing this!)</a><br /></p>
+                    <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculator2(Model.Id))">Use calculator (save contribution before doing this!)</a><br></p>
             </div>
 
             <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
@@ -665,10 +665,10 @@
 
             }
 
-            <br /><br />
+            <br><br>
               if (ViewBag.DisableLinks == null)
             {
-                <input type="submit" value="Save" />
+                <input type="submit" value="Save">
             }
 
             if (User.IsInRole(PvPStatics.Permissions_Proofreader))
@@ -686,26 +686,26 @@
 @{
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                <br /><br />
+                <br><br>
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
                 <p>@Html.Raw(ViewBag.StaticFormExists)</p>
                 <p>@Html.Raw(ViewBag.StaticItemExists)</p>
-                <a href="@Url.Action(MVC.Contribution.PublishSpell(Model.Id))">Publish Spell</a><br />
-                <a href="@Url.Action(MVC.Contribution.PublishForm(Model.Id))">Publish Form</a><br />
-                <a href="@Url.Action(MVC.Contribution.PublishItem(Model.Id))">Publish Item</a><br />
+                <a href="@Url.Action(MVC.Contribution.PublishSpell(Model.Id))">Publish Spell</a><br>
+                <a href="@Url.Action(MVC.Contribution.PublishForm(Model.Id))">Publish Form</a><br>
+                <a href="@Url.Action(MVC.Contribution.PublishItem(Model.Id))">Publish Item</a><br>
                 <p class="playerSearchingNotification">Note: always publish in this order: items, forms, spells.  Because foreign key stuff.</p>
 
             }
 
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br />
-                <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br />
+                <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br>
+                <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br>
             }
 
 }
 
-    <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
+    <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)">
 
     <div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
 

@@ -21,7 +21,7 @@
 
     <h1>Questing</h1>
 
-    <p>You are in the quest <b>@Model.Name!</b>  Loading...</p><br />
+    <p>You are in the quest <b>@Model.Name!</b>  Loading...</p><br>
 
     @Ajax.ActionLink("Resume Quest", MVC.Quest.Quest(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink", @id = "continueQuest" })
 </div>

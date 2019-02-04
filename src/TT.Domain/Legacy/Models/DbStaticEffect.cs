@@ -10,6 +10,7 @@ namespace TT.Domain.Models
         public string Description { get; set; }
         public int AvailableAtLevel { get; set; }
         public int? PreRequisiteEffectSourceId { get; set; }
+        public int? RequiredGameMode { get; set; }
 
         public bool isLevelUpPerk { get; set; }
         public int Duration { get; set; }
@@ -73,6 +74,7 @@ namespace TT.Domain.Models
                 Description = this.Description,
                 AvailableAtLevel = this.AvailableAtLevel,
                 PreRequisiteEffectSourceId = this.PreRequisiteEffectSourceId,
+                RequiredGameMode = RequiredGameMode,
                 isLevelUpPerk = this.isLevelUpPerk,
                 Duration = this.Duration,
                 Cooldown = this.Cooldown,

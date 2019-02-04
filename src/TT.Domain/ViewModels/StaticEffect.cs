@@ -8,6 +8,7 @@
         public int AvailableAtLevel { get; set; }
         public int? PreRequisiteEffectSourceId { get; set; }
 
+        public int? RequiredGameMode { get; set; }
         public bool isLevelUpPerk { get; set; }
         public int Duration { get; set; }
         public int Cooldown { get; set; }

@@ -373,7 +373,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
-            var cutoff = DateTime.UtcNow.AddHours(-1);
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
             var playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull && 
             m.Id != attacker.Id && 
             m.FormSourceId != RegularBimboFormSourceId && 

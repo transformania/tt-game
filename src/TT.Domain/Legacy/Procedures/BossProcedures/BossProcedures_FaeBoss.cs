@@ -312,7 +312,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <returns></returns>
         private static List<Player> GetEligibleTargetsInLocation(Player player)
         {
-            var cutoff = DateTime.UtcNow.AddMinutes(-30);
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
             var playersHere = PlayerProcedures.GetPlayersAtLocation(player.dbLocationName).Where(m => m.Mobility == PvPStatics.MobilityFull &&
             m.Id != player.Id &&
             m.BotId >= AIStatics.PsychopathBotId &&
@@ -330,7 +330,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var cutoff = DateTime.UtcNow.AddMinutes(-30);
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
             p.LastActionTimestamp > cutoff &&
             p.FormSourceId != GreatFaeFormSourceId &&

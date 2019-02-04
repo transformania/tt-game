@@ -324,7 +324,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static string GetRichestPlayerIds()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var cutoff = DateTime.UtcNow.AddHours(-1);
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
             IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&

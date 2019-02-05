@@ -28,7 +28,7 @@ namespace TT.Migrations
             Alter.Table("DbStaticItems").AddColumn("ConsumableSubItemType").AsInt32().Nullable();
             Execute.Sql("UPDATE DbStaticItems SET ConsumableSubItemType = 0 WHERE DbStaticItems.dbName LIKE 'rune_%'");
             Execute.Sql("UPDATE DbStaticItems SET ConsumableSubItemType = 1 WHERE DbStaticItems.dbName LIKE 'item_consumable_tome-%'");
-            Execute.Sql("UPDATE DbStaticItems SET ConsumableSubItemType = 2 WHERE DbStaticItems.dbName LIKE 'item_consumable_spellbook_small-%'");
+            Execute.Sql("UPDATE DbStaticItems SET ConsumableSubItemType = 2 WHERE DbStaticItems.dbName LIKE 'item_consumable_spellbook_%'");
             Execute.Sql("UPDATE DbStaticItems SET ConsumableSubItemType = 4 WHERE DbStaticItems.dbName LIKE 'item_consumeable_willpower_bomb_%'");
         }
     }

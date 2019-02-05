@@ -60,7 +60,7 @@ namespace TT.Domain.Procedures
                                                          LearnedAtRegion = skillSource.LearnedAtLocation,
                                                          TFPointsAmount = skillSource.TFPointsAmount,
                                                          ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
-                                                         ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                         ExclusiveToItemSourceId = skillSource.ExclusiveToItemSourceId,
                                                          GivesEffectSourceId = skillSource.GivesEffectSourceId,
                                                          IsPlayerLearnable = skillSource.IsPlayerLearnable
                                                      }
@@ -109,7 +109,7 @@ namespace TT.Domain.Procedures
                                                           LearnedAtRegion = skillSource.LearnedAtLocation,
                                                           TFPointsAmount = skillSource.TFPointsAmount,
                                                           ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
-                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                          ExclusiveToItemSourceId = skillSource.ExclusiveToItemSourceId,
                                                           GivesEffectSourceId = skillSource.GivesEffectSourceId,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
@@ -155,7 +155,7 @@ namespace TT.Domain.Procedures
                                                           LearnedAtRegion = skillSource.LearnedAtLocation,
                                                           TFPointsAmount = skillSource.TFPointsAmount,
                                                           ExclusiveToFormSourceId = skillSource.ExclusiveToFormSourceId,
-                                                          ExclusiveToItem = skillSource.ExclusiveToItem,
+                                                          ExclusiveToItemSourceId = skillSource.ExclusiveToItemSourceId,
                                                           GivesEffectSourceId = skillSource.GivesEffectSourceId,
                                                           IsPlayerLearnable = skillSource.IsPlayerLearnable,
                                                       }
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                 TFPointsAmount = dbstatic.TFPointsAmount,
                 DiscoveryMessage = dbstatic.DiscoveryMessage,
                 ExclusiveToFormSourceId = dbstatic.ExclusiveToFormSourceId,
-                ExclusiveToItem = dbstatic.ExclusiveToItem,
+                ExclusiveToItemSourceId = dbstatic.ExclusiveToItemSourceId,
                 LearnedAtLocation = dbstatic.LearnedAtLocation,
                 LearnedAtRegion = dbstatic.LearnedAtRegion,
                 IsPlayerLearnable = dbstatic.IsPlayerLearnable
@@ -334,27 +334,27 @@ namespace TT.Domain.Procedures
 
         public static void UpdateItemSpecificSkillsToPlayer(Player owner)
         {
-            UpdateItemSpecificSkillsToPlayer(owner, "X");
+            UpdateItemSpecificSkillsToPlayer(owner, null);
         }
 
         /// <summary>
         /// Delete any curses/blessing gained by items/pets from a player that they no longer posses, then give them any curses unique to a new item/pet.  Psychopathic spellslingers make an exception and should never learn any new curses from items/pets they have gained.
         /// </summary>
         /// <param name="owner">The Player who owns/owned the item</param>
-        /// <param name="newItemName">The name of a new item that the player is gaining, if any.</param>
-        public static void UpdateItemSpecificSkillsToPlayer(Player owner, string newItemName)
+        /// <param name="newItemSourceId">The id of a new item that the player is gaining, if any.</param>
+        public static void UpdateItemSpecificSkillsToPlayer(Player owner, int? newItemSourceId)
         {
 
             ISkillRepository skillRepo = new EFSkillRepository();
 
             // delete all of the old item specific skills for the player
             IEnumerable<SkillViewModel> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
-            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped && i.dbName != newItemName).Select(s => s.dbName).ToList();
+            List<int> equippedItemSourceIds = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped && i.ItemSourceId != newItemSourceId).Select(s => s.ItemSourceId).ToList();
             var itemSpecificSkillsIds = new List<int>();
 
             foreach (var s in itemSpecificSkills)
             {
-                if (!s.StaticSkill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.StaticSkill.ExclusiveToItem))
+                if (s.StaticSkill.ExclusiveToItemSourceId != null && !equippedItemSourceIds.Contains(s.StaticSkill.ExclusiveToItemSourceId.Value))
                 {
                     itemSpecificSkillsIds.Add(s.dbSkill.Id);
                 }
@@ -372,18 +372,22 @@ namespace TT.Domain.Procedures
             }
 
             // now give the player any skills they are missing
-            var itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemName).ToList();
-            foreach (var skill in itemSpecificSkillsToGive)
+            if (newItemSourceId != null)
             {
-
-                // make sure player does not already have this skill due to some bug or othher
-                var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.SkillSourceId == skill.Id);
-
-                if (possibledbSkill == null)
+                var itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemSourceId.Value).ToList();
+                foreach (var skill in itemSpecificSkillsToGive)
                 {
-                    DomainRegistry.Repository.Execute(new CreateSkill { ownerId = owner.Id, skillSourceId = skill.Id });
+
+                    // make sure player does not already have this skill due to some bug or othher
+                    var possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.SkillSourceId == skill.Id);
+
+                    if (possibledbSkill == null)
+                    {
+                        DomainRegistry.Repository.Execute(new CreateSkill { ownerId = owner.Id, skillSourceId = skill.Id });
+                    }
                 }
             }
+            
         }
 
         public static int GetCountOfLearnableSpells()

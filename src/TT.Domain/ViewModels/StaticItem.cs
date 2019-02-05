@@ -3,13 +3,14 @@
     public class StaticItem
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public string PortraitUrl { get; set; }
         public decimal MoneyValue { get; set; }
         public decimal MoneyValueSell { get; set; }
         public string ItemType { get; set; }
+        public int? ConsumableSubItemType { get; set; }
+        
         public int UseCooldown { get; set; }
         public string UsageMessage_Item { get; set; }
         public string UsageMessage_Player { get; set; }

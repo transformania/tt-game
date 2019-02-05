@@ -255,7 +255,7 @@ namespace TT.Domain.Procedures
                     // item gain
                     else if (q.RewardType==(int)QuestStatics.RewardType.Item)
                     {
-                        var item = ItemStatics.GetStaticItem(q.RewardAmount);
+                        var item = ItemStatics.GetStaticItem(System.Convert.ToInt32(q.RewardAmount));
                         ItemProcedures.GiveNewItemToPlayer(player, item);
                         message += " <br>You received a <b>" + item.FriendlyName + "</b>.";
                     }

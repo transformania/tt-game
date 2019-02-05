@@ -122,7 +122,7 @@ namespace TT.Domain.Procedures
 
                 resultMessage += "  You have gained " + xpGain + " xp.  <b>Congratulations, you have gained a level!  Your owner will be so proud...</b>";
 
-                var wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.dbName).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
+                var wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.ItemSourceId).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
 
                 // now we need to change the owner's max health or mana based on this leveling
                 if (inanimateMe.OwnerId > 0)
@@ -261,7 +261,7 @@ namespace TT.Domain.Procedures
                 dbPlayer.dbLocationName = owner.dbLocationName;
             }
 
-            var itemPlus = ItemStatics.GetStaticItem(dbPlayerItem.dbName);
+            var itemPlus = ItemStatics.GetStaticItem(dbPlayerItem.ItemSource.Id);
 
             if (roll < strugglesMade)
             {

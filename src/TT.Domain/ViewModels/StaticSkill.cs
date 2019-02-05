@@ -2,7 +2,6 @@
 {
     public class StaticSkill
     {
-        //this class stores all of the skills as available to everyone.  It has absolutely nothing to do with what an individual player has.
         public int Id { get; set; }
         public string FriendlyName { get; set; }
         public int? FormSourceId { get; set; }
@@ -19,6 +18,7 @@
         public int? GivesEffectSourceId { get; set; }
 
         public int? ExclusiveToFormSourceId { get; set; }
-        public string ExclusiveToItem { get; set; }
+        public int? ExclusiveToItemSourceId { get; set; }
+        
     }
 }

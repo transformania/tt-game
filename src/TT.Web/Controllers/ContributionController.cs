@@ -129,20 +129,9 @@ namespace TT.Web.Controllers
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
                 IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
 
-                var itemdbname = "";
-
-                if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
-                {
-                    itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-                }
-                else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
-                {
-                    itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-                }
-
                 var staticSkill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == contribution.SkillSourceId);
                 var staticForm = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == contribution.FormSourceId);
-                var sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+                var staticItem = itemRepo.DbStaticItems.FirstOrDefault(f => f.Id == contribution.ItemSourceId);
 
                 if (staticSkill == null)
                 {
@@ -162,13 +151,13 @@ namespace TT.Web.Controllers
                     ViewBag.StaticFormExists = $"<p class='good'>Static form found: {staticForm.FriendlyName}</p>";
                 }
 
-                if (sitem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
+                if (staticItem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
                 {
-                    ViewBag.StaticItemExists += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
+                    ViewBag.StaticItemExists += "<p class='bad'>No static item/pet found.</p>";
                 }
                 else if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
                 {
-                    ViewBag.StaticItemExists += "<p class='good'>Static item/pet found:  " + itemdbname + "</p>";
+                    ViewBag.StaticItemExists += $"<p class='good'>Static item/pet found:  {staticItem.FriendlyName}</p>";
                 }
 
             }
@@ -752,7 +741,7 @@ namespace TT.Web.Controllers
 
             saveme.Skill_FriendlyName = input.Skill_FriendlyName;
             saveme.Skill_UniqueToFormSourceId = input.Skill_UniqueToFormSourceId;
-            saveme.Skill_UniqueToItem = input.Skill_UniqueToItem;
+            saveme.Skill_UniqueToItemSourceId = input.Skill_UniqueToItemSourceId;
             saveme.Skill_UniqueToLocation = input.Skill_UniqueToLocation;
             saveme.Skill_Description = input.Skill_Description;
             saveme.Skill_ManaCost = input.Skill_ManaCost;
@@ -924,7 +913,7 @@ namespace TT.Web.Controllers
                 DomainRegistry.Repository.Execute(new SetSkillSourceFKs
                 {
                     SkillSourceId = spell.Id,
-                    ExclusiveToItemSource = spell.ExclusiveToItem,
+                    ExclusiveToItemSourceId = spell.ExclusiveToItemSourceId,
                     ExclusiveToFormSourceId = spell.ExclusiveToFormSourceId,
                     GivesEffectSourceId = spell.GivesEffectSourceId,
                     FormSourceId = spell.FormSourceId
@@ -955,16 +944,6 @@ namespace TT.Web.Controllers
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             ITFMessageRepository tfRepo = new EFTFMessageRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
-            var itemdbname = "";
-
-            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
-            {
-                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
-            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
-            {
-                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
 
             var form = formRepo.DbStaticForms.FirstOrDefault(s => s.Id == contribution.FormSourceId);
             if (form == null)
@@ -991,7 +970,7 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing tf message object from database.</p>";
             }
 
-            form.BecomesItemDbName = itemdbname;
+            form.BecomesItemSourceId = contribution.ItemSourceId;
             form.Description = contribution.Form_Description;
             form.FriendlyName = contribution.Form_FriendlyName;
             form.Gender = contribution.Form_Gender;
@@ -1093,8 +1072,8 @@ namespace TT.Web.Controllers
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            if (!String.IsNullOrEmpty(form.BecomesItemDbName))
-                DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceName = form.BecomesItemDbName });
+            if (form.BecomesItemSourceId != null)
+                DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceId = form.BecomesItemSourceId.Value });
 
             return View(MVC.Contribution.Views.Publish);
         }
@@ -1113,23 +1092,11 @@ namespace TT.Web.Controllers
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            var itemdbname = "";
-
-            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
-            {
-                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
-            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
-            {
-                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            }
-
-            var item = itemRepo.DbStaticItems.FirstOrDefault(s => s.dbName == itemdbname);
+            var item = itemRepo.DbStaticItems.FirstOrDefault(s => s.Id == contribution.ItemSourceId);
 
             if (item == null)
             {
                 item = new DbStaticItem();
-                item.dbName = itemdbname;
                 message += "<p class='bad'>CREATED NEW ENTRY.</p>";
             }
             else
@@ -1154,7 +1121,7 @@ namespace TT.Web.Controllers
 
                 // update the form's graphic too while we're at it.
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemDbName == item.dbName);
+                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemSourceId == item.Id);
                 if (form != null)
                 {
                     form.PortraitUrl = item.PortraitUrl;
@@ -1227,6 +1194,7 @@ namespace TT.Web.Controllers
 
 
             itemRepo.SaveDbStaticItem(item);
+            contribution.ItemSourceId = item.Id;
 
             ViewBag.Message = message;
 
@@ -1366,7 +1334,7 @@ namespace TT.Web.Controllers
             staticSkill.MobilityType = "curse";
 
             staticSkill.ExclusiveToFormSourceId = contribution.Skill_UniqueToFormSourceId;
-            staticSkill.ExclusiveToItem = contribution.Skill_UniqueToItem;
+            staticSkill.ExclusiveToItemSourceId = contribution.Skill_UniqueToItemSourceId;
 
             skillRepo.SaveDbStaticSkill(staticSkill);
 
@@ -1379,7 +1347,7 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = staticSkill.Id,
-                ExclusiveToItemSource = staticSkill.ExclusiveToItem,
+                ExclusiveToItemSourceId = staticSkill.ExclusiveToItemSourceId,
                 ExclusiveToFormSourceId = staticSkill.ExclusiveToFormSourceId,
                 GivesEffectSourceId = contribution.EffectSourceId,
                 FormSourceId = staticSkill.FormSourceId

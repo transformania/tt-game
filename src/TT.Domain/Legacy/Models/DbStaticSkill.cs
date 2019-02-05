@@ -18,7 +18,7 @@
         public int? GivesEffectSourceId { get; set; }
 
         public int? ExclusiveToFormSourceId { get; set; }
-        public string ExclusiveToItem { get; set; }
+        public int? ExclusiveToItemSourceId { get; set; }
 
         public string MobilityType { get; set; }
     }

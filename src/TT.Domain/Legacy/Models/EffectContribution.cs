@@ -16,7 +16,7 @@ namespace TT.Domain.Models
 
         public string Skill_FriendlyName { get; set; }
         public int? Skill_UniqueToFormSourceId { get; set; }
-        public string Skill_UniqueToItem { get; set; }
+        public int? Skill_UniqueToItemSourceId { get; set; }
         public string Skill_UniqueToLocation { get; set; }
         public string Skill_Description { get; set; }
         public decimal Skill_ManaCost { get; set; }

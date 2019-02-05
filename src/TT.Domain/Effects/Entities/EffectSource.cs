@@ -5,12 +5,11 @@ namespace TT.Domain.Effects.Entities
     public class EffectSource : Entity<int>
     {
 
-        public string dbName { get; protected set; }
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public int AvailableAtLevel { get; protected set; }
         public string PreRequesite { get; protected set; }
-        public int RequiredGameMode { get; protected set; }
+        public int? RequiredGameMode { get; protected set; }
 
         public bool isLevelUpPerk { get; protected set; }
         public int Duration { get; protected set; }

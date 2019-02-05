@@ -15,7 +15,6 @@ namespace TT.Domain.Items.Queries
                 return ctx.AsQueryable<ItemSource>().Select(cr => new ItemSourceDetail
                 {
                     Id = cr.Id,
-                    DbName = cr.DbName,
                     FriendlyName = cr.FriendlyName,
                     IsUnique = cr.IsUnique
                 });

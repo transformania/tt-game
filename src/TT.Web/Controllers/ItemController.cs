@@ -62,7 +62,7 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player owns at least one of the type of item needed
-            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId);
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -123,7 +123,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns at least one of the type of item needed
-            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
+            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId);
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -153,7 +153,7 @@ namespace TT.Web.Controllers
             }
 
             PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormSourceId.Value);
-            ItemProcedures.DeleteItemOfName(me, itemToUse.dbItem.dbName);
+            ItemProcedures.DeleteItemOfItemSourceId(me, itemToUse.dbItem.ItemSourceId);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
@@ -186,7 +186,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (itemToUse.dbItem.dbName != "item_consumable_curselifter" && itemToUse.dbItem.dbName != "item_Butt_Plug_Hanna")
+            if (itemToUse.dbItem.ItemSourceId != ItemStatics.CurseLifterItemSourceId && itemToUse.dbItem.ItemSourceId != ItemStatics.ButtPlugItemSourceId)
             {
                 TempData["Error"] = "This type of item cannot lift curses.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -223,7 +223,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item can remove curses and is not any old item
-            if (itemToUse.dbItem.dbName != "item_consumable_curselifter" && itemToUse.dbItem.dbName != "item_Butt_Plug_Hanna")
+            if (itemToUse.dbItem.ItemSourceId != ItemStatics.CurseLifterItemSourceId && itemToUse.dbItem.ItemSourceId != ItemStatics.ButtPlugItemSourceId)
             {
                 TempData["Error"] = "This item cannot remove curses.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -288,7 +288,7 @@ namespace TT.Web.Controllers
             }
 
             // make sure that this is actually a book
-            if (!book.dbItem.dbName.Contains("item_consumable_tome-"))
+            if (book.Item.ConsumableSubItemType != (int)ItemStatics.ConsumableSubItemTypes.Tome)
             {
                 TempData["Error"] = "You can't read that item!";
                 TempData["SubError"] = "It's not a book.";
@@ -296,7 +296,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player hasn't already read this book
-            if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.dbName))
+            if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.ItemSourceId))
             {
                 TempData["Error"] = "You have already absorbed the knowledge from this book and can learn nothing more from it.";
                 TempData["SubError"] = "Perhaps a friend could use this tome more than you right now.";
@@ -304,7 +304,7 @@ namespace TT.Web.Controllers
             }
 
             ItemProcedures.DeleteItem(book.dbItem.Id);
-            ItemProcedures.AddBookReading(me, book.dbItem.dbName);
+            ItemProcedures.AddBookReading(me, book.dbItem.ItemSourceId);
             PlayerProcedures.GiveXP(me, 35);
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1);

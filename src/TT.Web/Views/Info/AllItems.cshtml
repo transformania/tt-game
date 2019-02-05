@@ -11,10 +11,6 @@
             <tr>
                 <td>Id</td>
                 <td><b>Name as seen ingame</b></td>
-                
-                <td>
-                    <b>Paste this text to contribution form</b>
-                </td>
                 <td><b>Unique?</b></td>
             </tr>
         </thead>
@@ -26,8 +22,6 @@
                     <td class="copyable" data-clipboard-text="@f.Id">@f.Id</td>
                     <td class="copyable" data-clipboard-text="@f.FriendlyName">@f.FriendlyName</td>
                     
-                    <td class="copyable" data-clipboard-text="@f.DbName">@f.DbName</td>
-
                     @{
                 if (f.IsUnique)
                 {

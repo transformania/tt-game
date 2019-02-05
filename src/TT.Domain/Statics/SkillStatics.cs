@@ -35,10 +35,10 @@ namespace TT.Domain.Statics
             return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToFormSourceId == formSourceId);
         }
 
-        public static IEnumerable<DbStaticSkill> GetItemSpecificSkills(string itemdbaName)
+        public static IEnumerable<DbStaticSkill> GetItemSpecificSkills(int itemSourceId)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToItem == itemdbaName);
+            return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToItemSourceId == itemSourceId);
         }
 
         public static IEnumerable<DbStaticSkill> GetSkillsLearnedAtLocation(string locationName)

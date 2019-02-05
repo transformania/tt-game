@@ -119,7 +119,6 @@ namespace TT.Domain.Statics
         public const string ItemType_Pet = "pet";
         public const string ItemType_Rune = "rune";
 
-        public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
         public const int ItemType_DungeonArtifact_Id = 218;
 
         public const int Dungeon_ArtifactCurseEffectSourceId = 102;
@@ -130,10 +129,6 @@ namespace TT.Domain.Statics
         public const int DungeonDemon_Limit = 5;
 
         public const int Dungeon_VanquishSpellSourceId = 686;
-
-        public const string ItemType_TGBomb = "item_consumable_tg_bomb";
-
-        
 
         public const int PsychopathDefaultAmount = 15;
         public const int Covenant_MaximumAnimatePlayerCount = 25;

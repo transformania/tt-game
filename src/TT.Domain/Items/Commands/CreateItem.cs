@@ -10,7 +10,6 @@ namespace TT.Domain.Items.Commands
     public class CreateItem : DomainCommand<int>
     {
 
-        public string dbName { get;  set; }
 
         public string dbLocationName { get;  set; }
         public bool IsEquipped { get;  set; }
@@ -30,7 +29,6 @@ namespace TT.Domain.Items.Commands
         public CreateItem()
         {
             dbLocationName = "";
-            dbName = "";
             IsEquipped = false;
             TurnsUntilUse = 0;
             Level = 1;

@@ -19,14 +19,13 @@ namespace TT.Tests.Forms.Commands
         {
             var itemSource = new ItemSourceBuilder()
                 .With(i => i.Id, 50)
-                .With(i => i.DbName, "derpshoes")
                 .BuildAndSave();
 
             var formSource = new FormSourceBuilder()
                 .With(f => f.Id, 33)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK {FormSourceId = formSource.Id, ItemSourceName = itemSource.DbName});
+            DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK {FormSourceId = formSource.Id, ItemSourceId = itemSource.Id});
 
             var loadedform = DataContext.AsQueryable<FormSource>().First(t => t.Id == formSource.Id);
 
@@ -47,8 +46,8 @@ namespace TT.Tests.Forms.Commands
                  .With(f => f.Id, 33)
                  .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = formSource.Id, ItemSourceName = "fake"});
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with dbName 'fake' could not be found");
+            Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = formSource.Id, ItemSourceId = -999});
+            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with Id '-999' could not be found");
         }
     }
 }

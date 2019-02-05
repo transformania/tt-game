@@ -582,6 +582,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            if (skill.dbSkill.SkillSourceId == PvPStatics.Spell_WeakenId)
+            {
+                ViewBag.Message = $"You can't archive the {skill.StaticSkill.FriendlyName} skill.";
+                return PartialView(MVC.Settings.Views.partial.ArchiveNotice);
+            }
+
             SkillProcedures.ArchiveSpell(skill.dbSkill.Id);
 
             if (!skill.dbSkill.IsArchived)

@@ -7,18 +7,20 @@
 
 <div class="containerInner textSpaced">
     @Html.Raw(Model.Text)
+    <hr>
+    @{
+        if (!Model.AlreadyRead)
+        {
+            <a href="@Url.Action(MVC.Item.ReadSkillBook(Model.BookId))" class="btn">Absorb Knowledge</a>
+        }
+        else
+        {
+            <b>You have already absorbed all the knowledge you can from this tome.</b>
+        }
+    }
 </div>
 
-@{
-    if (!Model.AlreadyRead)
-    {
-        <a href="@Url.Action(MVC.Item.ReadSkillBook(Model.BookId))">Absorb Knowledge</a>
-    }
-    else
-    {
-        <b>You have already absorbed all the knowledge you can from this tome.</b>
-    }
-}
+
 
 
 <style>

@@ -981,7 +981,9 @@ namespace TT.Domain.Procedures
                 {
                     return "You have to wait longer before you can use this item agin.";
                 }
-                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
+                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable
+                    && itemPlus.Item.GivesEffectSourceId != null &&
+                    EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
                 {
                     return "You can't use this yet as you already have the effect active or on cooldown.";
                 }

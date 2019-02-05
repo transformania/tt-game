@@ -54,7 +54,6 @@ namespace TT.Tests.Items.Commands
 
             var bomb = new ItemBuilder()
                 .With(i => i.ItemSource, new ItemSourceBuilder().BuildAndSave())
-                .With(i => i.dbName, PvPStatics.ItemType_TGBomb)
                 .With(i => i.Id, 5)
                 .BuildAndSave();
 
@@ -157,7 +156,6 @@ namespace TT.Tests.Items.Commands
         {
             var bomb = new ItemBuilder()
                 .With(i => i.ItemSource, new ItemSourceBuilder().BuildAndSave())
-                .With(i => i.dbName, PvPStatics.ItemType_TGBomb)
                 .With(i => i.Id, 5)
                 .BuildAndSave();
 

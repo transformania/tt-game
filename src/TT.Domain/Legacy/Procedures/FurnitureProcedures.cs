@@ -24,38 +24,38 @@ namespace TT.Domain.Procedures
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
           //  IDbStaticFurnitureRepository furnStaticRepo = new EFDbStaticFurnitureRepository();
 
-            IEnumerable<FurnitureViewModel> output = from f in furnRepo.Furnitures
-                                                     where f.CovenantId == covenantId
-                                                     join sf in furnRepo.DbStaticFurniture on f.dbType equals sf.dbType
+            IEnumerable<FurnitureViewModel> output = from furniture in furnRepo.Furnitures
+                                                     where furniture.CovenantId == covenantId
+                                                     join staticFurniture in furnRepo.DbStaticFurniture on furniture.dbType equals staticFurniture.dbType
                                                      select new FurnitureViewModel
                                                      {
                                                          dbFurniture = new Furniture_VM
                                                          {
-                                                             Id = f.Id,
-                                                             dbType = f.dbType,
-                                                             ContractStartTurn = f.ContractStartTurn,
-                                                             ContractEndTurn = f.ContractEndTurn,
-                                                             CovenantId = f.CovenantId,
-                                                             ContractTurnDuration = f.ContractTurnDuration,
-                                                             LastUsersIds = f.LastUsersIds,
-                                                             LastUseTimestamp = f.LastUseTimestamp,
-                                                             Price = f.Price,
-                                                             HumanName = f.HumanName,
+                                                             Id = furniture.Id,
+                                                             dbType = furniture.dbType,
+                                                             ContractStartTurn = furniture.ContractStartTurn,
+                                                             ContractEndTurn = furniture.ContractEndTurn,
+                                                             CovenantId = furniture.CovenantId,
+                                                             ContractTurnDuration = furniture.ContractTurnDuration,
+                                                             LastUsersIds = furniture.LastUsersIds,
+                                                             LastUseTimestamp = furniture.LastUseTimestamp,
+                                                             Price = furniture.Price,
+                                                             HumanName = furniture.HumanName,
                                                          },
 
                                                          FurnitureType = new StaticFurniture
                                                          {
-                                                             Id = sf.Id,
-                                                             dbType = sf.dbType,
-                                                             FriendlyName = sf.FriendlyName,
-                                                             APReserveRefillAmount = sf.APReserveRefillAmount,
-                                                             BaseContractTurnLength = sf.BaseContractTurnLength,
-                                                             BaseCost = sf.BaseCost,
-                                                             GivesEffectSourceId = sf.GivesEffectSourceId,
-                                                             GivesItem = sf.GivesItem,
-                                                             MinutesUntilReuse = sf.MinutesUntilReuse,
-                                                             Description = sf.Description,
-                                                             PortraitUrl = sf.PortraitUrl,
+                                                             Id = staticFurniture.Id,
+                                                             dbType = staticFurniture.dbType,
+                                                             FriendlyName = staticFurniture.FriendlyName,
+                                                             APReserveRefillAmount = staticFurniture.APReserveRefillAmount,
+                                                             BaseContractTurnLength = staticFurniture.BaseContractTurnLength,
+                                                             BaseCost = staticFurniture.BaseCost,
+                                                             GivesEffectSourceId = staticFurniture.GivesEffectSourceId,
+                                                             GivesItemSourceId = staticFurniture.GivesItemSourceId,
+                                                             MinutesUntilReuse = staticFurniture.MinutesUntilReuse,
+                                                             Description = staticFurniture.Description,
+                                                             PortraitUrl = staticFurniture.PortraitUrl,
                                                              
                                                          }
 
@@ -187,11 +187,11 @@ namespace TT.Domain.Procedures
             }
 
             //furniture gives item
-            else if (!furnitureStatic.GivesItem.IsNullOrEmpty())
+            else if (furnitureStatic.GivesItemSourceId != null)
             {
-                ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
+                ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItemSourceId.Value);
                 PlayerProcedures.SetTimestampToNow(user);
-                var itemGained = ItemStatics.GetStaticItem(furnitureStatic.GivesItem);
+                var itemGained = ItemStatics.GetStaticItem(furnitureStatic.GivesItemSourceId.Value);
                 return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, gaining a " + itemGained.FriendlyName + ".";
             }
 

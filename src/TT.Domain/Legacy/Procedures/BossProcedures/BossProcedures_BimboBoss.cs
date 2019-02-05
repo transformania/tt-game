@@ -22,7 +22,6 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int CureEffectSourceId = 33;
         public const int RegularTFSpellSourceId = 532;
         private const int RegularBimboFormSourceId = 232;
-        public const string CureItemDbName = "item_consumeable_bimbo_cure";
         public const int CureItemSourceId = 143;
         public const int BimboBossFormSourceId = 233;
 
@@ -395,7 +394,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 var cmd = new CreateItem
                 {
                     dbLocationName = LocationsStatics.GetRandomLocationNotInDungeon(),
-                    dbName = CureItemDbName,
                     IsEquipped = false,
                     IsPermanent = false,
                     Level = 0,
@@ -403,7 +401,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     OwnerId = null,
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
-                    ItemSourceId = ItemStatics.GetStaticItem(CureItemDbName).Id
+                    ItemSourceId = ItemStatics.GetStaticItem(CureItemSourceId).Id
                 };
 
                 if (turnNumber % 3 == 0)

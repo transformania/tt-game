@@ -15,7 +15,7 @@ namespace TT.Domain.Skills.Commands
         public int? FormSourceId { get; set; }
         public int? GivesEffectSourceId { get; set; }
         public int? ExclusiveToFormSourceId { get; set; }
-        public string ExclusiveToItemSource { get; set; }
+        public int? ExclusiveToItemSourceId { get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -59,13 +59,13 @@ namespace TT.Domain.Skills.Commands
                     }
                 }
 
-                if (!ExclusiveToItemSource.IsNullOrEmpty())
+                if (ExclusiveToItemSourceId != null)
                 {
-                    exclusiveToItemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.DbName == ExclusiveToItemSource);
+                    exclusiveToItemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == ExclusiveToItemSourceId);
                     if (exclusiveToFormSource == null)
                     {
                         throw new DomainException(
-                            $"ExclusiveToItemSource with name '{ExclusiveToItemSource}' could not be found");
+                            $"ExclusiveToItemSource with id '{ExclusiveToItemSourceId}' could not be found");
                     }
                 }
 

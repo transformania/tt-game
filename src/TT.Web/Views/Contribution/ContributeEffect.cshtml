@@ -211,7 +211,7 @@
 
             <div class="form__panel" id="Skill_UniqueToItem_Panel" style="display: none;">
                 <label for="Skill_UniqueToItem">What is the name of the item this spell grants when equipped?</label>
-                @Html.TextBoxFor(e => e.Skill_UniqueToItem)
+                @Html.TextBoxFor(e => e.Skill_UniqueToItemSourceId)
             </div>
 
         
@@ -454,7 +454,7 @@
 
         var startLocation = "@Model.Skill_UniqueToLocation";
         var startForm = "@Model.Skill_UniqueToFormSourceId";
-        var startItem = "@Model.Skill_UniqueToItem";
+        var startItem = "@Model.Skill_UniqueToItemSourceId";
 
         if (startLocation!="") {
             showForLocationCurse();

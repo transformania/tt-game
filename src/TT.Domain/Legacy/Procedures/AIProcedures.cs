@@ -307,7 +307,7 @@ namespace TT.Domain.Procedures
                     var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                     var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s =>
                         s.dbSkill.SkillSourceId != PvPStatics.Spell_WeakenId && s.StaticSkill.ExclusiveToFormSourceId == null &&
-                        s.StaticSkill.ExclusiveToItem == null);
+                        s.StaticSkill.ExclusiveToItemSourceId == null);
 
                     // the bot has an attack target, so go chase it
                     if (directive.State == "attack")

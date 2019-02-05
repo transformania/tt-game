@@ -8,7 +8,6 @@ namespace TT.Domain.Effects.Entities
     {
 
         public Player Owner { get; protected set; }
-        public string dbName { get; protected set; }
         public int Duration { get; protected set; }
         public bool IsPermanent { get; protected set; }
         public int Level { get; protected set; }
@@ -23,7 +22,6 @@ namespace TT.Domain.Effects.Entities
             {
                 Owner = player,
                 EffectSource = effectSource,
-                dbName = effectSource.dbName,
                 Duration = cmd.Duration,
                 Level = cmd.Level,
                 Cooldown = cmd.Cooldown,

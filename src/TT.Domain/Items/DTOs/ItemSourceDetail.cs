@@ -5,7 +5,6 @@ namespace TT.Domain.Items.DTOs
     public class ItemSourceDetail
     {
         public int Id { get; set; }
-        public string DbName { get; set; }
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public string PortraitUrl { get; set; }

@@ -282,7 +282,7 @@ namespace TT.Web.Controllers
 
             ProofreadCopy.Skill_FriendlyName = OldCopy.Skill_FriendlyName;
             ProofreadCopy.Skill_UniqueToFormSourceId = OldCopy.Skill_UniqueToFormSourceId;
-            ProofreadCopy.Skill_UniqueToItem = OldCopy.Skill_UniqueToItem;
+            ProofreadCopy.Skill_UniqueToItemSourceId = OldCopy.Skill_UniqueToItemSourceId;
             ProofreadCopy.Skill_UniqueToLocation = OldCopy.Skill_UniqueToLocation;
             ProofreadCopy.Skill_Description = OldCopy.Skill_Description;
             ProofreadCopy.Skill_ManaCost = OldCopy.Skill_ManaCost;
@@ -474,7 +474,7 @@ namespace TT.Web.Controllers
             foreach (var form in forms)
             {
 
-                var item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
+                var item = itemRepo.DbStaticItems.FirstOrDefault(i => i.Id == form.BecomesItemSourceId);
 
                 if (item != null)
                 {
@@ -1573,12 +1573,11 @@ namespace TT.Web.Controllers
             var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
-                dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 FormerPlayerId = me.Id,
                 OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
-                ItemSourceId = ItemStatics.GetStaticItem("item_Flirty_Three-Tiered_Skirt_Martiandawn").Id
+                ItemSourceId = ItemStatics.GetStaticItem(88).Id // flirty 3-tiered skirt
             };
 
             DomainRegistry.Repository.Execute(cmd);
@@ -1624,12 +1623,11 @@ namespace TT.Web.Controllers
             var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
-                dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
                 FormerPlayerId = me.Id,
                 OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
-                ItemSourceId = ItemStatics.GetStaticItem("animal_Cuddly_Pocket_Goo_Girl_GooGirl").Id
+                ItemSourceId = ItemStatics.GetStaticItem(96).Id // cuddly pocket goo
             };
             DomainRegistry.Repository.Execute(cmd);
 
@@ -1700,13 +1698,12 @@ namespace TT.Web.Controllers
 
             var cmd = new CreateItem
             {
-                dbName = "item_consumeable_teleportation_scroll",
                 OwnerId = me.Id,
                 dbLocationName = "",
                 EquippedThisTurn = false,
                 LastSouledTimestamp = DateTime.UtcNow,
                 Level = 0,
-                ItemSourceId = ItemStatics.GetStaticItem("item_consumeable_teleportation_scroll").Id
+                ItemSourceId = ItemStatics.GetStaticItem(ItemStatics.TeleportationScrollItemSourceId).Id
             };
 
             DomainRegistry.Repository.Execute(cmd);

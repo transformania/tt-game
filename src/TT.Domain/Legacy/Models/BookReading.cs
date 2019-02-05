@@ -6,7 +6,7 @@ namespace TT.Domain.Models
     {
         public int Id { get; set; }
         public int PlayerId { get; set; }
-        public string BookDbName { get; set; }
+        public int BookItemSourceId { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

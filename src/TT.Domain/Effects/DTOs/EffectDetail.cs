@@ -5,7 +5,6 @@ namespace TT.Domain.Effects.DTOs
     public class EffectDetail
     {
         public PlayerDetail Owner { get;  set; }
-        public string dbName { get;  set; }
         public int Duration { get;  set; }
         public bool IsPermanent { get;  set; }
         public int Level { get;  set; }

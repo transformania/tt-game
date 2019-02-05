@@ -83,7 +83,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              BecomesItemSourceId = form.BecomesItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              BecomesItemSourceId = form.BecomesItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -294,7 +294,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              BecomesItemSourceId = form.BecomesItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -401,7 +401,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemDbName = form.BecomesItemDbName,
+                                                              BecomesItemSourceId = form.BecomesItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -1079,10 +1079,6 @@ namespace TT.Domain.Procedures
             // find a findable item (48-60)
             else if (roll < 60)
             {
-
-
-                var eligibleItems = ItemStatics.GetAllFindableItems().ToList();
-
                 var justFound = ItemProcedures.GetRandomFindableItem();
 
                 var output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
@@ -1093,7 +1089,7 @@ namespace TT.Domain.Procedures
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs))
                 {
-                    var randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.dbName == justFound.dbName).Last();
+                    var randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.ItemSourceId == justFound.Id).Last();
                     ItemProcedures.DropItem(randomItem.dbItem.Id);
                     output += "  However, your arms are full and you dropped it.";
                 }

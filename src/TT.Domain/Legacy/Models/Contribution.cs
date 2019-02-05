@@ -324,6 +324,7 @@ namespace TT.Domain.Models
 
         public int? SkillSourceId { get; set; }
         public int? FormSourceId { get; set; }
+        public int? ItemSourceId { get; set; }
 
         /// <summary>
         /// Returns the name of the folder after Images/PvP to look inside to find the appropriate graphic

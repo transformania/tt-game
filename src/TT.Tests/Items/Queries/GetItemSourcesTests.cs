@@ -13,13 +13,11 @@ namespace TT.Tests.Items.Queries
         public void Should_fetch_all_available_items()
         {
             new ItemSourceBuilder().With(cr => cr.Id, 200)
-                .With(cr => cr.DbName, "dbName")
                 .With(cr => cr.FriendlyName, "Friendly Name")
                 .With(cr => cr.IsUnique, true)
                 .BuildAndSave();
 
             new ItemSourceBuilder().With(cr => cr.Id, 200)
-                .With(cr => cr.DbName, "dbName2")
                 .With(cr => cr.FriendlyName, "Unfriendly Name!")
                 .With(cr => cr.IsUnique, true)
                 .BuildAndSave();

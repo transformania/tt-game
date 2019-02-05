@@ -261,7 +261,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.NewMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
 
-                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.BecomesItemDbName).PortraitUrl;
+                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.BecomesItemSourceId.Value).PortraitUrl;
 
                 animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
 
@@ -1844,7 +1844,7 @@ namespace TT.Web.Controllers
                 }
 
                 // if item is an accessory, you can't wear two of the same thing
-                if (item.Item.ItemType == PvPStatics.ItemType_Accessory && ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.dbName) == 1)
+                if (item.Item.ItemType == PvPStatics.ItemType_Accessory && ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
                 {
                     TempData["Error"] = "You are already equipped with an accessory of this type.";
                     TempData["SubError"] = "You can't equip two of the same accessory at a time.";
@@ -1915,7 +1915,7 @@ namespace TT.Web.Controllers
             }
 
             // if this item is a teleportation scroll, redirect to the teleportation page.
-            if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
+            if (item.dbItem.ItemSourceId == ItemStatics.TeleportationScrollItemSourceId)
             {
 
                 // assert that this player is not in a duel
@@ -1946,13 +1946,13 @@ namespace TT.Web.Controllers
             }
 
             // if this item is the self recaster, redirect to the animate spell listing page
-            if (item.dbItem.dbName == "item_consumable_selfcaster")
+            if (item.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId)
             {
                 return RedirectToAction(MVC.Item.SelfCast());
             }
 
             // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
-            if (item.dbItem.dbName.Contains("item_consumable_tome-"))
+            if (item.Item.ConsumableSubItemType != null && item.Item.ConsumableSubItemType == (int)ItemStatics.ConsumableSubItemTypes.Tome)
             {
 
                 var cmd = new GetTomeByItem { ItemSourceId = item.Item.Id };
@@ -1961,7 +1961,7 @@ namespace TT.Web.Controllers
                 var output = new SkillBookViewModel
                 {
                     Text = tome.Text,
-                    AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.dbName),
+                    AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.ItemSourceId),
                     BookId = item.dbItem.Id,
                 };
 
@@ -1970,12 +1970,12 @@ namespace TT.Web.Controllers
                 return View(MVC.Item.Views.SkillBook, output);
             }
 
-            if (item.dbItem.dbName == "item_consumable_curselifter" || item.dbItem.dbName == "item_Butt_Plug_Hanna")
+            if (item.dbItem.ItemSourceId == ItemStatics.CurseLifterItemSourceId || item.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId)
             {
                 return RedirectToAction(MVC.Item.RemoveCurse(item.dbItem.Id));
             }
 
-            if (item.dbItem.dbName == PvPStatics.ItemType_TGBomb)
+            if (item.dbItem.ItemSourceId == ItemStatics.TgSplashOrbItemSourceId)
             {
                 try
                 {
@@ -2646,7 +2646,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player actually does own one of this
-            if (ItemProcedures.PlayerHasNumberOfThisItem(me, "item_consumeable_teleportation_scroll") <= 0)
+            if (ItemProcedures.PlayerHasNumberOfThisItem(me, ItemStatics.TeleportationScrollItemSourceId) <= 0)
             {
                 TempData["Error"] = "You don't have one of these.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -2681,7 +2681,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
-            ItemProcedures.DeleteItemOfName(me, "item_consumeable_teleportation_scroll");
+            ItemProcedures.DeleteItemOfItemSourceId(me, ItemStatics.TeleportationScrollItemSourceId);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);

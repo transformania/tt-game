@@ -8,7 +8,7 @@
         public decimal TFEnergyRequired { get; set; }
         public string Gender { get; set; }
         public string MobilityType { get; set; }
-        public string BecomesItemDbName { get; set; }
+        public int? BecomesItemSourceId { get; set; }
         public string PortraitUrl { get; set; }
         public bool IsUnique { get; set; }
 

@@ -44,12 +44,10 @@ namespace TT.Tests.Skills.Commands
 
             exlusiveToItem = new ItemSourceBuilder()
                 .With(i => i.Id, 100)
-                .With(i => i.DbName, "exclusiveToItem")
                 .BuildAndSave();
 
             givesEffect = new EffectSourceBuilder()
                 .With(i => i.Id, 78)
-                .With(i => i.dbName, "givesEffect")
                 .BuildAndSave();
 
         }
@@ -63,7 +61,7 @@ namespace TT.Tests.Skills.Commands
                 SkillSourceId = 55,
                 FormSourceId = form.Id, 
                 ExclusiveToFormSourceId = exclusiveToForm.Id,
-                ExclusiveToItemSource = exlusiveToItem.DbName,
+                ExclusiveToItemSourceId = exlusiveToItem.Id,
                 GivesEffectSourceId = givesEffect.Id
             });
 
@@ -74,10 +72,8 @@ namespace TT.Tests.Skills.Commands
             skillSource.ExclusiveToFormSource.Id.Should().Be(7);
 
             skillSource.ExclusiveToItemSource.Id.Should().Be(100);
-            skillSource.ExclusiveToItemSource.DbName.Should().Be("exclusiveToItem");
 
             skillSource.GivesEffectSource.Id.Should().Be(78);
-            skillSource.GivesEffectSource.dbName.Should().Be("givesEffect");
 
         }
 
@@ -90,7 +86,7 @@ namespace TT.Tests.Skills.Commands
                 SkillSourceId = 55,
                 FormSourceId = null,
                 ExclusiveToFormSourceId = null,
-                ExclusiveToItemSource = null,
+                ExclusiveToItemSourceId = null,
                 GivesEffectSourceId = null
             });
 
@@ -135,10 +131,10 @@ namespace TT.Tests.Skills.Commands
         public void should_throw_error_if_exclusive_to_item_source_submitted_but_not_found()
         {
 
-            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToItemSource = "fake" };
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToItemSourceId = -999 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with name 'fake' could not be found");
+            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with id '-999' could not be found");
         }
 
         [Test]

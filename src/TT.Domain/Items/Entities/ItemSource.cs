@@ -8,7 +8,6 @@ namespace TT.Domain.Items.Entities
     public class ItemSource : Entity<int>
     {
 
-        public string DbName { get; protected set; }
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public string PortraitUrl { get; protected set; }

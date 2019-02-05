@@ -2,7 +2,6 @@
 {
     public class EffectSourceDetail
     {
-        public string dbName { get; protected set; }
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public int AvailableAtLevel { get; protected set; }

@@ -27,7 +27,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int ValentinesPresenceSpellSourceId = 839;
         private const int ValentinesPresenceEffectSourceId = 143;
 
-        public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
+        public const int QueensPantiesItemSourceId = 125;
 
         private const int DayNightInterval = 12;
 
@@ -84,14 +84,13 @@ namespace TT.Domain.Procedures.BossProcedures
                 var createItemCmd = new CreateItem
                 {
                     dbLocationName = "",
-                    dbName = QueensPanties,
                     EquippedThisTurn = false,
                     IsEquipped = false,
                     IsPermanent = false,
                     Level = 11,
                     OwnerId = id,
                     PvPEnabled = -1,
-                    ItemSourceId = ItemStatics.GetStaticItem(QueensPanties).Id
+                    ItemSourceId = ItemStatics.GetStaticItem(QueensPantiesItemSourceId).Id
                 };
 
                 DomainRegistry.Repository.Execute(createItemCmd);
@@ -221,7 +220,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             // have Valentine equip his two strongest swords
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<Item> valentineSwords = itemRepo.Items.Where(i => i.OwnerId == valentine.Id && i.dbName != QueensPanties).OrderByDescending(i => i.Level);
+            IEnumerable<Item> valentineSwords = itemRepo.Items.Where(i => i.OwnerId == valentine.Id && i.ItemSourceId != QueensPantiesItemSourceId).OrderByDescending(i => i.Level);
             var swordsToSave = new List<Item>();
 
             var counter = 1;
@@ -290,7 +289,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
             
 
-            var panties = itemRepo.Items.FirstOrDefault(i => i.dbName == QueensPanties);
+            var panties = itemRepo.Items.FirstOrDefault(i => i.ItemSourceId == QueensPantiesItemSourceId);
             panties.OwnerId = newOwnerId;
             itemRepo.SaveItem(panties);
 

@@ -5,7 +5,7 @@ namespace TT.Domain.Models
     public class Item
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
+        public int ItemSourceId { get; set; }
         public int? OwnerId { get; set; }
         public string dbLocationName { get; set; }
         public bool IsEquipped { get; set; }
@@ -31,7 +31,7 @@ namespace TT.Domain.Models
     public class Item_VM
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
+        public int ItemSourceId { get; set; }
         public int? OwnerId { get; set; }
         public string dbLocationName { get; set; }
         public bool IsEquipped { get; set; }

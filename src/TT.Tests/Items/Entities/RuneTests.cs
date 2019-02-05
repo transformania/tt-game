@@ -60,7 +60,6 @@ namespace TT.Tests.Items.Entities
         }
 
         [Test]
-        [TestCase(PvPStatics.ItemType_DungeonArtifact)]
         [TestCase(PvPStatics.ItemType_Consumable)]
         [TestCase(PvPStatics.ItemType_Consumable_Reuseable)]
         [TestCase(PvPStatics.ItemType_Rune)]

@@ -13,7 +13,6 @@ namespace TT.Tests.Items.Queries
         public void Should_fetch_tome_by_id()
         {
             new ItemSourceBuilder().With(cr => cr.Id, 23)
-                .With(cr => cr.DbName, "dbName")
                 .With(cr => cr.FriendlyName, "Hello!")
                 .With(cr => cr.IsUnique, true)
                 .BuildAndSave();
@@ -23,7 +22,6 @@ namespace TT.Tests.Items.Queries
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
             item.Id.Should().Be(23);
-            item.DbName.Should().BeEquivalentTo("dbName");
             item.FriendlyName.Should().BeEquivalentTo("Hello!");
             item.IsUnique.Should().Be(true);
         }

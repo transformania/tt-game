@@ -52,17 +52,16 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void TransferBooksFromLindellaToLorekeeper(Player lorekeeper)
         {
             var lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
-            IItemRepository itemRepo = new EFItemRepository();
 
-            var LindellasBooks = itemRepo.Items.Where(i => i.OwnerId == lindella.Id && (i.dbName.Contains("item_consumable_spellbook_") || i.dbName.Contains("item_consumable_tome-"))).ToList();
+            var allLindellaItems = ItemProcedures.GetAllPlayerItems(lindella.Id).Where(i =>
+                i.Item.ConsumableSubItemType == (int) ItemStatics.ConsumableSubItemTypes.Spellbook ||
+                i.Item.ConsumableSubItemType == (int) ItemStatics.ConsumableSubItemTypes.Tome);
 
-            foreach (var i in LindellasBooks)
+            foreach (var i in allLindellaItems)
             {
-                var cmd = new ChangeItemOwner {ItemId = i.Id, OwnerId = lorekeeper.Id};
+                var cmd = new ChangeItemOwner {ItemId = i.dbItem.Id, OwnerId = lorekeeper.Id};
                 DomainRegistry.Repository.Execute(cmd);
             }
-
-
         }
 
     }

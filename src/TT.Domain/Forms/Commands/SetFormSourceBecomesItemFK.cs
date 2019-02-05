@@ -9,7 +9,7 @@ namespace TT.Domain.Forms.Commands
     public class SetFormSourceBecomesItemFK : DomainCommand
     {
         public int FormSourceId { private  get; set; }
-        public string ItemSourceName { private get; set; }
+        public int ItemSourceId { private get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -20,9 +20,9 @@ namespace TT.Domain.Forms.Commands
                 if (formSource == null)
                     throw new DomainException($"FormSource with Id '{FormSourceId}' could not be found");
 
-                var itemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.DbName == ItemSourceName);
+                var itemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == ItemSourceId);
                 if (itemSource == null)
-                    throw new DomainException($"ItemSource with dbName '{ItemSourceName}' could not be found");
+                    throw new DomainException($"ItemSource with Id '{ItemSourceId}' could not be found");
 
                 formSource.SetItemSource(itemSource);
                 ctx.Update(formSource);

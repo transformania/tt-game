@@ -84,19 +84,24 @@
                         </td>
                         <td class="tableCellDescription">@skill.SkillSource.Description</td>
                         @{
-                    if (@skill.SkillSource.GivesEffectSource != null)
-                    {
-                        <td class="effect">@skill.SkillSource.GivesEffectSource.FriendlyName</td>
-                    }
-                    else
-                    {
-                        <td>N/A</td>
-                    }
-                }
-                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.SkillSource.Id), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
-                </tr>
+                            if (@skill.SkillSource.GivesEffectSource != null)
+                            {
+                                <td class="effect">@skill.SkillSource.GivesEffectSource.FriendlyName</td>
+                            }
+                            else
+                            {
+                                <td>N/A</td>
+                            }
                         }
-        }
+                        <td>
+                            @if (skill.SkillSource.Id != PvPStatics.Spell_WeakenId)
+                            {
+                                @Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.SkillSource.Id), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)
+                            }
+                        </td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>
@@ -115,20 +120,17 @@
     }
 
     tr {
-       border: 1px dashed rgb(161, 105, 105);
-       text-align: center;
+        border: 1px dashed rgb(161, 105, 105);
+        text-align: center;
     }
-
-    
-
 </style>
 
 
 
 
 
- 
-    <script>
+
+<script>
     $(document).ready(function () {
         $('#MySkills').dataTable({
             "orderCellsTop": true,
@@ -136,14 +138,14 @@
                 this.api().column(3).every(function () {
                     var column = this;
                     $("#filtermobility").on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
 
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
 
                     column.data().unique().sort().each(function (d, j) {
                         $("#filtermobility").append('<option value="' + d + '">' + d + '</option>')
@@ -169,4 +171,4 @@
     }
 
 
-    </script>
+</script>

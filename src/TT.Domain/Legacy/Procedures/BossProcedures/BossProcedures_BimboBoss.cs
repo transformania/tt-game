@@ -102,7 +102,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 var attackCount = (int)Math.Floor(rand.NextDouble() * 2 + 1);
                 for (var i = 0; i < attackCount; i++) {
-                    AttackProcedures.Attack(bimboss, human, KissSkillSourceId);
+                    AttackProcedures.Attack(bimboss, human, RegularTFSpellSourceId);
                 }
                 AIProcedures.DealBossDamage(bimboss, human, false, attackCount);
             }

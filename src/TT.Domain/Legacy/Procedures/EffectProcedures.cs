@@ -244,7 +244,7 @@ namespace TT.Domain.Procedures
                     logmessage = effectPlus.MessageWhenHit;
                 }
 
-                PlayerLogProcedures.AddPlayerLog(player.Id, effectPlus.MessageWhenHit, false);
+                PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);
                 DomainRegistry.Repository.Execute(cmd);
                 return logmessage;
             }

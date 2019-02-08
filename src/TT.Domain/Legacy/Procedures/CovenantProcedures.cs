@@ -438,12 +438,7 @@ namespace TT.Domain.Procedures
             return furnRepo.Furnitures.Count(f => f.CovenantId == covenant.Id);
         }
 
-        public static string ChangeCovenantCaptain(Covenant covenant, Player player)
-        {
-            return ChangeCovenantCaptain(covenant, player, false);
-        }
-
-        public static string ChangeCovenantCaptain(Covenant covenant, Player player, bool removeOnly)
+        public static string ChangeCovenantCaptain(Covenant covenant, Player player, bool removeOnly = false)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             var dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
@@ -461,20 +456,29 @@ namespace TT.Domain.Procedures
                 covRepo.SaveCovenant(dbCovenant);
             }
 
-            if (dbCovenant.Captains.Contains(playerIdString) || removeOnly)
+            var isACaptain = dbCovenant.Captains.Contains(playerIdString);
+            if (isACaptain && removeOnly)
             {
                 dbCovenant.Captains = dbCovenant.Captains.Replace(playerIdString, "");
                 covRepo.SaveCovenant(dbCovenant);
                 WriteCovenantLog(player.GetFullName() + " is no longer a captain of the covenant.", covenant.Id, true);
                 return player.GetFullName() + " is no longer a captain of the covenant.";
-            } else if (!removeOnly) {
-                dbCovenant.Captains += playerIdString;
-                covRepo.SaveCovenant(dbCovenant);
-                WriteCovenantLog(player.GetFullName() + " is now a captain of the covenant.", covenant.Id, true);
-                return player.GetFullName() + " is now a captain of the covenant.";
             }
-            return "";
-            
+
+            if (isACaptain)
+            {
+                return $"{player.GetFullName()} is already a captain.";
+            }
+
+            if (removeOnly)
+            {
+                return $"{player.GetFullName()} can't be removed as a captain because they are not one currently.";
+            }
+
+            dbCovenant.Captains += playerIdString;
+            covRepo.SaveCovenant(dbCovenant);
+            WriteCovenantLog(player.GetFullName() + " is now a captain of the covenant.", covenant.Id, true);
+            return player.GetFullName() + " is now a captain of the covenant.";
         }
 
         public static string ChangeCovenantLeader(Covenant covenant, Player player)

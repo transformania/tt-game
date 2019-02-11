@@ -140,10 +140,6 @@ namespace TT.Domain.Procedures
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
-
-                        // add even more damage if the spell is "weaken"
-                        var extraDamageFromWeaken = (skillBeingUsed.StaticSkill.Id == PvPStatics.Spell_WeakenId) ? skillBeingUsed.StaticSkill.HealthDamageAmount*1.5M : 0;
-
                         var extraDamageFromLevel = .75M*me.Level;
 
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
@@ -161,7 +157,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = 2;
                         }
 
-                        var totalHealthDamage = (skillBeingUsed.StaticSkill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
+                        var totalHealthDamage = (skillBeingUsed.StaticSkill.HealthDamageAmount + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
 
                         // make sure damage is never in the negatives (which would heal instead)
                         if (totalHealthDamage < 0)

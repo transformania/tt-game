@@ -127,6 +127,7 @@ namespace TT.Domain.Procedures
                 // now we need to change the owner's max health or mana based on this leveling
                 if (inanimateMe.OwnerId > 0)
                 {
+                    PlayerLogProcedures.AddPlayerLog((int)inanimateMe.OwnerId, wearerMessage, true);
                     var inanimateMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
 
                     if (inanimateMePlus.Item.HealthBonusPercent != 0.0M || inanimateMePlus.Item.ManaBonusPercent != 0.0M)
@@ -167,7 +168,6 @@ namespace TT.Domain.Procedures
                 }
 
 
-                PlayerLogProcedures.AddPlayerLog((int)inanimateMe.OwnerId, wearerMessage, true);
             }
             else
             {

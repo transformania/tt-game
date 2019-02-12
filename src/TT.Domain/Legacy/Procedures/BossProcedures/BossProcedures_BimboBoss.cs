@@ -90,7 +90,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // if the player doesn't currently have it, give them the infection kiss
-            if (!EffectProcedures.PlayerHasEffect(human, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(human, KissEffectSourceId))
+            if (!EffectProcedures.PlayerHasEffect(human, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(human, CureEffectSourceId))
             {
                 AttackProcedures.Attack(bimboss, human, KissSkillSourceId);
                 AIProcedures.DealBossDamage(bimboss, human, false, 1);
@@ -275,7 +275,7 @@ namespace TT.Domain.Procedures.BossProcedures
             if (ShouldHeal(bimboBoss, turnNumber))
             {
                 
-                var activeCurses = effectRepo.Effects.Count(eff => eff.EffectSourceId == CureEffectSourceId) *3;
+                var activeCurses = effectRepo.Effects.Count(eff => eff.EffectSourceId == KissEffectSourceId) *3;
                 activeCurses = activeCurses > 75 ? 75 : activeCurses;
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);

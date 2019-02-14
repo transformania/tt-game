@@ -1016,7 +1016,7 @@ namespace TT.Domain.Procedures
                         }
 
                         owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana;
-                        if (owner.Mana > owner.Mana)
+                        if (owner.Mana > owner.MaxMana)
                         {
                             owner.Mana = owner.MaxMana;
                         }

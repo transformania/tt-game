@@ -179,7 +179,7 @@ namespace TT.Domain.Procedures
 
                         if (PvPStatics.ChaosMode)
                         {
-                            context.Database.ExecuteSqlCommand($"Update [dbo].[Players] SET ActionPoints = {TurnTimesStatics.GetActionPointLimit()}, ActionPoints_Refill = {TurnTimesStatics.GetActionPointReserveLimit()}, TimesAttackingThisUpdate = -999, Mana = MaxMana, CleansesMeditatesThisRound = -999");
+                            context.Database.ExecuteSqlCommand($"Update [dbo].[Players] SET ActionPoints = {TurnTimesStatics.GetActionPointLimit()}, ActionPoints_Refill = {TurnTimesStatics.GetActionPointReserveLimit()}, TimesAttackingThisUpdate = -999, Mana = MaxMana, CleansesMeditatesThisRound = -999, ItemsUsedThisTurn = -999");
                         }
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");

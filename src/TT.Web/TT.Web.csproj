@@ -380,6 +380,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_59.cshtml" />
     <Content Include="Views\PvP\partial\partial_ItemDetail.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_60.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_61.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

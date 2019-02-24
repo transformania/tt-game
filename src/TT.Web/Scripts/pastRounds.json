@@ -479,6 +479,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 61,
+      "name": "Alpha 61 Era of Amie Proffitt)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
 
   ]

@@ -23,7 +23,16 @@
         <span id="turn_countdown">-:--</span>
     </li>
     <li><a href="@Url.Action(MVC.PvP.WorldMap("false"))">Map</a></li>
-    <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions (@Model.PlayerLog.Count())</a></li>
+            <li><a href="@Url.Action(MVC.PvP.MySkills())">Spells</a></li>
+            <li><a href="@Url.Action(MVC.PvP.MyPerks())">My Effects</a></li>
+            <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">Look at Yourself</a></li>
+            <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.You.MembershipId))">My Statistics</a></li>
+        </ul>
+    </li>
     <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
@@ -108,8 +117,9 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be. 
-                
+            <p>
+                Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be.
+
                 @{
                     if (!Model.IsPermanent)
                     {
@@ -120,7 +130,7 @@
                         <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
                     }
                 }
-                
+
             </p>
             <br>
             <p>
@@ -150,29 +160,29 @@
                 @{
                     if (!Model.IsPermanent)
                     {
-                        <p class="center-block">
-                            <span class="place">Chance to return human: @Model.StruggleChance %.</span>
-                            <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
-                        </p>
-                    }
+                    <p class="center-block">
+                        <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+                        <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
+                    </p>
+                }
 
-                    if (Model.OwnedBy != null)
-                    {
-                        <p>
-                            <br>
-                            <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
-                        </p>
-                    }
+                if (Model.OwnedBy != null)
+                {
+                    <p>
+                        <br>
+                        <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
+                    </p>
+                }
 
 
-                    if (Model.RenderCaptcha)
-                    {
-                        @Html.Partial(MVC.PvP.Views.partial.captchaForm)
-                    }
+                if (Model.RenderCaptcha)
+                {
+                    @Html.Partial(MVC.PvP.Views.partial.captchaForm)
+                }
 
                 }
-            </p>
-            </div>           
+                </p>
+            </div>
 
 
             @*                  This needs to be rewritten !!!                 *@
@@ -294,94 +304,94 @@
             @*                  This needs to be rewritten !!!                 *@
 
 
-        
+
+        </div>
     </div>
-</div>
 
-        @*all players who are online*@
+    @*all players who are online*@
 
-        <div class="onlinePlayersWrapperBG">
-            <div class="row boxContainer">
-                @*all players who are online*@
-                @{
-                    foreach (var p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
-                    {
+    <div class="onlinePlayersWrapperBG">
+        <div class="row boxContainer">
+            @*all players who are online*@
+            @{
+                foreach (var p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+                {
 
-                        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-                            <div class="charaBoxInner">
-                                <div>
-                                    <p>
-                                        @Html.Partial(MVC.PvP.Views.Player_Partial, p)
-                                        <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
-                                    </p>
-                                </div>
+                    <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                        <div class="charaBoxInner">
+                            <div>
+                                <p>
+                                    @Html.Partial(MVC.PvP.Views.Player_Partial, p)
+                                    <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                </p>
                             </div>
                         </div>
-                    }
-
+                    </div>
                 }
-            </div>
-        </div>
 
-        @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
+            }
+        </div>
+    </div>
+
+    @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
         {
 
             <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
         }
-        }
+    }
 
-        @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
+    @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
         {
             <div class="offlinePlayersWrapperBG">
                 <div class="row boxContainer">
 
                     @{
-            foreach (var p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
-            {
-                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-                    <div class="charaBoxInner">
-                        <div>
-                            <p>
-                                @Html.Partial(MVC.PvP.Views.Player_Partial, p)
-                                <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            }
+                        foreach (var p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+                        {
+                            <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                                <div class="charaBoxInner">
+                                    <div>
+                                        <p>
+                                            @Html.Partial(MVC.PvP.Views.Player_Partial, p)
+                                            <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
 
                 </div>
             </div>
         }
-        }
+    }
 
-        @*all players who are offline*@
-        <div style="clear:both;"></div>
+    @*all players who are offline*@
+    <div style="clear:both;"></div>
 
 
-        @Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
+    @Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
 
-        <!-- Modal -->
-        <div class="modal fade" id="petInteractModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
-                    </div>
-                    <div class="modal-body">
-                        <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0))" class="btn petActionLink">Lick (+WP)</a>
-                        <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0))" class="btn petActionLink">Nuzzle (+MP)</a>
-                        <hr>
-                        <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0))" class="btn petActionLink">Headbutt (-WP)</a>
-                        <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0))" class="btn petActionLink">Snarl (-MP)</a>
-                    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="petInteractModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
+                </div>
+                <div class="modal-body">
+                    <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0))" class="btn petActionLink">Lick (+WP)</a>
+                    <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0))" class="btn petActionLink">Nuzzle (+MP)</a>
+                    <hr>
+                    <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0))" class="btn petActionLink">Headbutt (-WP)</a>
+                    <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0))" class="btn petActionLink">Snarl (-MP)</a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
+    <script>
 
     var attacksMade = @Model.You.TimesAttackingThisUpdate;
     var turnNo = @ViewBag.WorldTurnNumber;
@@ -451,4 +461,4 @@
 
 
 
-</script>
+    </script>

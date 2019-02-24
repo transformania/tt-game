@@ -9,6 +9,7 @@ using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
+using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -32,7 +33,7 @@ namespace TT.Domain.Players.Entities
 
         [Column("dbLocationName")]
         public string Location { get; protected set; }
-        public ICollection<Item> Items { get; protected set; } 
+        public ICollection<Item> Items { get; protected set; }
         public ICollection<Effect> Effects { get; protected set; }
         public ICollection<Skill> Skills { get; protected set; }
         public ICollection<PlayerLog> PlayerLogs { get; protected set; }
@@ -56,7 +57,7 @@ namespace TT.Domain.Players.Entities
         public int TimesAttackingThisUpdate { get; protected set; }
 
         public decimal ActionPoints { get; protected set; }
-        public decimal ActionPoints_Refill { get; protected  set; }
+        public decimal ActionPoints_Refill { get; protected set; }
 
         public string Gender { get; protected set; } // TODO:  remove this as gender should be part of FormSource
         public string Mobility { get; protected set; } // TODO:  remove this as gender should be part of FormSource
@@ -85,7 +86,7 @@ namespace TT.Domain.Players.Entities
 
         public decimal PvPScore { get; protected set; }
         public int DonatorLevel { get; protected set; }
-        public string Nickname { get; protected  set; }
+        public string Nickname { get; protected set; }
         public DateTime OnlineActivityTimestamp { get; protected set; }
         public bool IsBannedFromGlobalChat { get; protected set; }
         public string ChatColor { get; protected set; }
@@ -97,7 +98,7 @@ namespace TT.Domain.Players.Entities
 
         public Covenant CovenantLed { get; protected set; }
 
-        public InanimateXP ItemXP { get; protected set; } 
+        public InanimateXP ItemXP { get; protected set; }
 
         private Player()
         {
@@ -134,7 +135,7 @@ namespace TT.Domain.Players.Entities
                 BotId = cmd.BotId,
                 NPC = npc,
                 MindControlIsActive = cmd.MindControlIsActive,
-                IpAddress =  cmd.IpAddress,
+                IpAddress = cmd.IpAddress,
                 LastActionTimestamp = cmd.LastActionTimestamp,
                 LastCombatTimestamp = cmd.LastCombatTimestamp,
                 LastCombatAttackedTimestamp = cmd.LastCombatAttackedTimestamp,
@@ -221,7 +222,7 @@ namespace TT.Domain.Players.Entities
             {
                 PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".</b>", DateTime.UtcNow, true));
             }
-            
+
         }
 
         /// <summary>
@@ -330,7 +331,7 @@ namespace TT.Domain.Players.Entities
 
             return result;
         }
-         
+
         /// <summary>
         /// Removes a percentage of TF energy that this player has, determined by the stats passed in
         /// </summary>
@@ -425,6 +426,7 @@ namespace TT.Domain.Players.Entities
 
         public void GiveItem(Item item)
         {
+            item.SetLocation(String.Empty);
             Items.Add(item);
         }
 
@@ -434,7 +436,7 @@ namespace TT.Domain.Players.Entities
         /// <param name="amount">Amount of XP to give player</param>
         public void AddXP(decimal amount)
         {
-            var xpNeeded = (decimal) GetXPNeededForLevelUp();
+            var xpNeeded = (decimal)GetXPNeededForLevelUp();
             XP += amount;
             if (XP >= xpNeeded)
             {
@@ -590,7 +592,7 @@ namespace TT.Domain.Players.Entities
             {
                 sneakLevel -= (int)(new Random().NextDouble() * 75);
             }
-            
+
             return sneakLevel;
         }
 
@@ -628,7 +630,7 @@ namespace TT.Domain.Players.Entities
         public string AddSelfRestoreEnergy(BuffBox buffs)
         {
 
-            var actualAmount = 10 + (float) Math.Floor(buffs.Allure() / 10);
+            var actualAmount = 10 + (float)Math.Floor(buffs.Allure() / 10);
 
             if (this.SelfRestoreEnergy == null)
             {
@@ -641,7 +643,7 @@ namespace TT.Domain.Players.Entities
 
             this.CleansesMeditatesThisRound++;
             this.ActionPoints -= (decimal)PvPStatics.SelfRestoreAPCost;
-            this.Mana -= (decimal) PvPStatics.SelfRestoreManaCost;
+            this.Mana -= (decimal)PvPStatics.SelfRestoreManaCost;
             this.LastActionTimestamp = DateTime.UtcNow;
 
             if (this.SelfRestoreEnergy.Amount < PvPStatics.SelfRestoreTFnergyRequirement)
@@ -660,6 +662,59 @@ namespace TT.Domain.Players.Entities
                 return output;
             }
 
+        }
+
+        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, BuffBox attackerBuffs)
+        {
+            var logbox = new LogBox();
+            this.FormSource = formSource;
+            this.Mobility = formSource.MobilityType;
+
+            var newItem = Item.CreateFromPlayer(this, itemSource);
+            this.Item = newItem;
+
+            this.DropAllItems();
+
+            if (attacker == null)
+            {
+                newItem.SetLocation(this.Location);
+            }
+            else
+            {
+                if (attacker.HasRoomForNewItem(newItem, attackerBuffs))
+                {
+                    attacker.GiveItem(newItem);
+                    newItem.ChangeOwner(attacker);
+                }
+                else
+                {
+                    newItem.SetLocation(this.Location);
+                }
+            }
+
+            logbox.AttackerLog = $"<br><b>You fully transformed {this.GetFullName()} into a {itemSource.FriendlyName}</b>!";
+            logbox.VictimLog = $"<br><b>You have been fully transformed into a {itemSource.FriendlyName}!</b>!";
+            logbox.LocationLog = $"<br><b>{this.GetFullName()} was completely transformed into a {itemSource.FriendlyName}</b> here.";
+
+            return logbox;
+        }
+
+        private bool HasRoomForNewItem(Item item, BuffBox buffs)
+        {
+            // bots have inlimited inventory sizes
+            if (this.BotId != AIStatics.ActivePlayerBotId)
+            {
+                return true;
+            }
+
+            var carriedItemCount = this.GetCarriedItemCount();
+            var maxInventorySize = this.GetMaxInventorySize(buffs);
+
+            var hasRoom = carriedItemCount < maxInventorySize;
+
+            var petAlreadyEquipped = item.ItemSource.ItemType == PvPStatics.ItemType_Pet && this.Items.Count(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet) >= 1;
+
+            return hasRoom && !petAlreadyEquipped;
         }
 
     }

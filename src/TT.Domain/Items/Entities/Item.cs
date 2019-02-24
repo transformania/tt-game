@@ -5,6 +5,7 @@ using TT.Domain.Entities;
 using TT.Domain.Items.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Items.Entities
 {
@@ -54,6 +55,37 @@ namespace TT.Domain.Items.Entities
             if (owner != null && owner.BotId != AIStatics.ActivePlayerBotId)
             {
                 newItem.LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+            }
+
+            return newItem;
+        }
+
+        public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource)
+        {
+            var newItem = new Item()
+            {
+               
+                FormerPlayer = formerPlayer,
+                ItemSource = itemSource,
+                IsEquipped = false,
+                TurnsUntilUse = 0,
+                Level = formerPlayer.Level,
+                TimeDropped = DateTime.UtcNow,
+                EquippedThisTurn = false,
+                PvPEnabled = formerPlayer.GameMode,
+                LastSold = DateTime.UtcNow
+            };
+
+            if (formerPlayer.BotId == AIStatics.ActivePlayerBotId)
+            {
+                newItem.IsPermanent = false;
+                newItem.LastSouledTimestamp = DateTime.UtcNow;
+            }
+            else
+            {
+                newItem.IsPermanent = true;
+                newItem.LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+                newItem.PvPEnabled = (int)GameModeStatics.GameModes.Any;
             }
 
             return newItem;

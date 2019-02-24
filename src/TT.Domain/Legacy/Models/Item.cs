@@ -18,6 +18,7 @@ namespace TT.Domain.Models
         public DateTime LastSouledTimestamp { get; set; }
         public DateTime LastSold { get; set; }
         public int? EmbeddedOnItemId { get; set; }
+        public int? FormerPlayerId { get; set; }
 
         public Item()
         {

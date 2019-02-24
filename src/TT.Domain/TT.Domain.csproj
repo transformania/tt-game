@@ -161,6 +161,7 @@
     <Compile Include="Legacy\Services\NameService.cs" />
     <Compile Include="Players\Commands\GiveRune.cs" />
     <Compile Include="Players\Commands\Move.cs" />
+    <Compile Include="Players\Commands\PlayerBecomesItem.cs" />
     <Compile Include="Players\Queries\CanAttackNpcWithSpell.cs" />
     <Compile Include="Players\Queries\CanInteractWith.cs" />
     <Compile Include="Players\Queries\GetCurrentCarryWeight.cs" />

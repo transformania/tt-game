@@ -114,6 +114,7 @@
     <Compile Include="Items\Commands\DeleteExpiredRunesOnMerchantsTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Items\Commands\EmbedRuneTests.cs" />
+    <Compile Include="Items\Commands\PlayerBecomesItemTests.cs" />
     <Compile Include="Items\Commands\RetrieveSoulboundItemsTests.cs" />
     <Compile Include="Items\Commands\SoulbindItemToPlayerTests.cs" />
     <Compile Include="Items\Commands\UnembedAllRunesTest.cs" />

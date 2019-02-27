@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Exceptions;
+using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Queries;
@@ -1058,6 +1059,81 @@ namespace TT.Web.Controllers
 
             return View(MVC.NPC.Views.TalkToValentine);
 
+        }
+
+        public virtual ActionResult TalkToSoulbinder()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
+            var output = new TalkToSoulbinderViewModel
+            {
+                Items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = me.Id }).ToList(),
+                AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id})
+            };
+            output.NPCOwnedSoulboundItems = output.AllSoulboundItems.Where(i => i.Owner != null && i.Owner.Id == npc.Id);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.NPC.Views.TalkToSoulbinder, output);
+        }
+
+        public virtual ActionResult SoulbindItemList()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
+            var output = new TalkToSoulbinderViewModel
+            {
+                Items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = me.Id }).ToList(),
+                Money = (int)me.Money,
+                AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id })
+            };
+            output.NPCOwnedSoulboundItems = output.AllSoulboundItems.Where(i => i.Owner != null && i.Owner.Id == npc.Id);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.NPC.Views.SoulbindItemList, output);
+        }
+
+        public virtual ActionResult SoulbindItem(int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SoulbindItemToPlayer { ItemId = itemId, OwnerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            return RedirectToAction(MVC.NPC.TalkToSoulbinder());
+        }
+
+        public virtual ActionResult RetrieveSoulboundItems()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new RetrieveSoulboundItems { PlayerId = me.Id});
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            return RedirectToAction(MVC.NPC.TalkToSoulbinder());
         }
     }
 }

@@ -21,6 +21,7 @@ namespace TT.Domain.Items.DTOs
         public DateTime LastSold { get; protected set; }
         public ICollection<ItemRuneDetail> Runes { get; set; }
         public ItemRuneDetail EmbeddedOnItem { get; set; }
+        public PlayPageItemDetail.PlayPagePlayerDetail SoulboundToPlayer { get; set; }
     }
 
     public class InventoryItemSource

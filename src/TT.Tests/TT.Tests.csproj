@@ -114,12 +114,14 @@
     <Compile Include="Items\Commands\DeleteExpiredRunesOnMerchantsTests.cs" />
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Items\Commands\EmbedRuneTests.cs" />
-    <Compile Include="Items\Commands\PlayerBecomesItemTests.cs" />
+    <Compile Include="Items\Commands\RetrieveSoulboundItemsTests.cs" />
+    <Compile Include="Items\Commands\SoulbindItemToPlayerTests.cs" />
     <Compile Include="Items\Commands\UnembedAllRunesTest.cs" />
     <Compile Include="Items\Commands\UnembedRunesOnItemTests.cs" />
     <Compile Include="Items\Commands\UnembedRuneTests.cs" />
     <Compile Include="Items\Entities\ItemSourceTests.cs" />
     <Compile Include="Items\Entities\RuneTests.cs" />
+    <Compile Include="Items\Queries\GetPlayerItemsThatCanBeSoulboundTests.cs" />
     <Compile Include="Items\Queries\GetRandomRuneAtLevelTests.cs" />
     <Compile Include="Items\Queries\Leaderboard\ItemLeaderboardMappingsTests.cs" />
     <Compile Include="Pipeline\ValidationPipelineBehaviorTest.cs" />

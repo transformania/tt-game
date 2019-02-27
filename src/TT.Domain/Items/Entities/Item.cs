@@ -27,6 +27,7 @@ namespace TT.Domain.Items.Entities
         public DateTime LastSold { get; protected set; }
         public Item EmbeddedOnItem { get; protected set; }
         public ICollection<Item> Runes { get; protected set; }
+        public Player SoulboundToPlayer { get; protected set; }
 
         private Item()
         {
@@ -173,6 +174,8 @@ namespace TT.Domain.Items.Entities
                 rune.LastSold = now;
             }
 
+            newOwner.Items.Add(this);
+
             return this;
         }
 
@@ -287,6 +290,16 @@ namespace TT.Domain.Items.Entities
         public void SetFormerPlayer(Player player)
         {
             this.FormerPlayer = player;
+        }
+
+        public void SoulbindToPlayer(Player player)
+        {
+            this.SoulboundToPlayer = player;
+            if (this.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+            {
+                this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer, $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.", DateTime.UtcNow, true));
+            }
+
         }
 
     }

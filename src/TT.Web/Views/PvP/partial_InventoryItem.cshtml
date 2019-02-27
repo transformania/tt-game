@@ -1,21 +1,21 @@
 ﻿@model TT.Domain.Items.DTOs.ItemDetail
-           @using TT.Web.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
-    <div class="portrait" style="background-image: url('@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true)'")>
+    <div class="portrait" style="background-image: url('@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true)'" )>
         @{
             if (Model.Level > 0 && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
             {
                 <span class="icon icon-level"><b>@Model.Level</b></span>
-         
+
             }
 
             if (ViewBag.ShowDetailLinks != null && ViewBag.ShowDetailLinks)
             {
                 @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
             }
-            
+
         }
         @HtmlHelpers.PrintItemTypeIcon(Model.ItemSource.ItemType)
         @HtmlHelpers.PrintSouledIcon(Model)
@@ -27,85 +27,89 @@
         {
 
 
-    <div style="text-align: center;">
-        <p>@Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)</p>
+            <div style="text-align: center;">
+                <p>
+                    @if (Model.SoulboundToPlayer != null)
+                        {
+                            <span class="playerMediatingNotification"><b>[SB]</b></span>
+                        }
+
+                    @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
+                </p>
+
+                @{
+                    if (Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable_Reuseable && Model.ItemSource.ItemType != PvPStatics.ItemType_Pet)
+                    {
+
+                        if (!Model.IsEquipped)
+                        {
+                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
+                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                        }
+
+                        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
+                        {
+                            <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
+                        }
+
+                        if (Model.IsEquipped && !Model.EquippedThisTurn)
+                        {
+                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
+                        }
+
+                    }
+                    if (Model.ItemSource.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || !ViewBag.DisableReleaseLink))
+                    {
+                        <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Release</a>
+                    }
+                    else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
+                    {
+                        <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
+                        <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                    }
+                    else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                    {
+
+                        if (Model.TurnsUntilUse > 0)
+                        {
+                            <span style="color: red;">Reuse in <b>@Model.TurnsUntilUse</b> turns.</span>
+                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
+                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                        }
 
 
-
-
-        @{
-        if (Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable_Reuseable && Model.ItemSource.ItemType != PvPStatics.ItemType_Pet)
-        {
-
-            if (!Model.IsEquipped)
-            {
-                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
-                <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                    }
                 }
 
-            if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
-            {
-                <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
-            }
-
-                if (Model.IsEquipped && !Model.EquippedThisTurn)
-                {
-            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
-            }
-
-}
-if (Model.ItemSource.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || !ViewBag.DisableReleaseLink))
-{
-    <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Release</a>
-}
-else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
-{
-    <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
-    <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-}
-else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
-{
-
-if (Model.TurnsUntilUse > 0)
-{
-    <span style="color: red;">Reuse in <b>@Model.TurnsUntilUse</b> turns.</span>
-    <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-}
-else
-{
-    <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
-    <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-}
-
-
-}
-        }
-
-    </div>
+            </div>
 
         }
 
     }
 </div>
-    
 
 
 
 
 
-    <style>
-        .itemName {
-            font-size: 20px;
-            font-weight: bold;
-        }
 
-        .WasPerson {
-            font-size: 15px;
-            color: chocolate;
-            font-style: italic;
-        }
+<style>
+    .itemName {
+        font-size: 20px;
+        font-weight: bold;
+    }
 
-        .attackLink {
-            text-align: center;
-        }
-    </style>
+    .WasPerson {
+        font-size: 15px;
+        color: chocolate;
+        font-style: italic;
+    }
+
+    .attackLink {
+        text-align: center;
+    }
+</style>

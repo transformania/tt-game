@@ -448,7 +448,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             if (botId == AIStatics.ActivePlayerBotId)
                 return new MvcHtmlString("border-player");
-            if (new [] {AIStatics.LoremasterBotId, AIStatics.LindellaBotId, AIStatics.WuffieBotId, AIStatics.LoremasterBotId, AIStatics.BartenderBotId, AIStatics.JewdewfaeBotId }.Contains(botId))
+            if (new [] {AIStatics.LoremasterBotId, AIStatics.LindellaBotId, AIStatics.WuffieBotId, AIStatics.LoremasterBotId, AIStatics.BartenderBotId, AIStatics.JewdewfaeBotId, AIStatics.SoulbinderBotId }.Contains(botId))
                 return new MvcHtmlString("border-npc");
             return new MvcHtmlString("border-bot");
         }

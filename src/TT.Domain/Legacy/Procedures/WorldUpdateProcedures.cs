@@ -79,6 +79,28 @@ namespace TT.Domain.Procedures
                     {
                         BossProcedures_Loremaster.SpawnLoremaster();
                     }
+
+                    var soulbinder = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.SoulbinderBotId);
+                    if (soulbinder == null)
+                    {
+                        DomainRegistry.Repository.Execute(new CreatePlayer
+                        {
+                            FirstName = "Karin",
+                            LastName = "Kezesul-Adriz the Soulbinder",
+                            FormSourceId = 1000,
+                            Location = "stripclub_office",
+                            Level = 10,
+                            Mobility = PvPStatics.MobilityFull,
+                            Money = 0,
+                            Gender = PvPStatics.GenderFemale,
+                            Health = 9999,
+                            MaxHealth = 9999,
+                            Mana = 9999,
+                            MaxMana = 9999,
+                            OnlineActivityTimestamp = DateTime.UtcNow,
+                            BotId = AIStatics.SoulbinderBotId
+                        });
+                    }
                 }
                 #endregion
 
@@ -357,6 +379,7 @@ namespace TT.Domain.Procedures
                 var skaldyr = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
                 var merchantId = merchant.Id;
                 var skaldyrId = skaldyr.Id;
+                var soulbinderId = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId).Id;
 
                 // have abandoned items go to Lindella
                 if (turnNo % 11 == 3 && merchant.Mobility == PvPStatics.MobilityFull)
@@ -838,6 +861,12 @@ namespace TT.Domain.Procedures
                             "DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
                         context.Database.ExecuteSqlCommand(
                             $"UPDATE [dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
+
+                        // move soulbound items on the ground to the soulbinding NPC.  First query moves the runes on those items, second moves the items themselves.
+                        context.Database.ExecuteSqlCommand(
+                            $"UPDATE[dbo].[Items] SET OwnerId = {soulbinderId}, dbLocationName = '' FROM Items WHERE Id IN (SELECT Id FROM Items WHERE dbLocationName <> '' AND SoulboundToPlayerId IS NOT NULL);" +
+                            $"UPDATE[dbo].[Items] SET OwnerId = {soulbinderId}, dbLocationName = '' WHERE dbLocationName <> '' AND SoulboundToPlayerId IS NOT NULL;");
+
                     }
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
                 }

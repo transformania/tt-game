@@ -1016,7 +1016,8 @@ namespace TT.Web.Controllers
                     targeted.BotId == AIStatics.WuffieBotId ||
                     targeted.BotId == AIStatics.JewdewfaeBotId ||
                     targeted.BotId == AIStatics.BartenderBotId ||
-                    targeted.BotId == AIStatics.LoremasterBotId)
+                    targeted.BotId == AIStatics.LoremasterBotId ||
+                    targeted.BotId == AIStatics.SoulbinderBotId)
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction(MVC.PvP.Play());
@@ -1598,6 +1599,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            //assert that the item is not soulbound to someone else
+            if (pickup.SoulboundToPlayer != null && pickup.SoulboundToPlayer.Id != me.Id)
+            {
+                TempData["Error"] = "This item is soulbound to another player and cannot be picked up by anyone else.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
             if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs) && pickup.ItemSource.ItemType != PvPStatics.ItemType_Pet && pickup.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id)
             {
@@ -1898,6 +1906,13 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type items next turn.";
                 return RedirectToAction(MVC.Item.MyInventory());
+            }
+
+            //assert that the item is not soulbound to someone else
+            if (item.dbItem.SoulboundToPlayerId != null && item.dbItem.SoulboundToPlayerId != me.Id)
+            {
+                TempData["Error"] = "This item is soulbound to another player and cannot be picked up by anyone else.";
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this item is of a consumable type (consumable or consumable-reusable)

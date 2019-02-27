@@ -8,7 +8,6 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using System.Threading;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
@@ -48,7 +47,8 @@ namespace TT.Domain.Procedures
                                                              TimeDropped = item.TimeDropped,
                                                              TurnsUntilUse = item.TurnsUntilUse,
                                                              LastSouledTimestamp = item.LastSouledTimestamp,
-                                                             EmbeddedOnItemId = item.EmbeddedOnItemId
+                                                             EmbeddedOnItemId = item.EmbeddedOnItemId,
+                                                             SoulboundToPlayerId = item.SoulboundToPlayerId
                                                           },
 
 
@@ -148,6 +148,7 @@ namespace TT.Domain.Procedures
                                                          TimeDropped = item.TimeDropped,
                                                          TurnsUntilUse = item.TurnsUntilUse,
                                                          LastSouledTimestamp = item.LastSouledTimestamp,
+                                                         SoulboundToPlayerId = item.SoulboundToPlayerId
                                                      },
 
 

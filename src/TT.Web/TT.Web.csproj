@@ -381,6 +381,8 @@
     <Content Include="Views\PvP\partial\partial_ItemDetail.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_60.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_61.cshtml" />
+    <Content Include="Views\NPC\TalkToSoulbinder.cshtml" />
+    <Content Include="Views\NPC\SoulbindItemList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

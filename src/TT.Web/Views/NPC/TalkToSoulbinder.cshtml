@@ -1,0 +1,38 @@
+﻿@model TT.Domain.ViewModels.TalkToSoulbinderViewModel
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.NPC.TalkToSoulbinder())">Talk</a></li>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
+            <img class="img-responsive center-block" src="../Images/PvP/portraits/succubus_soulbinder_witchy.jpg">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+            <p>"Hello there, mortal.  Have you come to soulbind a prized possession to your soul?  None others may take your soulbound items and pets, and should you find yourself suddenly without them, you can always return here to me to get them back.  The first soulbinding is free of charge!  Alternatively, if you're looking for a good price on your <i>own</i> soul, I'm open for some haggling..."</p>
+
+            <p>"Oh, I'm afraid that if you have a pet, I'll have to hang on to your soulbound one until you have room again.  Rules are rules, after all."</p>
+            
+            @if (Model.NPCOwnedSoulboundItems.Count() > 0)
+            {
+                <p><a href="@Url.Action(MVC.NPC.RetrieveSoulboundItems())">Retrieve my @Model.NPCOwnedSoulboundItems.Count() soulbound items</a></p>
+            }
+            
+            @if (Model.Items.Count() > 0)
+            {
+                <p><a href="@Url.Action(MVC.NPC.SoulbindItemList())">Soulbind an item/pet</a></p>
+            }
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#soulbindItemsTable').dataTable();
+    });
+</script>

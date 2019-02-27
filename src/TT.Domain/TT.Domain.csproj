@@ -49,6 +49,11 @@
     <Compile Include="Covenants\Mappings\CovenantMappings.cs" />
     <Compile Include="CreationPolices\CreationPolicy.cs" />
     <Compile Include="CreationPolices\CreationPolicyAttribute.cs" />
+    <Compile Include="Items\Commands\RetrieveSoulboundItems.cs" />
+    <Compile Include="Items\Commands\SoulbindItemToPlayer.cs" />
+    <Compile Include="Items\Queries\GetItemsSoulboundToPlayer.cs" />
+    <Compile Include="Items\Queries\GetPlayerItemsThatCanBeSoulbound.cs" />
+    <Compile Include="Items\Services\PriceCalculator.cs" />
     <Compile Include="Statics\TurnTimesStatics.cs" />
     <Compile Include="TFEnergy\Commands\SelfRestoreToBase.cs" />
     <Compile Include="TFEnergy\Entities\SelfRestoreEnergy.cs" />
@@ -181,6 +186,7 @@
     <Compile Include="ViewModels\ItemRuneDetailViewModel.cs" />
     <Compile Include="ViewModels\MoveLogBox.cs" />
     <Compile Include="ViewModels\RemoveCurseViewModel.cs" />
+    <Compile Include="ViewModels\TalkToSoulbinderViewModel.cs" />
     <Compile Include="ViewModels\UseFurnitureViewModel.cs" />
     <Compile Include="ViewModels\World\OldItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\World\OldXpLeaderboardViewModel.cs" />

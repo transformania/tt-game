@@ -270,7 +270,11 @@
                                         {
                                             <a href="@Url.Action(MVC.NPC.TalkToLorekeeper())" class="attackLink">Talk</a>
                                         }
-}
+                                        if (p.Player.BotId == AIStatics.SoulbinderBotId)
+                                        {
+                                            <a href="@Url.Action(MVC.NPC.TalkToSoulbinder())" class="attackLink">Talk</a>
+                                        }
+                                    }
                                 </div>
                             </p>
                         </div>
@@ -317,52 +321,58 @@
 
 
 }
-<div class="floorItemsWrapperBG">
-    <div class="row boxContainer">
-        @{
+    <div class="floorItemsWrapperBG">
+        <div class="row boxContainer">
+            @{
 
-            foreach (var item in Model.LocationItems)
-            {
-                <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
-                    <div class="charaBoxInner">
-                        <div>
-                            <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
-                                @{ if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
-                                 {
-                                    <span class="floorItemLevel"><b>@item.Level</b></span>
-                                 }
-                                }
-                                @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
-                            </div>
-
-                            <div>
-                                @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
-                                }
-
-                                }
-
-                                <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
-                                @{
-                if (item.FormerPlayer != null)
+                foreach (var item in Model.LocationItems)
                 {
-                    <span class="formerPlayer">(Formerly @item.FormerPlayer.FullName)</span>
-                }
-                                }
+                    <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
+                        <div class="charaBoxInner">
+                            <div>
+                                <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
+                                    @{ if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
+                                        {
+                                            <span class="floorItemLevel"><b>@item.Level</b></span>
+                                        }
+                                    }
+                                    @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
+                                </div>
+
+                                <div>
+                                    @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                                        {
+                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
+                                        }
+
+                                    }
+                                    @{
+                                        if (item.SoulboundToPlayer != null)
+                                        {
+                                            <span class="playerMediatingNotification"><b>[SB]</b></span>
+                                        }
+
+                                        <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
+                                       
+                                            if (item.FormerPlayer != null)
+                                            {
+                                                <span class="formerPlayer">(Formerly @item.FormerPlayer.FullName)</span>
+                                            }
+                                        
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
 
-        }
+            }
+        </div>
     </div>
-</div>
 
 @Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
 

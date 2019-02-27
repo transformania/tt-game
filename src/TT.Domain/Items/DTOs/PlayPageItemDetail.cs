@@ -8,6 +8,7 @@ namespace TT.Domain.Items.DTOs
         public int Id { get; set; }
         public PlayPageItemSourceDetail ItemSource { get; set; }
         public PlayPagePlayerDetail FormerPlayer { get; set; }
+        public PlayPageSoulboundToPlayerDetail SoulboundToPlayer { get; set; }
         public string dbLocationName { get; set; }
         public int Level { get; set; }
         public int PvPEnabled { get; set; }
@@ -42,6 +43,11 @@ namespace TT.Domain.Items.DTOs
                         $"{FirstName} '{Nickname}' {LastName}";
                 }
             }
+        }
+
+        public class PlayPageSoulboundToPlayerDetail
+        {
+            public int Id { get; set; }
         }
 
         public class PlayPageItemSourceDetail

@@ -125,6 +125,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToValentine);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SoulbindItem()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItem);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public NPCController Actions { get { return MVC.NPC; } }
@@ -161,6 +167,10 @@ namespace TT.Web.Controllers
             public readonly string LorekeeperLearnSpell = ("LorekeeperLearnSpell").ToLowerInvariant();
             public readonly string LorekeeperLearnSpellSend = ("LorekeeperLearnSpellSend").ToLowerInvariant();
             public readonly string TalkToValentine = ("TalkToValentine").ToLowerInvariant();
+            public readonly string TalkToSoulbinder = ("TalkToSoulbinder").ToLowerInvariant();
+            public readonly string SoulbindItemList = ("SoulbindItemList").ToLowerInvariant();
+            public readonly string SoulbindItem = ("SoulbindItem").ToLowerInvariant();
+            public readonly string RetrieveSoulboundItems = ("RetrieveSoulboundItems").ToLowerInvariant();
         }
 
 
@@ -261,6 +271,14 @@ namespace TT.Web.Controllers
         {
             public readonly string question = ("question").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_SoulbindItem s_params_SoulbindItem = new ActionParamsClass_SoulbindItem();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SoulbindItem SoulbindItemParams { get { return s_params_SoulbindItem; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SoulbindItem
+        {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -275,10 +293,12 @@ namespace TT.Web.Controllers
                 public readonly string LorekeeperPurchaseBook = "LorekeeperPurchaseBook";
                 public readonly string SellList = "SellList";
                 public readonly string SellPetList = "SellPetList";
+                public readonly string SoulbindItemList = "SoulbindItemList";
                 public readonly string TalkToAdrianna = "TalkToAdrianna";
                 public readonly string TalkToBartender = "TalkToBartender";
                 public readonly string TalkToCandice = "TalkToCandice";
                 public readonly string TalkToLorekeeper = "TalkToLorekeeper";
+                public readonly string TalkToSoulbinder = "TalkToSoulbinder";
                 public readonly string TalkToValentine = "TalkToValentine";
                 public readonly string TalkWithJewdewfae = "TalkWithJewdewfae";
                 public readonly string TradeWithMerchant = "TradeWithMerchant";
@@ -288,10 +308,12 @@ namespace TT.Web.Controllers
             public readonly string LorekeeperPurchaseBook = "~/Views/NPC/LorekeeperPurchaseBook.cshtml";
             public readonly string SellList = "~/Views/NPC/SellList.cshtml";
             public readonly string SellPetList = "~/Views/NPC/SellPetList.cshtml";
+            public readonly string SoulbindItemList = "~/Views/NPC/SoulbindItemList.cshtml";
             public readonly string TalkToAdrianna = "~/Views/NPC/TalkToAdrianna.cshtml";
             public readonly string TalkToBartender = "~/Views/NPC/TalkToBartender.cshtml";
             public readonly string TalkToCandice = "~/Views/NPC/TalkToCandice.cshtml";
             public readonly string TalkToLorekeeper = "~/Views/NPC/TalkToLorekeeper.cshtml";
+            public readonly string TalkToSoulbinder = "~/Views/NPC/TalkToSoulbinder.cshtml";
             public readonly string TalkToValentine = "~/Views/NPC/TalkToValentine.cshtml";
             public readonly string TalkWithJewdewfae = "~/Views/NPC/TalkWithJewdewfae.cshtml";
             public readonly string TradeWithMerchant = "~/Views/NPC/TradeWithMerchant.cshtml";
@@ -547,6 +569,51 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToValentine);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "question", question);
             TalkToValentineOverride(callInfo, question);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TalkToSoulbinderOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TalkToSoulbinder()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToSoulbinder);
+            TalkToSoulbinderOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SoulbindItemListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SoulbindItemList()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItemList);
+            SoulbindItemListOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SoulbindItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SoulbindItem(int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItem);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            SoulbindItemOverride(callInfo, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RetrieveSoulboundItemsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RetrieveSoulboundItems()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RetrieveSoulboundItems);
+            RetrieveSoulboundItemsOverride(callInfo);
             return callInfo;
         }
 

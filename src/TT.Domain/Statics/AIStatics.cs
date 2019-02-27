@@ -22,6 +22,7 @@ namespace TT.Domain.Statics
         public const int LoremasterBotId = -15;
         public const int FaebossBotId = -16;
         public const int MotorcycleGangLeaderBotId = -17;
+        public const int SoulbinderBotId = -26;
 
         public const int MinibossSororityMotherId = -18;
         public const int MinibossPopGoddessId = -19;

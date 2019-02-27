@@ -30,6 +30,10 @@ namespace TT.Domain.Items.Mappings
                 .HasOptional(i => i.EmbeddedOnItem)
                 .WithMany(i => i.Runes).Map(m => m.MapKey("EmbeddedOnItemId"));
 
+            modelBuilder.Entity<Item>()
+                .HasOptional(i => i.SoulboundToPlayer)
+                .WithMany().Map(m => m.MapKey("SoulboundToPlayerId"));
+
         }
 
         public ItemMappings()

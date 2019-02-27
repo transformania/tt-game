@@ -174,7 +174,10 @@ namespace TT.Domain.Items.Entities
                 rune.LastSold = now;
             }
 
-            newOwner.Items.Add(this);
+            if (!newOwner.Items.Contains(this))
+            {
+                newOwner.Items.Add(this);
+            }
 
             return this;
         }

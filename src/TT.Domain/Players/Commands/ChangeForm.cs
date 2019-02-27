@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
@@ -19,7 +20,11 @@ namespace TT.Domain.Players.Commands
             ContextQuery = ctx =>
             {
 
-                var player = ctx.AsQueryable<Player>().SingleOrDefault(cr => cr.Id == PlayerId);
+                var player = ctx.AsQueryable<Player>()
+                    .Include(p => p.Item)
+                    .Include(p => p.Item.Owner)
+                    .SingleOrDefault(cr => cr.Id == PlayerId);
+
                 if (player == null)
                     throw new DomainException($"Player with ID {PlayerId} could not be found");
 

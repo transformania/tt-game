@@ -734,24 +734,25 @@ namespace TT.Domain.Procedures
 
         public static void InstantRestoreToBase(Player player)
         {
-            var oldFormSourceId = player.FormSourceId;
 
-            if (player.Mobility != PvPStatics.MobilityFull)
-            {
-                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
-
-                if (itemMe != null)
-                {
-                    // drop any runes embedded on the newCharacterViewModel-item, or return them to the former owner's inventory
-                    DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
-                    DomainRegistry.Repository.Execute(new DeleteItem {ItemId = itemMe.Id});
-                }
-            }
+           
             DomainRegistry.Repository.Execute(new ChangeForm
             {
                 PlayerId = player.Id,
                 FormSourceId = player.OriginalFormSourceId
             });
+
+            if (player.Mobility != PvPStatics.MobilityFull)
+            {
+                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
+
+                if (itemMe != null)
+                {
+                    // drop any runes embedded on the newCharacterViewModel-item, or return them to the former owner's inventory
+                    DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
+                    DomainRegistry.Repository.Execute(new DeleteItem { ItemId = itemMe.Id });
+                }
+            }
 
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
 

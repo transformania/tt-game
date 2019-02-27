@@ -194,6 +194,20 @@ namespace TT.Domain.Players.Entities
 
         public void ChangeForm(FormSource form)
         {
+
+            if (this.Item != null)
+            {
+                if (this.Item.Owner != null)
+                {
+                    this.Location = this.Item.Owner.Location;
+                }
+                else
+                {
+                    this.Location = this.Item.dbLocationName;
+                }
+
+            }
+
             FormSource = form;
             Gender = form.Gender;
             Mobility = form.MobilityType;

@@ -28,11 +28,13 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.FirstName, "Bob")
                 .With(p => p.BotId, AIStatics.ActivePlayerBotId)
                 .With(p => p.PlayerLogs, new List<PlayerLog>())
+                .With(p =>  p.Level, 5)
                 .BuildAndSave();
 
             ownerPlayer = new PlayerBuilder()
                 .With(p => p.Id, 68)
                 .With(p => p.FirstName, "Sam")
+                .With(p => p.Level, 5)
                 .BuildAndSave();
 
             item = new ItemBuilder()
@@ -53,6 +55,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Id, 100)
                 .With(p => p.FirstName, "Sam")
                 .With(p => p.Items, new List<Item>())
+                .With(p => p.Level, 5)
                 .BuildAndSave();
 
             item = new ItemBuilder()
@@ -140,6 +143,7 @@ namespace TT.Tests.Items.Commands
             var someoneElse = new PlayerBuilder()
                 .With(p => p.Id, 1831)
                 .With(p => p.FirstName, "Sam")
+                .With(p => p.Level, 5)
                 .BuildAndSave();
 
             item = new ItemBuilder()
@@ -159,6 +163,29 @@ namespace TT.Tests.Items.Commands
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.Should().ThrowExactly<DomainException>().WithMessage("You don't own that item.");
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void should_throw_exception_if_player_too_low_level(int level)
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 1831)
+                .With(p => p.FirstName, "Sam")
+                .With(p => p.Level, level)
+                .BuildAndSave();
+
+            var cmd = new SoulbindItemToPlayer
+            {
+                ItemId = item.Id,
+                OwnerId = player.Id,
+            };
+
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.Should().ThrowExactly<DomainException>().WithMessage("You must be at least level 4 in order to soulbind any items or pets to you.");
         }
 
         [Test]
@@ -191,6 +218,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Id, 150)
                 .With(p => p.FirstName, "Sam")
                 .With(p => p.Items, new List<Item>())
+                .With(p => p.Level, 5)
                 .BuildAndSave();
 
             item = new ItemBuilder()

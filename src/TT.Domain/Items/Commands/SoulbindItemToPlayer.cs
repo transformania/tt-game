@@ -37,6 +37,9 @@ namespace TT.Domain.Items.Commands
                 if (player == null)
                     throw new DomainException($"Player with ID '{OwnerId}' not found.");
 
+                if (player.Level < 4)
+                    throw new DomainException("You must be at least level 4 in order to soulbind any items or pets to you.");
+
                 if (item.Owner == null || item.Owner.Id != OwnerId)
                     throw new DomainException("You don't own that item.");
 

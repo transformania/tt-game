@@ -391,6 +391,20 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Item.MyInventory());
         }
 
+        public virtual ActionResult SetSoulbindingConsent(bool isConsenting)
+        {
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SetSoulbindingConsent { PlayerId = me.Id, IsConsenting = isConsenting});
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
     }
 }

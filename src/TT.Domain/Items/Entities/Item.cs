@@ -5,7 +5,6 @@ using TT.Domain.Entities;
 using TT.Domain.Items.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Items.Entities
 {
@@ -28,6 +27,7 @@ namespace TT.Domain.Items.Entities
         public Item EmbeddedOnItem { get; protected set; }
         public ICollection<Item> Runes { get; protected set; }
         public Player SoulboundToPlayer { get; protected set; }
+        public bool ConsentsToSoulbinding { get; protected set; }
 
         private Item()
         {
@@ -81,6 +81,7 @@ namespace TT.Domain.Items.Entities
             {
                 newItem.IsPermanent = false;
                 newItem.LastSouledTimestamp = DateTime.UtcNow;
+                newItem.ConsentsToSoulbinding = false;
                 newItem.SetGameMode(attacker);
             }
             else
@@ -88,6 +89,7 @@ namespace TT.Domain.Items.Entities
                 newItem.IsPermanent = true;
                 newItem.LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
                 newItem.PvPEnabled = (int)GameModeStatics.GameModes.Any;
+                newItem.ConsentsToSoulbinding = true;
             }
 
             return newItem;
@@ -320,6 +322,11 @@ namespace TT.Domain.Items.Entities
                     this.PvPEnabled = (int) GameModeStatics.GameModes.Superprotection;
                 }
             }
+        }
+
+        public void SetSoulbindingConsent(bool isConsenting)
+        {
+            ConsentsToSoulbinding = isConsenting;
         }
 
     }

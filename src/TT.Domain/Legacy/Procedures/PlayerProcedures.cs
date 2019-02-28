@@ -612,7 +612,7 @@ namespace TT.Domain.Procedures
                 oldItemMe.IsPermanent = true;
                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                 itemRepo.SaveItem(oldItemMe);
-
+                DomainRegistry.Repository.Execute(new SetSoulbindingConsent { IsConsenting = true, PlayerId = oldplayer.Id });
             }
 
 
@@ -636,7 +636,6 @@ namespace TT.Domain.Procedures
                 InRP = newCharacterViewModel.StartInRP,
                 FormSourceId = newCharacterViewModel.FormSourceId
             };
-            //cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
             if (newCharacterViewModel.InanimateForm == null)

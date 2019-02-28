@@ -40,6 +40,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.FormerPlayer, formerItemPlayer)
                 .With(i => i.Id, 33)
                 .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
         }
@@ -59,6 +60,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.FormerPlayer, formerItemPlayer)
                 .With(i => i.Id, 87)
                 .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var cmd = new SoulbindItemToPlayer
@@ -145,6 +147,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.FormerPlayer, formerItemPlayer)
                 .With(i => i.Id, 87)
                 .With(i => i.IsPermanent, false)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var cmd = new SoulbindItemToPlayer
@@ -156,6 +159,28 @@ namespace TT.Tests.Items.Commands
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.Should().ThrowExactly<DomainException>().WithMessage("You don't own that item.");
+        }
+
+        [Test]
+        public void should_throw_exception_if_item_nonconsenting()
+        {
+            item = new ItemBuilder()
+                .With(i => i.Owner, ownerPlayer)
+                .With(i => i.FormerPlayer, formerItemPlayer)
+                .With(i => i.Id, 734)
+                .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, false)
+                .BuildAndSave();
+
+            var cmd = new SoulbindItemToPlayer
+            {
+                ItemId = item.Id,
+                OwnerId = ownerPlayer.Id,
+            };
+
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.Should().ThrowExactly<DomainException>().WithMessage("This item is not currently consenting to soulbinding.");
         }
 
         [Test]
@@ -171,8 +196,9 @@ namespace TT.Tests.Items.Commands
             item = new ItemBuilder()
                 .With(i => i.Owner, ownerPlayer)
                 .With(i => i.FormerPlayer, formerItemPlayer)
-                .With(i => i.Id, 87)
+                .With(i => i.Id, 187)
                 .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var previousSouledItem = new ItemBuilder()

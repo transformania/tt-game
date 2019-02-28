@@ -105,6 +105,7 @@ namespace TT.Tests.Items.Commands
             newItem.Level.Should().Be(victim.Level);
             newItem.dbLocationName.Should().Be(String.Empty);
             newItem.ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            newItem.ConsentsToSoulbinding.Should().Be(false);
 
             var attackerPostTF = DataContext.AsQueryable<Player>().First(p => p.Id == attacker.Id);
             attackerPostTF.Items.Count.Should().Be(1);
@@ -113,6 +114,7 @@ namespace TT.Tests.Items.Commands
             var droppedItem = DataContext.AsQueryable<Item>().First(i => i.Id == 82624);
             droppedItem.Owner.Should().Be(null);
             droppedItem.dbLocationName.Should().Be("someplace");
+
         }
 
         [Test]
@@ -147,6 +149,7 @@ namespace TT.Tests.Items.Commands
             newItem.Level.Should().Be(botVictim.Level);
             newItem.dbLocationName.Should().Be(String.Empty);
             newItem.ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            newItem.ConsentsToSoulbinding.Should().Be(true);
         }
 
         [Test]

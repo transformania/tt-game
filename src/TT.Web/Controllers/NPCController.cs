@@ -161,6 +161,7 @@ namespace TT.Web.Controllers
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = me.Id})
                 .Where(i => i.ItemSource.ItemType != PvPStatics.ItemType_Pet && 
                 !i.IsEquipped && 
+                i.SoulboundToPlayer == null &&
                 (i.IsPermanent || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable || i.ItemSource.ItemType == PvPStatics.ItemType_Rune));
 
             return View(MVC.NPC.Views.SellList, output);
@@ -205,6 +206,13 @@ namespace TT.Web.Controllers
                 itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Rune)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is not soulbound
+            if (itemBeingSold.SoulboundToPlayer != null)
+            {
+                TempData["Error"] = "You can't sell Lindella any soulbould items.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -354,6 +362,7 @@ namespace TT.Web.Controllers
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
                 .Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet &&
                             i.IsEquipped &&
+                            i.SoulboundToPlayer == null &&
                             i.IsPermanent);
 
             return View(MVC.NPC.Views.SellPetList, output);
@@ -391,10 +400,17 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that the item is either permanent or consumable
+            // assert that the item is permanent
             if (!itemBeingSold.IsPermanent)
             {
                 TempData["Error"] = "Unfortunately Wüffie will not purchase pets that may later struggle free anymore.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert pet is not soulbound
+            if (itemBeingSold.SoulboundToPlayer != null)
+            {
+                TempData["Error"] = "You can't sell Wüffie any soulbould pets.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

@@ -186,6 +186,7 @@ namespace TT.Domain.Procedures
             {
                 inanimateMe.IsPermanent = true;
                 itemRep.SaveItem(inanimateMe);
+                DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = me.Id});
                 resultMessage += "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
             }
 

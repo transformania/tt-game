@@ -115,6 +115,7 @@
     <Compile Include="Items\Commands\DeleteUnpurchasedPsychoItemsTests.cs" />
     <Compile Include="Items\Commands\EmbedRuneTests.cs" />
     <Compile Include="Items\Commands\PlayerBecomesItemTests.cs" />
+    <Compile Include="Items\Commands\RemoveSoulbindingOnPlayerItemsTests.cs" />
     <Compile Include="Items\Commands\RetrieveSoulboundItemsTests.cs" />
     <Compile Include="Items\Commands\SetSoulbindingConsentTests.cs" />
     <Compile Include="Items\Commands\SoulbindItemToPlayerTests.cs" />

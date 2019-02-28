@@ -61,7 +61,7 @@ namespace TT.Domain.Items.Entities
             return newItem;
         }
 
-        public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource)
+        public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource, Player attacker)
         {
             var newItem = new Item()
             {
@@ -73,7 +73,7 @@ namespace TT.Domain.Items.Entities
                 Level = formerPlayer.Level,
                 TimeDropped = DateTime.UtcNow,
                 EquippedThisTurn = false,
-                PvPEnabled = formerPlayer.GameMode,
+               
                 LastSold = DateTime.UtcNow
             };
 
@@ -81,6 +81,7 @@ namespace TT.Domain.Items.Entities
             {
                 newItem.IsPermanent = false;
                 newItem.LastSouledTimestamp = DateTime.UtcNow;
+                newItem.SetGameMode(attacker);
             }
             else
             {
@@ -303,6 +304,22 @@ namespace TT.Domain.Items.Entities
                 this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer, $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.", DateTime.UtcNow, true));
             }
 
+        }
+
+        private void SetGameMode(Player player)
+        {
+            if (player == null)
+            {
+                this.PvPEnabled = (int) GameModeStatics.GameModes.Any;
+            }
+            else
+            {
+                this.PvPEnabled = player.GameMode;
+                if (this.PvPEnabled == (int)GameModeStatics.GameModes.Superprotection)
+                {
+                    this.PvPEnabled = (int) GameModeStatics.GameModes.Superprotection;
+                }
+            }
         }
 
     }

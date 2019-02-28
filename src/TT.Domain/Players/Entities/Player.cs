@@ -684,7 +684,7 @@ namespace TT.Domain.Players.Entities
             this.FormSource = formSource;
             this.Mobility = formSource.MobilityType;
 
-            var newItem = Item.CreateFromPlayer(this, itemSource);
+            var newItem = Item.CreateFromPlayer(this, itemSource, attacker);
             this.Item = newItem;
 
             this.DropAllItems();

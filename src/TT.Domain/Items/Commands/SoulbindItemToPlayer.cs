@@ -46,7 +46,9 @@ namespace TT.Domain.Items.Commands
                 if (item.FormerPlayer == null)
                     throw new DomainException("Only souled items may be soulbound.");
 
-                // assert player has sufficient funds
+                if (!item.ConsentsToSoulbinding)
+                    throw new DomainException("This item is not currently consenting to soulbinding.");
+
                 var souledItemCount = ctx.AsQueryable<Item>()
                     .Count(i => i.SoulboundToPlayer != null && i.SoulboundToPlayer.Id == OwnerId);
 

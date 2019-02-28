@@ -731,10 +731,5 @@ namespace TT.Domain.Players.Entities
             return hasRoom && !petAlreadyEquipped;
         }
 
-        public int GetNumberOfSoulboundItems()
-        {
-            return this.Items.Count(i => i.SoulboundToPlayer != null);
-        }
-
     }
 }

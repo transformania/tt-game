@@ -107,6 +107,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnattachRune);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetSoulbindingConsent()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetSoulbindingConsent);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ItemController Actions { get { return MVC.Item; } }
@@ -136,6 +142,7 @@ namespace TT.Web.Controllers
             public readonly string UnembedRunesList = ("UnembedRunesList").ToLowerInvariant();
             public readonly string UnattachRune = ("UnattachRune").ToLowerInvariant();
             public readonly string UnembedRunes = ("UnembedRunes").ToLowerInvariant();
+            public readonly string SetSoulbindingConsent = ("SetSoulbindingConsent").ToLowerInvariant();
         }
 
 
@@ -204,6 +211,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_UnattachRune
         {
             public readonly string Id = ("Id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SetSoulbindingConsent s_params_SetSoulbindingConsent = new ActionParamsClass_SetSoulbindingConsent();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetSoulbindingConsent SetSoulbindingConsentParams { get { return s_params_SetSoulbindingConsent; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetSoulbindingConsent
+        {
+            public readonly string isConsenting = ("isConsenting").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -405,6 +420,18 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UnembedRunes);
             UnembedRunesOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetSoulbindingConsentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool isConsenting);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetSoulbindingConsent(bool isConsenting)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetSoulbindingConsent);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isConsenting", isConsenting);
+            SetSoulbindingConsentOverride(callInfo, isConsenting);
             return callInfo;
         }
 

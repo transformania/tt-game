@@ -23,6 +23,7 @@ namespace TT.Tests.Items.Queries
                 .With(i => i.IsPermanent, true)
                 .With(i => i.FormerPlayer, null)
                 .With(i => i.Owner, owner)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var nonPermanentItem = new ItemBuilder()
@@ -32,6 +33,7 @@ namespace TT.Tests.Items.Queries
                     .With(p => p.Id, 50)
                     .BuildAndSave())
                 .With(i => i.Owner, owner)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var alreadySoulboundItem = new ItemBuilder()
@@ -42,6 +44,7 @@ namespace TT.Tests.Items.Queries
                     .BuildAndSave())
                 .With(i => i.SoulboundToPlayer, owner)
                 .With(i => i.Owner, owner)
+                .With(i => i.ConsentsToSoulbinding, true)
                 .BuildAndSave();
 
             var eligibleItem = new ItemBuilder()
@@ -52,6 +55,18 @@ namespace TT.Tests.Items.Queries
                     .BuildAndSave())
                 .With(i => i.SoulboundToPlayer, null)
                 .With(i => i.Owner, owner)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .BuildAndSave();
+
+            var nonConsentingItem = new ItemBuilder()
+                .With(p => p.Id, 4)
+                .With(i => i.IsPermanent, true)
+                .With(i => i.FormerPlayer, new PlayerBuilder()
+                    .With(p => p.Id, 50)
+                    .BuildAndSave())
+                .With(i => i.SoulboundToPlayer, null)
+                .With(i => i.Owner, owner)
+                .With(i => i.ConsentsToSoulbinding, false)
                 .BuildAndSave();
 
             var items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = owner.Id }).ToList();

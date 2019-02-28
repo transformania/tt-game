@@ -20,7 +20,8 @@ namespace TT.Domain.Items.Queries
                         i.Owner.Id == OwnerId &&
                         i.FormerPlayer != null &&
                         i.IsPermanent &&
-                        i.SoulboundToPlayer == null
+                        i.SoulboundToPlayer == null &&
+                        i.ConsentsToSoulbinding
                     )
                     .Include(i => i.Owner)
                     .Include(i => i.FormerPlayer)

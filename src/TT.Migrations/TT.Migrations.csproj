@@ -93,6 +93,7 @@
     <Compile Include="201809102113_PlayerReports.cs" />
     <Compile Include="201808051328_AllowChaosChanges.cs" />
     <Compile Include="201807120100_NukeCovenantFounder.cs" />
+    <Compile Include="201902261940_SoulbindItemConsent.cs" />
     <Compile Include="201902172143_SoulbindItems.cs" />
     <Compile Include="201902040150_AddRequiredGameModeToEffects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

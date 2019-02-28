@@ -301,11 +301,22 @@ namespace TT.Domain.Items.Entities
         public void SoulbindToPlayer(Player player)
         {
             this.SoulboundToPlayer = player;
-            if (this.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+            if (player != null)
             {
-                this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer, $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.", DateTime.UtcNow, true));
-            }
 
+                if (this.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+                {
+                    this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer,
+                        $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.",
+                        DateTime.UtcNow, true));
+                }
+            }
+            else
+            {
+                this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer,
+                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",
+                    DateTime.UtcNow, true));
+            }
         }
 
         private void SetGameMode(Player player)

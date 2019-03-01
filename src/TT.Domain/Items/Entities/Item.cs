@@ -36,7 +36,7 @@ namespace TT.Domain.Items.Entities
 
         public static Item Create(Player owner, Player formerPlayer, ItemSource itemSource, CreateItem cmd)
         {
-            var newItem = new Item()
+            var newItem = new Item
             {
                 Owner = owner,
                 FormerPlayer = formerPlayer,
@@ -63,7 +63,7 @@ namespace TT.Domain.Items.Entities
 
         public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource, Player attacker)
         {
-            var newItem = new Item()
+            var newItem = new Item
             {
                
                 FormerPlayer = formerPlayer,
@@ -129,14 +129,14 @@ namespace TT.Domain.Items.Entities
         public Item Drop(Player owner, string locationOverride = null)
         {
             Owner = null;
-            dbLocationName = String.IsNullOrEmpty(locationOverride) ? owner.Location : locationOverride;
+            dbLocationName = string.IsNullOrEmpty(locationOverride) ? owner.Location : locationOverride;
             IsEquipped = false;
             var now = DateTime.UtcNow;
             TimeDropped = now;
 
-            foreach (var rune in this.Runes)
+            foreach (var rune in Runes)
             {
-                rune.dbLocationName = String.Empty;
+                rune.dbLocationName = string.Empty;
                 rune.IsEquipped = true;
                 rune.Owner = null;
                 rune.TimeDropped = now;
@@ -152,26 +152,26 @@ namespace TT.Domain.Items.Entities
             TimeDropped = now;
             LastSold = now;
 
-            if (this.Owner != null)
+            if (Owner != null)
             {
-                this.Owner.Items.Remove(this);
+                Owner.Items.Remove(this);
             }
 
             // always equip pets immediately, otherwise unequip
-            this.IsEquipped = this.ItemSource.ItemType == PvPStatics.ItemType_Pet;
+            IsEquipped = ItemSource.ItemType == PvPStatics.ItemType_Pet;
 
             Owner = newOwner;
-            dbLocationName = String.Empty;
+            dbLocationName = string.Empty;
 
-            var gameModeValue = gameModeFlag != null ? gameModeFlag.Value : PvPEnabled;
+            var gameModeValue = gameModeFlag ?? PvPEnabled;
 
             PvPEnabled = gameModeValue;
             
-            foreach (var rune in this.Runes)
+            foreach (var rune in Runes)
             {
                 rune.Owner = newOwner;
                 rune.IsEquipped = true;
-                rune.dbLocationName = String.Empty;
+                rune.dbLocationName = string.Empty;
                 rune.PvPEnabled = gameModeValue;
                 rune.TimeDropped = now;
                 rune.LastSold = now;
@@ -197,29 +197,26 @@ namespace TT.Domain.Items.Entities
         public bool CanAttachRunesToThisItemType()
         {
 
-            var validTypes = new List<string>();
-            validTypes.Add(PvPStatics.ItemType_Pants);
-            validTypes.Add(PvPStatics.ItemType_Shirt);
-            validTypes.Add(PvPStatics.ItemType_Hat);
-            validTypes.Add(PvPStatics.ItemType_Shoes);
-            validTypes.Add(PvPStatics.ItemType_Accessory);
-            validTypes.Add(PvPStatics.ItemType_Pet);
-            validTypes.Add(PvPStatics.ItemType_Underpants);
-            validTypes.Add(PvPStatics.ItemType_Undershirt);
-
-            if (!validTypes.Contains(this.ItemSource.ItemType))
+            var validTypes = new List<string>
             {
-                return false;
-            }
+                PvPStatics.ItemType_Pants,
+                PvPStatics.ItemType_Shirt,
+                PvPStatics.ItemType_Hat,
+                PvPStatics.ItemType_Shoes,
+                PvPStatics.ItemType_Accessory,
+                PvPStatics.ItemType_Pet,
+                PvPStatics.ItemType_Underpants,
+                PvPStatics.ItemType_Undershirt
+            };
 
-            return true;
+            return validTypes.Contains(ItemSource.ItemType);
         }
 
         public bool HasRoomForRunes()
         {
-            if (this.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            if (ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
-                if (this.Runes.Count >= 2)
+                if (Runes.Count >= 2)
                 {
                     return false;
 
@@ -227,7 +224,7 @@ namespace TT.Domain.Items.Entities
             }
             else
             {
-                if (this.Runes.Count >= 1)
+                if (Runes.Count >= 1)
                 {
                     return false;
 
@@ -238,7 +235,7 @@ namespace TT.Domain.Items.Entities
 
         public bool IsOfHighEnoughLevelForRune(Item rune)
         {
-            return this.Level >= rune.ItemSource.RuneLevel;
+            return Level >= rune.ItemSource.RuneLevel;
         }
 
         /// <summary>
@@ -247,20 +244,20 @@ namespace TT.Domain.Items.Entities
         /// <param name="rune"></param>
         public void AttachRune(Item rune)
         {
-            this.Runes.Add(rune);
+            Runes.Add(rune);
             rune.EmbeddedOnItem = this;
             rune.IsEquipped = true;
-            rune.Owner = this.Owner;
+            rune.Owner = Owner;
             rune.EquippedThisTurn = true;
         }
 
         public void RemoveRunes()
         {
-            foreach (var rune in this.Runes.ToList())
+            foreach (var rune in Runes.ToList())
             {
                 RemoveRune(rune);
             }
-            this.Runes.Clear();
+            Runes.Clear();
         }
 
         public void RemoveRune(Item rune)
@@ -269,51 +266,51 @@ namespace TT.Domain.Items.Entities
             rune.IsEquipped = false;
             rune.EquippedThisTurn = true;
 
-            if (this.Owner != null)
+            if (Owner != null)
             {
-                rune.Owner = this.Owner;
-                rune.dbLocationName = String.Empty;
+                rune.Owner = Owner;
+                rune.dbLocationName = string.Empty;
             }
             else
             {
                 rune.Owner = null;
-                rune.dbLocationName = this.dbLocationName;
+                rune.dbLocationName = dbLocationName;
             }
 
-            this.Runes.Remove(rune);
+            Runes.Remove(rune);
         }
 
         public void SetEquippedThisTurn(bool equippedThisTurn)
         {
-            this.EquippedThisTurn = equippedThisTurn;
+            EquippedThisTurn = equippedThisTurn;
         }
 
         public void SetLocation(string location)
         {
-            this.dbLocationName = location;
+            dbLocationName = location;
         }
 
         public void SetFormerPlayer(Player player)
         {
-            this.FormerPlayer = player;
+            FormerPlayer = player;
         }
 
         public void SoulbindToPlayer(Player player)
         {
-            this.SoulboundToPlayer = player;
+            SoulboundToPlayer = player;
             if (player != null)
             {
 
-                if (this.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+                if (FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer,
+                    FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
                         $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.",
                         DateTime.UtcNow, true));
                 }
             }
             else
             {
-                this.FormerPlayer.PlayerLogs.Add(PlayerLog.Create(this.FormerPlayer,
+                FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
                     "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",
                     DateTime.UtcNow, true));
             }
@@ -323,14 +320,14 @@ namespace TT.Domain.Items.Entities
         {
             if (player == null)
             {
-                this.PvPEnabled = (int) GameModeStatics.GameModes.Any;
+                PvPEnabled = (int) GameModeStatics.GameModes.Any;
             }
             else
             {
-                this.PvPEnabled = player.GameMode;
-                if (this.PvPEnabled == (int)GameModeStatics.GameModes.Superprotection)
+                PvPEnabled = player.GameMode;
+                if (PvPEnabled == (int)GameModeStatics.GameModes.Superprotection)
                 {
-                    this.PvPEnabled = (int) GameModeStatics.GameModes.Superprotection;
+                    PvPEnabled = (int) GameModeStatics.GameModes.Protection;
                 }
             }
         }

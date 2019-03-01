@@ -43,9 +43,8 @@ namespace TT.Tests.Domain.Services
         }
 
         [TestCase("")]
-        [TestCase("")]
         [TestCase(null)]
-        public void Should_not_allow_invalid_playerId(string message)
+        public void Should_not_allow_invalid_message(string message)
         {
             const int playerId = 1;
 

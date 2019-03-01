@@ -66,7 +66,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.FirstName, "Attacker")
                 .With(p => p.LastName, "Smacker")
                 .With(p => p.Items, emptyItemList)
-                .With(p => p.GameMode, (int)GameModeStatics.GameModes.Protection)
+                .With(p => p.GameMode, (int)GameModeStatics.GameModes.Superprotection)
                 .BuildAndSave();
 
             itemSource = new ItemSourceBuilder()
@@ -101,7 +101,7 @@ namespace TT.Tests.Items.Commands
             var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
             newItem.Owner.Id.Should().Be(attacker.Id);
             newItem.IsPermanent.Should().Be(false);
-            newItem.PvPEnabled.Should().Be((int) GameModeStatics.GameModes.Protection); // match attacker's game mode
+            newItem.PvPEnabled.Should().Be((int) GameModeStatics.GameModes.Protection); // Superprotection players always get protection items
             newItem.Level.Should().Be(victim.Level);
             newItem.dbLocationName.Should().Be(String.Empty);
             newItem.ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);

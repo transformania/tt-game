@@ -30,7 +30,7 @@ namespace TT.Domain.Players.Commands
                 var victim = ctx.AsQueryable<Player>()
                     .Include(i => i.Items)
                     .Include(p => p.FormSource)
-                    .Include(p => p.Items)
+                    .Include(p => p.Items.Select(i => i.Runes))
                     .Include(p => p.Items.Select(i => i.ItemSource))
                 .SingleOrDefault(cr => cr.Id == VictimId);
 

@@ -3,10 +3,8 @@ using System.Linq;
 using Highway.Data;
 using TT.Domain.Effects.Entities;
 using TT.Domain.Entities.Skills;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Exceptions;
 using TT.Domain.Players.Entities;
-using TT.Domain.TFEnergies.Entities;
 
 namespace TT.Domain.Players.Commands
 {
@@ -21,6 +19,7 @@ namespace TT.Domain.Players.Commands
             {
                 var player = ctx.AsQueryable<Player>()
                 .Include(p => p.Items)
+                .Include(p => p.Items.Select(i => i.Runes))
                 .FirstOrDefault(i => i.Id == PlayerId);
 
                 if (player == null)

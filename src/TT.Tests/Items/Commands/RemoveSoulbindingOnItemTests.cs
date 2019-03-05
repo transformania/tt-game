@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using TT.Domain.Exceptions;
+using TT.Domain.Items.Commands;
+using TT.Domain.Items.Entities;
+using TT.Domain.Players.Entities;
+using TT.Domain.Statics;
+using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
+
+namespace TT.Tests.Items.Commands
+{
+    public class RemoveSoulbindingOnItemTests : TestBase
+    {
+
+        private Player player;
+        private Player formerPlayerInanimate;
+        private Item soulboundItem;
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            player = new PlayerBuilder()
+                .With(p => p.Id, 100)
+                .With(p => p.BotId, AIStatics.ActivePlayerBotId)
+                .With(p => p.Items, new List<Item>())
+                .BuildAndSave();
+
+            formerPlayerInanimate = new PlayerBuilder()
+                .With(p => p.Id, 2345)
+                .With(p => p.BotId, AIStatics.ActivePlayerBotId)
+                .With(p => p.PlayerLogs, new List<PlayerLog>())
+                .BuildAndSave();
+
+            soulboundItem = new ItemBuilder()
+                .With(i => i.Id, 123)
+                .With(i => i.Owner, player)
+                .With(i => i.SoulboundToPlayer, player)
+                .With(i => i.FormerPlayer, formerPlayerInanimate)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Pants)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            player.GiveItem(soulboundItem);
+
+        }
+
+        [Test]
+        public void should_remove_soulbinding()
+        {
+
+            var cmd = new RemoveSoulbindingOnItem { ItemId = soulboundItem.Id };
+            Repository.Execute(cmd);
+
+            var itemLoaded = DataContext.AsQueryable<Item>().First(p => p.Id == soulboundItem.Id);
+            itemLoaded.SoulboundToPlayer.Should().Be(null);
+            itemLoaded.ConsentsToSoulbinding.Should().Be(false);
+
+        }
+
+        [Test]
+        public void throw_exception_if_item_not_found()
+        {
+            var cmd = new RemoveSoulbindingOnItem { ItemId = 12345 };
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.Should().ThrowExactly<DomainException>().WithMessage("Item with Id '12345' could not be found.");
+        }
+
+    }
+}

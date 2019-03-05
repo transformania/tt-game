@@ -383,6 +383,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_61.cshtml" />
     <Content Include="Views\NPC\TalkToSoulbinder.cshtml" />
     <Content Include="Views\NPC\SoulbindItemList.cshtml" />
+    <Content Include="Views\PvP\partial\SoulboundTo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

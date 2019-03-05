@@ -550,6 +550,7 @@ namespace TT.Web.Controllers
                     public readonly string partial_perkBonus = "partial_perkBonus";
                     public readonly string partial_recentActivity = "partial_recentActivity";
                     public readonly string RoundStatus = "RoundStatus";
+                    public readonly string SoulboundTo = "SoulboundTo";
                 }
                 public readonly string AjaxAttackModal = "~/Views/PvP/partial/AjaxAttackModal.cshtml";
                 public readonly string attackModal = "~/Views/PvP/partial/attackModal.cshtml";
@@ -561,6 +562,7 @@ namespace TT.Web.Controllers
                 public readonly string partial_perkBonus = "~/Views/PvP/partial/partial_perkBonus.cshtml";
                 public readonly string partial_recentActivity = "~/Views/PvP/partial/partial_recentActivity.cshtml";
                 public readonly string RoundStatus = "~/Views/PvP/partial/RoundStatus.cshtml";
+                public readonly string SoulboundTo = "~/Views/PvP/partial/SoulboundTo.cshtml";
             }
         }
     }

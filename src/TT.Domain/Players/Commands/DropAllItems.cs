@@ -20,6 +20,7 @@ namespace TT.Domain.Players.Commands
 
                 var player = ctx.AsQueryable<Player>()
                     .Include(i => i.Items)
+                    .Include(i => i.Items.Select(r => r.Runes))
                     .Include(i => i.Items.Select(t => t.ItemSource))
                     .SingleOrDefault(p => p.Id == PlayerId);
 

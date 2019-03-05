@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
 using TT.Domain.Procedures;
@@ -29,7 +28,6 @@ namespace TT.Tests.Players.Entities
 
             var runeItem = new ItemBuilder()
                 .With(i => i.Id, 1)
-                .With(i => i.Owner.Id, 50)
                 .With(i => i.IsEquipped, false)
                 .With(i => i.Owner, player)
                 .With(i => i.ItemSource, new ItemSourceBuilder()
@@ -40,7 +38,6 @@ namespace TT.Tests.Players.Entities
 
             var nonRuneItem = new ItemBuilder()
                 .With(i => i.Id, 2)
-                .With(i => i.Owner.Id, 50)
                 .With(i => i.IsEquipped, false)
                 .With(i => i.Owner, player)
                 .With(i => i.ItemSource, new ItemSourceBuilder()
@@ -48,6 +45,19 @@ namespace TT.Tests.Players.Entities
                     .BuildAndSave()
                 )
                 .BuildAndSave();
+
+            var embeddedRune = new ItemBuilder()
+                .With(i => i.Id, 3)
+                .With(i => i.IsEquipped, true)
+                .With(i => i.Owner, player)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave()
+                )
+                .With(i => i.EmbeddedOnItem, nonRuneItem)
+                .BuildAndSave();
+
+            nonRuneItem.AttachRune(embeddedRune);
 
             player.Items.Add(runeItem);
             player.Items.Add(nonRuneItem);
@@ -62,6 +72,9 @@ namespace TT.Tests.Players.Entities
             nonRuneItem.IsEquipped.Should().BeFalse();
             nonRuneItem.dbLocationName.Should().Be("street_70e9th");
 
+            embeddedRune.Owner.Should().BeNull();
+            embeddedRune.IsEquipped.Should().Be(true);
+            embeddedRune.dbLocationName.Should().Be(String.Empty);
         }
 
         [Test]

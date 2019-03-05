@@ -128,6 +128,12 @@
                     else
                     {
                         <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
+
+                        if (Model.YouItem.SoulboundToPlayer != null)
+                        {
+                            @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.YouItem)
+                        }
+
                     }
                 }
 

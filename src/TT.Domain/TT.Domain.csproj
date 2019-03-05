@@ -49,6 +49,7 @@
     <Compile Include="Covenants\Mappings\CovenantMappings.cs" />
     <Compile Include="CreationPolices\CreationPolicy.cs" />
     <Compile Include="CreationPolices\CreationPolicyAttribute.cs" />
+    <Compile Include="Items\Commands\RemoveSoulbindingOnItem.cs" />
     <Compile Include="Items\Commands\RemoveSoulbindingOnPlayerItems.cs" />
     <Compile Include="Items\Commands\RetrieveSoulboundItems.cs" />
     <Compile Include="Items\Commands\SetSoulbindingConsent.cs" />

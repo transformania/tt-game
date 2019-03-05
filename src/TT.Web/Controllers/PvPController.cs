@@ -2889,9 +2889,9 @@ namespace TT.Web.Controllers
             }
 
             // all checks pass; drop item and notify owner
+            DomainRegistry.Repository.Execute(new RemoveSoulbindingOnItem { ItemId = inanimateMe.Id });
             ItemProcedures.DropItem(inanimateMe.Id);
-            var inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
-            var message = me.GetFullName() + ", your " + inaniamteMePlus.Item.FriendlyName + ", slipped free due to your inactivity and can be claimed by a new owner.";
+            var message = $"{me.GetFullName()}, your {inanimateMe.ItemSource.FriendlyName}, slipped free due to your inactivity and can be claimed by a new owner.";
             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
 
             TempData["Result"] = "You have slipped free from your owner.";

@@ -521,8 +521,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (targetForm.Id == MindControlStatics.MindControl__MeditateFormSourceId)
                     {
-                        // TODO
-                        //EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
+                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffectSourceId, target);
                     }
 
                 }

@@ -46,20 +46,24 @@ namespace TT.Domain.Procedures
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
 
+                Player lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
+                Player wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
+
                 #region spawn NPCS
                 // make sure the NPCs have been spawned early turn
                 if (turnNo <= 3)
                 {
-                    var lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
+                    
                     if (lindella == null)
                     {
                         BossProcedures_Lindella.SpawnLindella();
+                        lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
                     }
 
-                    var wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
                     if (wuffie == null)
                     {
                         BossProcedures_PetMerchant.SpawnPetMerchant();
+                        wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
                     }
 
                     var fae = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.JewdewfaeBotId);
@@ -375,14 +379,11 @@ namespace TT.Domain.Procedures
                 serverLogRepo.SaveServerLog(log);
 
                 // find the ids for the merchants Lindella and Skaldyr
-                var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                 var skaldyr = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
-                var merchantId = merchant.Id;
-                var skaldyrId = skaldyr.Id;
                 var soulbinderId = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId).Id;
 
                 // have abandoned items go to Lindella
-                if (turnNo % 11 == 3 && merchant.Mobility == PvPStatics.MobilityFull)
+                if (turnNo % 11 == 3 && lindella.Mobility == PvPStatics.MobilityFull)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started collecting all abandoned items for Lindella");
 
@@ -391,9 +392,9 @@ namespace TT.Domain.Procedures
                         try
                         {
 
-                            context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Items] SET OwnerId = {merchant.Id}, dbLocationName = '', PvPEnabled = {(int)GameModeStatics.GameModes.Any}, TimeDropped = '{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}' " +
+                            context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Items] SET OwnerId = {lindella.Id}, dbLocationName = '', PvPEnabled = {(int)GameModeStatics.GameModes.Any}, TimeDropped = '{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}' " +
                                                                $"FROM DbStaticItems WHERE dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND DbStaticItems.Id = Items.ItemSourceId AND(ItemType != '${PvPStatics.ItemType_Pet}' OR ConsumableSubItemType = {(int)ItemStatics.ConsumableSubItemTypes.Rune}) AND ItemSourceId != {ItemStatics.ItemType_DungeonArtifactItemSourceId};" +
-                                                               $"UPDATE [dbo].[Players] SET dbLocationName = '' FROM Items WHERE Items.FormerPlayerId = Players.Id AND Items.OwnerId = {merchant.Id};");
+                                                               $"UPDATE [dbo].[Players] SET dbLocationName = '' FROM Items WHERE Items.FormerPlayerId = Players.Id AND Items.OwnerId = {lindella.Id};");
 
 
 
@@ -414,7 +415,7 @@ namespace TT.Domain.Procedures
                 // delete all consumable type items that have been sitting around on the ground for too long
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
                 DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnGround());
-                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnMerchants { LindellaId = merchantId, LorekeeperId = skaldyrId });
+                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnMerchants { LindellaId = lindella.Id, LorekeeperId = skaldyr.Id });
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
                 serverLogRepo.SaveServerLog(log);
@@ -860,7 +861,7 @@ namespace TT.Domain.Procedures
                         context.Database.ExecuteSqlCommand(
                             "DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
                         context.Database.ExecuteSqlCommand(
-                            $"UPDATE [dbo].[Items] SET EmbeddedOnItemId = NULL WHERE OwnerId = {merchant.Id} AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
+                            $"UPDATE [dbo].[Items] SET EmbeddedOnItemId = NULL WHERE (OwnerId = {lindella.Id} OR OwnerId = {wuffie.Id}) AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
 
                         // move soulbound items on the ground to the soulbinding NPC.  First query moves the runes on those items, second moves the items themselves.
                         context.Database.ExecuteSqlCommand(

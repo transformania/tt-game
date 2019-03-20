@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using FeatureSwitch;
 
@@ -21,6 +22,11 @@ namespace TT.Web
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
+        }
+
+        protected void Application_BeginRequest()
+        {
+          Context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
     }
 }

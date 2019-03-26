@@ -2,6 +2,8 @@
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "Settings";
+    // TODO:  get rid of this crap once all links to round number are done via integer, not string
+    var round = int.Parse(PvPStatics.AlphaRound.Split(' ')[2]); // 'Alpha Round 42' gets split up, take the 3rd position which is the number... hack, I know
 }
 
 @section menu
@@ -17,7 +19,7 @@
     <h2>Offline Timer</h2>
 
     <p>
-        Your account currently has <b>@Model.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes against it.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
+        Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
 
         @{
             if (Model.Strikes.Any())

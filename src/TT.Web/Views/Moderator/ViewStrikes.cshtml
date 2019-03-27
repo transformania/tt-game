@@ -2,6 +2,8 @@
 @model TT.Domain.ViewModels.AddStrikeViewModel
 @{
     ViewBag.Title = "Assign Strike";
+    // TODO:  get rid of this crap once all links to round number are done via integer, not string
+    var round = int.Parse(PvPStatics.AlphaRound.Split(' ')[2]); // 'Alpha Round 42' gets split up, take the 3rd position which is the number... hack, I know
 }
 
 @section menu
@@ -16,7 +18,7 @@
 
     <p>This strike is being posted against <a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.UserId))">@Model.PlayerUserStrikesDetail.FirstName @Model.PlayerUserStrikesDetail.LastName</a> with the account name "<b>@Model.PlayerUserStrikesDetail.User.UserName</b>".</p><br>
 
-    <p>@Model.PlayerUserStrikesDetail.FirstName is at <b>@Model.PlayerUserStrikesDetail.User.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes.</p><br>
+    <p>@Model.PlayerUserStrikesDetail.FirstName is at <b>@Model.PlayerUserStrikesDetail.User.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes this round and @Model.PlayerUserStrikesDetail.User.Strikes.Count() throughout the account's lifetime.</p><br>
 
     @{
         if (Model.PlayerUserStrikesDetail.User.Strikes.Any())

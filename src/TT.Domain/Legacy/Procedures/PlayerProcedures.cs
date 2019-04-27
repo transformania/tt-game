@@ -1292,24 +1292,6 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(dbplayer);
         }
 
-        public static void AddMinutesToTimestamp(Player player, int amount, bool PvPOnly)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-
-            dbplayer.LastActionTimestamp = dbplayer.LastActionTimestamp.AddMinutes(amount);
-
-            var timecompare = DateTime.Compare(dbplayer.LastActionTimestamp, DateTime.UtcNow);
-
-           // t1 is greater than t2, aka last action timestamp is larger than now
-            if (timecompare > 0)
-            {
-                dbplayer.LastActionTimestamp = DateTime.UtcNow;
-            }
-
-            playerRepo.SavePlayer(dbplayer);
-        }
-
         private static string GiveLevelingBonus(Player player, int level)
         {
             player.MaxHealth += PvPStatics.LevelUpHealthMaxIncreaseBase + level*PvPStatics.LevelUpHealthMaxIncreasePerLevel;

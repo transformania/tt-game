@@ -1669,7 +1669,7 @@ namespace TT.Web.Controllers
 
             }
 
-            PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.SetTimestampToNow(me);
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
 
@@ -1758,7 +1758,7 @@ namespace TT.Web.Controllers
                 locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
             }
 
-            PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.SetTimestampToNow(me);
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
 
@@ -2007,7 +2007,7 @@ namespace TT.Web.Controllers
 
             var result = ItemProcedures.UseItem(itemId, myMembershipId);
 
-            PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
             TempData["Result"] = result;

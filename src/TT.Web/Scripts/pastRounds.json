@@ -482,7 +482,7 @@
     },
     {
       "number": 61,
-      "name": "Alpha 61 Era of Amie Proffitt)",
+      "name": "Alpha 61 (Era of Amie Proffitt)",
       "pvp": true,
       "item": true,
       "xp": true,
@@ -490,7 +490,15 @@
     },
     {
       "number": 62,
-      "name": "Alpha 62 Era of Grizel Indivar)",
+      "name": "Alpha 62 (Era of Grizel Indivar)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 63,
+      "name": "Alpha 63 (Era ofRazlien Banks)",
       "pvp": true,
       "item": true,
       "xp": true,

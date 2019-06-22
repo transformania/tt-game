@@ -498,7 +498,15 @@
     },
     {
       "number": 63,
-      "name": "Alpha 63 (Era ofRazlien Banks)",
+      "name": "Alpha 63 (Era of Razlien Banks)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 64,
+      "name": "Alpha 64 (Era of Titania Siofra)",
       "pvp": true,
       "item": true,
       "xp": true,

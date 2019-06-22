@@ -386,6 +386,7 @@
     <Content Include="Views\PvP\partial\SoulboundTo.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_62.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_63.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_64.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

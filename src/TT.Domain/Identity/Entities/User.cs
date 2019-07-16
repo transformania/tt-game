@@ -23,6 +23,7 @@ namespace TT.Domain.Identity.Entities
         public ICollection<Report> ReportsGiven { get; private set; } = new List<Report>(); // reports this user has assigned against other players
         public ICollection<Role> Roles { get; private set; } = new List<Role>();
         public Donator Donator { get; protected set; }
+        public DateTime? LockoutEndDateUtc { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }
 
@@ -56,6 +57,11 @@ namespace TT.Domain.Identity.Entities
         public void SetAllowChaosChanges(bool allowChaosChanges)
         {
             this.AllowChaosChanges = allowChaosChanges;
+        }
+
+        public void SetLockoutEndDateUtc(DateTime dateTime)
+        {
+            LockoutEndDateUtc = dateTime;
         }
     }
 

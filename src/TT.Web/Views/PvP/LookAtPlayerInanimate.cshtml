@@ -98,10 +98,7 @@
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
             <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
-            @if (User.IsInRole(PvPStatics.Permissions_Admin))
-            {
-                <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
-            }
+            <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
         }
     }
 }

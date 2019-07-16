@@ -83,6 +83,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReportSend);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetAccountLockoutDate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -106,6 +112,7 @@ namespace TT.Web.Controllers
             public readonly string ViewReports = ("ViewReports").ToLowerInvariant();
             public readonly string HandleReport = ("HandleReport").ToLowerInvariant();
             public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
+            public readonly string SetAccountLockoutDate = ("SetAccountLockoutDate").ToLowerInvariant();
         }
 
 
@@ -140,6 +147,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_HandleReportSend
         {
             public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SetAccountLockoutDate s_params_SetAccountLockoutDate = new ActionParamsClass_SetAccountLockoutDate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetAccountLockoutDate SetAccountLockoutDateParams { get { return s_params_SetAccountLockoutDate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetAccountLockoutDate
+        {
+            public readonly string userId = ("userId").ToLowerInvariant();
+            public readonly string date = ("date").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -248,6 +264,19 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReportSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             HandleReportSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, System.DateTime date);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId, System.DateTime date)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "date", date);
+            SetAccountLockoutDateOverride(callInfo, userId, date);
             return callInfo;
         }
 

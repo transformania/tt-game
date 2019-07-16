@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using TT.Domain.Identity.CommandRequests;
 using TT.Domain.Identity.PropertyValidators;
+using TT.Domain.Statics;
 using TT.Web.Attributes;
 
 namespace TT.Web.Controllers.API.Admin
@@ -24,6 +25,7 @@ namespace TT.Web.Controllers.API.Admin
         // POST api/AdminSignOut
         [HttpPost]
         [ValidateWebApiAntiForgeryToken]
+        [System.Web.Mvc.Authorize(Roles = PvPStatics.Permissions_Moderator)]
         public async Task<HttpResponseMessage> Post(ResetSecurityStamp id)
         {
             try

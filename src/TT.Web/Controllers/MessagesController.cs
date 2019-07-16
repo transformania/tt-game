@@ -8,6 +8,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Queries;
+using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -26,6 +27,11 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             DomainRegistry.Repository.Execute(new DeletePlayerExpiredMessages { OwnerId = me.Id });
 
@@ -69,6 +75,11 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             if (deleteAll)
             {
                 DomainRegistry.Repository.Execute(new DeleteAllMessagesOwnedByPlayer() { OwnerId = me.Id });
@@ -96,6 +107,11 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             MessageDetail message;
 
@@ -199,6 +215,11 @@ namespace TT.Web.Controllers
             output.ReceiverId = playerId;
             output.responseToId = responseTo;
             output.SendingToName = sendingTo.GetFullName();
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             if (TempData["MessageText"] != null && TempData["ErrorMessage"] != null)
             {

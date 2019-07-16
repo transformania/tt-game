@@ -771,7 +771,10 @@ namespace TT.Web.Controllers
 
             #region validation checks
 
-
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is in an okay form to do this
             if (!PlayerCanPerformAction(me, "attack"))
@@ -1545,6 +1548,11 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             var myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
@@ -2903,7 +2911,10 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is greater than level 3 if they are mobile
             if (me.Level < 3 && me.Mobility == PvPStatics.MobilityFull)
@@ -2972,6 +2983,11 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)

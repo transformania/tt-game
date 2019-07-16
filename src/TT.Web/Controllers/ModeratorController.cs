@@ -100,5 +100,20 @@ namespace TT.Web.Controllers
             TempData["Result"] = "You have replied to this report.";
             return RedirectToAction(MVC.Moderator.ViewReports());
         }
+
+        public virtual ActionResult SetAccountLockoutDate(string userId, DateTime date)
+        {
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SetLockoutTimestamp { UserId = userId, date = date });
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = "Error: " + e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+         
+        }
     }
 }

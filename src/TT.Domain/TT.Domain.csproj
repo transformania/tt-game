@@ -49,6 +49,7 @@
     <Compile Include="Covenants\Mappings\CovenantMappings.cs" />
     <Compile Include="CreationPolices\CreationPolicy.cs" />
     <Compile Include="CreationPolices\CreationPolicyAttribute.cs" />
+    <Compile Include="Identity\Commands\SetLockoutTimestamp.cs" />
     <Compile Include="Items\Commands\RemoveSoulbindingOnItem.cs" />
     <Compile Include="Items\Commands\RemoveSoulbindingOnPlayerItems.cs" />
     <Compile Include="Items\Commands\RetrieveSoulboundItems.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Items\Queries\GetItemsSoulboundToPlayer.cs" />
     <Compile Include="Items\Queries\GetPlayerItemsThatCanBeSoulbound.cs" />
     <Compile Include="Items\Services\PriceCalculator.cs" />
+    <Compile Include="Players\Queries\IsAccountLockedOut.cs" />
     <Compile Include="Statics\TurnTimesStatics.cs" />
     <Compile Include="TFEnergy\Commands\SelfRestoreToBase.cs" />
     <Compile Include="TFEnergy\Entities\SelfRestoreEnergy.cs" />

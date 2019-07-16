@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 using TT.Domain;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Models;
+using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Web.CustomHtmlHelpers;
@@ -55,6 +56,11 @@ namespace TT.Web.Hubs
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
             
             me.Player.UpdateOnlineActivityTimestamp();
+
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.Player.MembershipId}))
+            {
+                return;
+            }
             
             // Assert player is not banned
             if (me.Player.IsBannedFromGlobalChat && room == "global")

@@ -89,6 +89,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetAccountLockoutDateSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDateSend);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -113,6 +119,7 @@ namespace TT.Web.Controllers
             public readonly string HandleReport = ("HandleReport").ToLowerInvariant();
             public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
             public readonly string SetAccountLockoutDate = ("SetAccountLockoutDate").ToLowerInvariant();
+            public readonly string SetAccountLockoutDateSend = ("SetAccountLockoutDateSend").ToLowerInvariant();
         }
 
 
@@ -155,7 +162,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SetAccountLockoutDate
         {
             public readonly string userId = ("userId").ToLowerInvariant();
-            public readonly string date = ("date").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SetAccountLockoutDateSend s_params_SetAccountLockoutDateSend = new ActionParamsClass_SetAccountLockoutDateSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetAccountLockoutDateSend SetAccountLockoutDateSendParams { get { return s_params_SetAccountLockoutDateSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetAccountLockoutDateSend
+        {
+            public readonly string suspendTimeoutViewModel = ("suspendTimeoutViewModel").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -169,12 +183,14 @@ namespace TT.Web.Controllers
             {
                 public readonly string HandleReport = "HandleReport";
                 public readonly string Index = "Index";
+                public readonly string SetAccountLockoutDate = "SetAccountLockoutDate";
                 public readonly string ViewAbusiveMessages = "ViewAbusiveMessages";
                 public readonly string ViewReports = "ViewReports";
                 public readonly string ViewStrikes = "ViewStrikes";
             }
             public readonly string HandleReport = "~/Views/Moderator/HandleReport.cshtml";
             public readonly string Index = "~/Views/Moderator/Index.cshtml";
+            public readonly string SetAccountLockoutDate = "~/Views/Moderator/SetAccountLockoutDate.cshtml";
             public readonly string ViewAbusiveMessages = "~/Views/Moderator/ViewAbusiveMessages.cshtml";
             public readonly string ViewReports = "~/Views/Moderator/ViewReports.cshtml";
             public readonly string ViewStrikes = "~/Views/Moderator/ViewStrikes.cshtml";
@@ -268,15 +284,26 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, System.DateTime date);
+        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId, System.DateTime date)
+        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "date", date);
-            SetAccountLockoutDateOverride(callInfo, userId, date);
+            SetAccountLockoutDateOverride(callInfo, userId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetAccountLockoutDateSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetAccountLockoutDateSend(TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDateSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
+            SetAccountLockoutDateSendOverride(callInfo, suspendTimeoutViewModel);
             return callInfo;
         }
 

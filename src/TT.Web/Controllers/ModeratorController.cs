@@ -8,6 +8,7 @@ using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Queries;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -101,11 +102,18 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Moderator.ViewReports());
         }
 
-        public virtual ActionResult SetAccountLockoutDate(string userId, DateTime date)
+        public virtual ActionResult SetAccountLockoutDate(string userId)
+        {
+            var player = PlayerProcedures.GetPlayerFromMembership(userId);
+            return View(MVC.Moderator.Views.SetAccountLockoutDate, new SuspendTimeoutViewModel{Player = player, UserId = player.MembershipId, date = DateTime.UtcNow.AddYears(99)});
+        }
+
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult SetAccountLockoutDateSend(SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new SetLockoutTimestamp { UserId = userId, date = date });
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SetLockoutTimestamp { UserId = suspendTimeoutViewModel.UserId, date = suspendTimeoutViewModel.date });
                 return RedirectToAction(MVC.PvP.Play());
             }
             catch (DomainException e)
@@ -113,7 +121,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "Error: " + e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
-         
+
         }
     }
 }

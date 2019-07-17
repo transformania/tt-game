@@ -24,6 +24,11 @@ namespace TT.Web.Controllers
             var userId = User.Identity.GetUserId();
             var me = new GetPlayerFormFromMembership { MembershipId = userId }.Find();
 
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = userId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             if (!me.CanAccessChat())
                 return View(MVC.PvP.Views.MakeNewCharacter);
 
@@ -73,6 +78,12 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ChatLog(string room, string filter)
         {
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.MembershipId }))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var model = new ChatLogViewModel
             {
                 Room = room,

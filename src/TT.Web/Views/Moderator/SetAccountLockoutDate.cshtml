@@ -1,0 +1,26 @@
+﻿@model TT.Domain.ViewModels.SuspendTimeoutViewModel
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+<div class="containerInner">
+    <h3>Set account lockout</h3>
+
+    <p>You are setting a lockout date for <b>@Model.Player.GetFullName()</b> with user Id <b>@Model.Player.MembershipId</b> with last used ip address <b>@Model.Player.IpAddress</b>.</p><br>
+
+    @using (Html.BeginForm(MVC.Moderator.SetAccountLockoutDateSend(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <p>Lock until:</p>
+        @Html.TextBoxFor(m => m.date)
+
+        @Html.HiddenFor(m => m.UserId)
+
+        <br>
+        <input type="submit" class="btn btn-chat" value="Send">
+    }
+
+</div>

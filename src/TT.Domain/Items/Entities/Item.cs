@@ -318,7 +318,7 @@ namespace TT.Domain.Items.Entities
 
         private void SetGameMode(Player player)
         {
-            if (player == null)
+            if (player == null || player.BotId != AIStatics.ActivePlayerBotId)
             {
                 PvPEnabled = (int) GameModeStatics.GameModes.Any;
             }

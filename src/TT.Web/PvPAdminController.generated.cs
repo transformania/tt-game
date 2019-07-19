@@ -193,24 +193,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult EditNewsPost()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult EditNewsPostSend()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPostSend);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult DeleteNewsPost()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.JsonResult GetMembershipIdFromUsername()
         {
             return new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.GetMembershipIdFromUsername);
@@ -288,10 +270,6 @@ namespace TT.Web.Controllers
             public readonly string EditCustomForm = ("EditCustomForm").ToLowerInvariant();
             public readonly string EditCustomFormSend = ("EditCustomFormSend").ToLowerInvariant();
             public readonly string DeleteCustomForm = ("DeleteCustomForm").ToLowerInvariant();
-            public readonly string ListNewsPosts = ("ListNewsPosts").ToLowerInvariant();
-            public readonly string EditNewsPost = ("EditNewsPost").ToLowerInvariant();
-            public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
-            public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
             public readonly string GetMembershipIdFromUsername = ("GetMembershipIdFromUsername").ToLowerInvariant();
             public readonly string SetEveryoneToSP = ("SetEveryoneToSP").ToLowerInvariant();
         }
@@ -473,30 +451,6 @@ namespace TT.Web.Controllers
         {
             public readonly string Id = ("Id").ToLowerInvariant();
         }
-        static readonly ActionParamsClass_EditNewsPost s_params_EditNewsPost = new ActionParamsClass_EditNewsPost();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_EditNewsPost EditNewsPostParams { get { return s_params_EditNewsPost; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_EditNewsPost
-        {
-            public readonly string Id = ("Id").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_EditNewsPostSend s_params_EditNewsPostSend = new ActionParamsClass_EditNewsPostSend();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_EditNewsPostSend EditNewsPostSendParams { get { return s_params_EditNewsPostSend; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_EditNewsPostSend
-        {
-            public readonly string input = ("input").ToLowerInvariant();
-        }
-        static readonly ActionParamsClass_DeleteNewsPost s_params_DeleteNewsPost = new ActionParamsClass_DeleteNewsPost();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_DeleteNewsPost DeleteNewsPostParams { get { return s_params_DeleteNewsPost; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_DeleteNewsPost
-        {
-            public readonly string Id = ("Id").ToLowerInvariant();
-        }
         static readonly ActionParamsClass_GetMembershipIdFromUsername s_params_GetMembershipIdFromUsername = new ActionParamsClass_GetMembershipIdFromUsername();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_GetMembershipIdFromUsername GetMembershipIdFromUsernameParams { get { return s_params_GetMembershipIdFromUsername; } }
@@ -522,12 +476,10 @@ namespace TT.Web.Controllers
                 public readonly string ChangeWorldStats = "ChangeWorldStats";
                 public readonly string DungeonTest = "DungeonTest";
                 public readonly string EditCustomForm = "EditCustomForm";
-                public readonly string EditNewsPost = "EditNewsPost";
                 public readonly string FaeList = "FaeList";
                 public readonly string FindMissingThumbnails = "FindMissingThumbnails";
                 public readonly string Index = "Index";
                 public readonly string ListCustomForms = "ListCustomForms";
-                public readonly string ListNewsPosts = "ListNewsPosts";
                 public readonly string PublicBroadcast = "PublicBroadcast";
                 public readonly string RenamePlayer = "RenamePlayer";
                 public readonly string Scratchpad = "Scratchpad";
@@ -547,12 +499,10 @@ namespace TT.Web.Controllers
             public readonly string ChangeWorldStats = "~/Views/PvPAdmin/ChangeWorldStats.cshtml";
             public readonly string DungeonTest = "~/Views/PvPAdmin/DungeonTest.cshtml";
             public readonly string EditCustomForm = "~/Views/PvPAdmin/EditCustomForm.cshtml";
-            public readonly string EditNewsPost = "~/Views/PvPAdmin/EditNewsPost.cshtml";
             public readonly string FaeList = "~/Views/PvPAdmin/FaeList.cshtml";
             public readonly string FindMissingThumbnails = "~/Views/PvPAdmin/FindMissingThumbnails.cshtml";
             public readonly string Index = "~/Views/PvPAdmin/Index.cshtml";
             public readonly string ListCustomForms = "~/Views/PvPAdmin/ListCustomForms.cshtml";
-            public readonly string ListNewsPosts = "~/Views/PvPAdmin/ListNewsPosts.cshtml";
             public readonly string PublicBroadcast = "~/Views/PvPAdmin/PublicBroadcast.cshtml";
             public readonly string RenamePlayer = "~/Views/PvPAdmin/RenamePlayer.cshtml";
             public readonly string Scratchpad = "~/Views/PvPAdmin/Scratchpad.cshtml";
@@ -1218,53 +1168,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteCustomForm);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             DeleteCustomFormOverride(callInfo, Id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ListNewsPostsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ListNewsPosts()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ListNewsPosts);
-            ListNewsPostsOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void EditNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult EditNewsPost(int Id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            EditNewsPostOverride(callInfo, Id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void EditNewsPostSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Models.NewsPost input);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult EditNewsPostSend(TT.Domain.Models.NewsPost input)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPostSend);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
-            EditNewsPostSendOverride(callInfo, input);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void DeleteNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult DeleteNewsPost(int Id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            DeleteNewsPostOverride(callInfo, Id);
             return callInfo;
         }
 

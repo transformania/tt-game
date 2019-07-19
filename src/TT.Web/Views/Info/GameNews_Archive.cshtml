@@ -14,9 +14,9 @@
     @{
         foreach (var n in Model)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
             {
-                <a href="@Url.Action(MVC.PvPAdmin.EditNewsPost(n.Id))" class="bad">[Edit]</a>
+                <a href="@Url.Action(MVC.Moderator.EditNewsPost(n.Id))" class="bad">[Edit]</a>
             }
             <p>@n.Timestamp.ToString("MMMM d")</p>
             @Html.Raw(n.Text)

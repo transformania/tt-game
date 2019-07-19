@@ -1,0 +1,15 @@
+While the source code for TT falls under the MIT License, be aware that there
+are exceptions for the assets used within the game.  These assets belong to
+their respective artists and authors who have NOT necessarily granted
+permission for re-use of their assets outside of transformaniatime.com.  These
+assets include:
+
+- All artwork
+- All spells / forms descriptions / effects (DbStaticEffects, DbStaticForms,
+  DbStaticItems, DbStaticSkills, TFMessages)
+- All Jewdewfae encounters
+- All Tomes
+
+The data provided in the SeedData for these are only to be used as examples and
+must not be deployed on a public-facing server other than on the
+transformaniatime.com domain.

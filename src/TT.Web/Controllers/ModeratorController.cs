@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Messages.Queries;
+using TT.Domain.Models;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -14,7 +18,7 @@ using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers
 {
-    [Authorize(Roles = PvPStatics.Permissions_Moderator)]
+    [Authorize(Roles = PvPStatics.Permissions_Moderator + "," + PvPStatics.Permissions_Admin)]
     public partial class ModeratorController : Controller
     {
 
@@ -122,6 +126,72 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+        }
+
+        /// <summary>
+        /// List all of the News posts available for admins to edit
+        /// </summary>
+        /// <returns></returns>
+        public virtual ActionResult ListNewsPosts()
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.OrderByDescending(a => a.Timestamp);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.Moderator.Views.ListNewsPosts, output);
+        }
+
+        /// <summary>
+        /// Make changes to an existing or new NewsPost
+        /// </summary>
+        /// <param name="Id">Id of the news post to make changes to.  -1 indicates a new post.</param>
+        /// <returns></returns>
+        public virtual ActionResult EditNewsPost(int Id)
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.FirstOrDefault(f => f.Id == Id) ?? new NewsPost();
+
+            return View(MVC.Moderator.Views.EditNewsPost, output);
+
+        }
+
+        /// <summary>
+        /// Submit a NewsPost for revisions.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditNewsPostSend(NewsPost input)
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var saveMe = repo.NewsPosts.FirstOrDefault(f => f.Id == input.Id) ?? new NewsPost();
+
+            saveMe.Timestamp = input.Timestamp;
+            saveMe.Text = input.Text;
+            saveMe.ViewState = input.ViewState;
+            repo.SaveNewsPost(saveMe);
+
+            TempData["Result"] = "News Post " + input.Id + " saved successfully!";
+            return RedirectToAction(MVC.Moderator.ListNewsPosts());
+
+        }
+
+        /// <summary>
+        /// Deletes a news post
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public virtual ActionResult DeleteNewsPost(int Id)
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            repo.DeleteNewsPost(Id);
+
+            TempData["Result"] = "News Post " + Id + " deleted successfully!";
+            return RedirectToAction(MVC.Moderator.ListNewsPosts());
         }
     }
 }

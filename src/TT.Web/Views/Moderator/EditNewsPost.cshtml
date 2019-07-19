@@ -2,13 +2,13 @@
 
 @section menu
 {
-    <li><a href="@Url.Action(MVC.PvPAdmin.ListNewsPosts())">Back</a></li>
+    <li><a href="@Url.Action(MVC.Moderator.ListNewsPosts())">Back</a></li>
 }
 
 <div class="containerInner listdots">
     <h1>Edit News Post</h1>
 
-    @using (Html.BeginForm(MVC.PvPAdmin.EditNewsPostSend(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.Moderator.EditNewsPostSend(), FormMethod.Post))
     {
 
         <label>Timestamp:</label>
@@ -31,6 +31,7 @@
         <hr>
 
         @Html.HiddenFor(n => n.Id)
+        @Html.AntiForgeryToken()
 
         <input type="submit" value="Save">
 

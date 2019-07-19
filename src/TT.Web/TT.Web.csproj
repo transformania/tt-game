@@ -337,6 +337,8 @@
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_46.cshtml" />
+    <Content Include="Views\Moderator\EditNewsPost.cshtml" />
+    <Content Include="Views\Moderator\ListNewsPosts.cshtml" />
     <Content Include="XMLs\validChatColors.txt" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_42.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Items\Alpha_42.cshtml" />
@@ -680,8 +682,6 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_29.cshtml" />
     <Content Include="Views\PvPAdmin\ListCustomForms.cshtml" />
     <Content Include="Views\PvPAdmin\EditCustomForm.cshtml" />
-    <Content Include="Views\PvPAdmin\ListNewsPosts.cshtml" />
-    <Content Include="Views\PvPAdmin\EditNewsPost.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_30.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Items\Alpha_30.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\XP\Alpha_30.cshtml" />

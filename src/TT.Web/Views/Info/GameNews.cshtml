@@ -11,9 +11,9 @@
     <li><a href="@Url.Action(MVC.Info.GearTool())">Equipment Helper</a></li>
     <li><a href="@Url.Action(MVC.Info.ServerPopulation())">Server Population By Turn</a></li>
     <li><a href="https://gitlab.com/transformania/tt-game">Source Code on GitLab</a></li>
-    @{if (User.IsInRole(PvPStatics.Permissions_Admin))
+    @{if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
         {
-            <li><a href="@Url.Action(MVC.PvPAdmin.ListNewsPosts())">Edit News</a></li>
+            <li><a href="@Url.Action(MVC.Moderator.ListNewsPosts())">Edit News</a></li>
         }
     }
 }
@@ -31,9 +31,9 @@
         foreach (var n in Model.NewsPosts)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
             {
-                <a href="@Url.Action(MVC.PvPAdmin.EditNewsPost(n.Id))" class="bad">[Edit]</a>
+                <a href="@Url.Action(MVC.Moderator.EditNewsPost(n.Id))" class="bad">[Edit]</a>
             }
 
             <p>@n.Timestamp.ToString("MMMM d")</p>

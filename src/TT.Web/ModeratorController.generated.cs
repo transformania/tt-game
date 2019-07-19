@@ -95,6 +95,24 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDateSend);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult EditNewsPost()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult EditNewsPostSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPostSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DeleteNewsPost()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -120,6 +138,10 @@ namespace TT.Web.Controllers
             public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
             public readonly string SetAccountLockoutDate = ("SetAccountLockoutDate").ToLowerInvariant();
             public readonly string SetAccountLockoutDateSend = ("SetAccountLockoutDateSend").ToLowerInvariant();
+            public readonly string ListNewsPosts = ("ListNewsPosts").ToLowerInvariant();
+            public readonly string EditNewsPost = ("EditNewsPost").ToLowerInvariant();
+            public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
+            public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
         }
 
 
@@ -171,6 +193,30 @@ namespace TT.Web.Controllers
         {
             public readonly string suspendTimeoutViewModel = ("suspendTimeoutViewModel").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_EditNewsPost s_params_EditNewsPost = new ActionParamsClass_EditNewsPost();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_EditNewsPost EditNewsPostParams { get { return s_params_EditNewsPost; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_EditNewsPost
+        {
+            public readonly string Id = ("Id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_EditNewsPostSend s_params_EditNewsPostSend = new ActionParamsClass_EditNewsPostSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_EditNewsPostSend EditNewsPostSendParams { get { return s_params_EditNewsPostSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_EditNewsPostSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_DeleteNewsPost s_params_DeleteNewsPost = new ActionParamsClass_DeleteNewsPost();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DeleteNewsPost DeleteNewsPostParams { get { return s_params_DeleteNewsPost; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DeleteNewsPost
+        {
+            public readonly string Id = ("Id").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -181,15 +227,19 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string EditNewsPost = "EditNewsPost";
                 public readonly string HandleReport = "HandleReport";
                 public readonly string Index = "Index";
+                public readonly string ListNewsPosts = "ListNewsPosts";
                 public readonly string SetAccountLockoutDate = "SetAccountLockoutDate";
                 public readonly string ViewAbusiveMessages = "ViewAbusiveMessages";
                 public readonly string ViewReports = "ViewReports";
                 public readonly string ViewStrikes = "ViewStrikes";
             }
+            public readonly string EditNewsPost = "~/Views/Moderator/EditNewsPost.cshtml";
             public readonly string HandleReport = "~/Views/Moderator/HandleReport.cshtml";
             public readonly string Index = "~/Views/Moderator/Index.cshtml";
+            public readonly string ListNewsPosts = "~/Views/Moderator/ListNewsPosts.cshtml";
             public readonly string SetAccountLockoutDate = "~/Views/Moderator/SetAccountLockoutDate.cshtml";
             public readonly string ViewAbusiveMessages = "~/Views/Moderator/ViewAbusiveMessages.cshtml";
             public readonly string ViewReports = "~/Views/Moderator/ViewReports.cshtml";
@@ -304,6 +354,53 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDateSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
             SetAccountLockoutDateSendOverride(callInfo, suspendTimeoutViewModel);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ListNewsPostsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ListNewsPosts()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ListNewsPosts);
+            ListNewsPostsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult EditNewsPost(int Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            EditNewsPostOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditNewsPostSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Models.NewsPost input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult EditNewsPostSend(TT.Domain.Models.NewsPost input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPostSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            EditNewsPostSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeleteNewsPost(int Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            DeleteNewsPostOverride(callInfo, Id);
             return callInfo;
         }
 

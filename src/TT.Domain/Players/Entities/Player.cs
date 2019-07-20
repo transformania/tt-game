@@ -356,8 +356,15 @@ namespace TT.Domain.Players.Entities
 
             foreach (var energy in TFEnergies)
             {
-                var newValue = energy.Amount * (1 - (cleansePercentage / 100.0M));
-                energy.SetAmount(newValue);
+                var newValue = energy.Amount - cleansePercentage;
+                if (newValue > 0)
+                {
+                    energy.SetAmount(newValue);
+                }
+                else
+                {
+                    TFEnergies.Remove(energy);   
+                }
             }
 
         }

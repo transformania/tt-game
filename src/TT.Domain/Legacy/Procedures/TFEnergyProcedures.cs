@@ -40,38 +40,46 @@ namespace TT.Domain.Procedures
 
                 var minutesAgo = Math.Abs(Math.Floor(e.Timestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-                if (minutesAgo > 180)
+                if (e.CasterId == null)
+                {
+                    sharedEnergyAmt += e.Amount;
+                }
+                else if (minutesAgo > 180)
                 {
                     mergeUpEnergyAmt += e.Amount;
                     energiesEligibleForDelete.Add(e);
-                }
-                else if (e.CasterId == null)
-                {
-                    sharedEnergyAmt += e.Amount;
                 }
             }
 
             // if the amount of old energies is greater than 0, write up a new one and save it as 'public domain' TF Energy
             if (mergeUpEnergyAmt > 0)
             {
+                var publicEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.StaticSkill.FormSourceId && e.CasterId == null);
 
-                var cmd = new CreateTFEnergy
+                if (publicEnergy == null)
                 {
-                    PlayerId = victim.Id,
-                    Amount = mergeUpEnergyAmt,
-                    CasterId = null,
-                    FormSourceId = skill.StaticSkill.FormSourceId
-                };
+                    var cmd = new CreateTFEnergy
+                    {
+                        PlayerId = victim.Id,
+                        Amount = mergeUpEnergyAmt,
+                        CasterId = null,
+                        FormSourceId = skill.StaticSkill.FormSourceId
+                    };
 
-                var form = FormStatics.GetForm(skill.StaticSkill.Id);
+                    var form = FormStatics.GetForm(skill.StaticSkill.Id);
 
-                if (form != null)
-                {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.Id).Id;
+                    if (form != null)
+                    {
+                        cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.Id).Id;
+                    }
+
+                    DomainRegistry.Repository.Execute(cmd);
                 }
-
-                DomainRegistry.Repository.Execute(cmd);
-
+                else
+                {
+                    publicEnergy.Amount += mergeUpEnergyAmt;
+                    repo.SaveTFEnergy(publicEnergy);
+                }
 
                 foreach (var e in energiesEligibleForDelete)
                 {
@@ -563,7 +571,14 @@ namespace TT.Domain.Procedures
             foreach (var energy in mydbEnergies)
             {
                 energy.Amount *= 1 - (bonusPercentageFromBuffs / 100.0M);
-                repo.SaveTFEnergy(energy);
+                if (energy.Amount > 0)
+                {
+                    repo.SaveTFEnergy(energy);
+                }
+                else
+                {
+                    repo.DeleteTFEnergy(energy.Id);
+                }
             }
 
         }

@@ -136,7 +136,7 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.CleanseTFEnergies(new BuffBox());
-            player.TFEnergies.First().Amount.Should().Be(49);
+            player.TFEnergies.First().Amount.Should().Be(48);
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace TT.Tests.Players.Entities
             buffs.FromForm_CleanseExtraTFEnergyRemovalPercent = 10;
 
             player.CleanseTFEnergies(buffs);
-            player.TFEnergies.First().Amount.Should().Be(44);
+            player.TFEnergies.First().Amount.Should().Be(38);
         }
 
         [Test]

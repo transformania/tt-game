@@ -570,7 +570,7 @@ namespace TT.Domain.Procedures
 
             foreach (var energy in mydbEnergies)
             {
-                energy.Amount *= 1 - (bonusPercentageFromBuffs / 100.0M);
+                energy.Amount -= bonusPercentageFromBuffs;
                 if (energy.Amount > 0)
                 {
                     repo.SaveTFEnergy(energy);

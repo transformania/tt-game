@@ -4,8 +4,13 @@
 
 
 @{
-    var XPtoLevel = Model.Player.Level >= PvPStatics.MaxPlayerLevel ? (float)Model.Player.XP : TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
+    var XPtoLevel = TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
     var XpWidth = Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100);
+    if (Model.Player.Level >= PvPStatics.MaxPlayerLevel)
+    {
+        XPtoLevel = (float)Model.Player.XP;
+        XpWidth = 100;
+    }
 }
 
 <div class="avatarXPWrapper" title="@Model.Player.XP / @XPtoLevel.00 XP to next level">

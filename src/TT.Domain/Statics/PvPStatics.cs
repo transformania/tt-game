@@ -84,6 +84,7 @@ namespace TT.Domain.Statics
         public const int MaxAttacksPerUpdate = 3;
         public const decimal LocationMoveCost = 1.0M;
         public const decimal AttackCost = 3.0M;
+        public const decimal AttackManaCost = 10.0M;
         public const decimal MeditateCost = 4.0M;
         public const decimal CleanseCost = 4.0M;
 

@@ -657,7 +657,6 @@ namespace TT.Web.Controllers
 
             ViewBag.Recovered = false;
             ViewBag.RecoveredMsg = "";
-            ViewBag.ManaCost = AttackProcedures.GetSpellManaCost(me, target);
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
@@ -862,7 +861,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has enough mana to cast
-            if ((float)me.Mana < AttackProcedures.GetSpellManaCost(me, targeted))
+            if (me.Mana < PvPStatics.AttackManaCost)
             {
                 TempData["Error"] = "You don't have enough mana to cast this.";
                 TempData["SubError"] = "You can recover mana using consumable items, meditating, or waiting for it to replenish over time.";

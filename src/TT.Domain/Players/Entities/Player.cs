@@ -457,6 +457,10 @@ namespace TT.Domain.Players.Entities
         /// <param name="amount">Amount of XP to give player</param>
         public void AddXP(decimal amount)
         {
+            if (Level >= PvPStatics.MaxPlayerLevel)
+            {
+                return;
+            }
             var xpNeeded = (decimal)GetXPNeededForLevelUp();
             XP += amount;
             if (XP >= xpNeeded)

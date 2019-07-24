@@ -1,9 +1,10 @@
-﻿@model TT.Domain.ViewModels.PlayerFormViewModel
+﻿@using TT.Domain.Statics
+@model TT.Domain.ViewModels.PlayerFormViewModel
 
 
 
 @{
-    var XPtoLevel = TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
+    var XPtoLevel = Model.Player.Level >= PvPStatics.MaxPlayerLevel ? (float)Model.Player.XP : TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
     var XpWidth = Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100);
 }
 

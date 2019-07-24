@@ -43,6 +43,7 @@ namespace TT.Domain.Statics
         public const decimal XP__LevelDifferenceXPGainModifier = 1.5M;
         public const decimal XP__EndgameTFCompletionLevelBase = 8;
         public const decimal XP__EnchantmentMaxXP = 3;
+        public const int MaxPlayerLevel = 12;
 
         public const int MaximumDuelTurnLength = 10;
 

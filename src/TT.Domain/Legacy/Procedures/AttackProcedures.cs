@@ -140,8 +140,6 @@ namespace TT.Domain.Procedures
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
-                        var extraDamageFromLevel = .75M*me.Level;
-
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
                         var willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
 
@@ -157,7 +155,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = 2;
                         }
 
-                        var totalHealthDamage = (skillBeingUsed.StaticSkill.HealthDamageAmount + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
+                        var totalHealthDamage = skillBeingUsed.StaticSkill.HealthDamageAmount * willpowerDamageModifierFromBonuses * criticalModifier;
 
                         // make sure damage is never in the negatives (which would heal instead)
                         if (totalHealthDamage < 0)

@@ -1212,6 +1212,10 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
+            if (dbPlayer == null || dbPlayer.Level >= PvPStatics.MaxPlayerLevel)
+            {
+                return "";
+            }
             // decrease XP gain by 40% for psychos
             if (dbPlayer.BotId == AIStatics.PsychopathBotId)
             {

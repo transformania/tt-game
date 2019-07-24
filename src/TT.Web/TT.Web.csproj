@@ -476,7 +476,6 @@
     <Content Include="Views\PvP\MyPerks.cshtml" />
     <Content Include="Views\PvP\partial\partial_perkBonus.cshtml" />
     <Content Include="Views\PvP\partial\partial_AllBuffsTable.cshtml" />
-    <Content Include="Views\PvP\partial\attackModal.cshtml" />
     <Content Include="Views\Settings\Settings.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Alpha_3.cshtml" />
     <Content Include="Views\PvP\TeleportMap.cshtml" />

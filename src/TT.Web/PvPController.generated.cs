@@ -541,7 +541,6 @@ namespace TT.Web.Controllers
                 public class _ViewNamesClass
                 {
                     public readonly string AjaxAttackModal = "AjaxAttackModal";
-                    public readonly string attackModal = "attackModal";
                     public readonly string captchaForm = "captchaForm";
                     public readonly string movementTable = "movementTable";
                     public readonly string OldLeaderboardLinks = "OldLeaderboardLinks";
@@ -553,7 +552,6 @@ namespace TT.Web.Controllers
                     public readonly string SoulboundTo = "SoulboundTo";
                 }
                 public readonly string AjaxAttackModal = "~/Views/PvP/partial/AjaxAttackModal.cshtml";
-                public readonly string attackModal = "~/Views/PvP/partial/attackModal.cshtml";
                 public readonly string captchaForm = "~/Views/PvP/partial/captchaForm.cshtml";
                 public readonly string movementTable = "~/Views/PvP/partial/movementTable.cshtml";
                 public readonly string OldLeaderboardLinks = "~/Views/PvP/partial/OldLeaderboardLinks.cshtml";

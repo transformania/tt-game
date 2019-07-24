@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel>
+@using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
     <p id="youAreAttacking">You are attacking @ViewBag.TargetName.</p>  
-    <p>This spell will cost you <b>@ViewBag.ManaCost</b> mana to cast against this opponent.</p>
+    <p>This spell will cost you <b>@PvPStatics.AttackManaCost</b> mana to cast against this opponent.</p>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
 <a href="@Url.Action(MVC.Duel.IssueChallenge((int)ViewBag.TargetId))" id="duel_challenge">Challenge to Duel</a>
 <span id="expand" onclick="expandModal()">Expand</span>
@@ -34,7 +35,7 @@
 
 
         <span>
-            <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.SkillSourceId.Value))" class="@HtmlHelpers.GetSpellTypeClass(s)" manacost="@s.StaticSkill.ManaCost">@s.StaticSkill.FriendlyName</a>
+            <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.SkillSourceId.Value))" class="@HtmlHelpers.GetSpellTypeClass(s)">@s.StaticSkill.FriendlyName</a>
         </span>
 
     }

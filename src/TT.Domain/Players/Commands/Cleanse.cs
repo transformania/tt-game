@@ -52,6 +52,11 @@ namespace TT.Domain.Players.Commands
 
                 result = player.Cleanse(Buffs);
 
+                foreach (var energy in player.TFEnergies.ToList().Where(energy => energy.Amount <= 0))
+                {
+                    ctx.Remove(energy);
+                }
+
                 // log statistics only for human players
                 if (player.BotId == AIStatics.ActivePlayerBotId)
                 {

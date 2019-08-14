@@ -866,7 +866,7 @@
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="T4MVC">
-      <Version>4.1.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="WebGrease">
       <Version>1.6.0</Version>

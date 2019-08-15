@@ -819,10 +819,10 @@
       <Version>1.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi">
-      <Version>5.2.4</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin">
-      <Version>5.2.4</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
       <Version>1.0.8</Version>

@@ -638,7 +638,7 @@ namespace TT.Domain.ViewModels
                 "Magicka", 
                 new BuffDetail {
                     DisplayName = "Magicka",
-                    Description = "Magicka reflects your raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal. You will also find that your increased magical prowess allows you greater control over your opponent's bodies.", 
+                    Description = "Magicka reflects your raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal. You will also find that your increased magical prowess allows you greater control over your opponent&apos;s bodies.", 
                     PlusIcons = new List<string> { ManaUpIconClass, AttackIconClass }, 
                     MinusIcons =  new  List<string> { }
                 }

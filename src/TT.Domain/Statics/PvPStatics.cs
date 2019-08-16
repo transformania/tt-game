@@ -45,7 +45,7 @@ namespace TT.Domain.Statics
         public const decimal XP__EnchantmentMaxXP = 3;
         public const int MaxPlayerLevel = 12;
 
-        public const int MaximumDuelTurnLength = 10;
+        public const int MaximumDuelTurnLength = 15;
 
         public const string Permissions_Admin = "admin";
         public const string Permissions_Moderator = "moderator";

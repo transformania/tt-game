@@ -584,9 +584,9 @@ namespace TT.Domain.ViewModels
                 "Discipline", 
                 new BuffDetail {
                     DisplayName = "Discipline",
-                    Description = "Discipline affects the strength of your mental defenses, reducing the effectiveness of all spells cast against you.  Unfortunately you will lose a bit of your own offensive power, being a bit more stable and predictable.", 
+                    Description = "Discipline affects the strength of your mental defenses, reducing the effectiveness of all spells cast against you, while also giving you more will to resist those spells.", 
                     PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
-                    MinusIcons =  new  List<string> { AttackIconClass }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
@@ -595,16 +595,16 @@ namespace TT.Domain.ViewModels
                     DisplayName = "Perception",
                     Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things.  It is also quite useful to have so you know when a spell cast is starting off poorly, reducing the chance of it exploding in your own face.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> {  }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
                 "Charisma", 
                 new BuffDetail {
                     DisplayName = "Charisma",
-                    Description = "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your defenses slightly.", 
+                    Description = "Charisma affects the strength of your willpower and transformative attacks; it represents your ability to influence people and bend them to your design.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { DefenseIconClass, WPUpIconClass }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
@@ -612,17 +612,17 @@ namespace TT.Domain.ViewModels
                 new BuffDetail {
                     DisplayName = "Fortitude",
                     Description = "Although brute force is generally looked down on in the wizarding world, having some extra strength allows you to carry more posessions at a time, plus the extra bulk of your body will make your opponent expend a little more effort to transform.", 
-                    PlusIcons = new List<string> { DefenseIconClass }, 
-                    MinusIcons =  new  List<string> { "" }
+                    PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
                 "Agility", 
                 new BuffDetail {
                     DisplayName = "Agility",
-                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.  Unfortunately moving so quickly is not the best when trying to shoot a spell straight, so these casters can expect a few more spells to go awry and damage themselves instead of their target.", 
+                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while making less noise.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
-                    MinusIcons =  new  List<string> { DefenseIconClass }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
@@ -631,16 +631,16 @@ namespace TT.Domain.ViewModels
                     DisplayName = "Restoration",
                     Description = "Restoration increases the amount of willpower and mana you recover when cleansing or meditating, as well as purge a bit of extra transformation energies from your body.", 
                     PlusIcons = new List<string> { RestorationIconCLass }, 
-                    MinusIcons =  new  List<string> {  }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
                 "Magicka", 
                 new BuffDetail {
                     DisplayName = "Magicka",
-                    Description = "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal.", 
-                    PlusIcons = new List<string> { ManaUpIconClass }, 
-                    MinusIcons =  new  List<string> {  }
+                    Description = "Magicka reflects your raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal. You will also find that your increased magical prowess allows you greater control over your opponent's bodies.", 
+                    PlusIcons = new List<string> { ManaUpIconClass, AttackIconClass }, 
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
@@ -656,9 +656,9 @@ namespace TT.Domain.ViewModels
                 "Luck", 
                 new BuffDetail {
                     DisplayName = "Luck",
-                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents and helps to slightly reduce bad luck of your own in the form of reduced misfires.", 
+                    Description = "Luck is random chance seeming to operate in your favor. Or, maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents and helps to slightly reduce bad luck of your own in the form of reduced misfires.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> {  }
+                    MinusIcons =  new  List<string> { }
                 }
             },
         };

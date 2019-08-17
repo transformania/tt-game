@@ -131,7 +131,7 @@ namespace TT.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName.Trim(), Email = model.Email.Trim(), CreateDate = DateTime.Now };
+                var user = new User { UserName = model.UserName?.Trim(), Email = model.Email?.Trim(), CreateDate = DateTime.Now };
                 var result = userManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -212,7 +212,7 @@ namespace TT.Web.Controllers
             {
                 if (userManager.CheckPassword(user, model.OldPassword))
                 {
-                    var result = userManager.SetEmail(User.Identity.GetUserId(), model.Email.Trim());
+                    var result = userManager.SetEmail(User.Identity.GetUserId(), model.Email?.Trim());
                     if (result.Succeeded)
                     {
                         user = userManager.FindById(User.Identity.GetUserId());

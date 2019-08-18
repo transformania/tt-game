@@ -43,13 +43,15 @@
 
                         if (!Model.IsEquipped)
                         {
-                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
+                            if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
+                            {
+                                <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
+                            }
                             <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-                        }
-
-                        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
-                        {
-                            <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
                         }
 
                         if (Model.IsEquipped && !Model.EquippedThisTurn)

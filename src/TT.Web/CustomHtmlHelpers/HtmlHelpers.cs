@@ -177,7 +177,7 @@ namespace TT.Web.CustomHtmlHelpers
             }
             else
             {
-                strPortraitUrl = new GetStaticItem { ItemSourceId = player.Form.BecomesItemSourceId.Value }.Find().PortraitUrl;
+                strPortraitUrl = new GetStaticItem { ItemSourceId = player.Form.ItemSourceId.Value }.Find().PortraitUrl;
                 if (player.Player.Mobility == PvPStatics.MobilityPet)
                 {
                     output = "/Images/PvP/animalPortraits/";

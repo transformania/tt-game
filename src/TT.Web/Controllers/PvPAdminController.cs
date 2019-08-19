@@ -474,7 +474,7 @@ namespace TT.Web.Controllers
             foreach (var form in forms)
             {
 
-                var item = itemRepo.DbStaticItems.FirstOrDefault(i => i.Id == form.BecomesItemSourceId);
+                var item = itemRepo.DbStaticItems.FirstOrDefault(i => i.Id == form.ItemSourceId);
 
                 if (item != null)
                 {

@@ -970,7 +970,7 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Loaded existing tf message object from database.</p>";
             }
 
-            form.BecomesItemSourceId = contribution.ItemSourceId;
+            form.ItemSourceId = contribution.ItemSourceId;
             form.Description = contribution.Form_Description;
             form.FriendlyName = contribution.Form_FriendlyName;
             form.Gender = contribution.Form_Gender;
@@ -1072,9 +1072,6 @@ namespace TT.Web.Controllers
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            if (form.BecomesItemSourceId != null)
-                DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceId = form.BecomesItemSourceId.Value });
-
             return View(MVC.Contribution.Views.Publish);
         }
 
@@ -1121,7 +1118,7 @@ namespace TT.Web.Controllers
 
                 // update the form's graphic too while we're at it.
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemSourceId == item.Id);
+                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.ItemSourceId == item.Id);
                 if (form != null)
                 {
                     form.PortraitUrl = item.PortraitUrl;

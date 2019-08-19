@@ -83,7 +83,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemSourceId = form.BecomesItemSourceId,
+                                                              ItemSourceId = form.ItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemSourceId = form.BecomesItemSourceId,
+                                                              ItemSourceId = form.ItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -294,7 +294,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemSourceId = form.BecomesItemSourceId,
+                                                              ItemSourceId = form.ItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 
@@ -401,7 +401,7 @@ namespace TT.Domain.Procedures
                                                               TFEnergyRequired = form.TFEnergyRequired,
                                                               Gender = form.Gender,
                                                               MobilityType = form.MobilityType,
-                                                              BecomesItemSourceId = form.BecomesItemSourceId,
+                                                              ItemSourceId = form.ItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
                                                               IsUnique = form.IsUnique,
 

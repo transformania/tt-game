@@ -1017,7 +1017,7 @@ namespace TT.Domain.Procedures
         public static DbStaticForm GetFormFromItem(DbStaticItem item)
         {
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
-            var form = formRepo.DbStaticForms.Where(f => f.BecomesItemSourceId == item.Id).FirstOrDefault();
+            var form = formRepo.DbStaticForms.Where(f => f.ItemSourceId == item.Id).FirstOrDefault();
             return form;
         }
 

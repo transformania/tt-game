@@ -261,7 +261,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.NewMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
 
-                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.BecomesItemSourceId.Value).PortraitUrl;
+                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
                 animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
 

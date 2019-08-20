@@ -511,7 +511,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 65,
+      "name": "Alpha 65 (Era of Viola Hawthorne)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
-
   ]
 }

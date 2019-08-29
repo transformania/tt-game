@@ -519,6 +519,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 66,
+      "name": "Alpha 66 (Era of Alice Grayson)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

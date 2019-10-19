@@ -17,7 +17,7 @@ namespace TT.Domain.Procedures
 {
     public static class AIProcedures
     {
-
+        /* Commenting out for Halloween Stuff
         private const string Psycho1MName = "botform_psychopathic_spellslinger_male";
         private const string Psycho1FName = "botform_psychopathic_spellslinger_female";
         private const string Psycho3MName = "botform_psychopathic_spellslinger_male_3";
@@ -39,6 +39,30 @@ namespace TT.Domain.Procedures
         private const int Psycho7FId = 842;
         private const int Psycho9MId = 843;
         private const int Psycho9FId = 844;
+        */
+
+        // Halloween lines below.
+        private const string Psycho1MName = "form_Bewitched_Femboy_Annabelle_Jumeau";
+        private const string Psycho1FName = "form_Curious_Witch_Witch_Maria";
+        private const string Psycho3MName = "form_Mighty_Werewolf_Mizuho";
+        private const string Psycho3FName = "form_Fierce_She-Wolf_Troodon";
+        private const string Psycho5MName = "form_Vampire_Lord_Blood_Knight";
+        private const string Psycho5FName = "form_Seductive_vampire_Foxpower93";
+        private const string Psycho7MName = "form_Incubus_Servant_Boy_Blackarts";
+        private const string Psycho7FName = "form_Succubine_Maid_Ashley_Valentine";
+        private const string Psycho9MName = "form_Gloom_Kacie_Cross";
+        private const string Psycho9FName = "form_Gothic_Skeleton_Soul";
+
+        private const int Psycho1MId = 882;
+        private const int Psycho1FId = 822;
+        private const int Psycho3MId = 178;
+        private const int Psycho3FId = 363;
+        private const int Psycho5MId = 94;
+        private const int Psycho5FId = 95;
+        private const int Psycho7MId = 402;
+        private const int Psycho7FId = 901;
+        private const int Psycho9MId = 323;
+        private const int Psycho9FId = 863;
 
         private const int PsychopathicForLevelOneEffectSourceId = 19;
         private const int PsychopathicForLevelThreeEffectSourceId = 20;

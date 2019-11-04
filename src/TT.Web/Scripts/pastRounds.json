@@ -535,6 +535,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 68,
+      "name": "Alpha 68 (Era of a Hallow Victory)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

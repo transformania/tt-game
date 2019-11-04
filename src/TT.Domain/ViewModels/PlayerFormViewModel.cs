@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Models;
+using TT.Domain.Statics;
 
 namespace TT.Domain.ViewModels
 {
@@ -9,7 +10,7 @@ namespace TT.Domain.ViewModels
 
         public bool CanAccessChat()
         {
-            return Player != null && Player.BotId == 0 && !string.IsNullOrWhiteSpace(Player.FirstName) && !string.IsNullOrWhiteSpace(Player.LastName);
+            return Player != null && (PvPStatics.ChaosMode || Player.BotId == AIStatics.ActivePlayerBotId) && !string.IsNullOrWhiteSpace(Player.FirstName) && !string.IsNullOrWhiteSpace(Player.LastName);
         }
     }
 }

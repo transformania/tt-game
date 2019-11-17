@@ -274,18 +274,10 @@ namespace TT.Domain.Procedures
 
                  {
                 Stat__PsychopathsDefeated,
-                    /* Updating for Halloween
                     new StatsDetailsMap{
                         FriendlyName="Psycho Hunter",
                         Description="Psychopathic Spellslingers defeated",
                         ImageUrl="trophy.jpg",
-                        Active = true
-                        }
-                    */
-                    new StatsDetailsMap{
-                        FriendlyName="Hallow Victory",
-                        Description="Spooky Spellslingers defeated",
-                        ImageUrl="halloween.jpg",
                         Active = true
                         }
                 },

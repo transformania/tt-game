@@ -543,6 +543,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 69,
+      "name": "Alpha 68 (Era of Food for Thought)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

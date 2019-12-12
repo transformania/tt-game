@@ -154,15 +154,31 @@ namespace TT.Domain.Procedures.BossProcedures
                     //Gingerbread Boys and Candy Cane Girls
                     if (human.Gender == PvPStatics.GenderMale)
                     {
+                        AttackProcedures.Attack(valentine, human, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(valentine, human, BoySpellSourceID);
                         AttackProcedures.Attack(valentine, human, BoySpellSourceID);
-                        AIProcedures.DealBossDamage(valentine, human, false, 2);
+                        AIProcedures.DealBossDamage(valentine, human, false, 3);
                     }
                     else
                     {
+                        AttackProcedures.Attack(valentine, human, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
                         AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
-                        AIProcedures.DealBossDamage(valentine, human, false, 2);
+                        AIProcedures.DealBossDamage(valentine, human, false, 3);
+                    }
+
+                    // give this player the vampire curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(human, BloodyKissEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, human, BloodyCurseSpellSourceId);
+                        AIProcedures.DealBossDamage(valentine, human, false, 1);
+                    }
+
+                    // give this player the immobility curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(human, ValentinesPresenceEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, human, ValentinesPresenceSpellSourceId);
+                        AIProcedures.DealBossDamage(valentine, human, false, 1);
                     }
                 }
 
@@ -173,16 +189,32 @@ namespace TT.Domain.Procedures.BossProcedures
                     // counterattack three against original attacker, and don't bother trying to turn them into a tree.
                     if (human.Gender == PvPStatics.GenderMale)
                     {
+                        AttackProcedures.Attack(valentine, human, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(valentine, human, BoySpellSourceID);
                         AttackProcedures.Attack(valentine, human, BoySpellSourceID);
                         AttackProcedures.Attack(valentine, human, BoySpellSourceID);
-                        AIProcedures.DealBossDamage(valentine, human, false, 1);
+                        AIProcedures.DealBossDamage(valentine, human, false, 4);
                     }
                     else
                     {
+                        AttackProcedures.Attack(valentine, human, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
                         AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
                         AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AIProcedures.DealBossDamage(valentine, human, false, 4);
+                    }
+
+                    // give this player the vampire curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(human, BloodyKissEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, human, BloodyCurseSpellSourceId);
+                        AIProcedures.DealBossDamage(valentine, human, false, 1);
+                    }
+
+                    // give this player the immobility curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(human, ValentinesPresenceEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, human, ValentinesPresenceSpellSourceId);
                         AIProcedures.DealBossDamage(valentine, human, false, 1);
                     }
 
@@ -249,6 +281,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffectSourceId))
                 {
                     AttackProcedures.Attack(valentine, p, ValentinesPresenceSpellSourceId);
+                    AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
             }

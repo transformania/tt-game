@@ -11,7 +11,7 @@ namespace TT.Domain.ViewModels
         public static Dictionary<string, BossSummon> GlobalBossSummonDictionary = new Dictionary<string, BossSummon> {
     { "ranch_bedroom", new BossSummon { BossId = AIStatics.DonnaBotId, MinimumTurn = TurnTimesStatics.GetDonnaMinSpawnTurn(), ActivationText = "" }},
 
-     { "castle_armory", new BossSummon { BossId = AIStatics.ValentineBotId, MinimumTurn = TurnTimesStatics.GetValentineMinSpawnTurn(), ActivationText = "" }},
+     { "forest_pinecove", new BossSummon { BossId = AIStatics.ValentineBotId, MinimumTurn = TurnTimesStatics.GetValentineMinSpawnTurn(), ActivationText = "" }},  //Normally castle_armory
 
      { "stripclub_bar_seats", new BossSummon { BossId = AIStatics.BimboBossBotId, MinimumTurn = TurnTimesStatics.GetBimboBossMinSpawnTurn(), ActivationText = "" }},
 

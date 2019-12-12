@@ -1054,7 +1054,7 @@ namespace TT.Web.Controllers
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
                     {
-                        TempData["Error"] = "You get the feeling this type of spell won't work against Lord Valentine.";
+                        TempData["Error"] = "You get the feeling this type of spell won't work against Lady Krampus.";
                         TempData["SubError"] = "Maybe a different one would do...";
                         return RedirectToAction(MVC.PvP.Play());
                     }

@@ -606,7 +606,10 @@ namespace TT.Web.Controllers
                 }
                 if (stats.Boss_Valentine == AIStatics.ACTIVE)
                 {
+                    /*
                     output += "\"A powerful vampire lord named Valentine is in town, letting people try to test their skills against him.  He won't leave the castle at all, so you can safely disengage him as you please; he holds no grudges.  However, it's best not to be standing near him for too long; he seeks to turn vampires out of the population here, and if he grows tired of you as a vampire he will try to turn you into a sleek sword for his personal collection instead!\"<br><br>";
+                    */
+                    output += "\"Rumor has it that a powerful demon named Krampus is hiding somewhere in town. People are saying that they are up to no good, spreading havoc where they go. Countless spell casters have met a terrible fate at the hand of this ravenous demon. You might want to steer clear if you can help it, or you might end up as something a little more festive instead.\"<br><br>";
 
                 }
                 if (stats.Boss_Sisters == AIStatics.ACTIVE)

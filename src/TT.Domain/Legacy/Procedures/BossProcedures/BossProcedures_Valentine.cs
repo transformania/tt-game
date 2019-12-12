@@ -9,46 +9,58 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
+
+/*
+ * Oh no! A terrible curse has befallen the once vampire lord!
+ * Now, he's cursed with holiday cheer! 
+ * She now suffers in silence, punishing those that are naughty. 
+ * Reskins can be TFs with the right spin! 
+ * 
+ * I admit this is really hacky, but this is a holiday boss reskin.
+ * -Fritz
+ */
 namespace TT.Domain.Procedures.BossProcedures
 {
     public static class BossProcedures_Valentine
     {
 
-        private const string ValentineFirstName = "Lord 'Teaserael'";
-        private const string ValentineLastName = "Valentine";
+        private const string ValentineFirstName = "Lady";
+        private const string ValentineLastName = "Krampus";
 
-        public const int ValentineFormSourceId = 207;
+        public const int ValentineFormSourceId = 739; //Krampus
 
-        public const int SwordSpellSourceId = 501;
+        public const int BoySpellSourceID = 1064; //Gingerbread Man
+        public const int GirlSpellSourceID = 1053; //Candy Cane Girl
+        public const int TreeSpellSourceID = 1054; //Christmas Tree
 
-        public const int BloodyCurseSpellSourceId = 727;
-        private const int BloodyKissEffectSourceId = 140;
+        public const int BloodyCurseSpellSourceId = 1264; //Smooch
+        private const int BloodyKissEffectSourceId = 197; //Smooch
 
-        public const int ValentinesPresenceSpellSourceId = 839;
-        private const int ValentinesPresenceEffectSourceId = 143;
+        public const int ValentinesPresenceSpellSourceId = 1261; //Snatch
+        private const int ValentinesPresenceEffectSourceId = 196; //Snatch
 
-        public const int QueensPantiesItemSourceId = 125;
+        public const int QueensPantiesItemSourceId = 599; //Snowflake
 
         private const int DayNightInterval = 12;
 
         public const string DayStance = "daystance";
         public const string NightStance = "nightstance";
 
-        // NIGHT -- male
-        public const int NightVampireMaleSpellSourceId = 813;
-        public const int NightVampireMaleFormSourceId = 463;
+        // NIGHT -- Joyful Caroler
+        public const int NightVampireMaleSpellSourceId = 1267;
+        public const int NightVampireMaleFormSourceId = 1020;
 
-        // NIGHT -- female
-        public const int NightVampireFemaleSpellSourceId = 814;
-        public const int NightVampireFemaleFormSourceId = 464;
+        // NIGHT -- Cheerful Caroler
+        public const int NightVampireFemaleSpellSourceId = 1266;
+        public const int NightVampireFemaleFormSourceId = 1019;
 
-        // DAY -- male
-        public const int DayVampireMaleSpellSourceId = 815;
-        public const int DayVampireMaleFormSourceId = 465;
+        // DAY -- Joyful Caroler
+        public const int DayVampireMaleSpellSourceId = 1267;
+        public const int DayVampireMaleFormSourceId = 1020;
 
-        // DAY -- female
-        public const int DayVampireFemaleSpellSourceId = 816;
-        public const int DayVampireFemaleFormSourceId = 466;
+        // DAY -- Cheerful Caroler
+        public const int DayVampireFemaleSpellSourceId = 1266;
+        public const int DayVampireFemaleFormSourceId = 1019;
 
         public static void SpawnValentine()
         {
@@ -70,7 +82,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     FormSourceId = ValentineFormSourceId,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
-                    Level = 10,
+                    Level = 30,
                     BotId = AIStatics.ValentineBotId,
                 };
                 var id = DomainRegistry.Repository.Execute(cmd);
@@ -87,7 +99,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     EquippedThisTurn = false,
                     IsEquipped = false,
                     IsPermanent = false,
-                    Level = 11,
+                    Level = 6,
                     OwnerId = id,
                     PvPEnabled = -1,
                     ItemSourceId = ItemStatics.GetStaticItem(QueensPantiesItemSourceId).Id
@@ -125,7 +137,7 @@ namespace TT.Domain.Procedures.BossProcedures
             if (valentine.Health <= 0)
             {
 
-                var victoryMessage = "'It's over!' - you yell in a thrill, already feeling the excitement of your victory over this sly, old fox as you lunge at him at point blank range, your palm tightly clenching a spell to finish it off. However, something is wrong. Grin, that paints itself on his lips, states about anything but an imminent defeat. His movements change, becoming more fuid, unreadable, as he steps to the side - or teleports? you don't even notice - and sticks his leg out, providing you with wonderful opportunity to trip over it. Opportunity that you, of course, took, falling over onto the floor, barely managing to not smash your face on it. Immediately after two blades tickle your neck, and the his voice agrees with your previous statement: - 'Indeed, it's over.' - suddenly the sharp steel by your throat vanishes into thin air as the man laughs heartily: - 'I admire your passion, young one.' - as you get up, you look at him and see a sincere smile on his face, as he continues: - 'Mind calling it a draw for today? It won't work good for my reputation if other's would know how you've beaten me.' - he winks. - 'And here's a little prize for your effort. Something very special, That I most certainly do not just trying to get rid of before i got caught...' - he reaches into his pocket, and gives you... a pair of panties. Before you can object or question this 'gift', he explains: - 'Thise are not just any panties. They belong to the Queen herself... so if i were you I'd keep them hidden to avoid being tuurned into a matching bra...' - before he could finish, a loud, furious woman's voice echoes through the room: - 'Israel Victis Valentine!!!.. Care to explain yourself?!!' - the mans face goes noticeably paler than it was before as he whispers to you: - 'Run! Run, I'll distract her!' - as you are snraking out through the other door, you can hear his voice, growing distant: - 'Oh, dear, i did expect you to wake up so soon...'";
+                var victoryMessage = "'Fa-la-la-la-la la la la-la!' you recite again, pushing Lady Krampus closer to her limits. The Krampus, worn and weary from your incessant singing, frowns and shakes her head as you continue with your attack upon her. 'I grow tired of this entire charade! This isn't any fun!' she scowls and puts hands over her ears, stepping aside as if to escape your jingling. 'You win! I can't stand this! I didn't even want to stay in this accursed town, anyways!' You can feel a smile creep across your lips, happy in your attempts to erode their will. Still holding her hands upon the sides of her head, she moves to the back of the cabin and reaches into a corner. 'All I wanted to do was punish naughty boys and girls and make the holiday better, but my efforts are clearly out-classed! I feel you would do better in my place!' She continued to mutter to herself as she digs through the rubble, only relenting once they have fetched a lock-box from the debris. 'You seem to be a particularly greedy type, so I have a gift for you. Take it and do as you like with it. I'm done with this place.' She places it into your hands and in an instant, she disappears in a cloud of snow. In their parting, the ringing of caroling in your own brain seems to finally cease to free you from its curse. Shaking your head to come back to your senses, you look down at the item left for you. You cautiously open the unlocked box, finding a simple crystalline item. Much like a snowflake, its form looks rather delicate and fragile.";
 
                 PlayerLogProcedures.AddPlayerLog(human.Id, victoryMessage, true);
 
@@ -139,34 +151,57 @@ namespace TT.Domain.Procedures.BossProcedures
                 // regular counterattacks, not berserk
                 if (valentine.Health > valentine.MaxHealth / 4)
                 {
-                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
-                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
-                    AIProcedures.DealBossDamage(valentine, human, false, 2);
+                    //Gingerbread Boys and Candy Cane Girls
+                    if (human.Gender == PvPStatics.GenderMale)
+                    {
+                        AttackProcedures.Attack(valentine, human, BoySpellSourceID);
+                        AttackProcedures.Attack(valentine, human, BoySpellSourceID);
+                        AIProcedures.DealBossDamage(valentine, human, false, 2);
+                    }
+                    else
+                    {
+                        AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AIProcedures.DealBossDamage(valentine, human, false, 2);
+                    }
                 }
 
                 // berserk mode counterattack
                 else
                 {
 
-                    // counterattack twice against original attacker
-                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
-                    AttackProcedures.Attack(valentine, human, SwordSpellSourceId);
-                    AIProcedures.DealBossDamage(valentine, human, false, 1);
+                    // counterattack three against original attacker, and don't bother trying to turn them into a tree.
+                    if (human.Gender == PvPStatics.GenderMale)
+                    {
+                        AttackProcedures.Attack(valentine, human, BoySpellSourceID);
+                        AttackProcedures.Attack(valentine, human, BoySpellSourceID);
+                        AttackProcedures.Attack(valentine, human, BoySpellSourceID);
+                        AIProcedures.DealBossDamage(valentine, human, false, 1);
+                    }
+                    else
+                    {
+                        AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AttackProcedures.Attack(valentine, human, GirlSpellSourceID);
+                        AIProcedures.DealBossDamage(valentine, human, false, 1);
+                    }
 
-                    // attack everyone else with 1 cast
+                    // attack everyone else with 1 cast for Holiday cheer.
                     var playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == PvPStatics.MobilityFull && 
+                    playersHere = playersHere.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                     !PlayerProcedures.PlayerIsOffline(p) &&
-                    p.Level >= 3 && 
-                    p.BotId == AIStatics.ActivePlayerBotId && 
-                    p.Id != valentine.Id && 
+                    p.Level >= 3 &&
+                    p.BotId == AIStatics.ActivePlayerBotId &&
+                    p.Id != valentine.Id &&
+                    p.Id != human.Id &&
                     p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
 
+                    //People need to be more festive! 
                     foreach (var p in playersHere)
                     {
-                        AttackProcedures.Attack(valentine, p, SwordSpellSourceId);
+                        AttackProcedures.Attack(valentine, p, TreeSpellSourceID);
                         AIProcedures.DealBossDamage(valentine, p, false, 1);
                     }
                 }
@@ -202,7 +237,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (var p in playersHere)
             {
-                
+
                 // give this player the vampire curse if they do not yet have it
                 if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffectSourceId))
                 {
@@ -265,6 +300,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
                 }
             }
+            /* Only have the one stance.
             else if (stance == BossProcedures_Valentine.NightStance)
             {
                 if (player.FormSourceId != NightVampireFemaleFormSourceId && player.FormSourceId != NightVampireMaleFormSourceId)
@@ -279,6 +315,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
                 }
             }
+            */
         }
 
         public static void EndEvent(int newOwnerId)
@@ -287,13 +324,13 @@ namespace TT.Domain.Procedures.BossProcedures
             IItemRepository itemRepo = new EFItemRepository();
 
             var valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
-            
+
 
             var panties = itemRepo.Items.FirstOrDefault(i => i.ItemSourceId == QueensPantiesItemSourceId);
             panties.OwnerId = newOwnerId;
             itemRepo.SaveItem(panties);
 
-            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = valentine.Id, IgnoreRunes = true});
+            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = valentine.Id, IgnoreRunes = true });
             DomainRegistry.Repository.Execute(new DeletePlayer { PlayerId = valentine.Id });
 
             PvPWorldStatProcedures.Boss_EndValentine();
@@ -331,6 +368,7 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             var turnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
 
+            /* We don't really need the Krampus to change stances.
             if (turnNum % (DayNightInterval * 2) < DayNightInterval)
             {
                 return DayStance;
@@ -339,7 +377,9 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 return NightStance;
             }
+            */
 
+            return DayStance;
         }
 
         public static string GetStanceLocation()
@@ -347,7 +387,8 @@ namespace TT.Domain.Procedures.BossProcedures
             var stance = GetStance();
             if (stance == DayStance)
             {
-                return "castle_training";
+                //Normal castle_training
+                return "forest_cabin";
             }
             else
             {
@@ -372,7 +413,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
             }
 
-            // Night stance:  Only night vampires can attack Valentine
+            // Night stance:  Only night vampires can attack Valentine - don't need to change anything, because I'm lazy and the Krampus should only be in day stance.
             else
             {
                 if (attacker.FormSourceId == NightVampireMaleFormSourceId || attacker.FormSourceId == NightVampireFemaleFormSourceId)
@@ -383,14 +424,15 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     return false;
                 }
-            }
+            }  
         }
 
 
 
         public static string GetWrongFormText()
         {
-            return "Lord Valentine takes in your form with a studious and suggestive look. \"I'm afraid you are not yet ready for this hour’s training, child. Perhaps a few adjustments here...\" He caresses your cheek with a finger. \"...and here.\" His next touch leads down your neck with a chilling tingle that stops at your cleavage. In his trail there is marble white flesh, chilled yet so sensitive you can feel the Lords breath washing down upon it. When did he get so close...?";
+            return "As you approach, the Krampus leers over you, their look seeming to cut right to your soul. \"Have you come for another kiss, or would you like to go into my sack?\" Their gaze looks incredibly malicious, as if they're thinking the best way to gobble you up. Perhaps the Krampus is just waiting to deal with another naughty spell-casters. \"Won't you join me, spreading holiday cheer?\" she asks you, the sounds of caroling ringing in your ears.";
+
         }
 
     }

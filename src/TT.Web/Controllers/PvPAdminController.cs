@@ -1466,7 +1466,9 @@ namespace TT.Web.Controllers
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpellSourceId);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpellSourceId);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BoySpellSourceID);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.GirlSpellSourceID);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.TreeSpellSourceID);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireFemaleSpellSourceId);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireFemaleSpellSourceId);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireMaleSpellSourceId);

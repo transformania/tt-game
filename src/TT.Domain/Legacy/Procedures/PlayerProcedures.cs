@@ -952,7 +952,7 @@ namespace TT.Domain.Procedures
                         }
 
                     }
-                    else if (roll < 1 && dbLocationName == "castle_armory")
+                    else if (roll < 1 && dbLocationName == "forest_pinecove") //Normally castle_armory
                     {
                         if (world.IsValentineAvailable())
                         {

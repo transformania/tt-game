@@ -12,15 +12,19 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
-            <img class="img-responsive center-block" src="../Images/PvP/portraits/vampireboss.png">
+            <img class="img-responsive center-block" src="../Images/PvP/portraits/lady_krampus_ewillice.jpg">
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
 
             @{
                 if (ViewBag.stance == BossProcedures_Valentine.DayStance)
                 {
+                    @* Valentine may come back around at some time. For now, he is a Holiday Boss reskin.
                     <p>While stepping into Training Halls your ears are suddenly filled with sound of metal clashing against metal and ocassional talk that accompanies the fight. Curiously you step closer - after all you came here with only one purpose...</p>
                     <p><a href="@Url.Action(MVC.NPC.TalkToValentine("take_challenge"))">Take a challenge</a></p>
+                    *@
+                    <p>The sounds of soft chanting ring through your ears as you approach the festive demon. She looks down upon you, not saying a word, but you can tell she would be more than happy to fill you with the holiday spirit.</p>
+                    <p><a href="@Url.Action(MVC.NPC.TalkToValentine("take_challenge"))">I feel so festive!</a></p>
                 }
                 else if (ViewBag.stance == BossProcedures_Valentine.NightStance)
                 {
@@ -29,7 +33,7 @@
                 }
                 else
                 {
-                    <p>"I'm Valentine and I'm a pervert."</p>
+                    <p>"Come back when I'm in the holiday spirit."</p>
                 }
             }
         </div>

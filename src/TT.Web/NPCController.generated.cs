@@ -131,6 +131,18 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItem);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SoulboundRename()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulboundRename);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RenameSoulboundSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenameSoulboundSend);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public NPCController Actions { get { return MVC.NPC; } }
@@ -171,6 +183,8 @@ namespace TT.Web.Controllers
             public readonly string SoulbindItemList = ("SoulbindItemList").ToLowerInvariant();
             public readonly string SoulbindItem = ("SoulbindItem").ToLowerInvariant();
             public readonly string RetrieveSoulboundItems = ("RetrieveSoulboundItems").ToLowerInvariant();
+            public readonly string SoulboundRename = ("SoulboundRename").ToLowerInvariant();
+            public readonly string RenameSoulboundSend = ("RenameSoulboundSend").ToLowerInvariant();
         }
 
 
@@ -279,6 +293,22 @@ namespace TT.Web.Controllers
         {
             public readonly string itemId = ("itemId").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_SoulboundRename s_params_SoulboundRename = new ActionParamsClass_SoulboundRename();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SoulboundRename SoulboundRenameParams { get { return s_params_SoulboundRename; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SoulboundRename
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_RenameSoulboundSend s_params_RenameSoulboundSend = new ActionParamsClass_RenameSoulboundSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RenameSoulboundSend RenameSoulboundSendParams { get { return s_params_RenameSoulboundSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RenameSoulboundSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -294,6 +324,7 @@ namespace TT.Web.Controllers
                 public readonly string SellList = "SellList";
                 public readonly string SellPetList = "SellPetList";
                 public readonly string SoulbindItemList = "SoulbindItemList";
+                public readonly string SoulboundRename = "SoulboundRename";
                 public readonly string TalkToAdrianna = "TalkToAdrianna";
                 public readonly string TalkToBartender = "TalkToBartender";
                 public readonly string TalkToCandice = "TalkToCandice";
@@ -309,6 +340,7 @@ namespace TT.Web.Controllers
             public readonly string SellList = "~/Views/NPC/SellList.cshtml";
             public readonly string SellPetList = "~/Views/NPC/SellPetList.cshtml";
             public readonly string SoulbindItemList = "~/Views/NPC/SoulbindItemList.cshtml";
+            public readonly string SoulboundRename = "~/Views/NPC/SoulboundRename.cshtml";
             public readonly string TalkToAdrianna = "~/Views/NPC/TalkToAdrianna.cshtml";
             public readonly string TalkToBartender = "~/Views/NPC/TalkToBartender.cshtml";
             public readonly string TalkToCandice = "~/Views/NPC/TalkToCandice.cshtml";
@@ -614,6 +646,30 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RetrieveSoulboundItems);
             RetrieveSoulboundItemsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SoulboundRenameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SoulboundRename(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulboundRename);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            SoulboundRenameOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RenameSoulboundSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.PlayerNameViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RenameSoulboundSend(TT.Domain.ViewModels.PlayerNameViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenameSoulboundSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            RenameSoulboundSendOverride(callInfo, input);
             return callInfo;
         }
 

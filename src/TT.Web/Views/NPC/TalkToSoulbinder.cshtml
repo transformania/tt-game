@@ -1,4 +1,7 @@
-﻿@model TT.Domain.ViewModels.TalkToSoulbinderViewModel
+﻿@using TT.Domain.Items.Services
+@using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
+@model TT.Domain.ViewModels.TalkToSoulbinderViewModel
 
 @section menu
 {
@@ -15,15 +18,49 @@
             <p>"Hello there, mortal.  Have you come to soulbind a prized possession to your soul?  None others may take your soulbound items and pets, and should you find yourself suddenly without them, you can always return here to me to get them back.  The first soulbinding is free of charge!  Alternatively, if you're looking for a good price on your <i>own</i> soul, I'm open for some haggling..."</p>
 
             <p>"Oh, I'm afraid that if you have a pet, I'll have to hang on to your soulbound one until you have room again.  Rules are rules, after all."</p>
-            
+
             @if (Model.NPCOwnedSoulboundItems.Count() > 0)
             {
                 <p><a href="@Url.Action(MVC.NPC.RetrieveSoulboundItems())">Retrieve my @Model.NPCOwnedSoulboundItems.Count() soulbound items</a></p>
             }
-            
+
             @if (Model.Items.Count() > 0)
             {
                 <p><a href="@Url.Action(MVC.NPC.SoulbindItemList())">Soulbind an item/pet</a></p>
+            }
+
+
+            @if (Model.AllSoulboundItems.Count() == 0)
+            {
+                <p>You do not have any items or pets that are currently soulbound.</p>
+            }
+            else
+            {
+                <table id="soulbindItemsTable" class="table table-hover messageTable dt-responsive">
+                    <thead>
+                        <tr>
+                            <th>Victim Name</th>
+                            <th>Item Name</th>
+                            <th>Level</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model.AllSoulboundItems)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))" target="_blank">@item.FormerPlayer.FullName</a></td>
+                                    <td>@item.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, item)</td>
+                                    <td>@item.Level</td>
+                                    <td><img src="@HtmlHelpers.GetImageUrl(item.ItemSource.PortraitUrl, item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
+                                    <td><a href="@Url.Action(MVC.NPC.SoulboundRename(item.FormerPlayer.Id))">Rename</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             }
 
         </div>
@@ -33,6 +70,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#soulbindItemsTable').dataTable();
+        $('#soulbindItemsTable').dataTable({
+            "lengthMenu": [[2, 5, 7, 10, -1], [2, 5, 7, 10, "All"]]
+        });
     });
+
 </script>

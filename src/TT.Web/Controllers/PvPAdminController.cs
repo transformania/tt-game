@@ -1368,6 +1368,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         public virtual ActionResult RenamePlayerSend(PlayerNameViewModel input)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))

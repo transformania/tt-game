@@ -4,6 +4,8 @@ using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
@@ -1153,6 +1155,63 @@ namespace TT.Web.Controllers
             }
 
             return RedirectToAction(MVC.NPC.TalkToSoulbinder());
+        }
+
+        public virtual ActionResult SoulboundRename(int id)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var item = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).FirstOrDefault(i => i.FormerPlayer.Id == id);
+
+            if (item == null)
+            {
+                TempData["Error"] = "This player is not soul bound to you";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var output = new PlayerNameViewModel
+            {
+                Id = item.FormerPlayer.Id,
+                NewFirstName = item.FormerPlayer.FirstName,
+                NewLastName = item.FormerPlayer.LastName
+            };
+
+            return View(MVC.NPC.Views.SoulboundRename, output);
+        }
+
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult RenameSoulboundSend(PlayerNameViewModel input)
+        {
+
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+            var item = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Where(i => i.FormerPlayer.Id == input.Id).FirstOrDefault();
+
+            if (item == null)
+            {
+                TempData["Error"] = "This player is not soul bound to you";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (!string.IsNullOrEmpty(input.NewFirstName) && input.NewFirstName != player.FirstName)
+            {
+                player.FirstName = input.NewFirstName;
+            }
+
+            if (!string.IsNullOrEmpty(input.NewLastName) && input.NewLastName != player.LastName)
+            {
+                player.LastName = input.NewLastName;
+            }
+
+            playerRepo.SavePlayer(player);
+
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed your soulbound object.</b>", true);
+
+            return RedirectToAction(MVC.PvP.Play());
         }
     }
 }

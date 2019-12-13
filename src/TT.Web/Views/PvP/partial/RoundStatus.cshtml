@@ -20,7 +20,7 @@
 
     if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode)
     {
-        <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos Mode</a> in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+<div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos Mode</a> in which attacks are unlimited.  This is a rapid test mode that occurs in-between rounds and is not a representation of normal in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.RoundStartsAt != null && Model.RoundStartsAt.Value.CompareTo(DateTime.UtcNow) > 0)

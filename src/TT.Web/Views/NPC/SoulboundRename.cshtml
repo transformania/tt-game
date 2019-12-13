@@ -1,0 +1,30 @@
+﻿@model TT.Domain.ViewModels.PlayerNameViewModel
+
+    <div class="containerInner">
+
+        <h1>Rename Soulbound Item / Pet</h1>
+
+        <p>You can use this tool to rename a soulbound object or pet.  Some rules:</p>
+        <ul class="listdots">
+            <li>This tool only works if the person has consented to being soulbound..</li>
+            <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
+            <li>Do not make any words so long that it cannot text wrap comfortably.</li>
+        </ul>
+
+        @using (Html.BeginForm(MVC.NPC.RenameSoulboundSend(), FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.Id)
+
+            <span>FirstName:</span>
+            @Html.TextAreaFor(m => m.NewFirstName)<br><br>
+
+            <span>LastName:</span>
+            @Html.TextAreaFor(m => m.NewLastName)<br><br>
+
+            <input type="submit" value="Send">
+        }
+
+    </div>
+

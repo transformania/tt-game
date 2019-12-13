@@ -431,6 +431,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_66 = "Alpha_66";
                         public readonly string Alpha_67 = "Alpha_67";
                         public readonly string Alpha_68 = "Alpha_68";
+                        public readonly string Alpha_69 = "Alpha_69";
                     }
                     public readonly string Alpha_17 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_17.cshtml";
                     public readonly string Alpha_18 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_18.cshtml";
@@ -484,6 +485,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_66 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_66.cshtml";
                     public readonly string Alpha_67 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_67.cshtml";
                     public readonly string Alpha_68 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_68.cshtml";
+                    public readonly string Alpha_69 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_69.cshtml";
                 }
                 static readonly _XPClass s_XP = new _XPClass();
                 public _XPClass XP { get { return s_XP; } }

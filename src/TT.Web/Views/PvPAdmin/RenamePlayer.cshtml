@@ -19,6 +19,8 @@
 
     @using (Html.BeginForm(MVC.PvPAdmin.RenamePlayerSend(), FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
+
         <span>Id:</span>
         @Html.TextAreaFor(m => m.Id)<br><br>
 
@@ -29,7 +31,7 @@
         @Html.TextAreaFor(m => m.NewLastName)<br><br>
 
         <span>Form Source Id:</span>
-        @Html.TextBoxFor(m => m.NewFormSourceId, new {@type="number"})<br><br>
+        @Html.TextBoxFor(m => m.NewFormSourceId, new { @type = "number" })<br><br>
 
         <span>Level:</span>
         @Html.TextAreaFor(m => m.Level)<br><br>

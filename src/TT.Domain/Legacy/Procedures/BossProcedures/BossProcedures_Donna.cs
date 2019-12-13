@@ -162,7 +162,8 @@ namespace TT.Domain.Procedures.BossProcedures
                     itemRepo.SaveItem(i);
                 }
 
-                var donnasPlayerPets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = donna.Id}).OrderBy(i => i.Level).ToList();
+                //The list should only look at pets.
+                var donnasPlayerPets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = donna.Id }).Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet).OrderBy(i => i.Level).ToList();
 
                 // have Donna release her weakest pet every so often
                 if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Any())

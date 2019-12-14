@@ -1157,6 +1157,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TalkToSoulbinder());
         }
 
+        [HttpGet]
         public virtual ActionResult SoulboundRename(int id)
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1176,11 +1177,13 @@ namespace TT.Web.Controllers
                 NewLastName = item.FormerPlayer.LastName
             };
 
+
             return View(MVC.NPC.Views.SoulboundRename, output);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult RenameSoulboundSend(PlayerNameViewModel input)
+        public virtual ActionResult SoulboundRename(PlayerNameViewModel input)
         {
 
             var myMembershipId = User.Identity.GetUserId();
@@ -1232,7 +1235,7 @@ namespace TT.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(MVC.NPC.SoulboundRename(item.FormerPlayer.Id));
+                return View(MVC.NPC.Views.SoulboundRename, input);
             }
 
             playerRepo.SavePlayer(player);

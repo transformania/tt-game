@@ -6,24 +6,49 @@
 }
 
 <div class="containerInner">
+
+    <h1>View Questions</h1>
+
+    <table class="table table-hover messageTable">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Time Sent</th>
+                <th style="width: 25%;">Sender</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var report in Model.Where(r => r.Reporter.Id == r.Reported.Id))
+                {
+                        <tr>
+                            <td>@report.Timestamp.ToString("MMMM dd, yyyy") (Round @report.Round)</td>
+                            <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
+                            <td>@report.Reason</td>
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+
     <h1>View Reports</h1>
 
-    <table  class="table table-hover messageTable">
+    <table class="table table-hover messageTable">
         <thead>
-        <tr>
-            <th>Timestamp</th>
-            <th>Reporter</th>
-            <th>Reported</th>
-            <th>Message</th>
-            <th>Moderator response</th>
-            <th></th>
-        </tr>
+            <tr>
+                <th>Timestamp</th>
+                <th>Reporter</th>
+                <th>Reported</th>
+                <th>Message</th>
+                <th>Moderator response</th>
+                <th></th>
+            </tr>
 
         </thead>
         <tbody>
 
             @{
-                foreach (var report in Model)
+                foreach (var report in Model.Where(r => r.Reporter.Id != r.Reported.Id))
                 {
                     <tr>
                         <td>@report.Timestamp.ToString("MMMM dd, yyyy") (Round @report.Round)</td>
@@ -41,3 +66,12 @@
     </table>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.messageTable').dataTable({
+            "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]]
+        });
+    });
+
+</script>

@@ -1191,6 +1191,29 @@ namespace TT.Web.Controllers
 
             var item = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Where(i => i.FormerPlayer.Id == input.Id).FirstOrDefault();
 
+            // assert that the first name is not reserved by the system
+            var fnamecheck = TrustStatics.NameIsReserved(input.NewFirstName);
+            if (!fnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("NewFirstName", "You can't use the first name '" + input.NewFirstName + "'.  It is reserved or else not allowed.");
+            }
+
+
+            // assert that the last name is not reserved by the system
+            var lnamecheck = TrustStatics.NameIsReserved(input.NewLastName);
+            if (!lnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("NewLastName", "You can't use the last name '" + input.NewLastName + "'.  It is reserved or else not allowed.");
+            }
+
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+            var resName = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == input.NewFirstName + " " + input.NewLastName);
+
+            if (resName != null && resName.MembershipId != player.MembershipId)
+            {
+                ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
+            }
+                
             if (item == null)
             {
                 TempData["Error"] = "This player is not soul bound to you";
@@ -1205,6 +1228,11 @@ namespace TT.Web.Controllers
             if (!string.IsNullOrEmpty(input.NewLastName) && input.NewLastName != player.LastName)
             {
                 player.LastName = input.NewLastName;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(MVC.NPC.SoulboundRename(item.FormerPlayer.Id));
             }
 
             playerRepo.SavePlayer(player);

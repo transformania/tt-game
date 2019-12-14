@@ -12,7 +12,7 @@
     <table class="table table-hover messageTable">
         <thead>
             <tr>
-                <th style="width: 25%;">Time Sent</th>
+                <th style="width: 25%;">Timestamp</th>
                 <th style="width: 25%;">Sender</th>
                 <th>Message</th>
             </tr>
@@ -21,11 +21,11 @@
             @{
                 foreach (var report in Model.Where(r => r.Reporter.Id == r.Reported.Id))
                 {
-                        <tr>
-                            <td>@report.Timestamp.ToString("MMMM dd, yyyy") (Round @report.Round)</td>
-                            <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
-                            <td>@report.Reason</td>
-                        </tr>
+                    <tr>
+                        <td>Round @report.Round, @report.Timestamp.ToString("MM/dd/yyyy")</td>
+                        <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
+                        <td>@report.Reason</td>
+                    </tr>
                 }
             }
         </tbody>
@@ -51,7 +51,7 @@
                 foreach (var report in Model.Where(r => r.Reporter.Id != r.Reported.Id))
                 {
                     <tr>
-                        <td>@report.Timestamp.ToString("MMMM dd, yyyy") (Round @report.Round)</td>
+                        <td>Round @report.Round, @report.Timestamp.ToString("MM/dd/yyyy")</td>
                         <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
                         <td class="bad"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reported.Id))">@report.Reported.UserName</a></td>
                         <td>@report.Reason</td>
@@ -70,7 +70,8 @@
 <script>
     $(document).ready(function () {
         $('.messageTable').dataTable({
-            "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]]
+            "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+            "order": [[0, "desc"]]
         });
     });
 

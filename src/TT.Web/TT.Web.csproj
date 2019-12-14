@@ -396,6 +396,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_68.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_69.cshtml" />
     <Content Include="Views\NPC\SoulboundRename.cshtml" />
+    <Content Include="Views\Report\Question.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

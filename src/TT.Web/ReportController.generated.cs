@@ -88,6 +88,7 @@ namespace TT.Web.Controllers
         public class ActionNamesClass
         {
             public readonly string Report = ("Report").ToLowerInvariant();
+            public readonly string Question = ("Question").ToLowerInvariant();
             public readonly string SubmitReport = ("SubmitReport").ToLowerInvariant();
         }
 
@@ -106,8 +107,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SubmitReport
         {
-            public readonly string reportedId = ("reportedId").ToLowerInvariant();
-            public readonly string reason = ("reason").ToLowerInvariant();
+            public readonly string model = ("model").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -119,8 +119,10 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Question = "Question";
                 public readonly string Report = "Report";
             }
+            public readonly string Question = "~/Views/Report/Question.cshtml";
             public readonly string Report = "~/Views/Report/Report.cshtml";
         }
     }
@@ -143,15 +145,25 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SubmitReportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string reportedId, string reason);
+        partial void QuestionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SubmitReport(string reportedId, string reason)
+        public override System.Web.Mvc.ActionResult Question()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Question);
+            QuestionOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SubmitReportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.ReportViewModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SubmitReport(TT.Domain.ViewModels.ReportViewModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SubmitReport);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reportedId", reportedId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reason", reason);
-            SubmitReportOverride(callInfo, reportedId, reason);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            SubmitReportOverride(callInfo, model);
             return callInfo;
         }
 

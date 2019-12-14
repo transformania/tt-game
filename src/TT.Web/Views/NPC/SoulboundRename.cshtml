@@ -13,15 +13,18 @@
 
         @using (Html.BeginForm(MVC.NPC.RenameSoulboundSend(), FormMethod.Post))
         {
+            @Html.ValidationSummary()
             @Html.AntiForgeryToken()
 
             @Html.HiddenFor(m => m.Id)
 
             <span>FirstName:</span>
             @Html.TextAreaFor(m => m.NewFirstName)<br><br>
+            @Html.ValidationMessageFor(m => m.NewFirstName)
 
             <span>LastName:</span>
             @Html.TextAreaFor(m => m.NewLastName)<br><br>
+            @Html.ValidationMessageFor(m => m.NewLastName)
 
             <input type="submit" value="Send">
         }

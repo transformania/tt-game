@@ -188,6 +188,7 @@
     <Compile Include="Validation\NullValidator.cs" />
     <Compile Include="Validation\ValidationPipelineBehavior.cs" />
     <Compile Include="ViewModels\AttachRuneListViewModel.cs" />
+    <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\ItemRuneDetailViewModel.cs" />
     <Compile Include="ViewModels\MoveLogBox.cs" />
     <Compile Include="ViewModels\RemoveCurseViewModel.cs" />

@@ -6,6 +6,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers
 {
@@ -18,12 +19,32 @@ namespace TT.Web.Controllers
         public virtual ActionResult Report(string Id)
         {
             var reported = PlayerProcedures.GetPlayerFromMembership(Id);
-            return View(MVC.Report.Views.Report, reported);
+
+            var output = new ReportViewModel
+            {
+                ReportedId = Id,
+                Name = reported.GetFullName()
+            };
+
+            return View(MVC.Report.Views.Report, output);
+        }
+
+        // GET: /Messages
+        [HttpGet]
+        public virtual ActionResult Question()
+        {
+            var output = new ReportViewModel
+            {
+                ReportedId = User.Identity.GetUserId()
+            };
+
+            return View(MVC.Report.Views.Question, output);
         }
 
         [HttpPost]
-        public virtual ActionResult SubmitReport(string reportedId, string reason)
-        {
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult SubmitReport(ReportViewModel model)
+{
             var myMembershipId = User.Identity.GetUserId();
             var round = Int32.Parse(PvPStatics.AlphaRound.Split(' ')[2]);
 
@@ -31,8 +52,8 @@ namespace TT.Web.Controllers
             {
                 DomainRegistry.Repository.Execute(new SubmitReport
                 {
-                    Reason = reason,
-                    ReportedId = reportedId,
+                    Reason = model.Reason,
+                    ReportedId = model.ReportedId,
                     ReporterId = myMembershipId,
                     Round = round
                 });

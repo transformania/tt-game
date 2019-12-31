@@ -551,6 +551,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 70,
+      "name": "Alpha 70 (Era of Krampus Fun)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

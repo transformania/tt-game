@@ -9,6 +9,8 @@
             <li>This tool only works if the person has consented to being soulbound..</li>
             <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
             <li>Do not make any words so long that it cannot text wrap comfortably.</li>
+            <li>Names are limited to 30 characters, with apostrophes and hyphens allowed.</li>
+            <li><b>Do not use apostrophes to give your items nicknames</b>. You may only use apostrophes for such forms as "Owner's Pet" or for similar things.</li>
         </ul>
 
         @using (Html.BeginForm(MVC.NPC.SoulboundRename(), FormMethod.Post))
@@ -18,11 +20,11 @@
 
             @Html.HiddenFor(m => m.Id)
 
-            <p><span>FirstName:</span>
+            <p><span>First Name:</span>
             @Html.TextAreaFor(m => m.NewFirstName)
             <b>@Html.ValidationMessageFor(m => m.NewFirstName)</b></p>
 
-            <p><span>LastName:</span>
+            <p><span>Last Name:</span>
             @Html.TextAreaFor(m => m.NewLastName)
             <b>@Html.ValidationMessageFor(m => m.NewLastName)</b></p>
 

@@ -1396,12 +1396,6 @@ namespace TT.Web.Controllers
                 string changed_money = null;
                 string changed_form = null;
 
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.ErrorMessage = "The player was not renamed.  You can only use letters and the first and last names must be between 2 and 30 letters long.";
-                    return RedirectToAction(MVC.PvPAdmin.RenamePlayer(player.Id));
-                }
-
                 if (!string.IsNullOrEmpty(input.NewFirstName) && input.NewFirstName != player.FirstName)
                 {
                     changed_name = " name,";

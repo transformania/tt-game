@@ -559,6 +559,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 71,
+      "name": "Alpha 71 (Era of Back to School)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

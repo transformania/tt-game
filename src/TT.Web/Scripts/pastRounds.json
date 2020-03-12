@@ -567,6 +567,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 72,
+      "name": "Alpha 72 (Era of Freeeeedom!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

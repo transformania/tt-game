@@ -575,6 +575,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 73,
+      "name": "Alpha 73 (Era of Funny Bunnies!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

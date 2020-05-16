@@ -35,25 +35,7 @@
     <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
-            <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
-            <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
-            <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
-        </ul>
-    </li>
-    @{
-        if (Model.NewMessageCount > 0)
-        {
-            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.NewMessageCount)</a></li>
-        }
-        else
-        {
-            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
-        }
-    }
+
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -65,7 +47,7 @@
             }
         </ul>
     </li>
-    <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
+
     @{
         if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
         {
@@ -84,6 +66,29 @@
             </li>
         }
     }
+
+    @{
+        if (Model.NewMessageCount > 0)
+        {
+            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.NewMessageCount)</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
+        }
+    }
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
+            <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+            <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+            <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
+        </ul>
+    </li>
+
+    <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
 }
 
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)

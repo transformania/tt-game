@@ -151,7 +151,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, Model)
+        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, true))
             @{
                 if (Model.You.Player.ShoutsRemaining > 0)
                 {

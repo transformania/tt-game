@@ -1,39 +1,66 @@
-﻿@model TT.Domain.ViewModels.PlayPageViewModel
+﻿@model TT.Domain.ViewModels.MovementModel
 
 <table class="tableLines">
     <tr>
         <td></td>
-        <td>@{
+        <td class="navcell">@{
                 if (Model.Location.Name_North != null)
                 {
+                    if (Model.IsMobile)
+                    {
                         <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))" id="north">@Model.Location.FriendlyName_North</a>
+                    }
+                    else
+                    {
+                        @Model.Location.FriendlyName_North
+                    }
                 }
             }</td>
         <td></td>
     </tr>
     <tr>
-        <td>@{
+        <td class="navcell">@{
                 if (Model.Location.Name_West != null)
                 {
+                    if (Model.IsMobile)
+                    {
                         <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))" id="west">@Model.Location.FriendlyName_West</a>
+                    }
+                    else
+                    {
+                        @Model.Location.FriendlyName_West
+                    }
                 }
             }</td>
         <td>@Model.Location.Name</td>
-        <td>@{
+        <td class="navcell">@{
                 if (Model.Location.Name_East != null)
                 {
+                    if (Model.IsMobile)
+                    {
                         <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))" id="east">@Model.Location.FriendlyName_East</a>
+                    }
+                    else
+                    {
+                        @Model.Location.FriendlyName_East
+                    }
                 }
             }</td>
     </tr>
     <tr>
         <td></td>
-        <td>@{
+        <td class="navcell">@{
                 if (Model.Location.Name_South != null)
                 {
+                    if (Model.IsMobile)
+                    {
                         <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))" id="south">@Model.Location.FriendlyName_South</a>
+                    }
+                    else
+                    {
+                        @Model.Location.FriendlyName_South
+                    }
                 }
-
             }</td>
         <td></td>
     </tr>

@@ -8,6 +8,15 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    @{
+        if (Model.Player != null && Model.Player.BotId != TT.Domain.Statics.AIStatics.RerolledPlayerBotId)
+        {
+            <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">Look at Player</a></li>
+            <li><a href="@Url.Action(MVC.Messages.Write(Model.Player.Id, -1))">Send a Message</a></li>
+            <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.Player.Id))">Add Friend</a></li>
+            <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id))">Blacklist player</a></li>
+        }
+    }
 }
 
 <div class="containerInner">

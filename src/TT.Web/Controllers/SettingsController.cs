@@ -169,6 +169,7 @@ namespace TT.Web.Controllers
             ViewBag.Name = player.GetFullName();
 
             var output = new BioPageViewModel();
+            output.Player = player;
             output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
             if (output.PlayerBio == null)
             {

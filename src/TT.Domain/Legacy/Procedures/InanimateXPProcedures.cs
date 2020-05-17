@@ -349,7 +349,7 @@ namespace TT.Domain.Procedures
 
                 if (dbPlayerItem.Owner != null)
                 {
-                    var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
+                    var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance next struggle:  " + inanimXP.TimesStruggled + "%]";
                     PlayerLogProcedures.AddPlayerLog(dbPlayerItem.Owner.Id, message, true);
                 }
 

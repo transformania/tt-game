@@ -54,15 +54,6 @@ a {
     background-color: yellow !important;
 }
 
-.locationDescription {
-    font-style: italic;
-}
-
-.navcell {
-    max-width: 150px;
-    max-height: 150px;
-}
-
 .formerPlayer {
     font-size: 9px;
     font-style: italic;

@@ -3,7 +3,7 @@
 <table class="tableLines">
     <tr>
         <td></td>
-        <td class="navcell">@{
+        <td>@{
                 if (Model.Location.Name_North != null)
                 {
                     if (Model.IsMobile)
@@ -19,7 +19,7 @@
         <td></td>
     </tr>
     <tr>
-        <td class="navcell">@{
+        <td>@{
                 if (Model.Location.Name_West != null)
                 {
                     if (Model.IsMobile)
@@ -33,7 +33,7 @@
                 }
             }</td>
         <td>@Model.Location.Name</td>
-        <td class="navcell">@{
+        <td>@{
                 if (Model.Location.Name_East != null)
                 {
                     if (Model.IsMobile)
@@ -49,7 +49,7 @@
     </tr>
     <tr>
         <td></td>
-        <td class="navcell">@{
+        <td>@{
                 if (Model.Location.Name_South != null)
                 {
                     if (Model.IsMobile)
@@ -65,14 +65,3 @@
         <td></td>
     </tr>
 </table>
-
-<style>
-    td{
-        width:75px;
-        height:75px;
-        font-size:10px;
-    }
-    td:empty{
-        background-color:gainsboro;
-    }
-</style>

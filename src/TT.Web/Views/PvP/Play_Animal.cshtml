@@ -195,126 +195,14 @@
                 </p>
             </div>
 
-
-            @*                  This needs to be rewritten !!!                 *@
-            @*                  This needs to be rewritten !!!                 *@
-
             <p>
                 <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br> </span></center>
                 <span class="locationDescription">@Model.Location.Description</span>
             </p>
-            <table class="tableLines">
-                <tr>
-                    <td></td>
-                    <td class="navcell">
-                        @*NORTH*@
 
-                        @{
-                            if (Model.Location.Name_North != null)
-                            {
-                                if (Model.You.Mobility == PvPStatics.MobilityFull)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))">@Model.Location.FriendlyName_North</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))">@Model.Location.FriendlyName_North</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
-                                {
-                                    <span>@Model.Location.FriendlyName_North</span>
-                                }
-                            }
-                        }
-
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="navcell">
-                        @*WEST*@
-
-
-                        @{
-                            if (Model.Location.Name_West != null)
-                            {
-                                if (Model.You.Mobility == PvPStatics.MobilityFull)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))">@Model.Location.FriendlyName_West</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))">@Model.Location.FriendlyName_West</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
-                                {
-                                    <span>@Model.Location.FriendlyName_West</span>
-                                }
-                            }
-                        }
-
-                    </td>
-                    <td id="location"></td>
-                    <td class="navcell">
-                        @*EAST*@
-
-
-
-                        @{
-                            if (Model.Location.Name_East != null)
-                            {
-
-                                if (Model.You.Mobility == PvPStatics.MobilityFull)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))">@Model.Location.FriendlyName_East</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))">@Model.Location.FriendlyName_East</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
-                                {
-                                    <span>@Model.Location.FriendlyName_East</span>
-                                }
-                            }
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-
-                    <td class="navcell">
-                        @*SOUTH*@
-
-
-                        @{
-                            if (Model.Location.Name_South != null)
-                            {
-
-                                if (Model.You.Mobility == PvPStatics.MobilityFull)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))">@Model.Location.FriendlyName_South</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
-                                {
-                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))">@Model.Location.FriendlyName_South</a>
-                                }
-                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
-                                {
-                                    <span>@Model.Location.FriendlyName_South</span>
-                                }
-                            }
-
-                        }
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-
-            @*                  This needs to be rewritten !!!                 *@
-            @*                  This needs to be rewritten !!!                 *@
-
-
+            <div style="text-align: center;">
+                @Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, Model.OwnedBy == null))
+            </div>
 
         </div>
     </div>

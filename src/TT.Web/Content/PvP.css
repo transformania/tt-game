@@ -2,11 +2,6 @@
     overflow-y: scroll;
 }
 
-#location {
-    width: 300px;
-    height: 20px;
-}
-
 .deleteMessegeConfirm {
     display: none;
     text-align: center;

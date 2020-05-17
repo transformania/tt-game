@@ -194,16 +194,15 @@
                 }
                 </p>
             </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, Model.OwnedBy == null))</div>
+            <div class="col-md-8 covenDescription">
+                <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y] <br> </span>
 
-            <p>
-                <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br> </span></center>
-                <span class="locationDescription">@Model.Location.Description</span>
-            </p>
-
-            <div style="text-align: center;">
-                @Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, Model.OwnedBy == null))
+                @Model.Location.GetDescription()
             </div>
-
         </div>
     </div>
 

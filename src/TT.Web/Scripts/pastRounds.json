@@ -583,6 +583,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 74,
+      "name": "Alpha 74 (Era of Flowers)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

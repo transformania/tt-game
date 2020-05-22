@@ -73,6 +73,26 @@ namespace TT.Web.Hubs
             var name = descriptor.Item1;
             pic = string.IsNullOrWhiteSpace(descriptor.Item2) ? pic : descriptor.Item2;
 
+            if (Context.User.IsInRole(PvPStatics.Permissions_Developer))
+            {
+                name = name + " (Dev)";
+            }
+            else if (Context.User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                name = name + " (Admin)";
+            }
+            else if (Context.User.IsInRole(PvPStatics.Permissions_Moderator))
+            {  
+                switch (me.Player.MembershipId)
+                {
+                    case "d465db1c-ba4f-4347-b666-4dfd1c9a5e33": //Because Martha wants to be a filthy casual.
+                        break;
+                    default:
+                        name = name + " (Mod)";
+                        break;
+                }
+            }
+
             // Performs message processing to correctly format any special text
             var output = ChatMessageProcessor.ProcessMessage(new MessageData(name, message));
 

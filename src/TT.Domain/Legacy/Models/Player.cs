@@ -12,7 +12,7 @@ namespace TT.Domain.Models
 {
     public class Player
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
         [Index("IX_MembershipIdAndCovenant", 1)]
         [Index("IX_MembershipIdAndInPvP", 1)]
         [Index]
@@ -149,9 +149,12 @@ namespace TT.Domain.Models
 
         public bool IsInDungeon()
         {
-            if (this.dbLocationName.Contains("dungeon_")) {
+            if (this.dbLocationName.Contains("dungeon_"))
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
@@ -208,7 +211,7 @@ namespace TT.Domain.Models
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
         public bool IsBannedFromGlobalChat { get; set; }
-        
+
 
         public string ChatColor { get; set; }
         public int ShoutsRemaining { get; set; }
@@ -244,7 +247,7 @@ namespace TT.Domain.Models
             {
                 var name = desc.Name;
 
-                switch(desc.TagBehaviorEnum)
+                switch (desc.TagBehaviorEnum)
                 {
                     case TagBehavior.Append:
                         name = GetFullName();
@@ -257,7 +260,7 @@ namespace TT.Domain.Models
                         break;
                 }
 
-                return new Tuple<string, string>($"{name} {desc.RoleEnum.ToTag()}", desc.PictureURL);
+                return new Tuple<string, string>(name, desc.PictureURL);
             }
 
             return new Tuple<string, string>(GetFullName(), string.Empty);
@@ -277,7 +280,8 @@ namespace TT.Domain.Models
 
         public Player ToDbPlayer()
         {
-            var output = new Player{
+            var output = new Player
+            {
                 Id = this.Id,
                 MembershipId = this.MembershipId,
                 FirstName = this.FirstName,
@@ -372,13 +376,6 @@ namespace TT.Domain.Models
         /// <para>See <see cref="TagBehavior"/> for more description.</para>
         /// </summary>
         public TagBehavior TagBehaviorEnum { get; set; }
-
-        /// <summary>
-        /// <para>Gets or sets the role.</para>
-        /// <para>Defaults to <see cref="Role.Admin"/>.</para>
-        /// <para>Proper role enums on the player entity will replace this.</para>
-        /// </summary>
-        public Role RoleEnum { get; set; }
     }
 
     public static class PlayerDescriptorStatics
@@ -403,44 +400,7 @@ namespace TT.Domain.Models
             /// <summary>
             /// Replace both the last name and the nickname with the appropriate tag.
             /// </summary>
-            ReplaceLastNameAndNick,        
-        }
-
-        public enum Role
-        {
-            /// <summary>
-            /// Replace with/append the tag, (Admin).
-            /// </summary>
-            Admin,
-
-            /// <summary>
-            /// Replace with/append the tag, (Dev).
-            /// </summary>
-            Developer
-        }
-
-        private static IDictionary<Role, string> RoleTags { get; } = new Dictionary<Role, string>
-            {
-                { Role.Admin, "(Admin)" },
-                { Role.Developer, "(Dev)" }
-            };
-
-        /// <summary>
-        /// <para>Retrieves the tag string from the enum using a backing <see cref="Dictionary{Role, String}"/>.</para>
-        /// <para>Falls back on <see cref="Role.ToString()"/>.</para>
-        /// </summary>
-        /// <param name="role">The role to try and get.</param>
-        /// <returns>The tag string.</returns>
-        public static string ToTag(this Role role)
-        {
-            string str;
-
-            if (RoleTags.TryGetValue(role, out str))
-            {
-                return str;
-            }
-
-            return role.ToString();
+            ReplaceLastNameAndNick,
         }
     }
 }

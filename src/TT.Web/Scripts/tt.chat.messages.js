@@ -110,13 +110,17 @@
     	message: 'Please take part in our Transformation Preferences Poll. '
     };
 
-	reservedText['[fp]'] = {
-		message: "  .-'---`-.\n,'          `.\n|             \\\n|              \\\n\\           _  \\\n,\\  _    ,'-,/-)\\\n( * \\ \\,' ,' ,'-)\n `._,)     -',-')\n   \\/         ''/\n    )        / /\n   /       ,'-",
-	}
+    reservedText['[fp]'] = {
+        message: "  .-'---`-.\n,'          `.\n|             \\\n|              \\\n\\           _  \\\n,\\  _    ,'-,/-)\\\n( * \\ \\,' ,' ,'-)\n `._,)     -',-')\n   \\/         ''/\n    )        / /\n   /       ,'-",
+    }
 
-	reservedText['[sd]'] = {
-		message: "  ------\n,'   SERVER PUBLISH HAPPENING SOON.       `.\n|     (Brace for derp.)        \\\n"
-	}
+    reservedText['[sd]'] = {
+        message: "  ------\n,'   SERVER PUBLISH HAPPENING SOON.       `.\n|     (Brace for derp.)        \\\n",
+    }
+
+    reservedText['[qb]'] = {
+        message: " ／人◕ ‿‿ ◕人＼ { Dᴏ ʏᴏᴜ ᴡᴀɴɴᴀ ᴍᴀᴋᴇ ᴀ ᴄᴏɴᴛʀᴀᴄᴛ? }",
+    };
 
 	formatters['RegularText'] = function (model) {
 		var user = model.User;

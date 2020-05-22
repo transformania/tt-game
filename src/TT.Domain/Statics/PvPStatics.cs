@@ -5,7 +5,6 @@ using TT.Domain.Models;
 namespace TT.Domain.Statics
 {
     using TagEnum = PlayerDescriptorStatics.TagBehavior;
-    using RoleEnum = PlayerDescriptorStatics.Role;
 
     public static class PvPStatics
     {
@@ -48,6 +47,7 @@ namespace TT.Domain.Statics
         public const int MaximumDuelTurnLength = 15;
 
         public const string Permissions_Admin = "admin";
+        public const string Permissions_Developer = "developer";
         public const string Permissions_Moderator = "moderator";
         public const string Permissions_MultiAccountWhitelist = "whitelisted";
         public const string Permissions_Proofreader = "proofreader";
@@ -181,7 +181,6 @@ namespace TT.Domain.Statics
                     {
                         Name = "Judoo",
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
-                        RoleEnum = RoleEnum.Admin
                     }
                 },
                 {
@@ -190,21 +189,18 @@ namespace TT.Domain.Statics
                         Name = "Mizuho",
                         PictureURL = MizuhoThumbnail,
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
-                        RoleEnum = RoleEnum.Developer
                     }
                 },
                 {
                     "251", new PlayerDescriptorDTO // Arrhae
                     {
                      // PictureURL = ArrhaeThumbnail, Arrhae wants to keep regular portrait for now, not admin/dev custom one
-                        RoleEnum = RoleEnum.Developer
                     }
                 },
                 {
                     "834", new PlayerDescriptorDTO // Eric
                     {
                      // PictureURL = EricThumbnail, Not likely
-                        RoleEnum = RoleEnum.Developer
                     }
                 },
                 {
@@ -213,7 +209,6 @@ namespace TT.Domain.Statics
                         Name = "Tempest",
                      // PictureURL = TempestThumbnail, no custom portrait yet
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
-                        RoleEnum = RoleEnum.Developer
                     }
                 }
             };
@@ -228,6 +223,7 @@ namespace TT.Domain.Statics
         {
             "69",
             "3490",
+            "7570",
         };
 
         public static readonly IEnumerable<string> ReservedText = new List<string>
@@ -237,6 +233,7 @@ namespace TT.Domain.Statics
             "[poll]",
             "[fp]",
             "[sd]",
+            "[qb]"
         };
 
         public static readonly IEnumerable<string> ActionTypes = new List<string>

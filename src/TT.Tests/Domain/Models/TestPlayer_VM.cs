@@ -13,7 +13,6 @@ using TT.Domain.Players.Commands;
 namespace TT.Tests.Domain.Models
 {
     using TagEnum = PlayerDescriptorStatics.TagBehavior;
-    using RoleEnum = PlayerDescriptorStatics.Role;
 
     [TestFixture]
     public class TestPlayer_VM
@@ -72,7 +71,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}' {player.LastName} (Admin)");
+            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}' {player.LastName}");
         }
 
         [Test]
@@ -82,7 +81,7 @@ namespace TT.Tests.Domain.Models
 
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { Name = replaceName, TagBehaviorEnum = TagEnum.ReplaceFullName });
 
-            player.GetDescriptor().Item1.Should().Be($"{replaceName} (Admin)");
+            player.GetDescriptor().Item1.Should().Be($"{replaceName}");
         }
 
         [Test]
@@ -90,7 +89,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastName });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}' (Admin)");
+            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}'");
         }
 
         [Test]
@@ -100,7 +99,7 @@ namespace TT.Tests.Domain.Models
 
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastName });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} (Admin)");
+            player.GetDescriptor().Item1.Should().Be(player.FirstName);
         }
 
         [Test]
@@ -108,15 +107,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastNameAndNick });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} (Admin)");
-        }
-
-        [Test]
-        public void Should_get_descriptor_with_full_name_and_dev_if_staff_and_TagBehaviorEnum_is_set_to_the_default_Append()
-        {
-            staff.Add(player.MembershipId, new PlayerDescriptorDTO { RoleEnum = RoleEnum.Developer });
-
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}' {player.LastName} (Dev)");
+            player.GetDescriptor().Item1.Should().Be(player.FirstName);
         }
 
         [Test]

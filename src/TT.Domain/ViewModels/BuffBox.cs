@@ -544,7 +544,7 @@ namespace TT.Domain.ViewModels
             return Convert.ToDecimal(output);
         }
 
-        public decimal ExtraInventorySpace()
+        public int ExtraInventorySpace()
         {
             float output = 0;
             var substat = "ExtraInventorySpace"; ;
@@ -562,9 +562,7 @@ namespace TT.Domain.ViewModels
             output += (float)FromForm_ExtraInventorySpace;
             output += (float)FromEffects_ExtraInventorySpace;
 
-            output = (float)Math.Floor(output);
-
-            return Convert.ToDecimal(output);
+            return (int)Math.Floor(output);
         }
     }
 

@@ -27,6 +27,7 @@ namespace TT.Domain.Models
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
+        public int ExtraInventory { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
         public string Gender { get; set; }
@@ -133,6 +134,7 @@ namespace TT.Domain.Models
                 this.Mana = 0;
             }
 
+            this.ExtraInventory = buffs.ExtraInventorySpace();
         }
 
         public DateTime GetLastCombatTimestamp()
@@ -183,6 +185,7 @@ namespace TT.Domain.Models
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
+        public int ExtraInventory { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
         public string Gender { get; set; }
@@ -291,6 +294,7 @@ namespace TT.Domain.Models
                 MaxHealth = this.MaxHealth,
                 Mana = this.Mana,
                 MaxMana = this.MaxMana,
+                ExtraInventory =  this.ExtraInventory,
                 ActionPoints = this.ActionPoints,
                 ActionPoints_Refill = this.ActionPoints_Refill,
                 Gender = this.Gender,

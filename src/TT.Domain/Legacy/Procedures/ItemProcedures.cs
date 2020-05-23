@@ -584,19 +584,17 @@ namespace TT.Domain.Procedures
 
         public static int GetInventoryMaxSize(BuffBox box)
         {
-            return (int)Math.Floor(box.ExtraInventorySpace()) + PvPStatics.MaxCarryableItemCountBase;
+            return box.ExtraInventorySpace() + PvPStatics.MaxCarryableItemCountBase;
         }
 
         public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker)
         {
-            var attackerBuffs = GetPlayerBuffs(attacker);
-
-            var output = DomainRegistry.Repository.Execute(new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = targetForm.Id, AttackerBuffs = attackerBuffs });
+            var output = DomainRegistry.Repository.Execute(new PlayerBecomesItem { AttackerId = attacker?.Id, VictimId = victim.Id, NewFormId = targetForm.Id });
 
             IItemRepository itemRepo = new EFItemRepository();
             var item = itemRepo.Items.First(i => i.FormerPlayerId.Value == victim.Id);
 
-            ItemTransferLogProcedures.AddItemTransferLog(item.Id, attacker.Id);
+            ItemTransferLogProcedures.AddItemTransferLog(item.Id, attacker?.Id);
 
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(victim);
 

@@ -25,8 +25,6 @@ namespace TT.Tests.Items.Commands
         private FormSource formSource;
         private ItemSource itemSource;
 
-        private BuffBox attackerBuffBox;
-
         private List<Item> victimItems;
         private List<Item> emptyItemList;
 
@@ -34,8 +32,6 @@ namespace TT.Tests.Items.Commands
         public override void SetUp()
         {
             base.SetUp();
-
-            attackerBuffBox = new BuffBox();
 
             victimItems = new List<Item>();
             emptyItemList = new List<Item>();
@@ -86,7 +82,7 @@ namespace TT.Tests.Items.Commands
         public void player_should_become_item_and_go_to_attacker()
         {
 
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox};
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
@@ -130,7 +126,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Level, 7)
                 .BuildAndSave();
 
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = botVictim.Id, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = botVictim.Id, NewFormId = formSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Psychopath Panties into a A new Item!</b>!");
@@ -155,8 +151,15 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void fall_on_ground_if_no_inventory_space_for_attacker()
         {
-            attackerBuffBox.FromEffects_Fortitude = -9999;
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox };
+            attacker = new PlayerBuilder()
+                .With(p => p.Id, 296)
+                .With(p => p.FirstName, "Attacker")
+                .With(p => p.LastName, "Smacker")
+                .With(p => p.Items, emptyItemList)
+                .With(p => p.ExtraInventory, -9999)
+                .BuildAndSave();
+
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
@@ -185,7 +188,7 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
 
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!");
@@ -232,7 +235,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Location, "rainbowland")
                 .BuildAndSave();
 
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!");
@@ -248,7 +251,7 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void should_create_item_when_attacker_null()
         {
-            var cmd = new PlayerBecomesItem { AttackerId = null, VictimId = victim.Id, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = null, VictimId = victim.Id, NewFormId = formSource.Id };
 
             var logs = DomainRegistry.Repository.Execute(cmd);
             logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
@@ -269,7 +272,7 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void Should_throw_exception_if_victim_not_found()
         {
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = -1, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = -1, NewFormId = formSource.Id };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
@@ -281,7 +284,7 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void Should_throw_exception_if_attacker_specified_but_not_found()
         {
-            var cmd = new PlayerBecomesItem { AttackerId = 123, VictimId = victim.Id, NewFormId = formSource.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = 123, VictimId = victim.Id, NewFormId = formSource.Id };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
@@ -293,7 +296,7 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void Should_throw_exception_if_new_form_not_found()
         {
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = -1, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = -1 };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
@@ -309,7 +312,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.ItemSource, null)
                 .BuildAndSave();
 
-            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource2.Id, AttackerBuffs = attackerBuffBox };
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource2.Id };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 

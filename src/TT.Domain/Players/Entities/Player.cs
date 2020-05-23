@@ -51,6 +51,7 @@ namespace TT.Domain.Players.Entities
         public decimal MaxHealth { get; protected set; }
         public decimal Mana { get; protected set; }
         public decimal MaxMana { get; protected set; }
+        public int ExtraInventory { get; protected set; }
 
         public decimal XP { get; protected set; }
         public int Level { get; protected set; }
@@ -399,9 +400,9 @@ namespace TT.Domain.Players.Entities
         /// </summary>
         /// <param name="buffs"></param>
         /// <returns></returns>
-        public int GetMaxInventorySize(BuffBox buffs)
+        public int GetMaxInventorySize()
         {
-            return (int)Math.Floor(buffs.ExtraInventorySpace()) + PvPStatics.MaxCarryableItemCountBase;
+            return ExtraInventory + PvPStatics.MaxCarryableItemCountBase;
         }
 
         /// <summary>
@@ -409,10 +410,10 @@ namespace TT.Domain.Players.Entities
         /// </summary>
         /// <param name="buffs"></param>
         /// <returns></returns>
-        public bool IsCarryingTooMuchToMove(BuffBox buffs)
+        public bool IsCarryingTooMuchToMove()
         {
             var carriedNonWornItems = this.Items.Count(i => !i.IsEquipped);
-            return carriedNonWornItems >= GetMaxInventorySize(buffs) + 1;
+            return carriedNonWornItems >= GetMaxInventorySize() + 1;
         }
 
         /// <summary>
@@ -682,7 +683,7 @@ namespace TT.Domain.Players.Entities
 
         }
 
-        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, BuffBox attackerBuffs)
+        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource)
         {
             var logbox = new LogBox();
             this.FormSource = formSource;
@@ -699,7 +700,7 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                if (attacker.HasRoomForNewItem(newItem, attackerBuffs))
+                if (attacker.HasRoomForNewItem(newItem))
                 {
                     attacker.GiveItem(newItem);
                     newItem.ChangeOwner(attacker);
@@ -717,7 +718,7 @@ namespace TT.Domain.Players.Entities
             return logbox;
         }
 
-        private bool HasRoomForNewItem(Item item, BuffBox buffs)
+        private bool HasRoomForNewItem(Item item)
         {
             // bots have inlimited inventory sizes
             if (this.BotId != AIStatics.ActivePlayerBotId)
@@ -726,7 +727,7 @@ namespace TT.Domain.Players.Entities
             }
 
             var carriedItemCount = this.GetCarriedItemCount();
-            var maxInventorySize = this.GetMaxInventorySize(buffs);
+            var maxInventorySize = this.GetMaxInventorySize();
 
             var hasRoom = carriedItemCount < maxInventorySize;
 

@@ -14,7 +14,6 @@ namespace TT.Domain.Players.Commands
         public int VictimId { get; set; }
         public int? AttackerId { get; set; }
         public int NewFormId { get; set; }
-        public BuffBox AttackerBuffs { get; set; }
 
         public override LogBox Execute(IDataContext context)
         {
@@ -23,10 +22,6 @@ namespace TT.Domain.Players.Commands
 
             ContextQuery = ctx =>
             {
-
-                if (AttackerBuffs == null)
-                    throw new DomainException("AttackerBuffs is required");
-
                 var victim = ctx.AsQueryable<Player>()
                     .Include(i => i.Items)
                     .Include(p => p.FormSource)
@@ -64,7 +59,7 @@ namespace TT.Domain.Players.Commands
                     throw new DomainException("Form is not inanimate or pet");
                 }
 
-                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource, AttackerBuffs);
+                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource);
 
                 ctx.Commit();
                 

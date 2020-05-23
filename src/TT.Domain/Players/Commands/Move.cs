@@ -60,9 +60,9 @@ namespace TT.Domain.Players.Commands
                         throw new DomainException($"You can't move because you are a non-feral pet owned by {player.Item.Owner.GetFullName()}.");
                 }
 
-                if (player.IsCarryingTooMuchToMove(Buffs))
+                if (player.IsCarryingTooMuchToMove())
                 {
-                    var excessItemCount = player.GetCarriedItemCount() - player.GetMaxInventorySize(Buffs);
+                    var excessItemCount = player.GetCarriedItemCount() - player.GetMaxInventorySize();
                     var pluralize = excessItemCount == 1 ? "item" : "items";
                     throw new DomainException($"You are carrying too much to move.  You need to drop at least {excessItemCount} {pluralize}.");
                 }

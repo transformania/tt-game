@@ -312,9 +312,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, new List<Item>())
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-
-            player.GetMaxInventorySize(buffs).Should().Be(6);
+            player.GetMaxInventorySize().Should().Be(6);
         }
 
         [Test]
@@ -336,12 +334,10 @@ namespace TT.Tests.Players.Entities
 
             var player = new PlayerBuilder()
                 .With(i => i.Items, items)
+                .With(i => i.ExtraInventory, 2)
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-            buffs.FromForm_ExtraInventorySpace = 2;
-
-            player.GetMaxInventorySize(buffs).Should().Be(8);
+            player.GetMaxInventorySize().Should().Be(8);
         }
 
         [Test]
@@ -364,9 +360,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-
-            player.IsCarryingTooMuchToMove(buffs).Should().Be(false);
+            player.IsCarryingTooMuchToMove().Should().Be(false);
         }
 
         [Test]
@@ -387,12 +381,10 @@ namespace TT.Tests.Players.Entities
 
             var player = new PlayerBuilder()
                 .With(i => i.Items, items)
+                .With(i => i.ExtraInventory, -5)
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-            buffs.FromForm_ExtraInventorySpace = -5;
-
-            player.IsCarryingTooMuchToMove(buffs).Should().Be(true);
+            player.IsCarryingTooMuchToMove().Should().Be(true);
         }
 
         [Test]
@@ -413,12 +405,10 @@ namespace TT.Tests.Players.Entities
 
             var player = new PlayerBuilder()
                 .With(i => i.Items, items)
+                .With(i => i.ExtraInventory, -4)
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-            buffs.FromForm_ExtraInventorySpace = -4;
-
-            player.IsCarryingTooMuchToMove(buffs).Should().Be(false);
+            player.IsCarryingTooMuchToMove().Should().Be(false);
         }
 
         [Test]

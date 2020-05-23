@@ -29,6 +29,7 @@ namespace TT.Tests.Players.Commands
         private BuffBox buffs;
         private string destination;
         private List<Stat> stats;
+        private List<Item> items;
 
         [SetUp]
         public void Init()
@@ -48,11 +49,7 @@ namespace TT.Tests.Players.Commands
                     .With(i => i.ItemType, PvPStatics.ItemType_Pet)
                     .BuildAndSave())
                 .BuildAndSave();
-
-            var items = new List<Item>();
-
-            items.Add(item1);
-            items.Add(item2);
+            items = new List<Item> {item1, item2};
 
             stats = new List<Stat>()
             {
@@ -240,8 +237,13 @@ namespace TT.Tests.Players.Commands
         [Test]
         public void should_throw_exception_if_player_is_carrying_too_much_with_1_extra_item()
         {
-            buffs.FromForm_ExtraInventorySpace = -5; // limit of 1
-            var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
+            new PlayerBuilder()
+                .With(p => p.Id, 51)
+                .With(p => p.ExtraInventory, -5)
+                .With(p => p.Items, items)
+                .BuildAndSave();
+            
+            var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
             action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 1 item.");
         }
@@ -249,8 +251,13 @@ namespace TT.Tests.Players.Commands
         [Test]
         public void should_throw_exception_if_player_is_carrying_too_much_with_2_extra_items()
         {
-            buffs.FromForm_ExtraInventorySpace = -6; // limit of 0
-            var cmd = new Move { PlayerId = 50, Buffs = buffs, destination = destination };
+            new PlayerBuilder()
+                .With(p => p.Id, 51)
+                .With(p => p.ExtraInventory, -6)
+                .With(p => p.Items, items)
+                .BuildAndSave();
+
+            var cmd = new Move { PlayerId = 51, Buffs = buffs, destination = destination };
             var action = new Action(() => { Repository.Execute(cmd); });
             action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 2 items.");
         }

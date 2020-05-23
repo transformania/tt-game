@@ -96,6 +96,7 @@
     <Compile Include="201902261940_SoulbindItemConsent.cs" />
     <Compile Include="201902172143_SoulbindItems.cs" />
     <Compile Include="201902040150_AddRequiredGameModeToEffects.cs" />
+    <Compile Include="201907260553_AddExtraInventory.cs" />
     <Compile Include="201908190406_RemoveBecomesItemSourceId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

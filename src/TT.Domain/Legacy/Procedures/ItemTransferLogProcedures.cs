@@ -36,15 +36,16 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static void AddItemTransferLog(int iItem, int iOwner)
+        public static void AddItemTransferLog(int iItem, int? iOwner)
         {
             IItemTransferLogRepository ItemTransferLogRepo = new EFItemTransferLogRepository();
-            var newlog = new ItemTransferLog();
+            var newlog = new ItemTransferLog
+            {
+                ItemId = iItem,
+                OwnerId = iOwner ?? -1,
+                Timestamp = DateTime.UtcNow
+            };
 
-            newlog.ItemId = iItem;
-            newlog.OwnerId = iOwner;
-            newlog.Timestamp = DateTime.UtcNow;
-           
             ItemTransferLogRepo.SaveItemTransferLog(newlog);
         }
     }

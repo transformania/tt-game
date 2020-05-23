@@ -1100,7 +1100,7 @@ namespace TT.Domain.Procedures
                 var myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
-                if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs))
+                if (ItemProcedures.PlayerIsCarryingTooMuch(player, 1))
                 {
                     var randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.ItemSourceId == justFound.Id).Last();
                     ItemProcedures.DropItem(randomItem.dbItem.Id);

@@ -217,11 +217,11 @@ namespace TT.Domain.Procedures
             return output.First();
         }
 
-        public static bool PlayerIsCarryingTooMuch(int newOwnerId, int offset, BuffBox buffs)
+        public static bool PlayerIsCarryingTooMuch(Player newOwner, int offset)
         {
-            var carryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = newOwnerId}) - offset;
+            var carryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = newOwner.Id}) - offset;
 
-            var max = GetInventoryMaxSize(buffs);
+            var max = GetInventoryMaxSize(newOwner);
 
             return carryWeight >= max;
         }
@@ -582,9 +582,9 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static int GetInventoryMaxSize(BuffBox box)
+        public static int GetInventoryMaxSize(Player player)
         {
-            return box.ExtraInventorySpace() + PvPStatics.MaxCarryableItemCountBase;
+            return player.ExtraInventory + PvPStatics.MaxCarryableItemCountBase;
         }
 
         public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker)

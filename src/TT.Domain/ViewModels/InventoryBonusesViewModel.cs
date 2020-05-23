@@ -12,5 +12,6 @@ namespace TT.Domain.ViewModels
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
         public int CurrentCarryCount { get; set; }
+        public int MaxInventorySize { get; set; }
     }
 }

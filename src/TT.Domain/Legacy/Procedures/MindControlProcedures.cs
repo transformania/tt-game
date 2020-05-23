@@ -198,12 +198,12 @@ namespace TT.Domain.Procedures
             return 0;
         }
 
-        public static decimal GetAPCostToMove(BuffBox buffs, string oldLocation, string newLocation)
+        public static decimal GetAPCostToMove(Player player, string newLocation)
         {
-            var oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
+            var oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             var newLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
             decimal output = Math.Abs(oldLocationl.X - newLocationl.X) + Math.Abs(oldLocationl.Y - newLocationl.Y);
-            output *= 1-buffs.MoveActionPointDiscount();
+            output *= 1-player.MoveActionPointDiscount;
 
             return output;
         }

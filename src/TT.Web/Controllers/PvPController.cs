@@ -538,11 +538,9 @@ namespace TT.Web.Controllers
                 }
             }
 
-            var buffs = ItemProcedures.GetPlayerBuffs(me.Id);
-
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, Buffs = buffs, destination = locname });
+                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname });
             }
             catch (DomainException e)
             {

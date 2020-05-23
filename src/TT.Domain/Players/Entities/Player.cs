@@ -52,7 +52,8 @@ namespace TT.Domain.Players.Entities
         public decimal Mana { get; protected set; }
         public decimal MaxMana { get; protected set; }
         public int ExtraInventory { get; protected set; }
-
+        public decimal MoveActionPointDiscount { get; protected set; }
+        public decimal SneakPercent { get; protected set; }
         public decimal XP { get; protected set; }
         public int Level { get; protected set; }
         public int TimesAttackingThisUpdate { get; protected set; }
@@ -219,6 +220,9 @@ namespace TT.Domain.Players.Entities
         {
             MaxHealth = Convert.ToDecimal(GetWillpowerBaseByLevel(Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
             MaxMana = Convert.ToDecimal(GetManaBaseByLevel(Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            ExtraInventory = buffs.ExtraInventorySpace();
+            SneakPercent = buffs.SneakPercent();
+            MoveActionPointDiscount = buffs.MoveActionPointDiscount();
             ForceWithinBounds();
         }
 
@@ -398,7 +402,6 @@ namespace TT.Domain.Players.Entities
         /// <summary>
         /// Return the maximum amount of items a player is allowed to hold in their inventory.  Once this limit is reached, a player cannot pick up any new items.  If exceeded, the player is unable to move.
         /// </summary>
-        /// <param name="buffs"></param>
         /// <returns></returns>
         public int GetMaxInventorySize()
         {
@@ -408,7 +411,6 @@ namespace TT.Domain.Players.Entities
         /// <summary>
         /// Returns whether or not the player is carrying too many items to be able to move.  This value does not count any items that are equipped.
         /// </summary>
-        /// <param name="buffs"></param>
         /// <returns></returns>
         public bool IsCarryingTooMuchToMove()
         {
@@ -558,7 +560,7 @@ namespace TT.Domain.Players.Entities
             return logBox;
         }
 
-        public MoveLogBox MoveTo(string destination, BuffBox buffs)
+        public MoveLogBox MoveTo(string destination)
         {
             var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
             var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
@@ -568,7 +570,7 @@ namespace TT.Domain.Players.Entities
 
             var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
 
-            var sneakLevel = this.CalculateSneakLevel(buffs);
+            var sneakLevel = this.CalculateSneakLevel();
             if (sneakLevel > 0)
             {
                 playerLog += $" (Concealment lvl <b>{sneakLevel}</b>)";
@@ -576,7 +578,7 @@ namespace TT.Domain.Players.Entities
 
             this.Location = destination;
             AddLog(playerLog, false);
-            var movementCost = PvPStatics.LocationMoveCost - buffs.MoveActionPointDiscount();
+            var movementCost = PvPStatics.LocationMoveCost - MoveActionPointDiscount;
             this.ActionPoints -= movementCost;
             this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
             this.LastActionTimestamp = DateTime.UtcNow;
@@ -598,11 +600,10 @@ namespace TT.Domain.Players.Entities
         /// <summary>
         /// Returns a random value between 0 and 75 to determine the concealment level of a player's movement
         /// </summary>
-        /// <param name="buffs"></param>
         /// <returns></returns>
-        private int CalculateSneakLevel(BuffBox buffs)
+        private int CalculateSneakLevel()
         {
-            var sneakLevel = (int)buffs.SneakPercent();
+            var sneakLevel = (int)SneakPercent;
             if (sneakLevel < 0)
             {
                 sneakLevel = -999;

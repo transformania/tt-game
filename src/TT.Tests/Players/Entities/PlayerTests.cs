@@ -480,6 +480,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.ActionPoints, 10)
                 .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
                 .With(i => i.LastActionTimestamp, DateTime.UtcNow.AddHours(-2))
+                .With( i => i.MoveActionPointDiscount, .5M)
                 .With(p => p.User, new UserBuilder()
                     .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
@@ -503,10 +504,7 @@ namespace TT.Tests.Players.Entities
             player.Items.Add(item1);
             player.Items.Add(item2);
 
-            var buffs = new BuffBox();
-            buffs.FromForm_MoveActionPointDiscount = .5M;
-
-            var destinationLogs = player.MoveTo("coffee_shop_patio", buffs);
+            var destinationLogs = player.MoveTo("coffee_shop_patio");
 
             destinationLogs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
             destinationLogs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");
@@ -538,16 +536,14 @@ namespace TT.Tests.Players.Entities
             var player = new PlayerBuilder()
                 .With(i => i.ActionPoints, 10)
                 .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
+                .With(i => i.SneakPercent, 100)
                 .With(p => p.User, new UserBuilder()
                     .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-            buffs.FromForm_SneakPercent = 100;
-
-            var logs = player.MoveTo("coffee_shop_patio", buffs);
+            var logs = player.MoveTo("coffee_shop_patio");
 
             logs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
             logs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");

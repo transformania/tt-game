@@ -36,7 +36,6 @@ namespace TT.Tests.Players.Commands
 
 
         [Test]
-        [Ignore("Loading play buffs from the sql stored procedure does not work in testing.  Mock that method out?")]
         public void should_move_player_when_takes_bus()
         {
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
@@ -44,10 +43,10 @@ namespace TT.Tests.Players.Commands
             DomainRegistry.Repository.Execute(cmd);
 
             player = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
-            player.Money.Should().Be(975);
-            player.ActionPoints.Should().Be(117);
+            player.Money.Should().Be(970);
+            player.ActionPoints.Should().Be(357);
             player.Location.Should().Be(LocationsStatics.STREET_160_SUNNYGLADE_DRIVE);
-            player.PlayerLogs.First().Message.Should().Be("You took the bus from <b>Street: 270 W. 9th Avenue</b> to <b>Street: 160 Sunnyglade Drive</b> for <b>25</b> Arpeyjis.");
+            player.PlayerLogs.First().Message.Should().Be("You took the bus from <b>Street: 270 W. 9th Avenue</b> to <b>Street: 160 Sunnyglade Drive</b> for <b>30</b> Arpeyjis.");
 
             var originLog = DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == LocationsStatics.STREET_270_WEST_9TH_AVE);
             var destinationLog = DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == LocationsStatics.STREET_160_SUNNYGLADE_DRIVE);
@@ -74,7 +73,6 @@ namespace TT.Tests.Players.Commands
                 .With(n => n.Id, 73472)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
                 .With(p => p.Money, 1000)
-                .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Mobility, PvPStatics.MobilityInanimate)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
 
@@ -287,7 +285,6 @@ namespace TT.Tests.Players.Commands
         }
 
         [Test]
-        [Ignore("Not sure how to test this")]
         public void Should_throw_exception_if_player_is_immobilized()
         {
 
@@ -295,7 +292,8 @@ namespace TT.Tests.Players.Commands
                 .With(n => n.Id, 10)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
                 .With(p => p.Money, 1000)
-                .With(p => p.Mobility, PvPStatics.MobilityInanimate)
+                .With(p => p.MoveActionPointDiscount, -999)
+                .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-3))
                 .BuildAndSave();

@@ -67,9 +67,7 @@ namespace TT.Domain.Players.Commands
                 if (player.Effects.FirstOrDefault(e => e.EffectSource != null && e.EffectSource.Id == MindControlStatics.MindControl__Movement_DebuffEffectSourceId) != null)
                     throw new DomainException("You can't ride the bus while under the Forced March! mind control spell.");
 
-                var buffs = ItemProcedures.GetPlayerBuffs(player.Id);
-
-                if (buffs.MoveActionPointDiscount() < -TurnTimesStatics.GetActionPointReserveLimit())
+                if (player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't ride the bus while immobilized.");
 
                 output = $"You took the bus from <b>{originLocation.Name}</b> to <b>{destinationLocation.Name}</b> for <b>{ticketPrice}</b> Arpeyjis.";

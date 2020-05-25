@@ -42,7 +42,8 @@ namespace TT.Web.Controllers
                 MaxHealth = me.MaxHealth,
                 Mana = me.Mana,
                 MaxMana = me.MaxMana,
-                CurrentCarryCount = DomainRegistry.Repository.FindSingle( new GetCurrentCarryWeight { PlayerId = me.Id})
+                CurrentCarryCount = DomainRegistry.Repository.FindSingle( new GetCurrentCarryWeight { PlayerId = me.Id}),
+                MaxInventorySize = ItemProcedures.GetInventoryMaxSize(me)
             };
 
             ViewBag.ErrorMessage = TempData["Error"];

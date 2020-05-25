@@ -13,7 +13,6 @@ namespace TT.Domain.Players.Commands
     public class Move : DomainCommand<string>
     {
         public int PlayerId { get; set; }
-        public BuffBox Buffs { get; set; }
         public string destination { get; set; }
 
         public override string Execute(IDataContext context)
@@ -41,7 +40,7 @@ namespace TT.Domain.Players.Commands
                 if (LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination) == null)
                     throw new DomainException($"Location with dbName '{destination}' could not be found");
 
-                if (Buffs.MoveActionPointDiscount() < -TurnTimesStatics.GetActionPointReserveLimit())
+                if (player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't move since you have been immobilized!");
 
                 if (player.ActionPoints < PvPStatics.LocationMoveCost)
@@ -93,7 +92,7 @@ namespace TT.Domain.Players.Commands
                 }
                 else
                 {
-                    logs = player.MoveTo(destination, Buffs);
+                    logs = player.MoveTo(destination);
                 }
 
 
@@ -116,9 +115,6 @@ namespace TT.Domain.Players.Commands
         {
             if (PlayerId <= 0)
                 throw new DomainException("Player ID is required!");
-
-            if (Buffs == null)
-                throw new DomainException("Buffs are required!");
         }
     }
 }

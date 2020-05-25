@@ -28,6 +28,8 @@ namespace TT.Domain.Models
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
         public int ExtraInventory { get; set; }
+        public decimal MoveActionPointDiscount { get; set; }
+        public decimal SneakPercent { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
         public string Gender { get; set; }
@@ -135,6 +137,9 @@ namespace TT.Domain.Models
             }
 
             this.ExtraInventory = buffs.ExtraInventorySpace();
+            SneakPercent = buffs.SneakPercent();
+            MoveActionPointDiscount = buffs.MoveActionPointDiscount();
+
         }
 
         public DateTime GetLastCombatTimestamp()
@@ -186,6 +191,9 @@ namespace TT.Domain.Models
         public decimal Mana { get; set; }
         public decimal MaxMana { get; set; }
         public int ExtraInventory { get; set; }
+        public decimal MoveActionPointDiscount { get; set; }
+        public decimal SneakPercent { get; set; }
+
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
         public string Gender { get; set; }
@@ -295,6 +303,8 @@ namespace TT.Domain.Models
                 Mana = this.Mana,
                 MaxMana = this.MaxMana,
                 ExtraInventory =  this.ExtraInventory,
+                SneakPercent = this.SneakPercent,
+                MoveActionPointDiscount = this.MoveActionPointDiscount,
                 ActionPoints = this.ActionPoints,
                 ActionPoints_Refill = this.ActionPoints_Refill,
                 Gender = this.Gender,

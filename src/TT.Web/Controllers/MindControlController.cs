@@ -44,7 +44,6 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Victim = victim;
-            ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
 

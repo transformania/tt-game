@@ -115,7 +115,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has room in their inventory
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me)))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me, 0))
             {
                 TempData["Error"] = "You are carrying too many items to purchase a new one.";
                 TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
@@ -443,9 +443,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.MindControl.MindControlList());
             }
 
-            var victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
             // assert that the victim has enough AP for the journey
-            var apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
+            var apCost = MindControlProcedures.GetAPCostToMove(victim, to);
             if (victim.ActionPoints < apCost)
             {
                 TempData["Error"] = "Your victim does not have enough action points to move there.";
@@ -470,7 +469,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the victim is not carrying too much to move
-            if (ItemProcedures.PlayerIsCarryingTooMuch(victim.Id, 0, victimBuffs))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(victim, 0))
             {
                 TempData["Error"] = "Your victim is carrying too much to be able to move.";
                 return RedirectToAction(MVC.PvP.Play());

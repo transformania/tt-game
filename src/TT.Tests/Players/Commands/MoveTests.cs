@@ -294,7 +294,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new Move { PlayerId = 51, destination = destination };
 
             var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait ?? more seconds before moving.");
+            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait * more seconds before moving.");
         }
 
         [Test]

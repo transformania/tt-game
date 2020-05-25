@@ -220,7 +220,7 @@ namespace TT.Tests.Players.Commands
         [Test]
         public void Should_not_allow_action_points_greater_than_max()
         {
-            cmd.ActionPoints = 121;
+            cmd.ActionPoints = TurnTimesStatics.GetActionPointLimit() + 1;
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
@@ -230,7 +230,7 @@ namespace TT.Tests.Players.Commands
         [Test]
         public void Should_not_allow_action_point_refills_greater_than_max()
         {
-            cmd.ActionPoints_Refill = 361;
+            cmd.ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit() + 1;
 
             var action = new Action(() => { Repository.Execute(cmd); });
 

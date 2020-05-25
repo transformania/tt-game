@@ -393,7 +393,7 @@ namespace TT.Domain.Procedures
                         {
 
                             context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Items] SET OwnerId = {lindella.Id}, dbLocationName = '', PvPEnabled = {(int)GameModeStatics.GameModes.Any}, TimeDropped = '{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}' " +
-                                                               $"FROM DbStaticItems WHERE dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND DbStaticItems.Id = Items.ItemSourceId AND(ItemType != '${PvPStatics.ItemType_Pet}' OR ConsumableSubItemType = {(int)ItemStatics.ConsumableSubItemTypes.Rune}) AND ItemSourceId != {ItemStatics.ItemType_DungeonArtifactItemSourceId};" +
+                                                               $"FROM DbStaticItems WHERE dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId IS NULL AND DbStaticItems.Id = Items.ItemSourceId AND ItemType != '{PvPStatics.ItemType_Pet}' AND ItemSourceId != {ItemStatics.ItemType_DungeonArtifactItemSourceId};" +
                                                                $"UPDATE [dbo].[Players] SET dbLocationName = '' FROM Items WHERE Items.FormerPlayerId = Players.Id AND Items.OwnerId = {lindella.Id};");
 
 

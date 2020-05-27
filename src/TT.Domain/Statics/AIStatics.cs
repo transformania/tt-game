@@ -62,5 +62,15 @@ namespace TT.Domain.Statics
                    id == MinibossLazyLifeguardId ||
                    id == MinibossExchangeProfessorId;
         }
+
+        public static bool IsAFriendly(int id)
+        {
+            return id == LindellaBotId ||
+                   id == WuffieBotId ||
+                   id == JewdewfaeBotId ||
+                   id == BartenderBotId ||
+                   id == LoremasterBotId ||
+                   id == SoulbinderBotId;
+        }
     }
 }

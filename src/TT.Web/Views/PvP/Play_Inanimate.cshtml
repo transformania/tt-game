@@ -1,7 +1,7 @@
 ﻿@model TT.Domain.ViewModels.InanimatePlayPageViewModel
 @using TT.Domain.Procedures
-@using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -94,7 +94,8 @@
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)
 
 <div class="specialBox specialBox2">
-    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
@@ -110,7 +111,6 @@
 </ul>
 
 <p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", MVC.PvP.DismissNotifications_Ajax(), new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
-
 
 <div class="containerInner">
     <div class="row">
@@ -132,6 +132,7 @@
                     else
                     {
                         <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their belonging as a level <b>@Model.Item.Level @Model.Form.FriendlyName</b>.</span>
+
                         if (Model.Item.SoulboundToPlayer != null)
                         {
                             @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.Item)
@@ -180,7 +181,6 @@
                                 <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner</a>
                             </li>
 
-
                             @{
                                 if (!Model.Item.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                                 {
@@ -189,22 +189,18 @@
                                     </li>
                                 }
 
-
-
-
                                 if (Model.WornBy != null)
                                 {
-                                    <li><a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a></li>
+                                    <li>
+                                        <br>
+                                        <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
+                                    </li>
                                 }
-
                             }
                         </ul>
                     </p>
-
                 }
-            }
 
-            @{
                 if (!Model.Item.IsPermanent)
                 {
                     <p class="center-block">
@@ -287,19 +283,17 @@
 
     $(document).ready(function() {
 
-        $(".check").each(function() {
+        $( "#timerBox" ).click(function() {
+            alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last " + @TurnTimesStatics.GetTurnLengthInSeconds() + " seconds.");
+        });
+
+        $(".check").each(function () {
             if (attacksMade>=1) {
                 $( this ).attr("href", "#");
                 $( this ).addClass("disabled");
             }
         });
 
-    });
-
-
-
-    $( "#timerBox" ).click(function() {
-        alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last " + @TurnTimesStatics.GetTurnLengthInSeconds() + " seconds.");
     });
 
     function pingDone(data) {

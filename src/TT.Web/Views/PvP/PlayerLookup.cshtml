@@ -1,4 +1,6 @@
 ﻿@model TT.Domain.ViewModels.PlayerSearchViewModel
+@using TT.Domain.Statics
+
 @{
     ViewBag.Title = "Player Lookup";
 }
@@ -35,7 +37,12 @@
                 <p>
                     @p.GetFullName()
                     <a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Id))" class="btn btn-default btn-xs">Look At</a>
-                    <a href="@Url.Action(MVC.Messages.Write(p.Id, -1))" class="btn btn-default btn-xs">Message</a>
+                    @{
+                        if (p.BotId == AIStatics.ActivePlayerBotId)
+                        {
+                            <a href="@Url.Action(MVC.Messages.Write(p.Id, -1))" class="btn btn-default btn-xs">Message</a>
+                        }
+                    }
                 </p>
             }
         }

@@ -161,9 +161,12 @@
                 {
                     <p>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.</p>
 
-                    <p>
-                        <a href="@Url.Action(MVC.Messages.Write(Model.OwnedBy.Player.Id, -1))" class="inanimateAction">Communicate with @Model.OwnedBy.Player.GetFullName()</a>
-                    </p>
+                    if (Model.OwnedBy.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <p>
+                            <a href="@Url.Action(MVC.Messages.Write(Model.OwnedBy.Player.Id, -1))" class="inanimateAction">Communicate with @Model.OwnedBy.Player.GetFullName()</a>
+                        </p>
+                    }
 
                     if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                     {

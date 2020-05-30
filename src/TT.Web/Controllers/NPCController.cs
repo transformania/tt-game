@@ -104,6 +104,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
+            // assert this item is not a pet
+            if (purchased.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            {
+                TempData["Error"] = $"You cannot purchase pets from {merchant.FirstName}.";
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
+            }
+
             var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
 
             // assert that the player has enough money for this

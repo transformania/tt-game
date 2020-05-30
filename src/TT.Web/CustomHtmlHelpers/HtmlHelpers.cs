@@ -109,7 +109,7 @@ namespace TT.Web.CustomHtmlHelpers
 
             var output = "";
 
-            var minutesAgo = Math.Abs(Math.Floor(then.Subtract(DateTime.UtcNow).TotalMinutes));
+            var minutesAgo = Math.Max(0, Math.Floor(DateTime.UtcNow.Subtract(then).TotalMinutes));
 
             var hoursAgo = (int)Math.Floor(minutesAgo / 60);
             minutesAgo = minutesAgo % 60;

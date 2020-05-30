@@ -142,7 +142,7 @@
    <div id="playerActionBox">
         <a href="@Url.Action(MVC.PvP.Cleanse())" id="actionCleanse" class="actionButton">Cleanse (4 AP, 3 Mana)</a>
         <a href="@Url.Action(MVC.PvP.Meditate())" id="actionMeditate" class="actionButton">Meditate (4 AP)</a>
-        <a href="@Url.Action(MVC.PvP.Search())" id="actionSearch" class="actionButton">Search this Area (@Model.APSearchCost AP)</a>
+        <a href="@Url.Action(MVC.PvP.Search())" id="actionSearch" class="actionButton">Search this Area (@String.Format("{0:0.#}", Model.APSearchCost) AP)</a>
     </div>
 
     <div class="row">

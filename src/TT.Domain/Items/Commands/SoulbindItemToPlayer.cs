@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
@@ -58,7 +59,7 @@ namespace TT.Domain.Items.Commands
                 var price = PriceCalculator.GetPriceToSoulbindNextItem(souledItemCount);
 
                 if (player.Money < price)
-                    throw new DomainException($"You cannot afford this.  You need <b>{price}</b> Arpeyjis and only have <b>{player.Money}</b>.");
+                    throw new DomainException($"You cannot afford this.  You need <b>{price}</b> Arpeyjis and only have <b>{Math.Floor(player.Money)}</b>.");
 
 
                 item.SoulbindToPlayer(player);

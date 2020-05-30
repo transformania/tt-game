@@ -12,7 +12,7 @@
 <div class="containerInner">
     <h1>Sunnyglade Bus</h1>
     <p>Feet tired? Whether you have two, four, eight, none, or any number inbetween, you can hop on the bus to get around town a little faster, provided you have the Arpeyjis. Safety regulation do require that riders have not been in recent combat.</p>
-    <p>You have <span title="Arpeyjis" class="icon icon-money"></span> <b>@Model.Player.Money</b> Arpeyjis.</p>
+    <p>You have <span title="Arpeyjis" class="icon icon-money"></span> <b>@(Math.Floor(Model.Player.Money))</b> Arpeyjis.</p>
 
     <ul>
         @{

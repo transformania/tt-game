@@ -557,6 +557,8 @@ namespace TT.Domain.Procedures
                 XPGain = PvPStatics.XP__EnchantmentMaxXP;
             }
 
+            var XPGainText = String.Format("{0:0.#}", XPGain);
+
             // location is not controlled; give it to whichever covenant is attacking it
             if (info.TakeoverAmount <= 0)
             {
@@ -571,7 +573,7 @@ namespace TT.Domain.Procedures
                 }
 
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
-                output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
+                output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGainText + " XP)</b>";
                 location.CovenantController = (int)player.Covenant;
                 location.TakeoverAmount = info.TakeoverAmount;
                 var myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
@@ -597,7 +599,7 @@ namespace TT.Domain.Procedures
                     location.TakeoverAmount = info.TakeoverAmount;
                     var cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
                     output =
-                        $"Your enchantment reinforces this location by {takeoverAmount}.  New influence level is {info.TakeoverAmount} for your covenant, {cov?.Name ?? "unknown"}.  (+{XPGain} XP)</b>";
+                        $"Your enchantment reinforces this location by {takeoverAmount}.  New influence level is {info.TakeoverAmount} for your covenant, {cov?.Name ?? "unknown"}.  (+{XPGainText} XP)</b>";
                    
                 }
                 else
@@ -625,11 +627,11 @@ namespace TT.Domain.Procedures
 
                     if (cov != null)
                     {
-                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controller, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
+                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controller, " + cov.Name + ".  (+" + XPGainText + " XP)</b>";
                     }
                     else
                     {
-                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".  (+" + XPGain + " XP)</b>";
+                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".  (+" + XPGainText + " XP)</b>";
                     }
 
                   

@@ -5,11 +5,9 @@
 
 @{
 
-    var HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
-    if (HealthWidth > 100) { HealthWidth = 100; }
-    var ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
-    if (ManaWidth > 100) { ManaWidth = 100; }
-    var ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / TurnTimesStatics.GetActionPointLimit() * 100);
+    var HealthWidth = Math.Min(100, Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100));
+    var ManaWidth = Math.Min(100, Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100));
+    var ActionWidth = Math.Min(100, Convert.ToInt32(Model.Player.ActionPoints / TurnTimesStatics.GetActionPointLimit() * 100));
 
 }
 <div class="row">
@@ -60,9 +58,9 @@
 
         @Html.Partial(MVC.PvP.Views.partial_XpBar, Model)
 
-        <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
-        <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
-        <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+        <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxAttacksPerUpdate)</span>
+        <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount"> @Model.Player.CleansesMeditatesThisRound @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxCleansesMeditatesPerUpdate)</span>
+        <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"> @Math.Floor(Model.Player.Money)</span>
     </div>
 
 
@@ -110,9 +108,9 @@
 
                 @Html.Partial(MVC.PvP.Views.partial_XpBar, Model)
 
-                <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
-                <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
-                <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+                <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount"> @Model.Player.TimesAttackingThisUpdate @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxAttacksPerUpdate)</span>
+                <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount"> @Model.Player.CleansesMeditatesThisRound @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxCleansesMeditatesPerUpdate)</span>
+                <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"> @Math.Floor(Model.Player.Money)</span>
             </div>
         </div>
     </div>

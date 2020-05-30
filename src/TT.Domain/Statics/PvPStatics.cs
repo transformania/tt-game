@@ -81,7 +81,7 @@ namespace TT.Domain.Statics
 
         public const decimal Item_LevelBonusModifier = .1M;
 
-        public const int MaxAttacksPerUpdate = 3;
+        public static int MaxAttacksPerUpdate => ChaosMode ? 999 : 3;
         public const decimal LocationMoveCost = 1.0M;
         public const decimal AttackCost = 3.0M;
         public const decimal AttackManaCost = 10.0M;
@@ -99,7 +99,8 @@ namespace TT.Domain.Statics
         public const decimal SearchAPCost = 4.0M;
 
         public const int MaxCarryableItemCountBase = 6;
-        public const int MaxCleansesMeditatesPerUpdate = 3;
+        public static int MaxCleansesMeditatesPerUpdate => ChaosMode ? 999 : 3;
+        public static int MaxItemUsesPerUpdate => ChaosMode ? 999 : 1;
 
         public const decimal CriticalMissPercentChance = 8;
         public const decimal CriticalHitPercentChance = 8;

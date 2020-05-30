@@ -1906,7 +1906,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not already used an item this turn
-            if (me.ItemsUsedThisTurn > 0)
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type items next turn.";
@@ -2673,7 +2673,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not already used an item this turn
-            if (me.ItemsUsedThisTurn > 0)
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type item next turn.";

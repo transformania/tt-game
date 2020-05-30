@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var dbHuman = playerRepo.Players.FirstOrDefault(p => p.Id == human.Id);
-                dbHuman.TimesAttackingThisUpdate = 3;
+                dbHuman.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
                 dbHuman.Health = 0;
                 dbHuman.Mana = 0;
                 dbHuman.XP -= 25;

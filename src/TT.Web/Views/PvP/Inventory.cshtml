@@ -1,4 +1,6 @@
 ﻿@model TT.Domain.ViewModels.InventoryBonusesViewModel
+@using TT.Domain.Statics
+
 @{
     ViewBag.Title = "Inventory";
 }
@@ -16,10 +18,8 @@
 
 @{
 
-    var HealthWidth = Convert.ToInt32(Model.Health / Model.MaxHealth * 100);
-    if (HealthWidth > 100) { HealthWidth = 100; }
-    var ManaWidth = Convert.ToInt32(Model.Mana / Model.MaxMana * 100);
-    if (ManaWidth > 100) { ManaWidth = 100; }
+    var HealthWidth = Math.Min(100, Convert.ToInt32(Model.Health / Model.MaxHealth * 100));
+    var ManaWidth = Math.Min(100, Convert.ToInt32(Model.Mana / Model.MaxMana * 100));
 
 }
 
@@ -42,7 +42,7 @@
 
     <p>You are carrying <b>@Model.CurrentCarryCount / @Model.MaxInventorySize</b> items.</p>
 
-    <p>You have used <b>@ViewBag.ItemsUsedThisTurn/1</b> consumable type items this turn.</p>
+    <p>You have used <b>@ViewBag.ItemsUsedThisTurn @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxItemUsesPerUpdate)</b> consumable type items this turn.</p>
 </div>
 
 <div class="containerInner">

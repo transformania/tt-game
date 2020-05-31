@@ -1012,12 +1012,7 @@ namespace TT.Web.Controllers
             {
 
                 // disable attacks on "friendly" NPCs
-                if (targeted.BotId == AIStatics.LindellaBotId ||
-                    targeted.BotId == AIStatics.WuffieBotId ||
-                    targeted.BotId == AIStatics.JewdewfaeBotId ||
-                    targeted.BotId == AIStatics.BartenderBotId ||
-                    targeted.BotId == AIStatics.LoremasterBotId ||
-                    targeted.BotId == AIStatics.SoulbinderBotId)
+                if (AIStatics.IsAFriendly(targeted.BotId))
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction(MVC.PvP.Play());

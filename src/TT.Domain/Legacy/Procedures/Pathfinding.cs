@@ -89,7 +89,7 @@ namespace TT.Domain.Procedures
             var updateTimer = new Stopwatch();
             updateTimer.Start();
 
-            if (start.dbName == end.dbName)
+            if (start == null || end == null || start.dbName == end.dbName)
             {
                 return "";
             }

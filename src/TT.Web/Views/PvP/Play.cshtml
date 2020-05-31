@@ -1,7 +1,7 @@
 ﻿@model TT.Domain.ViewModels.PlayPageViewModel
-@using TT.Web.CustomHtmlHelpers
-@using TT.Domain.Statics
 @using TT.Domain.Procedures
+@using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -35,9 +35,7 @@
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
 
-
     <li><a href="@Url.Action(MVC.Quest.QuestsAvailableHere())">Quest</a></li>
-
 
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
@@ -103,10 +101,10 @@
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)
 
 <div class="specialBox specialBox2">
-    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
-
 
 <ul id="notificationBox" style="display:none;">
     @{
@@ -120,7 +118,6 @@
 </ul>
 
 <p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", MVC.PvP.DismissNotifications_Ajax(), new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
-
 
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
@@ -142,9 +139,7 @@
 
     @Html.Partial(MVC.PvP.Views.partial_FrontPageAvatar, Model.You)
 
-
-
-    <div id="playerActionBox">
+   <div id="playerActionBox">
         <a href="@Url.Action(MVC.PvP.Cleanse())" id="actionCleanse" class="actionButton">Cleanse (4 AP, 3 Mana)</a>
         <a href="@Url.Action(MVC.PvP.Meditate())" id="actionMeditate" class="actionButton">Meditate (4 AP)</a>
         <a href="@Url.Action(MVC.PvP.Search())" id="actionSearch" class="actionButton">Search this Area (@Model.APSearchCost AP)</a>
@@ -169,34 +164,29 @@
                 {
                     <span class="covSafeground">Safeground for the <b>@temp.Value.Name</b> Covenant</span>
                 }
-
-
-
-
             }
         </div>
         <div class="col-md-8 covenDescription">
             <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
 
-
             @Model.Location.GetDescription()
             @{
-                
-                     if (Model.You.Player.GameMode >= 2 && !Model.You.Player.IsInDungeon() && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
+
+                if (Model.You.Player.GameMode >= 2 && !Model.You.Player.IsInDungeon() && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
                 {
                     <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (30 AP)</a>
                 }
-               else if (Model.You.Player.IsInDungeon())
-               {
-                   <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
-               }
-                
+                else if (Model.You.Player.IsInDungeon())
+                {
+                    <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
+                }
+
                 if (Model.Location.CovenantController != null)
                 {
                     try
                     {
                         var temp2 = CovenantDictionary.IdNameFlagLookup[(int) Model.Location.CovenantController];
-    
+
                         if (temp2 != null)
                         {
                             <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
@@ -208,14 +198,12 @@
                     }
                 }
 
-
                 if (Model.You.Player.GameMode == 2 && !Model.You.Player.IsInDungeon())
                 {
                     <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a>
                 }
             }
 
- 
         </div>
     </div>
 
@@ -233,7 +221,6 @@
                     <div class="charaBoxInner">
                         <div>
                             <p>
-
                                 <div>@Html.Partial(MVC.PvP.Views.Player_Partial, p)</div>
                                 <div style="text-align:center; margin-top:2px;">
                                     @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
@@ -286,93 +273,90 @@
     </div>
 </div>
 
-
 <div style="clear:both;"></div>
 
 @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
-{
-    <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
-}
+    {
+        <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
+    }
 }
 
 @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
-{
-    <div class="offlinePlayersWrapperBG">
-        <div class="row boxContainer">
-
-            @{
-    foreach (var p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
     {
-        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-            <div class="charaBoxInner">
-                <div>
-                    <p>
-                        @Html.Partial(MVC.PvP.Views.Player_Partial, p)
-                    </p>
-                </div>
-            </div>
-        </div>
-    }
-            }
+        <div class="offlinePlayersWrapperBG">
+            <div class="row boxContainer">
 
-        </div>
-    </div>
-}
-
-
-}
-    <div class="floorItemsWrapperBG">
-        <div class="row boxContainer">
-            @{
-
-                foreach (var item in Model.LocationItems)
-                {
-                    <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
-                        <div class="charaBoxInner">
-                            <div>
-                                <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
-                                    @{ if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
-                                        {
-                                            <span class="floorItemLevel"><b>@item.Level</b></span>
-                                        }
-                                    }
-                                    @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
-                                </div>
-
+                @{
+                    foreach (var p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+                    {
+                        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                            <div class="charaBoxInner">
                                 <div>
-                                    @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
-                                        {
-                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
-                                        }
-                                        else
-                                        {
-                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
-                                        }
-
-                                    }
-                                    @{
-                                        if (item.SoulboundToPlayer != null)
-                                        {
-                                            <span class="playerMediatingNotification"><b>[SB]</b></span>
-                                        }
-
-                                        <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
-                                       
-                                            if (item.FormerPlayer != null)
-                                            {
-                                                <span class="formerPlayer">(Formerly @item.FormerPlayer.FullName)</span>
-                                            }
-                                        
-                                    }
+                                    <p>
+                                        @Html.Partial(MVC.PvP.Views.Player_Partial, p)
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
 
-            }
+            </div>
         </div>
+    }
+}
+
+<div class="floorItemsWrapperBG">
+    <div class="row boxContainer">
+        @{
+
+            foreach (var item in Model.LocationItems)
+            {
+                <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
+                    <div class="charaBoxInner">
+                        <div>
+                            <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
+                                @{
+                                    if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
+                                    {
+                                        <span class="floorItemLevel"><b>@item.Level</b></span>
+                                    }
+                                }
+                                @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
+                            </div>
+
+                            <div>
+                                @{
+                                    if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                                    {
+                                        <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
+                                    }
+
+                                    if (item.SoulboundToPlayer != null)
+                                    {
+                                        <span class="playerMediatingNotification"><b>[SB]</b></span>
+                                    }
+
+                                    <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
+
+                                    if (item.FormerPlayer != null)
+                                    {
+                                        <span class="formerPlayer">(Formerly @item.FormerPlayer.FullName)</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
     </div>
+</div>
 
 @Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
 
@@ -385,48 +369,43 @@
 
 <script>
 
+    var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
     var turnNo = @ViewBag.WorldTurnNumber;
     var togglestate = 0;
     var blinkEnabled = 0;
+
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+    var donatorTier = @Model.You.Player.DonatorLevel;
+    var playUpdateSound = false;
+    var playAttackSound = false;
+    var playMessageSound = false;
+    var notificationsEnabled = false;
 
     var timer_minutes = "";
     var timer_seconds = "";
+    var turnLengthInSeconds = @TurnTimesStatics.GetTurnLengthInSeconds();
 
     var ap = @Model.You.Player.ActionPoints;
-    var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
-
     var cleanseCost = @PvPStatics.CleanseCost;
     var meditateCost = @PvPStatics.MeditateCost;
     var searchCost = @Model.APSearchCost;
     var attackCostAP = @PvPStatics.AttackCost;
     var attackCap = @PvPStatics.MaxAttacksPerUpdate;
 
-    var donatorTier = @Model.You.Player.DonatorLevel;
-    var turnLengthInSeconds = @TurnTimesStatics.GetTurnLengthInSeconds();
-
-    var playUpdateSound = false;
-    var playAttackSound = false;
-    var playMessageSound = false;
-    var notificationsEnabled = false;
     var name = "@Model.You.Player.GetFullName()";
     var playerMana = @Model.You.Player.Mana;
     var maxLogSize = @ViewBag.MaxLogSize;
 
     $(document).ready(function () {
 
-   
-
-       
-
         // var msgToReplace = name + " has"
         var text = $("#RecentActivityLog").html();
-
 
         for (var i = 0; i <= maxLogSize; i++) {
             text = text.replace(name, "You");
             text = text.replace("You was", "You were");
         }
+
 
         $( "#timerBox" ).click(function() {
             alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last " + turnLengthInSeconds + " seconds.");
@@ -465,10 +444,7 @@
 
         $("#timeReportClickMe").click(function() {
             $("#timeReport").show();
-
         });
-
-        
 
     }); // end document.ready
 

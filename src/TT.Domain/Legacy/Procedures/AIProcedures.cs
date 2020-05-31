@@ -545,63 +545,36 @@ namespace TT.Domain.Procedures
 
             var path = PathfindingProcedures.GetMovementPath(start, end);
 
-            var pathTiles = path.Split(';');
-
+            var pathTiles = (bot.dbLocationName + ";" + path).Split(';');
             pathTiles = pathTiles.Take(pathTiles.Length - 1).ToArray();
 
-            var xDistance = distance;
-            if (pathTiles.Length < distance)
+            if (pathTiles.Length == 1)
             {
-                xDistance = pathTiles.Length - 1;
+                return pathTiles[0];
             }
 
-            var output = "";
+            var currentTileIndex = 0;
+            var nextTile = pathTiles[currentTileIndex];
+            var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-            // the first movement, from current to 2nd place, is not in the array... write it manually
-            if (pathTiles.Length > 0)
+            // Distance is adjusted up to preserve behavior of previous implementation
+            var numberOfSteps = Math.Min(distance + 1, pathTiles.Length - 1);
+
+            while (currentTileIndex < numberOfSteps)
             {
-                var enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == start.dbName).Name;
-                var leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[0]).Name;
-                LocationLogProcedures.AddLocationLog(start.dbName, leavingMessage);
-                LocationLogProcedures.AddLocationLog(pathTiles[0], enteringMessage);
-                output += leavingMessage + "<br>";
-                output += "----<br>";
+                var currentTile = nextTile;
+                var currentTileName = nextTileName;
 
-                for (var i = 0; i < xDistance; i++)
-                {
-                    try
-                    {
-                        enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i]).Name;
-                        leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i + 1]).Name;
-                        LocationLogProcedures.AddLocationLog(pathTiles[i], leavingMessage);
-                        LocationLogProcedures.AddLocationLog(pathTiles[i + 1], enteringMessage);
+                nextTile = pathTiles[++currentTileIndex];
+                nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-                        output += leavingMessage + "<br>";
-                        output += enteringMessage + "<br>";
-                        output += "----<br>";
-                    }
-                    catch
-                    {
+                var botName = bot.FirstName + " " + bot.LastName;
 
-                    }
-
-                }
-
+                LocationLogProcedures.AddLocationLog(currentTile, botName + " left toward " + nextTileName);
+                LocationLogProcedures.AddLocationLog(nextTile, botName + " entered from " + currentTileName);
             }
 
-            try
-            {
-                return pathTiles[xDistance];
-            }
-            catch
-            {
-                return pathTiles[xDistance - 1];
-            }
-
-            //  output += "AT:  " + pathTiles[xDistance];
-
-            //  return output;
-
+            return nextTile;
         }
 
         public static int GetPsychopathLevel(int turnNumber)

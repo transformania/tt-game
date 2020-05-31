@@ -297,29 +297,32 @@ namespace TT.Domain.Procedures
             var attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
 
             // add in some extra WP damage if TF energy high enough for TF but WP is still high
-            if (energyAccumulated > targetForm.TFEnergyRequired * 1.25M && energyAccumulated <= targetForm.TFEnergyRequired * 1.5M && (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId))
+            if (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId)
             {
-                output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra 3 willpower damage.";
-                output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra 3 willpower damage.";
-                target.Health -= 3;
-                target.NormalizeHealthMana();
-                playerRepo.SavePlayer(target);
-            }
-            else if (energyAccumulated > targetForm.TFEnergyRequired * 1.5M && (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId))
-            {
-                output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 6 willpower damage.";
-                output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 6 willpower damage.";
-                target.Health -= 6;
-                target.NormalizeHealthMana();
-                playerRepo.SavePlayer(target);
-            }
-            else if (energyAccumulated > targetForm.TFEnergyRequired * 1.75M && (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId))
-            {
-                output.VictimLog += "  You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 9 willpower damage.";
-                output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 9 willpower damage.";
-                target.Health -= 9;
-                target.NormalizeHealthMana();
-                playerRepo.SavePlayer(target);
+                if (energyAccumulated > targetForm.TFEnergyRequired * 1.75M)
+                {
+                    output.VictimLog += "  You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 9 willpower damage.";
+                    output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 9 willpower damage.";
+                    target.Health -= 9;
+                    target.NormalizeHealthMana();
+                    playerRepo.SavePlayer(target);
+                }
+                else if (energyAccumulated > targetForm.TFEnergyRequired * 1.5M)
+                {
+                    output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 6 willpower damage.";
+                    output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 6 willpower damage.";
+                    target.Health -= 6;
+                    target.NormalizeHealthMana();
+                    playerRepo.SavePlayer(target);
+                }
+                else if (energyAccumulated > targetForm.TFEnergyRequired * 1.25M)
+                {
+                    output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra 3 willpower damage.";
+                    output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra 3 willpower damage.";
+                    target.Health -= 3;
+                    target.NormalizeHealthMana();
+                    playerRepo.SavePlayer(target);
+                }
             }
 
                 #region animate transformation

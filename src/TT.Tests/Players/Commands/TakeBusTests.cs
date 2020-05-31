@@ -44,7 +44,7 @@ namespace TT.Tests.Players.Commands
 
             player = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
             player.Money.Should().Be(970);
-            player.ActionPoints.Should().Be(357);
+            player.ActionPoints.Should().Be(TurnTimesStatics.GetActionPointReserveLimit() - 3);
             player.Location.Should().Be(LocationsStatics.STREET_160_SUNNYGLADE_DRIVE);
             player.PlayerLogs.First().Message.Should().Be("You took the bus from <b>Street: 270 W. 9th Avenue</b> to <b>Street: 160 Sunnyglade Drive</b> for <b>30</b> Arpeyjis.");
 

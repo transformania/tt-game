@@ -36,7 +36,7 @@ namespace TT.Domain.TFEnergy.Commands
                 if (player.Mana < (decimal)PvPStatics.SelfRestoreManaCost)
                     throw new DomainException($"You don't have enough mana to do this.  You have {player.Mana} and need {PvPStatics.SelfRestoreManaCost}.");
 
-                if (player.CleansesMeditatesThisRound >= 3)
+                if (player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
                 {
                     throw new DomainException("You have cleansed and meditated too many times this turn.");
                 }

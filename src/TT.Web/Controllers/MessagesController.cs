@@ -47,6 +47,7 @@ namespace TT.Web.Controllers
                 if (personWearingMe != null)
                 {
                     output.WearerId = personWearingMe.Player.Id;
+                    output.WearerBotId = personWearingMe.Player.BotId;
                     output.WearerName = personWearingMe.Player.GetFullName();
                 }
             }

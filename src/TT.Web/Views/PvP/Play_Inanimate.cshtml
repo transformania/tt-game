@@ -161,9 +161,12 @@
                 {
                     <p>You are currently being worn by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
-                    <p>
-                        <a href="@Url.Action(MVC.Messages.Write(Model.WornBy.Player.Id, -1))" class="inanimateAction">Telepathically communicate with @Model.WornBy.Player.GetFullName()</a>
-                    </p>
+                    if (Model.WornBy.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <p>
+                            <a href="@Url.Action(MVC.Messages.Write(Model.WornBy.Player.Id, -1))" class="inanimateAction">Telepathically communicate with @Model.WornBy.Player.GetFullName()</a>
+                        </p>
+                    }
 
                     <p>
                         Although inanimate, you can still move just the tiniest bit.  You can still...

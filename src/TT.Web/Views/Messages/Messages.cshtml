@@ -193,7 +193,7 @@
     </table>
 
     @{
-        if (Model.WearerId != -1 && Model.WearerName != null)
+        if (Model.WearerId != -1 && Model.WearerName != null && Model.WearerBotId == AIStatics.ActivePlayerBotId)
         {
 
             <p> <a href="@Url.Action(MVC.Messages.Write(Model.WearerId, -1))">Telepathically talk to the person wearing you, @Model.WearerName</a> </p>

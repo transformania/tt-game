@@ -53,6 +53,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 var directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);
 
+                if(directive.TargetLocation.IsEmpty())
+                {
+                    AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "270_west_9th_ave");
+                }
+
                 if (directive.TargetLocation != merchant.dbLocationName)
                 {
                     var newplace = AIProcedures.MoveTo(merchant, directive.TargetLocation, 5);

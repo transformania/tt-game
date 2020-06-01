@@ -1489,6 +1489,10 @@ namespace TT.Domain.Procedures
                 player.Mana = 0;
             }
 
+            player.ExtraInventory = buffs.ExtraInventorySpace();
+            player.SneakPercent = buffs.SneakPercent();
+            player.MoveActionPointDiscount = buffs.MoveActionPointDiscount();
+
             return player;
         }
 

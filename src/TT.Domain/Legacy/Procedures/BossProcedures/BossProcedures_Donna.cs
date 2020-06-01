@@ -119,7 +119,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     // Donna has a valid target; go chase it down and attack.  Donna does not look for new targets.
                     else
                     {
-                        var newplace = AIProcedures.MoveTo(donna, target.dbLocationName, 9);
+                        var newplace = AIProcedures.MoveTo(donna, target.dbLocationName, 10);
                         donna.dbLocationName = newplace;
                         playerRepo.SavePlayer(donna);
 

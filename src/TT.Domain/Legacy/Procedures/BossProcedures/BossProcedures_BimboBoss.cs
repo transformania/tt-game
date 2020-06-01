@@ -111,7 +111,7 @@ namespace TT.Domain.Procedures.BossProcedures
             else
             {
                 var targetLocation = GetLocationWithMostEligibleTargets();
-                var newlocation = AIProcedures.MoveTo(human, targetLocation, 8);
+                var newlocation = AIProcedures.MoveTo(human, targetLocation, 9);
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var dbHuman = playerRepo.Players.FirstOrDefault(p => p.Id == human.Id);
@@ -151,7 +151,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             var targetLocation = GetLocationWithMostEligibleTargets();
-            var newlocation = AIProcedures.MoveTo(bimboBoss, targetLocation, 12);
+            var newlocation = AIProcedures.MoveTo(bimboBoss, targetLocation, 13);
 
             bimboBoss.dbLocationName = newlocation;
 

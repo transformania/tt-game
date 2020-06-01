@@ -195,7 +195,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             {
                 // move to a randomn location in this region
                 var nextLocation = LocationsStatics.GetRandomLocation_InRegion(data.Region);
-                var actualNextLocation = AIProcedures.MoveTo(miniboss, nextLocation, 10);
+                var actualNextLocation = AIProcedures.MoveTo(miniboss, nextLocation, 11);
                 miniboss.dbLocationName = actualNextLocation;
                 miniboss.Mana = miniboss.MaxMana;
                 playerRepo.SavePlayer(miniboss);

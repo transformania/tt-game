@@ -100,7 +100,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
 
             targetLocation = String.IsNullOrEmpty(targetLocation) ? boss.dbLocationName : targetLocation;
 
-            var newlocation = AIProcedures.MoveTo(boss, targetLocation, 8);
+            var newlocation = AIProcedures.MoveTo(boss, targetLocation, 9);
             boss.dbLocationName = newlocation;
             boss.Mana = boss.MaxMana;
             playerRepo.SavePlayer(boss);
@@ -111,7 +111,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             foreach (var follower in followers)
             {
                 Player followerEF = playerRepo.Players.First(p => p.Id == follower.Id);
-                var followerNewLocation = AIProcedures.MoveTo(follower, newlocation, 99999);
+                var followerNewLocation = AIProcedures.MoveTo(follower, newlocation, 100000);
 
                 // leave location log and penalize some 5 AP
                 if (followerEF.dbLocationName != followerNewLocation)

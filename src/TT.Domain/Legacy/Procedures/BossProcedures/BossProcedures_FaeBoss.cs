@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <summary>
         /// The base number of tiles Narcissa will move to catch up to her target or seek out new ones
         /// </summary>
-        private const int MovementBaseDistance = 7;
+        private const int MovementBaseDistance = 8;
 
         /// <summary>
         /// The random number of additional tiles Narcissa will move to catch up to her target or seek out new ones
@@ -371,7 +371,7 @@ namespace TT.Domain.Procedures.BossProcedures
         }
 
         /// <summary>
-        /// Clears Narciss'a target
+        /// Clears Narcissa's target
         /// </summary>
         /// <param name="directive"></param>
         private static void ResetTarget(AIDirective directive)
@@ -383,14 +383,14 @@ namespace TT.Domain.Procedures.BossProcedures
         }
 
         /// <summary>
-        ///  Returns a number between 7 and 12 to give Narcissa some randomness on how far she is willing to chase a target in one turn.
+        ///  Returns a number between 8 and 13 to give Narcissa some randomness on how far she is willing to chase a target in one turn.
         /// </summary>
-        /// <returns>Random int between 7 and 12</returns>
+        /// <returns>Random int between 8 and 13</returns>
         private static int GetRandomChaseDistance()
         {
             var rand = new Random(Guid.NewGuid().GetHashCode());
-            var num = rand.NextDouble()*6;
-            return MovementBaseDistance + (int)MovementRandomExtraDistance;
+            var num = (int)Math.Floor(rand.NextDouble() * MovementRandomExtraDistance);
+            return MovementBaseDistance + num;
         }
 
         /// <summary>

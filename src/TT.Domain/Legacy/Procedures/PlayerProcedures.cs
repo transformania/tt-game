@@ -813,7 +813,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            AIProcedures.MoveTo(dbPlayer, destinationDbName, 99999);
+            AIProcedures.MoveTo(dbPlayer, destinationDbName, 100000);
             dbPlayer.ActionPoints -= actionPointCost;
             dbPlayer.dbLocationName = destinationDbName;
             dbPlayer.LastActionTimestamp = DateTime.UtcNow;

@@ -259,7 +259,7 @@ namespace TT.Domain.Procedures.BossProcedures
                             ItemProcedures.EquipItem(victimThiefItem.Id, true);
                         }
                         var newlocation = LocationsStatics.GetRandomLocation_NoStreets();
-                        AIProcedures.MoveTo(attackingThief, newlocation, 99999);
+                        AIProcedures.MoveTo(attackingThief, newlocation, 100000);
                         attackingThief.dbLocationName = newlocation;
                         playerRepo.SavePlayer(attackingThief);
                         var buffs = ItemProcedures.GetPlayerBuffs(attackingThief);

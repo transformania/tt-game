@@ -249,7 +249,7 @@ namespace TT.Domain.Procedures.BossProcedures
             var locationToBe = GetStanceLocation();
             if (valentine.dbLocationName != locationToBe)
             {
-                AIProcedures.MoveTo(valentine, locationToBe, 99999);
+                AIProcedures.MoveTo(valentine, locationToBe, 100000);
                 valentine.dbLocationName = locationToBe;
                 playerRepo.SavePlayer(valentine);
             }

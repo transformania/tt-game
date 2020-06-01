@@ -96,7 +96,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     newLocation = LocationsStatics.GetRandomLocation_InRegion("campground");
                 }
 
-                var actualNewLocation = AIProcedures.MoveTo(petMerchant, newLocation, 5);
+                var actualNewLocation = AIProcedures.MoveTo(petMerchant, newLocation, 6);
                 petMerchant.dbLocationName = actualNewLocation;
                 playerRepo.SavePlayer(petMerchant);
 

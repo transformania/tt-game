@@ -334,7 +334,7 @@ namespace TT.Domain.Procedures
                             {
                                 if (botbuffs.MoveActionPointDiscount() > -100 && CanMove(worldDetail, myTarget))
                                 {
-                                    var newplace = MoveTo(bot, myTarget.dbLocationName, 4);
+                                    var newplace = MoveTo(bot, myTarget.dbLocationName, 5);
                                     bot.dbLocationName = newplace;
                                 }
                             }
@@ -372,7 +372,7 @@ namespace TT.Domain.Procedures
                     {
                         if (botbuffs.MoveActionPointDiscount() > -100)
                         {
-                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocationNotInDungeon(), 4);
+                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocationNotInDungeon(), 5);
                             bot.dbLocationName = newplace;
                         }
 

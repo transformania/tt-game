@@ -60,7 +60,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 if (directive.TargetLocation != merchant.dbLocationName)
                 {
-                    var newplace = AIProcedures.MoveTo(merchant, directive.TargetLocation, 5);
+                    var newplace = AIProcedures.MoveTo(merchant, directive.TargetLocation, 6);
                     merchant.dbLocationName = newplace;
                 }
 

@@ -557,8 +557,7 @@ namespace TT.Domain.Procedures
             var nextTile = pathTiles[currentTileIndex];
             var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-            // Distance is adjusted up to preserve behavior of previous implementation
-            var numberOfSteps = Math.Min(distance + 1, pathTiles.Length - 1);
+            var numberOfSteps = Math.Min(distance, pathTiles.Length - 1);
 
             while (currentTileIndex < numberOfSteps)
             {

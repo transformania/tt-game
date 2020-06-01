@@ -383,14 +383,14 @@ namespace TT.Domain.Procedures.BossProcedures
         }
 
         /// <summary>
-        ///  Returns 14.
+        ///  Returns a number between 8 and 13 to give Narcissa some randomness on how far she is willing to chase a target in one turn.
         /// </summary>
-        /// <returns>14</returns>
+        /// <returns>Random int between 8 and 13</returns>
         private static int GetRandomChaseDistance()
         {
             var rand = new Random(Guid.NewGuid().GetHashCode());
-            var num = rand.NextDouble()*6;
-            return MovementBaseDistance + (int)MovementRandomExtraDistance;
+            var num = (int)Math.Floor(rand.NextDouble() * MovementRandomExtraDistance);
+            return MovementBaseDistance + num;
         }
 
         /// <summary>

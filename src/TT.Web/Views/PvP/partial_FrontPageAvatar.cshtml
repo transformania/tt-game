@@ -108,8 +108,8 @@
 
                 @Html.Partial(MVC.PvP.Views.partial_XpBar, Model)
 
-                <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount"> @Model.Player.TimesAttackingThisUpdate @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxAttacksPerUpdate)</span>
-                <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount"> @Model.Player.CleansesMeditatesThisRound @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxCleansesMeditatesPerUpdate)</span>
+                <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount"> @Model.Player.TimesAttackingThisUpdate / @(PvPStatics.ChaosMode ? "∞" : PvPStatics.MaxAttacksPerUpdate.ToString())</span>
+                <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount"> @Model.Player.CleansesMeditatesThisRound / @(PvPStatics.ChaosMode ? "∞" : PvPStatics.MaxCleansesMeditatesPerUpdate.ToString())</span>
                 <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"> @Math.Floor(Model.Player.Money)</span>
             </div>
         </div>

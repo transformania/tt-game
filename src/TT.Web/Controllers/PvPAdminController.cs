@@ -1333,17 +1333,24 @@ namespace TT.Web.Controllers
             {
 
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
-                    TempData["Error"] = "The rename tool only works in chaos mode.";
-                    return RedirectToAction(MVC.PvP.Play());
+                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
+                    {
+                        TempData["Error"] = "The rename tool only works in chaos mode.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
                 }
 
                 var person = PlayerProcedures.GetPlayer(id);
                 if (person.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = person.MembershipId}))
                 {
-                    TempData["Error"] = "This player does not have chaos mode changes enabled.";
-                    return RedirectToAction(MVC.PvP.Play());
+                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
+                    {
+                        TempData["Error"] = "This player does not have chaos mode changes enabled.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
                 }
 
                 var output = new PlayerNameViewModel();
@@ -1378,8 +1385,11 @@ namespace TT.Web.Controllers
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
+                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
+                    {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction(MVC.PvP.Play());
+                    }
                 }
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1387,8 +1397,11 @@ namespace TT.Web.Controllers
 
                 if (player.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
                 {
+                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
+                    {
                     TempData["Error"] = "This player does not have chaos mode changes enabled.";
                     return RedirectToAction(MVC.PvP.Play());
+                    }
                 }
 
                 string changed_name = null;

@@ -787,16 +787,16 @@
       <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="BuildWebCompiler">
-      <Version>1.11.375</Version>
+      <Version>1.12.405</Version>
     </PackageReference>
     <PackageReference Include="Common.Logging">
       <Version>3.4.1</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
-      <Version>6.2.0</Version>
+      <Version>6.4.4</Version>
     </PackageReference>
     <PackageReference Include="FeatureSwitch">
-      <Version>1.4.0</Version>
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="FeatureSwitch.Glimpse">
       <Version>1.3.0</Version>
@@ -811,16 +811,16 @@
       <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="Highway.Data.EntityFramework">
-      <Version>6.0.4.2</Version>
+      <Version>7.0.4</Version>
     </PackageReference>
     <PackageReference Include="MediatR">
       <Version>3.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <Version>2.2.1</Version>
+      <Version>2.2.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Identity.Owin">
-      <Version>2.2.1</Version>
+      <Version>2.2.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR">
       <Version>2.0.3</Version>
@@ -835,30 +835,30 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <Version>1.0.8</Version>
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
-      <Version>4.5.0</Version>
+      <Version>4.7.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Net.Compilers">
-      <Version>2.7.0</Version>
+      <Version>3.6.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb">
-      <Version>4.0.0</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security.Cookies">
-      <Version>4.0.0</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security.OAuth">
-      <Version>4.0.0</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="MSBuild.Microsoft.VisualStudio.Web.targets">
       <Version>14.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="RecaptchaNet">
       <Version>2.1.0</Version>
@@ -873,10 +873,10 @@
       <Version>4.2.1</Version>
     </PackageReference>
     <PackageReference Include="System.Interactive">
-      <Version>3.1.1</Version>
+      <Version>4.1.1</Version>
     </PackageReference>
     <PackageReference Include="T4MVC">
-      <Version>4.2.2</Version>
+      <Version>4.2.4</Version>
     </PackageReference>
     <PackageReference Include="WebGrease">
       <Version>1.6.0</Version>

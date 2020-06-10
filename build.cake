@@ -1,13 +1,13 @@
-#addin "nuget:?package=Cake.SqlServer"
-#addin Cake.FluentMigrator
-#addin Cake.FileHelpers
-#addin nuget:?package=SharpZipLib
-#addin nuget:?package=Cake.Compression
-#addin nuget:?package=System.ValueTuple
+#addin "nuget:?package=Cake.SqlServer&version=2.2.0"
+#addin Cake.FluentMigrator&version=0.4.0
+#addin Cake.FileHelpers&version=3.2.1
+#addin nuget:?package=SharpZipLib&version=1.2.0
+#addin nuget:?package=Cake.Compression&version=0.2.4
+#addin nuget:?package=System.ValueTuple&version=4.5.0
 #tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
-#tool "nuget:?package=NUnit.ConsoleRunner"
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool "nuget:?package=ReportGenerator&version=4.6.1"
 
 using static Cake.Common.Tools.ReportGenerator.ReportGeneratorReportType;
 using static System.Globalization.CultureInfo;

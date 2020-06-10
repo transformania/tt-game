@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 
 namespace TT.IntegrationTests
@@ -91,7 +93,7 @@ namespace TT.IntegrationTests
         private CsvReader BuildCsvReader(string csv_file_path)
         {
             TextReader reader = new StreamReader(csv_file_path);
-            CsvReader csvReader = new CsvReader(new CsvParserWithQuotes(reader, new Configuration(), false));
+            CsvReader csvReader = new CsvReader(new CsvParserWithQuotes(reader, new CsvConfiguration(CultureInfo.CurrentCulture), false));
             csvReader.Context.RecordBuilder = new RecordBuilderWithQuotes();
             csvReader.Configuration.TypeConverterCache.AddConverter<string>(new NullableStringTypeConverter());
 
@@ -221,7 +223,7 @@ namespace TT.IntegrationTests
         #region Custom Class Extensions
         private class CsvParserWithQuotes : CsvParser
         {
-            public CsvParserWithQuotes(TextReader reader, Configuration configuration, bool leaveOpen) : base(reader, configuration, leaveOpen)
+            public CsvParserWithQuotes(TextReader reader, CsvConfiguration configuration, bool leaveOpen) : base(reader, configuration, leaveOpen)
             {
             }
 

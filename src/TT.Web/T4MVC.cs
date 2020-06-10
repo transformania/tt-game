@@ -378,6 +378,7 @@ namespace Links
             {
                 public static readonly string bootstrap_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/bootstrap.min.css");
                 public static readonly string custom_css = T4MVCHelpers.ProcessAssetPath("~/Content/custom.css");
+                public static readonly string custom_min_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/custom.min.css");
                 public static readonly string mystyle_css = T4MVCHelpers.ProcessAssetPath("~/Content/mystyle.css");
                 public static readonly string ng_animation_css = T4MVCHelpers.ProcessAssetPath("~/Content/ng-animation.css");
                 public static readonly string PvP_css = T4MVCHelpers.ProcessAssetPath("~/Content/PvP.css");

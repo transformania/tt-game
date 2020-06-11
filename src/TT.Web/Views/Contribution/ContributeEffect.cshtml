@@ -203,7 +203,7 @@
 
             <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
                 <label for="Skill_FriendlyName">What is the Id of the form that grants this spell?</label>
-                @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
                 @Html.TextBoxFor(e => e.Skill_UniqueToFormSourceId, new { @type = "number", @min = "0" })
             </div>
 
@@ -253,8 +253,8 @@
         <div class="form__panel" id="Skill_UniqueToLocation_Panel" style="display: none;">
             <label for="Skill_UniqueToLocation">What is the name of the location where this curse can be obtained when searching?</label>
             @Html.TextBoxFor(e => e.Skill_UniqueToLocation)
-            @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "locationsModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
-            <div id="locationsModal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
+            @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "locationsModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
+            <div id="locationsModal" class="helpModal"></div>
         </div>
 
         <div class="form__panel">
@@ -412,11 +412,6 @@
 <a href="@Url.Action(MVC.PvP.Play())">Back to game (Don't forget to save!)</a>
 
 <script>
-
-    function launchModal() {
-        $("#locationsModal").show();
-    }
-
     $(document).ready(function () {
         $('#YourContributions').dataTable({
             "order": [[1, "asc"], [2, "asc"]],

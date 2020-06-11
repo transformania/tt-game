@@ -2,7 +2,6 @@
 @using TT.Domain.Statics
 @using TT.Domain.Models
 
-<script src="@Links.Scripts.jquery_ui_1_10_4_js"></script>
 <script src="@Links.Scripts.suggestedLength_js"></script>
 
 @section menu
@@ -218,7 +217,7 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_LearnedAtRegion)
-                    @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "skillLearnedAt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                    @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "skillLearnedAt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
                     @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
                     <div id="skillLearnedAt"></div>
                 </div>
@@ -533,7 +532,7 @@
                 </div>
 
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.CursedTF_FormSourceId) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                    @Html.LabelFor(m => m.CursedTF_FormSourceId) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
                     @Html.TextBoxFor(m => m.CursedTF_FormSourceId, new { })
                     <div id="curseFormModal"></div>
                 </div>
@@ -707,8 +706,6 @@
 
     <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)">
 
-    <div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
-
     </div>
     <script>
 
@@ -879,13 +876,6 @@
             $("#Form_Description").attr("placeholder", "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.");
 
         }
-
-        function launchModal() {
-            $("#modal").show();
-        }
-
-
-
     </script>
 
     <style>

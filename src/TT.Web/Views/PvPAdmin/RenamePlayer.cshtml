@@ -1,7 +1,5 @@
 ﻿@model TT.Domain.ViewModels.PlayerNameViewModel
 
-<script src="@Links.Scripts.jquery_ui_1_10_4_js"></script>
-
 <div class="containerInner">
 
     <h1>Rename Player / Change Form</h1>
@@ -15,7 +13,7 @@
         <li>You are under no obligation to fulfill requests.</li>
     </ul>
 
-    @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
 
     @using (Html.BeginForm(MVC.PvPAdmin.RenamePlayerSend(), FormMethod.Post))
     {
@@ -42,12 +40,6 @@
         <input type="submit" value="Send">
     }
 
-    <div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS: </div>
+    <div id="modal" class="helpModal"></div>
 
 </div>
-
-<script>
-    function launchModal() {
-        $("#modal").show();
-    }
-</script>

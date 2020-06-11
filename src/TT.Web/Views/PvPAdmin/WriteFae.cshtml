@@ -11,7 +11,7 @@
     </div>
 
     @Ajax.ActionLink("Show Locations", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "", OnFailure = "" }, new { @class = "attackLink" })
-    @Ajax.ActionLink("Show Forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Show Forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
 
 
     <div id="help"></div>

@@ -33,7 +33,7 @@ namespace TT.Web.Hubs
             return base.OnConnected();
         }
 
-        public override Task OnDisconnected()
+        public override Task OnDisconnected(bool stopCalled)
         {
             var connectionId = Context.ConnectionId;
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId()).Player;
@@ -42,12 +42,12 @@ namespace TT.Web.Hubs
             _chatPersistenceService.TrackDisconnect(me.MembershipId, connectionId);
             
             if (string.IsNullOrWhiteSpace(room) || _chatPersistenceService.GetRoomsPlayerIsIn(me.MembershipId).Contains(room))
-                return base.OnDisconnected();
+                return base.OnDisconnected(stopCalled);
 
             SendNoticeToRoom(room, me, " has left the room.");
             UpdateUserList(room, false);
 
-            return base.OnDisconnected();
+            return base.OnDisconnected(stopCalled);
         }
 
         public void Send(string message)

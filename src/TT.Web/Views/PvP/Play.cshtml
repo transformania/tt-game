@@ -1,13 +1,14 @@
 ﻿@model TT.Domain.ViewModels.PlayPageViewModel
+@using Glimpse.Mvc.Tab
 @using TT.Domain.Procedures
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
-<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="@Links.Scripts.jquery_ui_1_10_4_js"></script>
 
-<script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+<script src="@Links.Scripts.jquery_signalR_2_4_1_js"></script>
 <script src="~/signalr/hubs"></script>
-<script src="~/Scripts/notices.js"></script>
+<script src="@Links.Scripts.notices_js"></script>
 @{
     ViewBag.Title = "Play";
 }

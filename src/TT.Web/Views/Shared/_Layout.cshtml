@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
   <head>
-  <script src="~/Scripts/jquery-2.1.0.js"></script>
+  <script src="@Links.Scripts.jquery_2_1_0_js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="never">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>@(string.IsNullOrEmpty(ViewBag.Title) ? "Transformania Time" : $"{ViewBag.Title} - Transformania Time")</title>
-    <script src="~/js/datatables/1.10.11/jquery.dataTables.min.js"></script>
-    <script src="~/js/datatables/1.10.11/dataTables.bootstrap.min.js"></script>
-    <script src="~/js/datatables-responsive/2.0.2/dataTables.responsive.min.js"></script>
-    <script src="~/js/datatables-responsive/2.0.2/responsive.bootstrap.min.js"></script>
-    <script src="~/Scripts/moment.min.js"></script>
+    <script src="@Links.js.datatables._1_10_11.jquery_dataTables_min_js"></script>
+    <script src="@Links.js.datatables._1_10_11.dataTables_bootstrap_min_js"></script>
+    <script src="@Links.js.datatables_responsive._2_0_2.dataTables_responsive_min_js"></script>
+    <script src="@Links.js.datatables_responsive._2_0_2.responsive_bootstrap_min_js"></script>
+    <script src="@Links.Scripts.moment_js"></script>
 
     <!-- Bootstrap -->
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-	<link href="~/Content/custom.min.css" rel="stylesheet">
-	<link href="~/Content/PvP.css" rel="stylesheet">
-    <link href="~/js/datatables/1.10.11/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="~/js/datatables-responsive/2.0.2/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="@Links.Content.bootstrap_min_css" rel="stylesheet">
+	<link href="@Links.Content.custom_css" rel="stylesheet">
+	<link href="@Links.Content.PvP_css" rel="stylesheet">
+    <link href="@Links.js.datatables._1_10_11.dataTables_bootstrap_min_css" rel="stylesheet">
+    <link href="@Links.js.datatables_responsive._2_0_2.responsive_dataTables_min_css" rel="stylesheet">
 
     <link rel="shortcut icon" href="/Images/PvP/Icons/tt_logo.ico">
     @RenderSection("head", required: false)
@@ -112,11 +112,11 @@
           </footer>
       </div>
 
-      <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+      <script src="@Links.Scripts.jquery_unobtrusive_ajax_js"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="~/js/bootstrap/3.3.1/bootstrap.min.js"></script>
+    <script src="@Links.js.bootstrap._3_3_1.bootstrap_min_js"></script>
         @RenderSection("scripts", required: false)
-      <script src="~/Scripts/boxesResize.js"></script>
+      <script src="@Links.Scripts.boxesResize_js"></script>
   </body>
 </html>

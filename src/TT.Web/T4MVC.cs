@@ -121,8 +121,8 @@ namespace Links
         public static readonly string jquery_mobile_custom_min_js = Url("jquery.mobile.custom.min.js");
         public static readonly string jquery_mobile_doubletap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.mobile.doubletap.min.js") ? Url("jquery.mobile.doubletap.min.js") : Url("jquery.mobile.doubletap.js");
         public static readonly string jquery_rotate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.rotate.min.js") ? Url("jquery.rotate.min.js") : Url("jquery.rotate.js");
-        public static readonly string jquery_signalR_2_0_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.signalR-2.0.3.min.js") ? Url("jquery.signalR-2.0.3.min.js") : Url("jquery.signalR-2.0.3.js");
-        public static readonly string jquery_signalR_2_0_3_min_js = Url("jquery.signalR-2.0.3.min.js");
+        public static readonly string jquery_signalR_2_4_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.signalR-2.4.1.min.js") ? Url("jquery.signalR-2.4.1.min.js") : Url("jquery.signalR-2.4.1.js");
+        public static readonly string jquery_signalR_2_4_1_min_js = Url("jquery.signalR-2.4.1.min.js");
         public static readonly string jquery_unobtrusive_ajax_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.unobtrusive-ajax.min.js") ? Url("jquery.unobtrusive-ajax.min.js") : Url("jquery.unobtrusive-ajax.js");
         public static readonly string jquery_unobtrusive_ajax_min_js = Url("jquery.unobtrusive-ajax.min.js");
         public static readonly string jQueryRotate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryRotate.min.js") ? Url("jQueryRotate.min.js") : Url("jQueryRotate.js");
@@ -260,6 +260,63 @@ namespace Links
     
     }
 
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public static class js {
+        public const string UrlPath = "~/js";
+        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class bootstrap {
+            public const string UrlPath = "~/js/bootstrap";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class _3_3_1 {
+                public const string UrlPath = "~/js/bootstrap/3.3.1";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string bootstrap_min_js = Url("bootstrap.min.js");
+            }
+        
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class datatables {
+            public const string UrlPath = "~/js/datatables";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class _1_10_11 {
+                public const string UrlPath = "~/js/datatables/1.10.11";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string dataTables_bootstrap_min_css = Url("dataTables.bootstrap.min.css");
+                public static readonly string dataTables_bootstrap_min_js = Url("dataTables.bootstrap.min.js");
+                public static readonly string jquery_dataTables_min_js = Url("jquery.dataTables.min.js");
+            }
+        
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class datatables_responsive {
+            public const string UrlPath = "~/js/datatables-responsive";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class _2_0_2 {
+                public const string UrlPath = "~/js/datatables-responsive/2.0.2";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string dataTables_responsive_min_js = Url("dataTables.responsive.min.js");
+                public static readonly string responsive_bootstrap_min_js = Url("responsive.bootstrap.min.js");
+                public static readonly string responsive_dataTables_min_css = Url("responsive.dataTables.min.css");
+            }
+        
+        }
+    
+        public static readonly string web_config = Url("web.config");
+    }
+
     
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static partial class Bundles
@@ -282,8 +339,8 @@ namespace Links
                 public static readonly string jquery_mobile_custom_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.custom.min.js"); 
                 public static readonly string jquery_mobile_doubletap_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.doubletap.js"); 
                 public static readonly string jquery_rotate_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.rotate.js"); 
-                public static readonly string jquery_signalR_2_0_3_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.0.3.js"); 
-                public static readonly string jquery_signalR_2_0_3_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.0.3.min.js"); 
+                public static readonly string jquery_signalR_2_4_1_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.4.1.js"); 
+                public static readonly string jquery_signalR_2_4_1_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.signalR-2.4.1.min.js"); 
                 public static readonly string jquery_unobtrusive_ajax_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.unobtrusive-ajax.js"); 
                 public static readonly string jquery_unobtrusive_ajax_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.unobtrusive-ajax.min.js"); 
                 public static readonly string jQueryRotate_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jQueryRotate.js"); 
@@ -383,6 +440,55 @@ namespace Links
                 public static readonly string ng_animation_css = T4MVCHelpers.ProcessAssetPath("~/Content/ng-animation.css");
                 public static readonly string PvP_css = T4MVCHelpers.ProcessAssetPath("~/Content/PvP.css");
                 public static readonly string Site_css = T4MVCHelpers.ProcessAssetPath("~/Content/Site.css");
+            }
+        }
+        public static partial class js 
+        {
+            public static partial class bootstrap 
+            {
+                public static partial class _3_3_1 
+                {
+                    public static class Assets
+                    {
+                        public static readonly string bootstrap_min_js = T4MVCHelpers.ProcessAssetPath("~/js/bootstrap/3.3.1/bootstrap.min.js"); 
+                    }
+                }
+                public static class Assets
+                {
+                }
+            }
+            public static partial class datatables 
+            {
+                public static partial class _1_10_11 
+                {
+                    public static class Assets
+                    {
+                        public static readonly string dataTables_bootstrap_min_css = T4MVCHelpers.ProcessAssetPath("~/js/datatables/1.10.11/dataTables.bootstrap.min.css");
+                        public static readonly string dataTables_bootstrap_min_js = T4MVCHelpers.ProcessAssetPath("~/js/datatables/1.10.11/dataTables.bootstrap.min.js"); 
+                        public static readonly string jquery_dataTables_min_js = T4MVCHelpers.ProcessAssetPath("~/js/datatables/1.10.11/jquery.dataTables.min.js"); 
+                    }
+                }
+                public static class Assets
+                {
+                }
+            }
+            public static partial class datatables_responsive 
+            {
+                public static partial class _2_0_2 
+                {
+                    public static class Assets
+                    {
+                        public static readonly string dataTables_responsive_min_js = T4MVCHelpers.ProcessAssetPath("~/js/datatables-responsive/2.0.2/dataTables.responsive.min.js"); 
+                        public static readonly string responsive_bootstrap_min_js = T4MVCHelpers.ProcessAssetPath("~/js/datatables-responsive/2.0.2/responsive.bootstrap.min.js"); 
+                        public static readonly string responsive_dataTables_min_css = T4MVCHelpers.ProcessAssetPath("~/js/datatables-responsive/2.0.2/responsive.dataTables.min.css");
+                    }
+                }
+                public static class Assets
+                {
+                }
+            }
+            public static class Assets
+            {
             }
         }
     }

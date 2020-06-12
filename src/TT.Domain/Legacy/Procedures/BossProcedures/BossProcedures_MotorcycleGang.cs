@@ -284,6 +284,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public static void EndEvent()
         {
             PvPWorldStatProcedures.Boss_EndMotorcycleGang();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
 
             var damages = AIProcedures.GetTopAttackers(AIStatics.MotorcycleGangLeaderBotId, 25);
 
@@ -300,7 +301,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 victor.XP += reward;
                 l++;
 
-                PlayerProcedures.GiveXP(victor, reward);
+                playerRepo.SavePlayer(victor);
                 PlayerLogProcedures.AddPlayerLog(victor.Id, $"<b>For your contribution in defeating {BossFirstName} {BossLastName}, you earn {reward} XP from your spells cast against her</b>", true);
 
                 // top three get runes

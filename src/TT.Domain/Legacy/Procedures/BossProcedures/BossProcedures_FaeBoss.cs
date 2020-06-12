@@ -276,6 +276,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static void EndEvent()
         {
             PvPWorldStatProcedures.Boss_EndFaeBoss();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
 
             var damages = AIProcedures.GetTopAttackers(AIStatics.FaebossBotId, 25);
 
@@ -292,7 +293,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 victor.XP += reward;
                 l++;
 
-                PlayerProcedures.GiveXP(victor, reward);
+                playerRepo.SavePlayer(victor);
                 PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
 
                 // top three get runes

@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Web", "TT.Web\TT.Web.csproj", "{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Domain", "TT.Domain\TT.Domain.csproj", "{6A6DA43C-7502-4656-A5FD-83A0A7561246}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.Domain", "TT.Domain\TT.Domain.csproj", "{6A6DA43C-7502-4656-A5FD-83A0A7561246}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Tests", "TT.Tests\TT.Tests.csproj", "{DBFCEC04-8C92-43AB-AB33-DFE02A0A51A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.Tests", "TT.Tests\TT.Tests.csproj", "{DBFCEC04-8C92-43AB-AB33-DFE02A0A51A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Migrations", "TT.Migrations\TT.Migrations.csproj", "{10556679-DA4A-4F86-ADAE-D98B4AD6260C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.Migrations", "TT.Migrations\TT.Migrations.csproj", "{10556679-DA4A-4F86-ADAE-D98B4AD6260C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.IntegrationTests", "TT.IntegrationTests\TT.IntegrationTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.IntegrationTests", "TT.IntegrationTests\TT.IntegrationTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6A6DA43C-7502-4656-A5FD-83A0A7561246} = {6A6DA43C-7502-4656-A5FD-83A0A7561246}
 	EndProjectSection

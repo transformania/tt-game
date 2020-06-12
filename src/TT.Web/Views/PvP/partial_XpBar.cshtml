@@ -13,7 +13,7 @@
     }
 }
 
-<div class="avatarXPWrapper" title="@Model.Player.XP / @XPtoLevel.00 XP to next level">
+<div class="avatarXPWrapper" title="@($"{Model.Player.XP:N2} / {XPtoLevel:N2}") XP to next level">
     <div class="avatarXPAmt" style="width: @XpWidth%"></div>
 </div>
 

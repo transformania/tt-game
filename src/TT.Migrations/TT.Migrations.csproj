@@ -1,117 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10556679-DA4A-4F86-ADAE-D98B4AD6260C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TT.Migrations</RootNamespace>
-    <AssemblyName>TT.Migrations</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyTitle>TT.Migrations</AssemblyTitle>
+    <Product>TT.Migrations</Product>
+    <Copyright>Copyright ©  2016</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="FluentMigrator" Version="1.6.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="201602170247_AddChatRooms.cs" />
-    <Compile Include="201603181738_AddTopicToChatRoom.cs" />
-    <Compile Include="201603110034_AddTomes.cs" />
-    <Compile Include="201604042333_AddRestockItems.cs" />
-    <Compile Include="201604042151_AddNPCs.cs" />
-    <Compile Include="201605211900_AddFormFKs.cs" />
-    <Compile Include="201605030603_UpdateMessages.cs" />
-    <Compile Include="201605011120_AddItemFKs.cs" />
-    <Compile Include="201604071120_AddPlayer.cs" />
-    <Compile Include="201606231841_AddEffectFKs.cs" />
-    <Compile Include="201606221825_AddSkillFKs.cs" />
-    <Compile Include="201612292101_ArtistBioFKToUser.cs" />
-    <Compile Include="201612280858_InanimateXpFKToPlayer.cs" />
-    <Compile Include="201612280045_ItemFKToPlayer.cs" />
-    <Compile Include="201606241348_AddPlayerLogFKs.cs" />
-    <Compile Include="201605250819_AddFKtoRPClassifiedAd.cs" />
-    <Compile Include="201607252000_SkillSourceFKs.cs" />
-    <Compile Include="201607151721_AddTFEnergyFK.cs" />
-    <Compile Include="201702071200_ConvertToDatetime2.cs" />
-    <Compile Include="201702260039_DropPreRound1Tables.cs" />
-    <Compile Include="201702251000_DropEfMigrations.cs" />
-    <Compile Include="201702211090_RestockItemBotId.cs" />
-    <Compile Include="201702190840_UserStrikes.cs" />
-    <Compile Include="201702120607_SoftDeleteMessages.cs" />
-    <Compile Include="201805201803_AddMotorcycleBoss.cs" />
-    <Compile Include="201801291714_AddRunes.cs" />
-    <Compile Include="201801031109_RoundStartsAt.cs" />
-    <Compile Include="201703261037_Covenants.cs" />
-    <Compile Include="201703210608_LeaderboardTables.cs" />
-    <Compile Include="201703083300_ChatLogColumnAdditions.cs" />
-    <Compile Include="201615152300_FormSourceFKtoItemSource.cs" />
-    <Compile Include="201612210137_MindControlFKs.cs" />
-    <Compile Include="201612031003_AddIndexes.cs" />
-    <Compile Include="201612012118_AchievementFK.cs" />
-    <Compile Include="201611121347_RoundTurnNumber.cs" />
-    <Compile Include="201609271803_DonatorFK.cs" />
-    <Compile Include="201608181243_TFMessageFK.cs" />
-    <Compile Include="201608031909_AddRecaptchaEntry.cs" />
-    <Compile Include="201804260056_RemoveVictimName.cs" />
-    <Compile Include="201902031713_RemoveFakeItemFK.cs" />
-    <Compile Include="201901302126_RemoveFakeEffectFKs.cs" />
-    <Compile Include="201901271013_AltSexFormSource.cs" />
-    <Compile Include="201901251339_QuestSetFormMigration.cs" />
-    <Compile Include="201901211044_AddTurnTimeStatics.cs" />
-    <Compile Include="201901201303_IncreaseReportCharLimit.cs" />
-    <Compile Include="201901131059_RemoveFakeFormFKs.cs" />
-    <Compile Include="201901102308_ContributionSkillFKs.cs" />
-    <Compile Include="201809102113_PlayerReports.cs" />
-    <Compile Include="201808051328_AllowChaosChanges.cs" />
-    <Compile Include="201807120100_NukeCovenantFounder.cs" />
-    <Compile Include="201902261940_SoulbindItemConsent.cs" />
-    <Compile Include="201902172143_SoulbindItems.cs" />
-    <Compile Include="201902040150_AddRequiredGameModeToEffects.cs" />
-    <Compile Include="201907260553_AddExtraInventory.cs" />
-    <Compile Include="201908190406_RemoveBecomesItemSourceId.cs" />
-    <Compile Include="202005231604_AddMoreBuffBox.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentMigrator">
-      <Version>1.6.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

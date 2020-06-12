@@ -112,7 +112,7 @@ Task("Run-Unit-Tests")
         {
             var unitCoverage = new FilePath("unitCoverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
+               tool.NUnit3("./src/**/bin/" + configuration + "/net461/*.Tests.dll");
             },
             unitCoverage,
             new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
@@ -125,7 +125,7 @@ Task("Run-Unit-Tests")
         }
         else
         {
-            NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
+            NUnit3("./src/**/bin/" + configuration + "/net461/*.Tests.dll");
         }
     }
 );
@@ -133,7 +133,7 @@ Task("Run-Unit-Tests")
 Task("Run-Integration-Tests")
     .IsDependentOn("Build")
     .Does(() => {
-        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/ConnectionStrings.config"))
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/net461/ConnectionStrings.config"))
         {
             file.WriteLine($"<connectionStrings><add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{connectionString}\"/></connectionStrings>");
         }
@@ -143,7 +143,7 @@ Task("Run-Integration-Tests")
         {
             var integrationCoverage = new FilePath("integrationCoverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/*.IntegrationTests.dll");
+               tool.NUnit3("./src/**/bin/" + configuration + "/net461/*.IntegrationTests.dll");
             },
             integrationCoverage,
             new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
@@ -156,10 +156,10 @@ Task("Run-Integration-Tests")
         }
         else
         {
-            NUnit3("./src/**/bin/" + configuration + "/*.IntegrationTests.dll");
+            NUnit3("./src/**/bin/" + configuration + "/net461/*.IntegrationTests.dll");
         }
         
-        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/ConnectionStrings.config");
+        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/net461/ConnectionStrings.config");
     }
 );
 
@@ -263,7 +263,7 @@ Task("Migrate")
             Connection = "StatsWebConnection",
             ConnectionStringConfigPath ="./tools/ConnectionStrings.config",
             Provider = "sqlserver",
-            Assembly = "./src/TT.Migrations/bin/" + configuration + "/TT.Migrations.dll"
+            Assembly = "./src/TT.Migrations/bin/" + configuration + "/net461/TT.Migrations.dll"
         });
         System.IO.File.Delete(@"./tools/ConnectionStrings.config");
         Information("Applying stored procedures against {0}", dbServer);

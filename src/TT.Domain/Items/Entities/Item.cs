@@ -266,15 +266,16 @@ namespace TT.Domain.Items.Entities
             rune.IsEquipped = false;
             rune.EquippedThisTurn = true;
 
-            if (Owner != null)
-            {
-                rune.Owner = Owner;
-                rune.dbLocationName = string.Empty;
-            }
-            else
+            if (Owner == null || Owner.BotId == AIStatics.WuffieBotId)
             {
                 rune.Owner = null;
                 rune.dbLocationName = dbLocationName;
+                rune.TimeDropped = DateTime.Now;
+            }
+            else
+            {
+                rune.Owner = Owner;
+                rune.dbLocationName = string.Empty;
             }
 
             Runes.Remove(rune);

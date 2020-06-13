@@ -75,6 +75,7 @@ namespace TT.Domain.Items.Commands
                 context.Commit();
                 foreach (var i in query)
                 {
+                    i.RemoveRunes();
                     ctx.Remove(i);
                 }
 

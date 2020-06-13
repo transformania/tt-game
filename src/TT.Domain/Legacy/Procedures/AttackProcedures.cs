@@ -102,9 +102,11 @@ namespace TT.Domain.Procedures
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
-                        PlayerProcedures.DamagePlayerHealth(me.Id, skillBeingUsed.StaticSkill.HealthDamageAmount * (1 + meBuffs.SpellExtraHealthDamagePercent() / 100));
-                        logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {Math.Round(skillBeingUsed.StaticSkill.HealthDamageAmount, 2)}.  ";
-                        logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by " +  Math.Round(skillBeingUsed.StaticSkill.HealthDamageAmount, 2) + ".";
+                        var amountToDamage = skillBeingUsed.StaticSkill.HealthDamageAmount *
+                                             (1 + meBuffs.SpellExtraHealthDamagePercent() / 100);
+                        PlayerProcedures.DamagePlayerHealth(me.Id, amountToDamage);
+                        logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {amountToDamage:N2}.  ";
+                        logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by {amountToDamage:N2}.";
                         result += logs.AttackerLog;
                     }
 

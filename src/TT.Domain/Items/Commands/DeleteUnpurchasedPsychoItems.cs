@@ -37,6 +37,7 @@ namespace TT.Domain.Items.Commands
                                 i.Owner != null &&
                                 (i.Owner.Id == lindella.Id || i.Owner.Id == wuffie.Id)
                                 && i.TimeDropped < cutoff)
+                    .Include(i => i.Runes)
                     .Include(i => i.FormerPlayer)
                     .Include(i => i.FormerPlayer.Effects)
                     .Include(i => i.FormerPlayer.Skills)

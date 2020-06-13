@@ -4,6 +4,8 @@ using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
@@ -343,6 +345,10 @@ namespace TT.Web.Controllers
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new EmbedRune { ItemId = itemId, PlayerId = me.Id, RuneId = runeId });
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+                playerRepo.SavePlayer(newMe);
             }
             catch (DomainException e)
             {
@@ -367,6 +373,10 @@ namespace TT.Web.Controllers
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new UnembedRune { PlayerId = me.Id, ItemId = Id});
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+                playerRepo.SavePlayer(newMe);
             }
             catch (DomainException e)
             {
@@ -383,6 +393,10 @@ namespace TT.Web.Controllers
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new UnembedAllRunes { PlayerId = me.Id});
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+                playerRepo.SavePlayer(newMe);
             }
             catch (DomainException e)
             {

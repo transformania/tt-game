@@ -208,48 +208,41 @@ namespace TT.Domain.Procedures
 
 
             // okay to proceed--give this player this perk.
+            DomainRegistry.Repository.Execute(cmd);
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var person = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var logMessage = $"You have gained the perk {effectPlus.FriendlyName}.";
 
-            // this is a level up perk so just return a simple message
             if (cmd.IsPermanent)
             {
-                var logmessage = "You have gained the perk " + effectPlus.FriendlyName + ".";
-                PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);
+                // this is a level up perk so just return a simple message
+                PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
 
                 //remove an unused perk from the player
-                IPlayerRepository playerRepo = new EFPlayerRepository();
-                var person = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
                 person.UnusedLevelUpPerks--;
-                playerRepo.SavePlayer(person);
-
-                DomainRegistry.Repository.Execute(cmd);
-                return logmessage;
             }
-
-           // this is a temporary perk so return the flavor text
             else
             {
-
-                var logmessage = "";
-
+                // this is a temporary perk so return the flavor text
                 if (player.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                 {
-                    logmessage = effectPlus.MessageWhenHit_M;
+                    logMessage = effectPlus.MessageWhenHit_M;
                 }
                 else if (player.Gender == PvPStatics.GenderFemale && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                 {
-                    logmessage = effectPlus.MessageWhenHit_F;
+                    logMessage = effectPlus.MessageWhenHit_F;
                 }
                 else
                 {
-                    logmessage = effectPlus.MessageWhenHit;
+                    logMessage = effectPlus.MessageWhenHit;
                 }
 
-                PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);
-                DomainRegistry.Repository.Execute(cmd);
-                return logmessage;
+                PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
             }
+            person.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(person));
+            playerRepo.SavePlayer(person);
 
-
+            return logMessage;
         }
 
         public static void RemovePerkFromPlayer(int effectSourceId, Player player)

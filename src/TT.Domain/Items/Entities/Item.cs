@@ -270,6 +270,7 @@ namespace TT.Domain.Items.Entities
             {
                 rune.Owner = null;
                 rune.dbLocationName = dbLocationName;
+                rune.TimeDropped = DateTime.Now;
             }
             else
             {

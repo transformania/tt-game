@@ -1362,6 +1362,10 @@ namespace TT.Web.Controllers
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new SelfRestoreToBase { PlayerId = me.Id, Buffs = buffs });
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+                playerRepo.SavePlayer(newMe);
             }
             catch (DomainException e)
             {

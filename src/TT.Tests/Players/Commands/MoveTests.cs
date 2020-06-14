@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
@@ -12,7 +11,7 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
+using TT.Tests.Builders.Effects;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.MindControl;
@@ -48,7 +47,7 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
             items = new List<Item> {item1, item2};
 
-            stats = new List<Stat>()
+            stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 88).BuildAndSave()
             };
@@ -66,38 +65,34 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             destination = "coffee_shop_patio";
-
-
-
         }
 
         [Test]
         public void can_move_as_animate()
         {
-            DomainRegistry.Repository.Execute(new Move { PlayerId = 50, destination = destination });
+            Assert.That(() => DomainRegistry.Repository.Execute(new Move {PlayerId = 50, destination = destination}),
+                Throws.Nothing);
 
-            var fromLocationLog = DataContext.AsQueryable<LocationLog>()
-                .FirstOrDefault(l => l.dbLocationName == LocationsStatics.STREET_200_MAIN_STREET);
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>()
+                    .First(l => l.dbLocationName == LocationsStatics.STREET_200_MAIN_STREET).Message,
+                Is.EqualTo("John Doe left toward Carolyne's Coffee Shop (Patio)")); // Moved from
 
-            fromLocationLog.Message.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
+            Assert.That(DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == destination).Message,
+                Is.EqualTo("John Doe entered from Street: 200 Main Street")); // Moved to
 
-            var toLocationLog = DataContext.AsQueryable<LocationLog>()
-                .FirstOrDefault(l => l.dbLocationName == destination);
+            Assert.That(DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 50).Message,
+                Is.EqualTo("You moved from <b>Street: 200 Main Street</b> to <b>Carolyne's Coffee Shop (Patio)</b>."));
 
-            toLocationLog.Message.Should().Be("John Doe entered from Street: 200 Main Street");
-
-            var playerLogs = DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 50);
-            playerLogs.Message.Should().Be("You moved from <b>Street: 200 Main Street</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
-
-            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
-                .Be(89);
-
+            Assert.That(player.Location, Is.EqualTo(destination));
+            
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(89));
         }
 
         [Test]
         public void can_move_as_animal()
         {
-
             player = new PlayerBuilder()
                 .With(p => p.Id, 55)
                 .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
@@ -113,25 +108,25 @@ namespace TT.Tests.Players.Commands
                 )
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Move { PlayerId = 55, destination = destination });
+            Assert.That(() => DomainRegistry.Repository.Execute(new Move {PlayerId = 55, destination = destination}),
+                Throws.Nothing);
 
-            var fromLocationLog = DataContext.AsQueryable<LocationLog>()
-                .FirstOrDefault(l => l.dbLocationName == LocationsStatics.STREET_200_MAIN_STREET);
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>()
+                    .First(l => l.dbLocationName == LocationsStatics.STREET_200_MAIN_STREET).Message,
+                Is.EqualTo("John Doe (feral) left toward Carolyne's Coffee Shop (Patio)")); // Moved from
 
-            fromLocationLog.Message.Should().Be("John Doe (feral) left toward Carolyne's Coffee Shop (Patio)");
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == destination).Message,
+                Is.EqualTo("John Doe (feral) entered from Street: 200 Main Street")); // Moved to
 
-            var toLocationLog = DataContext.AsQueryable<LocationLog>()
-                .FirstOrDefault(l => l.dbLocationName == destination);
+            Assert.That(DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 55).Message,
+                Is.EqualTo("You moved from <b>Street: 200 Main Street</b> to <b>Carolyne's Coffee Shop (Patio)</b>."));
 
-            toLocationLog.Message.Should().Be("John Doe (feral) entered from Street: 200 Main Street");
-
-            var playerLogs = DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 55);
-            playerLogs.Message.Should().Be("You moved from <b>Street: 200 Main Street</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
-
-            player.Location.Should().Be(destination);
-            player.Item.dbLocationName.Should().Be(destination);
-            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
-                .Be(89);
+            Assert.That(player.Location, Is.EqualTo(destination));
+            Assert.That(player.Item.dbLocationName, Is.EqualTo(destination));
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(89));
 
         }
 
@@ -139,32 +134,33 @@ namespace TT.Tests.Players.Commands
         public void should_throw_exception_if_player_not_provided()
         {
             var cmd = new Move { PlayerId = 0, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player ID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player ID is required!"));
         }
 
         [Test]
         public void should_throw_exception_if_player_not_found()
         {
             var cmd = new Move { PlayerId = 1234, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '1234' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '1234' could not be found"));
         }
 
         [Test]
         public void should_throw_exception_if_destination_not_provided()
         {
             var cmd = new Move { PlayerId = 50 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Destination must be specified");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Destination must be specified"));
         }
 
         [Test]
         public void should_throw_exception_if_destination_invalid()
         {
             var cmd = new Move { PlayerId = 50, destination = "fakePlace" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Location with dbName 'fakePlace' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Location with dbName 'fakePlace' could not be found"));
         }
 
         [Test]
@@ -172,8 +168,8 @@ namespace TT.Tests.Players.Commands
         {
             var cmd = new Move { PlayerId = 50, destination = destination };
             player.SetActionPoints(0);
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to move.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You don't have enough action points to move."));
         }
 
         [Test]
@@ -185,8 +181,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move because you are currently inanimate!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You can't move because you are currently inanimate!"));
         }
 
         [Test]
@@ -210,8 +207,9 @@ namespace TT.Tests.Players.Commands
             item.SetFormerPlayer(petPlayer);
 
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move because you are a non-feral pet owned by Bob Smith.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You can't move because you are a non-feral pet owned by Bob Smith."));
         }
 
         [Test]
@@ -223,8 +221,9 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.Items, items)
                 .BuildAndSave();
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't move since you have been immobilized!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You can't move since you have been immobilized!"));
         }
 
         [Test]
@@ -237,8 +236,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
             
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 1 item.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You are carrying too much to move.  You need to drop at least 1 item."));
         }
 
         [Test]
@@ -251,8 +251,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are carrying too much to move.  You need to drop at least 2 items.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You are carrying too much to move.  You need to drop at least 2 items."));
         }
 
         [Test]
@@ -265,8 +266,10 @@ namespace TT.Tests.Players.Commands
                 .With(v => v.TurnsRemaining, 3)
                 .BuildAndSave();
 
-            var mindControlList = new List<VictimMindControl>();
-            mindControlList.Add(mindControl);
+            var mindControlList = new List<VictimMindControl>
+            {
+                mindControl
+            };
 
             new PlayerBuilder()
                 .With(p => p.Id, 51)
@@ -278,9 +281,20 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.VictimMindControls, mindControlList)
                 .BuildAndSave();
 
+            var effectSourceMarch = new EffectSourceBuilder()
+                .With(e => e.Id, MindControlStatics.MindControl__Movement_DebuffEffectSourceId)
+                .BuildAndSave();
+
+            var effectMarch = new EffectBuilder()
+                .With(e => e.EffectSource, effectSourceMarch)
+                .BuildAndSave();
+
+            player.Effects.Add(effectMarch);
+            
             var cmd = new Move { PlayerId = 51, destination = destination };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You try to move but discover you cannot!  Some other mage has partial control of your mind, disabling your ability to move on your own!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "You try to move but discover you cannot!  Some other mage has partial control of your mind, disabling your ability to move on your own!"));
         }
 
         [Test]
@@ -293,8 +307,9 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, destination = destination };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are resting from a recent attack.  You must wait * more seconds before moving.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .Matches("You are resting from a recent attack\\.  You must wait .* more seconds before moving\\."));
         }
 
         [Test]
@@ -307,8 +322,9 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, destination = destination };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must finish your duel before you can move again.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must finish your duel before you can move again."));
         }
 
         [Test]
@@ -321,8 +337,9 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, destination = destination };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must end your quest before you can move again.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must end your quest before you can move again."));
         }
 
         [Test]
@@ -334,9 +351,9 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new Move { PlayerId = 51, destination = destination };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot move directly from Street: 70 E. 9th Avenue to Carolyne's Coffee Shop (Patio).");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "You cannot move directly from Street: 70 E. 9th Avenue to Carolyne's Coffee Shop (Patio)."));
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using FluentAssertions;
+﻿using NUnit.Framework;
 using System.Linq;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Assets;
@@ -25,13 +23,14 @@ namespace TT.Tests.Assets.Commands
 
             var cmdEdit = new UpdateTome { TomeId = 7, Text = "new text123", BaseItemId = 200 };
 
-            Repository.Execute(cmdEdit);
+            Assert.That(() => Repository.Execute(cmdEdit), Throws.Nothing);
 
             var editedTome = DataContext.AsQueryable<Tome>().FirstOrDefault(cr => cr.Id == 7);
-            
-            editedTome.Id.Should().Be(7);
-            editedTome.Text.Should().Be("new text123");
-            editedTome.BaseItem.Id.Should().Be(200);
+
+            Assert.That(editedTome, Is.Not.Null);
+            Assert.That(editedTome.Id, Is.EqualTo(7));
+            Assert.That(editedTome.Text, Is.EqualTo("new text123"));
+            Assert.That(editedTome.BaseItem.Id, Is.EqualTo(200));
         }
 
         [TestCase("")]
@@ -41,9 +40,8 @@ namespace TT.Tests.Assets.Commands
         {
             var cmd = new UpdateTome { Text = text, TomeId = 1, BaseItemId = 1 };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("No text was provided for the tome");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No text was provided for the tome"));
         }
 
         [TestCase(-1)]
@@ -52,9 +50,8 @@ namespace TT.Tests.Assets.Commands
         {
             var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Tome Id must be greater than 0"));
         }
 
         [TestCase(-1)]
@@ -63,9 +60,8 @@ namespace TT.Tests.Assets.Commands
         {
             var cmd = new UpdateTome { Text = "tome text", TomeId = 1, BaseItemId = id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Base item id must be greater than 0"));
         }
 
         [Test]
@@ -74,8 +70,8 @@ namespace TT.Tests.Assets.Commands
             const int id = 1;
             var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Tome with ID {id} was not found"));
         }
 
         [Test]
@@ -90,8 +86,8 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new UpdateTome { Text = "tome text", TomeId = tomeId, BaseItemId = baseItemId };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Base item with ID {baseItemId} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Base item with ID {baseItemId} was not found"));
         }
     }
 }

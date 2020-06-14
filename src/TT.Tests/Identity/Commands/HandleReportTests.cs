@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -33,28 +31,25 @@ namespace TT.Tests.Identity.Commands
         public void can_handle_report()
         {
             var cmd = new HandleReport { ReportId = this.report.Id, ModeratorResponse = "handled!"};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var report = DataContext.AsQueryable<Report>().First();
-            report.ModeratorResponse.Should().Be("handled!");
+            Assert.That(DataContext.AsQueryable<Report>().First().ModeratorResponse, Is.EqualTo("handled!"));
         }
 
         [Test]
         public void should_throw_exception_if_report_not_provided()
         {
             var cmd = new HandleReport { ModeratorResponse = "handled!" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ReportId must be a positive integer greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ReportId must be a positive integer greater than 0"));
         }
 
         [Test]
         public void should_throw_exception_if_report_not_found()
         {
             var cmd = new HandleReport { ModeratorResponse = "handled!", ReportId = 999};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Report with Id '999' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Report with Id '999' could not be found"));
         }
 
     }

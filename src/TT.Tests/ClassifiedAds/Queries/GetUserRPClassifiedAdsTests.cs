@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace TT.Tests.ClassifiedAds.Queries
                        orderby ad.RefreshTimestamp descending
                        select ad;
 
-            ads.Should().Equal(adsq);
+            Assert.That(ads, Is.EqualTo(adsq));
         }
     }
 }

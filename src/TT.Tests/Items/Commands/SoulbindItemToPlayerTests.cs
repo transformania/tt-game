@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -72,17 +70,18 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var result = Repository.Execute(cmd);
-            result.Should().Be("You soulbound <b>Bob Doe</b> the <b>Test Item Source</b> for <b>0</b> Arpeyjis.");
+            Assert.That(Repository.Execute(cmd),
+                Is.EqualTo("You soulbound <b>Bob Doe</b> the <b>Test Item Source</b> for <b>0</b> Arpeyjis."));
 
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == item.Id);
 
-            editedItem.SoulboundToPlayer.FirstName.Should().Be("Sam");
-            editedItem.SoulboundToPlayer.BotId.Should().Be(AIStatics.ActivePlayerBotId);
-            editedItem.SoulboundToPlayer.Id.Should().Be(ownerPlayer.Id);
-            editedItem.FormerPlayer.PlayerLogs.Count.Should().Be(1);
-            editedItem.FormerPlayer.PlayerLogs.ElementAt(0).Message.Should().Be("Sam Doe has soulbound you!  No other players will be able to claim you as theirs.");
-
+            Assert.That(editedItem, Is.Not.Null);
+            Assert.That(editedItem.SoulboundToPlayer.FirstName, Is.EqualTo("Sam"));
+            Assert.That(editedItem.SoulboundToPlayer.BotId, Is.EqualTo(AIStatics.ActivePlayerBotId));
+            Assert.That(editedItem.SoulboundToPlayer.Id, Is.EqualTo(ownerPlayer.Id));
+            Assert.That(editedItem.FormerPlayer.PlayerLogs, Has.Exactly(1).Items);
+            Assert.That(editedItem.FormerPlayer.PlayerLogs.ElementAt(0).Message,
+                Is.EqualTo("Sam Doe has soulbound you!  No other players will be able to claim you as theirs."));
         }
 
         [Test]
@@ -94,10 +93,8 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Item with id '12345' not found.");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Item with ID '12345' not found."));
         }
 
         [Test]
@@ -109,10 +106,8 @@ namespace TT.Tests.Items.Commands
                 OwnerId = 12345
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with id '12345' not found.");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '12345' not found."));
         }
 
         [Test]
@@ -132,9 +127,9 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Only permanent items or pets may be souldbound.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Only permanent items or pets may be souldbound."));
         }
 
         [Test]
@@ -160,9 +155,8 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't own that item.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You don't own that item."));
         }
 
         [Test]
@@ -183,9 +177,9 @@ namespace TT.Tests.Items.Commands
                 OwnerId = player.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be at least level 4 in order to soulbind any items or pets to you.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must be at least level 4 in order to soulbind any items or pets to you."));
         }
 
         [Test]
@@ -205,9 +199,9 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("This item is not currently consenting to soulbinding.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("This item is not currently consenting to soulbinding."));
         }
 
         [Test]
@@ -236,7 +230,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.SoulboundToPlayer, ownerPlayer)
                 .BuildAndSave();
 
-            ownerPlayer.GiveItem(previousSouledItem);
+            Assert.That(() => ownerPlayer.GiveItem(previousSouledItem), Throws.Nothing);
 
             var cmd = new SoulbindItemToPlayer
             {
@@ -244,10 +238,9 @@ namespace TT.Tests.Items.Commands
                 OwnerId = ownerPlayer.Id,
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot afford this.  You need <b>100</b> Arpeyjis and only have <b>0</b>.");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You cannot afford this.  You need <b>100</b> Arpeyjis and only have <b>0</b>."));
         }
     }
 }

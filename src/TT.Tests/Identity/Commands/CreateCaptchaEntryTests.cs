@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -22,24 +20,20 @@ namespace TT.Tests.Identity.Commands
                 .BuildAndSave();
 
             var cmd = new CreateCaptchaEntry { UserId = "abcde" };
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<CaptchaEntry>().Count(p =>
+            Assert.That(DataContext.AsQueryable<CaptchaEntry>().Where(p =>
                 p.User.Id == "abcde" &&
                 p.User.UserName == "Bob" &&
                 p.TimesFailed == 0 &&
-                p.TimesPassed == 0)
-            .Should().Be(1);
-
+                p.TimesPassed == 0), Has.Exactly(1).Items);
         }
 
         [Test]
         public void should_throw_error_if_player_not_found()
         {
             var cmd = new CreateCaptchaEntry() { UserId = "abcde" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id abcde could not be found");
+            Assert.That(() => Repository.Execute(cmd), Throws.TypeOf<DomainException>().With.Message.EqualTo("User with Id abcde could not be found"));
         }
 
     }

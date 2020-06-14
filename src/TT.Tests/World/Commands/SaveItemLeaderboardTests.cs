@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -83,38 +81,41 @@ namespace TT.Tests.World.Commands
 
             var leaders = DataContext.AsQueryable<TT.Domain.World.Entities.ItemLeaderboardEntry>();
 
-            leaders.Count().Should().Be(3);
+            Assert.That(leaders, Has.Exactly(3).Items);
 
             var first = leaders.ElementAt(0);
-            first.PlayerName.Should()
-                .Be($"{firstPlace.FormerPlayer.FirstName} {firstPlace.FormerPlayer.LastName}");
-            first.ItemName.Should().Be(itemSource1.FriendlyName);
-            first.ItemSource.Id.Should().Be(itemSource1.Id);
-            first.Level.Should().Be(firstPlace.Level);
-            first.ItemType.Should().Be(itemSource1.ItemType);
+            Assert.That(first.PlayerName,
+                Is.EqualTo($"{firstPlace.FormerPlayer.FirstName} {firstPlace.FormerPlayer.LastName}"));
+            Assert.That(first.ItemName, Is.EqualTo(itemSource1.FriendlyName));
+            Assert.That(first.ItemSource.Id, Is.EqualTo(itemSource1.Id));
+            Assert.That(first.Level, Is.EqualTo(firstPlace.Level));
+            Assert.That(first.ItemType, Is.EqualTo(itemSource1.ItemType));
 
             var second = leaders.ElementAt(1);
-            second.PlayerName.Should().Be($"{secondPlace.FormerPlayer.FirstName} {secondPlace.FormerPlayer.LastName}");
-            second.ItemName.Should().Be(itemSource2.FriendlyName);
-            second.ItemSource.Id.Should().Be(itemSource2.Id);
+            Assert.That(second.PlayerName,
+                Is.EqualTo($"{secondPlace.FormerPlayer.FirstName} {secondPlace.FormerPlayer.LastName}"));
+            Assert.That(second.ItemName, Is.EqualTo(itemSource2.FriendlyName));
+            Assert.That(second.ItemSource.Id, Is.EqualTo(itemSource2.Id));
 
             var third = leaders.ElementAt(2);
-            third.PlayerName.Should()
-                .Be($"{thirdPlaceTiedOnLevel.FormerPlayer.FirstName} {thirdPlaceTiedOnLevel.FormerPlayer.LastName}");
+            Assert.That(third.PlayerName,
+                Is.EqualTo(
+                    $"{thirdPlaceTiedOnLevel.FormerPlayer.FirstName} {thirdPlaceTiedOnLevel.FormerPlayer.LastName}"));
         }
 
         [Test]
         public void should_throw_error_if_not_last_round()
         {
-            var world = new WorldBuilder()
+            new WorldBuilder()
                  .With(i => i.RoundNumber, "Alpha Round 13")
                  .With(i => i.TurnNumber, 350)
                  .With(i => i.RoundDuration, 5000)
                  .With(i => i.ChaosMode, false)
                  .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
+            Assert.That(() => Repository.Execute(new SaveItemLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "Unable to save Item/Pet leaderboards at this time.  It is turn 350 and needs to be turn 5000."));
         }
 
         [Test]
@@ -127,8 +128,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save Item/Pet leaderboards at this time.  The game is currently in chaos mode.");
+            Assert.That(() => Repository.Execute(new SaveItemLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "Unable to save Item/Pet leaderboards at this time.  The game is currently in chaos mode."));
         }
 
         [Test]
@@ -146,22 +148,23 @@ namespace TT.Tests.World.Commands
                 .With(e => e.RoundNumber, 13)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("There are already existing Item/Pet leaderboard entries for round 13.");
+            Assert.That(() => Repository.Execute(new SaveItemLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("There are already existing Item/Pet leaderboard entries for round 13."));
         }
 
         [Test]
         public void should_throw_error_if_round_number_not_set()
         {
-            Action action = () => Repository.Execute(new SaveItemLeaderboards());
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            Assert.That(() => Repository.Execute(new SaveItemLeaderboards()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Round Number must be set!"));
         }
 
         [Test]
         public void should_throw_error_if_no_world_data_found()
         {
-            Action action = () => Repository.Execute(new SaveItemLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("No world data found.");
+            Assert.That(() => Repository.Execute(new SaveItemLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No world data found."));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using TT.Tests.Builders.Item;
 using System.Linq;
-using FluentAssertions;
+using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
@@ -46,26 +46,34 @@ namespace TT.Tests.Items.Commands
                 OwnerId = sam.Id
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == item.Id);
-
-            editedItem.Owner.FirstName.Should().Be("Sam");
-
+            Assert.That(DataContext.AsQueryable<Item>().First(i => i.Id == item.Id).Owner.FirstName,
+                Is.EqualTo("Sam"));
         }
 
         [Test]
-        [Ignore("TODO")]
         public void throw_exception_if_item_not_found()
         {
+            var cmd = new ChangeItemOwner
+            {
+                ItemId = 100,
+                OwnerId = sam.Id
+            };
 
+            Assert.That(() => Repository.Execute(cmd), Throws.TypeOf<DomainException>().With.Message.EqualTo("Item with ID 100 could not be found"));
         }
 
         [Test]
-        [Ignore("TODO")]
         public void throw_exception_if_player_not_found()
         {
+            var cmd = new ChangeItemOwner
+            {
+                ItemId = item.Id,
+                OwnerId = 100
+            };
 
+            Assert.That(() => Repository.Execute(cmd), Throws.TypeOf<DomainException>().With.Message.EqualTo("player with ID 100 could not be found"));
         }
 
     }

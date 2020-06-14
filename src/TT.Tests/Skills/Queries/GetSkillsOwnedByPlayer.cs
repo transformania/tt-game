@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Skills.Queries;
@@ -55,23 +54,23 @@ namespace TT.Tests.Skills.Queries
 
             var cmd = new GetSkillsOwnedByPlayer { playerId = 50 };
 
-            var skills = DomainRegistry.Repository.Find(cmd);
-            var skillIds = skills.Select(s => s.Id);
+            var skills = DomainRegistry.Repository.Find(cmd).ToList();
+            var skillIds = skills.Select(s => s.Id).ToList();
 
-            skillIds.Should().Contain(1);
-            skillIds.Should().Contain(2);
+            Assert.That(skillIds, Has.Member(1));
+            Assert.That(skillIds, Has.Member(2));
 
             var animateSkill = skills.First(s => s.Id == 1);
-            animateSkill.SkillSource.FriendlyName.Should().Be("Mad Cowmaker");
-            animateSkill.SkillSource.FormSource.PortraitUrl.Should().Be("madCow.png");
-            animateSkill.SkillSource.FormSource.FriendlyName.Should().Be("Mad Cow");
+            Assert.That(animateSkill.SkillSource.FriendlyName, Is.EqualTo("Mad Cowmaker"));
+            Assert.That(animateSkill.SkillSource.FormSource.PortraitUrl, Is.EqualTo("madCow.png"));
+            Assert.That(animateSkill.SkillSource.FormSource.FriendlyName, Is.EqualTo("Mad Cow"));
 
             var inanimateSkill = skills.First(s => s.Id == 2);
-            inanimateSkill.SkillSource.FriendlyName.Should().Be("Statuemaker");
-            inanimateSkill.SkillSource.FormSource.PortraitUrl.Should().Be(null);
-            inanimateSkill.SkillSource.FormSource.FriendlyName.Should().Be("Statue");
-            inanimateSkill.SkillSource.FormSource.ItemSource.FriendlyName.Should().Be("Statue");
-            inanimateSkill.SkillSource.FormSource.ItemSource.PortraitUrl.Should().Be("statueItem.png");
+            Assert.That(inanimateSkill.SkillSource.FriendlyName, Is.EqualTo("Statuemaker"));
+            Assert.That(inanimateSkill.SkillSource.FormSource.PortraitUrl, Is.Null);
+            Assert.That(inanimateSkill.SkillSource.FormSource.FriendlyName, Is.EqualTo("Statue"));
+            Assert.That(inanimateSkill.SkillSource.FormSource.ItemSource.FriendlyName, Is.EqualTo("Statue"));
+            Assert.That(inanimateSkill.SkillSource.FormSource.ItemSource.PortraitUrl, Is.EqualTo("statueItem.png"));
         }
     }
 }

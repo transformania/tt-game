@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -26,13 +24,14 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new ChangeDonatorTier{ UserId = player.User.Id, Tier = 3};
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
             var changedPlayer = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
 
-            changedPlayer.DonatorLevel.Should().Be(3);
-            changedPlayer.PlayerLogs.First().Message.Should().Be("<b>An admin has set your donator status to Tier 3.  <span class='good'>Thank you for supporting Transformania Time!</span></b>");
-
+            Assert.That(changedPlayer.DonatorLevel, Is.EqualTo(3));
+            Assert.That(changedPlayer.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "<b>An admin has set your donator status to Tier 3.  <span class='good'>Thank you for supporting Transformania Time!</span></b>"));
         }
 
         [Test]
@@ -46,31 +45,30 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new ChangeDonatorTier { UserId = player.User.Id, Tier = 0 };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
             var changedPlayer = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
 
-            changedPlayer.DonatorLevel.Should().Be(0);
-            changedPlayer.PlayerLogs.First().Message.Should().Be("<b>An admin has set your donator status to Tier 0.</b>");
-
+            Assert.That(changedPlayer.DonatorLevel, Is.EqualTo(0));
+            Assert.That(changedPlayer.PlayerLogs.First().Message,
+                Is.EqualTo("<b>An admin has set your donator status to Tier 0.</b>"));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new ChangeDonatorTier { UserId = "fakeuser", Tier = 0 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with user ID 'fakeuser' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player with user ID 'fakeuser' could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_user_not_provided()
         {
             var cmd = new ChangeDonatorTier { UserId = null, Tier = 0 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("userId is required"));
         }
 
         [Test]
@@ -79,9 +77,8 @@ namespace TT.Tests.Players.Commands
         public void Should_throw_exception_if_tier_out_of_bounds(int tier)
         {
             var cmd = new ChangeDonatorTier { UserId = "user", Tier = tier };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Tier must be an integer between 0 and 3.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Tier must be an integer between 0 and 3."));
         }
     }
 }

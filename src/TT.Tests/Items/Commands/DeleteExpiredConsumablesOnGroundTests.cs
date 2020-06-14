@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
@@ -75,15 +74,14 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteExpiredConsumablesOnGround();
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var idsRemaining = DataContext.AsQueryable<Item>().Select(i => i.Id);
 
-            idsRemaining.Should().Contain(1);
-            idsRemaining.Should().Contain(2);
-            idsRemaining.Should().Contain(4);
-
-            idsRemaining.Should().NotContain(3);
+            Assert.That(idsRemaining, Has.Member(1));
+            Assert.That(idsRemaining, Has.Member(2));
+            Assert.That(idsRemaining, Has.Member(4));
+            Assert.That(idsRemaining, Has.No.Member(3));
         }
 
     }

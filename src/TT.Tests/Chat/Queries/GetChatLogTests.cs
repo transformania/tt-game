@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Chat.Queries;
@@ -44,12 +43,12 @@ namespace TT.Tests.Chat.Queries
                 .BuildAndSave();
 
             var logs = DomainRegistry.Repository.Find(new GetChatLogs {Room = "global", Filter = "lasth"}).ToArray();
-            logs.Count().Should().Be(2);
+            Assert.That(logs, Has.Exactly(2).Items);
 
-            logs[0].Id.Should().Be(less_recent_log.Id);
-            logs[0].Message.Should().Be("Hello chat from 45 minutes ago");
+            Assert.That(logs[0].Id, Is.EqualTo(less_recent_log.Id));
+            Assert.That(logs[0].Message, Is.EqualTo("Hello chat from 45 minutes ago"));
 
-            logs[1].Id.Should().Be(recent_log.Id);
+            Assert.That(logs[1].Id, Is.EqualTo(recent_log.Id));
         }
     }
 }

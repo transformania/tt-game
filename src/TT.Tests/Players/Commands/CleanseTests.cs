@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Players.Commands;
@@ -35,12 +33,12 @@ namespace TT.Tests.Players.Commands
         public void should_cleanse_player()
         {
 
-            var TFEnergies = new List<TFEnergy>()
+            var TFEnergies = new List<TFEnergy>
             {
                 new TFEnergyBuilder().With(t => t.Amount, 50).BuildAndSave()
             };
 
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).With(t => t.Amount, 20).BuildAndSave()
             };
@@ -56,21 +54,25 @@ namespace TT.Tests.Players.Commands
                .With(p => p.TFEnergies, TFEnergies)
                .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Cleanse { PlayerId = 100, Buffs = buffs });
+            Assert.That(() => DomainRegistry.Repository.Execute(new Cleanse {PlayerId = 100, Buffs = buffs}),
+                Throws.Nothing);
 
             var playerLoaded = DataContext.AsQueryable<Player>().First();
 
-            playerLoaded.PlayerLogs.First().Message.Should().Be("You cleansed at Street: 200 Main Street.");
-            playerLoaded.Health.Should().Be(8);
-            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            Assert.That(playerLoaded.PlayerLogs.First().Message,
+                Is.EqualTo("You cleansed at Street: 200 Main Street."));
+            Assert.That(playerLoaded.Health, Is.EqualTo(8));
+            Assert.That(playerLoaded.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
-            locationLog.dbLocationName.Should().Be(player.Location);
-            locationLog.Message.Should().Be("<span class='playerCleansingNotification'>John Doe cleansed here.</span>");
+            Assert.That(locationLog.dbLocationName, Is.EqualTo(player.Location));
+            Assert.That(locationLog.Message,
+                Is.EqualTo("<span class='playerCleansingNotification'>John Doe cleansed here.</span>"));
 
             var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesCleansed);
-            stat.Owner.Id.Should().Be("bob");
-            stat.Amount.Should().Be(1);
+            Assert.That(stat, Is.Not.Null);
+            Assert.That(stat.Owner.Id, Is.EqualTo("bob"));
+            Assert.That(stat.Amount, Is.EqualTo(1));
         }
 
         [Test]
@@ -81,9 +83,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 3, Buffs = buffs};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '3' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '3' could not be found"));
         }
 
         [Test]
@@ -95,9 +96,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to cleanse!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You don't have enough action points to cleanse!"));
         }
 
         [Test]
@@ -109,9 +110,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to cleanse!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You must be animate in order to cleanse!"));
         }
 
 
@@ -124,9 +124,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough mana to cleanse!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You don't have enough mana to cleanse!"));
         }
 
         [Test]
@@ -138,9 +137,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You have cleansed and meditated the maximum number of times this update.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You have cleansed and meditated the maximum number of times this update."));
         }
 
         [Test]
@@ -148,9 +147,8 @@ namespace TT.Tests.Players.Commands
         {
 
             var cmd = new Cleanse { Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player ID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player ID is required!"));
         }
 
         [Test]
@@ -158,21 +156,19 @@ namespace TT.Tests.Players.Commands
         {
 
             var cmd = new Cleanse { PlayerId = 100  };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Buffs are required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Buffs are required!"));
         }
 
         [Test]
         public void should_skip_AP_validation_for_bot()
         {
-
-            var TFEnergies = new List<TFEnergy>()
+            var TFEnergies = new List<TFEnergy>
             {
                 new TFEnergyBuilder().With(t => t.Amount, 50).BuildAndSave()
             };
 
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).BuildAndSave()
             };
@@ -194,12 +190,10 @@ namespace TT.Tests.Players.Commands
                .With(p => p.TFEnergies, TFEnergies)
                .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Cleanse { PlayerId = 100, Buffs = buffs, NoValidate = true});
-            var playerLoaded = DataContext.AsQueryable<Player>().First();
-
-            playerLoaded.Health.Should().BeGreaterThan(0);
-
-
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new Cleanse {PlayerId = 100, Buffs = buffs, NoValidate = true}),
+                Throws.Nothing);
+            Assert.That(DataContext.AsQueryable<Player>().First().Health, Is.GreaterThan(0));
         }
     }
 }

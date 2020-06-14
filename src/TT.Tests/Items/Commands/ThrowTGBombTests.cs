@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Entities;
@@ -127,35 +126,42 @@ namespace TT.Tests.Items.Commands
                .With(p => p.PlayerLogs, new List<PlayerLog>())
                .BuildAndSave();
 
-            var result = Repository.Execute(new ThrowTGBomb { ItemId = bomb.Id, PlayerId = thrower.Id });
-            result.Should().Be("You throw your TG Splash Orb and swap the sex of 2 other mages near you: <b>Female Bystander</b> and <b>Male Bystander</b> and gain <b>6</b> XP!");
+            Assert.That(Repository.Execute(new ThrowTGBomb {ItemId = bomb.Id, PlayerId = thrower.Id}),
+                Is.EqualTo(
+                    "You throw your TG Splash Orb and swap the sex of 2 other mages near you: <b>Female Bystander</b> and <b>Male Bystander</b> and gain <b>6</b> XP!"));
 
             var players = DataContext.AsQueryable<Player>();
 
             var loadedThrower = players.First(p => p.Id == thrower.Id);
-            loadedThrower.XP.Should().Be(9);
-            loadedThrower.User.Stats.First().AchievementType.Should().Be(StatsProcedures.Stat__TgOrbVictims);
-            loadedThrower.User.Stats.First().Amount.Should().Be(2);
+            Assert.That(loadedThrower.XP, Is.EqualTo(9));
+            Assert.That(loadedThrower.User.Stats.First().AchievementType,
+                Is.EqualTo(StatsProcedures.Stat__TgOrbVictims));
+            Assert.That(loadedThrower.User.Stats.First().Amount, Is.EqualTo(2));
 
             var loadedfemaleBystander = players.First(p => p.Id == femaleBystander.Id);
-            loadedfemaleBystander.FormSource.FriendlyName.Should().Be("Alt Sex Regular Girl -> Regular Guy Form");
-            loadedfemaleBystander.Gender.Should().Be(PvPStatics.GenderMale);
-            loadedfemaleBystander.PlayerLogs.First().Message.Should().Be("You yelp and feel your body change to that of the opposite sex from <b>Orb Thrower</b>'s use of a TG Splash Orb in your location!");
+            Assert.That(loadedfemaleBystander.FormSource.FriendlyName,
+                Is.EqualTo("Alt Sex Regular Girl -> Regular Guy Form"));
+            Assert.That(loadedfemaleBystander.Gender, Is.EqualTo(PvPStatics.GenderMale));
+            Assert.That(loadedfemaleBystander.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "You yelp and feel your body change to that of the opposite sex from <b>Orb Thrower</b>'s use of a TG Splash Orb in your location!"));
 
             var loadedMaleBystander = players.First(p => p.Id == maleBystander.Id);
-            loadedMaleBystander.FormSource.FriendlyName.Should().Be("Alt Sex Regular Guy -> Regular Girl Form");
-            loadedMaleBystander.Gender.Should().Be(PvPStatics.GenderFemale);
-            loadedMaleBystander.PlayerLogs.First().Message.Should().Be("You yelp and feel your body change to that of the opposite sex from <b>Orb Thrower</b>'s use of a TG Splash Orb in your location!");
+            Assert.That(loadedMaleBystander.FormSource.FriendlyName,
+                Is.EqualTo("Alt Sex Regular Guy -> Regular Girl Form"));
+            Assert.That(loadedMaleBystander.Gender, Is.EqualTo(PvPStatics.GenderFemale));
+            Assert.That(loadedMaleBystander.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "You yelp and feel your body change to that of the opposite sex from <b>Orb Thrower</b>'s use of a TG Splash Orb in your location!"));
 
-            var wrongModeLoaded = players.First(p => p.Id == wrongMode.Id);
-            wrongModeLoaded.FormSource.FriendlyName.Should().Be(wrongMode.FormSource.FriendlyName); // unchanged
+            Assert.That(players.First(p => p.Id == wrongMode.Id).FormSource.FriendlyName,
+                Is.EqualTo(wrongMode.FormSource.FriendlyName)); // unchanged
 
-            var offlineLoaded = players.First(p => p.Id == offline.Id);
-            offlineLoaded.FormSource.FriendlyName.Should().Be(offline.FormSource.FriendlyName); // unchanged
+            Assert.That(players.First(p => p.Id == offline.Id).FormSource.FriendlyName,
+                Is.EqualTo(offline.FormSource.FriendlyName)); // unchanged
 
-            var nonBaseFormLoaded = players.First(p => p.Id == nonBaseFormPlayer.Id);
-            nonBaseFormLoaded.FormSource.FriendlyName.Should().Be(nonBaseFormPlayer.FormSource.FriendlyName); // unchanged
-
+            Assert.That(players.First(p => p.Id == nonBaseFormPlayer.Id).FormSource.FriendlyName,
+                Is.EqualTo(nonBaseFormPlayer.FormSource.FriendlyName)); // unchanged
         }
 
         [Test]
@@ -167,19 +173,16 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new ThrowTGBomb { ItemId = bomb.Id, PlayerId = 12 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("player with ID 12 could not be found.");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("player with ID 12 could not be found."));
         }
 
         [Test]
         public void should_throw_exception_if_player_id_not_specified()
         {
             var cmd = new ThrowTGBomb { ItemId = 12 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("PlayerId is required."));
         }
 
         [Test]
@@ -192,19 +195,17 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new ThrowTGBomb { ItemId = 2365, PlayerId = thrower.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Item with ID 2365 could not be found or does not belong to you.");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Item with ID 2365 could not be found or does not belong to you."));
         }
 
         [Test]
         public void should_throw_exception_if_item_id_not_specified()
         {
             var cmd = new ThrowTGBomb { PlayerId = 12 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId is required."));
         }
     }
 }

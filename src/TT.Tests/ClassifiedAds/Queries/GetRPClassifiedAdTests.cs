@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using System;
+﻿using NUnit.Framework;
 using TT.Domain.ClassifiedAds.Queries;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
@@ -47,8 +45,7 @@ namespace TT.Tests.ClassifiedAds.Queries
         [Test]
         public void Should_get_ad()
         {
-            var ad = Repository.FindSingle(cmd);
-            ad.Id.Should().Be(Ad.Id);
+            Assert.That(Repository.FindSingle(cmd).Id, Is.EqualTo(Ad.Id));
         }
 
         [Test]
@@ -56,30 +53,27 @@ namespace TT.Tests.ClassifiedAds.Queries
         {
             cmd.UserId += '-';
             cmd.CheckUserId = false;
-            var ad = Repository.FindSingle(cmd);
-            ad.Id.Should().Be(Ad.Id);
+            Assert.That(Repository.FindSingle(cmd).Id, Is.EqualTo(Ad.Id));
         }
 
         [Test]
         public void Should_throw_if_not_owner()
         {
             cmd.UserId += '-';
-            Action action = () => Repository.FindSingle(cmd);
-
-            action.Should().ThrowExactly<RPClassifiedAdNotOwnerException>()
-                .WithMessage($"User {cmd.UserId} does not own RP Classified Ad Id {Ad.Id}")
-                .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
+            Assert.That(() => Repository.FindSingle(cmd),
+                Throws.TypeOf<RPClassifiedAdNotOwnerException>().With.Message
+                    .EqualTo($"User {cmd.UserId} does not own RP Classified Ad Id {Ad.Id}").And
+                    .Property("UserFriendlyError").EqualTo("You do not own this RP Classified Ad."));
         }
 
         [Test]
         public void Should_throw_if_ad_does_not_exist()
         {
             cmd.RPClassifiedAdId++;
-            Action action = () => Repository.FindSingle(cmd);
-
-            action.Should().ThrowExactly<RPClassifiedAdNotFoundException>()
-                .WithMessage($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found")
-                .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
+            Assert.That(() => Repository.FindSingle(cmd),
+                Throws.TypeOf<RPClassifiedAdNotFoundException>().With.Message
+                    .EqualTo($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found").And
+                    .Property("UserFriendlyError").EqualTo("This RP Classified Ad doesn't exist."));
         }
     }
 }

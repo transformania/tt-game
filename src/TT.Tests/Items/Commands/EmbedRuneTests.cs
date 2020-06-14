@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -66,38 +64,33 @@ namespace TT.Tests.Items.Commands
                 PlayerId = player.Id
             };
 
-            var result = Repository.Execute(cmd);
-
-            item.Runes.Count.Should().Be(1);
-            item.Runes.First().EmbeddedOnItem.Id.Should().Be(item.Id);
-            result.Should().Be("You attached your Rune of Leetness onto your Red T-Shirt.");
+            Assert.That(Repository.Execute(cmd), Is.EqualTo("You attached your Rune of Leetness onto your Red T-Shirt."));
+            Assert.That(item.Runes, Has.Exactly(1).Items);
+            Assert.That(item.Runes.First().EmbeddedOnItem.Id, Is.EqualTo(item.Id));
         }
 
         [Test]
         public void should_throw_exception_if_player_id_not_defined()
         {
             var cmd = new EmbedRune {  RuneId = 100, ItemId = 250};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("PlayerId is required"));
         }
 
         [Test]
         public void should_throw_exception_if_item_id_not_defined()
         {
-            var cmd = new EmbedRune { PlayerId = 12, RuneId = 100,  };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required");
+            var cmd = new EmbedRune { PlayerId = 12, RuneId = 100 };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId is required"));
         }
 
         [Test]
         public void should_throw_exception_if_rune_id_not_defined()
         {
             var cmd = new EmbedRune { PlayerId = 12, ItemId = 250 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("RuneId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RuneId is required"));
         }
 
         [Test]
@@ -106,9 +99,9 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune.Id, PlayerId = 999 };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You do not own the item you are attempting to embed runes on.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You do not own the item you are attempting to embed runes on."));
         }
 
         [Test]
@@ -122,9 +115,8 @@ namespace TT.Tests.Items.Commands
                 PlayerId = player.Id
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Item with ID '999' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Item with ID '999' could not be found"));
         }
 
         [Test]
@@ -138,9 +130,8 @@ namespace TT.Tests.Items.Commands
                 PlayerId = player.Id
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Rune with ID '100' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Rune with ID '100' could not be found"));
         }
 
         [Test]
@@ -158,9 +149,8 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune.Id, PlayerId = player.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Only runes can be embedded on items.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Only runes can be embedded on items."));
         }
 
         [Test]
@@ -178,9 +168,8 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune{ItemId = item.Id, RuneId = rune.Id, PlayerId = player.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot embed a rune on this item type.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You cannot embed a rune on this item type."));
         }
 
         [Test]
@@ -200,9 +189,9 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune.Id, PlayerId = player.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("This item is of too low level to attach this rune.  It is level 7 and needs to be at least level 10.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "This item is of too low level to attach this rune.  It is level 7 and needs to be at least level 10."));
         }
 
         [Test]
@@ -231,9 +220,9 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune.Id, PlayerId = player.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("This item has no more room for additional runes.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("This item has no more room for additional runes."));
         }
 
         [Test]
@@ -253,9 +242,9 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new EmbedRune { ItemId = item.Id, RuneId = rune2.Id, PlayerId = player.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("This rune has already been equipped once this turn.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("This rune has already been equipped once this turn."));
         }
 
 

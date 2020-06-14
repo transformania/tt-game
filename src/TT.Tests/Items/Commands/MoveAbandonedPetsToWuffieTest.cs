@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -57,20 +56,18 @@ namespace TT.Tests.Items.Commands
 
 
             var cmd = new MoveAbandonedPetsToWuffie {WuffieId = 1};
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Item>().Count(i =>
-               i.Owner != null && i.Owner.Id == 1)
-            .Should().Be(1);
+            Assert.That(DataContext.AsQueryable<Item>().Where(i => i.Owner != null && i.Owner.Id == 1),
+                Has.Exactly(1).Items);
         }
 
         [Test]
         public void should_throw_exception_if_wuffie_not_found()
         {
             var cmd = new MoveAbandonedPetsToWuffie { WuffieId = 13 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Wuffie with Id 13");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Could not find Wuffie with Id 13"));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using FluentAssertions;
+﻿using NUnit.Framework;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Assets;
@@ -31,26 +29,26 @@ namespace TT.Tests.Assets.Commands
 
             var cmdEdit = new UpdateRestockItem { RestockItemId = 13, AmountBeforeRestock = 25, BaseItemId = item.Id, AmountToRestockTo = 50, BotId = AIStatics.LindellaBotId };
 
-            Repository.Execute(cmdEdit);
+            Assert.That(() => Repository.Execute(cmdEdit), Throws.Nothing);
 
             var editedRestockItem = DataContext.AsQueryable<RestockItem>().FirstOrDefault(cr => cr.Id == 13);
 
-            editedRestockItem.Id.Should().Be(13);
-            editedRestockItem.AmountBeforeRestock.Should().Be(25);
-            editedRestockItem.AmountToRestockTo.Should().Be(50);
-            editedRestockItem.BaseItem.Id.Should().Be(222);
-            editedRestockItem.BotId.Should().Be(AIStatics.LindellaBotId);
+            Assert.That(editedRestockItem, Is.Not.Null);
+            Assert.That(editedRestockItem.Id, Is.EqualTo(13));
+            Assert.That(editedRestockItem.AmountBeforeRestock, Is.EqualTo(25));
+            Assert.That(editedRestockItem.AmountToRestockTo, Is.EqualTo(50));
+            Assert.That(editedRestockItem.BaseItem.Id, Is.EqualTo(222));
+            Assert.That(editedRestockItem.BotId, Is.EqualTo(AIStatics.LindellaBotId));
         }
 
         [TestCase(-1)]
         [TestCase(0)]
         public void Should_throw_error_when_base_item_id_is_invalid(int id)
         {
-            var cmd = new UpdateRestockItem { AmountBeforeRestock = 0, BaseItemId = 0, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = 0, BaseItemId = 0, RestockItemId = restockItem.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Base item id must be greater than 0"));
         }
 
 
@@ -58,11 +56,10 @@ namespace TT.Tests.Assets.Commands
         public void Should_throw_error_when_base_item_is_not_found()
         {
             const int id = 17;
-            var cmd = new UpdateRestockItem { AmountBeforeRestock = 0, BaseItemId = id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = 0, BaseItemId = id, RestockItemId = restockItem.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Base item with Id {id} could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Base item with Id {id} could not be found"));
         }
 
         [Test]
@@ -72,11 +69,10 @@ namespace TT.Tests.Assets.Commands
 
             var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
 
-            var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, RestockItemId = restockItem.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount before restock must be 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Minimum amount before restock must be 0"));
         }
 
         [Test]
@@ -86,13 +82,14 @@ namespace TT.Tests.Assets.Commands
 
             var item = new ItemSourceBuilder().With(cr => cr.Id, 215).BuildAndSave();
 
-            var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, RestockItemId = restockItem.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var editedRestockItem = DataContext.AsQueryable<RestockItem>().FirstOrDefault(cr => cr.Id == 13);
 
-            editedRestockItem.Id.Should().Be(13);
+            Assert.That(editedRestockItem, Is.Not.Null);
+            Assert.That(editedRestockItem.Id, Is.EqualTo(13));
         }
 
         [Test]
@@ -103,12 +100,36 @@ namespace TT.Tests.Assets.Commands
             var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
-            var cmd = new UpdateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, AmountToRestockTo = amount, BotId = AIStatics.LindellaBotId };
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, RestockItemId = restockItem.Id, AmountToRestockTo = amount, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount to restock to must be 1");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Minimum amount to restock to must be 1"));
         }
 
+        [Test]
+        public void Should_throw_error_when_no_restock_item_id()
+        {
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
+
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, AmountToRestockTo = 1, BotId = AIStatics.LindellaBotId };
+
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RestockItemId must be set"));
+        }
+
+        [Test]
+        public void Should_throw_error_when_invalid_restock_item_id()
+        {
+            var restockId = 77;
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
+
+            var cmd = new UpdateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, RestockItemId = restockId, AmountToRestockTo = 1, BotId = AIStatics.LindellaBotId };
+
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo($"Restock item with Id {restockId} could not be found"));
+        }
     }
 }

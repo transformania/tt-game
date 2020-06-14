@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using FluentAssertions;
 using System.Linq;
 using TT.Domain.AI.Commands;
 using TT.Domain.AI.Entities;
@@ -19,12 +18,12 @@ namespace TT.Tests.AI.Commands
 
             var cmdEdit = new UpdateNPC { NPCId = 3, SpawnText = "updated spawn"};
 
-            Repository.Execute(cmdEdit);
+            Assert.That(() => Repository.Execute(cmdEdit), Throws.Nothing);
 
             var editedNPC = DataContext.AsQueryable<NPC>().FirstOrDefault(n => n.Id == 3);
 
-            editedNPC.Id.Should().Be(3);
-            editedNPC.SpawnText.Should().Be("updated spawn");
+            Assert.That(editedNPC.Id, Is.EqualTo(3));
+            Assert.That(editedNPC.SpawnText, Is.EqualTo("updated spawn"));
         }
 
     }

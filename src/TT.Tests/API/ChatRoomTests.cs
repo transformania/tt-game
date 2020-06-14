@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http.Results;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Chat.DTOs;
@@ -23,9 +22,9 @@ namespace TT.Tests.API
             var actionResult = controller.Put(new CreateChatRoom { RoomName = "Test_Room" });
             var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<ChatRoomDetail>;
 
-            createdResult.Should().NotBeNull();
-            createdResult.RouteName.Should().Be("DefaultApi");
-            createdResult.RouteValues["id"].Should().Be("Test_Room");
+            Assert.That(createdResult, Is.Not.Null);
+            Assert.That(createdResult.RouteName, Is.EqualTo("DefaultApi"));
+            Assert.That(createdResult.RouteValues["id"], Is.EqualTo("Test_Room"));
         }
 
         [Test]
@@ -38,7 +37,8 @@ namespace TT.Tests.API
             var actionResult = controller.Put(new CreateChatRoom());
             var badRequestResult = actionResult as BadRequestErrorMessageResult;
 
-            badRequestResult.Message.Should().NotBeEmpty();
+            Assert.That(badRequestResult, Is.Not.Null);
+            Assert.That(badRequestResult.Message, Is.Not.Empty);
         }
 
         [Test]
@@ -52,7 +52,8 @@ namespace TT.Tests.API
             var actionResult = controller.Get();
             var rooms = actionResult as OkNegotiatedContentResult<IEnumerable<ChatRoomDetail>>;
 
-            rooms.Content.Should().HaveCount(2);
+            Assert.That(rooms, Is.Not.Null);
+            Assert.That(rooms.Content, Has.Exactly(2).Items);
         }
     }
 }

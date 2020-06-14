@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -90,17 +89,17 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteExpiredRunesOnMerchants();
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var idsRemaining = DataContext.AsQueryable<Item>().Select(i => i.Id);
 
-            idsRemaining.Should().Contain(3);
-            idsRemaining.Should().Contain(4);
-            idsRemaining.Should().Contain(5);
-            idsRemaining.Should().Contain(6);
+            Assert.That(idsRemaining, Has.Member(3));
+            Assert.That(idsRemaining, Has.Member(4));
+            Assert.That(idsRemaining, Has.Member(5));
+            Assert.That(idsRemaining, Has.Member(6));
 
-            idsRemaining.Should().NotContain(1);
-            idsRemaining.Should().NotContain(2);
+            Assert.That(idsRemaining, Has.No.Member(1));
+            Assert.That(idsRemaining, Has.No.Member(2));
         }
 
         [Test]
@@ -113,9 +112,8 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteExpiredRunesOnMerchants();
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Could not find Lindella with BotId -3"));
         }
 
         [Test]
@@ -128,9 +126,8 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteExpiredRunesOnMerchants();
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lorekeeper with BotId -15");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Could not find Lorekeeper with BotId -15"));
         }
     }
 }

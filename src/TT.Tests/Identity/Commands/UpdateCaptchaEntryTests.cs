@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -24,11 +23,12 @@ namespace TT.Tests.Identity.Commands
                 .BuildAndSave();
 
             var cmd = new UpdateCaptchaEntry {UserId = "abcde", AddPassAttempt = false, AddFailAttempt = true};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var entry = DataContext.AsQueryable<CaptchaEntry>().First(e => e.User.Id == "abcde");
-            entry.TimesFailed.Should().Be(1);
-            entry.TimesPassed.Should().Be(0);
+            var entry = DataContext.AsQueryable<CaptchaEntry>().FirstOrDefault(e => e.User.Id == "abcde");
+            Assert.That(entry, Is.Not.Null);
+            Assert.That(entry.TimesFailed, Is.EqualTo(1));
+            Assert.That(entry.TimesPassed, Is.EqualTo(0));
         }
 
         [Test]
@@ -42,21 +42,22 @@ namespace TT.Tests.Identity.Commands
                 .BuildAndSave();
 
             var cmd = new UpdateCaptchaEntry {UserId = "abcde", AddPassAttempt = true, AddFailAttempt = false};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var entry = DataContext.AsQueryable<CaptchaEntry>().First(e => e.User.Id == "abcde");
-            entry.TimesFailed.Should().Be(0);
-            entry.TimesPassed.Should().Be(1);
-            entry.ExpirationTimestamp.Should().BeCloseTo(DateTime.UtcNow.AddHours(24).AddMinutes(30), 250);
+            var entry = DataContext.AsQueryable<CaptchaEntry>().FirstOrDefault(e => e.User.Id == "abcde");
+            Assert.That(entry, Is.Not.Null);
+            Assert.That(entry.TimesFailed, Is.EqualTo(0));
+            Assert.That(entry.TimesPassed, Is.EqualTo(1));
+            Assert.That(entry.ExpirationTimestamp,
+                Is.EqualTo(DateTime.UtcNow.AddHours(24).AddMinutes(30)).Within(250).Milliseconds);
         }
 
         [Test]
         public void should_throw_exception_if_user_has_no_captcha_entry()
         {
             var cmd = new UpdateCaptchaEntry {UserId = "abcde", AddPassAttempt = true, AddFailAttempt = false};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("CaptchaEntry with Id abcde could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("CaptchaEntry with Id abcde could not be found"));
         }
     }
 }

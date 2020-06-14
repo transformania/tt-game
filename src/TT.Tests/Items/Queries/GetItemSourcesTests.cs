@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Tests.Builders.Item;
@@ -26,7 +25,7 @@ namespace TT.Tests.Items.Queries
 
             var items = DomainRegistry.Repository.Find(cmd);
 
-            items.Should().HaveCount(2);
+            Assert.That(items, Has.Exactly(2).Items);
         }
 
         [Test]
@@ -34,10 +33,7 @@ namespace TT.Tests.Items.Queries
         {
             var cmd = new GetItemSources();
 
-            var items = DomainRegistry.Repository.Find(cmd);
-
-            items.Should().BeEmpty();
+            Assert.That(DomainRegistry.Repository.Find(cmd), Is.Empty);
         }
-
     }
 }

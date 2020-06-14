@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
@@ -28,9 +27,8 @@ namespace TT.Tests.Identity.Queries
 
             var bios = DomainRegistry.Repository.Find(new GetArtistBios()).ToArray();
 
-            bios.Should().HaveCount(1);
-            bios[0].Id.Should().Be(live_bio.Id);
-
+            Assert.That(bios, Has.Exactly(1).Items);
+            Assert.That(bios[0].Id, Is.EqualTo(live_bio.Id));
         }
 
     }

@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading;
@@ -46,14 +45,14 @@ namespace TT.Tests.ClassifiedAds.Commands
         public void Should_refresh_ad()
         {
             Thread.Sleep(3000);
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var ads = DataContext.AsQueryable<RPClassifiedAd>();
-            ads.Should().HaveCount(1);
+            Assert.That(ads, Has.Exactly(1).Items);
             var ad = ads.Single();
-            ad.Should().Be(Ad);
+            Assert.That(ad, Is.EqualTo(Ad));
 
-            ad.RefreshTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            Assert.That(ad.RefreshTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
         }
 
         [Test]
@@ -62,34 +61,34 @@ namespace TT.Tests.ClassifiedAds.Commands
             Thread.Sleep(3000);
             cmd.CheckUserId = false;
             cmd.UserId = null;
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var ads = DataContext.AsQueryable<RPClassifiedAd>();
-            ads.Should().HaveCount(1);
+            Assert.That(ads, Has.Exactly(1).Items);
             var ad = ads.Single();
-            ad.Should().Be(Ad);
+            Assert.That(ad, Is.EqualTo(Ad));
 
-            ad.RefreshTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            Assert.That(ad.RefreshTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
         }
 
         [Test]
         public void Should_throw_if_user_does_not_own_ad()
         {
             cmd.UserId += "-";
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<RPClassifiedAdNotOwnerException>()
-                .WithMessage($"User {cmd.UserId} does not own RPClassifiedAdId {cmd.RPClassifiedAdId}")
-                .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotOwnerException>().With.Message
+                    .EqualTo($"User {cmd.UserId} does not own RPClassifiedAdId {cmd.RPClassifiedAdId}").And
+                    .Property("UserFriendlyError").EqualTo("You do not own this RP Classified Ad."));
         }
 
         [Test]
         public void Should_throw_if_ad_does_not_exist()
         {
             cmd.RPClassifiedAdId++;
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<RPClassifiedAdNotFoundException>()
-                .WithMessage($"RPClassifiedAdId with ID {cmd.RPClassifiedAdId} could not be found")
-                .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotFoundException>().With.Message
+                    .EqualTo($"RPClassifiedAdId with ID {cmd.RPClassifiedAdId} could not be found").And
+                    .Property("UserFriendlyError").EqualTo("This RP Classified Ad doesn't exist."));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -96,17 +95,16 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.TimeDropped, DateTime.UtcNow.AddDays(-1))
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
+            Assert.That(() => DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems()), Throws.Nothing);
 
             var items = DataContext.AsQueryable<Item>();
             var itemIds = items.Select(i => i.Id);
 
-            items.Count().Should().Be(2);
-            itemIds.Should().NotContain(deletablePsychoItem.Id);
-            itemIds.Should().NotContain(deletablePetItem.Id);
-            itemIds.Should().Contain(nonDeleteableItem.Id);
-            itemIds.Should().Contain(nonDeleteableRecentItem.Id);
-
+            Assert.That(items, Has.Exactly(2).Items);
+            Assert.That(itemIds, Has.No.Member(deletablePsychoItem.Id));
+            Assert.That(itemIds, Has.No.Member(deletablePetItem.Id));
+            Assert.That(itemIds, Has.Member(nonDeleteableItem.Id));
+            Assert.That(itemIds, Has.Member(nonDeleteableRecentItem.Id));
         }
 
         [Test]
@@ -118,9 +116,8 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.BotId, AIStatics.WuffieBotId)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.Execute(new DeleteUnpurchasedPsychoItems()); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Lindella with BotId -3");
+            Assert.That(() => Repository.Execute(new DeleteUnpurchasedPsychoItems()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Could not find Lindella with BotId -3"));
 
         }
 
@@ -133,9 +130,8 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.BotId, AIStatics.LindellaBotId)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.Execute(new DeleteUnpurchasedPsychoItems()); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Could not find Wuffie with BotId -10");
+            Assert.That(() => Repository.Execute(new DeleteUnpurchasedPsychoItems()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Could not find Wuffie with BotId -10"));
 
         }
     }

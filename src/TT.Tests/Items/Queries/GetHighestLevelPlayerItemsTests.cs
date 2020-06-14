@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
@@ -73,14 +72,12 @@ namespace TT.Tests.Items.Queries
 
             var items = DomainRegistry.Repository.Find(cmd).ToArray();
 
-            items.Count().Should().Be(3);
-            items[0].Id.Should().Be(high_level_player_item.Id);
-            items[1].Id.Should().Be(low_level_player_item.Id);
-            items[2].Id.Should().Be(low_level_item_low_xp.Id);
+            Assert.That(items, Has.Exactly(3).Items);
+            Assert.That(items[0].Id, Is.EqualTo(high_level_player_item.Id));
+            Assert.That(items[1].Id, Is.EqualTo(low_level_player_item.Id));
+            Assert.That(items[2].Id, Is.EqualTo(low_level_item_low_xp.Id));
 
-            var allIds = items.Select(i => i.Id);
-            allIds.Should().NotContain(item_from_bot.Id);
-
+            Assert.That(items.Select(i => i.Id), Has.No.Member(item_from_bot.Id));
         }
     }
 }

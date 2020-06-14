@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Players.Queries;
@@ -27,10 +26,10 @@ namespace TT.Tests.Players.Queries
                .BuildAndSave();
 
 
-            var forms = DomainRegistry.Repository.Find(new GetBaseForms());
-            forms.Count().Should().Be(2);
-            forms.ElementAt(0).FriendlyName.Should().Be("Regular Guy");
-            forms.ElementAt(1).FriendlyName.Should().Be("Regular Girl");
+            var forms = DomainRegistry.Repository.Find(new GetBaseForms()).ToList();
+            Assert.That(forms, Has.Exactly(2).Items);
+            Assert.That(forms.ElementAt(0).FriendlyName, Is.EqualTo("Regular Guy"));
+            Assert.That(forms.ElementAt(1).FriendlyName, Is.EqualTo("Regular Girl"));
 
         }
     }

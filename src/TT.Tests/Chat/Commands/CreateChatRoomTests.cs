@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Chat.Entities;
@@ -22,12 +21,9 @@ namespace TT.Tests.Chat.Commands
 
             var room = Repository.Execute(cmd);
 
-            DataContext.AsQueryable<ChatRoom>().Count(cr => 
-                cr.Id == room.Id &&
-                cr.Name == "Test_Room" && 
-                cr.Creator.Id == creator.Id && 
-                cr.CreatedAt.Value.Date == DateTime.UtcNow.Date)
-            .Should().Be(1);
+            Assert.That(DataContext.AsQueryable<ChatRoom>().Where(cr =>
+                    cr.Id == room.Id && cr.Name == "Test_Room" && cr.Creator.Id == creator.Id &&
+                    cr.CreatedAt.Value.Date == DateTime.UtcNow.Date), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -39,9 +35,8 @@ namespace TT.Tests.Chat.Commands
 
             var cmd = new CreateChatRoom { RoomName = existingName, CreatorId = Guid.NewGuid().ToString() };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Chat room '{existingName}' already exists");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Chat room '{existingName}' already exists"));
         }
 
         [TestCase("Test!")]
@@ -54,10 +49,9 @@ namespace TT.Tests.Chat.Commands
         {
             var cmd = new CreateChatRoom { RoomName = roomName, CreatorId = Guid.NewGuid().ToString() };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage(
-                $"Chat room '{roomName}' contains unsupported characters, only alphanumeric names with _ or - are allowed");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    $"Chat room '{roomName}' contains unsupported characters, only alphanumeric names with _ or - are allowed"));
         }
 
         [TestCase("Test_")]
@@ -73,9 +67,12 @@ namespace TT.Tests.Chat.Commands
         {
             var creator = new UserBuilder().BuildAndSave();
 
-            Repository.Execute(new CreateChatRoom { RoomName = roomName, CreatorId = creator.Id});
+            Assert.That(() => Repository.Execute(new CreateChatRoom {RoomName = roomName, CreatorId = creator.Id}),
+                Throws.Nothing);
 
-            DataContext.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName && cr.Creator.Id == creator.Id).Should().BeTrue();
+            Assert.That(
+                DataContext.AsQueryable<ChatRoom>().Where(cr => cr.Name == roomName && cr.Creator.Id == creator.Id),
+                Is.Not.Empty);
         }
 
         [Test]
@@ -83,9 +80,8 @@ namespace TT.Tests.Chat.Commands
         {
             var cmd = new CreateChatRoom { CreatorId = Guid.NewGuid().ToString() };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("No room name was provided");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No room name was provided"));
         }
 
         [Test]
@@ -93,9 +89,8 @@ namespace TT.Tests.Chat.Commands
         {
             var cmd = new CreateChatRoom { RoomName = "Test_Room" };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("No room creator was provided");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No room creator was provided"));
         }
 
         [Test]
@@ -103,9 +98,8 @@ namespace TT.Tests.Chat.Commands
         {
             var cmd = new CreateChatRoom { RoomName = "Test_Room", CreatorId = Guid.NewGuid().ToString()};
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Room creator does not exist");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Room creator does not exist"));
         }
     }
 }

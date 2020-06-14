@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
@@ -98,37 +96,45 @@ namespace TT.Tests.Items.Commands
         {
 
             var cmd = new RemoveSoulbindingOnPlayerItems {PlayerId = player.Id};
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            var lindellaLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == lindella.Id);
-            lindellaLoaded.Items.Count.Should().Be(1);
-            lindellaLoaded.Items.ElementAt(0).Id.Should().Be(soulboundItem.Id);
+            var lindellaLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == lindella.Id);
+            Assert.That(lindellaLoaded, Is.Not.Null);
+            Assert.That(lindellaLoaded.Items, Has.Exactly(1).Items);
+            Assert.That(lindellaLoaded.Items.ElementAt(0).Id, Is.EqualTo(soulboundItem.Id));
 
-            var wuffieLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == wuffie.Id);
-            wuffieLoaded.Items.Count.Should().Be(1);
-            wuffieLoaded.Items.ElementAt(0).Id.Should().Be(soulboundPet.Id);
+            var wuffieLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == wuffie.Id);
+            Assert.That(wuffieLoaded, Is.Not.Null);
+            Assert.That(wuffieLoaded.Items, Has.Exactly(1).Items);
+            Assert.That(wuffieLoaded.Items.ElementAt(0).Id, Is.EqualTo(soulboundPet.Id));
 
-            var soulboundItemLoaded = DataContext.AsQueryable<Item>().First(p => p.Id == soulboundItem.Id);
-            soulboundItemLoaded.SoulboundToPlayer.Should().Be(null);
-            soulboundItemLoaded.Owner.Should().Be(lindella);
-            soulboundItemLoaded.ConsentsToSoulbinding.Should().Be(false);
+            var soulboundItemLoaded = DataContext.AsQueryable<Item>().FirstOrDefault(p => p.Id == soulboundItem.Id);
+            Assert.That(soulboundItemLoaded, Is.Not.Null);
+            Assert.That(soulboundItemLoaded.SoulboundToPlayer, Is.Null);
+            Assert.That(soulboundItemLoaded.Owner, Is.EqualTo(lindella));
+            Assert.That(soulboundItemLoaded.ConsentsToSoulbinding, Is.False);
 
-            var soulboundPetLoaded = DataContext.AsQueryable<Item>().First(p => p.Id == soulboundPet.Id);
-            soulboundPetLoaded.SoulboundToPlayer.Should().Be(null);
-            soulboundPetLoaded.Owner.Should().Be(wuffie);
-            soulboundPetLoaded.ConsentsToSoulbinding.Should().Be(false);
+            var soulboundPetLoaded = DataContext.AsQueryable<Item>().FirstOrDefault(p => p.Id == soulboundPet.Id);
+            Assert.That(soulboundPetLoaded, Is.Not.Null);
+            Assert.That(soulboundPetLoaded.SoulboundToPlayer, Is.Null);
+            Assert.That(soulboundPetLoaded.Owner, Is.EqualTo(wuffie));
+            Assert.That(soulboundPetLoaded.ConsentsToSoulbinding, Is.False);
 
-            var formerPlayerInanimateLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == this.formerPlayerInanimate.Id);
-            formerPlayerInanimateLoaded.PlayerLogs.Count.Should().Be(1);
-            formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).Message.Should().Be("Your past owner has lost the last of their own humanity, shattering the soulbinding between you.");
-            formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).IsImportant.Should().Be(true);
+            var formerPlayerInanimateLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == this.formerPlayerInanimate.Id);
+            Assert.That(formerPlayerInanimateLoaded, Is.Not.Null);
+            Assert.That(formerPlayerInanimateLoaded.PlayerLogs, Has.Exactly(1).Items);
+            Assert.That(formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).Message,
+                Is.EqualTo(
+                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you."));
+            Assert.That(formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).IsImportant, Is.True);
 
-            var formerPlayerPetLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == this.formerPlayerPet.Id);
-            formerPlayerPetLoaded.PlayerLogs.Count.Should().Be(1);
-            formerPlayerPetLoaded.PlayerLogs.ElementAt(0).Message.Should().Be("Your past owner has lost the last of their own humanity, shattering the soulbinding between you.");
-            formerPlayerPetLoaded.PlayerLogs.ElementAt(0).IsImportant.Should().Be(true);
-
+            var formerPlayerPetLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == this.formerPlayerPet.Id);
+            Assert.That(formerPlayerPetLoaded, Is.Not.Null);
+            Assert.That(formerPlayerPetLoaded.PlayerLogs, Has.Exactly(1).Items);
+            Assert.That(formerPlayerPetLoaded.PlayerLogs.ElementAt(0).Message,
+                Is.EqualTo(
+                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you."));
+            Assert.That(formerPlayerPetLoaded.PlayerLogs.ElementAt(0).IsImportant, Is.True);
         }
-
     }
 }

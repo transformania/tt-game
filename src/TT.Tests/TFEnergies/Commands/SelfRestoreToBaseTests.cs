@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -70,20 +69,22 @@ namespace TT.Tests.TFEnergies.Commands
 
             var cmd = new SelfRestoreToBase { PlayerId = restoredPlayer.Id, Buffs = buffs };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var playerLoaded = DataContext.AsQueryable<Player>().Where(p => p.Id == restoredPlayer.Id).First();
-            playerLoaded.Id.Should().Be(restoredPlayer.Id);
-            playerLoaded.Gender.Should().Be(originalForm.Gender);
-            playerLoaded.FormSource.Id.Should().Be(originalForm.Id);
-            playerLoaded.FormSource.FriendlyName.Should().Be(originalForm.FriendlyName);
-            playerLoaded.ActionPoints.Should().Be(47);
-            playerLoaded.Mana.Should().Be(15);
-            playerLoaded.CleansesMeditatesThisRound.Should().Be(1);
-            playerLoaded.PlayerLogs.First().Message.Should().Be("<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>Base Form</b>!<span>");
-            playerLoaded.SelfRestoreEnergy.Amount.Should().Be(0);
-            playerLoaded.SelfRestoreEnergy.Timestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
-            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            var playerLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == restoredPlayer.Id);
+            Assert.That(playerLoaded.Id, Is.EqualTo(restoredPlayer.Id));
+            Assert.That(playerLoaded.Gender, Is.EqualTo(originalForm.Gender));
+            Assert.That(playerLoaded.FormSource.Id, Is.EqualTo(originalForm.Id));
+            Assert.That(playerLoaded.FormSource.FriendlyName, Is.EqualTo(originalForm.FriendlyName));
+            Assert.That(playerLoaded.ActionPoints, Is.EqualTo(47));
+            Assert.That(playerLoaded.Mana, Is.EqualTo(15));
+            Assert.That(playerLoaded.CleansesMeditatesThisRound, Is.EqualTo(1));
+            Assert.That(playerLoaded.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>Base Form</b>!<span>"));
+            Assert.That(playerLoaded.SelfRestoreEnergy.Amount, Is.EqualTo(0));
+            Assert.That(playerLoaded.SelfRestoreEnergy.Timestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
+            Assert.That(playerLoaded.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
         }
 
         [Test]
@@ -101,38 +102,38 @@ namespace TT.Tests.TFEnergies.Commands
 
             var cmd = new SelfRestoreToBase { PlayerId = insufficientEnergyPlayer.Id, Buffs = buffs };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var playerLoaded = DataContext.AsQueryable<Player>().Where(p => p.Id == insufficientEnergyPlayer.Id).First();
-            playerLoaded.Id.Should().Be(insufficientEnergyPlayer.Id);
-            playerLoaded.Gender.Should().Be(currentForm.Gender);
-            playerLoaded.FormSource.Id.Should().Be(currentForm.Id);
-            playerLoaded.FormSource.FriendlyName.Should().Be(currentForm.FriendlyName);
-            playerLoaded.ActionPoints.Should().Be(47);
-            playerLoaded.Mana.Should().Be(15);
-            playerLoaded.CleansesMeditatesThisRound.Should().Be(1);
-            playerLoaded.PlayerLogs.First().Message.Should().Be("You rest and attempt to restore yourself to your base form.  [+10, 10/100].  Keep trying and you'll find yourself in a familiar form in no time...");
-            playerLoaded.SelfRestoreEnergy.Amount.Should().Be(10);
-            playerLoaded.SelfRestoreEnergy.Timestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
-            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            var playerLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == insufficientEnergyPlayer.Id);
+            Assert.That(playerLoaded.Id, Is.EqualTo(insufficientEnergyPlayer.Id));
+            Assert.That(playerLoaded.Gender, Is.EqualTo(currentForm.Gender));
+            Assert.That(playerLoaded.FormSource.Id, Is.EqualTo(currentForm.Id));
+            Assert.That(playerLoaded.FormSource.FriendlyName, Is.EqualTo(currentForm.FriendlyName));
+            Assert.That(playerLoaded.ActionPoints, Is.EqualTo(47));
+            Assert.That(playerLoaded.Mana, Is.EqualTo(15));
+            Assert.That(playerLoaded.CleansesMeditatesThisRound, Is.EqualTo(1));
+            Assert.That(playerLoaded.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "You rest and attempt to restore yourself to your base form.  [+10, 10/100].  Keep trying and you'll find yourself in a familiar form in no time..."));
+            Assert.That(playerLoaded.SelfRestoreEnergy.Amount, Is.EqualTo(10));
+            Assert.That(playerLoaded.SelfRestoreEnergy.Timestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
+            Assert.That(playerLoaded.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new SelfRestoreToBase { PlayerId = 999, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 999 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID 999 could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_buffs_not_provided()
         {
             var cmd = new SelfRestoreToBase { PlayerId = player.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Buffs are required.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Buffs are required."));
         }
 
         [Test]
@@ -147,9 +148,9 @@ namespace TT.Tests.TFEnergies.Commands
                 .BuildAndSave();
 
             var cmd = new SelfRestoreToBase { PlayerId = player.Id, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to do this.  You have 1 and need 3.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You don't have enough action points to do this.  You have 1 and need 3."));
         }
 
         [Test]
@@ -164,9 +165,9 @@ namespace TT.Tests.TFEnergies.Commands
                 .BuildAndSave();
 
             var cmd = new SelfRestoreToBase { PlayerId = player.Id, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough mana to do this.  You have 1 and need 10.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You don't have enough mana to do this.  You have 1 and need 10."));
         }
 
         [Test]
@@ -182,9 +183,9 @@ namespace TT.Tests.TFEnergies.Commands
                 .BuildAndSave();
 
             var cmd = new SelfRestoreToBase { PlayerId = player.Id, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You have cleansed and meditated too many times this turn.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You have cleansed and meditated too many times this turn."));
         }
 
     }

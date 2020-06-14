@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
@@ -34,7 +33,7 @@ namespace TT.Tests.Players.Commands
         public void should_meditate_player()
         {
 
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).BuildAndSave()
             };
@@ -49,21 +48,25 @@ namespace TT.Tests.Players.Commands
                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
                .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Meditate { PlayerId = 100, Buffs = buffs });
+            Assert.That(() => DomainRegistry.Repository.Execute(new Meditate {PlayerId = 100, Buffs = buffs}),
+                Throws.Nothing);
 
             var playerLoaded = DataContext.AsQueryable<Player>().First();
 
-            playerLoaded.PlayerLogs.First().Message.Should().Be("You meditated at Street: 200 Main Street.");
-            playerLoaded.Mana.Should().Be(11);
-            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            Assert.That(playerLoaded.PlayerLogs.First().Message,
+                Is.EqualTo("You meditated at Street: 200 Main Street."));
+            Assert.That(playerLoaded.Mana, Is.EqualTo(11));
+            Assert.That(playerLoaded.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
-            locationLog.dbLocationName.Should().Be(player.Location);
-            locationLog.Message.Should().Be("<span class='playerMediatingNotification'>John Doe meditated here.</span>");
+            Assert.That(locationLog.dbLocationName, Is.EqualTo(player.Location));
+            Assert.That(locationLog.Message,
+                Is.EqualTo("<span class='playerMediatingNotification'>John Doe meditated here.</span>"));
 
             var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMeditated);
-            stat.Owner.Id.Should().Be("bob");
-            stat.Amount.Should().Be(1);
+            Assert.That(stat, Is.Not.Null);
+            Assert.That(stat.Owner.Id, Is.EqualTo("bob"));
+            Assert.That(stat.Amount, Is.EqualTo(1));
         }
 
         [Test]
@@ -84,9 +87,9 @@ namespace TT.Tests.Players.Commands
                .BuildAndSave();
 
             var cmd = new Meditate { PlayerId = player.Id, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!"));
         }
 
         [Test]
@@ -97,9 +100,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Meditate { PlayerId = 3, Buffs = buffs};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '3' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '3' could not be found"));
         }
 
         [Test]
@@ -111,9 +113,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough action points to meditate!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You don't have enough action points to meditate!"));
         }
 
         [Test]
@@ -125,9 +127,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to meditate!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You must be animate in order to meditate!"));
         }
 
         [Test]
@@ -139,37 +140,31 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new Meditate { PlayerId = 100, Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You have cleansed and meditated the maximum number of times this update.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You have cleansed and meditated the maximum number of times this update."));
         }
 
         [Test]
         public void should_throw_exception_if_player_id_not_provided()
         {
-
             var cmd = new Meditate { Buffs = buffs };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player ID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player ID is required!"));
         }
 
         [Test]
         public void should_throw_exception_if_buffs_not_provided()
         {
-
             var cmd = new Meditate { PlayerId = 100  };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Buffs are required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Buffs are required!"));
         }
 
         [Test]
         public void should_skip_AP_validation_for_bot()
         {
-
-
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).BuildAndSave()
             };
@@ -190,12 +185,12 @@ namespace TT.Tests.Players.Commands
                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
                .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Meditate { PlayerId = 100, Buffs = buffs, NoValidate = true});
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new Meditate
+                    {PlayerId = 100, Buffs = buffs, NoValidate = true}), Throws.Nothing);
             var playerLoaded = DataContext.AsQueryable<Player>().First();
 
-            playerLoaded.Mana.Should().BeGreaterThan(0);
-
-
+            Assert.That(playerLoaded.Mana, Is.GreaterThan(0));
         }
     }
 }

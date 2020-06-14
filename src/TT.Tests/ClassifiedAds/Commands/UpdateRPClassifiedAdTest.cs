@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading;
@@ -53,30 +52,30 @@ namespace TT.Tests.ClassifiedAds.Commands
         [Test]
         public void Should_update_all_columns()
         {
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
             var ads = DataContext.AsQueryable<RPClassifiedAd>();
-            ads.Should().HaveCount(1);
+            Assert.That(ads, Has.Exactly(1).Items);
             var ad = ads.Single();
-            ad.Should().Be(Ad);
+            Assert.That(ad, Is.EqualTo(Ad));
 
-            ad.Title.Should().Be(cmd.Title);
-            ad.Text.Should().Be(cmd.Text);
-            ad.YesThemes.Should().Be(cmd.YesThemes);
-            ad.NoThemes.Should().Be(cmd.NoThemes);
+            Assert.That(ad.Title, Is.EqualTo(cmd.Title));
+            Assert.That(ad.Text, Is.EqualTo(cmd.Text));
+            Assert.That(ad.YesThemes, Is.EqualTo(cmd.YesThemes));
+            Assert.That(ad.NoThemes, Is.EqualTo(cmd.NoThemes));
         }
 
         [Test]
         public void Should_refresh_timestamp()
         {
             Thread.Sleep(3000);
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var ads = DataContext.AsQueryable<RPClassifiedAd>();
-            ads.Should().HaveCount(1);
+            Assert.That(ads, Has.Exactly(1).Items);
             var ad = ads.Single();
-            ad.Should().Be(Ad);
+            Assert.That(ad, Is.EqualTo(Ad));
 
-            ad.RefreshTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            Assert.That(ad.RefreshTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
         }
 
         [Test]
@@ -84,10 +83,10 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.RPClassifiedAdId++;
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<RPClassifiedAdNotFoundException>()
-                .WithMessage($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found")
-                .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotFoundException>().With.Message
+                    .EqualTo($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found").And
+                    .Property("UserFriendlyError").EqualTo("This RP Classified Ad doesn't exist."));
         }
 
         [Test]
@@ -95,10 +94,10 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.UserId += '-';
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<RPClassifiedAdNotOwnerException>()
-                .WithMessage($"User {cmd.UserId} does not own RPClassifiedAdId {cmd.RPClassifiedAdId}")
-                .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotOwnerException>().With.Message
+                    .EqualTo($"User {cmd.UserId} does not own RPClassifiedAdId {cmd.RPClassifiedAdId}").And
+                    .Property("UserFriendlyError").EqualTo("You do not own this RP Classified Ad."));
         }
 
         [Test]
@@ -106,17 +105,17 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.CheckUserId = false;
             cmd.UserId += '-';
-            
-            Repository.Execute(cmd);
-            var ads = DataContext.AsQueryable<RPClassifiedAd>();
-            ads.Should().HaveCount(1);
-            var ad = ads.Single();
-            ad.Should().Be(Ad);
 
-            ad.Title.Should().Be(cmd.Title);
-            ad.Text.Should().Be(cmd.Text);
-            ad.YesThemes.Should().Be(cmd.YesThemes);
-            ad.NoThemes.Should().Be(cmd.NoThemes);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
+            var ads = DataContext.AsQueryable<RPClassifiedAd>();
+            Assert.That(ads, Has.Exactly(1).Items);
+            var ad = ads.Single();
+            Assert.That(ad, Is.EqualTo(Ad));
+
+            Assert.That(ad.Title, Is.EqualTo(cmd.Title));
+            Assert.That(ad.Text, Is.EqualTo(cmd.Text));
+            Assert.That(ad.YesThemes, Is.EqualTo(cmd.YesThemes));
+            Assert.That(ad.NoThemes, Is.EqualTo(cmd.NoThemes));
         }
 
         [TestCase(4)]
@@ -124,9 +123,8 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.Title = new string('-', titleLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The title is too short.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message.EqualTo("The title is too short."));
         }
 
         [TestCase(36)]
@@ -134,9 +132,8 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.Title = new string('-', titleLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The title is too long.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message.EqualTo("The title is too long."));
         }
 
         [TestCase(49)]
@@ -144,9 +141,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.Text = new string('-', textLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The description is too short.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message
+                    .EqualTo("The description is too short."));
         }
 
         [TestCase(301)]
@@ -154,9 +151,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.Text = new string('-', textLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The description is too long.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message
+                    .EqualTo("The description is too long."));
         }
 
         [TestCase(201)]
@@ -164,9 +161,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.YesThemes = new string('-', yesThemesLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The desired themes field is too long.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message
+                    .EqualTo("The desired themes field is too long."));
         }
 
         [TestCase(201)]
@@ -174,9 +171,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.NoThemes = new string('-', noThemesLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The undesired themes field is too long.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message
+                    .EqualTo("The undesired themes field is too long."));
         }
 
         [TestCase(71)]
@@ -184,9 +181,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.PreferredTimezones = new string('-', preferredTimezonesLength);
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdInvalidInputException>()
-                .WithMessage("The preferred timezones field is too long.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdInvalidInputException>().With.Message
+                    .EqualTo("The preferred timezones field is too long."));
         }
     }
 }

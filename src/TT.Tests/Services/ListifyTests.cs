@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Statics;
 
@@ -11,87 +10,57 @@ namespace TT.Tests.Services
         [Test]
         public void should_print_out_one_item_correctly()
         {
-            var list = new List<string>();
-            list.Add("Bob");
+            var list = new List<string> {"Bob"};
 
-            var output = ListifyHelper.Listify(list);
-            output.Should().Be("Bob");
-
+            Assert.That(ListifyHelper.Listify(list), Is.EqualTo("Bob"));
         }
 
         [Test]
         public void should_print_out_one_item_correctly_with_bolding()
         {
-            var list = new List<string>();
-            list.Add("Bob");
+            var list = new List<string> {"Bob"};
 
-            var output = ListifyHelper.Listify(list, true);
-            output.Should().Be("<b>Bob</b>");
-
+            Assert.That(ListifyHelper.Listify(list, true), Is.EqualTo("<b>Bob</b>"));
         }
 
         [Test]
         public void should_print_out_two_items_correctly()
         {
-            var list = new List<string>();
-            list.Add("Bob");
-            list.Add("Jane");
+            var list = new List<string> {"Bob", "Jane"};
 
-            var output = ListifyHelper.Listify(list);
-            output.Should().Be("Bob and Jane");
-
+            Assert.That(ListifyHelper.Listify(list), Is.EqualTo("Bob and Jane"));
         }
 
         [Test]
         public void should_print_out_two_items_correctly_with_bolding()
         {
-            var list = new List<string>();
-            list.Add("Bob");
-            list.Add("Jane");
+            var list = new List<string> {"Bob", "Jane"};
 
-            var output = ListifyHelper.Listify(list, true);
-            output.Should().Be("<b>Bob</b> and <b>Jane</b>");
-
+            Assert.That(ListifyHelper.Listify(list, true), Is.EqualTo("<b>Bob</b> and <b>Jane</b>"));
         }
 
         [Test]
         public void should_print_out_three_items_correctly()
         {
-            var list = new List<string>();
-            list.Add("Bob");
-            list.Add("Jane");
-            list.Add("George");
+            var list = new List<string> {"Bob", "Jane", "George"};
 
-            var output = ListifyHelper.Listify(list);
-            output.Should().Be("Bob, Jane, and George");
-
+            Assert.That(ListifyHelper.Listify(list), Is.EqualTo("Bob, Jane, and George"));
         }
 
         [Test]
         public void should_print_out_three_items_correctly_with_bolding()
         {
-            var list = new List<string>();
-            list.Add("Bob");
-            list.Add("Jane");
-            list.Add("George");
+            var list = new List<string> {"Bob", "Jane", "George"};
 
-            var output = ListifyHelper.Listify(list, true);
-            output.Should().Be("<b>Bob</b>, <b>Jane</b>, and <b>George</b>");
-
+            Assert.That(ListifyHelper.Listify(list, true), Is.EqualTo("<b>Bob</b>, <b>Jane</b>, and <b>George</b>"));
         }
 
         [Test]
         public void should_print_out_four_items_correctly()
         {
-            var list = new List<string>();
-            list.Add("Melissa");
-            list.Add("Bob");
-            list.Add("Jane");
-            list.Add("George");
+            var list = new List<string> {"Melissa", "Bob", "Jane", "George"};
 
-            var output = ListifyHelper.Listify(list);
-            output.Should().Be("Melissa, Bob, Jane, and George");
-
+            Assert.That(ListifyHelper.Listify(list), Is.EqualTo("Melissa, Bob, Jane, and George"));
         }
     }
 }

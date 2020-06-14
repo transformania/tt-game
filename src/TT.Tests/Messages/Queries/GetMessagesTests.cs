@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Messages.Queries;
@@ -52,11 +51,8 @@ namespace TT.Tests.Messages.Queries
                 .With(p => p.IsDeleted, true)
                .BuildAndSave();
 
-            var cmd = new GetUnreadMessageCountByPlayer() { OwnerId = receiver.Id };
-            var count = DomainRegistry.Repository.FindSingle(cmd);
-
-            count.Should().Be(2);
-
+            var cmd = new GetUnreadMessageCountByPlayer { OwnerId = receiver.Id };
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.EqualTo(2));
         }
 
         [Test]
@@ -70,12 +66,11 @@ namespace TT.Tests.Messages.Queries
 
             var message = DomainRegistry.Repository.FindSingle(cmd);
 
-            message.MessageId.Should().Be(23);
-            message.Sender.FirstName.Should().BeEquivalentTo("Sam");
-            message.Sender.LastName.Should().BeEquivalentTo("Houston");
-            message.Receiver.FirstName.Should().BeEquivalentTo("Lora");
-            message.Receiver.LastName.Should().BeEquivalentTo("Teetoo");
-
+            Assert.That(message.MessageId, Is.EqualTo(23));
+            Assert.That(message.Sender.FirstName, Is.EqualTo("Sam"));
+            Assert.That(message.Sender.LastName, Is.EqualTo("Houston"));
+            Assert.That(message.Receiver.FirstName, Is.EqualTo("Lora"));
+            Assert.That(message.Receiver.LastName, Is.EqualTo("Teetoo"));
         }
 
         [Test]
@@ -115,15 +110,13 @@ namespace TT.Tests.Messages.Queries
                 Take = 50
             };
 
-            var messages = DomainRegistry.Repository.Find(cmd);
+            var messages = DomainRegistry.Repository.Find(cmd).ToList();
 
-            messages.Should().HaveCount(2);
-            messages.First().MessageText.Should().BeEquivalentTo("hello");
-            messages.Last().MessageText.Should().BeEquivalentTo("world!");
+            Assert.That(messages, Has.Exactly(2).Items);
+            Assert.That(messages.First().MessageText, Is.EqualTo("hello"));
+            Assert.That(messages.Last().MessageText, Is.EqualTo("world!"));
 
-            var messagesIds = messages.Select(i => i.MessageId);
-            messagesIds.Should().NotContain(deletedMessage.Id);
-
+            Assert.That(messages.Select(i => i.MessageId), Has.No.Member(deletedMessage.Id));
         }
 
         [Test]
@@ -161,14 +154,13 @@ namespace TT.Tests.Messages.Queries
                 ReceiverId = receiver.Id
             };
 
-            var messages = DomainRegistry.Repository.Find(cmd);
+            var messages = DomainRegistry.Repository.Find(cmd).ToList();
 
-            messages.Should().HaveCount(2);
-            messages.First().MessageText.Should().BeEquivalentTo("hello");
-            messages.Last().MessageText.Should().BeEquivalentTo("world!");
+            Assert.That(messages, Has.Exactly(2).Items);
+            Assert.That(messages.First().MessageText, Is.EqualTo("hello"));
+            Assert.That(messages.Last().MessageText, Is.EqualTo("world!"));
 
-            var messagesIds = messages.Select(i => i.MessageId);
-            messagesIds.Should().NotContain(deletedMessage.Id);
+            Assert.That(messages.Select(i => i.MessageId), Has.No.Member(deletedMessage.Id));
         }
 
         [Test]
@@ -189,11 +181,7 @@ namespace TT.Tests.Messages.Queries
                 MessageId = 23
             };
 
-            var playerOwnsMessage = DomainRegistry.Repository.FindSingle(cmd);
-
-            playerOwnsMessage.Should().BeTrue();
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.True);
         }
-
-
     }
 }

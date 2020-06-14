@@ -1,6 +1,4 @@
-﻿using System;
-using AutoMapper;
-using FluentAssertions;
+﻿using AutoMapper;
 using NUnit.Framework;
 using TT.Domain;
 
@@ -17,9 +15,7 @@ namespace TT.Tests.Domain.Mapper
                 cfg.AddProfiles(typeof(DomainRegistry).Assembly);
             });
 
-            var action = new Action(() => { mapperConfiguration.AssertConfigurationIsValid(); });
-
-            action.Should().NotThrow();
+            Assert.That(() => mapperConfiguration.AssertConfigurationIsValid(), Throws.Nothing);
         }
     }
 }

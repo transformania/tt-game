@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.AI.Queries;
 using TT.Tests.Builders.AI;
@@ -22,9 +21,7 @@ namespace TT.Tests.AI.Queries
 
             var cmd = new GetNPCs();
 
-            var npcs = DomainRegistry.Repository.Find(cmd);
-
-            npcs.Should().HaveCount(2);
+            Assert.That(DomainRegistry.Repository.Find(cmd), Has.Exactly(2).Items);
         }
 
         [Test]
@@ -32,9 +29,7 @@ namespace TT.Tests.AI.Queries
         {
             var cmd = new GetNPCs();
 
-            var npcs = DomainRegistry.Repository.Find(cmd);
-
-            npcs.Should().BeEmpty();
+            Assert.That(DomainRegistry.Repository.Find(cmd), Is.Empty);
         }
 
     }

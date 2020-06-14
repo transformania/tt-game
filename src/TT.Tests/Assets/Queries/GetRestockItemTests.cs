@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Assets.Queries;
 using TT.Domain.Exceptions;
@@ -25,13 +23,13 @@ namespace TT.Tests.Assets.Queries
 
             var query = new GetRestockItem { RestockItemId = 7 };
 
-            var RestockItem = DomainRegistry.Repository.FindSingle(query);
+            var restockItem = DomainRegistry.Repository.FindSingle(query);
 
-            RestockItem.Id.Should().Be(7);
-            RestockItem.AmountBeforeRestock.Should().Be(5);
-            RestockItem.AmountToRestockTo.Should().Be(9);
-            RestockItem.BaseItem.Id.Should().Be(35);
-            RestockItem.BotId.Should().Be(AIStatics.LindellaBotId);
+            Assert.That(restockItem.Id, Is.EqualTo(7));
+            Assert.That(restockItem.AmountBeforeRestock, Is.EqualTo(5));
+            Assert.That(restockItem.AmountToRestockTo, Is.EqualTo(9));
+            Assert.That(restockItem.BaseItem.Id, Is.EqualTo(35));
+            Assert.That(restockItem.BotId, Is.EqualTo(AIStatics.LindellaBotId));
         }
 
         [TestCase(-1)]
@@ -40,9 +38,8 @@ namespace TT.Tests.Assets.Queries
         {
             var query = new GetRestockItem { RestockItemId = id };
 
-            var action = new Action(() => { Repository.FindSingle(query); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
+            Assert.That(() => Repository.FindSingle(query),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RestockItem Id must be greater than 0"));
         }
 
         [Test]
@@ -50,9 +47,7 @@ namespace TT.Tests.Assets.Queries
         {
             var query = new GetRestockItem { RestockItemId = 1 };
 
-            var RestockItem = Repository.FindSingle(query);
-
-            RestockItem.Should().BeNull();
+            Assert.That(Repository.FindSingle(query), Is.Null);
         }
     }
 }

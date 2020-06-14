@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
@@ -25,11 +24,11 @@ namespace TT.Tests.Identity.Queries
                 .With(i => i.AchievementType, "surfing")
                 .BuildAndSave();
 
-            var stats = DomainRegistry.Repository.Find(new GetPlayerStats { OwnerId = owner.Id });
+            var stats = DomainRegistry.Repository.Find(new GetPlayerStats { OwnerId = owner.Id }).ToList();
 
-            stats.Count().Should().Be(1);
-            stats.First().Id.Should().Be(245);
-            stats.First().AchievementType.Should().Be("surfing");
+            Assert.That(stats, Has.Exactly(1).Items);
+            Assert.That(stats.First().Id, Is.EqualTo(245));
+            Assert.That(stats.First().AchievementType, Is.EqualTo("surfing"));
         }
     }
 }

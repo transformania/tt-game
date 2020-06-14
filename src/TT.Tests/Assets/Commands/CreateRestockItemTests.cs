@@ -1,6 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using FluentAssertions;
+﻿using NUnit.Framework;
 using TT.Tests.Builders.Item;
 using TT.Domain.Assets.Commands;
 using TT.Domain.Exceptions;
@@ -20,9 +18,7 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = 0, BaseItemId = item.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var RestockItem = Repository.Execute(cmd);
-
-            RestockItem.Should().BeGreaterThan(0);
+            Assert.That(Repository.Execute(cmd), Is.GreaterThan(0));
         }
 
         [TestCase(-1)]
@@ -31,9 +27,8 @@ namespace TT.Tests.Assets.Commands
         {
             var cmd = new CreateRestockItem { AmountBeforeRestock = 0, BaseItemId = 0, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Base item id must be greater than 0"));
         }
 
         [Test]
@@ -42,9 +37,8 @@ namespace TT.Tests.Assets.Commands
             const int id = 1;
             var cmd = new CreateRestockItem { AmountBeforeRestock = 0, BaseItemId = id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Base item with Id {id} could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Base item with Id {id} could not be found"));
         }
 
         [Test]
@@ -57,9 +51,8 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount before restock must be 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Minimum amount before restock must be 0"));
         }
 
         [Test]
@@ -72,9 +65,7 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, BotId = AIStatics.LindellaBotId };
 
-            var RestockItem = Repository.Execute(cmd);
-
-            RestockItem.Should().BeGreaterThan(0);
+            Assert.That(Repository.Execute(cmd), Is.GreaterThan(0));
         }
 
         [Test]
@@ -87,9 +78,8 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, AmountToRestockTo = amount, BotId = AIStatics.LindellaBotId };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Minimum amount to restock to must be 1");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Minimum amount to restock to must be 1"));
         }
 
 

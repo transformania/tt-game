@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -57,21 +55,20 @@ namespace TT.Tests.Items.Commands
         {
 
             var cmd = new RemoveSoulbindingOnItem { ItemId = soulboundItem.Id };
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            var itemLoaded = DataContext.AsQueryable<Item>().First(p => p.Id == soulboundItem.Id);
-            itemLoaded.SoulboundToPlayer.Should().Be(null);
-            itemLoaded.ConsentsToSoulbinding.Should().Be(false);
-
+            var itemLoaded = DataContext.AsQueryable<Item>().FirstOrDefault(p => p.Id == soulboundItem.Id);
+            Assert.That(itemLoaded, Is.Not.Null);
+            Assert.That(itemLoaded.SoulboundToPlayer, Is.Null);
+            Assert.That(itemLoaded.ConsentsToSoulbinding, Is.False);
         }
 
         [Test]
         public void throw_exception_if_item_not_found()
         {
             var cmd = new RemoveSoulbindingOnItem { ItemId = 12345 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Item with Id '12345' could not be found.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Item with Id '12345' could not be found."));
         }
 
     }

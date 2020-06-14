@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -32,13 +30,14 @@ namespace TT.Tests.Items.Commands
 
             var cmdEdit = new UpdateItem { ItemId = 7, OwnerId = 123};
 
-            Repository.Execute(cmdEdit);
+            Assert.That(() => Repository.Execute(cmdEdit), Throws.Nothing);
 
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(cr => cr.Id == 7);
 
-            editedItem.Id.Should().Be(7);
-            editedItem.Owner.Id.Should().Be(123);
-            editedItem.Owner.FirstName.Should().Be("Rupart");
+            Assert.That(editedItem, Is.Not.Null);
+            Assert.That(editedItem.Id, Is.EqualTo(7));
+            Assert.That(editedItem.Owner.Id, Is.EqualTo(123));
+            Assert.That(editedItem.Owner.FirstName, Is.EqualTo("Rupart"));
         }
 
         [Test]
@@ -61,13 +60,13 @@ namespace TT.Tests.Items.Commands
                 dbLocationName = "tampa"
             };
 
-            Repository.Execute(cmdEdit);
+            Assert.That(() => Repository.Execute(cmdEdit), Throws.Nothing);
 
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(cr => cr.Id == 7);
 
-            editedItem.Id.Should().Be(7);
-            editedItem.Owner.Should().BeNull();
-            editedItem.dbLocationName.Should().BeEquivalentTo("tampa");
+            Assert.That(editedItem.Id, Is.EqualTo(7));
+            Assert.That(editedItem.Owner, Is.Null);
+            Assert.That(editedItem.dbLocationName, Is.EqualTo("tampa"));
         }
 
         [Test]
@@ -80,12 +79,8 @@ namespace TT.Tests.Items.Commands
                 dbLocationName = "tampa"
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Item with Id {999} could not be found");
-
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Item with ID {999} could not be found"));
         }
-
-
     }
 }

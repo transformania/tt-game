@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -43,40 +41,40 @@ namespace TT.Tests.Identity.Commands
         public void can_submit_report_when_target_is_valid() { 
         
             var cmd = new SubmitReport { ReporterId = reporter.Id, ReportedId = reportedPlayer.User.Id, Reason = "Did stuff", Round = 50 };
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var report = DataContext.AsQueryable<Report>().First();
-            report.Reporter.Id.Should().Be(reporter.Id);
-            report.Reported.Id.Should().Be(reportedPlayer.User.Id);
-            report.Round.Should().Be(50);
-            report.Reason.Should().Be("Did stuff");
+            var report = DataContext.AsQueryable<Report>().FirstOrDefault();
+            Assert.That(report, Is.Not.Null);
+            Assert.That(report.Reporter.Id, Is.EqualTo(reporter.Id));
+            Assert.That(report.Reported.Id, Is.EqualTo(reportedPlayer.User.Id));
+            Assert.That(report.Round, Is.EqualTo(50));
+            Assert.That(report.Reason, Is.EqualTo("Did stuff"));
         }
 
         [Test]
         public void should_throw_exception_if_reporter_not_found()
         {
             var cmd = new SubmitReport { ReporterId = "Fake", ReportedId = reportedPlayer.User.Id, Reason = "Did stuff", Round = 50 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Reporting user with Id 'Fake' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Reporting user with Id 'Fake' could not be found"));
         }
 
         [Test]
         public void should_throw_exception_if_reported_not_found()
         {
             var cmd = new SubmitReport { ReporterId = reporter.Id, ReportedId = "Fake", Reason = "Did stuff", Round = 50 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Reported user with Id 'Fake' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Reported user with Id 'Fake' could not be found"));
         }
 
         [Test]
         public void should_throw_exception_no_reason()
         {
             var cmd = new SubmitReport { ReporterId = reporter.Id, ReportedId = reportedPlayer.User.Id, Reason = null, Round = 50 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Reason for report is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Reason for report is required"));
         }
 
         [Test]
@@ -85,9 +83,9 @@ namespace TT.Tests.Identity.Commands
         public void should_throw_exception_if_round_invalid(int round)
         {
             var cmd = new SubmitReport { ReporterId = reporter.Id, ReportedId = reportedPlayer.User.Id, Reason = "derP", Round = round };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round must be a positive integer greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Round must be a positive integer greater than 0"));
         }
     }
 }

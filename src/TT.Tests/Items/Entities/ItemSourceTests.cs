@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Item;
 
@@ -16,7 +15,7 @@ namespace TT.Tests.Items.Entities
                 .With(i => i.ItemType, itemType)
                 .BuildAndSave();
 
-            itemSource.IsPermanentFromCreation().Should().Be(true);
+            Assert.That(itemSource.IsPermanentFromCreation(), Is.True);
         }
 
         [Test]
@@ -34,7 +33,7 @@ namespace TT.Tests.Items.Entities
                 .With(i => i.ItemType, itemType)
                 .BuildAndSave();
 
-            itemSource.IsPermanentFromCreation().Should().Be(false);
+            Assert.That(itemSource.IsPermanentFromCreation(), Is.False);
         }
     }
 }

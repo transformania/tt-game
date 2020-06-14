@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Models;
 using TT.Web.Services;
@@ -25,10 +24,11 @@ namespace TT.Tests.Services
 
             persistanceService.TrackConnection(player, Guid.NewGuid().ToString());
 
-            persistanceService.InternalPersistence.Should().ContainKey(player.MembershipId);
-            persistanceService.InternalPersistence[player.MembershipId].Name.Should().Be(player.GetFullName());
-            persistanceService.InternalPersistence[player.MembershipId].Connections.Should().HaveCount(1);
-            persistanceService.InternalPersistence[player.MembershipId].IsDonator.Should().BeTrue();
+            Assert.That(persistanceService.InternalPersistence, Contains.Key(player.MembershipId));
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Name,
+                Is.EqualTo(player.GetFullName()));
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Connections, Has.Exactly(1).Items);
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].IsDonator, Is.True);
         }
 
         [Test]
@@ -45,13 +45,13 @@ namespace TT.Tests.Services
             persistanceService.TrackConnection(player2, Guid.NewGuid().ToString());
             persistanceService.TrackConnection(player2, Guid.NewGuid().ToString());
 
-            persistanceService.InternalPersistence.Should().ContainKey(player1.MembershipId);
-            persistanceService.InternalPersistence.Should().ContainKey(player2.MembershipId);
+            Assert.That(persistanceService.InternalPersistence, Contains.Key(player1.MembershipId));
+            Assert.That(persistanceService.InternalPersistence, Contains.Key(player2.MembershipId));
 
-            persistanceService.InternalPersistence.Should().HaveCount(2);
+            Assert.That(persistanceService.InternalPersistence, Has.Exactly(2).Items);
 
-            persistanceService.InternalPersistence[player1.MembershipId].Connections.Should().HaveCount(2);
-            persistanceService.InternalPersistence[player2.MembershipId].Connections.Should().HaveCount(3);
+            Assert.That(persistanceService.InternalPersistence[player1.MembershipId].Connections, Has.Exactly(2).Items);
+            Assert.That(persistanceService.InternalPersistence[player2.MembershipId].Connections, Has.Exactly(3).Items);
         }
 
         [Test]
@@ -65,12 +65,12 @@ namespace TT.Tests.Services
             persistanceService.TrackConnection(player, connectionId1);
             persistanceService.TrackConnection(player, connectionId2);
 
-            persistanceService.InternalPersistence[player.MembershipId].Connections.Should().HaveCount(2);
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Connections, Has.Exactly(2).Items);
 
             persistanceService.TrackDisconnect(player.MembershipId, connectionId1);
 
-            persistanceService.InternalPersistence[player.MembershipId].Connections.Should().HaveCount(1);
-            persistanceService.InternalPersistence[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId2);
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Connections, Has.Exactly(1).Items);
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Connections.First().ConnectionId, Is.EqualTo(connectionId2));
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace TT.Tests.Services
 
             persistanceService.TrackConnection(player, connectionId);
 
-            persistanceService.InternalPersistence[player.MembershipId].Connections.Should().HaveCount(1);
+            Assert.That(persistanceService.InternalPersistence[player.MembershipId].Connections, Has.Exactly(1).Items);
 
             persistanceService.TrackDisconnect(player.MembershipId, connectionId);
 
-            persistanceService.InternalPersistence.ContainsKey(player.MembershipId).Should().BeFalse();
+            Assert.That(persistanceService.InternalPersistence, Does.Not.ContainKey(player.MembershipId));
         }
 
         [Test]
@@ -101,9 +101,9 @@ namespace TT.Tests.Services
             persistanceService.TrackRoomJoin(player.MembershipId, connectionId, room);
 
             var connection = persistanceService.InternalPersistence[player.MembershipId].Connections.Single();
-            connection.ConnectionId.Should().Be(connectionId);
-            connection.Room.Should().Be(room);
-            connection.LastActivity.ToShortTimeString().Should().Be(DateTime.UtcNow.ToShortTimeString());
+            Assert.That(connection.ConnectionId, Is.EqualTo(connectionId));
+            Assert.That(connection.Room, Is.EqualTo(room));
+            Assert.That(connection.LastActivity.ToShortTimeString(), Is.EqualTo(DateTime.UtcNow.ToShortTimeString()));
         }
 
         [Test]
@@ -122,8 +122,13 @@ namespace TT.Tests.Services
             persistenceService.TrackConnection(player, connectionId2);
             persistenceService.TrackRoomJoin(player.MembershipId, connectionId2, room2);
 
-            persistenceService.InternalPersistence[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId1 && x.Room == room1);
-            persistenceService.InternalPersistence[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId2 && x.Room == room2);
+            Assert.That(persistenceService.InternalPersistence[player.MembershipId].Connections, Has.Exactly(2).Items);
+            Assert.That(
+                persistenceService.InternalPersistence[player.MembershipId].Connections
+                    .Where(x => x.ConnectionId == connectionId1 && x.Room == room1), Has.Exactly(1).Items);
+            Assert.That(
+                persistenceService.InternalPersistence[player.MembershipId].Connections
+                    .Where(x => x.ConnectionId == connectionId2 && x.Room == room2), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -137,7 +142,7 @@ namespace TT.Tests.Services
             persistenceService.TrackMessageSend(player.MembershipId, connectionId);
 
             var connection = persistenceService.InternalPersistence[player.MembershipId].Connections.Single(x => x.ConnectionId == connectionId);
-            connection.LastActivity.ToShortTimeString().Should().Be(DateTime.UtcNow.ToShortTimeString());
+            Assert.That(connection.LastActivity.ToShortTimeString(), Is.EqualTo(DateTime.UtcNow.ToShortTimeString()));
         }
 
         [Test]
@@ -151,7 +156,7 @@ namespace TT.Tests.Services
             persistenceService.TrackConnection(player, connectionId);
             persistenceService.TrackRoomJoin(player.MembershipId, connectionId, room);
 
-            persistenceService.HasNameChanged(player.MembershipId, "New Player Name").Should().BeTrue();
+            Assert.That(persistenceService.HasNameChanged(player.MembershipId, "New Player Name"), Is.True);
         }
 
         [Test]
@@ -165,7 +170,7 @@ namespace TT.Tests.Services
             persistenceService.TrackConnection(player, connectionId);
             persistenceService.TrackRoomJoin(player.MembershipId, connectionId, room);
 
-            persistenceService.HasNameChanged(player.MembershipId, player.GetDescriptor().Item1).Should().BeFalse();
+            Assert.That(persistenceService.HasNameChanged(player.MembershipId, player.GetDescriptor().Item1), Is.False);
         }
 
         [Test]
@@ -189,9 +194,8 @@ namespace TT.Tests.Services
             persistenceService.TrackRoomJoin(player1.MembershipId, connectionId2, room2);
             persistenceService.TrackRoomJoin(player2.MembershipId, connectionId3, room3);
 
-            var rooms = persistenceService.GetRoomsPlayerIsIn(player1.MembershipId);
-
-            rooms.Should().Contain(new[] {room1, room2}).And.NotContain(room3);
+            Assert.That(persistenceService.GetRoomsPlayerIsIn(player1.MembershipId),
+                Is.SupersetOf(new[] {room1, room2}).And.No.Member(room3));
         }
 
         [Test]
@@ -203,9 +207,7 @@ namespace TT.Tests.Services
 
             persistenceService.TrackConnection(player, connectionId);
 
-            var rooms = persistenceService.GetRoomsPlayerIsIn(player.MembershipId);
-
-            rooms.Should().BeEmpty();
+            Assert.That(persistenceService.GetRoomsPlayerIsIn(player.MembershipId), Is.Empty);
         }
 
         [Test]
@@ -219,8 +221,7 @@ namespace TT.Tests.Services
             persistenceService.TrackConnection(player, connectionId);
             persistenceService.TrackRoomJoin(player.MembershipId, connectionId, room);
 
-            var result = persistenceService.GetRoom(player.MembershipId, connectionId);
-            result.Should().Be(room);
+            Assert.That(persistenceService.GetRoom(player.MembershipId, connectionId), Is.EqualTo(room));
         }
 
         [Test]
@@ -230,8 +231,7 @@ namespace TT.Tests.Services
             var playerId = "doesn't exist";
             var connectionId = Guid.NewGuid().ToString();
 
-            var result = persistenceService.GetRoom(playerId, connectionId);
-            result.Should().Be(string.Empty);
+            Assert.That(persistenceService.GetRoom(playerId, connectionId), Is.Empty);
         }
 
         [Test]
@@ -245,8 +245,7 @@ namespace TT.Tests.Services
             persistenceService.TrackConnection(player, connectionId);
             persistenceService.TrackRoomJoin(player.MembershipId, Guid.NewGuid().ToString(), room);
 
-            var result = persistenceService.GetRoom(player.MembershipId, connectionId);
-            result.Should().Be(string.Empty);
+            Assert.That(persistenceService.GetRoom(player.MembershipId, connectionId), Is.Empty);
         }
 
         [Test]
@@ -270,9 +269,9 @@ namespace TT.Tests.Services
             persistenceService.TrackRoomJoin(player3.MembershipId, connectionId3, room);
 
             var users = persistenceService.GetUsersInRoom(room).ToList();
-            users.Should().Contain(x => x.MembershipId == player1.MembershipId);
-            users.Should().Contain(x => x.MembershipId == player3.MembershipId);
-            users.Should().NotContain(x => x.MembershipId == player2.MembershipId);
+            Assert.That(users.Where(x => x.MembershipId == player1.MembershipId), Has.Exactly(1).Items);
+            Assert.That(users.Where(x => x.MembershipId == player3.MembershipId), Has.Exactly(1).Items);
+            Assert.That(users.Where(x => x.MembershipId == player2.MembershipId), Is.Empty);
         }
 
         [Test]
@@ -290,7 +289,7 @@ namespace TT.Tests.Services
 
             persistenceService.TrackPlayerNameChange(player.MembershipId, newName);
 
-            persistenceService.GetUsersInRoom(room).Should().Contain(x => x.Name == newName);
+            Assert.That(persistenceService.GetUsersInRoom(room).Where(x => x.Name == newName), Has.Exactly(1).Items);
         }
 
         public class ChatPersistenceServiceWrapper : ChatPersistenceService

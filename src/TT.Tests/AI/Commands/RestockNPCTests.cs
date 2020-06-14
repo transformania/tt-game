@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.AI.Commands;
@@ -65,32 +64,29 @@ namespace TT.Tests.AI.Commands
             DomainRegistry.Repository.Execute(new RestockNPC {BotId = player.BotId});
 
             var playerLoaded = DataContext.AsQueryable<Player>().First();
-            playerLoaded.Items.Count.Should().Be(4);
+            Assert.That(playerLoaded.Items, Has.Exactly(4).Items);
 
             var itemDates = playerLoaded.Items.Select(i => i.LastSold).ToList();
-            itemDates.ElementAt(0).Should().BeCloseTo(DateTime.UtcNow, 60000);
-            itemDates.ElementAt(1).Should().BeCloseTo(DateTime.UtcNow, 60000);
-            itemDates.ElementAt(2).Should().BeCloseTo(DateTime.UtcNow, 60000);
-            itemDates.ElementAt(3).Should().BeCloseTo(DateTime.UtcNow, 60000);
+            Assert.That(itemDates, Is.All.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
             var itemNames = playerLoaded.Items.Select(i => i.ItemSource.FriendlyName).ToList();
 
-            itemNames.ElementAt(0).Should().Be("socks");
-            itemNames.ElementAt(1).Should().Be("hats");
-            itemNames.ElementAt(2).Should().Be("hats");
-            itemNames.ElementAt(3).Should().Be("hats");
+            Assert.That(itemNames.ElementAt(0), Is.EqualTo("socks"));
+            Assert.That(itemNames.ElementAt(1), Is.EqualTo("hats"));
+            Assert.That(itemNames.ElementAt(2), Is.EqualTo("hats"));
+            Assert.That(itemNames.ElementAt(3), Is.EqualTo("hats"));
 
-            itemNames.Contains(socks.BaseItem.FriendlyName).Should().Be(true);
-            itemNames.Contains(hat.BaseItem.FriendlyName).Should().Be(true);
-            itemNames.Contains(bonnet.BaseItem.FriendlyName).Should().Be(false);
+            Assert.That(itemNames, Has.Member(socks.BaseItem.FriendlyName));
+            Assert.That(itemNames, Has.Member(hat.BaseItem.FriendlyName));
+            Assert.That(itemNames, Has.No.Member(bonnet.BaseItem.FriendlyName));
         }
 
         [Test]
         public void should_throw_error_if_npc_not_found()
         {
             var cmd = new RestockNPC { BotId = 12345 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with BotId '12345' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with BotId '12345' could not be found"));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -38,20 +36,20 @@ namespace TT.Tests.Items.Commands
         public void can_set_consent_to(bool isConsenting)
         {
             player.Item.SetSoulbindingConsent(!isConsenting);
-            var result = Repository.Execute(new SetSoulbindingConsent { PlayerId = player.Id, IsConsenting = isConsenting});
-            result.Should().Be($"You have set your soulbinding consent to <b>{isConsenting}</b>.");
+            Assert.That(
+                Repository.Execute(new SetSoulbindingConsent {PlayerId = player.Id, IsConsenting = isConsenting}),
+                Is.EqualTo($"You have set your soulbinding consent to <b>{isConsenting}</b>."));
 
-            var itemLoaded = DataContext.AsQueryable<Item>().First(i => i.Id == player.Item.Id);
-            itemLoaded.ConsentsToSoulbinding.Should().Be(isConsenting);
+            Assert.That(DataContext.AsQueryable<Item>().First(i => i.Id == player.Item.Id).ConsentsToSoulbinding,
+                Is.EqualTo(isConsenting));
         }
 
         [Test]
         public void throw_exception_if_player_not_found()
         {
             var cmd = new SetSoulbindingConsent {PlayerId = -123, IsConsenting = true};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '-123' not found.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '-123' not found."));
         }
 
         [Test]
@@ -67,10 +65,8 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new SetSoulbindingConsent { PlayerId =  player.Id, IsConsenting = true };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You are not inanimate or a pet.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You are not inanimate or a pet."));
         }
     }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -26,26 +24,24 @@ namespace TT.Tests.Identity.Commands
             var output = DomainRegistry.Repository.Execute(new SetArtistBioVisibility { UserId = bio.Owner.Id, IsVisible = true });
 
             var editedBio = DataContext.AsQueryable<ArtistBio>().First(b => b.Owner.Id == bio.Owner.Id);
-            editedBio.IsLive.Should().Be(true);
-            output.Should().Be("You set your artist bio visibility to True.");
+            Assert.That(editedBio.IsLive, Is.True);
+            Assert.That(output, Is.EqualTo("You set your artist bio visibility to True."));
         }
 
         [Test]
         public void should_throw_exception_if_bio_not_found()
         {
             var cmd = new SetArtistBioVisibility { UserId = "fake", IsVisible = true };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Artist bio for user 'fake' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Artist bio for user 'fake' could not be found"));
         }
 
         [Test]
         public void should_throw_exception_if_userId_not_provided()
         {
             var cmd = new SetArtistBioVisibility { IsVisible = true };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("userId is required"));
         }
 
     }

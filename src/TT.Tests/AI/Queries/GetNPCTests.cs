@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.AI.Queries;
 using TT.Tests.Builders.AI;
@@ -20,8 +19,8 @@ namespace TT.Tests.AI.Queries
 
             var npc = DomainRegistry.Repository.FindSingle(cmd);
 
-            npc.Id.Should().Be(5);
-            npc.SpawnText.Should().BeEquivalentTo("spawn text uno");
+            Assert.That(npc.Id, Is.EqualTo(5));
+            Assert.That(npc.SpawnText, Is.EqualTo("spawn text uno"));
         }
     }
 }

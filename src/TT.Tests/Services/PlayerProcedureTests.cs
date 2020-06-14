@@ -3,74 +3,44 @@ using TT.Domain.Procedures;
 
 namespace TT.Tests.Services
 {
+    [TestFixture]
     class PlayerProcedureTests
     {
 
         [TestFixture]
-        public class Tests_for_base_willpower_mana_and_xp_to_next_level
+        public class Tests_for_base_willpower_mana_and_xp_to_next_level : TestBase
         {
-
-            // privates
-
-            [SetUp]
-            public void SetUp()
+            [Test]
+            [TestCase(1, 100)]
+            [TestCase(2, 140)]
+            [TestCase(3, 200)]
+            [TestCase(12, 1680)]
+            [TestCase(27, 8120)]
+            public void Should_retrieve_correct_xp_requirement_for_levelup(int level, int expectedXp)
             {
-
+                Assert.That(PlayerProcedures.GetXPNeededForLevelUp(level), Is.EqualTo(expectedXp));
             }
 
             [Test]
-            public void Should_retrieve_correct_xp_requirement_for_levelup()
+            [TestCase(1, 50)]
+            [TestCase(2, 55)]
+            [TestCase(7, 80)]
+            [TestCase(55, 320)]
+            public void Should_retrieve_correct_mana_base_by_level(int level, int expectedMana)
             {
-                var xpRequired_lvl1 = PlayerProcedures.GetXPNeededForLevelUp(1);
-                Assert.AreEqual(100, xpRequired_lvl1);
-
-                var xpRequired_lvl2 = PlayerProcedures.GetXPNeededForLevelUp(2);
-                Assert.AreEqual(140, xpRequired_lvl2);
-
-                var xpRequired_lvl3 = PlayerProcedures.GetXPNeededForLevelUp(3);
-                Assert.AreEqual(200, xpRequired_lvl3);
-
-                var xpRequired_lvl12 = PlayerProcedures.GetXPNeededForLevelUp(12);
-                Assert.AreEqual(1680, xpRequired_lvl12);
-
-                var xpRequired_lvl27 = PlayerProcedures.GetXPNeededForLevelUp(27);
-                Assert.AreEqual(8120, xpRequired_lvl27);
-
-            }
-
-            [Test]
-            public void Should_retrieve_correct_mana_base_by_level()
-            {
-                var manaBase_lvl1 = PlayerProcedures.GetManaBaseByLevel(1);
-                Assert.AreEqual(50, manaBase_lvl1);
-
-                var manaBase_lvl2 = PlayerProcedures.GetManaBaseByLevel(2);
-                Assert.AreEqual(55, manaBase_lvl2);
-
-                var manaBase_lvl7 = PlayerProcedures.GetManaBaseByLevel(7);
-                Assert.AreEqual(80, manaBase_lvl7);
-
-                var manaBase_lvl55 = PlayerProcedures.GetManaBaseByLevel(55);
-                Assert.AreEqual(320, manaBase_lvl55);
+                Assert.That(PlayerProcedures.GetManaBaseByLevel(level), Is.EqualTo(expectedMana));
             }
 
 
             [Test]
-            public void Should_retrieve_correct_wp_base_by_level()
+            [TestCase(1, 100)]
+            [TestCase(2, 110)]
+            [TestCase(7, 160)]
+            [TestCase(55, 640)]
+            public void Should_retrieve_correct_wp_base_by_level(int level, int expectedWillpower)
             {
-                var wpBase_lvl1 = PlayerProcedures.GetWillpowerBaseByLevel(1);
-                Assert.AreEqual(100, wpBase_lvl1);
-
-                var wpBase_lvl2 = PlayerProcedures.GetWillpowerBaseByLevel(2);
-                Assert.AreEqual(110, wpBase_lvl2);
-
-                var wpBase_lvl7 = PlayerProcedures.GetWillpowerBaseByLevel(7);
-                Assert.AreEqual(160, wpBase_lvl7);
-
-                var wpBase_lvl55 = PlayerProcedures.GetWillpowerBaseByLevel(55);
-                Assert.AreEqual(640, wpBase_lvl55);
+                Assert.That(PlayerProcedures.GetWillpowerBaseByLevel(level), Is.EqualTo(expectedWillpower));
             }
         }
-
     }
 }

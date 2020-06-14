@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
@@ -21,8 +20,7 @@ namespace TT.Tests.Players.Queries
                 .BuildAndSave();
 
             var cmd = new PlayerIsAtBusStop { playerLocation = player.Location};
-            var result = DomainRegistry.Repository.FindSingle(cmd);
-            result.Should().Be(true);
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.True);
         }
 
         [Test]
@@ -34,8 +32,7 @@ namespace TT.Tests.Players.Queries
                 .BuildAndSave();
 
             var cmd = new PlayerIsAtBusStop { playerLocation = player.Location };
-            var result = DomainRegistry.Repository.FindSingle(cmd);
-            result.Should().Be(false);
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.False);
         }
     }
 }

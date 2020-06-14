@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -10,7 +9,6 @@ using TT.Domain.Items.Entities;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
@@ -84,33 +82,38 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a A new Item!!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here."));
 
-            var victimPostTF = DataContext.AsQueryable<Player>().First(p => p.Id == victim.Id);
-            victimPostTF.Mobility.Should().Be(PvPStatics.MobilityInanimate);
-            victimPostTF.FormSource.Id.Should().Be(formSource.Id);
-            victimPostTF.Item.ItemSource.Id.Should().Be(itemSource.Id);
+            var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
+            Assert.That(victimPostTF, Is.Not.Null);
+            Assert.That(victimPostTF.Mobility, Is.EqualTo(PvPStatics.MobilityInanimate));
+            Assert.That(victimPostTF.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(victimPostTF.Item.ItemSource.Id, Is.EqualTo(itemSource.Id));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
-            newItem.Owner.Id.Should().Be(attacker.Id);
-            newItem.IsPermanent.Should().Be(false);
-            newItem.PvPEnabled.Should().Be((int) GameModeStatics.GameModes.Protection); // Superprotection players always get protection items
-            newItem.Level.Should().Be(victim.Level);
-            newItem.dbLocationName.Should().Be(String.Empty);
-            newItem.ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
-            newItem.ConsentsToSoulbinding.Should().Be(false);
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner.Id, Is.EqualTo(attacker.Id));
+            Assert.That(newItem.IsPermanent, Is.False);
+            Assert.That(newItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection)); // Superprotection players always get protection items
+            Assert.That(newItem.Level, Is.EqualTo(victim.Level));
+            Assert.That(newItem.dbLocationName, Is.Empty);
+            Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(newItem.ConsentsToSoulbinding, Is.False);
 
-            var attackerPostTF = DataContext.AsQueryable<Player>().First(p => p.Id == attacker.Id);
-            attackerPostTF.Items.Count.Should().Be(1);
-            attackerPostTF.Items.ElementAt(0).FormerPlayer.Id.Should().Be(victimPostTF.Id);
+            var attackerPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == attacker.Id);
+            Assert.That(attackerPostTF, Is.Not.Null);
+            Assert.That(attackerPostTF.Items, Has.Exactly(1).Items);
+            Assert.That(attackerPostTF.Items.ElementAt(0).FormerPlayer.Id, Is.EqualTo(victimPostTF.Id));
 
-            var droppedItem = DataContext.AsQueryable<Item>().First(i => i.Id == 82624);
-            droppedItem.Owner.Should().Be(null);
-            droppedItem.dbLocationName.Should().Be("someplace");
-
+            var droppedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 82624);
+            Assert.That(droppedItem, Is.Not.Null);
+            Assert.That(droppedItem.Owner, Is.Null);
+            Assert.That(droppedItem.dbLocationName, Is.EqualTo("someplace"));
         }
 
         [Test]
@@ -128,24 +131,29 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = botVictim.Id, NewFormId = formSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Psychopath Panties into a A new Item!</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a A new Item!!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Psychopath Panties was completely transformed into a A new Item!</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog")
+                    .EqualTo("<br><b>You fully transformed Psychopath Panties into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Psychopath Panties was completely transformed into a A new Item!</b> here."));
 
-            var victimPostTF = DataContext.AsQueryable<Player>().First(p => p.Id == botVictim.Id);
-            victimPostTF.Mobility.Should().Be(PvPStatics.MobilityInanimate);
-            victimPostTF.FormSource.Id.Should().Be(formSource.Id);
-            victimPostTF.Item.ItemSource.Id.Should().Be(itemSource.Id);
+            var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == botVictim.Id);
+            Assert.That(victimPostTF, Is.Not.Null);
+            Assert.That(victimPostTF.Mobility, Is.EqualTo(PvPStatics.MobilityInanimate));
+            Assert.That(victimPostTF.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(victimPostTF.Item.ItemSource.Id, Is.EqualTo(itemSource.Id));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == botVictim.Id);
-            newItem.Owner.Id.Should().Be(attacker.Id);
-            newItem.PvPEnabled.Should().Be((int)GameModeStatics.GameModes.Any);
-            newItem.IsPermanent.Should().Be(true);
-            newItem.Level.Should().Be(botVictim.Level);
-            newItem.dbLocationName.Should().Be(String.Empty);
-            newItem.ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
-            newItem.ConsentsToSoulbinding.Should().Be(true);
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == botVictim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner.Id, Is.EqualTo(attacker.Id));
+            Assert.That(newItem.PvPEnabled, Is.EqualTo((int) GameModeStatics.GameModes.Any));
+            Assert.That(newItem.IsPermanent, Is.True);
+            Assert.That(newItem.Level, Is.EqualTo(botVictim.Level));
+            Assert.That(newItem.dbLocationName, Is.Empty);
+            Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(newItem.ConsentsToSoulbinding, Is.True);
         }
 
         [Test]
@@ -161,14 +169,17 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a A new Item!!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here."));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
-            newItem.Owner.Should().Be(null);
-            newItem.dbLocationName.Should().Be(victim.Location);
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner, Is.Null);
+            Assert.That(newItem.dbLocationName, Is.EqualTo(victim.Location));
         }
 
         [Test]
@@ -190,14 +201,17 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a Squeaky Pet!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Victim MgGee was completely transformed into a Squeaky Pet</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a Squeaky Pet!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a Squeaky Pet</b> here."));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
-            newItem.Owner.Should().Be(attacker);
-            newItem.IsEquipped.Should().Be(true);
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner, Is.EqualTo(attacker));
+            Assert.That(newItem.IsEquipped, Is.True);
         }
 
         [Test]
@@ -212,8 +226,10 @@ namespace TT.Tests.Items.Commands
                     .BuildAndSave())
                     .With(i => i.Id, 1525).BuildAndSave();
 
-            var petList = new List<Item>();
-            petList.Add(pet);
+            var petList = new List<Item>
+            {
+                pet
+            };
 
             var petItemSource = new ItemSourceBuilder()
                 .With(i => i.Id, 1000)
@@ -237,15 +253,18 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = petFormSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a Squeaky Pet!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Victim MgGee was completely transformed into a Squeaky Pet</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a Squeaky Pet</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a Squeaky Pet!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a Squeaky Pet</b> here."));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
-            newItem.Owner.Should().Be(null);
-            newItem.IsEquipped.Should().Be(false);
-            newItem.dbLocationName.Should().Be(victim.Location);
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner, Is.Null);
+            Assert.That(newItem.IsEquipped, Is.False);
+            Assert.That(newItem.dbLocationName, Is.EqualTo(victim.Location));
         }
 
         [Test]
@@ -253,20 +272,24 @@ namespace TT.Tests.Items.Commands
         {
             var cmd = new PlayerBecomesItem { AttackerId = null, VictimId = victim.Id, NewFormId = formSource.Id };
 
-            var logs = DomainRegistry.Repository.Execute(cmd);
-            logs.AttackerLog.Should().Be("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!");
-            logs.VictimLog.Should().Be("<br><b>You have been fully transformed into a A new Item!!</b>!");
-            logs.LocationLog.Should().Be("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here.");
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here."));
 
-            var victimPostTF = DataContext.AsQueryable<Player>().First(p => p.Id == victim.Id);
-            victimPostTF.Mobility.Should().Be(PvPStatics.MobilityInanimate);
-            victimPostTF.FormSource.Id.Should().Be(formSource.Id);
-            victimPostTF.Item.ItemSource.Id.Should().Be(itemSource.Id);
+            var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
+            Assert.That(victimPostTF, Is.Not.Null);
+            Assert.That(victimPostTF.Mobility, Is.EqualTo(PvPStatics.MobilityInanimate));
+            Assert.That(victimPostTF.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(victimPostTF.Item.ItemSource.Id, Is.EqualTo(itemSource.Id));
 
-            var newItem = DataContext.AsQueryable<Item>().First(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
-            newItem.Owner.Should().Be(null);
-            newItem.dbLocationName.Should().Be(victim.Location);
-            newItem.PvPEnabled.Should().Be((int) GameModeStatics.GameModes.Any); // chaos poof turns into any game mode
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner, Is.Null);
+            Assert.That(newItem.dbLocationName, Is.EqualTo(victim.Location));
+            Assert.That(newItem.PvPEnabled, Is.EqualTo((int) GameModeStatics.GameModes.Any)); // chaos poof turns into any game mode
         }
 
         [Test]
@@ -274,10 +297,9 @@ namespace TT.Tests.Items.Commands
         {
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = -1, NewFormId = formSource.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>()
-                .WithMessage("Player (victim) with ID '-1' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player (victim) with ID '-1' could not be found"));
 
         }
 
@@ -286,10 +308,9 @@ namespace TT.Tests.Items.Commands
         {
             var cmd = new PlayerBecomesItem { AttackerId = 123, VictimId = victim.Id, NewFormId = formSource.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>()
-                .WithMessage("Player (attacker) with ID '123' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player (attacker) with ID '123' could not be found"));
 
         }
 
@@ -298,9 +319,8 @@ namespace TT.Tests.Items.Commands
         {
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = -1 };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Form with ID '-1' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Form with ID '-1' could not be found"));
         }
 
         [Test]
@@ -314,9 +334,8 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource2.Id };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Form is not inanimate or pet");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Form is not inanimate or pet"));
         }
     }
 }

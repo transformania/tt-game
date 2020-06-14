@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Effects.Entities;
@@ -41,33 +39,23 @@ namespace TT.Tests.Players.Commands
                 .With(s => s.Owner, owner)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = 23});
+            Assert.That(() => DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = 23}), Throws.Nothing);
 
-            DataContext.AsQueryable<Player>().Count(p =>
-               p.Id == 23)
-             .Should().Be(0);
+            Assert.That(DataContext.AsQueryable<Player>().Where(p => p.Id == 23), Is.Empty);
 
-            DataContext.AsQueryable<Skill>().Count(p =>
-               p.Id == 1)
-             .Should().Be(0);
+            Assert.That(DataContext.AsQueryable<Skill>().Where(p => p.Id == 1), Is.Empty);
 
-            DataContext.AsQueryable<Effect>().Count(p =>
-              p.Id == 2)
-            .Should().Be(0);
+            Assert.That(DataContext.AsQueryable<Effect>().Where(p => p.Id == 2), Is.Empty);
 
-            DataContext.AsQueryable<PlayerLog>().Count(p =>
-              p.Id == 3)
-            .Should().Be(0);
-
+            Assert.That(DataContext.AsQueryable<PlayerLog>().Where(p => p.Id == 3), Is.Empty);
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new DeletePlayer {PlayerId = 23};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 23 was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID 23 was not found"));
         }
     }
 }

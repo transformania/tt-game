@@ -22,6 +22,8 @@ namespace TT.Domain.Assets.Commands
             {
 
                 var restockItem = ctx.AsQueryable<RestockItem>().SingleOrDefault(cr => cr.Id == RestockItemId);
+                if (restockItem == null)
+                    throw new DomainException($"Restock item with Id {RestockItemId} could not be found");
 
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == BaseItemId);
                 if (baseItem == null)
@@ -38,6 +40,9 @@ namespace TT.Domain.Assets.Commands
 
         protected override void Validate()
         {
+            if (RestockItemId == 0)
+                throw new DomainException("RestockItemId must be set");
+
             if (AmountBeforeRestock < 0)
                 throw new DomainException("Minimum amount before restock must be 0");
 

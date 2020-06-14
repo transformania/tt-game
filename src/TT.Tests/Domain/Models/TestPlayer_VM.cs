@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using TT.Domain;
@@ -36,16 +35,16 @@ namespace TT.Tests.Domain.Models
 
             var descriptor = player.GetDescriptor();
 
-            descriptor.Item1.Should().BeEmpty();
-            descriptor.Item2.Should().BeEmpty();
+            Assert.That(descriptor.Item1, Is.Empty);
+            Assert.That(descriptor.Item2, Is.Empty);
         }
 
         [Test]
         public void Should_get_descriptor_with_full_player_name_if_not_staff()
         {
             var descriptor = player.GetDescriptor();
-            descriptor.Item1.Should().Be("Test 'Wibble' User");
-            descriptor.Item2.Should().BeEmpty();
+            Assert.That(descriptor.Item1, Is.EqualTo("Test 'Wibble' User"));
+            Assert.That(descriptor.Item2, Is.Empty);
         }
 
         [Test]
@@ -55,7 +54,7 @@ namespace TT.Tests.Domain.Models
 
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { PictureURL = url });
 
-            player.GetDescriptor().Item2.Should().Be(url);
+            Assert.That(player.GetDescriptor().Item2, Is.EqualTo(url));
         }
 
         [Test]
@@ -63,7 +62,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { });
 
-            player.GetDescriptor().Item2.Should().BeEmpty();
+            Assert.That(player.GetDescriptor().Item2, Is.Empty);
         }
 
         [Test]
@@ -71,7 +70,8 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}' {player.LastName}");
+            Assert.That(player.GetDescriptor().Item1,
+                Is.EqualTo($"{player.FirstName} '{player.Nickname}' {player.LastName}"));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace TT.Tests.Domain.Models
 
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { Name = replaceName, TagBehaviorEnum = TagEnum.ReplaceFullName });
 
-            player.GetDescriptor().Item1.Should().Be($"{replaceName}");
+            Assert.That(player.GetDescriptor().Item1, Is.EqualTo($"{replaceName}"));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastName });
 
-            player.GetDescriptor().Item1.Should().Be($"{player.FirstName} '{player.Nickname}'");
+            Assert.That(player.GetDescriptor().Item1, Is.EqualTo($"{player.FirstName} '{player.Nickname}'"));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace TT.Tests.Domain.Models
 
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastName });
 
-            player.GetDescriptor().Item1.Should().Be(player.FirstName);
+            Assert.That(player.GetDescriptor().Item1, Is.EqualTo(player.FirstName));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace TT.Tests.Domain.Models
         {
             staff.Add(player.MembershipId, new PlayerDescriptorDTO { TagBehaviorEnum = TagEnum.ReplaceLastNameAndNick });
 
-            player.GetDescriptor().Item1.Should().Be(player.FirstName);
+            Assert.That(player.GetDescriptor().Item1, Is.EqualTo(player.FirstName));
         }
 
         [Test]

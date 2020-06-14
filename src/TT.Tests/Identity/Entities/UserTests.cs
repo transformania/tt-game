@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Procedures;
@@ -29,7 +28,7 @@ namespace TT.Tests.Identity.Entities
                 .BuildAndSave();
 
             user.AddStat(StatsProcedures.Stat__TimesCleansed, 100);
-            user.Stats.First().Amount.Should().Be(150);
+            Assert.That(user.Stats.First().Amount, Is.EqualTo(150));
         }
 
         [Test]
@@ -42,7 +41,7 @@ namespace TT.Tests.Identity.Entities
                 .BuildAndSave();
 
             user.AddStat(StatsProcedures.Stat__TimesCleansed, 100);
-            user.Stats.First().Amount.Should().Be(100);
+            Assert.That(user.Stats.First().Amount, Is.EqualTo(100));
         }
 
     }

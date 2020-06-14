@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using System;
+﻿using NUnit.Framework;
 using TT.Domain.ClassifiedAds.Commands;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
@@ -43,9 +41,9 @@ namespace TT.Tests.ClassifiedAds.Commands
         [Test]
         public void Should_delete_ad()
         {
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<RPClassifiedAd>().Should().HaveCount(0);
+            Assert.That(DataContext.AsQueryable<RPClassifiedAd>(), Is.Empty);
         }
 
         [Test]
@@ -54,9 +52,9 @@ namespace TT.Tests.ClassifiedAds.Commands
             cmd.UserId = null;
             cmd.CheckUserId = false;
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<RPClassifiedAd>().Should().HaveCount(0);
+            Assert.That(DataContext.AsQueryable<RPClassifiedAd>(), Is.Empty);
         }
 
         [Test]
@@ -64,10 +62,10 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.UserId += "-";
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdNotOwnerException>()
-                .WithMessage($"User {cmd.UserId} does not own RP Classified Ad {cmd.RPClassifiedAdId}")
-                .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotOwnerException>().With.Message
+                    .EqualTo($"User {cmd.UserId} does not own RP Classified Ad {cmd.RPClassifiedAdId}").And
+                    .Property("UserFriendlyError").EqualTo("You do not own this RP Classified Ad."));
         }
 
         [Test]
@@ -75,10 +73,10 @@ namespace TT.Tests.ClassifiedAds.Commands
         {
             cmd.RPClassifiedAdId++;
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().Throw<RPClassifiedAdNotFoundException>()
-                .WithMessage($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} was not found")
-                .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<RPClassifiedAdNotFoundException>().With.Message
+                    .EqualTo($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} was not found").And
+                    .Property("UserFriendlyError").EqualTo("This RP Classified Ad doesn't exist."));
         }
     }
 }

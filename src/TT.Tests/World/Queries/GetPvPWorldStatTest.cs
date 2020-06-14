@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.World.Queries;
 using TT.Tests.Builders.Game;
@@ -18,9 +17,8 @@ namespace TT.Tests.World.Queries
                 .BuildAndSave();
 
             var stat = DomainRegistry.Repository.FindSingle(new GetWorld());
-            stat.Id.Should().Be(77);
-            stat.ChaosMode.Should().Be(false);
-
+            Assert.That(stat.Id, Is.EqualTo(77));
+            Assert.That(stat.ChaosMode, Is.False);
         }
     }
 }

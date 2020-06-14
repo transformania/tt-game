@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -25,18 +23,19 @@ namespace TT.Tests.Forms.Commands
                 .With(f => f.Id, 33)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK {FormSourceId = formSource.Id, ItemSourceId = itemSource.Id});
-
-            var loadedform = DataContext.AsQueryable<FormSource>().First(t => t.Id == formSource.Id);
-
-            loadedform.ItemSource.Id.Should().Be(itemSource.Id);
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK
+                    {FormSourceId = formSource.Id, ItemSourceId = itemSource.Id}), Throws.Nothing);
+            Assert.That(DataContext.AsQueryable<FormSource>().First(t => t.Id == formSource.Id).ItemSource.Id,
+                Is.EqualTo(itemSource.Id));
         }
 
         [Test]
         public void throws_exception_if_formSource_not_found()
         {
-            Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = 12345});
-            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource with Id '12345' could not be found");
+            Assert.That(() =>
+                    Repository.Execute(new SetFormSourceBecomesItemFK {FormSourceId = 12345}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("FormSource with Id '12345' could not be found"));
         }
 
         [Test]
@@ -46,8 +45,10 @@ namespace TT.Tests.Forms.Commands
                  .With(f => f.Id, 33)
                  .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = formSource.Id, ItemSourceId = -999});
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with Id '-999' could not be found");
+            Assert.That(
+                () => Repository.Execute(new SetFormSourceBecomesItemFK
+                    {FormSourceId = formSource.Id, ItemSourceId = -999}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemSource with Id '-999' could not be found"));
         }
     }
 }

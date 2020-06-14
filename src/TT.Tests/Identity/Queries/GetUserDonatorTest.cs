@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
 using TT.Tests.Builders.Identity;
@@ -24,8 +23,8 @@ namespace TT.Tests.Identity.Queries
 
             var user = DomainRegistry.Repository.FindSingle(new GetUserDonator{Id = 123});
 
-            user.Donator.Id.Should().Be(123);
-            user.Donator.PatreonName.Should().Be("Jimmybob");
+            Assert.That(user.Donator.Id, Is.EqualTo(123));
+            Assert.That(user.Donator.PatreonName, Is.EqualTo("Jimmybob"));
         }
     }
 }

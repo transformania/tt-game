@@ -32,7 +32,7 @@ namespace TT.Domain.Items.Commands
                 var player = ctx.AsQueryable<Player>().SingleOrDefault(p => p.Id == OwnerId);
 
                 if (player == null)
-                    throw new DomainException($"player with ID {ItemId} could not be found");
+                    throw new DomainException($"player with ID {OwnerId} could not be found");
 
                 item.ChangeOwner(player, GameMode);
                 ctx.Commit();

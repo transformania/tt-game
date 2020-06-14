@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -51,15 +49,13 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new ChangeForm { PlayerId = 23, FormId = newFormSource.Id };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Player>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Player>().Where(p =>
                p.Id == 23 &&
                p.Gender == PvPStatics.GenderFemale &&
                p.FormSource.Id == 3 &&
-               p.FormSource.FriendlyName == "werewolf")
-           .Should().Be(1);
-
+               p.FormSource.FriendlyName == "werewolf"), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -80,10 +76,10 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new ChangeForm { PlayerId = player.Id, FormId = newFormSource.Id };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var playerLoaded = DataContext.AsQueryable<Player>().SingleOrDefault(p => p.Id == player.Id);
-            playerLoaded.Location.Should().Be("rimworld");
+            Assert.That(DataContext.AsQueryable<Player>().Single(p => p.Id == player.Id).Location,
+                Is.EqualTo("rimworld"));
         }
 
         [Test]
@@ -103,36 +99,30 @@ namespace TT.Tests.Players.Commands
 
             var cmd = new ChangeForm { PlayerId = player.Id, FormId = newFormSource.Id };
 
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            var playerLoaded = DataContext.AsQueryable<Player>().SingleOrDefault(p => p.Id == player.Id);
-            playerLoaded.Location.Should().Be("mibbitworld");
+            Assert.That(DataContext.AsQueryable<Player>().Single(p => p.Id == player.Id).Location,
+                Is.EqualTo("mibbitworld"));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new ChangeForm { PlayerId = 23, FormId = oldFormSource.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 23 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID 23 could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_form_source_not_found()
         {
-
             new PlayerBuilder()
                 .With(p => p.Id, 23)
                 .BuildAndSave();
 
             var cmd = new ChangeForm { PlayerId = 23, FormId = -123 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource with ID -123 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("FormSource with ID -123 could not be found"));
         }
-
-
-
     }
 }

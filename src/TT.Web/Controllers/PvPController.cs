@@ -1610,6 +1610,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert that the item is not embedded, such as a 'ghost rune'
+            if (pickup.EmbeddedOnItem != null)
+            {
+                TempData["Error"] = "This rune is embedded in another item and cannot be picked up.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
             if (ItemProcedures.PlayerIsCarryingTooMuch(me, 0) && pickup.ItemSource.ItemType != PvPStatics.ItemType_Pet && pickup.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id)
             {

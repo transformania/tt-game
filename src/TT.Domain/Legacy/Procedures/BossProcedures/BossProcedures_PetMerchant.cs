@@ -77,23 +77,23 @@ namespace TT.Domain.Procedures.BossProcedures
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
 
                 var turnMod = turnNumber % (24 * 4);
+                var regionIndex = turnMod / 24;
 
                 var newLocation = "";
-                if (turnMod < 24 * 1)
+                switch (regionIndex)
                 {
-                    newLocation = LocationsStatics.GetRandomLocation_InRegion("ranch_outside");
-                }
-                else if (turnMod > 24 * 1 && turnMod <= 24 * 2)
-                {
-                    newLocation = LocationsStatics.GetRandomLocation_InRegion("forest");
-                }
-                else if (turnMod > 24 * 2 && turnMod <= 24 * 3)
-                {
-                    newLocation = LocationsStatics.GetRandomLocation_InRegion("campground");
-                }
-                else
-                {
-                    newLocation = LocationsStatics.GetRandomLocation_InRegion("campground");
+                    case 0:
+                        newLocation = LocationsStatics.GetRandomLocation_InRegion("ranch_outside");
+                        break;
+                    case 1:
+                        newLocation = LocationsStatics.GetRandomLocation_InRegion("forest");
+                        break;
+                    case 2:
+                        newLocation = LocationsStatics.GetRandomLocation_InRegion("campground");
+                        break;
+                    default:
+                        newLocation = LocationsStatics.GetRandomLocation_InRegion("park");
+                        break;
                 }
 
                 var actualNewLocation = AIProcedures.MoveTo(petMerchant, newLocation, 6);

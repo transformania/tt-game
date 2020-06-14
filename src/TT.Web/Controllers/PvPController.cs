@@ -1613,7 +1613,9 @@ namespace TT.Web.Controllers
             // assert that the item is not embedded, such as a 'ghost rune'
             if (pickup.EmbeddedOnItem != null)
             {
-                TempData["Error"] = "This rune is embedded in another item and cannot be picked up.";
+                TempData["Error"] = "This rune is embedded in another item and cannot be picked up.<br />\n"+
+                    "<em>Please report this on <a href=\"https://discord.gg/z66CYzX\">Discord</a> " +
+                    $"or by <a href=\"{Url.Action(MVC.Report.Question())}\">asking a question</a>, citing <strong>item ID {pickup.Id}.</strong></em>";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Effects.Entities;
@@ -55,7 +53,6 @@ namespace TT.Tests.Skills.Commands
         [Test]
         public void should_save_skill_with_new_fks()
         {
-            
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = 55,
@@ -67,20 +64,18 @@ namespace TT.Tests.Skills.Commands
 
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
 
-            skillSource.FormSource.Id.Should().Be(3);
+            Assert.That(skillSource.FormSource.Id, Is.EqualTo(3));
 
-            skillSource.ExclusiveToFormSource.Id.Should().Be(7);
+            Assert.That(skillSource.ExclusiveToFormSource.Id, Is.EqualTo(7));
 
-            skillSource.ExclusiveToItemSource.Id.Should().Be(100);
+            Assert.That(skillSource.ExclusiveToItemSource.Id, Is.EqualTo(100));
 
-            skillSource.GivesEffectSource.Id.Should().Be(78);
-
+            Assert.That(skillSource.GivesEffectSource.Id, Is.EqualTo(78));
         }
 
         [Test]
         public void should_save_skill_with_new_fks_all_nulls()
         {
-
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = 55,
@@ -92,29 +87,28 @@ namespace TT.Tests.Skills.Commands
 
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
 
-            skillSource.FormSource.Should().Be(null);
-            skillSource.ExclusiveToFormSource.Should().Be(null);
-            skillSource.GivesEffect.Should().Be(null);
-            skillSource.ExclusiveToItemSource.Should().Be(null);
+            Assert.That(skillSource.FormSource, Is.Null);
+            Assert.That(skillSource.ExclusiveToFormSource, Is.Null);
+            Assert.That(skillSource.GivesEffect, Is.Null);
+            Assert.That(skillSource.ExclusiveToItemSource, Is.Null);
         }
 
         [Test]
         public void should_throw_error_if_form_source_submitted_but_not_found()
         {
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSourceId = 99999 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("FormSource Source with id '99999' could not be found.  Does it need to be published first?");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "FormSource Source with id '99999' could not be found.  Does it need to be published first?"));
         }
 
         [Test]
         public void should_throw_error_if_exclusive_to_form_source_submitted_but_not_found()
         {
-
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToFormSourceId = 99999};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToFormSourceId with id '99999' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("ExclusiveToFormSourceId with id '99999' could not be found"));
         }
 
         [Test]
@@ -122,9 +116,9 @@ namespace TT.Tests.Skills.Commands
         {
 
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, GivesEffectSourceId = -999};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("EffectSource with Id '-999' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("EffectSource with Id '-999' could not be found"));
         }
 
         [Test]
@@ -132,18 +126,18 @@ namespace TT.Tests.Skills.Commands
         {
 
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToItemSourceId = -999 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with id '-999' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("ExclusiveToItemSource with id '-999' could not be found"));
         }
 
         [Test]
         public void should_throw_error_if_skill_source_not_found()
         {
             var cmd = new SetSkillSourceFKs { SkillSourceId = 3457};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("StaticSkill Source with Id 3457 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("StaticSkill Source with Id 3457 could not be found"));
         }
 
     }

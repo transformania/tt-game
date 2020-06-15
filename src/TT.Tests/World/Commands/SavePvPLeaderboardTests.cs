@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -92,36 +90,39 @@ namespace TT.Tests.World.Commands
                 .With(p => p.Covenant, covenant)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new SavePvPLeaderboards { RoundNumber = 13 });
+            Assert.That(() => DomainRegistry.Repository.Execute(new SavePvPLeaderboards {RoundNumber = 13}),
+                Throws.Nothing);
 
             var leaders = DataContext.AsQueryable<TT.Domain.World.Entities.PvPLeaderboardEntry>();
 
-            leaders.Count().Should().Be(4);
+            Assert.That(leaders, Has.Exactly(4).Items);
 
             var first = leaders.ElementAt(0);
-            first.PlayerName.Should()
-                .Be($"{firstPlaceHighestDungeonScore.FirstName} {firstPlaceHighestDungeonScore.LastName}");
-            first.FormName.Should().Be(form1.FriendlyName);
-            first.FormSource.Id.Should().Be(form1.Id);
-            first.Level.Should().Be(firstPlaceHighestDungeonScore.Level);
-            first.Mobility.Should().Be(firstPlaceHighestDungeonScore.Mobility);
-            first.CovenantName.Should().Be(null);
-            first.Sex.Should().Be(firstPlaceHighestDungeonScore.Gender);
+            Assert.That(first.PlayerName,
+                Is.EqualTo($"{firstPlaceHighestDungeonScore.FirstName} {firstPlaceHighestDungeonScore.LastName}"));
+            Assert.That(first.FormName, Is.EqualTo(form1.FriendlyName));
+            Assert.That(first.FormSource.Id, Is.EqualTo(form1.Id));
+            Assert.That(first.Level, Is.EqualTo(firstPlaceHighestDungeonScore.Level));
+            Assert.That(first.Mobility, Is.EqualTo(firstPlaceHighestDungeonScore.Mobility));
+            Assert.That(first.CovenantName, Is.Null);
+            Assert.That(first.Sex, Is.EqualTo(firstPlaceHighestDungeonScore.Gender));
 
             var second = leaders.ElementAt(1);
-            second.PlayerName.Should().Be($"{secondPlace.FirstName} {secondPlace.LastName}");
-            second.FormName.Should().Be(form2.FriendlyName);
-            second.FormSource.Id.Should().Be(form2.Id);
-            second.Sex.Should().Be(secondPlace.Gender);
+            Assert.That(second.PlayerName, Is.EqualTo($"{secondPlace.FirstName} {secondPlace.LastName}"));
+            Assert.That(second.FormName, Is.EqualTo(form2.FriendlyName));
+            Assert.That(second.FormSource.Id, Is.EqualTo(form2.Id));
+            Assert.That(second.Sex, Is.EqualTo(secondPlace.Gender));
 
             var third = leaders.ElementAt(2);
-            third.PlayerName.Should()
-                .Be($"{thirdPlaceNoDungeonScoreHigherLevel.FirstName} {thirdPlaceNoDungeonScoreHigherLevel.LastName}");
-            third.CovenantName.Should().Be(covenant.Name);
+            Assert.That(third.PlayerName,
+                Is.EqualTo(
+                    $"{thirdPlaceNoDungeonScoreHigherLevel.FirstName} {thirdPlaceNoDungeonScoreHigherLevel.LastName}"));
+            Assert.That(third.CovenantName, Is.EqualTo(covenant.Name));
 
             var fourth = leaders.ElementAt(3);
-            fourth.PlayerName.Should()
-                .Be($"{fourthPlaceNoDungeonScoreLowerLevel.FirstName} {fourthPlaceNoDungeonScoreLowerLevel.LastName}");
+            Assert.That(fourth.PlayerName,
+                Is.EqualTo(
+                    $"{fourthPlaceNoDungeonScoreLowerLevel.FirstName} {fourthPlaceNoDungeonScoreLowerLevel.LastName}"));
 
         }
 
@@ -135,8 +136,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, false)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SavePvPLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save PvP leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
+            Assert.That(() => Repository.Execute(new SavePvPLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "Unable to save PvP leaderboards at this time.  It is turn 350 and needs to be turn 5000."));
         }
 
         [Test]
@@ -149,8 +151,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SavePvPLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save PvP leaderboards at this time.  The game is currently in chaos mode.");
+            Assert.That(() => Repository.Execute(new SavePvPLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Unable to save PvP leaderboards at this time.  The game is currently in chaos mode."));
         }
 
         [Test]
@@ -168,22 +171,23 @@ namespace TT.Tests.World.Commands
                 .With(e => e.RoundNumber, 13)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SavePvPLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("There are already existing PvP leaderboard entries for round 13.");
+            Assert.That(() => Repository.Execute(new SavePvPLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("There are already existing PvP leaderboard entries for round 13."));
         }
 
         [Test]
         public void should_throw_error_if_round_number_not_set()
         {
-            Action action = () => Repository.Execute(new SavePvPLeaderboards());
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            Assert.That(() => Repository.Execute(new SavePvPLeaderboards()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Round Number must be set!"));
         }
 
         [Test]
         public void should_throw_error_if_no_world_data_found()
         {
-            Action action = () => Repository.Execute(new SavePvPLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("No world data found.");
+            Assert.That(() => Repository.Execute(new SavePvPLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No world data found."));
         }
     }
 }

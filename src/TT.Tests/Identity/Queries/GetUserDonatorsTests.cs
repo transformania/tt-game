@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
@@ -42,9 +41,9 @@ namespace TT.Tests.Identity.Queries
 
             var users = DomainRegistry.Repository.Find(new GetUserDonators {MinimumTier = 1}).ToArray(); ;
 
-            users.Length.Should().Be(1);
-            users[0].Donator.Id.Should().Be(123);
-            users[0].Donator.PatreonName.Should().Be("Jimmybob");
+            Assert.That(users, Has.Exactly(1).Items);
+            Assert.That(users[0].Donator.Id, Is.EqualTo(123));
+            Assert.That(users[0].Donator.PatreonName, Is.EqualTo("Jimmybob"));
         }
     }
 }

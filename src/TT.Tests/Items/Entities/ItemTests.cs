@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
@@ -12,9 +11,6 @@ namespace TT.Tests.Items.Entities
     [TestFixture]
     public class ItemTests : TestBase
     {
-
-        private int ONE_MINUTE = 60000;
-
         [Test]
         public void bot_items_have_old_last_souled_timestamp()
         {
@@ -30,7 +26,7 @@ namespace TT.Tests.Items.Entities
 
             var timeDifference = Math.Abs((item.LastSouledTimestamp - DateTime.UtcNow).TotalDays);
 
-            timeDifference.Should().BeGreaterThan(360);
+            Assert.That(timeDifference, Is.GreaterThan(360));
         }
 
         [Test]
@@ -48,7 +44,7 @@ namespace TT.Tests.Items.Entities
 
             var timeDifference = Math.Abs((item.LastSouledTimestamp - DateTime.UtcNow).TotalDays);
 
-            timeDifference.Should().BeLessThan(1);
+            Assert.That(timeDifference, Is.LessThan(1));
         }
 
         [Test]
@@ -91,26 +87,25 @@ namespace TT.Tests.Items.Entities
 
             item.Drop(owner);
 
-            item.IsEquipped.Should().Be(false);
-            item.Owner.Should().Be(null);
-            item.Runes.Count.Should().Be(1);
-            item.dbLocationName.Should().Be(owner.Location);
-            item.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
+            Assert.That(item.IsEquipped, Is.False);
+            Assert.That(item.Owner, Is.Null);
+            Assert.That(item.Runes, Has.Exactly(1).Items);
+            Assert.That(item.dbLocationName, Is.EqualTo(owner.Location));
+            Assert.That(item.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
-            rune.IsEquipped.Should().Be(true);
-            rune.Owner.Should().Be(null);
-            rune.EmbeddedOnItem.Id.Should().Be(item.Id);
-            rune.dbLocationName.Should().Be(String.Empty);
-            rune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
+            Assert.That(rune.IsEquipped, Is.True);
+            Assert.That(rune.Owner, Is.Null);
+            Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(item.Id));
+            Assert.That(rune.dbLocationName, Is.Empty);
+            Assert.That(rune.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
             unembeddedRune.Drop(owner);
 
-            unembeddedRune.IsEquipped.Should().Be(false);
-            unembeddedRune.Owner.Should().Be(null);
-            unembeddedRune.dbLocationName.Should().Be(owner.Location);
-            unembeddedRune.EmbeddedOnItem.Should().Be(null);
-            unembeddedRune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
-
+            Assert.That(unembeddedRune.IsEquipped, Is.False);
+            Assert.That(unembeddedRune.Owner, Is.Null);
+            Assert.That(unembeddedRune.dbLocationName, Is.EqualTo(owner.Location));
+            Assert.That(unembeddedRune.EmbeddedOnItem, Is.Null);
+            Assert.That(unembeddedRune.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
         }
 
         [Test]
@@ -150,16 +145,15 @@ namespace TT.Tests.Items.Entities
 
             item.ChangeOwner(newOwner);
 
-            item.Owner.Id.Should().Be(newOwner.Id);
-            item.Runes.Count.Should().Be(1);
-            item.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
+            Assert.That(item.Owner.Id, Is.EqualTo(newOwner.Id));
+            Assert.That(item.Runes, Has.Exactly(1).Items);
+            Assert.That(item.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
-            rune.Owner.Id.Should().Be(newOwner.Id);
-            rune.EmbeddedOnItem.Id.Should().Be(100);
-            rune.IsEquipped.Should().Be(true);
-            rune.dbLocationName.Should().Be(String.Empty);
-            rune.TimeDropped.Should().BeCloseTo(DateTime.UtcNow, ONE_MINUTE);
-
+            Assert.That(rune.Owner.Id, Is.EqualTo(newOwner.Id));
+            Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(100));
+            Assert.That(rune.IsEquipped, Is.True);
+            Assert.That(rune.dbLocationName, Is.Empty);
+            Assert.That(rune.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
         }
 
         [Test]
@@ -192,9 +186,8 @@ namespace TT.Tests.Items.Entities
             pet.ChangeOwner(newOwner);
             shirt.ChangeOwner(newOwner);
 
-            pet.IsEquipped.Should().Be(true);
-            shirt.IsEquipped.Should().Be(false);
-
+            Assert.That(pet.IsEquipped, Is.True);
+            Assert.That(shirt.IsEquipped, Is.False);
         }
 
         [Test]
@@ -214,7 +207,7 @@ namespace TT.Tests.Items.Entities
                 .BuildAndSave();
 
             pet.ChangeOwner(newOwner, (int)GameModeStatics.GameModes.PvP);
-            pet.PvPEnabled.Should().Be((int)GameModeStatics.GameModes.PvP);
+            Assert.That(pet.PvPEnabled, Is.EqualTo((int) GameModeStatics.GameModes.PvP));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -23,10 +21,11 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.InRP, false)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new ChangeRPMode {MembershipId = player.User.Id, InRPMode = true});
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new ChangeRPMode
+                    {MembershipId = player.User.Id, InRPMode = true}), Throws.Nothing);
 
-            var loadedPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
-            loadedPlayer.InRP.Should().Be(true);
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").InRP, Is.True);
         }
 
         [Test]
@@ -38,28 +37,28 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.InRP, true)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new ChangeRPMode { MembershipId = player.User.Id, InRPMode = false });
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new ChangeRPMode
+                    {MembershipId = player.User.Id, InRPMode = false}), Throws.Nothing);
 
-            var loadedPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
-            loadedPlayer.InRP.Should().Be(false);
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").InRP, Is.False);
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new ChangeRPMode {MembershipId = "fake", InRPMode = true};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player with MembershipID 'fake' could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_membership_null()
         {
             var cmd = new ChangeRPMode { MembershipId = null, InRPMode = true };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("MembershipID is required!"));
         }
     }
 }

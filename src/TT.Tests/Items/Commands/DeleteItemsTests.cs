@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
@@ -20,9 +17,9 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new DeleteItem {ItemId = 7};
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Item>().Count().Should().Be(0);
+            Assert.That(DataContext.AsQueryable<Item>(), Is.Empty);
         }
 
         [TestCase(-1)]
@@ -32,8 +29,8 @@ namespace TT.Tests.Items.Commands
 
             var cmd = new DeleteItem { ItemId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId must be greater than 0"));
         }
 
         [Test]
@@ -42,8 +39,8 @@ namespace TT.Tests.Items.Commands
             const int id = 1;
             var cmd = new DeleteItem { ItemId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Item with ID {id} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Item with ID {id} was not found"));
         }
     }
 

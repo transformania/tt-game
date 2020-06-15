@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using TT.Tests.Builders.Item;
 using System.Linq;
-using FluentAssertions;
+using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
@@ -41,13 +41,13 @@ namespace TT.Tests.Items.Commands
                 ItemId = item.Id
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 87);
 
-            editedItem.Owner.Should().BeNull();
-            editedItem.dbLocationName.Should().Be("hometown");
-
+            Assert.That(editedItem, Is.Not.Null);
+            Assert.That(editedItem.Owner, Is.Null);
+            Assert.That(editedItem.dbLocationName, Is.EqualTo("hometown"));
         }
 
         [Test]
@@ -61,34 +61,61 @@ namespace TT.Tests.Items.Commands
                 LocationOverride = LocationsStatics.STREET_70_EAST_9TH_AVE
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 87);
 
-            editedItem.Owner.Should().BeNull();
-            editedItem.dbLocationName.Should().Be(LocationsStatics.STREET_70_EAST_9TH_AVE);
-
+            Assert.That(editedItem, Is.Not.Null);
+            Assert.That(editedItem.Owner, Is.Null);
+            Assert.That(editedItem.dbLocationName, Is.EqualTo(LocationsStatics.STREET_70_EAST_9TH_AVE));
         }
 
         [Test]
-        [Ignore("TODO")]
         public void item_must_be_owned_by_player()
         {
+            var sam = new PlayerBuilder()
+                .With(p => p.Id, 60)
+                .With(p => p.Location, "hometown")
+                .BuildAndSave();
 
+            var cmd = new DropItem
+            {
+                OwnerId = sam.Id,
+                ItemId = item.Id
+            };
+
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"player {sam.Id} does not own item {item.Id}"));
         }
 
         [Test]
-        [Ignore("TODO")]
         public void player_cant_drop_non_owned_item()
         {
+            var unownedItem = new ItemBuilder()
+                .With(i => i.Id, 88)
+                .BuildAndSave();
             
+            var cmd = new DropItem
+            {
+                OwnerId = bob.Id,
+                ItemId = unownedItem.Id
+            };
+
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"player {bob.Id} does not own item {unownedItem.Id}"));
         }
 
         [Test]
-        [Ignore("TODO")]
         public void player_cant_drop_nonexistent_item()
         {
+            var cmd = new DropItem
+            {
+                OwnerId = bob.Id,
+                ItemId = 100
+            };
 
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Item with ID 100 could not be found"));
         }
 
         [Test]

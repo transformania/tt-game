@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -35,15 +33,13 @@ namespace TT.Tests.Identity.Commands
                 Tier = 3,
                 SpecialNotes = "good boy!"
             };
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Donator>().Count(d =>
+            Assert.That(DataContext.AsQueryable<Donator>().Where(d =>
                 d.PatreonName == "Jimmybob the second" &&
                 d.ActualDonationAmount == 9 &&
                 d.Tier == 3 &&
-                d.SpecialNotes == "good boy!")
-            .Should().Be(1);
-
+                d.SpecialNotes == "good boy!"), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -56,10 +52,9 @@ namespace TT.Tests.Identity.Commands
                 PatreonName = "Bob",
                 Tier = 3
             };
-           
-            var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("userId is required"));
         }
 
         [Test]
@@ -73,9 +68,8 @@ namespace TT.Tests.Identity.Commands
                 Tier = 3
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("User 'fakeuser' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("User 'fakeuser' could not be found"));
         }
     }
 }

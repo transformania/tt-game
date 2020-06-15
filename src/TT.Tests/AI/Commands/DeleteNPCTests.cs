@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using FluentAssertions;
-using System.Linq;
+﻿using NUnit.Framework;
 using TT.Domain.AI.Commands;
 using TT.Domain.AI.Entities;
 using TT.Domain.Exceptions;
@@ -21,9 +18,9 @@ namespace TT.Tests.AI.Commands
 
             var cmd = new DeleteNPC { NPCId = 7 };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<NPC>().Count().Should().Be(0);
+            Assert.That(DataContext.AsQueryable<NPC>(), Is.Empty);
         }
 
         [TestCase(-1)]
@@ -32,8 +29,8 @@ namespace TT.Tests.AI.Commands
         {
             var cmd = new DeleteNPC { NPCId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("NPC Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("NPC Id must be greater than 0"));
         }
 
         [Test]
@@ -42,8 +39,8 @@ namespace TT.Tests.AI.Commands
             const int id = 1;
             var cmd = new DeleteNPC { NPCId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"NPC with ID {id} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"NPC with ID {id} was not found"));
         }
     }
 }

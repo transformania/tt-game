@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
@@ -36,9 +35,9 @@ namespace TT.Tests.Items.Queries
 
             var items = DomainRegistry.Repository.Find(cmd);
 
-            items.Should().HaveCount(2);
-            items.First().Id.Should().Be(77);
-            items.Last().Id.Should().Be(91);
+            Assert.That(items, Has.Exactly(2).Items);
+            Assert.That(items.First().Id, Is.EqualTo(77));
+            Assert.That(items.Last().Id, Is.EqualTo(91));
         }
 
     }

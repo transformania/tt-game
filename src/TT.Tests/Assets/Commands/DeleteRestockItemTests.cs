@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using FluentAssertions;
-using System.Linq;
+﻿using NUnit.Framework;
 using TT.Domain.Assets.Commands;
 using TT.Domain.Assets.Entities;
 using TT.Domain.Exceptions;
@@ -20,9 +17,8 @@ namespace TT.Tests.Assets.Commands
 
             var cmd = new DeleteRestockItem { RestockItemId = 7 };
 
-            Repository.Execute(cmd);
-
-            DataContext.AsQueryable<RestockItem>().Count().Should().Be(0);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
+            Assert.That(DataContext.AsQueryable<RestockItem>(), Is.Empty);
         }
 
         [TestCase(-1)]
@@ -31,8 +27,8 @@ namespace TT.Tests.Assets.Commands
         {
             var cmd = new DeleteRestockItem { RestockItemId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("RestockItem Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RestockItem Id must be greater than 0"));
         }
 
         [Test]
@@ -41,8 +37,8 @@ namespace TT.Tests.Assets.Commands
             const int id = 1;
             var cmd = new DeleteRestockItem { RestockItemId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"RestockItem with ID {id} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"RestockItem with ID {id} was not found"));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Assets.Queries;
 using TT.Domain.Exceptions;
@@ -24,9 +22,9 @@ namespace TT.Tests.Assets.Queries
 
             var tome = DomainRegistry.Repository.FindSingle(query);
 
-            tome.Id.Should().Be(7);
-            tome.Text.Should().BeEquivalentTo("First Tome");
-            tome.BaseItem.Id.Should().Be(195);
+            Assert.That(tome.Id, Is.EqualTo(7));
+            Assert.That(tome.Text, Is.EqualTo("First Tome"));
+            Assert.That(tome.BaseItem.Id, Is.EqualTo(195));
         }
 
         [TestCase(-1)]
@@ -35,9 +33,8 @@ namespace TT.Tests.Assets.Queries
         {
             var query = new GetTome { TomeId = id };
 
-            var action = new Action(() => { Repository.FindSingle(query); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
+            Assert.That(() => Repository.FindSingle(query),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Tome Id must be greater than 0"));
         }
 
         [Test]
@@ -45,9 +42,7 @@ namespace TT.Tests.Assets.Queries
         {
             var query = new GetTome { TomeId = 1 };
 
-            var tome = Repository.FindSingle(query);
-
-            tome.Should().BeNull();
+            Assert.That(Repository.FindSingle(query), Is.Null);
         }
     }
 }

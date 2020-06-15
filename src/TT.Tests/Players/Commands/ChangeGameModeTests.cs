@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -24,10 +22,14 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new ChangeGameMode {MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, InChaos = true});
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection, InChaos = true
+                }), Throws.Nothing);
 
-            var loadedPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
-            loadedPlayer.GameMode.Should().Be((int)GameModeStatics.GameModes.Protection);
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
+                Is.EqualTo((int) GameModeStatics.GameModes.Protection));
         }
 
         [Test]
@@ -40,9 +42,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, InChaos = false };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot leave PvP mode during regular gameplay.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You cannot leave PvP mode during regular gameplay."));
         }
 
         [Test]
@@ -57,9 +59,9 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.PvP, InChaos = false };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot enter PvP mode during regular gameplay.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You cannot enter PvP mode during regular gameplay."));
         }
 
         [Test]
@@ -73,10 +75,15 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.Protection)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = inChaos });
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Superprotection,
+                    InChaos = inChaos
+                }), Throws.Nothing);
 
-            var loadedPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
-            loadedPlayer.GameMode.Should().Be((int)GameModeStatics.GameModes.Superprotection);
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
+                Is.EqualTo((int) GameModeStatics.GameModes.Superprotection));
         }
 
         [Test]
@@ -90,28 +97,32 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.Superprotection)
                 .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, InChaos = inChaos });
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection,
+                    InChaos = inChaos
+                }), Throws.Nothing);
 
-            var loadedPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
-            loadedPlayer.GameMode.Should().Be((int)GameModeStatics.GameModes.Protection);
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
+                Is.EqualTo((int) GameModeStatics.GameModes.Protection));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
             var cmd = new ChangeGameMode {MembershipId = "fake", GameMode = (int)GameModeStatics.GameModes.Protection };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with MembershipID 'fake' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player with MembershipID 'fake' could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_membership_null()
         {
             var cmd = new ChangeGameMode { MembershipId = null, GameMode = (int)GameModeStatics.GameModes.Protection };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("MembershipID is required!"));
         }
 
         [Test]
@@ -119,11 +130,9 @@ namespace TT.Tests.Players.Commands
         [TestCase(3)]
         public void Should_throw_exception_if_game_mode_invalid(int mode)
         {
-
             var cmd = new ChangeGameMode { MembershipId = "abcde", GameMode = mode };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Game mode selection is invalid");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Game mode selection is invalid"));
         }
 
         [Test]
@@ -136,9 +145,8 @@ namespace TT.Tests.Players.Commands
              .BuildAndSave();
 
             var cmd = new ChangeGameMode { MembershipId = null, GameMode = (int)GameModeStatics.GameModes.Superprotection };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("MembershipID is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("MembershipID is required!"));
         }
     }
 }

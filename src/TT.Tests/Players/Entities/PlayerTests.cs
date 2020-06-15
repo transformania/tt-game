@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
@@ -64,17 +63,17 @@ namespace TT.Tests.Players.Entities
 
             player.DropAllItems();
 
-            runeItem.Owner.Should().BeNull();
-            runeItem.IsEquipped.Should().BeFalse();
-            runeItem.dbLocationName.Should().Be("street_70e9th");
+            Assert.That(runeItem.Owner, Is.Null);
+            Assert.That(runeItem.IsEquipped, Is.False);
+            Assert.That(runeItem.dbLocationName, Is.EqualTo("street_70e9th"));
 
-            nonRuneItem.Owner.Should().BeNull();
-            nonRuneItem.IsEquipped.Should().BeFalse();
-            nonRuneItem.dbLocationName.Should().Be("street_70e9th");
+            Assert.That(nonRuneItem.Owner, Is.Null);
+            Assert.That(nonRuneItem.IsEquipped, Is.False);
+            Assert.That(nonRuneItem.dbLocationName, Is.EqualTo("street_70e9th"));
 
-            embeddedRune.Owner.Should().BeNull();
-            embeddedRune.IsEquipped.Should().Be(true);
-            embeddedRune.dbLocationName.Should().Be(String.Empty);
+            Assert.That(embeddedRune.Owner, Is.Null);
+            Assert.That(embeddedRune.IsEquipped, Is.True);
+            Assert.That(embeddedRune.dbLocationName, Is.Empty);
         }
 
         [Test]
@@ -111,21 +110,19 @@ namespace TT.Tests.Players.Entities
 
             player.DropAllItems(true);
 
-            runeItem.Owner.Id.Should().Be(player.Id);
-            runeItem.IsEquipped.Should().Be(true);
-            runeItem.dbLocationName.Should().BeNull();
+            Assert.That(runeItem.Owner.Id, Is.EqualTo(player.Id));
+            Assert.That(runeItem.IsEquipped, Is.True);
+            Assert.That(runeItem.dbLocationName, Is.Null);
 
-            nonRuneItem.Owner.Should().BeNull();
-            nonRuneItem.IsEquipped.Should().BeFalse();
-            nonRuneItem.dbLocationName.Should().Be("street_70e9th");
-
+            Assert.That(nonRuneItem.Owner, Is.Null);
+            Assert.That(nonRuneItem.IsEquipped, Is.False);
+            Assert.That(nonRuneItem.dbLocationName, Is.EqualTo("street_70e9th"));
         }
 
         [Test]
         public void reducing_tf_energy_reduces_by_two_percent_without_buffs()
         {
-
-            var tfEnergies = new List<TFEnergy>()
+            var tfEnergies = new List<TFEnergy>
             {
                 new TFEnergyBuilder().With(t => t.Amount, 50).BuildAndSave()
             };
@@ -136,14 +133,13 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.CleanseTFEnergies(new BuffBox());
-            player.TFEnergies.First().Amount.Should().Be(48);
+            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(48));
         }
 
         [Test]
         public void reducing_tf_energy_reduces_by_greater_percent_with_buffs()
         {
-
-            var tfEnergies = new List<TFEnergy>()
+            var tfEnergies = new List<TFEnergy>
             {
                 new TFEnergyBuilder().With(t => t.Amount, 50).BuildAndSave()
             };
@@ -153,81 +149,77 @@ namespace TT.Tests.Players.Entities
                 .With(p => p.TFEnergies, tfEnergies)
                 .BuildAndSave();
 
-            var buffs = new BuffBox();
-            buffs.FromForm_CleanseExtraTFEnergyRemovalPercent = 10;
+            var buffs = new BuffBox
+            {
+                FromForm_CleanseExtraTFEnergyRemovalPercent = 10
+            };
 
             player.CleanseTFEnergies(buffs);
-            player.TFEnergies.First().Amount.Should().Be(38);
+            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(38));
         }
 
         [Test]
         public void players_do_generate_logs_when_cleansing()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.Id, 50)
                 .With(p => p.BotId, AIStatics.ActivePlayerBotId)
                 .BuildAndSave();
 
             player.Cleanse(new BuffBox());
-            player.PlayerLogs.Count().Should().Be(1);
+            Assert.That(player.PlayerLogs, Has.Exactly(1).Items);
         }
 
         [Test]
         public void bots_dont_generate_logs_when_cleansing()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.Id, 50)
                 .With(p => p.BotId, AIStatics.PsychopathBotId)
                 .BuildAndSave();
 
             player.Cleanse(new BuffBox());
-            player.PlayerLogs.Count().Should().Be(0);
+            Assert.That(player.PlayerLogs, Is.Empty);
         }
 
         [Test]
         public void players_do_generate_logs_when_meditating()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.Id, 50)
                 .With(p => p.BotId, AIStatics.ActivePlayerBotId)
                 .BuildAndSave();
 
             player.Meditate(new BuffBox());
-            player.PlayerLogs.Count().Should().Be(1);
+            Assert.That(player.PlayerLogs, Has.Exactly(1).Items);
         }
 
         [Test]
         public void bots_dont_generate_logs_when_meditating()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.Id, 50)
                 .With(p => p.BotId, AIStatics.PsychopathBotId)
                 .BuildAndSave();
 
             player.Meditate(new BuffBox());
-            player.PlayerLogs.Count().Should().Be(0);
+            Assert.That(player.PlayerLogs, Is.Empty);
         }
 
         [Test]
         public void should_get_xp_required_for_levelup()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.XP, 0)
                 .With(p => p.Level, 3)
                 .BuildAndSave();
 
-            player.GetXPNeededForLevelUp().Should().Be(200);
+            Assert.That(player.GetXPNeededForLevelUp(), Is.EqualTo(200));
         }
 
         [Test]
         public void should_give_player_xp_and_not_level_up()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.XP, 95)
                 .With(p => p.Level, 3)
@@ -235,15 +227,14 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.AddXP(10);
-            player.XP.Should().Be(105);
-            player.Level.Should().Be(3);
-            player.UnusedLevelUpPerks.Should().Be(0);
+            Assert.That(player.XP, Is.EqualTo(105));
+            Assert.That(player.Level, Is.EqualTo(3));
+            Assert.That(player.UnusedLevelUpPerks, Is.EqualTo(0));
         }
 
         [Test]
         public void should_give_player_xp_and_level_up()
         {
-
             var player = new PlayerBuilder()
                 .With(p => p.XP, 195)
                 .With(p => p.Level, 3)
@@ -251,15 +242,14 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.AddXP(10);
-            player.XP.Should().Be(5);
-            player.Level.Should().Be(4);
-            player.UnusedLevelUpPerks.Should().Be(1);
+            Assert.That(player.XP, Is.EqualTo(5));
+            Assert.That(player.Level, Is.EqualTo(4));
+            Assert.That(player.UnusedLevelUpPerks, Is.EqualTo(1));
         }
 
         [Test]
         public void should_get_count_of_item_type()
         {
-
             // include this item, correct type
             var item1 = new ItemBuilder()
                 .With(i => i.ItemSource, new ItemSourceBuilder()
@@ -280,7 +270,7 @@ namespace TT.Tests.Players.Entities
 
             player.GiveItem(item1);
 
-            player.GetCountOfItem(5).Should().Be(1);
+            Assert.That(player.GetCountOfItem(5), Is.EqualTo(1));
         }
 
         [Test]
@@ -296,13 +286,13 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.GiveItemsOfType(itemSource, 3);
-            player.Items.Count().Should().Be(3);
-            player.Items.ElementAt(0).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
-            player.Items.ElementAt(0).dbLocationName.Should().Be("");
-            player.Items.ElementAt(1).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
-            player.Items.ElementAt(1).dbLocationName.Should().Be("");
-            player.Items.ElementAt(2).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
-            player.Items.ElementAt(2).dbLocationName.Should().Be("");
+            Assert.That(player.Items, Has.Exactly(3).Items);
+            Assert.That(player.Items.ElementAt(0).ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(player.Items.ElementAt(0).dbLocationName, Is.Empty);
+            Assert.That(player.Items.ElementAt(1).ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(player.Items.ElementAt(1).dbLocationName, Is.Empty);
+            Assert.That(player.Items.ElementAt(2).ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(player.Items.ElementAt(2).dbLocationName, Is.Empty);
         }
 
         [Test]
@@ -312,13 +302,12 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, new List<Item>())
                 .BuildAndSave();
 
-            player.GetMaxInventorySize().Should().Be(6);
+            Assert.That(player.GetMaxInventorySize(), Is.EqualTo(6));
         }
 
         [Test]
         public void getMaxInventorySize_returns_number_of_items_a_player_can_carry_when_they_have_some_buffs()
         {
-
             var items = new List<Item>();
 
             var item1 = new ItemBuilder()
@@ -337,7 +326,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.ExtraInventory, 2)
                 .BuildAndSave();
 
-            player.GetMaxInventorySize().Should().Be(8);
+            Assert.That(player.GetMaxInventorySize(), Is.EqualTo(8));
         }
 
         [Test]
@@ -360,7 +349,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.Items, items)
                 .BuildAndSave();
 
-            player.IsCarryingTooMuchToMove().Should().Be(false);
+            Assert.That(player.IsCarryingTooMuchToMove(), Is.False);
         }
 
         [Test]
@@ -384,7 +373,7 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.ExtraInventory, -5)
                 .BuildAndSave();
 
-            player.IsCarryingTooMuchToMove().Should().Be(true);
+            Assert.That(player.IsCarryingTooMuchToMove(), Is.True);
         }
 
         [Test]
@@ -408,36 +397,33 @@ namespace TT.Tests.Players.Entities
                 .With(i => i.ExtraInventory, -4)
                 .BuildAndSave();
 
-            player.IsCarryingTooMuchToMove().Should().Be(false);
+            Assert.That(player.IsCarryingTooMuchToMove(), Is.False);
         }
 
         [Test]
         public void IsInDungeon_returns_true_when_player_in_dungeon()
         {
-
             var player = new PlayerBuilder()
                 .With(i => i.Location, "dungeon_place")
                 .BuildAndSave();
 
-            player.IsInDungeon().Should().Be(true);
+            Assert.That(player.IsInDungeon(), Is.True);
         }
 
         [Test]
         public void IsInDungeon_returns_false_when_player_not_in_dungeon()
         {
-
             var player = new PlayerBuilder()
                 .With(i => i.Location, LocationsStatics.STREET_200_SUNNYGLADE_DRIVE)
                 .BuildAndSave();
 
-            player.IsInDungeon().Should().Be(false);
+            Assert.That(player.IsInDungeon(), Is.False);
         }
 
         [Test]
         public void CanMoveAsAnimal()
         {
-
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
             };
@@ -455,23 +441,26 @@ namespace TT.Tests.Players.Entities
 
             var destinationLogs = player.MoveToAsAnimal("coffee_shop_patio");
 
-            destinationLogs.SourceLocationLog.Should().Be("John Doe (feral) left toward Carolyne's Coffee Shop (Patio)");
-            destinationLogs.DestinationLocationLog.Should().Be("John Doe (feral) entered from Street: 200 Sunnyglade Drive");
+            Assert.That(destinationLogs.SourceLocationLog,
+                Is.EqualTo("John Doe (feral) left toward Carolyne's Coffee Shop (Patio)"));
+            Assert.That(destinationLogs.DestinationLocationLog,
+                Is.EqualTo("John Doe (feral) entered from Street: 200 Sunnyglade Drive"));
 
-            player.PlayerLogs.ElementAt(0).Message.Should().Be("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
-            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+            Assert.That(player.PlayerLogs.ElementAt(0).Message,
+                Is.EqualTo(
+                    "You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>."));
+            Assert.That(player.PlayerLogs.ElementAt(0).IsImportant, Is.False);
 
-            player.Location.Should().Be("coffee_shop_patio");
+            Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
 
-            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
-                .Be(4);
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(4));
         }
 
         [Test]
         public void CanMoveAsPlayer_NoSneak()
         {
-
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
             };
@@ -506,29 +495,32 @@ namespace TT.Tests.Players.Entities
 
             var destinationLogs = player.MoveTo("coffee_shop_patio");
 
-            destinationLogs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
-            destinationLogs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");
+            Assert.That(destinationLogs.SourceLocationLog,
+                Is.EqualTo("John Doe left toward Carolyne's Coffee Shop (Patio)"));
+            Assert.That(destinationLogs.DestinationLocationLog,
+                Is.EqualTo("John Doe entered from Street: 200 Sunnyglade Drive"));
 
-            player.PlayerLogs.ElementAt(0).Message.Should().Be("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>.");
-            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+            Assert.That(player.PlayerLogs.ElementAt(0).Message,
+                Is.EqualTo(
+                    "You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>."));
+            Assert.That(player.PlayerLogs.ElementAt(0).IsImportant, Is.False);
 
-            player.Location.Should().Be("coffee_shop_patio");
-            player.ActionPoints.Should().Be(9.5M);
+            Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
+            Assert.That(player.ActionPoints, Is.EqualTo(9.5M));
 
-            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
-                .Be(4);
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(4));
 
-            player.Items.ElementAt(0).dbLocationName.Should().Be(String.Empty);
-            player.Items.ElementAt(1).dbLocationName.Should().Be(String.Empty);
+            Assert.That(player.Items.ElementAt(0).dbLocationName, Is.Empty);
+            Assert.That(player.Items.ElementAt(1).dbLocationName, Is.Empty);
 
-            player.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            Assert.That(player.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
         }
 
         [Test]
         public void CanMoveAsPlayer_WithSneak()
         {
-
-            var stats = new List<Stat>()
+            var stats = new List<Stat>
             {
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 8).BuildAndSave()
             };
@@ -545,21 +537,22 @@ namespace TT.Tests.Players.Entities
 
             var logs = player.MoveTo("coffee_shop_patio");
 
-            logs.SourceLocationLog.Should().Be("John Doe left toward Carolyne's Coffee Shop (Patio)");
-            logs.DestinationLocationLog.Should().Be("John Doe entered from Street: 200 Sunnyglade Drive");
-            logs.ConcealmentLevel.Should().BeGreaterThan(0);
+            Assert.That(logs.SourceLocationLog, Is.EqualTo("John Doe left toward Carolyne's Coffee Shop (Patio)"));
+            Assert.That(logs.DestinationLocationLog, Is.EqualTo("John Doe entered from Street: 200 Sunnyglade Drive"));
+            Assert.That(logs.ConcealmentLevel, Is.GreaterThan(0));
 
-            player.PlayerLogs.ElementAt(0).Message.Should().Contain("You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>. (Concealment lvl <b>");
-            player.PlayerLogs.ElementAt(0).IsImportant.Should().Be(false);
+            Assert.That(player.PlayerLogs.ElementAt(0).Message,
+                Does.StartWith(
+                    "You moved from <b>Street: 200 Sunnyglade Drive</b> to <b>Carolyne's Coffee Shop (Patio)</b>. (Concealment lvl <b>"));
+            Assert.That(player.PlayerLogs.ElementAt(0).IsImportant, Is.False);
 
-            player.Location.Should().Be("coffee_shop_patio");
-            player.ActionPoints.Should().Be(9);
+            Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
+            Assert.That(player.ActionPoints, Is.EqualTo(9));
 
-            player.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount.Should()
-                .Be(9);
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(9));
 
-            player.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
-
+            Assert.That(player.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);
         }
 
         [Test]
@@ -607,9 +600,7 @@ namespace TT.Tests.Players.Entities
             player.Items.Add(shirt);
             player.Items.Add(pants);
 
-            player.GetCurrentCarryWeight().Should().Be(1);
-
+            Assert.That(player.GetCurrentCarryWeight(), Is.EqualTo(1));
         }
-
     }
 }

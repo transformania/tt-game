@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Chat.Queries;
 using TT.Tests.Builders.Chat;
@@ -17,9 +16,7 @@ namespace TT.Tests.Chat.Queries
 
             var cmd = new GetChatRooms();
 
-            var rooms = DomainRegistry.Repository.Find(cmd);
-
-            rooms.Should().HaveCount(2);
+            Assert.That(DomainRegistry.Repository.Find(cmd), Has.Exactly(2).Items);
         }
 
         [Test]
@@ -27,9 +24,7 @@ namespace TT.Tests.Chat.Queries
         {
             var cmd = new GetChatRooms();
 
-            var rooms = DomainRegistry.Repository.Find(cmd);
-
-            rooms.Should().BeEmpty();
+            Assert.That(DomainRegistry.Repository.Find(cmd), Is.Empty);
         }
     }
 }

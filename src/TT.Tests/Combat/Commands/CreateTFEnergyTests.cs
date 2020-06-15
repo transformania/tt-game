@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -39,13 +37,11 @@ namespace TT.Tests.Combat.Commands
                 CasterId = caster.Id
             });
 
-            DataContext.AsQueryable<TFEnergy>().Count(t =>
+            Assert.That(DataContext.AsQueryable<TFEnergy>().Where(t =>
                 t.Owner.Id == 50 &&
                 t.Caster.Id == 987 &&
                 t.Amount == 100 &&
-                t.FormSource.Id == 13)
-            .Should().Be(1);
-
+                t.FormSource.Id == 13), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -57,9 +53,8 @@ namespace TT.Tests.Combat.Commands
                 PlayerId = 13
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID 13 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID 13 could not be found"));
         }
 
     }

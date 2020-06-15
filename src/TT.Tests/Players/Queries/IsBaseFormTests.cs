@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Players.Queries;
 using TT.Tests.Builders.Form;
@@ -32,30 +31,25 @@ namespace TT.Tests.Players.Queries
         [Test]
         public void should_return_true_if_form_is_valid_male()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 1 });
-            isValid.Should().Be(true);
+            Assert.That(DomainRegistry.Repository.FindSingle(new IsBaseForm {formSourceId = 1}), Is.True);
         }
 
         [Test]
         public void should_return_true_if_form_is_valid_female()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 2 });
-            isValid.Should().Be(true);
+            Assert.That(DomainRegistry.Repository.FindSingle(new IsBaseForm {formSourceId = 2}), Is.True);
         }
 
         [Test]
         public void should_return_false_if_form_is_invalid()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 3 });
-            isValid.Should().Be(false);
+            Assert.That(DomainRegistry.Repository.FindSingle(new IsBaseForm {formSourceId = 3}), Is.False);
         }
 
         [Test]
         public void should_return_false_if_form_is_not_present()
         {
-            var isValid = DomainRegistry.Repository.FindSingle(new IsBaseForm { formSourceId = 999 });
-            isValid.Should().Be(false);
+            Assert.That(DomainRegistry.Repository.FindSingle(new IsBaseForm {formSourceId = 999}), Is.False);
         }
-
     }
 }

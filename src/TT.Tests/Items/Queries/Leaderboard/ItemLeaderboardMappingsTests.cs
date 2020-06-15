@@ -18,7 +18,7 @@ namespace TT.Tests.Items.Queries.Leaderboard
         [Test]
         public void MappingsAreValid()
         {
-            Mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            Assert.That(() => Mapper.ConfigurationProvider.AssertConfigurationIsValid(), Throws.Nothing);
         }
     }
 }

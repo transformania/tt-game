@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -23,15 +21,14 @@ namespace TT.Tests.Items.Commands
              new ItemSourceBuilder()
                 .With(i => i.Id, 195).BuildAndSave();
 
-            var cmd = new CreateItem();
-            cmd.OwnerId = 49;
-            cmd.ItemSourceId = 195;
+             var cmd = new CreateItem
+             {
+                 OwnerId = 49, ItemSourceId = 195
+             };
 
-            Repository.Execute(cmd);
+             Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Item>().Count(i =>
-               i.Owner.Id == 49)
-            .Should().Be(1);
+             Assert.That(DataContext.AsQueryable<Item>().Where(i => i.Owner.Id == 49), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -56,11 +53,9 @@ namespace TT.Tests.Items.Commands
                 FormerPlayerId = 57
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Item>().Count(i =>
-               i.FormerPlayer.Id == 57)
-            .Should().Be(1);
+            Assert.That(DataContext.AsQueryable<Item>().Where(i => i.FormerPlayer.Id == 57), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -76,11 +71,9 @@ namespace TT.Tests.Items.Commands
                 OwnerId = null
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Item>().Count(i =>
-               i.Owner == null)
-            .Should().Be(1);
+            Assert.That(DataContext.AsQueryable<Item>().Where(i => i.Owner == null), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -96,9 +89,8 @@ namespace TT.Tests.Items.Commands
                 OwnerId = 999
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id 999 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with Id 999 could not be found"));
         }
 
         [Test]
@@ -114,9 +106,8 @@ namespace TT.Tests.Items.Commands
                 FormerPlayerId = 999
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Former player with Id 999 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Former player with Id 999 could not be found"));
         }
 
         [Test]
@@ -128,9 +119,8 @@ namespace TT.Tests.Items.Commands
                 OwnerId = null
             };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Item Source with Id {999} could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Item Source with Id {999} could not be found"));
         }
 
     }

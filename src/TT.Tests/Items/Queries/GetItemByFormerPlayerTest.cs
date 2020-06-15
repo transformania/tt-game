@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Tests.Builders.Item;
@@ -28,9 +27,7 @@ namespace TT.Tests.Items.Queries
                 .BuildAndSave();
 
             var cmd = new GetItemByFormerPlayer { PlayerId = victim.Id };
-            var item = DomainRegistry.Repository.FindSingle(cmd);
-
-            item.Id.Should().Be(31);
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd).Id, Is.EqualTo(31));
         }
 
     }

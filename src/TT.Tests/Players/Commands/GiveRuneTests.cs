@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -39,51 +37,48 @@ namespace TT.Tests.Players.Commands
         [Test]
         public void can_give_rune()
         {
-            DomainRegistry.Repository.Execute(new GiveRune { PlayerId = owner.Id, ItemSourceId = runeSource.Id});
+            Assert.That(
+                () => DomainRegistry.Repository.Execute(
+                    new GiveRune {PlayerId = owner.Id, ItemSourceId = runeSource.Id}), Throws.Nothing);
 
-            owner.Items.Count.Should().Be(1);
+            Assert.That(owner.Items, Has.Exactly(1).Items);
             var rune = owner.Items.First();
-            rune.ItemSource.Id.Should().Be(runeSource.Id);
-            rune.ItemSource.FriendlyName.Should().Be(runeSource.FriendlyName);
-            rune.IsEquipped.Should().Be(false);
-            rune.Owner.Id.Should().Be(owner.Id);
-
+            Assert.That(rune.ItemSource.Id, Is.EqualTo(runeSource.Id));
+            Assert.That(rune.ItemSource.FriendlyName, Is.EqualTo(runeSource.FriendlyName));
+            Assert.That(rune.IsEquipped, Is.False);
+            Assert.That(rune.Owner.Id, Is.EqualTo(owner.Id));
         }
 
         [Test]
         public void throw_exception_if_playerId_not_provided()
         {
             var cmd = new GiveRune { ItemSourceId = runeSource.Id};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("PlayerId is required!"));
         }
 
         [Test]
         public void throw_exception_if_itemSourceId_not_provided()
         {
             var cmd = new GiveRune { PlayerId = owner.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId is required!"));
         }
 
         [Test]
         public void throw_exception_if_player_not_found()
         {
             var cmd = new GiveRune { PlayerId = 555, ItemSourceId = runeSource.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with ID '555' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with ID '555' could not be found"));
         }
 
         [Test]
         public void throw_exception_if_runeSource_not_found()
         {
             var cmd = new GiveRune { PlayerId = owner.Id, ItemSourceId = 555 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemSource with ID '555' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemSource with ID '555' could not be found"));
         }
 
     }

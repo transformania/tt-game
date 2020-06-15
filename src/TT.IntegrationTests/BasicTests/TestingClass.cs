@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace TT.IntegrationTests.BasicTests
                 .Where(p => p.FirstName == "John" && p.LastName == "Smith")
                 .Include(p => p.User)
                 .First();
-            player.User.Should().NotBeNull();
+            Assert.That(player.User, Is.Not.Null);
         }
 
         [Test]
@@ -31,10 +30,10 @@ namespace TT.IntegrationTests.BasicTests
 
             List<string> playersMembershipIds = DomainRegistry.Repository.Context.AsQueryable<Player>().Select(p => p.MembershipId).ToList();
 
-            playersMembershipIds.Should().NotBeEmpty();
-            playersMembershipIds.First().Should().BeNull();
-            playersMembershipIds.Should().HaveCount(6);
-            playersMembershipIds.Skip(1).Should().NotContainNulls();
+            Assert.That(playersMembershipIds, Is.Not.Empty);
+            Assert.That(playersMembershipIds.First(), Is.Null);
+            Assert.That(playersMembershipIds, Has.Exactly(6).Items);
+            Assert.That(playersMembershipIds.Skip(1), Has.None.Null);
         }
     }
 }

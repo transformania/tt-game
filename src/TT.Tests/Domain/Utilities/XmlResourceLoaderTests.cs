@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TT.Domain.Utilities;
 
@@ -16,7 +14,7 @@ namespace TT.Tests.Domain.Utilities
 
             var resource = XmlResourceLoader.Load<List<string>>(resourcePath);
 
-            resource.Should().Contain("Andy");
+            Assert.That(resource, Has.Member("Andy"));
         }
 
         [Test]
@@ -24,9 +22,8 @@ namespace TT.Tests.Domain.Utilities
         {
             var resourcePath = "TT.Domain.DoesntExist.xml";
 
-            Action action = () => XmlResourceLoader.Load<List<string>>(resourcePath);
-
-            action.Should().Throw<ResourceNotFoundException>();
+            Assert.That(() => XmlResourceLoader.Load<List<string>>(resourcePath),
+                Throws.TypeOf<ResourceNotFoundException>());
         }
     }
 }

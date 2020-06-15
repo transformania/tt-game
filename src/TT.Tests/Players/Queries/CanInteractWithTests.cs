@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Players.Entities;
 using TT.Domain.Players.Queries;
@@ -37,23 +35,21 @@ namespace TT.Tests.Players.Queries
         [Test]
         public void Should_return_true_if_conditions_okay()
         {
-            Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = player.Id }).Should().Be(true);
+            Assert.That(Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = player.Id }), Is.True);
         }
 
         [Test]
         public void Should_throw_exception_if_npc_not_found()
         {
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = -99, PlayerId = player.Id}); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("NPC with BotId '-99' does not exist");
+            Assert.That(() => Repository.FindSingle(new CanInteractWith {BotId = -99, PlayerId = player.Id}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("NPC with BotId '-99' does not exist"));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = -99}); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id '-99' does not exist");
+            Assert.That(() => Repository.FindSingle(new CanInteractWith {BotId = npc.BotId, PlayerId = -99}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with Id '-99' does not exist"));
         }
 
         [Test]
@@ -67,9 +63,10 @@ namespace TT.Tests.Players.Queries
                 .With(p => p.Location, LocationsStatics.STREET_130_SUNNYGLADE_DRIVE)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = inanimatePlayer.Id }); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to interact with Bot Bottonson.");
+            Assert.That(
+                () => Repository.FindSingle(new CanInteractWith {BotId = npc.BotId, PlayerId = inanimatePlayer.Id}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must be animate in order to interact with Bot Bottonson."));
         }
 
         [Test]
@@ -82,9 +79,9 @@ namespace TT.Tests.Players.Queries
                 .With(p => p.InDuel, 50)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = duelPlayer.Id }); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must conclude your duel in order to interact with Bot Bottonson.");
+            Assert.That(() => Repository.FindSingle(new CanInteractWith {BotId = npc.BotId, PlayerId = duelPlayer.Id}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must conclude your duel in order to interact with Bot Bottonson."));
         }
 
         [Test]
@@ -97,9 +94,9 @@ namespace TT.Tests.Players.Queries
                 .With(p => p.InQuest, 50)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = questPlayer.Id }); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must conclude your quest in order to interact with Bot Bottonson.");
+            Assert.That(() => Repository.FindSingle(new CanInteractWith {BotId = npc.BotId, PlayerId = questPlayer.Id}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must conclude your quest in order to interact with Bot Bottonson."));
         }
 
         [Test]
@@ -113,10 +110,10 @@ namespace TT.Tests.Players.Queries
                 .With(p => p.Location, LocationsStatics.STREET_130_SUNNYGLADE_DRIVE)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = inanimateNPC.BotId, PlayerId = player.Id }); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Bot Bottonson must be animate in order for you to interact with him.");
-
+            Assert.That(
+                () => Repository.FindSingle(new CanInteractWith {BotId = inanimateNPC.BotId, PlayerId = player.Id}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Bot Bottonson must be animate in order for you to interact with him."));
         }
 
         [Test]
@@ -130,10 +127,10 @@ namespace TT.Tests.Players.Queries
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .BuildAndSave();
 
-            var action = new Action(() => { Repository.FindSingle(new CanInteractWith { BotId = npc.BotId, PlayerId = wrongPlacePlayer.Id }); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be in the same location as Bot Bottonson in order to interact with him.");
+            Assert.That(
+                () => Repository.FindSingle(new CanInteractWith {BotId = npc.BotId, PlayerId = wrongPlacePlayer.Id}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must be in the same location as Bot Bottonson in order to interact with him."));
         }
-
     }
 }

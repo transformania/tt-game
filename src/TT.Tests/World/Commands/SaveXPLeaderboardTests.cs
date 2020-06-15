@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -80,32 +78,33 @@ namespace TT.Tests.World.Commands
                 .BuildAndSave();
 
 
-            DomainRegistry.Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
+            Assert.That(() => DomainRegistry.Repository.Execute(new SaveXpLeaderboards {RoundNumber = 13}),
+                Throws.Nothing);
 
             var leaders = DataContext.AsQueryable<TT.Domain.World.Entities.XpLeaderboardEntry>();
 
-            leaders.Count().Should().Be(3);
+            Assert.That(leaders, Has.Exactly(3).Items);
 
             var first = leaders.ElementAt(0);
-            first.PlayerName.Should()
-                .Be($"{firstPlaceHighestLevel.FirstName} {firstPlaceHighestLevel.LastName}");
-            first.FormName.Should().Be(form1.FriendlyName);
-            first.FormSource.Id.Should().Be(form1.Id);
-            first.Level.Should().Be(firstPlaceHighestLevel.Level);
-            first.Mobility.Should().Be(firstPlaceHighestLevel.Mobility);
-            first.CovenantName.Should().Be(null);
-            first.Sex.Should().Be(firstPlaceHighestLevel.Gender);
+            Assert.That(first.PlayerName,
+                Is.EqualTo($"{firstPlaceHighestLevel.FirstName} {firstPlaceHighestLevel.LastName}"));
+            Assert.That(first.FormName, Is.EqualTo(form1.FriendlyName));
+            Assert.That(first.FormSource.Id, Is.EqualTo(form1.Id));
+            Assert.That(first.Level, Is.EqualTo(firstPlaceHighestLevel.Level));
+            Assert.That(first.Mobility, Is.EqualTo(firstPlaceHighestLevel.Mobility));
+            Assert.That(first.CovenantName, Is.Null);
+            Assert.That(first.Sex, Is.EqualTo(firstPlaceHighestLevel.Gender));
 
             var second = leaders.ElementAt(1);
-            second.PlayerName.Should().Be($"{secondPlace.FirstName} {secondPlace.LastName}");
-            second.FormName.Should().Be(form2.FriendlyName);
-            second.FormSource.Id.Should().Be(form2.Id);
-            second.Sex.Should().Be(secondPlace.Gender);
+            Assert.That(second.PlayerName, Is.EqualTo($"{secondPlace.FirstName} {secondPlace.LastName}"));
+            Assert.That(second.FormName, Is.EqualTo(form2.FriendlyName));
+            Assert.That(second.FormSource.Id, Is.EqualTo(form2.Id));
+            Assert.That(second.Sex, Is.EqualTo(secondPlace.Gender));
 
             var third = leaders.ElementAt(2);
-            third.PlayerName.Should()
-                .Be($"{thirdPlaceTiedLevelLowerXP.FirstName} {thirdPlaceTiedLevelLowerXP.LastName}");
-            third.CovenantName.Should().Be(covenant.Name);
+            Assert.That(third.PlayerName,
+                Is.EqualTo($"{thirdPlaceTiedLevelLowerXP.FirstName} {thirdPlaceTiedLevelLowerXP.LastName}"));
+            Assert.That(third.CovenantName, Is.EqualTo(covenant.Name));
 
         }
 
@@ -119,8 +118,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, false)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save XP leaderboards at this time.  It is turn 350 and needs to be turn 5000.");
+            Assert.That(() => Repository.Execute(new SaveXpLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    "Unable to save XP leaderboards at this time.  It is turn 350 and needs to be turn 5000."));
         }
 
         [Test]
@@ -133,8 +133,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Unable to save XP leaderboards at this time.  The game is currently in chaos mode.");
+            Assert.That(() => Repository.Execute(new SaveXpLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Unable to save XP leaderboards at this time.  The game is currently in chaos mode."));
         }
 
         [Test]
@@ -152,22 +153,23 @@ namespace TT.Tests.World.Commands
                 .With(e => e.RoundNumber, 13)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("There are already existing XP leaderboard entries for round 13.");
+            Assert.That(() => Repository.Execute(new SaveXpLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("There are already existing XP leaderboard entries for round 13."));
         }
 
         [Test]
         public void should_throw_error_if_round_number_not_set()
         {
-            Action action = () => Repository.Execute(new SaveXpLeaderboards());
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            Assert.That(() => Repository.Execute(new SaveXpLeaderboards()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Round Number must be set!"));
         }
 
         [Test]
         public void should_throw_error_if_no_world_data_found()
         {
-            Action action = () => Repository.Execute(new SaveXpLeaderboards { RoundNumber = 13 });
-            action.Should().ThrowExactly<DomainException>().WithMessage("No world data found.");
+            Assert.That(() => Repository.Execute(new SaveXpLeaderboards {RoundNumber = 13}),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("No world data found."));
         }
     }
 }

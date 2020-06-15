@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.Skills;
@@ -79,14 +78,14 @@ namespace TT.Tests.Skills.Queries
             var cmd = new GetSkillsPurchaseableByPlayer { playerId = owner.Id, MobilityType = PvPStatics.MobilityFull };
 
             var skills = DomainRegistry.Repository.Find(cmd);
-            var skillIds = skills.Select(s => s.Id);
+            var skillIds = skills.Select(s => s.Id).ToList();
 
-            skillIds.Should().NotContain(notLiveSkill.Id);
-            skillIds.Should().NotContain(notRightMobilitySkill.Id);
-            skillIds.Should().NotContain(noLocationOrRegionSkill.Id);
-            skillIds.Should().NotContain(alreadyLearnedSkill.Id);
+            Assert.That(skillIds, Has.No.Member(notLiveSkill.Id));
+            Assert.That(skillIds, Has.No.Member(notRightMobilitySkill.Id));
+            Assert.That(skillIds, Has.No.Member(noLocationOrRegionSkill.Id));
+            Assert.That(skillIds, Has.No.Member(alreadyLearnedSkill.Id));
 
-            skillIds.Should().Contain(learnableSkill.Id);
+            Assert.That(skillIds, Has.Member(learnableSkill.Id));
         }
     }
 }

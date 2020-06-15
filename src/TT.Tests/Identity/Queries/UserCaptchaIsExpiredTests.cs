@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -22,9 +21,7 @@ namespace TT.Tests.Identity.Queries
                     .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(-1))
                 .BuildAndSave();
 
-            var isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
-
-            isExpired.Should().BeTrue();
+            Assert.That(DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired {UserId = "abcde"}), Is.True);
         }
 
         [Test]
@@ -37,17 +34,15 @@ namespace TT.Tests.Identity.Queries
                     .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(1))
                 .BuildAndSave();
 
-            var isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
-
-            isExpired.Should().BeFalse();
+            Assert.That(DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired {UserId = "abcde"}), Is.False);
         }
 
         [Test]
         public void throw_exception_if_captcha_doesnt_exist()
         {
-            var cmd = (new UserCaptchaIsExpired {UserId = "abcde"});
-            Action action = () => Repository.FindSingle(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id abcde has no CaptchaEntry");
+            var cmd = new UserCaptchaIsExpired {UserId = "abcde"};
+            Assert.That(() => Repository.FindSingle(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("User with Id abcde has no CaptchaEntry"));
         }
 
     }

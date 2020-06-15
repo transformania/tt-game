@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
@@ -45,17 +44,17 @@ namespace TT.Tests.Identity.Queries
 
             var strikes = DomainRegistry.Repository.Find(new GetUserStrikes {UserId = user.Id}).ToArray();
 
-            strikes.Should().HaveCount(2);
+            Assert.That(strikes, Has.Exactly(2).Items);
 
-            strikes[0].Id.Should().Be(newerStrike.Id);
-            strikes[0].Reason.Should().Be(newerStrike.Reason);
-            strikes[0].User.Id.Should().Be(user.Id);
-            strikes[0].FromModerator.Id.Should().Be(moderator2.Id);
+            Assert.That(strikes[0].Id, Is.EqualTo(newerStrike.Id));
+            Assert.That(strikes[0].Reason, Is.EqualTo(newerStrike.Reason));
+            Assert.That(strikes[0].User.Id, Is.EqualTo(user.Id));
+            Assert.That(strikes[0].FromModerator.Id, Is.EqualTo(moderator2.Id));
 
-            strikes[1].Id.Should().Be(olderStrike.Id);
-            strikes[1].Reason.Should().Be(olderStrike.Reason);
-            strikes[1].User.Id.Should().Be(user.Id);
-            strikes[1].FromModerator.Id.Should().Be(moderator.Id);
+            Assert.That(strikes[1].Id, Is.EqualTo(olderStrike.Id));
+            Assert.That(strikes[1].Reason, Is.EqualTo(olderStrike.Reason));
+            Assert.That(strikes[1].User.Id, Is.EqualTo(user.Id));
+            Assert.That(strikes[1].FromModerator.Id, Is.EqualTo(moderator.Id));
         }
     }
 }

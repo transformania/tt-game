@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
@@ -27,24 +25,25 @@ namespace TT.Tests.Players.Commands
                .With(p => p.ShoutsRemaining, 1)
                .BuildAndSave();
 
-            DomainRegistry.Repository.Execute(new Shout {Message = "Hello world!", UserId = player.User.Id});
+            Assert.That(() => DomainRegistry.Repository.Execute(new Shout {Message = "Hello world!", UserId = player.User.Id}), Throws.Nothing);
 
             var playerLoaded = DataContext.AsQueryable<Player>().First();
 
-            playerLoaded.ShoutsRemaining.Should().Be(0);
-            playerLoaded.PlayerLogs.First().Message.Should().Be("You shouted 'Hello world!' at Street: 200 Main Street.");
+            Assert.That(playerLoaded.ShoutsRemaining, Is.EqualTo(0));
+            Assert.That(playerLoaded.PlayerLogs.First().Message,
+                Is.EqualTo("You shouted 'Hello world!' at Street: 200 Main Street."));
 
-            var locationLog = DataContext.AsQueryable<LocationLog>().First();
-            locationLog.Message.Should().Be("<span class='playerShoutNotification'>John Doe shouted <b>\"Hello world!\"</b> here.</span>");
+            Assert.That(DataContext.AsQueryable<LocationLog>().First().Message,
+                Is.EqualTo(
+                    "<span class='playerShoutNotification'>John Doe shouted <b>\"Hello world!\"</b> here.</span>"));
         }
 
         [Test]
         public void should_throw_exception_if_user_not_provided()
         {
             var cmd = new Shout { Message = "Hello world!", UserId = null };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("userId is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("userId is required"));
         }
 
         [Test]
@@ -53,27 +52,25 @@ namespace TT.Tests.Players.Commands
         public void should_throw_exception_if_message_not_provided(string shout)
         {
             var cmd = new Shout { Message = shout, UserId = "abcde" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("A shout message is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("A shout message is required"));
         }
 
         [Test]
         public void should_throw_exception_if_message_too_long()
         {
             var cmd = new Shout { Message = "Yes this is a very long shout, too long for someone to reasonably want to say as a shout and stuff whoooo", UserId = "abcde" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("A shout must contain 100 characters or fewer.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("A shout must contain 100 characters or fewer."));
         }
 
         [Test]
         public void should_throw_exception_if_player_not_found()
         {
             var cmd = new Shout { Message = "Hello world!", UserId = "abcde" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with user ID 'abcde' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Player with user ID 'abcde' could not be found"));
         }
 
         [Test]
@@ -89,9 +86,8 @@ namespace TT.Tests.Players.Commands
                .BuildAndSave();
 
             var cmd = new Shout { Message = "Hello world!", UserId = player.User.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can only shout once per turn.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You can only shout once per turn."));
         }
 
         [Test]
@@ -107,10 +103,8 @@ namespace TT.Tests.Players.Commands
                .BuildAndSave();
 
             var cmd = new Shout { Message = "Hello world!", UserId = player.User.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to shout!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You must be animate in order to shout!"));
         }
-
     }
 }

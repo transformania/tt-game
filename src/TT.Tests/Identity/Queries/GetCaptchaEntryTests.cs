@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Identity.Queries;
 using TT.Tests.Builders.Identity;
@@ -23,9 +22,9 @@ namespace TT.Tests.Identity.Queries
 
             var entry = DomainRegistry.Repository.FindSingle(cmd);
 
-            entry.Id.Should().Be(77);
-            entry.User.Id.Should().Be("abcde");
-            entry.User.UserName.Should().Be("Bob");
+            Assert.That(entry.Id, Is.EqualTo(77));
+            Assert.That(entry.User.Id, Is.EqualTo("abcde"));
+            Assert.That(entry.User.UserName, Is.EqualTo("Bob"));
         }
     }
 }

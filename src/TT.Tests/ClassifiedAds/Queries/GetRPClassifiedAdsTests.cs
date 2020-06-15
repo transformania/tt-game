@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +63,7 @@ namespace TT.Tests.ClassifiedAds.Queries
                        orderby ad.RefreshTimestamp descending
                        select ad;
 
-            ads.Select(ad => ad.RPClassifiedAd).Should().Equal(adsq);
+            Assert.That(ads.Select(ad => ad.RPClassifiedAd), Is.EqualTo(adsq));
         }
 
         [Test]
@@ -76,7 +75,7 @@ namespace TT.Tests.ClassifiedAds.Queries
                        orderby ad.RefreshTimestamp descending
                        select ad;
 
-            ads.Select(ad => ad.RPClassifiedAd).Should().Equal(adsq);
+            Assert.That(ads.Select(ad => ad.RPClassifiedAd), Is.EqualTo(adsq));
         }
     }
 }

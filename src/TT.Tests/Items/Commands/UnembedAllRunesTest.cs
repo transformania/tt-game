@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -91,26 +89,22 @@ namespace TT.Tests.Items.Commands
                 PlayerId = player.Id
             };
 
-            var result = Repository.Execute(cmd);
+            Assert.That(Repository.Execute(cmd), Is.EqualTo("You removed the runes from 2 of your belongings."));
 
-            item1.Runes.Count.Should().Be(0);
-            item2.Runes.Count.Should().Be(0);
+            Assert.That(item1.Runes, Is.Empty);
+            Assert.That(item2.Runes, Is.Empty);
 
-            rune1.EmbeddedOnItem.Should().Be(null);
-            rune2.EmbeddedOnItem.Should().Be(null);
-            rune3.EmbeddedOnItem.Should().Be(null);
-
-            result.Should().Be("You removed the runes from 2 of your belongings.");
+            Assert.That(rune1.EmbeddedOnItem, Is.Null);
+            Assert.That(rune2.EmbeddedOnItem, Is.Null);
+            Assert.That(rune3.EmbeddedOnItem, Is.Null);
         }
 
         [Test]
         public void should_throw_exception_if_player_id_not_defined()
         {
-            var cmd = new UnembedAllRunes { };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("PlayerId is required");
+            var cmd = new UnembedAllRunes();
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("PlayerId is required"));
         }
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
@@ -71,10 +70,10 @@ namespace TT.Tests.Items.Queries
 
             var items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = owner.Id }).ToList();
 
-            items.Count.Should().Be(1);
-            items.ElementAt(0).Id.Should().Be(eligibleItem.Id);
-            items.ElementAt(0).IsPermanent.Should().Be(true);
-            items.ElementAt(0).FormerPlayer.Id.Should().Be(50);
+            Assert.That(items, Has.Exactly(1).Items);
+            Assert.That(items.ElementAt(0).Id, Is.EqualTo(eligibleItem.Id));
+            Assert.That(items.ElementAt(0).IsPermanent, Is.EqualTo(true));
+            Assert.That(items.ElementAt(0).FormerPlayer.Id, Is.EqualTo(50));
 
         }
     }

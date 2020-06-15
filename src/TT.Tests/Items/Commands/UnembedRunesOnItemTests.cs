@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -56,32 +54,28 @@ namespace TT.Tests.Items.Commands
 
             item1.AttachRune(rune1);
 
-            Repository.Execute(new UnbembedRunesOnItem {ItemId = item1.Id});
+            Assert.That(() => Repository.Execute(new UnbembedRunesOnItem {ItemId = item1.Id}), Throws.Nothing);
 
-            rune1.Owner.Id.Should().Be(player.Id);
-            rune1.EmbeddedOnItem.Should().Be(null);
-            rune1.IsEquipped.Should().Be(false);
-            rune1.dbLocationName.Should().Be(String.Empty);
+            Assert.That(rune1.Owner.Id, Is.EqualTo(player.Id));
+            Assert.That(rune1.EmbeddedOnItem, Is.Null);
+            Assert.That(rune1.IsEquipped, Is.False);
+            Assert.That(rune1.dbLocationName, Is.Empty);
         }
 
         [Test]
         public void should_throw_exception_if_ItemId_not_provided()
         {
-            var cmd = new UnbembedRunesOnItem { };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ItemId is required");
+            var cmd = new UnbembedRunesOnItem();
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId is required"));
         }
 
         [Test]
         public void should_throw_exception_if_rune_not_found()
         {
             var cmd = new UnbembedRunesOnItem { ItemId = 999};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Cannot find an item with id '999'");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Cannot find an item with id '999'"));
         }
-
-
     }
 }

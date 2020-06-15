@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Assets.Queries;
 using TT.Domain.Statics;
@@ -30,9 +29,7 @@ namespace TT.Tests.Assets.Queries
 
             var cmd = new GetRestockItems();
 
-            var RestockItems = DomainRegistry.Repository.Find(cmd);
-
-            RestockItems.Should().HaveCount(2);
+            Assert.That(DomainRegistry.Repository.Find(cmd), Has.Exactly(2).Items);
         }
 
         [Test]
@@ -40,9 +37,7 @@ namespace TT.Tests.Assets.Queries
         {
             var cmd = new GetRestockItems();
 
-            var RestockItems = DomainRegistry.Repository.Find(cmd);
-
-            RestockItems.Should().BeEmpty();
+            Assert.That(DomainRegistry.Repository.Find(cmd), Is.Empty);
         }
 
     }

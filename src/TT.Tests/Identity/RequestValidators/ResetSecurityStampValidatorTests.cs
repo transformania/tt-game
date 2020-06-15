@@ -102,7 +102,7 @@ namespace TT.Tests.Identity.RequestValidators
             request.UserNameId = adminUser.Id;
             var results = await validator.ValidateAsync(request);
 
-            Assert.That(results.Errors, Has.Exactly(0).Items);
+            Assert.That(results.Errors, Is.Empty);
         }
 
         [Test]

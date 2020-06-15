@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Players.Queries;
 using TT.Tests.Builders.AI;
@@ -30,9 +29,9 @@ namespace TT.Tests.Players.Queries
 
             var foundPlayer = DomainRegistry.Repository.FindSingle(cmd);
 
-            foundPlayer.Id.Should().Be(23);
-            foundPlayer.NPC.Id.Should().Be(7);
-            foundPlayer.FormSource.Id.Should().Be(101);
+            Assert.That(foundPlayer.Id, Is.EqualTo(23));
+            Assert.That(foundPlayer.NPC.Id, Is.EqualTo(7));
+            Assert.That(foundPlayer.FormSource.Id, Is.EqualTo(101));
         }
 
         [Test]
@@ -50,9 +49,8 @@ namespace TT.Tests.Players.Queries
 
             var foundPlayer = DomainRegistry.Repository.FindSingle(cmd);
 
-            foundPlayer.Id.Should().Be(23);
-            foundPlayer.BotId.Should().Be(5);
+            Assert.That(foundPlayer.Id, Is.EqualTo(23));
+            Assert.That(foundPlayer.BotId, Is.EqualTo(5));
         }
-
     }
 }

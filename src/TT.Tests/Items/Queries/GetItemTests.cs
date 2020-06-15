@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Tests.Builders.Item;
@@ -22,9 +21,9 @@ namespace TT.Tests.Items.Queries
 
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Be(77);
-            item.Owner.Should().Be(null);
-            item.ItemSource.Id.Should().Be(35);
+            Assert.That(item.Id, Is.EqualTo(77));
+            Assert.That(item.Owner, Is.Null);
+            Assert.That(item.ItemSource.Id, Is.EqualTo(35));
         }
 
         [Test]
@@ -44,8 +43,8 @@ namespace TT.Tests.Items.Queries
             var cmd = new GetItem { ItemId = 77 };
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Be(77);
-            item.Owner.FirstName.Equals("Antony");
+            Assert.That(item.Id, Is.EqualTo(77));
+            Assert.That(item.Owner.FirstName, Is.EqualTo("Antony"));
         }
 
     }

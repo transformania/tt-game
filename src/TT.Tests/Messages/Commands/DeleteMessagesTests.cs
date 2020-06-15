@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 using System.Linq;
-using FluentAssertions;
 using TT.Domain.Exceptions;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.Entities;
@@ -24,12 +23,11 @@ namespace TT.Tests.Messages.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteMessage { MessageId = 61, OwnerId = 3 };
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var messages = DataContext.AsQueryable<Message>();
-            messages.Count().Should().Be(1);
-            messages.First().IsDeleted.Should().Be(true);
-
+            Assert.That(messages, Has.Exactly(1).Items);
+            Assert.That(messages.First().IsDeleted, Is.True);
         }
 
         [TestCase(-1)]
@@ -40,8 +38,8 @@ namespace TT.Tests.Messages.Commands
                 .BuildAndSave();
             var cmd = new DeleteMessage { MessageId = id };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message Id must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message Id must be greater than 0"));
         }
 
         [Test]
@@ -49,10 +47,9 @@ namespace TT.Tests.Messages.Commands
         {
             var cmd = new DeleteMessage { MessageId = 999 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"Message with ID {999} was not found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"Message with ID {999} was not found"));
         }
-
 
         [Test]
         public void Should_throw_error_when_owner_not_set()
@@ -64,14 +61,13 @@ namespace TT.Tests.Messages.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteMessage { MessageId = 61 };
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("OwnerId is required to delete a message");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("OwnerId is required to delete a message"));
         }
 
         [Test]
         public void Should_throw_error_when_message_not_owned_by_player_is_not_found()
         {
-
             new MessageBuilder()
                 .With(m => m.Id, 61)
                 .With(m => m.Receiver, new PlayerBuilder()
@@ -80,8 +76,8 @@ namespace TT.Tests.Messages.Commands
 
             var cmd = new DeleteMessage { MessageId = 61, OwnerId = 4};
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 4");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message 61 not owned by player 4"));
         }
 
         [Test]
@@ -102,12 +98,12 @@ namespace TT.Tests.Messages.Commands
                 .BuildAndSave();
 
             var cmd = new DeleteAllMessagesOwnedByPlayer { OwnerId = 3 };
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var messages = DataContext.AsQueryable<Message>();
-            messages.Count().Should().Be(2);
-            messages.First().IsDeleted.Should().Be(true);
-            messages.Last().IsDeleted.Should().Be(true);
+            Assert.That(messages, Has.Exactly(2).Items);
+            Assert.That(messages.First().IsDeleted, Is.True);
+            Assert.That(messages.Last().IsDeleted, Is.True);
         }
 
         [Test]
@@ -146,10 +142,10 @@ namespace TT.Tests.Messages.Commands
                 .With(m => m.IsReportedAbusive, true)
                 .BuildAndSave();
 
-            var cmd = new DeletePlayerExpiredMessages() { OwnerId = 3 };
-            Repository.Execute(cmd);
+            var cmd = new DeletePlayerExpiredMessages { OwnerId = 3 };
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count().Should().Be(3);
+            Assert.That(DataContext.AsQueryable<Message>(), Has.Exactly(3).Items);
         }
 
     }

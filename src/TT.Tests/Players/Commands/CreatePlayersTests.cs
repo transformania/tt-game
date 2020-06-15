@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Forms.Entities;
@@ -16,9 +14,8 @@ namespace TT.Tests.Players.Commands
 {
     public class CreatePlayersTests : TestBase
     {
-
-        CreatePlayer cmd;
-        User user;
+        private CreatePlayer cmd;
+        private User user;
         private FormSource formSource;
 
         [SetUp]
@@ -35,15 +32,17 @@ namespace TT.Tests.Players.Commands
                 .With(f => f.FriendlyName, "Some Form")
                 .BuildAndSave();
 
-            cmd = new CreatePlayer();
-            cmd.FirstName = "Bob";
-            cmd.LastName = "McBobbinson";
-            cmd.UserId = user.Id;
-            cmd.Health = 100;
-            cmd.MaxHealth = 100;
-            cmd.Location = "now here is nowhere";
-            cmd.Gender = PvPStatics.GenderMale;
-            cmd.FormSourceId = formSource.Id;
+            cmd = new CreatePlayer
+            {
+                FirstName = "Bob",
+                LastName = "McBobbinson",
+                UserId = user.Id,
+                Health = 100,
+                MaxHealth = 100,
+                Location = "now here is nowhere",
+                Gender = PvPStatics.GenderMale,
+                FormSourceId = formSource.Id
+            };
         }
 
 
@@ -51,43 +50,32 @@ namespace TT.Tests.Players.Commands
         public void Should_create_new_player()
         {
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var player = DataContext.AsQueryable<Player>().First();
-            player.FirstName.Should().Be("Bob");
-            player.LastName.Should().Be("McBobbinson");
-            player.User.Id.Should().Be(user.Id);
-            player.DonatorLevel.Should().Be(2);
+            Assert.That(player.FirstName, Is.EqualTo("Bob"));
+            Assert.That(player.LastName, Is.EqualTo("McBobbinson"));
+            Assert.That(player.User.Id, Is.EqualTo(user.Id));
+            Assert.That(player.DonatorLevel, Is.EqualTo(2));
 
         }
 
         [Test]
         public void Should_create_new_player_without_user()
         {
-
             cmd.UserId = null;
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
             var player = DataContext.AsQueryable<Player>().First();
-            player.FirstName.Should().Be("Bob");
-            player.LastName.Should().Be("McBobbinson");
-            player.User.Should().Be(null);
-            player.DonatorLevel.Should().Be(0);
-
-        }
-
-        [Test]
-        public void Can_create_new_player_with_no_user()
-        {
-            cmd.UserId = null;
-            Repository.Execute(cmd);
-
-            DataContext.AsQueryable<Player>().Count(p =>
-                p.FirstName == "Bob" &&
-                p.LastName == "McBobbinson" &&
-                p.User == null)
-            .Should().Be(1);
+            Assert.That(player.FirstName, Is.EqualTo("Bob"));
+            Assert.That(player.LastName, Is.EqualTo("McBobbinson"));
+            Assert.That(player.User, Is.Null);
+            Assert.That(player.DonatorLevel, Is.EqualTo(0));
+            Assert.That(DataContext.AsQueryable<Player>().Where(p =>
+                    p.FirstName == "Bob" &&
+                    p.LastName == "McBobbinson" &&
+                    p.User == null), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -95,9 +83,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.FirstName = "";
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("First name is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("First name is required"));
         }
 
         [Test]
@@ -105,9 +92,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.LastName = "";
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Last name is required");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Last name is required"));
         }
 
         [TestCase(0)]
@@ -116,9 +102,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.Health = wp;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Willpower must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Willpower must be greater than 0"));
         }
 
         [TestCase(0)]
@@ -127,9 +112,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.MaxHealth = wp;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Maximum willpower must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Maximum willpower must be greater than 0"));
         }
 
         [TestCase(0)]
@@ -138,9 +122,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.Mana = mana;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Mana must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Mana must be greater than 0"));
         }
 
         [TestCase(0)]
@@ -149,21 +132,18 @@ namespace TT.Tests.Players.Commands
         {
             cmd.MaxMana = mana;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Maximum mana must be greater than 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Maximum mana must be greater than 0"));
         }
 
         [Test]
         public void Should_default_level_to_one()
         {
-            var playerId = Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            var memPlayer = DataContext.AsQueryable<Player>().First(p =>
+            Assert.That(DataContext.AsQueryable<Player>().First(p =>
                 p.User.Id == user.Id &&
-                p.Level == 1);
-
-            memPlayer.Level.Should().Be(1);
+                p.Level == 1).Level, Is.EqualTo(1));
         }
 
         [TestCase(0)]
@@ -172,9 +152,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.Level = 0;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Level must be at least one.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Level must be at least one."));
         }
 
         [Test]
@@ -182,9 +161,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.TimesAttackingThisUpdate = -1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("TimesAttackingThisUpdate must be at least 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("TimesAttackingThisUpdate must be at least 0"));
         }
 
         [Test]
@@ -192,9 +170,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.XP = -1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("XP must be at least 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("XP must be at least 0"));
         }
 
         [Test]
@@ -202,9 +179,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.ActionPoints = -1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints must be at least 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ActionPoints must be at least 0"));
         }
 
         [Test]
@@ -212,9 +188,8 @@ namespace TT.Tests.Players.Commands
         {
             cmd.ActionPoints_Refill = -1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be at least 0");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ActionPoints_Refill must be at least 0"));
         }
 
         [Test]
@@ -222,9 +197,9 @@ namespace TT.Tests.Players.Commands
         {
             cmd.ActionPoints = TurnTimesStatics.GetActionPointLimit() + 1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be less than " + TurnTimesStatics.GetActionPointLimit()));
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo($"ActionPoints must be less than {TurnTimesStatics.GetActionPointLimit()}"));
         }
 
         [Test]
@@ -232,9 +207,9 @@ namespace TT.Tests.Players.Commands
         {
             cmd.ActionPoints_Refill = TurnTimesStatics.GetActionPointReserveLimit() + 1;
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be less than " + TurnTimesStatics.GetActionPointReserveLimit());
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo($"ActionPoints_Refill must be less than {TurnTimesStatics.GetActionPointReserveLimit()}"));
         }
 
         [Test]
@@ -242,9 +217,9 @@ namespace TT.Tests.Players.Commands
         {
             cmd.Gender = "wasda";
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Gender must be either " + PvPStatics.GenderMale + " or " + PvPStatics.GenderFemale);
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo($"Gender must be either {PvPStatics.GenderMale} or {PvPStatics.GenderFemale}"));
         }
 
         [Test]
@@ -252,9 +227,9 @@ namespace TT.Tests.Players.Commands
         {
             cmd.Mobility = "wasda";
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Mobility must be one of the following: " + PvPStatics.MobilityFull + ", " + PvPStatics.MobilityInanimate + ", or " + PvPStatics.MobilityPet);
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo(
+                    $"Mobility must be one of the following: {PvPStatics.MobilityFull}, {PvPStatics.MobilityInanimate}, or {PvPStatics.MobilityPet}"));
         }
 
         [Test]
@@ -263,12 +238,10 @@ namespace TT.Tests.Players.Commands
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
             cmd.NPCId = npc.Id;
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Player>().Count(p =>
-                p.NPC.Id == npc.Id)
-            .Should().Be(1);
-
+            Assert.That(DataContext.AsQueryable<Player>().Where(p =>
+                p.NPC.Id == npc.Id), Has.Exactly(1).Items);
         }
 
     }

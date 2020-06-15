@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -31,11 +29,11 @@ namespace TT.Tests.Messages.Commands
                .BuildAndSave();
 
             var cmd = new MarkAsAbusive{ MessageId = 61, OwnerId = player.Id};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
             var messageLoaded = DataContext.AsQueryable<Message>().First(m => m.Id == message.Id);
-            messageLoaded.IsReportedAbusive.Should().Be(true);
-            messageLoaded.DoNotRecycleMe.Should().Be(true);
+            Assert.That(messageLoaded.IsReportedAbusive, Is.True);
+            Assert.That(messageLoaded.DoNotRecycleMe, Is.True);
         }
 
         [Test]
@@ -43,8 +41,8 @@ namespace TT.Tests.Messages.Commands
         {
             var cmd = new MarkAsAbusive { MessageId = 61, OwnerId = 999 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message with ID 61 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message with ID 61 could not be found"));
         }
 
         [Test]
@@ -58,8 +56,8 @@ namespace TT.Tests.Messages.Commands
 
             var cmd = new MarkAsAbusive { MessageId = 61, OwnerId = 123};
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 123");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message 61 not owned by player 123"));
         }
 
     }

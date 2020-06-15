@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
@@ -55,8 +54,8 @@ namespace TT.Tests.Items.Entities
                     .With(i => i.ItemType, itemType)
                     .BuildAndSave()
                 ).BuildAndSave();
-
-            item.CanAttachRunesToThisItemType().Should().Be(true);
+            
+            Assert.That(item.CanAttachRunesToThisItemType(), Is.True);
         }
 
         [Test]
@@ -71,7 +70,7 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave()
                 ).BuildAndSave();
 
-            item.CanAttachRunesToThisItemType().Should().Be(false);
+            Assert.That(item.CanAttachRunesToThisItemType(), Is.False);
         }
 
         [Test]
@@ -84,10 +83,9 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave()
                 ).BuildAndSave();
 
-            item.HasRoomForRunes().Should().Be(true);
+            Assert.That(item.HasRoomForRunes(), Is.True);
             item.AttachRune(rune);
-            item.HasRoomForRunes().Should().Be(false);
-
+            Assert.That(item.HasRoomForRunes(), Is.False);
         }
 
         [Test]
@@ -106,11 +104,11 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave()
                 ).BuildAndSave();
 
-            item.HasRoomForRunes().Should().Be(true);
+            Assert.That(item.HasRoomForRunes(), Is.True);
             item.AttachRune(rune);
-            item.HasRoomForRunes().Should().Be(true);
+            Assert.That(item.HasRoomForRunes(), Is.True);
             item.AttachRune(rune2);
-            item.HasRoomForRunes().Should().Be(false);
+            Assert.That(item.HasRoomForRunes(), Is.False);
         }
 
         [Test]
@@ -127,14 +125,14 @@ namespace TT.Tests.Items.Entities
 
             item.AttachRune(rune);
 
-            item.Runes.Count.Should().Be(1);
-            item.Runes.First().ItemSource.FriendlyName.Should().Be("Rune of Mana");
+            Assert.That(item.Runes, Has.Exactly(1).Items);
+            Assert.That(item.Runes.First().ItemSource.FriendlyName, Is.EqualTo("Rune of Mana"));
 
-            rune.IsEquipped.Should().Be(true);
-            rune.EmbeddedOnItem.Id.Should().Be(item.Id);
-            rune.Owner.Id.Should().Be(owner.Id);
-            rune.Owner.FirstName.Should().Be(owner.FirstName);
-            rune.EquippedThisTurn.Should().Be(true);
+            Assert.That(rune.IsEquipped, Is.True);
+            Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(item.Id));
+            Assert.That(rune.Owner.Id, Is.EqualTo(owner.Id));
+            Assert.That(rune.Owner.FirstName, Is.EqualTo(owner.FirstName));
+            Assert.That(rune.EquippedThisTurn, Is.EqualTo(true));
         }
 
         [Test]
@@ -148,7 +146,7 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave()
                 ).BuildAndSave();
 
-            item.IsOfHighEnoughLevelForRune(rune).Should().Be(true);
+            Assert.That(item.IsOfHighEnoughLevelForRune(rune), Is.True);
         }
 
         [Test]
@@ -162,7 +160,7 @@ namespace TT.Tests.Items.Entities
                     .BuildAndSave()
                 ).BuildAndSave();
 
-            item.IsOfHighEnoughLevelForRune(rune).Should().Be(false);
+            Assert.That(item.IsOfHighEnoughLevelForRune(rune), Is.False);
         }
 
         [Test]
@@ -190,19 +188,19 @@ namespace TT.Tests.Items.Entities
             unownedItem.AttachRune(rune2);
 
             unownedItem.RemoveRunes();
-            unownedItem.Runes.Count.Should().Be(0);
+            Assert.That(unownedItem.Runes, Is.Empty);
 
-            rune.EmbeddedOnItem.Should().Be(null);
-            rune.IsEquipped.Should().Be(false);
-            rune.Owner.Should().Be(null);
-            rune.dbLocationName.Should().Be("somewhere");
-            rune.EquippedThisTurn.Should().Be(true);
+            Assert.That(rune.EmbeddedOnItem, Is.Null);
+            Assert.That(rune.IsEquipped, Is.False);
+            Assert.That(rune.Owner, Is.Null);
+            Assert.That(rune.dbLocationName, Is.EqualTo("somewhere"));
+            Assert.That(rune.EquippedThisTurn, Is.True);
 
-            rune2.EmbeddedOnItem.Should().Be(null);
-            rune2.IsEquipped.Should().Be(false);
-            rune2.Owner.Should().Be(null);
-            rune2.dbLocationName.Should().Be("somewhere");
-            rune2.EquippedThisTurn.Should().Be(true);
+            Assert.That(rune2.EmbeddedOnItem, Is.Null);
+            Assert.That(rune2.IsEquipped, Is.False);
+            Assert.That(rune2.Owner, Is.Null);
+            Assert.That(rune2.dbLocationName, Is.EqualTo("somewhere"));
+            Assert.That(rune2.EquippedThisTurn, Is.True);
         }
 
         [Test]
@@ -238,17 +236,17 @@ namespace TT.Tests.Items.Entities
             owner.GiveItem(ownedItem);
 
             ownedItem.RemoveRunes();
-            ownedItem.Runes.Count.Should().Be(0);
+            Assert.That(ownedItem.Runes, Is.Empty);
 
-            rune.EmbeddedOnItem.Should().Be(null);
-            rune.IsEquipped.Should().Be(false);
-            rune.Owner.Id.Should().Be(owner.Id);
-            rune.dbLocationName.Should().Be(String.Empty);
+            Assert.That(rune.EmbeddedOnItem, Is.Null);
+            Assert.That(rune.IsEquipped, Is.False);
+            Assert.That(rune.Owner.Id, Is.EqualTo(owner.Id));
+            Assert.That(rune.dbLocationName, Is.Empty);
 
-            rune2.EmbeddedOnItem.Should().Be(null);
-            rune2.IsEquipped.Should().Be(false);
-            rune2.Owner.Id.Should().Be(owner.Id);
-            rune2.dbLocationName.Should().Be(String.Empty);
+            Assert.That(rune2.EmbeddedOnItem, Is.Null);
+            Assert.That(rune2.IsEquipped, Is.False);
+            Assert.That(rune2.Owner.Id, Is.EqualTo(owner.Id));
+            Assert.That(rune2.dbLocationName, Is.Empty);
         }
 
     }

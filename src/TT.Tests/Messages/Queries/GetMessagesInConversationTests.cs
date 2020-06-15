@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -56,24 +55,21 @@ namespace TT.Tests.Messages.Queries
             var cmd = new GetMessagesInConversation { conversationId = guid1};
             var messages = DomainRegistry.Repository.Find(cmd);
 
-            var ids = messages.Select(m => m.MessageId);
+            var ids = messages.Select(m => m.MessageId).ToList();
 
-            ids.Should().Contain(1);
-            ids.Should().Contain(2);
-            ids.Should().Contain(4);
-            ids.Should().NotContain(otherConversationMessage.Id);
-            ids.Should().NotContain(deletedMessage.Id);
+            Assert.That(ids, Has.Member(1));
+            Assert.That(ids, Has.Member(2));
+            Assert.That(ids, Has.Member(4));
+            Assert.That(ids, Has.No.Member(otherConversationMessage.Id));
+            Assert.That(ids, Has.No.Member(deletedMessage.Id));
         }
 
         [Test]
         public void should_throw_exception_if_conversationId_is_null()
         {
             var cmd = new GetMessagesInConversation { conversationId = null };
-            var action = new Action(() => { Repository.Find(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("ConversationId cannot be null");
+            Assert.That(() => Repository.Find(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("ConversationId cannot be null"));
         }
-
-        
     }
 }

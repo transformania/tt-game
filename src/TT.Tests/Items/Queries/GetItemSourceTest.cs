@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
 using TT.Tests.Builders.Item;
@@ -21,9 +20,9 @@ namespace TT.Tests.Items.Queries
 
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Be(23);
-            item.FriendlyName.Should().BeEquivalentTo("Hello!");
-            item.IsUnique.Should().Be(true);
+            Assert.That(item.Id, Is.EqualTo(23));
+            Assert.That(item.FriendlyName, Is.EqualTo("Hello!"));
+            Assert.That(item.IsUnique, Is.True);
         }
     }
 }

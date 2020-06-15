@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.World.Queries;
@@ -50,10 +49,9 @@ namespace TT.Tests.World.Queries
             var cmd = new GetLocationLogsAtLocation {Location = "pluto", ConcealmentLevel = 50};
             var logs = DomainRegistry.Repository.Find(cmd).ToArray();
 
-            logs.Length.Should().Be(2);
-            logs[0].Id.Should().Be(3);
-            logs[1].Id.Should().Be(1);
-
+            Assert.That(logs, Has.Exactly(2).Items);
+            Assert.That(logs[0].Id, Is.EqualTo(3));
+            Assert.That(logs[1].Id, Is.EqualTo(1));
         }
     }
 }

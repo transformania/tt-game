@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -23,9 +21,8 @@ namespace TT.Tests.World.Commands
 
             DomainRegistry.Repository.Execute(new UpdateRoundNumber { RoundNumber = "new round"});
 
-            var world = DataContext.AsQueryable<TT.Domain.World.Entities.World>().First();
-
-            world.RoundNumber.Should().Be("new round");
+            Assert.That(DataContext.AsQueryable<TT.Domain.World.Entities.World>().First().RoundNumber,
+                Is.EqualTo("new round"));
         }
 
         [Test]
@@ -37,8 +34,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new UpdateRoundNumber { RoundNumber = "new round" });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round renaming can only be done at turn 0 or the maximum round turn.");
+            Assert.That(() => Repository.Execute(new UpdateRoundNumber {RoundNumber = "new round"}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Round renaming can only be done at turn 0 or the maximum round turn."));
         }
 
         [Test]
@@ -50,8 +48,9 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, false)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new UpdateRoundNumber { RoundNumber = "new round" });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round renaming can only be done in chaos mode.");
+            Assert.That(() => Repository.Execute(new UpdateRoundNumber {RoundNumber = "new round"}),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Round renaming can only be done in chaos mode."));
         }
 
         [Test]
@@ -63,8 +62,8 @@ namespace TT.Tests.World.Commands
                 .With(i => i.ChaosMode, true)
                 .BuildAndSave();
 
-            Action action = () => Repository.Execute(new UpdateRoundNumber { });
-            action.Should().ThrowExactly<DomainException>().WithMessage("Round Number must be set!");
+            Assert.That(() => Repository.Execute(new UpdateRoundNumber()),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Round Number must be set!"));
         }
 
     }

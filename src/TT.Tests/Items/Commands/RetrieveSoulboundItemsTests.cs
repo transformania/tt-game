@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -130,23 +128,21 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void can_transfer_all_soulbound_items_with_runes()
         {
-            var result = Repository.Execute(new RetrieveSoulboundItems { PlayerId = player.Id});
-            result.Should().Be("John Doe returns your soulbound High Heels, Bottle of Perfume, and Puppy Doggy.");
+            Assert.That(Repository.Execute(new RetrieveSoulboundItems {PlayerId = player.Id}),
+                Is.EqualTo("John Doe returns your soulbound High Heels, Bottle of Perfume, and Puppy Doggy."));
 
             var playerLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
 
-            playerLoaded.Items.Count.Should().Be(3);
-            playerLoaded.Items.ElementAt(0).Id.Should().Be(souldboundItemToTransfer1.Id);
-            playerLoaded.Items.ElementAt(0).Owner.Id.Should().Be(player.Id);
-            playerLoaded.Items.ElementAt(1).Id.Should().Be(souldboundItemToTransfer2.Id);
-            playerLoaded.Items.ElementAt(1).Owner.Id.Should().Be(player.Id);
-            playerLoaded.Items.ElementAt(2).Id.Should().Be(soulboundPetToTransfer.Id);
-            playerLoaded.Items.ElementAt(2).Owner.Id.Should().Be(player.Id);
+            Assert.That(playerLoaded.Items, Has.Exactly(3).Items);
+            Assert.That(playerLoaded.Items.ElementAt(0).Id, Is.EqualTo(souldboundItemToTransfer1.Id));
+            Assert.That(playerLoaded.Items.ElementAt(0).Owner.Id, Is.EqualTo(player.Id));
+            Assert.That(playerLoaded.Items.ElementAt(1).Id, Is.EqualTo(souldboundItemToTransfer2.Id));
+            Assert.That(playerLoaded.Items.ElementAt(1).Owner.Id, Is.EqualTo(player.Id));
+            Assert.That(playerLoaded.Items.ElementAt(2).Id, Is.EqualTo(soulboundPetToTransfer.Id));
+            Assert.That(playerLoaded.Items.ElementAt(2).Owner.Id, Is.EqualTo(player.Id));
 
-            var ids = playerLoaded.Items.Select(i => i.Id);
-            ids.Contains(soulboundItemOnGround.Id).Should().Be(false);
-            ids.Contains(soulboundItemForSomeoneElse.Id).Should().Be(false);
-
+            Assert.That(playerLoaded.Items.Select(i => i.Id),
+                Has.No.Member(soulboundItemOnGround.Id).And.No.Member(soulboundItemForSomeoneElse.Id));
         }
 
         [Test]
@@ -163,24 +159,22 @@ namespace TT.Tests.Items.Commands
 
             player.GiveItem(pet);
 
-            var result = Repository.Execute(new RetrieveSoulboundItems { PlayerId = player.Id });
-            result.Should().Be("John Doe returns your soulbound High Heels and Bottle of Perfume.");
+            Assert.That(Repository.Execute(new RetrieveSoulboundItems {PlayerId = player.Id}),
+                Is.EqualTo("John Doe returns your soulbound High Heels and Bottle of Perfume."));
 
             var playerLoaded = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
 
-            playerLoaded.Items.Count.Should().Be(3);
-            var ids = playerLoaded.Items.Select(i => i.Id);
-            ids.Contains(soulboundPetToTransfer.Id).Should().Be(false);
+            Assert.That(playerLoaded.Items, Has.Exactly(3).Items);
 
+            Assert.That(playerLoaded.Items.Select(i => i.Id), Has.No.Member(soulboundPetToTransfer.Id));
         }
 
         [Test]
         public void should_throw_exception_if_player_not_found()
         {
             var cmd = new RetrieveSoulboundItems { PlayerId = -99};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("player with ID '-99' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("player with ID '-99' could not be found"));
         }
 
         [Test]
@@ -193,18 +187,17 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var cmd = new RetrieveSoulboundItems { PlayerId = player.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be in the same location as John Doe to retrieve your soulbound items.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You must be in the same location as John Doe to retrieve your soulbound items."));
         }
 
         [Test]
         public void should_throw_exception_if_player_not_animate()
         {
             var cmd = new RetrieveSoulboundItems { PlayerId = inanimatePlayer.Id };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to do this.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You must be animate in order to do this."));
         }
     }
 

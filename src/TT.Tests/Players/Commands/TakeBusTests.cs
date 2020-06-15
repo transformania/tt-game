@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
@@ -8,6 +7,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
+using TT.Tests.Builders.Effects;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Players;
 
@@ -43,71 +43,70 @@ namespace TT.Tests.Players.Commands
             DomainRegistry.Repository.Execute(cmd);
 
             player = DataContext.AsQueryable<Player>().First(p => p.Id == player.Id);
-            player.Money.Should().Be(970);
-            player.ActionPoints.Should().Be(TurnTimesStatics.GetActionPointReserveLimit() - 3);
-            player.Location.Should().Be(LocationsStatics.STREET_160_SUNNYGLADE_DRIVE);
-            player.PlayerLogs.First().Message.Should().Be("You took the bus from <b>Street: 270 W. 9th Avenue</b> to <b>Street: 160 Sunnyglade Drive</b> for <b>30</b> Arpeyjis.");
+            Assert.That(player.Money, Is.EqualTo(970));
+            Assert.That(player.ActionPoints, Is.EqualTo(TurnTimesStatics.GetActionPointReserveLimit() - 3));
+            Assert.That(player.Location, Is.EqualTo(LocationsStatics.STREET_160_SUNNYGLADE_DRIVE));
+            Assert.That(player.PlayerLogs.First().Message,
+                Is.EqualTo(
+                    "You took the bus from <b>Street: 270 W. 9th Avenue</b> to <b>Street: 160 Sunnyglade Drive</b> for <b>30</b> Arpeyjis."));
 
-            var originLog = DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == LocationsStatics.STREET_270_WEST_9TH_AVE);
-            var destinationLog = DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == LocationsStatics.STREET_160_SUNNYGLADE_DRIVE);
-            originLog.Message.Should().Be("John Doe got on a bus headed toward Street: 160 Sunnyglade Drive.");
-            destinationLog.Message.Should().Be("John Doe arrived via bus from Street: 270 W. 9th Avenue.");
-
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>()
+                    .First(l => l.dbLocationName == LocationsStatics.STREET_270_WEST_9TH_AVE).Message,
+                Is.EqualTo("John Doe got on a bus headed toward Street: 160 Sunnyglade Drive.")); // Moved from
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>()
+                    .First(l => l.dbLocationName == LocationsStatics.STREET_160_SUNNYGLADE_DRIVE).Message,
+                Is.EqualTo("John Doe arrived via bus from Street: 270 W. 9th Avenue.")); // Moved to
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
-
             var cmd = new TakeBus { playerId = 987, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id '987' could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with Id '987' could not be found"));
         }
 
         [Test]
-        public void Should_throw_exception_if_player_not_animate()
+        [TestCase(PvPStatics.MobilityInanimate)]
+        [TestCase(PvPStatics.MobilityPet)]
+        public void Should_throw_exception_if_player_not_animate(string mobility)
         {
-
-           var player = new PlayerBuilder()
+           var inanimatePlayer = new PlayerBuilder()
                 .With(n => n.Id, 73472)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
                 .With(p => p.Money, 1000)
-                .With(p => p.Mobility, PvPStatics.MobilityInanimate)
+                .With(p => p.Mobility, mobility)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
 
                 .BuildAndSave();
 
-            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You must be animate in order to take the bus.");
+            var cmd = new TakeBus { playerId = inanimatePlayer.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You must be animate in order to take the bus."));
         }
 
         [Test]
         public void Should_throw_exception_if_destination_not_provided()
         {
-
             var cmd = new TakeBus { playerId = 987 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Destination is required.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Destination is required."));
         }
 
         [Test]
         public void Should_throw_exception_if_destination_is_same_as_origin()
         {
-
             var cmd = new TakeBus { playerId = player.Id, destination = player.Location};
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't take the bus to the location you're already at.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You can't take the bus to the location you're already at."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_recently_has_attacked()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 3)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -118,15 +117,14 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You have been in combat too recently to take a bus."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_recently_has_been_attacked()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 3)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -137,15 +135,14 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You have been in combat too recently to take a bus."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_in_duel()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 4)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -157,15 +154,13 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a duel.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You cannot take the bus whilst in a duel."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_in_quest()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 5)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -177,15 +172,13 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You cannot take the bus whilst in a quest.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You cannot take the bus whilst in a quest."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_cannot_afford_ticket()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 6)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -198,15 +191,13 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't afford this bus ticket!");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You can't afford this bus ticket!"));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_starting_at_bus_stop()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 7)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -217,15 +208,13 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You aren't at a valid bus stop.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You aren't at a valid bus stop."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_not_going_to_bus_stop()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 8)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -236,9 +225,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = "college_sciences" };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Your destination is not a valid bus stop.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Your destination is not a valid bus stop."));
         }
 
         [Test]
@@ -246,7 +234,6 @@ namespace TT.Tests.Players.Commands
         [TestCase(2.99)]
         public void Should_throw_exception_if_player_has_insufficient_AP(decimal actionPoints)
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 236)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -258,16 +245,13 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_230_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You don't have enough AP to take the bus.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You don't have enough AP to take the bus."));
         }
 
         [Test]
-        [Ignore("Not sure how to give a mock player effects...")]
         public void Should_throw_exception_if_player_is_mind_controlled_with_forced_march()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 9)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -275,19 +259,27 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-3))
-                //.With(p => p.Effects, new EffectBuilder().BuildAndSave())
                 .BuildAndSave();
 
-            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
+            var effectSourceMarch = new EffectSourceBuilder()
+                .With(e => e.Id, MindControlStatics.MindControl__Movement_DebuffEffectSourceId)
+                .BuildAndSave();
 
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't ride the bus while under the Forced March! mind control spell.");
+            var effectMarch = new EffectBuilder()
+                .With(e => e.EffectSource, effectSourceMarch)
+                .BuildAndSave();
+
+            player.Effects.Add(effectMarch);
+
+            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You can't ride the bus while under the Forced March! mind control spell."));
         }
 
         [Test]
         public void Should_throw_exception_if_player_is_immobilized()
         {
-
             player = new PlayerBuilder()
                 .With(n => n.Id, 10)
                 .With(p => p.User, new UserBuilder().BuildAndSave())
@@ -299,9 +291,8 @@ namespace TT.Tests.Players.Commands
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't ride the bus while immobilized.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You can't ride the bus while immobilized."));
         }
     }
 }

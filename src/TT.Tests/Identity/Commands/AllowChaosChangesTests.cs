@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -25,11 +23,9 @@ namespace TT.Tests.Identity.Commands
                 .BuildAndSave();
 
             var cmd = new AllowChaosChanges {UserId = "user", ChaosChangesEnabled = allowChanges};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            user = DataContext.AsQueryable<User>().First();
-            user.AllowChaosChanges.Should().Be(allowChanges);
-
+            Assert.That(DataContext.AsQueryable<User>().First().AllowChaosChanges, Is.EqualTo(allowChanges));
         }
 
 
@@ -41,9 +37,7 @@ namespace TT.Tests.Identity.Commands
                 .BuildAndSave();
 
             var cmd = new AllowChaosChanges { UserId = "fake", ChaosChangesEnabled = true };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("User with Id 'fake' could not be found");
+            Assert.That(()=> Repository.Execute(cmd), Throws.TypeOf<DomainException>().With.Message.EqualTo("User with Id 'fake' could not be found"));
         }
 
     }

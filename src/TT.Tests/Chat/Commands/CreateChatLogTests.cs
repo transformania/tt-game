@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Chat.Entities;
@@ -14,12 +13,13 @@ namespace TT.Tests.Chat.Commands
         {
             Repository.Execute(new CreateChatLog { Color = "pink", Message = "hello chat", Name = "Bob Smith", PortraitUrl = "face.jpg", Room = "global" });
 
-            var log = DataContext.AsQueryable<ChatLog>().First();
-            log.Message.Should().Be("hello chat");
-            log.Color.Should().Be("pink");
-            log.PortraitUrl.Should().Be("face.jpg");
-            log.Room.Should().Be("global");
-            log.Name.Should().Be("Bob Smith");
+            var log = DataContext.AsQueryable<ChatLog>().FirstOrDefault();
+            Assert.That(log, Is.Not.Null);
+            Assert.That(log.Message, Is.EqualTo("hello chat"));
+            Assert.That(log.Color, Is.EqualTo("pink"));
+            Assert.That(log.PortraitUrl, Is.EqualTo("face.jpg"));
+            Assert.That(log.Room, Is.EqualTo("global"));
+            Assert.That(log.Name, Is.EqualTo("Bob Smith"));
         }
     }
 }

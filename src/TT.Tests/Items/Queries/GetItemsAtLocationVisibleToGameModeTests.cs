@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Items.Queries;
@@ -45,9 +44,9 @@ namespace TT.Tests.Items.Queries
 
             var visibleItemIds = items.Select(i => i.Id);
 
-            visibleItemIds.Should().Contain(99);
-            visibleItemIds.Should().Contain(91);
-            visibleItemIds.Should().NotContain(77);
+            Assert.That(visibleItemIds, Has.Member(99));
+            Assert.That(visibleItemIds, Has.Member(91));
+            Assert.That(visibleItemIds, Has.No.Member(77));
 
         }
 
@@ -87,11 +86,9 @@ namespace TT.Tests.Items.Queries
 
             var visibleItemIds = items.Select(i => i.Id);
 
-            visibleItemIds.Should().Contain(77);
-            visibleItemIds.Should().Contain(91);
-            visibleItemIds.Should().NotContain(99);
-
+            Assert.That(visibleItemIds, Has.Member(77));
+            Assert.That(visibleItemIds, Has.Member(91));
+            Assert.That(visibleItemIds, Has.No.Member(99));
         }
-
     }
 }

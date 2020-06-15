@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Queries;
@@ -39,29 +37,24 @@ namespace TT.Tests.Items.Queries
                 .With(i => i.RuneLevel, 4)
                 .BuildAndSave();
 
-            var result = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel {RuneLevel = 1});
-
-            result.Should().BeGreaterOrEqualTo(100);
-            result.Should().BeLessOrEqualTo(101);
-
+            Assert.That(DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel {RuneLevel = 1}),
+                Is.EqualTo(100).Or.EqualTo(101));
         }
 
         [Test]
         public void throw_exception_if_RuneLevel_not_provided()
         {
             var query = new GetRandomRuneAtLevel {};
-            var action = new Action(() => { Repository.FindSingle(query); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("RuneLevel is required");
+            Assert.That(() => Repository.FindSingle(query),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RuneLevel is required"));
         }
 
         [Test]
         public void throw_exception_if_RuneLevel_invalid()
         {
             var query = new GetRandomRuneAtLevel { RuneLevel = 12345};
-            var action = new Action(() => { Repository.FindSingle(query); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("RuneLevel '12345' is not a valid level.");
+            Assert.That(() => Repository.FindSingle(query),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("RuneLevel '12345' is not a valid level."));
         }
     }
 }

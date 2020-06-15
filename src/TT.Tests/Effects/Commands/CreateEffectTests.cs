@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Effects.Commands;
@@ -14,6 +12,7 @@ namespace TT.Tests.Effects.Commands
     [TestFixture]
     public class CreateEffectTests : TestBase
     {
+        [Test]
         public void can_create_effect()
         {
             new PlayerBuilder()
@@ -24,23 +23,20 @@ namespace TT.Tests.Effects.Commands
                 .With(e => e.Id, 77)
                 .BuildAndSave();
 
-            var cmd = new CreateEffect { OwnerId = 100, EffectSourceId = 100 };
-            DomainRegistry.Repository.Execute(cmd);
+            var cmd = new CreateEffect { OwnerId = 100, EffectSourceId = 77 };
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Effect>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Effect>().Where(p =>
                 p.Owner.Id == 100 &&
-                p.EffectSource.Id == 77)
-            .Should().Be(1);
-
+                p.EffectSource.Id == 77), Has.Exactly(1).Items);
         }
 
         [Test]
         public void should_throw_error_if_effect_source_not_found()
         {
-            var cmd = new CreateEffect() { OwnerId = 100, EffectSourceId = 55 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Effect Source with Id 55 could not be found");
+            var cmd = new CreateEffect { OwnerId = 100, EffectSourceId = 55 };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Effect Source with Id 55 could not be found"));
         }
 
         [Test]
@@ -50,10 +46,9 @@ namespace TT.Tests.Effects.Commands
                 .With(ss => ss.Id, 55)
                 .BuildAndSave();
 
-            var cmd = new CreateEffect() { OwnerId = 100, EffectSourceId = 55 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id 100 could not be found");
+            var cmd = new CreateEffect { OwnerId = 100, EffectSourceId = 55 };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with Id 100 could not be found"));
         }
 
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Messages.Commands;
@@ -41,80 +39,84 @@ namespace TT.Tests.Messages.Commands
         public void Should_create_new_message()
         {
 
-            var cmd = new CreateMessage();
-            cmd.SenderId = playerBob.Id;
-            cmd.ReceiverId = playerSam.Id;
-            cmd.Text = "Message!";
+            var cmd = new CreateMessage
+            {
+                SenderId = playerBob.Id,
+                ReceiverId = playerSam.Id,
+                Text = "Message!"
+            };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Message>().Where(p =>
                 p.Sender.Id == 13 &&
                 p.Receiver.Id == 17 && 
-                p.MessageText == "Message!")
-            .Should().Be(1);
+                p.MessageText == "Message!"), Has.Exactly(1).Items);
         }
 
         [Test]
         public void Should_throw_exception_if_sender_is_not_found()
         {
+            var cmd = new CreateMessage
+            {
+                SenderId = 34745,
+                ReceiverId = playerSam.Id,
+                Text = "Message!"
+            };
 
-            var cmd = new CreateMessage();
-            cmd.SenderId = 34745;
-            cmd.ReceiverId = playerSam.Id;
-            cmd.Text = "Message!";
-
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Sending player with Id 34745 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Sending player with Id 34745 could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_receiver_is_not_found()
         {
 
-            var cmd = new CreateMessage();
-            cmd.SenderId = playerBob.Id;
-            cmd.ReceiverId = 34745;
-            cmd.Text = "Message!";
+            var cmd = new CreateMessage
+            {
+                SenderId = playerBob.Id,
+                ReceiverId = 34745,
+                Text = "Message!"
+            };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Receiving player with Id 34745 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("Receiving player with Id 34745 could not be found"));
         }
 
         [Test]
         public void Should_throw_exception_if_receiver_is_a_bot()
         {
-
             var botPlayer =  new PlayerBuilder()
                 .With(p => p.User, new UserBuilder().With(u => u.Id, "guid").BuildAndSave())
                 .With(p => p.Id, 19)
                 .With(p => p.BotId, AIStatics.ValentineBotId)
                 .BuildAndSave();
 
-            var cmd = new CreateMessage();
-            cmd.SenderId = playerBob.Id;
-            cmd.ReceiverId = botPlayer.Id;
-            cmd.Text = "Message!";
+            var cmd = new CreateMessage
+            {
+                SenderId = playerBob.Id,
+                ReceiverId = botPlayer.Id,
+                Text = "Message!"
+            };
 
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("You can't message NPCs.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You can't message NPCs."));
         }
 
         [Test]
         public void Should_throw_exception_if_text_is_blank()
         {
+            var cmd = new CreateMessage
+            {
+                SenderId = playerBob.Id,
+                ReceiverId = 34745,
+                Text = ""
+            };
 
-            var cmd = new CreateMessage();
-            cmd.SenderId = playerBob.Id;
-            cmd.ReceiverId = 34745;
-            cmd.Text = "";
-
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Text must not be empty or null");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Text must not be empty or null"));
         }
 
         [Test]
@@ -137,14 +139,12 @@ namespace TT.Tests.Messages.Commands
                 Text = "hello!"
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Message>().Where(p =>
                 p.Sender.Id == 50 &&
                 p.Receiver.Id == 55 &&
-                p.DoNotRecycleMe == true)
-            .Should().Be(1);
-
+                p.DoNotRecycleMe), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -167,14 +167,12 @@ namespace TT.Tests.Messages.Commands
                 Text = "hello!"
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Message>().Where(p =>
                 p.Sender.Id == 50 &&
                 p.Receiver.Id == 55 &&
-                p.DoNotRecycleMe == true)
-            .Should().Be(1);
-
+                p.DoNotRecycleMe), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -197,15 +195,12 @@ namespace TT.Tests.Messages.Commands
                 Text = "hello!"
             };
 
-            Repository.Execute(cmd);
+            Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Message>().Where(p =>
                 p.Sender.Id == 50 &&
                 p.Receiver.Id == 55 &&
-                p.DoNotRecycleMe == false)
-            .Should().Be(1);
-
+                p.DoNotRecycleMe == false), Has.Exactly(1).Items);
         }
-
     }
 }

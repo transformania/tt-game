@@ -33,7 +33,7 @@ namespace TT.Domain.Items.Commands
                 if (player == null)
                     throw new DomainException($"player with ID {ItemId} could not be found");
 
-                if (item.Owner != null && item.Owner.Id != OwnerId)
+                if (item.Owner == null || item.Owner.Id != OwnerId)
                 {
                     throw new DomainException($"player {OwnerId} does not own item {ItemId}");
                 }
@@ -51,7 +51,7 @@ namespace TT.Domain.Items.Commands
                 throw new DomainException("OwnerId is required!");
 
             if (ItemId <= 0)
-                throw new DomainException("OwnerId is required!");
+                throw new DomainException("ItemId is required!");
         }
 
     }

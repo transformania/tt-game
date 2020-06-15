@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.Skills;
@@ -26,21 +24,20 @@ namespace TT.Tests.Skills.Commands
                 .BuildAndSave();
 
             var cmd = new CreateSkill {ownerId = 100, skillSourceId = 55 };
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Skill>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Skill>().Where(p =>
                 p.Owner.Id == 100 &&
-                p.SkillSource.Id == 55)
-            .Should().Be(1);
+                p.SkillSource.Id == 55), Has.Exactly(1).Items);
         }
 
         [Test]
         public void should_throw_error_if_skill_source_not_found()
         {
             var cmd = new CreateSkill { ownerId = 100, skillSourceId = 55 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("StaticSkill Source with Id 55 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("StaticSkill Source with Id 55 could not be found"));
         }
 
         [Test]
@@ -51,12 +48,8 @@ namespace TT.Tests.Skills.Commands
                 .BuildAndSave();
 
             var cmd = new CreateSkill { ownerId = 100, skillSourceId = 55 };
-            var action = new Action(() => { Repository.Execute(cmd); });
-
-            action.Should().ThrowExactly<DomainException>().WithMessage("Player with Id 100 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Player with Id 100 could not be found"));
         }
-
-
-
     }
 }

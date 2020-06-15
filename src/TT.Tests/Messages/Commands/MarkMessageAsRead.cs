@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -31,12 +29,11 @@ namespace TT.Tests.Messages.Commands
                .BuildAndSave();
 
             var cmd = new MarkAsRead{ MessageId = 61, ReadStatus = MessageStatics.ReadAndMarkedAsUnread, OwnerId = player.Id};
-            DomainRegistry.Repository.Execute(cmd);
+            Assert.That(() => DomainRegistry.Repository.Execute(cmd), Throws.Nothing);
 
-            DataContext.AsQueryable<Message>().Count(p =>
+            Assert.That(DataContext.AsQueryable<Message>().Where(p =>
                 p.Id == 61 &&
-                p.ReadStatus == MessageStatics.ReadAndMarkedAsUnread)
-            .Should().Be(1);
+                p.ReadStatus == MessageStatics.ReadAndMarkedAsUnread), Has.Exactly(1).Items);
         }
 
         [Test]
@@ -44,8 +41,8 @@ namespace TT.Tests.Messages.Commands
         {
             var cmd = new MarkAsRead { MessageId = 999, ReadStatus = MessageStatics.ReadAndMarkedAsUnread, OwnerId = 999 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message with ID 999 could not be found");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message with ID 999 could not be found"));
         }
 
         [Test]
@@ -59,8 +56,8 @@ namespace TT.Tests.Messages.Commands
 
             var cmd = new MarkAsRead { MessageId = 61, ReadStatus = MessageStatics.ReadAndMarkedAsUnread, OwnerId = 999 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage("Message 61 not owned by player 999");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Message 61 not owned by player 999"));
         }
 
         [TestCase(-1)]
@@ -70,8 +67,8 @@ namespace TT.Tests.Messages.Commands
         {
             var cmd = new MarkAsRead { MessageId = 61, ReadStatus = readStatus, OwnerId = 999 };
 
-            Action action = () => Repository.Execute(cmd);
-            action.Should().ThrowExactly<DomainException>().WithMessage($"{readStatus} is not a valid read status.");
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo($"{readStatus} is not a valid read status."));
         }
     }
 }

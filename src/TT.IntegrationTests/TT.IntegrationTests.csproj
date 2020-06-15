@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>TT.IntegrationTests</AssemblyTitle>
     <Product>nunit.tests</Product>
     <Copyright>Copyright © 2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <PreBuildEvent>IF EXIST "$(ProjectDir)ConnectionStrings.config" xcopy "$(ProjectDir)ConnectionStrings.config" "$(TargetDir)" /y</PreBuildEvent>
+    <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">IF EXIST "$(ProjectDir)ConnectionStrings.config" xcopy "$(ProjectDir)ConnectionStrings.config" "$(TargetDir)" /y</PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <None Include="BasicTests\CSVsWithFKs\AspNetUsers.csv">

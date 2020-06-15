@@ -38,7 +38,7 @@ namespace TT.Tests.Domain.Services
 
             Assert.That(() => service.Notify(id, message),
                 Throws.TypeOf<ArgumentException>().With.Message
-                    .EqualTo("Cannot raise attack notification. \r\nParameter name: playerId"));
+                    .Matches("Cannot raise attack notification\\. [\r\n]+Parameter name: playerId"));
         }
 
         [TestCase("")]
@@ -51,7 +51,7 @@ namespace TT.Tests.Domain.Services
 
             Assert.That(() => service.Notify(playerId, message),
                 Throws.TypeOf<ArgumentException>().With.Message
-                    .EqualTo("Cannot raise attack notification. \r\nParameter name: message"));
+                    .Matches("Cannot raise attack notification\\. [\r\n]+Parameter name: message"));
         }
     }
 }

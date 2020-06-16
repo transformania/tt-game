@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
   <head>
-  <script src="@Links.Scripts.jquery_2_1_0_js"></script>
+  <script src="@Links.lib.jquery.jquery_js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="never">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>@(string.IsNullOrEmpty(ViewBag.Title) ? "Transformania Time" : $"{ViewBag.Title} - Transformania Time")</title>
-    <script src="@Links.js.datatables._1_10_11.jquery_dataTables_min_js"></script>
-    <script src="@Links.js.datatables._1_10_11.dataTables_bootstrap_min_js"></script>
-    <script src="@Links.js.datatables_responsive._2_0_2.dataTables_responsive_min_js"></script>
-    <script src="@Links.js.datatables_responsive._2_0_2.responsive_bootstrap_min_js"></script>
-    <script src="@Links.Scripts.moment_js"></script>
+    <script src="@Links.lib.datatables_net.jquery_dataTables_js"></script>
+    <script src="@Links.lib.datatables_net_bs.dataTables_bootstrap_js"></script>
+    <script src="@Links.lib.datatables_net_responsive.dataTables_responsive_js"></script>
+    <script src="@Links.lib.datatables_net_responsive_bs.responsive_bootstrap_js"></script>
+    <script src="@Links.lib.moment_js.moment_js_"></script>
 
     <!-- Bootstrap -->
     <link href="@Links.Content.bootstrap_min_css" rel="stylesheet">
 	<link href="@Links.Content.custom_css" rel="stylesheet">
 	<link href="@Links.Content.PvP_css" rel="stylesheet">
-    <link href="@Links.js.datatables._1_10_11.dataTables_bootstrap_min_css" rel="stylesheet">
-    <link href="@Links.js.datatables_responsive._2_0_2.responsive_dataTables_min_css" rel="stylesheet">
+    <link href="@Links.lib.datatables_net_bs.dataTables_bootstrap_css" rel="stylesheet">
+    <link href="@Links.lib.datatables_net_responsive_bs.responsive_bootstrap_css" rel="stylesheet">
 
     <link rel="shortcut icon" href="/Images/PvP/Icons/tt_logo.ico">
     @RenderSection("head", required: false)
@@ -112,10 +112,10 @@
           </footer>
       </div>
 
-      <script src="@Links.Scripts.jquery_unobtrusive_ajax_js"></script>
+      <script src="@Links.lib.jquery_ajax_unobtrusive.jquery_unobtrusive_ajax_js"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="@Links.js.bootstrap._3_3_1.bootstrap_min_js"></script>
+    <script src="@Links.lib.twitter_bootstrap.js.bootstrap_js"></script>
         @RenderSection("scripts", required: false)
       <script src="@Links.Scripts.boxesResize_js"></script>
   </body>

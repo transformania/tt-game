@@ -114,7 +114,7 @@ Task("Run-Unit-Tests")
                tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.Tests.dll");
             },
             unitCoverage,
-            new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
+            new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
                 .WithFilter("+[TT.Domain]*")
                 .WithFilter("-[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")
@@ -145,7 +145,7 @@ Task("Run-Integration-Tests")
                tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.IntegrationTests.dll");
             },
             integrationCoverage,
-            new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
+            new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
                 .WithFilter("+[TT.Domain]*")
                 .WithFilter("+[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")

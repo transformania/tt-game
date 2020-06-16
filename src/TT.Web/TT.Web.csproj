@@ -256,7 +256,6 @@
     <Content Include="Schema\RemoveOldIndexes.sql" />
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\boxesResize.js" />
-    <Content Include="cake\web.config" />
     <Content Include="libman.json" />
     <Content Include="Scripts\itemDetailModal.js" />
     <Content Include="Scripts\leaderboardDropdown.js" />

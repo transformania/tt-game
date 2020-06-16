@@ -128,7 +128,6 @@ namespace Links
         public const string UrlPath = "~/Content";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-        public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
         public static readonly string custom_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/custom.min.css") ? Url("custom.min.css") : Url("custom.css");
         public static readonly string custom_min_css = Url("custom.min.css");
         public static readonly string custom_scss = Url("custom.scss");
@@ -188,6 +187,9 @@ namespace Links
             public static readonly string jquery_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.min.js") ? Url("jquery.min.js") : Url("jquery.js");
             public static readonly string jquery_min_js = Url("jquery.min.js");
             public static readonly string jquery_min_map = Url("jquery.min.map");
+            public static readonly string jquery_slim_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.slim.min.js") ? Url("jquery.slim.min.js") : Url("jquery.slim.js");
+            public static readonly string jquery_slim_min_js = Url("jquery.slim.min.js");
+            public static readonly string jquery_slim_min_map = Url("jquery.slim.min.map");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -222,13 +224,8 @@ namespace Links
             public const string UrlPath = "~/lib/moment.js";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-            public static readonly string locales_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/locales.min.js") ? Url("locales.min.js") : Url("locales.js");
-            public static readonly string locales_min_js = Url("locales.min.js");
-            public static readonly string moment_with_locales_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment-with-locales.min.js") ? Url("moment-with-locales.min.js") : Url("moment-with-locales.js");
-            public static readonly string moment_with_locales_min_js = Url("moment-with-locales.min.js");
             public static readonly string moment_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
             public static readonly string moment_min_js = Url("moment.min.js");
-            public static readonly string tests_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tests.min.js") ? Url("tests.min.js") : Url("tests.js");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -253,9 +250,11 @@ namespace Links
                 public static readonly string bootstrap_theme_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/bootstrap-theme.min.css") ? Url("bootstrap-theme.min.css") : Url("bootstrap-theme.css");
                 public static readonly string bootstrap_theme_css_map = Url("bootstrap-theme.css.map");
                 public static readonly string bootstrap_theme_min_css = Url("bootstrap-theme.min.css");
+                public static readonly string bootstrap_theme_min_css_map = Url("bootstrap-theme.min.css.map");
                 public static readonly string bootstrap_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/bootstrap.min.css") ? Url("bootstrap.min.css") : Url("bootstrap.css");
                 public static readonly string bootstrap_css_map = Url("bootstrap.css.map");
                 public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
+                public static readonly string bootstrap_min_css_map = Url("bootstrap.min.css.map");
             }
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -267,6 +266,7 @@ namespace Links
                 public static readonly string glyphicons_halflings_regular_svg = Url("glyphicons-halflings-regular.svg");
                 public static readonly string glyphicons_halflings_regular_ttf = Url("glyphicons-halflings-regular.ttf");
                 public static readonly string glyphicons_halflings_regular_woff = Url("glyphicons-halflings-regular.woff");
+                public static readonly string glyphicons_halflings_regular_woff2 = Url("glyphicons-halflings-regular.woff2");
             }
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -311,7 +311,6 @@ namespace Links
         {
             public static class Assets
             {
-                public static readonly string bootstrap_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/bootstrap.min.css");
                 public static readonly string custom_css = T4MVCHelpers.ProcessAssetPath("~/Content/custom.css");
                 public static readonly string custom_min_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/custom.min.css");
                 public static readonly string PvP_css = T4MVCHelpers.ProcessAssetPath("~/Content/PvP.css");
@@ -361,6 +360,8 @@ namespace Links
                 {
                     public static readonly string jquery_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.js"); 
                     public static readonly string jquery_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.min.js"); 
+                    public static readonly string jquery_slim_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.slim.js"); 
+                    public static readonly string jquery_slim_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.slim.min.js"); 
                 }
             }
             public static partial class jquery_ajax_unobtrusive 
@@ -391,13 +392,8 @@ namespace Links
             {
                 public static class Assets
                 {
-                    public static readonly string locales_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/locales.js"); 
-                    public static readonly string locales_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/locales.min.js"); 
-                    public static readonly string moment_with_locales_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/moment-with-locales.js"); 
-                    public static readonly string moment_with_locales_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/moment-with-locales.min.js"); 
                     public static readonly string moment_js_ = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/moment.js"); 
                     public static readonly string moment_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/moment.min.js"); 
-                    public static readonly string tests_js = T4MVCHelpers.ProcessAssetPath("~/lib/moment.js/tests.js"); 
                 }
             }
             public static partial class signalr_js 

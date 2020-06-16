@@ -3,7 +3,7 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "twitter-bootstrap@3.3.1",
+      "library": "twitter-bootstrap@3.4.1",
       "destination": "lib/twitter-bootstrap/"
     },
     {
@@ -11,7 +11,7 @@
       "destination": "lib/signalr.js/"
     },
     {
-      "library": "jquery@2.1.0",
+      "library": "jquery@3.5.1",
       "destination": "lib/jquery/"
     },
     {
@@ -27,19 +27,23 @@
       ]
     },
     {
-      "library": "moment.js@2.10.3",
-      "destination": "lib/moment.js/"
+      "library": "moment.js@2.26.0",
+      "destination": "lib/moment.js/",
+      "files": [
+        "moment.min.js",
+        "moment.js"
+      ]
     },
     {
-      "library": "datatables.net-responsive-bs@2.0.2",
+      "library": "datatables.net-responsive-bs@2.2.5",
       "destination": "lib/datatables.net-responsive-bs/"
     },
     {
-      "library": "datatables.net-responsive@2.0.2",
+      "library": "datatables.net-responsive@2.2.5",
       "destination": "lib/datatables.net-responsive/"
     },
     {
-      "library": "jqueryui@1.10.4",
+      "library": "jqueryui@1.12.1",
       "destination": "lib/jqueryui/",
       "files": [
         "jquery-ui.min.js",
@@ -47,11 +51,11 @@
       ]
     },
     {
-      "library": "datatables.net@1.10.12",
+      "library": "datatables.net@2.1.1",
       "destination": "lib/datatables.net/"
     },
     {
-      "library": "datatables.net-bs@1.10.12",
+      "library": "datatables.net-bs@2.1.1",
       "destination": "lib/datatables.net-bs/"
     }
   ]

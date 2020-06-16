@@ -17,8 +17,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
@@ -204,7 +204,6 @@
     </Compile>
     <Compile Include="ViewModels\MySkillsViewModel.cs" />
     <Compile Include="ViewModels\SetNicknameViewModel.cs" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.min.css">
       <DependentUpon>custom.css</DependentUpon>
@@ -238,13 +237,10 @@
     <Content Include="lib\jqueryui\jquery-ui.min.js" />
     <Content Include="lib\jquery\jquery.js" />
     <Content Include="lib\jquery\jquery.min.js" />
-    <Content Include="lib\moment.js\locales.js" />
-    <Content Include="lib\moment.js\locales.min.js" />
-    <Content Include="lib\moment.js\moment-with-locales.js" />
-    <Content Include="lib\moment.js\moment-with-locales.min.js" />
+    <Content Include="lib\jquery\jquery.slim.js" />
+    <Content Include="lib\jquery\jquery.slim.min.js" />
     <Content Include="lib\moment.js\moment.js" />
     <Content Include="lib\moment.js\moment.min.js" />
-    <Content Include="lib\moment.js\tests.js" />
     <Content Include="lib\signalr.js\jquery.signalR.js" />
     <Content Include="lib\signalr.js\jquery.signalR.min.js" />
     <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.css" />
@@ -275,11 +271,15 @@
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
     <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.min.css.map" />
     <Content Include="lib\twitter-bootstrap\css\bootstrap.css.map" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap.min.css.map" />
     <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="lib\jquery\jquery.min.map" />
     <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="lib\jquery\jquery.min.map" />
+    <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="lib\jquery\jquery.slim.min.map" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>

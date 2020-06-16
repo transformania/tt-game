@@ -131,6 +131,29 @@ namespace TT.Tests.Players.Commands
         }
 
         [Test]
+        public void feral_animal_cannot_be_immobilized()
+        {
+            player = new PlayerBuilder()
+                .With(p => p.Id, 55)
+                .With(p => p.ActionPoints, TurnTimesStatics.GetActionPointReserveLimit())
+                .With(p => p.MoveActionPointDiscount, -999)  // Makes animate form immobile
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Stats, stats)
+                    .BuildAndSave())
+                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
+                .With(p => p.Mobility, PvPStatics.MobilityPet)
+                .With(p => p.Item, new ItemBuilder()
+                    .With(i => i.Id, 500)
+                    .With(i => i.dbLocationName, "someplace")
+                    .BuildAndSave()
+                )
+                .BuildAndSave();
+
+            Assert.That(() => DomainRegistry.Repository.Execute(new Move { PlayerId = 55, destination = destination }),
+                Throws.Nothing);
+        }
+
+        [Test]
         public void should_throw_exception_if_player_not_provided()
         {
             var cmd = new Move { PlayerId = 0, destination = destination };

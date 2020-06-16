@@ -40,7 +40,7 @@ namespace TT.Domain.Players.Commands
                 if (LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination) == null)
                     throw new DomainException($"Location with dbName '{destination}' could not be found");
 
-                if (player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
+                if (player.Mobility == PvPStatics.MobilityFull && player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't move since you have been immobilized!");
 
                 if (player.ActionPoints < PvPStatics.LocationMoveCost)

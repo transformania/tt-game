@@ -17,8 +17,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
@@ -216,42 +216,54 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\login-left.png" />
     <Content Include="Images\login-right.png" />
-    <Content Include="js\bootstrap\3.3.1\bootstrap.min.js" />
-    <Content Include="js\datatables-responsive\2.0.2\dataTables.responsive.min.js" />
-    <Content Include="js\datatables-responsive\2.0.2\responsive.bootstrap.min.js" />
-    <Content Include="js\datatables-responsive\2.0.2\responsive.dataTables.min.css" />
-    <Content Include="js\datatables\1.10.11\dataTables.bootstrap.min.css" />
-    <Content Include="js\datatables\1.10.11\dataTables.bootstrap.min.js" />
-    <Content Include="js\datatables\1.10.11\jquery.dataTables.min.js" />
+    <Content Include="lib\datatables.net-bs\dataTables.bootstrap.css" />
+    <Content Include="lib\datatables.net-bs\dataTables.bootstrap.js" />
+    <Content Include="lib\datatables.net-bs\dataTables.bootstrap.min.css" />
+    <Content Include="lib\datatables.net-bs\dataTables.bootstrap.min.js" />
+    <Content Include="lib\datatables.net-responsive-bs\responsive.bootstrap.css" />
+    <Content Include="lib\datatables.net-responsive-bs\responsive.bootstrap.js" />
+    <Content Include="lib\datatables.net-responsive-bs\responsive.bootstrap.min.css" />
+    <Content Include="lib\datatables.net-responsive-bs\responsive.bootstrap.min.js" />
+    <Content Include="lib\datatables.net-responsive\dataTables.responsive.js" />
+    <Content Include="lib\datatables.net-responsive\dataTables.responsive.min.js" />
+    <Content Include="lib\datatables.net\jquery.dataTables.js" />
+    <Content Include="lib\datatables.net\jquery.dataTables.min.js" />
+    <Content Include="lib\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.js" />
+    <Content Include="lib\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="lib\jquery-mobile\jquery.mobile.js" />
+    <Content Include="lib\jquery-mobile\jquery.mobile.min.js" />
+    <Content Include="lib\jqueryui\jquery-ui.js" />
+    <Content Include="lib\jqueryui\jquery-ui.min.js" />
+    <Content Include="lib\jquery\jquery.js" />
+    <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="lib\moment.js\locales.js" />
+    <Content Include="lib\moment.js\locales.min.js" />
+    <Content Include="lib\moment.js\moment-with-locales.js" />
+    <Content Include="lib\moment.js\moment-with-locales.min.js" />
+    <Content Include="lib\moment.js\moment.js" />
+    <Content Include="lib\moment.js\moment.min.js" />
+    <Content Include="lib\moment.js\tests.js" />
+    <Content Include="lib\signalr.js\jquery.signalR.js" />
+    <Content Include="lib\signalr.js\jquery.signalR.min.js" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.css" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap.css" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap.min.css" />
+    <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="lib\twitter-bootstrap\js\bootstrap.js" />
+    <Content Include="lib\twitter-bootstrap\js\bootstrap.min.js" />
+    <Content Include="lib\twitter-bootstrap\js\npm.js" />
     <Content Include="Schema\GetPlayerBuffs.sql" />
     <Content Include="Schema\PopulateBotId.sql" />
     <Content Include="Schema\RemoveOldIndexes.sql" />
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\boxesResize.js" />
-    <Content Include="js\web.config" />
     <Content Include="cake\web.config" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="libman.json" />
     <Content Include="Scripts\itemDetailModal.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
-    <Content Include="Scripts\jquery-ui-1.10.4.js" />
-    <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
-    <Content Include="Scripts\jquery.mobile.custom.js" />
-    <Content Include="Scripts\jquery.mobile.custom.min.js" />
-    <Content Include="Scripts\jquery.rotate.js" />
-    <Content Include="Scripts\jquery.signalR-2.4.1.js" />
-    <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="Scripts\leaderboardDropdown.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\newCharacter.js" />
     <Content Include="Scripts\notices.js" />
     <Content Include="Scripts\randomFirstLastNames.js" />
@@ -262,7 +274,12 @@
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="lib\twitter-bootstrap\css\bootstrap.css.map" />
+    <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="lib\jquery\jquery.min.map" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
@@ -340,9 +357,6 @@
     <Content Include="Content\PvP.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\custom.scss" />
     <None Include="ConnectionStrings.config">
       <SubType>Designer</SubType>
@@ -355,10 +369,7 @@
     </None>
     <None Include="Properties\PublishProfiles\test.transformaniatime.com.pubxml" />
     <None Include="Properties\PublishProfiles\transformaniatime.com.pubxml" />
-    <Content Include="Scripts\jquery.animate-color.min.js" />
-    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.mobile.doubletap.js" />
-    <Content Include="Scripts\jQueryRotate.js" />
     <Content Include="Scripts\tt.chat.userList.js" />
     <Content Include="Scripts\tt.chat.messages.js" />
     <Content Include="Views\HtmlPage1.html" />
@@ -713,6 +724,11 @@
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
     <PackageReference Include="BuildWebCompiler">
       <Version>1.12.405</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(CI)' != 'true'">
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build">
+      <Version>2.1.76</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

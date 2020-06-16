@@ -281,8 +281,7 @@ custom.min.css
 unitCoverage.xml
 integrationCoverage.xml
 coverage/
-/src/TT.Web/js/*
-!/src/TT.Web/js/web.config
+src/TT.Web/lib/
 
 # Cake
 /tools/

@@ -140,6 +140,26 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class Chart_js {
+            public const string UrlPath = "~/lib/Chart.js";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            public static readonly string Chart_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Chart.min.css") ? Url("Chart.min.css") : Url("Chart.css");
+            public static readonly string Chart_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Chart.min.js") ? Url("Chart.min.js") : Url("Chart.js");
+            public static readonly string Chart_min_css = Url("Chart.min.css");
+            public static readonly string Chart_min_js = Url("Chart.min.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class clipboard_js {
+            public const string UrlPath = "~/lib/clipboard.js";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            public static readonly string clipboard_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/clipboard.min.js") ? Url("clipboard.min.js") : Url("clipboard.js");
+            public static readonly string clipboard_min_js = Url("clipboard.min.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class datatables_net {
             public const string UrlPath = "~/lib/datatables.net";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
@@ -281,6 +301,53 @@ namespace Links
         
         }
     
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class vis {
+            public const string UrlPath = "~/lib/vis";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class img {
+                public const string UrlPath = "~/lib/vis/img";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class network {
+                    public const string UrlPath = "~/lib/vis/img/network";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string acceptDeleteIcon_png = Url("acceptDeleteIcon.png");
+                    public static readonly string addNodeIcon_png = Url("addNodeIcon.png");
+                    public static readonly string backIcon_png = Url("backIcon.png");
+                    public static readonly string connectIcon_png = Url("connectIcon.png");
+                    public static readonly string cross_png = Url("cross.png");
+                    public static readonly string cross2_png = Url("cross2.png");
+                    public static readonly string deleteIcon_png = Url("deleteIcon.png");
+                    public static readonly string downArrow_png = Url("downArrow.png");
+                    public static readonly string editIcon_png = Url("editIcon.png");
+                    public static readonly string leftArrow_png = Url("leftArrow.png");
+                    public static readonly string minus_png = Url("minus.png");
+                    public static readonly string plus_png = Url("plus.png");
+                    public static readonly string rightArrow_png = Url("rightArrow.png");
+                    public static readonly string upArrow_png = Url("upArrow.png");
+                    public static readonly string zoomExtends_png = Url("zoomExtends.png");
+                }
+            
+            }
+        
+            public static readonly string vis_graph3d_min_js = Url("vis-graph3d.min.js");
+            public static readonly string vis_network_min_css = Url("vis-network.min.css");
+            public static readonly string vis_network_min_js = Url("vis-network.min.js");
+            public static readonly string vis_timeline_graph2d_min_css = Url("vis-timeline-graph2d.min.css");
+            public static readonly string vis_timeline_graph2d_min_js = Url("vis-timeline-graph2d.min.js");
+            public static readonly string vis_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/vis.min.css") ? Url("vis.min.css") : Url("vis.css");
+            public static readonly string vis_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/vis.min.js") ? Url("vis.min.js") : Url("vis.js");
+            public static readonly string vis_js_map = Url("vis.js.map");
+            public static readonly string vis_map = Url("vis.map");
+            public static readonly string vis_min_css = Url("vis.min.css");
+            public static readonly string vis_min_js = Url("vis.min.js");
+        }
+    
     }
 
     
@@ -318,6 +385,24 @@ namespace Links
         }
         public static partial class lib 
         {
+            public static partial class Chart_js 
+            {
+                public static class Assets
+                {
+                    public static readonly string Chart_css = T4MVCHelpers.ProcessAssetPath("~/lib/Chart.js/Chart.css");
+                    public static readonly string Chart_js_ = T4MVCHelpers.ProcessAssetPath("~/lib/Chart.js/Chart.js"); 
+                    public static readonly string Chart_min_css = T4MVCHelpers.ProcessAssetPath("~/lib/Chart.js/Chart.min.css");
+                    public static readonly string Chart_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/Chart.js/Chart.min.js"); 
+                }
+            }
+            public static partial class clipboard_js 
+            {
+                public static class Assets
+                {
+                    public static readonly string clipboard_js_ = T4MVCHelpers.ProcessAssetPath("~/lib/clipboard.js/clipboard.js"); 
+                    public static readonly string clipboard_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/clipboard.js/clipboard.min.js"); 
+                }
+            }
             public static partial class datatables_net 
             {
                 public static class Assets
@@ -433,6 +518,33 @@ namespace Links
                 }
                 public static class Assets
                 {
+                }
+            }
+            public static partial class vis 
+            {
+                public static partial class img 
+                {
+                    public static partial class network 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                    }
+                }
+                public static class Assets
+                {
+                    public static readonly string vis_graph3d_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis-graph3d.min.js"); 
+                    public static readonly string vis_network_min_css = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis-network.min.css");
+                    public static readonly string vis_network_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis-network.min.js"); 
+                    public static readonly string vis_timeline_graph2d_min_css = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis-timeline-graph2d.min.css");
+                    public static readonly string vis_timeline_graph2d_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis-timeline-graph2d.min.js"); 
+                    public static readonly string vis_css = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis.css");
+                    public static readonly string vis_js = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis.js"); 
+                    public static readonly string vis_min_css = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis.min.css");
+                    public static readonly string vis_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/vis/vis.min.js"); 
                 }
             }
             public static class Assets

@@ -67,9 +67,9 @@
         $("#itemsModal").hide();
     }
 
-    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+    $.getScript("@Links.lib.clipboard_js.clipboard_js_")
         .done(function () {
-            new Clipboard('.copyable');
+            new ClipboardJS('.copyable');
         })
         .fail(function () {
             alert("Failed to load clipboard.");

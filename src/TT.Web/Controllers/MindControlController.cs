@@ -45,8 +45,6 @@ namespace TT.Web.Controllers
 
             ViewBag.Victim = victim;
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
-
             if (victim.IsInDungeon())
             {
                 var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
@@ -119,14 +117,12 @@ namespace TT.Web.Controllers
                 var locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
                 LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage);
 
-
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
             }
             else
             {
                 TempData["Error"] = "It seems " + victim.GetFullName() + " was not carrying or wearing anything to drop!";
             }
-
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
 
             return RedirectToAction(MVC.PvP.Play());
         }

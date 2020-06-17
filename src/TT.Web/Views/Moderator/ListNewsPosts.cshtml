@@ -2,7 +2,8 @@
 
 @section menu
 {
-    <li><a href="@Url.Action(MVC.Moderator.Index())">Back</a></li>
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Moderator.Index())">Back to moderation</a></li>
     <li><a href="@Url.Action(MVC.Moderator.EditNewsPost(-1))">Add news</a></li>
 }
 
@@ -10,7 +11,7 @@
 
 
 
-    <h2>ListNewsPosts</h2>
+    <h2>News Posts</h2>
 
     <table id="newsPosts" class="table table-hover messageTable">
         <thead>

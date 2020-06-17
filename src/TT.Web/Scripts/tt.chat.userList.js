@@ -19,7 +19,7 @@
 		else
 			output.addClass('bad');
 
-		output.doubleTap(function (e) { ChatModule.onUserDoubleTapped($(this).text(), e); });
+		output.doubletap(function (e) { ChatModule.onUserDoubleTapped($(this).text(), e); });
 
 		return output.append("<br>");
 	}

@@ -19,14 +19,6 @@
       "destination": "lib/jquery-ajax-unobtrusive/"
     },
     {
-      "library": "jquery-mobile@1.4.5",
-      "destination": "lib/jquery-mobile/",
-      "files": [
-        "jquery.mobile.min.js",
-        "jquery.mobile.js"
-      ]
-    },
-    {
       "library": "moment.js@2.26.0",
       "destination": "lib/moment.js/",
       "files": [
@@ -57,6 +49,10 @@
     {
       "library": "datatables.net-bs@2.1.1",
       "destination": "lib/datatables.net-bs/"
+    },
+    {
+      "library": "jquery-touch-events@2.0.3",
+      "destination": "lib/jquery-touch-events/"
     }
   ]
 }

@@ -71,7 +71,7 @@
         var text = $('<span></span>')
             .addClass(messageClass)
             .append(applyHighlightToMessage(linkify(message)))
-            .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
+            .doubletap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
             .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
 
         if (useUserColour)
@@ -127,7 +127,7 @@
 
 	    var userName = $('<strong></strong>')
 	        .text(user + ': ')
-	        .doubleTap(function(e) { ChatModule.onUserDoubleTapped(user, e); });
+	        .doubletap(function(e) { ChatModule.onUserDoubleTapped(user, e); });
 
 	    if (model.IsStaff)
 	    	userName.addClass('adminFont');

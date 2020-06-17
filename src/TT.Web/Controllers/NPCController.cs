@@ -507,6 +507,8 @@ namespace TT.Web.Controllers
             var victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
             PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
+
             return RedirectToAction(MVC.MindControl.MindControlList());
         }
 

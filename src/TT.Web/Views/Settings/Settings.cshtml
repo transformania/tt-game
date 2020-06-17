@@ -301,7 +301,9 @@
 
 </div>
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
 
         $("#toggleAudio_update").click(function () {
@@ -337,11 +339,12 @@
             alert(message + " DISABLED");
         }
     }
+    </script>
+}
 
-</script>
-
-
-<style>
+@section head
+{
+    <style>
     p {
         border: 1px solid;
         height: auto;
@@ -351,4 +354,5 @@
         padding: 5px;
         overflow: auto;
     }
-</style>
+    </style>
+}

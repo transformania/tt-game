@@ -106,7 +106,9 @@
     </table>
 </div>
 
-<style>
+@section head
+{
+    <style>
 
     .mobilityClass {
         color: darkblue;
@@ -124,13 +126,11 @@
         text-align: center;
     }
 </style>
+}
 
-
-
-
-
-
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#MySkills').dataTable({
             "orderCellsTop": true,
@@ -171,4 +171,5 @@
     }
 
 
-</script>
+    </script>
+}

@@ -107,8 +107,8 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         public static readonly string boxesResize_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/boxesResize.min.js") ? Url("boxesResize.min.js") : Url("boxesResize.js");
+        public static readonly string buffsTableColoring_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/buffsTableColoring.min.js") ? Url("buffsTableColoring.min.js") : Url("buffsTableColoring.js");
         public static readonly string itemDetailModal_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/itemDetailModal.min.js") ? Url("itemDetailModal.min.js") : Url("itemDetailModal.js");
-        public static readonly string jquery_mobile_doubletap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.mobile.doubletap.min.js") ? Url("jquery.mobile.doubletap.min.js") : Url("jquery.mobile.doubletap.js");
         public static readonly string leaderboardDropdown_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/leaderboardDropdown.min.js") ? Url("leaderboardDropdown.min.js") : Url("leaderboardDropdown.js");
         public static readonly string newCharacter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/newCharacter.min.js") ? Url("newCharacter.min.js") : Url("newCharacter.js");
         public static readonly string notices_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/notices.min.js") ? Url("notices.min.js") : Url("notices.js");
@@ -202,12 +202,12 @@ namespace Links
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class jquery_mobile {
-            public const string UrlPath = "~/lib/jquery-mobile";
+        public static class jquery_touch_events {
+            public const string UrlPath = "~/lib/jquery-touch-events";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-            public static readonly string jquery_mobile_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.mobile.min.js") ? Url("jquery.mobile.min.js") : Url("jquery.mobile.js");
-            public static readonly string jquery_mobile_min_js = Url("jquery.mobile.min.js");
+            public static readonly string jquery_mobile_events_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.mobile-events.min.js") ? Url("jquery.mobile-events.min.js") : Url("jquery.mobile-events.js");
+            public static readonly string jquery_mobile_events_min_js = Url("jquery.mobile-events.min.js");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -292,8 +292,8 @@ namespace Links
             public static class Assets
             {
                 public static readonly string boxesResize_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/boxesResize.js"); 
+                public static readonly string buffsTableColoring_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/buffsTableColoring.js"); 
                 public static readonly string itemDetailModal_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/itemDetailModal.js"); 
-                public static readonly string jquery_mobile_doubletap_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.mobile.doubletap.js"); 
                 public static readonly string leaderboardDropdown_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/leaderboardDropdown.js"); 
                 public static readonly string newCharacter_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/newCharacter.js"); 
                 public static readonly string notices_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/notices.js"); 
@@ -372,12 +372,12 @@ namespace Links
                     public static readonly string jquery_unobtrusive_ajax_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"); 
                 }
             }
-            public static partial class jquery_mobile 
+            public static partial class jquery_touch_events 
             {
                 public static class Assets
                 {
-                    public static readonly string jquery_mobile_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery-mobile/jquery.mobile.js"); 
-                    public static readonly string jquery_mobile_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery-mobile/jquery.mobile.min.js"); 
+                    public static readonly string jquery_mobile_events_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery-touch-events/jquery.mobile-events.js"); 
+                    public static readonly string jquery_mobile_events_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery-touch-events/jquery.mobile-events.min.js"); 
                 }
             }
             public static partial class jqueryui 

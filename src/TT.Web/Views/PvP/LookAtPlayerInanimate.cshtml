@@ -104,24 +104,27 @@
     }
 }
 
-<script>
-    @functions{
-        public string TokenHeaderValue()
-        {
-            AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
-            return cookieToken + ":" + formToken;
-        }
-
-        public string GetUserId()
-        {
-            return Model.PlayerForm.Player.MembershipId;
-        }
-
-        public string GetApiUrl()
-        {
-            return "/api";
-        }
+@functions{
+    public string TokenHeaderValue()
+    {
+        AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
+        return cookieToken + ":" + formToken;
     }
+
+    public string GetUserId()
+    {
+        return Model.PlayerForm.Player.MembershipId;
+    }
+
+    public string GetApiUrl()
+    {
+        return "/api";
+    }
+}
+
+@section scripts
+{
+    <script>
 
     $(document).ready(function () {
         // get current url that the page is on
@@ -176,9 +179,11 @@
             });
         });
     });
-
-</script>
-<style>
+    </script>
+}
+@section head
+{
+    <style>
     .leftDisplay {
         background-size: 100% 100%;
         position: relative;
@@ -227,4 +232,5 @@
             width: 100%;
         }
     }
-</style>
+    </style>
+}

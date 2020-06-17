@@ -90,10 +90,7 @@
 }
 
 <script>
-    var questId = @Model.ParentQuestState.QuestId;
-    var allVariablesList = [];
-
     $("#allVariables").click(function () {
-        loadUsedVariablesFromServer();
+        loadUsedVariablesFromServer("@Model.ParentQuestState.QuestId");
     });
 </script>

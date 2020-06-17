@@ -155,17 +155,3 @@
             <div>@Ajax.ActionLink("--Add Child QuestState--", MVC.QuestWriter.QuestState(-1, Model.QuestState.QuestId, Model.QuestState.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</div>
         }
     }*@
-
-
-
-<script>
-
-    var allStates;
-    var questId = @Model.QuestState.QuestId;
-   // var jumpToDropdown = $("#QuestState_JumpToQuestStateId");
-   // var jumpToLoadValue = 0; // TODO:  remove?
-
-
-   // // onload
-   //// loadJumpToDropdownWithValues();
-</script>

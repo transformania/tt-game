@@ -49,8 +49,9 @@
 
 </div>
 
-<script>
-   
+@section scripts
+{
+    <script>
     $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
         .done(function () {
             new Clipboard('.copyable');
@@ -67,5 +68,5 @@
             $('#answer').attr('data-clipboard-text', data);
         });
     }
-
-</script>
+    </script>
+}

@@ -231,8 +231,8 @@
     <Content Include="lib\datatables.net\jquery.dataTables.min.js" />
     <Content Include="lib\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.js" />
     <Content Include="lib\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="lib\jquery-mobile\jquery.mobile.js" />
-    <Content Include="lib\jquery-mobile\jquery.mobile.min.js" />
+    <Content Include="lib\jquery-touch-events\jquery.mobile-events.js" />
+    <Content Include="lib\jquery-touch-events\jquery.mobile-events.min.js" />
     <Content Include="lib\jqueryui\jquery-ui.js" />
     <Content Include="lib\jqueryui\jquery-ui.min.js" />
     <Content Include="lib\jquery\jquery.js" />
@@ -257,6 +257,7 @@
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="libman.json" />
+    <Content Include="Scripts\buffsTableColoring.js" />
     <Content Include="Scripts\itemDetailModal.js" />
     <Content Include="Scripts\leaderboardDropdown.js" />
     <Content Include="Scripts\newCharacter.js" />
@@ -368,7 +369,6 @@
     </None>
     <None Include="Properties\PublishProfiles\test.transformaniatime.com.pubxml" />
     <None Include="Properties\PublishProfiles\transformaniatime.com.pubxml" />
-    <Content Include="Scripts\jquery.mobile.doubletap.js" />
     <Content Include="Scripts\tt.chat.userList.js" />
     <Content Include="Scripts\tt.chat.messages.js" />
     <Content Include="Views\HtmlPage1.html" />
@@ -390,7 +390,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\PvP\Game.cshtml" />
     <Content Include="Views\PvP\Play.cshtml" />
     <Content Include="Views\PvP\MakeNewCharacter.cshtml" />
     <Content Include="Views\PvP\Player_Partial.cshtml" />

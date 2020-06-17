@@ -1,9 +1,4 @@
-﻿@section head
-{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
-}
-
-<div class="containerInner" style="overflow: scroll;">
+﻿<div class="containerInner" style="overflow: scroll;">
 
     <h1>Server Population By Turn</h1>
 
@@ -14,8 +9,10 @@
     <button onclick="changeReductionFactorAndDraw(12)">12</button>
     <button onclick="changeReductionFactorAndDraw(24)">24</button>
 </div>
-
-<script>
+@section scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+    <script>
 
     var labelsRaw = [];
     var dataRaw = [];
@@ -76,5 +73,5 @@
       
         var myLineChart = new Chart(ctx).Line(chartData, chartOptions);
     }
-
-</script>
+    </script>
+}

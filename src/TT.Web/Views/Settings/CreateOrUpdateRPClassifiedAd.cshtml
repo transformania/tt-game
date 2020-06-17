@@ -59,7 +59,9 @@
 
 </div>
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         var TextMax = 300;
         var YesThemesMax = 200;
@@ -108,9 +110,12 @@
             $('#Timezone_textRemaining').html(remaining + ' characters remaining');
         });
     });
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     .bad {
         color: #E18948 !important;
     }
@@ -122,4 +127,5 @@
     .text-container {
         margin-bottom: 20px;
     }
-</style>
+    </style>
+}

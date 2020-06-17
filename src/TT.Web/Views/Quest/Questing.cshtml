@@ -27,8 +27,9 @@
     @Ajax.ActionLink("Resume Quest", MVC.Quest.Quest(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink", @id = "continueQuest" })
 </div>
 
-
-<script>
+@section scripts
+{
+    <script>
 
     var questId = @Model.Id;
    // var newMsgCount = 0;
@@ -66,10 +67,14 @@
     setTimeout(function(){ $("#continueQuest").click() }, 50);
 
 
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     #continueQuest {
         display:none;
     }
-</style>
+    </style>
+}

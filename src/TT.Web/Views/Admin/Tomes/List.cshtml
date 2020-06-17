@@ -46,15 +46,21 @@
 
 </div>
 
-<style>
+@section head
+{
+    <style>
     table, td {
         padding: 5px;
         border: 1px solid black;
     }
-</style>
+    </style>
+}
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#tomes').dataTable();
     });
-</script>
+    </script>
+}

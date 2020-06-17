@@ -44,7 +44,9 @@
 
 </div>
 
-<script>
+@section scripts
+{
+    <script>
 
     $(document).ready(function () {
         copyToDisplay();
@@ -59,10 +61,14 @@
         $("#display").html(content);
     }
 
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
       textarea {
         height: 800px;
     }
-</style>
+    </style>
+}

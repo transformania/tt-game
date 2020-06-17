@@ -29,15 +29,20 @@
     }
 </div>
 
-<script>
+@section scripts
+{
+    <script>
     $("#Message").keypress(function () {
         var remaining = 100 - $("#Message").val().length;
         $("#textRemaining").html(remaining + " characters remaining");
     });
-</script>
-
-<style>
+    </script>
+}
+@section head
+{
+    <style>
     textarea {
         width: 100%;
     }
-</style>
+    </style>
+}

@@ -44,7 +44,10 @@
     </table>
 
 </div>
-<script>
+
+@section scripts
+{
+    <script>
         $(document).ready(function () {
             $('#newsPosts').dataTable({
                 "order": [[1, "desc"]],
@@ -57,10 +60,14 @@
                 }]
             });
         });
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     .containerInner img {
         width: 100%;
     }
-</style>
+    </style>
+}

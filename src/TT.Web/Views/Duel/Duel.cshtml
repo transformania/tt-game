@@ -17,7 +17,9 @@
     <a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
 </p>
 
-<style>
+@section head
+{
+    <style>
     #actionWindow {
         width: 700px;
         height: 700px;
@@ -29,8 +31,8 @@
         height: 200px;
         border: 1px solid black;
     }
-</style>
-
+    </style>
+}
 
 @section scripts {
     <!--Script references. -->

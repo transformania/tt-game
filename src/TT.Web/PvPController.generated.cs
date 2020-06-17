@@ -475,7 +475,6 @@ namespace TT.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string Bus = "Bus";
-                public readonly string Game = "Game";
                 public readonly string Inventory = "Inventory";
                 public readonly string LevelupPerk = "LevelupPerk";
                 public readonly string LoginRequired = "LoginRequired";
@@ -504,7 +503,6 @@ namespace TT.Web.Controllers
                 public readonly string WorldMap = "WorldMap";
             }
             public readonly string Bus = "~/Views/PvP/Bus.cshtml";
-            public readonly string Game = "~/Views/PvP/Game.cshtml";
             public readonly string Inventory = "~/Views/PvP/Inventory.cshtml";
             public readonly string LevelupPerk = "~/Views/PvP/LevelupPerk.cshtml";
             public readonly string LoginRequired = "~/Views/PvP/LoginRequired.cshtml";

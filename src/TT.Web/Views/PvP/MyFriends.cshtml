@@ -194,8 +194,9 @@
     <p class="center-block">You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
 </div>
 
-
-<style>
+@section head
+{
+    <style>
     h1 {
         text-align: center;
     }
@@ -222,9 +223,12 @@
         float: left;
         width: 100%;
     }
-</style>
+    </style>
+}
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#MyFriends').dataTable({
             "columnDefs": [{
@@ -236,4 +240,5 @@
             }]
         });
     });
-</script>
+    </script>
+}

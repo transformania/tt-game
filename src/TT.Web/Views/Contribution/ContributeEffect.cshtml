@@ -411,7 +411,9 @@
 
 <a href="@Url.Action(MVC.PvP.Play())">Back to game (Don't forget to save!)</a>
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#YourContributions').dataTable({
             "order": [[1, "asc"], [2, "asc"]],
@@ -535,5 +537,5 @@
         $("#attackerMessageNote").show();
 
     }
-
-</script>
+    </script>
+}

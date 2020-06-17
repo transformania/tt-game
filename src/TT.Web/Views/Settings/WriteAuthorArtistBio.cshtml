@@ -76,17 +76,22 @@
 
 <a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
 
-<style>
+@section head
+{
+    <style>
     input,textarea {
         width: 100%;
         border:1px solid gray;
     }
-</style>
+    </style>
+}
 
-
-<script>
+@section scripts
+{
+    <script>
     $("#MessageText").keydown(function () {
         var remaining = 1000 - $("#MessageText").val().length;
         $("#textRemaining").html(remaining + " characters remaining");
     });
-</script>
+    </script>
+}

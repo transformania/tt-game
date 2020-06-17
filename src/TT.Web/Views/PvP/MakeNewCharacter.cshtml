@@ -4,8 +4,11 @@
     ViewBag.Title = "New Character";
 }
 
-<script src="@Links.Scripts.randomFirstLastNames_js"></script>
-<script src="@Links.Scripts.newCharacter_js"></script>
+@section scripts
+{
+    <script src="@Links.Scripts.randomFirstLastNames_js"></script>
+    <script src="@Links.Scripts.newCharacter_js"></script>
+}
 
 <div>
     <p class="infoMessage error">@ViewBag.ErrorMessage</p>

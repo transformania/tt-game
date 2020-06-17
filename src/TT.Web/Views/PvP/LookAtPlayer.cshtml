@@ -147,24 +147,31 @@
         }
     }
 }
-<script>
-    @functions{
-        public string TokenHeaderValue()
-        {
-            AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
-            return cookieToken + ":" + formToken;
-        }
 
-        public string GetUserId()
-        {
-            return Model.PlayerForm.Player.MembershipId;
-        }
+@functions{
 
-        public string GetApiUrl()
-        {
-            return "/api";
-        }
+    public string TokenHeaderValue()
+    {
+        AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
+        return cookieToken + ":" + formToken;
     }
+
+    public string GetUserId()
+    {
+        return Model.PlayerForm.Player.MembershipId;
+    }
+
+    public string GetApiUrl()
+    {
+        return "/api";
+    }
+
+}
+
+@section scripts
+{
+    <script src="@Links.Scripts.buffsTableColoring_js"></script>
+    <script>
 
     function detail_success() {
         //$('#itemDetailModal').modal('show');
@@ -232,9 +239,12 @@
         });
     });
 
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     .leftDisplay {
         background-size: 100% 100%;
         position: relative;
@@ -316,4 +326,5 @@
 		.Links a { 
 			margin-right: 30px;
 		}
-</style>
+    </style>
+}

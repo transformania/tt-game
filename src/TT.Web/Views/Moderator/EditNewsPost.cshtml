@@ -43,8 +43,9 @@
 </div>
 
 
-
-<script>
+@section scripts
+{
+    <script>
 
     $(document).ready(function () {
         copyToDisplay();
@@ -58,10 +59,12 @@
         var content = $("#Text").val();
         $("#display").html(content);
     }
+    </script>
+}
 
-</script>
-
-<style>
+@section head
+{
+    <style>
     table, td {
         padding: 5px;
         border: 1px solid black;
@@ -70,5 +73,5 @@
     textarea {
         height: 200px;
     }
-</style>
-
+    </style>
+}

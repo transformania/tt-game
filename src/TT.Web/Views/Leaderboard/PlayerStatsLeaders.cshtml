@@ -52,8 +52,9 @@
 </div>
 
 
-
-<script>
+@section scripts
+{
+    <script>
     function success(panel) {
         var button = $("#" + panel);
         button.parent().parent().css("height", "484px");
@@ -74,4 +75,5 @@
         });
         $("#expandAllBtn").detach();
     }
-</script>
+    </script>
+}

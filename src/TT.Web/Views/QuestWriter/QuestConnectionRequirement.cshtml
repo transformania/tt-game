@@ -107,14 +107,7 @@
 }
 
 <script>
-
-    var questId = @Model.QuestConnection.QuestId;
-    var allVariablesList = [];
-
     $("#allVariables").click(function () {
-        loadUsedVariablesFromServer();
+        loadUsedVariablesFromServer("@Model.QuestConnection.QuestId");
     });
-
-    
-
 </script>

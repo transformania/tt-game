@@ -4,11 +4,6 @@
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
-<script src="@Links.lib.jqueryui.jquery_ui_js"></script>
-
-<script src="@Links.lib.signalr_js.jquery_signalR_js"></script>
-<script src="~/signalr/hubs"></script>
-<script src="@Links.Scripts.notices_js"></script>
 @{
     ViewBag.Title = "Play";
 }
@@ -372,7 +367,13 @@
     <span id="expand" onclick="expandModal()">Expand</span>
 </div>
 
-<script>
+@section scripts
+{
+    <script src="@Links.lib.jqueryui.jquery_ui_js"></script>
+    <script src="@Links.lib.signalr_js.jquery_signalR_js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="@Links.Scripts.notices_js"></script>
+    <script>
 
     var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
     var turnNo = @ViewBag.WorldTurnNumber;
@@ -456,4 +457,5 @@
     $( "#attackModal" ).draggable();
     $( "#attackModal" ).resizable();
 
-</script>
+    </script>
+}

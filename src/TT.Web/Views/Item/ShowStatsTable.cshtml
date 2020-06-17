@@ -62,7 +62,9 @@
 
 </div>
 
-<style>
+@section head
+{
+    <style>
     table {
         padding: 3px;
         border: 1px solid black;
@@ -108,9 +110,12 @@
             display: none;
         }
     }
-</style>
+    </style>
+}
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#bufftable tr').each(function () {
             $(this).find('td').each(function () {
@@ -129,4 +134,5 @@
             })
         })
     });
-</script>
+    </script>
+}

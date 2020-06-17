@@ -63,6 +63,8 @@
         </tbody>
     </table>
 </div>
+@section head
+{
     <style>
         .leaderBoardName {
             width: auto;
@@ -120,10 +122,14 @@
             }
         }
     </style>
+}
 
+@section scripts
+{
     <script>
         var myName = "@ViewBag.MyName";
         if (myName !== "") {
             $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
         }
     </script>
+}

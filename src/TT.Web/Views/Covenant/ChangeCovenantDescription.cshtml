@@ -47,8 +47,9 @@
 
 </div>
 
-
-<script>
+@section scripts
+{
+    <script>
     $(".selectable").click(function () {
         var img = $(this).attr("src");
         var filename = $(this).attr("filename")
@@ -56,10 +57,14 @@
         $("#choice").attr("src", img);
         $("#FlagUrl").val(filename);
     });
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     .selectable:hover{
         border:2px solid red;
     }
-</style>
+    </style>
+}

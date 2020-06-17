@@ -52,17 +52,19 @@
 
 </div>
 
-<script>
-
+@section scripts
+{
+    <script>
     $("#submitButton").attr("disabled", "disabled");
 
     function toggleButton() {
         $("#submitButton").removeAttr("disabled");
     }
-</script>
+    </script>
 
-<style>
+    <style>
     input[disabled] {
         background-color: darkgray;
     }
-</style>
+    </style>
+}

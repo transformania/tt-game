@@ -13,16 +13,6 @@
     <li><a href="@Url.Action(MVC.Info.Rules())" target="_blank">Rules</a></li>
 }
 
-<script>
-    $("#deleteAll").on('click', function () {
-        if ($("#realLink").is(":visible") == false) {
-            $("#realLink").show();
-        } else {
-            $("#realLink").hide();
-        }
-    });
-</script>
-
 <div id="realLink" class="specialBox specialBox2" style="display: none;">
     <span style="color:red;">Do you really want to delete all the messages? If yes then please click link below:</span><br>
     @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
@@ -201,9 +191,17 @@
     }
 </div>
 
-@section Scripts
+@section scripts
 {
     <script>
+        $("#deleteAll").on('click', function () {
+            if ($("#realLink").is(":visible") === false) {
+                $("#realLink").show();
+            } else {
+                $("#realLink").hide();
+            }
+        });
+
         $(document).ready(function () {
             $('#DeleteLink').on('click', function () {
                 document.getElementById('realLink').style.display = "block";

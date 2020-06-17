@@ -118,7 +118,8 @@
     </table>
 </div>
 
-
+@section head
+{
     <style>
         .leaderBoardName {
             width: auto;
@@ -176,7 +177,11 @@
             }
         }
     </style>
+}
 
+@section scripts
+{
+    <script src="@Links.Scripts.leaderboardDropdown_js"></script>
     <script>
 
         $("table tbody td:nth-child(7)")
@@ -191,3 +196,4 @@
             $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
         }
     </script>
+}

@@ -383,8 +383,9 @@
 <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)">
 
 
-
-<script>
+@section scripts
+{
+    <script>
 
     var choice = "curse";
 
@@ -554,9 +555,12 @@
 
     }
 
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
     table {
         padding: 3px;
         border: 1px solid black;
@@ -598,5 +602,5 @@
     input:read-only {
         background-color: lightgray;
     } 
-
-</style>
+    </style>
+}

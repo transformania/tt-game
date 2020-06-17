@@ -257,6 +257,7 @@
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="libman.json" />
+    <Content Include="Scripts\buffsTableColoring.js" />
     <Content Include="Scripts\itemDetailModal.js" />
     <Content Include="Scripts\leaderboardDropdown.js" />
     <Content Include="Scripts\newCharacter.js" />
@@ -390,7 +391,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\PvP\Game.cshtml" />
     <Content Include="Views\PvP\Play.cshtml" />
     <Content Include="Views\PvP\MakeNewCharacter.cshtml" />
     <Content Include="Views\PvP\Player_Partial.cshtml" />

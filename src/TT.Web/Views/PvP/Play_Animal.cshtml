@@ -3,10 +3,6 @@
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
-<script src="@Links.lib.signalr_js.jquery_signalR_js"></script>
-<script src="~/signalr/hubs"></script>
-<script src="@Links.Scripts.notices_js"></script>
-
 @{
     if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
     {
@@ -280,7 +276,12 @@
     </div>
 </div>
 
-<script>
+@section scripts
+{
+    <script src="@Links.lib.signalr_js.jquery_signalR_js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="@Links.Scripts.notices_js"></script>
+    <script>
 
     var attacksMade = @Model.You.TimesAttackingThisUpdate;
     var turnNo = @ViewBag.WorldTurnNumber;
@@ -341,4 +342,5 @@
 
     });
 
-</script>
+    </script>
+}

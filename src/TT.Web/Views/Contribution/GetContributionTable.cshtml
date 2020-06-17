@@ -44,7 +44,9 @@
 
 </table>
 
-<style>
+@section head
+{
+    <style>
     td {
         border: 1px solid gray;
         text-align: center;
@@ -68,9 +70,12 @@
     li {
         margin-bottom: 8px;
     }
-</style>
+    </style>
+}
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $("td").each(function () {
             if ($(this).text() == "0") {
@@ -78,4 +83,5 @@
             }
         });
     });
-</script>
+    </script>
+}

@@ -69,7 +69,9 @@
 
     </section>
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
        //toggleForms(true);
         $("#consent").click(function () {
@@ -85,13 +87,17 @@
         $("#submitBtn").prop("disabled", value);
     }
 
-</script>
+    </script>
+}
 
-<style>
+@section head
+{
+    <style>
 
    @@media (max-width: 768px) {
     .loginCenter{
         padding: 0px;
     }
+        }
+    </style>
 }
-</style>

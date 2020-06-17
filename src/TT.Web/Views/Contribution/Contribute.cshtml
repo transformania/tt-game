@@ -2,8 +2,6 @@
 @using TT.Domain.Statics
 @using TT.Domain.Models
 
-<script src="@Links.Scripts.suggestedLength_js"></script>
-
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
@@ -707,6 +705,9 @@
     <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)">
 
     </div>
+@section scripts
+{
+    <script src="@Links.Scripts.suggestedLength_js"></script>
     <script>
 
         var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();
@@ -877,7 +878,9 @@
 
         }
     </script>
-
+}
+@section head
+{
     <style>
         red {
             color: red;
@@ -949,3 +952,4 @@
     }
 
     </style>
+}

@@ -39,15 +39,21 @@
 
 <td><a href="@Url.Action(MVC.PvPAdmin.EditCustomForm(-1))">New</a></td>
 
-<style>
+@section head
+{
+    <style>
     table, td {
         padding: 5px;
         border: 1px solid black;
     }
-</style>
+    </style>
+}
 
-<script>
+@section scripts
+{
+    <script>
     $(document).ready(function () {
         $('#customForms').dataTable();
     });
-</script>
+    </script>
+}

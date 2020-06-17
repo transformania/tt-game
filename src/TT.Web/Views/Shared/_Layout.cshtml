@@ -1,20 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
   <head>
-  <script src="@Links.lib.jquery.jquery_js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="never">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>@(string.IsNullOrEmpty(ViewBag.Title) ? "Transformania Time" : $"{ViewBag.Title} - Transformania Time")</title>
-    <script src="@Links.lib.datatables_net.jquery_dataTables_js"></script>
-    <script src="@Links.lib.datatables_net_bs.dataTables_bootstrap_js"></script>
-    <script src="@Links.lib.datatables_net_responsive.dataTables_responsive_js"></script>
-    <script src="@Links.lib.datatables_net_responsive_bs.responsive_bootstrap_js"></script>
-    <script src="@Links.lib.moment_js.moment_js_"></script>
 
-    <!-- Bootstrap -->
     <link href="@Links.lib.twitter_bootstrap.css.bootstrap_css" rel="stylesheet">
 	<link href="@Links.Content.custom_css" rel="stylesheet">
 	<link href="@Links.Content.PvP_css" rel="stylesheet">
@@ -22,11 +15,9 @@
     <link href="@Links.lib.datatables_net_responsive_bs.responsive_bootstrap_css" rel="stylesheet">
 
     <link rel="shortcut icon" href="/Images/PvP/Icons/tt_logo.ico">
-    @RenderSection("head", required: false)
+    @RenderSection("head", false)
   </head>
-
-
-  <body>
+<body>
  <div class="container" id="siteTop">
  <nav class="navbar navbar-default outsideContainer navbarTT1">
   <div class="container-fluid">
@@ -106,17 +97,22 @@
 }
 </div>
 
-      <div class="container" >
-          <footer class="outsideContainer footerTT">
-              <a href="#siteTop">[ Back to top ]</a> || <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">[ Terms of Service ]</a> || <a href="@Url.Action(MVC.Account.PrivacyPolicy())" target="_blank">[ Privacy Policy ]</a> || Transformania Time :: 2013 - @DateTime.UtcNow.Year
-          </footer>
-      </div>
+<div class="container" >
+    <footer class="outsideContainer footerTT">
+        <a href="#siteTop">[ Back to top ]</a> || <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">[ Terms of Service ]</a> || <a href="@Url.Action(MVC.Account.PrivacyPolicy())" target="_blank">[ Privacy Policy ]</a> || Transformania Time :: 2013 - @DateTime.UtcNow.Year
+    </footer>
+</div>
 
-      <script src="@Links.lib.jquery_ajax_unobtrusive.jquery_unobtrusive_ajax_js"></script>
-
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="@Links.lib.twitter_bootstrap.js.bootstrap_js"></script>
-        @RenderSection("scripts", required: false)
-      <script src="@Links.Scripts.boxesResize_js"></script>
-  </body>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="@Links.lib.jquery.jquery_js"></script>
+<script src="@Links.lib.datatables_net.jquery_dataTables_js"></script>
+<script src="@Links.lib.datatables_net_bs.dataTables_bootstrap_js"></script>
+<script src="@Links.lib.datatables_net_responsive.dataTables_responsive_js"></script>
+<script src="@Links.lib.datatables_net_responsive_bs.responsive_bootstrap_js"></script>
+<script src="@Links.lib.moment_js.moment_js_"></script>
+<script src="@Links.lib.jquery_ajax_unobtrusive.jquery_unobtrusive_ajax_js"></script>
+<script src="@Links.lib.twitter_bootstrap.js.bootstrap_js"></script>
+@RenderSection("scripts", false)
+<script src="@Links.Scripts.boxesResize_js"></script>
+</body>
 </html>

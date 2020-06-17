@@ -37,7 +37,9 @@
 
 </div>
 
-<script>
+@section scripts
+{
+    <script>
 
     $(document).ready(function () {
         $("#loadNotice").hide();
@@ -71,7 +73,8 @@
         $("#loading").html("processing...");
     }
 
-    function loadUsedVariablesFromServer() {
+    function loadUsedVariablesFromServer(questId) {
+        var allVariablesList = [];
         $.getJSON("/QuestWriter/ShowAllUsedQuestVariables/" + questId, function (data) {
             allVariablesList = data;
         }).then(function () {
@@ -130,10 +133,12 @@
             toStatesDropdownFail.val(failTo);
         }
     }
+    </script>
+}
 
-</script>
-
-<style>
+@section head
+{
+    <style>
     #loadNotice {
         background-color: #ffd76a;
         text-align: center;
@@ -210,4 +215,5 @@
         padding: 2px;
         cursor: pointer;
     }
-</style>
+    </style>
+}

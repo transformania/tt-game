@@ -53,6 +53,24 @@
     {
       "library": "jquery-touch-events@2.0.3",
       "destination": "lib/jquery-touch-events/"
+    },
+    {
+      "library": "clipboard.js@2.0.6",
+      "destination": "lib/clipboard.js/"
+    },
+    {
+      "library": "vis@4.21.0",
+      "destination": "lib/vis/"
+    },
+    {
+      "library": "Chart.js@2.9.3",
+      "destination": "lib/Chart.js/",
+      "files": [
+        "Chart.min.js",
+        "Chart.css",
+        "Chart.js",
+        "Chart.min.css"
+      ]
     }
   ]
 }

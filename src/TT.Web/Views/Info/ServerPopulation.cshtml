@@ -1,8 +1,5 @@
-﻿<div class="containerInner" style="overflow: scroll;">
-
-    <h1>Server Population By Turn</h1>
-
-    <canvas id="myChart" width="4000" height="400"></canvas>
+﻿<div class="containerInner">
+    <canvas id="myChart" width="400" height="400"></canvas>
     <button onclick="changeReductionFactorAndDraw(1)">1</button>
     <button onclick="changeReductionFactorAndDraw(2)">2</button>
     <button onclick="changeReductionFactorAndDraw(6)">6</button>
@@ -11,15 +8,14 @@
 </div>
 @section scripts
 {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+    <script src="@Links.lib.Chart_js.Chart_js_"></script>
     <script>
 
     var labelsRaw = [];
     var dataRaw = [];
-    //var labelsFiltered = [];
-    //var dataFiltered = [];
     var populationInfo = "";
     var reductionFactor = 6;
+    var myLineChart;
 
     var ctx = document.getElementById("myChart").getContext("2d");
 
@@ -32,46 +28,58 @@
 
     function changeReductionFactorAndDraw(compression) {
         reductionFactor = compression;
-        renderChart();
+        updateData();
+        myLineChart.data.labels = labelsRaw;
+        myLineChart.data.datasets[0].data = dataRaw;
+        myLineChart.update();
     }
 
-    function renderChart() {
-
+    function updateData()
+    {
         labelsRaw = [];
         dataRaw = [];
 
+        var curPop = 0;
         for (var i = 0; i < populationInfo.length; i++) {
-            if (i % reductionFactor == 0) {
-                var infoItem = populationInfo[i];
-                labelsRaw.push(infoItem.Turn);
-                dataRaw.push(infoItem.Population);
+            curPop += populationInfo[i].Population;
+            if (i % reductionFactor === 0) {
+                curPop /= reductionFactor;
+                labelsRaw.push(populationInfo[i].Turn);
+                dataRaw.push(curPop);
+                curPop = 0;
             }
-        }
+        }     
+    }
 
-        ctx.canvas.width = 15 * labelsRaw.length;
+    function renderChart() {
+        updateData();
 
         var chartData = {
+            type: 'line',
+            data: {
             labels: labelsRaw,
             datasets: [
                 {
-                    label: "Round",
-                    fillColor: "white",
-                    strokeColor: "darkblue",
-                    pointColor: "black",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    label: "Players",
                     data: dataRaw
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Server Population By Turn'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
                 }
-            ]
+            }
         };
 
-        var chartOptions = {
-            scaleBeginAtZero: true,
-        };
-
-      
-        var myLineChart = new Chart(ctx).Line(chartData, chartOptions);
+        myLineChart = new Chart(ctx, chartData);
     }
     </script>
 }

@@ -217,6 +217,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Images\login-left.png" />
     <Content Include="Images\login-right.png" />
+    <Content Include="lib\Chart.js\Chart.css" />
+    <Content Include="lib\Chart.js\Chart.js" />
+    <Content Include="lib\Chart.js\Chart.min.css" />
+    <Content Include="lib\Chart.js\Chart.min.js" />
+    <Content Include="lib\clipboard.js\clipboard.js" />
+    <Content Include="lib\clipboard.js\clipboard.min.js" />
     <Content Include="lib\datatables.net-bs\dataTables.bootstrap.css" />
     <Content Include="lib\datatables.net-bs\dataTables.bootstrap.js" />
     <Content Include="lib\datatables.net-bs\dataTables.bootstrap.min.css" />
@@ -251,6 +257,30 @@
     <Content Include="lib\twitter-bootstrap\js\bootstrap.js" />
     <Content Include="lib\twitter-bootstrap\js\bootstrap.min.js" />
     <Content Include="lib\twitter-bootstrap\js\npm.js" />
+    <Content Include="lib\vis\img\network\acceptDeleteIcon.png" />
+    <Content Include="lib\vis\img\network\addNodeIcon.png" />
+    <Content Include="lib\vis\img\network\backIcon.png" />
+    <Content Include="lib\vis\img\network\connectIcon.png" />
+    <Content Include="lib\vis\img\network\cross.png" />
+    <Content Include="lib\vis\img\network\cross2.png" />
+    <Content Include="lib\vis\img\network\deleteIcon.png" />
+    <Content Include="lib\vis\img\network\downArrow.png" />
+    <Content Include="lib\vis\img\network\editIcon.png" />
+    <Content Include="lib\vis\img\network\leftArrow.png" />
+    <Content Include="lib\vis\img\network\minus.png" />
+    <Content Include="lib\vis\img\network\plus.png" />
+    <Content Include="lib\vis\img\network\rightArrow.png" />
+    <Content Include="lib\vis\img\network\upArrow.png" />
+    <Content Include="lib\vis\img\network\zoomExtends.png" />
+    <Content Include="lib\vis\vis-graph3d.min.js" />
+    <Content Include="lib\vis\vis-network.min.css" />
+    <Content Include="lib\vis\vis-network.min.js" />
+    <Content Include="lib\vis\vis-timeline-graph2d.min.css" />
+    <Content Include="lib\vis\vis-timeline-graph2d.min.js" />
+    <Content Include="lib\vis\vis.css" />
+    <Content Include="lib\vis\vis.js" />
+    <Content Include="lib\vis\vis.min.css" />
+    <Content Include="lib\vis\vis.min.js" />
     <Content Include="Schema\GetPlayerBuffs.sql" />
     <Content Include="Schema\PopulateBotId.sql" />
     <Content Include="Schema\RemoveOldIndexes.sql" />
@@ -280,6 +310,8 @@
     <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="lib\twitter-bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="lib\jquery\jquery.slim.min.map" />
+    <Content Include="lib\vis\vis.js.map" />
+    <Content Include="lib\vis\vis.map" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>

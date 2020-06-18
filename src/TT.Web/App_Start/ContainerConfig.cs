@@ -184,12 +184,7 @@ namespace TT.Web
 #pragma warning disable 618
                 cfg.CreateMissingTypeMaps = true;
 #pragma warning restore 618
-                // Calling GetAllInstances is fine here since this action is delayed until CreateMapper is called.
-                // At that point the mapper was requested and so the container is already locked.
-                foreach (var profile in container.GetAllInstances<Profile>())
-                {
-                    cfg.AddProfile(profile);
-                }
+                cfg.AddMaps(typeof(DomainRegistry).Assembly);
             }).CreateMapper();
 
             // This function is called once when the mapper singleton is needed.

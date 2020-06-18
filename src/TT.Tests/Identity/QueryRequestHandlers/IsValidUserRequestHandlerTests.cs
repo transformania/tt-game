@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading;
+using NUnit.Framework;
 using System.Threading.Tasks;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Identity.QueryRequestHandlers;
@@ -27,7 +28,8 @@ namespace TT.Tests.Identity.QueryRequestHandlers
         public async Task AssertRequestHandlerReturnsTrueWhenAUserExists()
         {
             request.UserNameId = user.Id;
-            var result = await requestHandler.Handle(request);
+            var token = new CancellationToken();
+            var result = await requestHandler.Handle(request, token);
 
             Assert.That(result, Is.True);
         }
@@ -36,7 +38,8 @@ namespace TT.Tests.Identity.QueryRequestHandlers
         public async Task AssertRequestHandlerReturnsFalseWhenNoUserExists()
         {
             request.UserNameId = "not a valid id";
-            var result = await requestHandler.Handle(request);
+            var token = new CancellationToken();
+            var result = await requestHandler.Handle(request, token);
 
             Assert.That(result, Is.False);
         }

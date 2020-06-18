@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Threading;
+using MediatR;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
 using NSubstitute.Core;
@@ -40,14 +41,15 @@ namespace TT.Tests.Identity.RequestValidators
             // as the validator has no clue about *how* the property is validated.
             // on the other hand, there isn't much of a better way to test a validator
             // than to do a kind of sort of integration test
+            var token = new CancellationToken();
             Task<bool> ReturnCall<TRequest, TRequestHandler>(CallInfo call)
                 where TRequest : IRequest<bool>
-                where TRequestHandler : IAsyncRequestHandler<TRequest, bool>
+                where TRequestHandler : IRequestHandler<TRequest, bool>
             {
                 if (call.Args().Length > 0 && call.Args()[0] is TRequest sentRequest)
                 {
                     var handler = (TRequestHandler) System.Activator.CreateInstance(typeof(TRequestHandler), DataContext);
-                    return handler.Handle(sentRequest);
+                    return handler.Handle(sentRequest, token);
                 }
                 return Task.FromResult(false);
             }

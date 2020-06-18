@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Threading;
+using FluentValidation;
 using MediatR;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
@@ -64,7 +65,8 @@ namespace TT.Tests.Pipeline
                 });
             });
 
-            await validationPipelineBehavior.Handle(requestMock, nextMock);
+            var token = new CancellationToken();
+            await validationPipelineBehavior.Handle(requestMock, token, nextMock);
             Assert.That(rulesetRan, Is.True);
         }
 
@@ -79,7 +81,8 @@ namespace TT.Tests.Pipeline
             });
             validatorMock.Include(idValidatorMock);
 
-            await validationPipelineBehavior.Handle(requestMock, nextMock);
+            var token = new CancellationToken();
+            await validationPipelineBehavior.Handle(requestMock, token, nextMock);
             Assert.That(userNameId, Is.EqualTo(capturedUserNameId));
         }
 
@@ -93,7 +96,8 @@ namespace TT.Tests.Pipeline
 
             async Task Delegate()
             {
-                await validationPipelineBehavior.Handle(requestMock, nextMock);
+                var token = new CancellationToken();
+                await validationPipelineBehavior.Handle(requestMock, token, nextMock);
             };
 
             Assert.That(Delegate, Throws.TypeOf<ValidationException>());
@@ -102,15 +106,19 @@ namespace TT.Tests.Pipeline
         [Test]
         public async Task AssertValidateAsyncIsUsed()
         {
-            await validationPipelineBehavior.Handle(requestMock, nextMock);
+            var token = new CancellationToken();
 
-            await validatorMock.Received().ValidateAsync(Arg.Any<ValidationContext<IRequestTest>>());
+            await validationPipelineBehavior.Handle(requestMock, token, nextMock);
+
+            await validatorMock.Received().ValidateAsync(Arg.Any<ValidationContext<IRequestTest>>(), token);
         }
 
         [Test]
         public async Task AssertNextIsCalledWhenSuccessful()
         {
-            await validationPipelineBehavior.Handle(requestMock, nextMock);
+            var token = new CancellationToken();
+
+            await validationPipelineBehavior.Handle(requestMock, token, nextMock);
 
             await nextMock.Received().Invoke();
         }
@@ -125,7 +133,8 @@ namespace TT.Tests.Pipeline
 
             try
             {
-                await validationPipelineBehavior.Handle(requestMock, nextMock);
+                var token = new CancellationToken();
+                await validationPipelineBehavior.Handle(requestMock, token, nextMock);
             }
             catch
             {

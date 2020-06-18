@@ -95,34 +95,33 @@ namespace TT.Web
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();
-            container.RegisterInstance(new SingleInstanceFactory(((IServiceProvider)container).GetService));
-            container.RegisterInstance(new MultiInstanceFactory(container.GetAllInstances));
+            container.RegisterInstance(new ServiceFactory(((IServiceProvider)container).GetService));
 
             // Request Handlers
-            var requestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<,>), domainAssembly);
-            var voidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<>), domainAssembly);
+            var requestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(RequestHandler<,>), domainAssembly);
+            var voidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(RequestHandler<>), domainAssembly);
 
-            var asyncRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IAsyncRequestHandler<,>), domainAssembly);
-            var asyncVoidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IAsyncRequestHandler<>), domainAssembly);
+            var asyncRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(IRequestHandler<,>), domainAssembly);
+            var asyncVoidRequestHandlerTypesToRegister = GetAllGenericImplementations(container, typeof(AsyncRequestHandler<>), domainAssembly);
 
             foreach (var types in requestHandlerTypesToRegister)
             {
-                container.Register(typeof(IRequestHandler<,>), types);
+                container.Register(typeof(RequestHandler<,>), types);
             }
 
             foreach (var types in voidRequestHandlerTypesToRegister)
             {
-                container.Register(typeof(IRequestHandler<>), types);
+                container.Register(typeof(RequestHandler<>), types);
             }
 
             foreach (var types in asyncRequestHandlerTypesToRegister)
             {
-                container.Register(typeof(IAsyncRequestHandler<,>), types);
+                container.Register(typeof(IRequestHandler<,>), types);
             }
 
             foreach (var types in asyncVoidRequestHandlerTypesToRegister)
             {
-                container.Register(typeof(IAsyncRequestHandler<>), types);
+                container.Register(typeof(AsyncRequestHandler<>), types);
             }
 
             // PipelineBehaviors

@@ -10,7 +10,7 @@ using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Queries.Leaderboard
 {
-    public class ItemLeaderboardHandler : IRequestHandler<ItemLeaderboardRequest, IEnumerable<ItemLeaderboardDetail>>
+    public class ItemLeaderboardHandler : RequestHandler<ItemLeaderboardRequest, IEnumerable<ItemLeaderboardDetail>>
     {
         private readonly IDataContext context;
         private readonly IMapper mapper;
@@ -21,7 +21,7 @@ namespace TT.Domain.Items.Queries.Leaderboard
             this.mapper = mapper;
         }
 
-        public IEnumerable<ItemLeaderboardDetail> Handle(ItemLeaderboardRequest message)
+        protected override IEnumerable<ItemLeaderboardDetail> Handle(ItemLeaderboardRequest message)
         {
             var query = context.AsQueryable<Item>()
                 .ProjectTo<ItemLeaderboardDetail>(mapper.ConfigurationProvider)

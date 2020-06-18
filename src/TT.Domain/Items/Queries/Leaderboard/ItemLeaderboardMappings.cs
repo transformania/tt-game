@@ -12,8 +12,6 @@ namespace TT.Domain.Items.Queries.Leaderboard
     {
         public ItemLeaderboardMappings()
         {
-            CreateMissingTypeMaps = false;
-
             // Query projection
             CreateMap<Player, ItemLeaderboardPlayerDetail>();
             CreateMap<Item, ItemLeaderboardItemDetail>();

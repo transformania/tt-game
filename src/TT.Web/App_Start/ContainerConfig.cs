@@ -181,12 +181,10 @@ namespace TT.Web
 
             IMapper CreateMapper() => new MapperConfiguration(cfg =>
             {
-                // Calling GetAllInstances is fine here since this action is delayed until CreateMapper is called.
-                // At that point the mapper was requested and so the container is already locked.
-                foreach (var profile in container.GetAllInstances<Profile>())
-                {
-                    cfg.AddProfile(profile);
-                }
+#pragma warning disable 618
+                cfg.CreateMissingTypeMaps = true;
+#pragma warning restore 618
+                cfg.AddMaps(typeof(DomainRegistry).Assembly);
             }).CreateMapper();
 
             // This function is called once when the mapper singleton is needed.
@@ -194,6 +192,8 @@ namespace TT.Web
 
             // This function is called only when something accesses the static Mapper instance.
             DomainRegistry.SetMapperFunc(container.GetInstance<IMapper>);
+
+            DomainRegistry.Mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
             container.Verify();
         }

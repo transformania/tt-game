@@ -29,28 +29,10 @@ namespace TT.Tests
             DomainRegistry.SetMapperFunc(() => mapper);
         }
 
-        public virtual IMapper GetMapper()
+        private static IMapper GetMapper()
         {
             return new MapBuilder()
-                .AddAssemblies(GetMapperAssemblies())
-                .AddProfileTypes(GetMapperProfileTyes())
-                .AddProfileInstances(GetMapperProfileInstances())
                 .BuildMapper();
-        }
-
-        public virtual IEnumerable<Assembly> GetMapperAssemblies()
-        {
-            return new List<Assembly> { typeof(DomainRegistry).Assembly };
-        }
-
-        public virtual IEnumerable<Type> GetMapperProfileTyes()
-        {
-            return new List<Type>() { };
-        }
-
-        public virtual IEnumerable<Profile> GetMapperProfileInstances()
-        {
-            return new List<Profile>() { };
         }
     }
 }

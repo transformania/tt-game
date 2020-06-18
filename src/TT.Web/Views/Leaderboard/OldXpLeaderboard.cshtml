@@ -8,6 +8,10 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
 }
+@section scripts
+{
+    <script src="@Links.Scripts.leaderboardDropdown_js"></script>
+}
 
 <div class="specialBox specialBox2">
     @Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)

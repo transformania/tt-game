@@ -20,7 +20,6 @@ namespace TT.Domain.ClassifiedAds.Mappings
     {
         public RPClassifiedAdMapping()
         {
-            CreateMissingTypeMaps = true; // TODO: Remove the anonymous type so we can disable this
             CreateMap<RPClassifiedAd, RPClassifiedAdDetail>();
             CreateMap<Player, PlayerDetail>();
         }

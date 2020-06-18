@@ -22,7 +22,7 @@
     <ProjectReference Include="..\TT.Domain\TT.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />

@@ -55,6 +55,9 @@ namespace TT.Tests.Utilities
         {
             return new MapperConfiguration(cfg =>
             {
+#pragma warning disable 618
+                cfg.CreateMissingTypeMaps = true;
+#pragma warning restore 618
                 var allTypes = Assemblies.Where(a => !a.IsDynamic).SelectMany(a => a.DefinedTypes);
 
                 var profilesTypes = allTypes

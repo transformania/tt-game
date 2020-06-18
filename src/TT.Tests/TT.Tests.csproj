@@ -12,7 +12,7 @@
     <ProjectReference Include="..\TT.Web\TT.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="FluentValidation" Version="7.1.1" />

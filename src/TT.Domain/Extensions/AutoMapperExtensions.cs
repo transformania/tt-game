@@ -35,7 +35,7 @@ namespace TT.Domain.Extensions
             Expression<Func<TDestination, TDestinationMember>> destinationMember,
             Func<TSource, TDestination, TDestinationMember, ResolutionContext, TResult> sourceMember)
         {
-            return mappingExpression.ForMember(destinationMember, src => src.ResolveUsing(sourceMember));
+            return mappingExpression.ForMember(destinationMember, src => src.MapFrom(sourceMember));
         }
 
         public static IMappingExpression<TSource, TDestination> MapForMember<TSource, TDestination, TResult, TDestinationMember>(

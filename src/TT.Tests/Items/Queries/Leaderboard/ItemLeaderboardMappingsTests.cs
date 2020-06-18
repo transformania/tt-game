@@ -14,11 +14,5 @@ namespace TT.Tests.Items.Queries.Leaderboard
                 .AddProfileInstances(new ItemLeaderboardMappings())
                 .BuildMapper();
         }
-
-        [Test]
-        public void MappingsAreValid()
-        {
-            Assert.That(() => Mapper.ConfigurationProvider.AssertConfigurationIsValid(), Throws.Nothing);
-        }
     }
 }

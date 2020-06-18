@@ -197,6 +197,18 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.GetMembershipIdFromUsername);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AdminRename()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdminRename);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AdminRenameSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdminRenameSend);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PvPAdminController Actions { get { return MVC.PvPAdmin; } }
@@ -272,6 +284,8 @@ namespace TT.Web.Controllers
             public readonly string DeleteCustomForm = ("DeleteCustomForm").ToLowerInvariant();
             public readonly string GetMembershipIdFromUsername = ("GetMembershipIdFromUsername").ToLowerInvariant();
             public readonly string SetEveryoneToSP = ("SetEveryoneToSP").ToLowerInvariant();
+            public readonly string AdminRename = ("AdminRename").ToLowerInvariant();
+            public readonly string AdminRenameSend = ("AdminRenameSend").ToLowerInvariant();
         }
 
 
@@ -459,6 +473,22 @@ namespace TT.Web.Controllers
         {
             public readonly string name = ("name").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_AdminRename s_params_AdminRename = new ActionParamsClass_AdminRename();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AdminRename AdminRenameParams { get { return s_params_AdminRename; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AdminRename
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_AdminRenameSend s_params_AdminRenameSend = new ActionParamsClass_AdminRenameSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AdminRenameSend AdminRenameSendParams { get { return s_params_AdminRenameSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AdminRenameSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -469,6 +499,7 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string AdminRename = "AdminRename";
                 public readonly string ApproveContributionList = "ApproveContributionList";
                 public readonly string ApproveEffectContributionList = "ApproveEffectContributionList";
                 public readonly string ChangeGameDate = "ChangeGameDate";
@@ -492,6 +523,7 @@ namespace TT.Web.Controllers
                 public readonly string WriteFae = "WriteFae";
                 public readonly string WriteFaeEncounter = "WriteFaeEncounter";
             }
+            public readonly string AdminRename = "~/Views/PvPAdmin/AdminRename.cshtml";
             public readonly string ApproveContributionList = "~/Views/PvPAdmin/ApproveContributionList.cshtml";
             public readonly string ApproveEffectContributionList = "~/Views/PvPAdmin/ApproveEffectContributionList.cshtml";
             public readonly string ChangeGameDate = "~/Views/PvPAdmin/ChangeGameDate.cshtml";
@@ -1191,6 +1223,30 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetEveryoneToSP);
             SetEveryoneToSPOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AdminRenameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AdminRename(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdminRename);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AdminRenameOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AdminRenameSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.PlayerNameViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AdminRenameSend(TT.Domain.ViewModels.PlayerNameViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdminRenameSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            AdminRenameSendOverride(callInfo, input);
             return callInfo;
         }
 

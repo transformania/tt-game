@@ -1336,21 +1336,15 @@ namespace TT.Web.Controllers
 
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
-                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
-                    {
                         TempData["Error"] = "The rename tool only works in chaos mode.";
                         return RedirectToAction(MVC.PvP.Play());
-                    }
                 }
 
                 var person = PlayerProcedures.GetPlayer(id);
                 if (person.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = person.MembershipId}))
                 {
-                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
-                    {
                         TempData["Error"] = "This player does not have chaos mode changes enabled.";
                         return RedirectToAction(MVC.PvP.Play());
-                    }
                 }
 
                 var output = new PlayerNameViewModel();
@@ -1385,11 +1379,8 @@ namespace TT.Web.Controllers
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
-                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
-                    {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction(MVC.PvP.Play());
-                    }
                 }
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1397,11 +1388,8 @@ namespace TT.Web.Controllers
 
                 if (player.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
                 {
-                    if (!User.IsInRole(PvPStatics.Permissions_Admin) || !User.IsInRole(PvPStatics.Permissions_Moderator))
-                    {
                     TempData["Error"] = "This player does not have chaos mode changes enabled.";
                     return RedirectToAction(MVC.PvP.Play());
-                    }
                 }
 
                 string changed_name = null;
@@ -1891,6 +1879,92 @@ namespace TT.Web.Controllers
             }
 
             TempData["Result"] = "All human players have been set to SuperProtection game mode.";
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        [Authorize]
+        public virtual ActionResult AdminRename(int id)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
+            {
+                TempData["Error"] = "I'm afraid I can't let you do that, Dave.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var player = PlayerProcedures.GetPlayerFormViewModel(id);
+
+            var output = new PlayerNameViewModel
+            {
+                Id = player.Player.Id,
+                NewFirstName = player.Player.FirstName,
+                NewLastName = player.Player.LastName
+            };
+
+
+            return View(MVC.PvPAdmin.Views.AdminRename, output);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult AdminRenameSend(PlayerNameViewModel input)
+        {
+            
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
+            {
+                TempData["Error"] = "I'm afraid I can't let you do that, Dave.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+            // assert that the first name is not reserved by the system
+            var fnamecheck = TrustStatics.NameIsReserved(input.NewFirstName);
+            if (!fnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("NewFirstName", "You can't use the first name '" + input.NewFirstName + "'.  It is reserved or else not allowed.");
+            }
+
+
+            // assert that the last name is not reserved by the system
+            var lnamecheck = TrustStatics.NameIsReserved(input.NewLastName);
+            if (!lnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("NewLastName", "You can't use the last name '" + input.NewLastName + "'.  It is reserved or else not allowed.");
+            }
+
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+            var resName = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == input.NewFirstName + " " + input.NewLastName);
+
+            if (resName != null && resName.MembershipId != player.MembershipId)
+            {
+                ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
+            }
+
+            if (!string.IsNullOrEmpty(input.NewFirstName) && input.NewFirstName != player.FirstName)
+            {
+                player.FirstName = input.NewFirstName;
+            }
+
+            if (!string.IsNullOrEmpty(input.NewLastName) && input.NewLastName != player.LastName)
+            {
+                player.LastName = input.NewLastName;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(MVC.NPC.Views.SoulboundRename, input);
+            }
+
+            playerRepo.SavePlayer(player);
+
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed the player to </b>" + input.NewFirstName + " " + input.NewLastName, true);
+
             return RedirectToAction(MVC.PvP.Play());
         }
     }

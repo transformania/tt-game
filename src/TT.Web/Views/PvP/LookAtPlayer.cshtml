@@ -38,7 +38,7 @@
                     {
                         <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>
                     }
-                  
+
                 }
             </p>
         }
@@ -54,7 +54,7 @@
     if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
     {
         <p>
-            &nbsp; 
+            &nbsp;
         </p>
     }
     else
@@ -84,8 +84,8 @@
                 @{
                     if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-                    else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-                    {<p class="bad">Offline</p>}
+                else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                {<p class="bad">Offline</p>}
                 }
                 <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br>
                 <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
@@ -117,33 +117,40 @@
     @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
     <div style="clear:both"></div>
     @Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)
- <div style="clear:both"></div>
-    
+    <div style="clear:both"></div>
+
 
 
 
 
 </div>
 @{
-    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
+    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
     {
         @section menubottom
         {
-            @if (!Model.PlayerForm.Player.FlaggedForAbuse)
-            {
-                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
-            }
-            else
+            @if (Model.PlayerForm.Player.FlaggedForAbuse)
             {
                 <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
             }
+            else
+            {
+                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
+            }
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
-            <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
-            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.AdminRename(Model.PlayerForm.Player.Id))">Rename</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>
             <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
             <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Account Lockout Date</a></li>
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
+        }
+    }
+    else if (PvPStatics.ChaosMode && User.IsInRole(PvPStatics.Permissions_Chaoslord))
+    {
+        @section menubottom
+        {
+            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>
         }
     }
 }
@@ -245,86 +252,86 @@
 @section head
 {
     <style>
-    .leftDisplay {
-        background-size: 100% 100%;
-        position: relative;
-        text-align: left;
-        height: 400px;
-        width: 400px;
-        display: inline-table;
-        vertical-align: top;
-        margin: 0px;
-    }
-
-    .iconPortrait{
-        float: right;
-        position: relative;
-    }
-
-    .rightDisplay {
-        padding-left: 10px;
-        padding-right: 10px;
-        width: 480px;
-        display: inline-table;
-        vertical-align: top;
-        text-align: left;
-    }
-
-    .textName {
-        font-size: 25px;
-        text-align: center;
-    }
-
-    .textDescription {
-        font-size: 14px;
-    }
-
-    .textMobility {
-        font-size: 16px;
-        font-style: italic;
-    }
-
-    .Links {
-        display: none;
-    }
-
-    .bad{
-        margin:0;
-        padding:0;
-        text-align: center;
-    }
-
-    .center{
-        margin:0;
-        padding:0;
-        text-align: center;
-    }
-    
-    .health{
-        font-size: 12px;
-    }
-
-        .mana{
-        font-size: 12px;
-    }
-
-    @@media screen and (max-width: 520px) {
         .leftDisplay {
-            height: 300px;
-            width: 300px;
+            background-size: 100% 100%;
+            position: relative;
+            text-align: left;
+            height: 400px;
+            width: 400px;
+            display: inline-table;
+            vertical-align: top;
+            margin: 0px;
+        }
+
+        .iconPortrait {
+            float: right;
+            position: relative;
         }
 
         .rightDisplay {
-            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 480px;
+            display: inline-table;
+            vertical-align: top;
+            text-align: left;
         }
-    }
 
-    		.itemBox {
-		height: 100% !important;
-		}
-		
-		.Links a { 
-			margin-right: 30px;
-		}
+        .textName {
+            font-size: 25px;
+            text-align: center;
+        }
+
+        .textDescription {
+            font-size: 14px;
+        }
+
+        .textMobility {
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .Links {
+            display: none;
+        }
+
+        .bad {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .center {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .health {
+            font-size: 12px;
+        }
+
+        .mana {
+            font-size: 12px;
+        }
+
+        @@media screen and (max-width: 520px) {
+            .leftDisplay {
+                height: 300px;
+                width: 300px;
+            }
+
+            .rightDisplay {
+                width: 100%;
+            }
+        }
+
+        .itemBox {
+            height: 100% !important;
+        }
+
+        .Links a {
+            margin-right: 30px;
+        }
     </style>
 }

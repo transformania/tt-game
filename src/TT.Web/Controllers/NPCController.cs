@@ -1248,7 +1248,8 @@ namespace TT.Web.Controllers
 
             playerRepo.SavePlayer(player);
 
-            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed your soulbound object.</b>", true);
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed your soulbound object: </b>" + input.NewFirstName + " " + input.NewLastName, true);
+            PlayerLogProcedures.AddPlayerLog(player.Id, "<b>Your owner has renamed you to </b>" + input.NewFirstName + " " + input.NewLastName, true);
 
             return RedirectToAction(MVC.PvP.Play());
         }

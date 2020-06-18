@@ -128,7 +128,7 @@ namespace TT.Web
             // PipelineBehaviors
             var pipelineBehaviorTypesToRegister = GetAllGenericImplementations(container, typeof(IPipelineBehavior<,>), domainAssembly);
 
-            container.RegisterCollection(typeof(IPipelineBehavior<,>), pipelineBehaviorTypesToRegister);
+            container.Collection.Register(typeof(IPipelineBehavior<,>), pipelineBehaviorTypesToRegister);
 
             // Validators
             var validatorTypes = GetAllGenericImplementations(container, typeof(IValidator<>), domainAssembly)
@@ -177,7 +177,7 @@ namespace TT.Web
             };
 
             // AutoMapper
-            container.RegisterCollection(typeof(Profile), typeof(DomainRegistry).Assembly);
+            container.Collection.Register(typeof(Profile), typeof(DomainRegistry).Assembly);
 
             IMapper CreateMapper() => new MapperConfiguration(cfg =>
             {

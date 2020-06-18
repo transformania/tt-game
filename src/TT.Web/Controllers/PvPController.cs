@@ -2771,7 +2771,6 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            var meItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
 
             // assert player is inanimate or an animal
             if (me.Mobility != PvPStatics.MobilityInanimate && me.Mobility != PvPStatics.MobilityPet)
@@ -2841,9 +2840,7 @@ namespace TT.Web.Controllers
 
             // all checks pass
             TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
-
-            PlayerLogProcedures.AddPlayerLog(owner.Id, me.GetFullName() + ", your " + meItem.ItemSource.FriendlyName + ", attempted to curse you!", true);
-            PlayerLogProcedures.AddPlayerLog(me.Id, "You attempted to curse your owner.", true);
+            PlayerLogProcedures.AddPlayerLog(me.Id,(string)TempData["Result"], true);
 
             return RedirectToAction(MVC.PvP.Play());
 

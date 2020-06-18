@@ -1,0 +1,38 @@
+﻿@model TT.Domain.ViewModels.PlayerNameViewModel
+
+    <div class="containerInner">
+
+        <h1>Rename Player</h1>
+
+        <p>This tool is only meant to be used to fix someone's name should it be offensive, have a typo, or violate the rules in some way. </p>
+        <ul class="listdots">
+            <li>This tool should only be used in the aforementioned scenarios. <b>During chaos, you should use the Rename Player tool found in a player's bio.</b></li>
+            <li>Do not use this to troll anyone.</li>
+            <li>Do not make any words so long that it cannot text wrap comfortably.</li>
+            <li>Names are limited to 30 characters, with apostrophes and hyphens allowed.</li>
+            <li><b>Do not use apostrophes to give players nicknames</b>. You may only use apostrophes for such forms as "Player's Pet" or for similar things.</li>
+            <li>Please do not use this tool to remove the roman numerals of a player that has chosen to re-roll.</li>
+        </ul>
+
+        @using (Html.BeginForm(MVC.PvPAdmin.AdminRenameSend(), FormMethod.Post))
+        {
+            @Html.ValidationSummary()
+            @Html.AntiForgeryToken()
+
+            <p><span>Player ID:</span>
+            @Html.TextAreaFor(m => m.Id)
+            </p>
+
+            <p><span>First Name:</span>
+            @Html.TextAreaFor(m => m.NewFirstName)
+            <b>@Html.ValidationMessageFor(m => m.NewFirstName)</b></p>
+
+            <p><span>Last Name:</span>
+            @Html.TextAreaFor(m => m.NewLastName)
+            <b>@Html.ValidationMessageFor(m => m.NewLastName)</b></p>
+
+            <input type="submit" value="Send">
+        }
+
+    </div>
+

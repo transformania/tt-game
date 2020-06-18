@@ -59,20 +59,20 @@
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <h3 class="center-block">@Model.PlayerForm.Form.FriendlyName</h3>
             @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityFull)
-            {
-                <span class="textMobility">
-                    Once human, this player has become inanimate and poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
-                </span>
+                {
+                    <span class="textMobility">
+                        Once human, this player has become inanimate and poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
+                    </span>
 
-            }}
+                }}
 
             @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
-            {
-                <span class="textMobility">
-                    Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.
-                </span>
+                {
+                    <span class="textMobility">
+                        Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.
+                    </span>
 
-            }}
+                }}
             <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
         </div>
     </center>
@@ -82,7 +82,7 @@
 <div style="clear:both"><br></div>
 
 @{
-    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
+    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
     {
         @section menubottom
         {
@@ -96,10 +96,18 @@
             }
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
-            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.AdminRename(Model.PlayerForm.Player.Id))">Rename</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>
             <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
             <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Account Lockout Date</a></li>
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
+        }
+    }
+    else if (PvPStatics.ChaosMode && User.IsInRole(PvPStatics.Permissions_Chaoslord))
+    {
+        @section menubottom
+        {
+            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>
         }
     }
 }
@@ -184,53 +192,53 @@
 @section head
 {
     <style>
-    .leftDisplay {
-        background-size: 100% 100%;
-        position: relative;
-        text-align: left;
-        height: 400px;
-        width: 400px;
-        display: inline-table;
-        vertical-align: top;
-        margin: 0px;
-    }
-
-    .rightDisplay {
-        padding-left: 10px;
-        padding-right: 10px;
-        width: 480px;
-        display: inline-table;
-        vertical-align: top;
-        text-align: left;
-    }
-
-    .textName {
-        font-size: 25px;
-        text-align: center;
-    }
-
-    .textDescription {
-        font-size: 14px;
-    }
-
-    .textMobility {
-        font-size: 16px;
-        font-style: italic;
-    }
-
-    .Links {
-        display: none;
-    }
-
-    @@media screen and (max-width: 520px) {
         .leftDisplay {
-            height: 300px;
-            width: 300px;
+            background-size: 100% 100%;
+            position: relative;
+            text-align: left;
+            height: 400px;
+            width: 400px;
+            display: inline-table;
+            vertical-align: top;
+            margin: 0px;
         }
 
         .rightDisplay {
-            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 480px;
+            display: inline-table;
+            vertical-align: top;
+            text-align: left;
         }
-    }
+
+        .textName {
+            font-size: 25px;
+            text-align: center;
+        }
+
+        .textDescription {
+            font-size: 14px;
+        }
+
+        .textMobility {
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .Links {
+            display: none;
+        }
+
+        @@media screen and (max-width: 520px) {
+            .leftDisplay {
+                height: 300px;
+                width: 300px;
+            }
+
+            .rightDisplay {
+                width: 100%;
+            }
+        }
     </style>
 }

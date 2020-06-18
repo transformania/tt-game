@@ -35,12 +35,12 @@ namespace TT.Web.Controllers.API.Admin
             catch (ValidationException ex)
             when (ex.Errors.FirstOrDefault()?.ErrorCode == nameof(UserHasCorrectValidator))
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, new { Error = ex.Errors.FirstOrDefault().ErrorMessage });
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, new { Error = ex.Errors.FirstOrDefault()?.ErrorMessage });
             }
             catch (ValidationException ex)
             when (ex.Errors.FirstOrDefault()?.ErrorCode == nameof(IsValidUserValidator))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = ex.Errors.FirstOrDefault().ErrorMessage });
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = ex.Errors.FirstOrDefault()?.ErrorMessage });
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "Successfully signed out user." });

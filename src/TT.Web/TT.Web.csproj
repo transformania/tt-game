@@ -785,7 +785,7 @@
       <Version>7.0.4</Version>
     </PackageReference>
     <PackageReference Include="MediatR">
-      <Version>3.0.1</Version>
+      <Version>8.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework">
       <Version>2.2.3</Version>

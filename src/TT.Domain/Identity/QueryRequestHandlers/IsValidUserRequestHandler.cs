@@ -2,13 +2,14 @@
 using MediatR;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Identity.QueryRequests;
 
 namespace TT.Domain.Identity.QueryRequestHandlers
 {
-    public class IsValidUserRequestHandler : IAsyncRequestHandler<IsValidUserRequest, bool>
+    public class IsValidUserRequestHandler : IRequestHandler<IsValidUserRequest, bool>
     {
         private readonly IDataContext context;
 
@@ -17,13 +18,13 @@ namespace TT.Domain.Identity.QueryRequestHandlers
             this.context = context;
         }
 
-        public async Task<bool> Handle(IsValidUserRequest message)
+        public async Task<bool> Handle(IsValidUserRequest message, CancellationToken cancellationToken)
         {
             var userQuery = from u in context.AsQueryable<User>()
                             where u.Id == message.UserNameId
                             select u;
 
-            return await userQuery.AnyAsync();
+            return await userQuery.AnyAsync(cancellationToken);
         }
     }
 }

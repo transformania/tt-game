@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading;
+using NUnit.Framework;
 using System.Threading.Tasks;
 using TT.Domain.Identity.Entities;
 using TT.Domain.Identity.QueryRequestHandlers;
@@ -37,7 +38,8 @@ namespace TT.Tests.Identity.QueryRequestHandlers
         {
             request.UserNameId = user.Id;
             request.Role = new[] { PvPStatics.Permissions_Artist, PvPStatics.Permissions_Chaoslord, PvPStatics.Permissions_Admin };
-            var result = await requestHandler.Handle(request);
+            var token = new CancellationToken();
+            var result = await requestHandler.Handle(request, token);
 
             Assert.That(result, Is.True);
         }
@@ -47,7 +49,8 @@ namespace TT.Tests.Identity.QueryRequestHandlers
         {
             request.UserNameId = user.Id;
             request.Role = new[] { PvPStatics.Permissions_Artist, PvPStatics.Permissions_Chaoslord };
-            var result = await requestHandler.Handle(request);
+            var token = new CancellationToken();
+            var result = await requestHandler.Handle(request, token);
 
             Assert.That(result, Is.False);
         }

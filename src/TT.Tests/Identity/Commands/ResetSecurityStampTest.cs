@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TT.Domain.Identity.CommandHandlers;
 using TT.Domain.Identity.CommandRequests;
@@ -37,7 +38,8 @@ namespace TT.Tests.Identity.Commands
         public async Task AssertStampResets()
         {
             var previousStampValue = testUserSecurityStamp.SecurityStamp;
-            await handler.Handle(resetSecurityStamp);
+            var token = new CancellationToken();
+            await handler.Handle(resetSecurityStamp, token);
             var currentStampValue = DataContext.AsQueryable<UserSecurityStamp>().First().SecurityStamp;
 
             Assert.That(previousStampValue, Is.Not.EqualTo(currentStampValue));

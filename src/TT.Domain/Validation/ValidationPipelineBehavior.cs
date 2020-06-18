@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Threading;
+using FluentValidation;
 using MediatR;
 using System.Threading.Tasks;
 using TT.Domain.RequestInterfaces;
@@ -19,7 +20,7 @@ namespace TT.Domain.Validation
             this.validator = validator;
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken token, RequestHandlerDelegate<TResponse> next)
         {
             ValidationContext<TRequest> validationContext;
             var ruleSets = RuleSets.None;
@@ -41,7 +42,7 @@ namespace TT.Domain.Validation
                 new PropertyChain(),
                 new IntersectRulesetValidatorSelector(ruleSets));
 
-            var result = await validator.ValidateAsync(validationContext);
+            var result = await validator.ValidateAsync(validationContext, token);
 
             if (!result.IsValid)
             {

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Players.Entities;
+using TT.Domain.Items.Entities;
 using TT.Domain.Statics;
+using TT.Domain.Procedures;
 
 namespace TT.Domain.Players.Commands
 {
@@ -20,7 +23,7 @@ namespace TT.Domain.Players.Commands
             ContextQuery = ctx =>
             {
 
-                var player = ctx.AsQueryable<Player>().SingleOrDefault(cr => cr.User.Id == MembershipId);
+                var player = ctx.AsQueryable<Player>().Include(p => p.Items).SingleOrDefault(cr => cr.User.Id == MembershipId);
                 if (player == null)
                     throw new DomainException($"Player with MembershipID '{MembershipId}' could not be found");
 
@@ -49,6 +52,11 @@ namespace TT.Domain.Players.Commands
                     
                     //Remove a player's Dungeon Points whenever they switch into P/SP
                     player.ClearPvPScore();
+                }
+
+                foreach (var i in player.Items)
+                {
+                    i.ChangeGameMode(GameMode);
                 }
 
                 player.ChangeGameMode(GameMode);

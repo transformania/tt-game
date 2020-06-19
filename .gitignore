@@ -278,8 +278,8 @@ AppSettings.config
 src/TT.Web/Images/PvP/
 custom.css
 custom.min.css
-unitCoverage.xml
-integrationCoverage.xml
+*-test-result.xml
+*-test-coverage.xml
 coverage/
 src/TT.Web/lib/
 

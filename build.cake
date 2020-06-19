@@ -21,13 +21,6 @@ var updateUrl = Argument("updateUrl", "http://localhost:52223/API/WorldUpdate");
 var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/cake/images.zip");
 
 var isInCI = Convert<bool>(EnvironmentVariable("CI") ?? "false");
-Uri unitHistoryUri = null;
-Uri integrationHistoryUri = null;
-if (isInCI)
-{
-    unitHistoryUri = Convert<Uri>(EnvironmentVariable("TT_UNIT_HISTORY_URI"));
-    integrationHistoryUri = Convert<Uri>(EnvironmentVariable("TT_INTEGRATION_HISTORY_URI"));
-}
 
 // Dictionary of DB instances and connection strings
 var instances = new Dictionary<string,Tuple<string,bool>>()
@@ -109,9 +102,11 @@ Task("Run-Unit-Tests")
         var platform = new CakePlatform();
         if (platform.Family == PlatformFamily.Windows)
         {
-            var unitCoverage = new FilePath("unitCoverage.xml");
+            var unitCoverage = new FilePath("unit-test-coverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.Tests.dll");
+               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.Tests.dll", new NUnit3Settings {
+                   Results = new[]  {new NUnit3Result { FileName = "unit-test-result.xml", Transform = "nunit3-junit.xslt" } }
+                   });
             },
             unitCoverage,
             new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
@@ -140,9 +135,11 @@ Task("Run-Integration-Tests")
         var platform = new CakePlatform();
         if (platform.Family == PlatformFamily.Windows)
         {
-            var integrationCoverage = new FilePath("integrationCoverage.xml");
+            var integrationCoverage = new FilePath("integration-test-coverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.IntegrationTests.dll");
+               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.IntegrationTests.dll", new NUnit3Settings {
+                   Results = new[]  {new NUnit3Result { FileName = "integration-test-result.xml", Transform = "nunit3-junit.xslt" } }
+                   });
             },
             integrationCoverage,
             new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
@@ -165,45 +162,14 @@ Task("Run-Integration-Tests")
 Task("Generate-Report")
     .IsDependentOn("Run-Unit-Tests")
     .IsDependentOn("Run-Integration-Tests")
-    .DoesForEach(new [] { (File("unitCoverage.xml"), "unit", unitHistoryUri), (File("integrationCoverage.xml"), "integration", integrationHistoryUri) }, (tuple) =>
+    .DoesForEach(new [] { (File("unit-test-coverage.xml"), "unit"), (File("integration-test-coverage.xml"), "integration") }, (tuple) =>
     {
-        var (path, testName, historyUri) = tuple;
+        var (path, testName) = tuple;
 
         if (FileExists(path))
         {
-            bool TryDownload(out FilePath historyPath)
-            {
-                try 
-                {
-                    historyPath = DownloadFile(historyUri);
-                }
-                catch (AggregateException ex)
-                when(ex.GetBaseException() is System.Net.Http.HttpRequestException)
-                {
-                    Warning($"{testName} coverage history not found.");
-                    historyPath = null;
-                    return false;
-                }
-
-                return true;
-            }
-
-            if (isInCI && TryDownload(out FilePath result))
-            {
-                try 
-                {
-                    GZipUncompress(result, new DirectoryPath($"coverage/{testName}/history"));
-                }
-                catch (Exception ex)
-                {
-                    Error(ex);
-                    throw;
-                }
-            }
-
             ReportGenerator(path, $"coverage/{testName}", new ReportGeneratorSettings(){
                 ReportTypes = new List<ReportGeneratorReportType>() { Html, Badges, TextSummary },
-                HistoryDirectory = new DirectoryPath($"coverage/{testName}/history")
             });
 
             foreach(var line in FileReadLines(new FilePath($"coverage/{testName}/Summary.txt")))
@@ -220,27 +186,6 @@ Task("Generate-Report")
                         Information($"  {CurrentCulture.TextInfo.ToTitleCase(testName)} " + trimmed.ToLower());
                     else
                         Information(line);
-                }
-            }
-            
-            if (isInCI)
-            {
-                try 
-                {
-                    GZipCompress(new DirectoryPath($"coverage/{testName}/history"), new FilePath($"coverage/{testName}/history.tar.gz"), 9);
-                }
-                catch (Exception ex)
-                {
-                    Error(ex);
-                    throw;
-                }
-
-                if (FileExists($"coverage/{testName}/history.tar.gz"))
-                {
-                    DeleteDirectory(new DirectoryPath($"coverage/{testName}/history"), new DeleteDirectorySettings
-                    {
-                        Recursive = true
-                    });
                 }
             }
         }

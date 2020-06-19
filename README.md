@@ -17,15 +17,6 @@ First off, here is the stack of technologies being used:
 
 Please read through CONTRIBUTING.md if you would like to contribute code to the project. We happily accept merge requests!
 
-## Build status
-
-[![build status](https://gitlab.com/transformania/tt-game/badges/master/build.svg)](https://gitlab.com/transformania/tt-game/commits/master)
-
-## Unit test coverage report
-
-[![coverage report](https://transformania.gitlab.io/tt-game/unit/badge_branchcoverage.svg)](https://transformania.gitlab.io/tt-game/unit/index.htm)
-[![coverage report](https://transformania.gitlab.io/tt-game/unit/badge_linecoverage.svg)](https://transformania.gitlab.io/tt-game/unit/index.htm)
-
 ## Good tools to have
 
 Below are some tools I keep in my developer environment used daily:

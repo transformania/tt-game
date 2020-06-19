@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Players.Entities;
@@ -28,11 +29,26 @@ namespace TT.Domain.Players.Commands
 
                 if (!InChaos)
                 {
-                    if (player.GameMode == (int)GameModeStatics.GameModes.PvP && (GameMode == (int)GameModeStatics.GameModes.Superprotection || GameMode == (int)GameModeStatics.GameModes.Protection))
-                        throw new DomainException("You cannot leave PvP mode during regular gameplay.");
+                    var WhenLastCombat = player.LastCombatTimestamp;
+
+                    //Compare combat time stamps to get the most recent.
+                    if (player.LastCombatTimestamp < player.LastCombatAttackedTimestamp)
+                    {
+                        WhenLastCombat = player.LastCombatAttackedTimestamp;
+                    }
+                    
+                    //Grab dates and get the minutes.
+                    var GetCombatMinutes = Math.Abs(Math.Floor(WhenLastCombat.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                    //Evaluate crap.
+                    if (GetCombatMinutes < 30 && player.GameMode == (int)GameModeStatics.GameModes.PvP)
+                        throw new DomainException("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes.");
 
                     if ((player.GameMode == (int)GameModeStatics.GameModes.Protection || player.GameMode == (int)GameModeStatics.GameModes.Superprotection) && GameMode == (int)GameModeStatics.GameModes.PvP)
-                        throw new DomainException("You cannot enter PvP mode during regular gameplay.");
+                        throw new DomainException("You cannot switch into that mode during regular gameplay.");
+                    
+                    //Remove a player's Dungeon Points whenever they switch into P/SP
+                    player.ClearPvPScore();
                 }
 
                 player.ChangeGameMode(GameMode);

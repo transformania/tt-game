@@ -44,6 +44,8 @@ namespace TT.Web.Controllers
             return View(MVC.Settings.Views.Settings, output);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public virtual ActionResult ChangeGameMode(int mode)
         {
             var myMembershipId = User.Identity.GetUserId();

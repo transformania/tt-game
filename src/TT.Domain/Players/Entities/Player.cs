@@ -377,6 +377,12 @@ namespace TT.Domain.Players.Entities
             GameMode = gameMode;
         }
 
+        //Clearing a user's Dungeon Points when they switch modes.
+        public void ClearPvPScore()
+        {
+            PvPScore = 0;
+        }
+
         public void Shout(string message)
         {
             ShoutsRemaining--;

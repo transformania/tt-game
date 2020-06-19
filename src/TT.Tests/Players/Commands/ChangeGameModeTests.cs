@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -39,12 +40,13 @@ namespace TT.Tests.Players.Commands
             var player = new PlayerBuilder()
                 .With(u => u.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.LastCombatTimestamp, DateTime.UtcNow)
                 .BuildAndSave();
 
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, InChaos = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
-                    .EqualTo("You cannot leave PvP mode during regular gameplay."));
+                    .EqualTo("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes."));
         }
 
         [Test]
@@ -61,7 +63,7 @@ namespace TT.Tests.Players.Commands
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.PvP, InChaos = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
-                    .EqualTo("You cannot enter PvP mode during regular gameplay."));
+                    .EqualTo("You cannot switch into that mode during regular gameplay."));
         }
 
         [Test]

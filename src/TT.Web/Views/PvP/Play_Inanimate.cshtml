@@ -290,7 +290,7 @@
         });
 
         $(".check").each(function () {
-            if (attacksMade>=1) {
+            if (attacksMade>=@PvPStatics.MaxActionsPerUpdate) {
                 $( this ).attr("href", "#");
                 $( this ).addClass("disabled");
             }

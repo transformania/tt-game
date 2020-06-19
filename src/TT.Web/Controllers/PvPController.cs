@@ -2030,6 +2030,7 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
 
             PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
+            PlayerLogProcedures.AddPlayerLog((int)item.dbItem.FormerPlayerId, "Your owner just used you!", true);
 
             return RedirectToAction(MVC.Item.MyInventory());
 
@@ -2156,7 +2157,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not acted too many times already
-            if (me.TimesAttackingThisUpdate >= 1)
+            if (me.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
                 TempData["Error"] = "You don't have enough energy to physically or psychically interact with your owner right now.";
                 TempData["SubError"] = "Wait a bit.";
@@ -2235,7 +2236,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player hasn't made too many attacks this update
-            if (me.TimesAttackingThisUpdate >= 1)
+            if (me.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
                 TempData["Error"] = "You have interacted too much this update.";
                 TempData["SubError"] = "You can only interact 1 times per update as an animal.  Wait a bit.";
@@ -2875,10 +2876,10 @@ namespace TT.Web.Controllers
             {
                 var hoursSinceSold = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSold).TotalHours);
 
-                if (hoursSinceSold < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+                if (hoursSinceSold < (PvPStatics.HoursBeforeInanimatesCanSlipFree / 2))
                 {
                     TempData["Error"] = "You cannot escape from your owner right now.";
-                    TempData["SubError"] = "You must remain in the vendor's inventory for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceSold) + " more hours before you can slip free.";
+                    TempData["SubError"] = "You must remain in the vendor's inventory for " + ((PvPStatics.HoursBeforeInanimatesCanSlipFree / 2) - hoursSinceSold) + " more hours before you can slip free.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
             }

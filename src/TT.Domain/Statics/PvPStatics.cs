@@ -82,6 +82,7 @@ namespace TT.Domain.Statics
         public const decimal Item_LevelBonusModifier = .1M;
 
         public static int MaxAttacksPerUpdate => ChaosMode ? 999 : 3;
+        public static int MaxActionsPerUpdate => ChaosMode ? 999 : 1;
         public const decimal LocationMoveCost = 1.0M;
         public const decimal AttackCost = 3.0M;
         public const decimal AttackManaCost = 10.0M;

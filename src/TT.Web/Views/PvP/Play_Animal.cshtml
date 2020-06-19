@@ -162,6 +162,23 @@
                         </p>
                     }
 
+                    <p>
+                        <ul class="inanimateActionList">
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("lick", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Lick your owner (+WP)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Nuzzle your owner (+MP)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Headbutt your owner (-WP)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Snarl at your owner (-MP)</a>
+                            </li>
+                        </ul>
+                    </p>
+
                     if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                     {
                         <p>
@@ -310,7 +327,7 @@
         });
 
         $(".check").each(function() {
-            if (attacksMade>=1) {
+            if (attacksMade>=@PvPStatics.MaxActionsPerUpdate) {
                 $( this ).attr("href", "#");
                 $( this ).addClass("disabled");
             }

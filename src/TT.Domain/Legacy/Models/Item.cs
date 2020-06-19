@@ -47,6 +47,7 @@ namespace TT.Domain.Models
         public DateTime LastSold { get; set; }
         public int? EmbeddedOnItemId { get; set; }
         public int? SoulboundToPlayerId { get; set; }
+        public int? FormerPlayerId { get; set; }
 
         public Item_VM()
         {

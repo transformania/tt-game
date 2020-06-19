@@ -48,7 +48,8 @@ namespace TT.Domain.Procedures
                                                              TurnsUntilUse = item.TurnsUntilUse,
                                                              LastSouledTimestamp = item.LastSouledTimestamp,
                                                              EmbeddedOnItemId = item.EmbeddedOnItemId,
-                                                             SoulboundToPlayerId = item.SoulboundToPlayerId
+                                                             SoulboundToPlayerId = item.SoulboundToPlayerId,
+                                                             FormerPlayerId = item.FormerPlayerId
                                                           },
 
 
@@ -148,7 +149,8 @@ namespace TT.Domain.Procedures
                                                          TimeDropped = item.TimeDropped,
                                                          TurnsUntilUse = item.TurnsUntilUse,
                                                          LastSouledTimestamp = item.LastSouledTimestamp,
-                                                         SoulboundToPlayerId = item.SoulboundToPlayerId
+                                                         SoulboundToPlayerId = item.SoulboundToPlayerId,
+                                                         FormerPlayerId = item.FormerPlayerId
                                                      },
 
 

@@ -7,12 +7,15 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Leaderboard.ItemLeaderboard())">View Item Leaderboard</a></li>
+    <li><a href="@Url.Action(MVC.Leaderboard.PvPLeaderboard())">View Dungeon Leaderboard</a></li>
+    <li><a href="@Url.Action(MVC.Leaderboard.Leaderboard())">View XP Leaderboard</a></li>
 }
 
 <div class="containerInner">
 
     <h1>Statistics Leaders</h1>
-    
+
     <button class="btn" id="expandAllBtn" onclick="expandAll()">Expand All</button> <br><br>
 
     <div class="row">

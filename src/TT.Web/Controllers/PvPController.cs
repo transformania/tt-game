@@ -2018,10 +2018,13 @@ namespace TT.Web.Controllers
 
             }
 
-            var result = ItemProcedures.UseItem(itemId, myMembershipId);
+            var (success, result) = ItemProcedures.UseItem(itemId, myMembershipId);
 
-            PlayerProcedures.SetTimestampToNow(me);
-            PlayerProcedures.AddItemUses(me.Id, 1);
+            if(success == true)
+            {
+                PlayerProcedures.SetTimestampToNow(me);
+                PlayerProcedures.AddItemUses(me.Id, 1);
+            }
 
             TempData["Result"] = result;
 
@@ -2030,7 +2033,11 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
 
             PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
-            PlayerLogProcedures.AddPlayerLog((int)item.dbItem.FormerPlayerId, "Your owner just used you!", true);
+
+            if (item.dbItem.FormerPlayerId != null)
+            {
+                PlayerLogProcedures.AddPlayerLog((int)item.dbItem.FormerPlayerId, "Your owner just used you!", true);
+            }
 
             return RedirectToAction(MVC.Item.MyInventory());
 

@@ -610,7 +610,7 @@ namespace TT.Domain.Procedures
             return item.Owner == null ? null : PlayerProcedures.GetPlayerFormViewModel(item.Owner.Id);
         }
 
-        public static string UseItem(int itemId, string membershipId)
+        public static (bool, string) UseItem(int itemId, string membershipId)
         {
             IItemRepository itemRepo = new EFItemRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -641,7 +641,7 @@ namespace TT.Domain.Procedures
 
                     if (owner.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
                     {
-                        return "You have attacked too many times this update.";
+                        return (false,"You have attacked too many times this update.");
                     }
                   
 
@@ -660,7 +660,7 @@ namespace TT.Domain.Procedures
                     }
 
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
-                    return output;
+                    return (true,output);
 
                 }
 
@@ -670,13 +670,13 @@ namespace TT.Domain.Procedures
                     // check if the player already has this effect or has it in cooldown.  If so, reject usage
                     if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
                     {
-                        return "You can't use this yet as you already have its effects active on you, or else the effect's cooldown has not expired.";
+                        return (false, "You can't use this yet as you already have its effects active on you, or else the effect's cooldown has not expired.");
                     }
                     else
                     {
                         itemRepo.DeleteItem(itemPlus.dbItem.Id);
                         LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-                        return EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner);
+                        return (true,EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner));
                     }
                 }
                 
@@ -695,7 +695,7 @@ namespace TT.Domain.Procedures
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantHealthRestore + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
+                    return (true,name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantHealthRestore + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP");
 
                 }
 
@@ -710,7 +710,7 @@ namespace TT.Domain.Procedures
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.InstantManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
+                    return (true, name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.InstantManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
                 }
 
                 // special items time!
@@ -719,26 +719,26 @@ namespace TT.Domain.Procedures
 
                     if (owner.FormSourceId == owner.OriginalFormSourceId)
                     {
-                        return "You could use this lotion, but as you are already in your base form it wouldn't do you any good.";
+                        return (false,"You could use this lotion, but as you are already in your base form it wouldn't do you any good.");
                     }
 
                     // assert that this player is not in a duel
                     if (owner.InDuel > 0)
                     {
-                        return "You must finish your duel before you can use this item.";
+                        return (false,"You must finish your duel before you can use this item.");
                     }
 
                     // assert that this player is not in a duel
                     if (owner.InQuest > 0)
                     {
-                        return "You must finish your quest before you can use this item.";
+                        return (false, "You must finish your quest before you can use this item.");
                     }
 
                     PlayerProcedures.InstantRestoreToBase(owner);
                     TFEnergyProcedures.CleanseTFEnergies(owner, 25);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.";
+                    return (true,name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.");
                 }
 
                 if (itemPlus.dbItem.ItemSourceId == ItemStatics.LullabyWhistleItemSourceId)
@@ -746,21 +746,21 @@ namespace TT.Domain.Procedures
                     AIDirectiveProcedures.DeaggroPsychopathsOnPlayer(owner);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intent on taking you down to forget all about you, so long as you don't provoke them again...";
+                    return (true,name + " take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intent on taking you down to forget all about you, so long as you don't provoke them again...");
                 }
 
                 if (itemPlus.dbItem.ItemSourceId == BossProcedures.BossProcedures_BimboBoss.CureItemSourceId)
                 {
 
                     if (!EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId)) {
-                        return "Since you are not infected with the bimbonic virus there's no need for you to use this right now.";
+                        return (false,"Since you are not infected with the bimbonic virus there's no need for you to use this right now.");
                     }
 
                     PlayerProcedures.InstantRestoreToBase(owner);
                     EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId, owner);
                     EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectSourceId, owner);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
-                    return "You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...";
+                    return (true,"You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...");
                 }
 
                 if (itemPlus.dbItem.ItemSourceId == ItemStatics.CovenantCrystalItemSourceId)
@@ -769,45 +769,45 @@ namespace TT.Domain.Procedures
                     // assert owner is not in the dungeon
                     if (owner.IsInDungeon())
                     {
-                        return "The dark magic seeping through the dungeon prevents your crystal from working.";
+                        return (false,"The dark magic seeping through the dungeon prevents your crystal from working.");
                     }
 
                     // assert that this player is not in a duel
                     if (owner.InDuel > 0)
                     {
-                        return "You must finish your duel before you can use this item.";
+                        return (false, "You must finish your duel before you can use this item.");
                     }
 
                     // assert that this player is not in a quest
                     if (owner.InQuest > 0)
                     {
-                        return "You must finish your quest before you can use this item.";
+                        return (false, "You must finish your quest before you can use this item.");
                     }
                     // assert owner has not been in combat recently
                     var minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                     if (minutesSinceCombat < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
                     {
-                        return "Unfortunately you have been in combat too recently for the crystal to work.";
+                        return (false, "Unfortunately you have been in combat too recently for the crystal to work.");
                     }
 
                     // assert owner is in a covenant
                     if (owner.Covenant == null || owner.Covenant < 1)
                     {
-                        return "Unfortunately as you are not in a covenant, you aren't able to use this item.";
+                        return (false, "Unfortunately as you are not in a covenant, you aren't able to use this item.");
                     }
 
                     // assert covenant has a safeground
                     var myCov = CovenantProcedures.GetDbCovenant((int)owner.Covenant);
                     if (myCov.HomeLocation.IsNullOrEmpty())
                     {
-                        return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
+                        return (false, "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.");
                     }
 
                     StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1);
 
                     var output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
-                    return output;
+                    return (true,output);
                 }
 
                 // spellbooks; these give the reader some spells they do not know.
@@ -831,7 +831,7 @@ namespace TT.Domain.Procedures
                     }
                     var output = $"You learned the spells: {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount), true)} from reading your spellbook before it crumbles and vanishes into dust.";
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
-                    return output;
+                    return (true,output);
                 }
             }
 
@@ -845,13 +845,13 @@ namespace TT.Domain.Procedures
                 // assert item is still not on cooldown
                 if (itemPlus.dbItem.TurnsUntilUse > 0)
                 {
-                    return "You have to wait longer before you can use this item agin.";
+                    return (false, "You have to wait longer before you can use this item agin.");
                 }
                 else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable
                     && itemPlus.Item.GivesEffectSourceId != null &&
                     EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffectSourceId.Value))
                 {
-                    return "You can't use this yet as you already have the effect active or on cooldown.";
+                    return (false, "You can't use this yet as you already have the effect active or on cooldown.");
                 }
                 else
                 {
@@ -878,7 +878,7 @@ namespace TT.Domain.Procedures
                         }
                         if (owner.Health < 0)
                         {
-                            return "You don't have enough willpower to use this item.";
+                            return (false, "You don't have enough willpower to use this item.");
                         }
 
                         owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana;
@@ -888,7 +888,7 @@ namespace TT.Domain.Procedures
                         }
                         if (owner.Mana < 0)
                         {
-                            return "You don't have enough mana to use this item.";
+                            return (false, "You don't have enough mana to use this item.");
                         }
 
                         itemRepo.SaveItem(thisdbItem);
@@ -897,7 +897,7 @@ namespace TT.Domain.Procedures
                         
                         
 
-                        return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
+                        return (true, name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana");
 
                     }
 
@@ -923,7 +923,7 @@ namespace TT.Domain.Procedures
                                 (float) (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel));
                         }
 
-                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
+                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP");
                     }
 
                    // just a mana gain
@@ -942,7 +942,7 @@ namespace TT.Domain.Procedures
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
-                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
+                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
                     }
 
                     else if (itemPlus.Item.GivesEffectSourceId != null)
@@ -952,15 +952,15 @@ namespace TT.Domain.Procedures
                         var effectPlus = EffectStatics.GetDbStaticEffect(itemPlus.Item.GivesEffectSourceId.Value);
                         if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                         {
-                            return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;
+                            return (true, name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M);
                         }
                         else if (owner.Gender == PvPStatics.GenderFemale && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                         {
-                            return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_F;
+                            return (true, name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_F);
                         }
                         else
                         {
-                            return  name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit;
+                            return (true, name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit);
                         }
                         
                     }
@@ -978,7 +978,7 @@ namespace TT.Domain.Procedures
 
             #endregion
 
-            return "";
+            return (true,"");
         }
 
         public static DbStaticItem GetRandomFindableItem()

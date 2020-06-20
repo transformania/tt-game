@@ -1,11 +1,20 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
 @using TT.Domain.Statics
+@{
+    ViewBag.Title = "Look at Covenant";
+}
+
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    @{
+        if (ViewBag.Player.Covenant != null)
+        {
+            <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+        }
+    }
     <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View All Covenants</a></li>
-    <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
 }
 
 <div class="containerInner text-center">
@@ -22,6 +31,10 @@
         }
     </p>
     <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Leader.Id))">Led by @Model.Leader.GetFullName()</a>
+
+    <p>
+        <a href="@Url.Action(MVC.Covenant.ApplyToCovenant(Model.dbCovenant.Id))">Apply to join this covenant</a>
+    </p>
 </div>
 
 <div class="onlinePlayersWrapperBG">
@@ -33,11 +46,11 @@
                         <div>
                             <p>
 
-                          @Html.Partial(MVC.PvP.Views.Player_Partial, p)     
+                          @Html.Partial(MVC.PvP.Views.Player_Partial, p)
                             </p>
                         </div>
                     </div>
                 </div>
-    }
+      }
     </div>
 </div>

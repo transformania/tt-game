@@ -1,10 +1,19 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.CovenantListItemViewModel>
 @using TT.Web.CustomHtmlHelpers
+@{
+    ViewBag.Title = "List of Covenants";
+}
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+    @{
+        if (ViewBag.Player.Covenant != null)
+        {
+            <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+        }
+    }
+    <li><a href="@Url.Action(MVC.Covenant.StartNewCovenant())">Create your own Covenant</a></li>
 }
 
 <div class="containerInner">
@@ -20,7 +29,12 @@
 
                 <p>@c.dbCovenant.SelfDescription.  @HtmlHelpers.PrintCovenantSafeground(c.dbCovenant)</p>
 
-                <a href="@Url.Action(MVC.Covenant.ApplyToCovenant(c.dbCovenant.Id))">Apply</a>
+                @{
+                    if (ViewBag.Player.Covenant == null)
+                    {
+                        <a href="@Url.Action(MVC.Covenant.ApplyToCovenant(c.dbCovenant.Id))">Apply</a>
+                    }
+                }
             </div>
         }
     }

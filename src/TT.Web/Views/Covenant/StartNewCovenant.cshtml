@@ -1,9 +1,18 @@
 ﻿@model TT.Domain.Models.Covenant
+@{
+    ViewBag.Title = "Start a New Covenant";
+}
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+    @{
+        if (ViewBag.Player.Covenant != null)
+        {
+            <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+        }
+    }
+
 }
 
 <div class="infoMessage error">

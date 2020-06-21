@@ -120,7 +120,7 @@ namespace TT.Domain.Procedures
                 inanimateMe.Level++;
                 itemRep.SaveItem(inanimateMe);
 
-                resultMessage += "  You have gained " + xpGain + " xp.  <b>Congratulations, you have gained a level!  Your owner will be so proud...</b>";
+                resultMessage += $"  You have gained {xpGain:0.#} xp.  <b>Congratulations, you have gained a level!  Your owner will be so proud...</b>";
 
                 var wearerMessage = "<span style='color: darkgreen'>" + me.FirstName + " " + me.LastName + ", currently your " + ItemStatics.GetStaticItem(inanimateMe.ItemSourceId).FriendlyName + ", has gained a level!  Treat them kindly and they might keep helping you out...</span>";
 
@@ -171,7 +171,7 @@ namespace TT.Domain.Procedures
             }
             else
             {
-                resultMessage = "  You have gained " + xpGain + " xp.  (" + xp.Amount + "/" + ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level) + ") to next level.";
+                resultMessage = $"  You have gained {xpGain:0.#} xp.  ({xp.Amount:0.#}/{ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level)}:0.# to next level).";
             }
 
             inanimXpRepo.SaveInanimateXP(xp);

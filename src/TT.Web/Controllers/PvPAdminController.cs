@@ -1456,11 +1456,10 @@ namespace TT.Web.Controllers
                 // if Donna, give player her spells
                 if (input.NewFormSourceId == BossProcedures_Donna.DonnaFormSourceId)
                 {
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell1);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell2);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell3);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell4);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell5);
+                    foreach (var spell in BossProcedures_Donna.Spells)
+                    {
+                        SkillProcedures.GiveSkillToPlayer(player.Id, spell);
+                    }
                 }
 
                 // if Valentine, give player his spells

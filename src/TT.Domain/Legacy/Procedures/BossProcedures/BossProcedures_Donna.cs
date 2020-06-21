@@ -17,13 +17,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private const string FirstName = "'Aunt' Donna";
         private const string LastName = "Milton";
-        private const int DonnaSpellCount = 5;
 
-        public const int Spell1 = 465;
-        public const int Spell2 = 595;
-        public const int Spell3 = 596;
-        public const int Spell4 = 597;
-        public const int Spell5 = 649;
+        public static readonly int[] Spells = {465, 595, 596, 597, 649};
 
         public const int DonnaFormSourceId = 287;
 
@@ -229,34 +224,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static int ChooseSpell(int turnNumber)
         {
-
-            var mod = turnNumber % (3*DonnaSpellCount);
-
-            if (mod >= 0 && mod < 3)
-            {
-                return Spell1;
-            }
-            else if (mod >= 4 && mod < 6)
-            {
-                return Spell2;
-            }
-            else if (mod >= 7 && mod < 9)
-            {
-                return Spell3;
-            }
-            else if (mod >= 10 && mod < 12)
-            {
-                return Spell4;
-            }
-            else if (mod >= 13 && mod < 15)
-            {
-                return Spell5;
-            }
-            else
-            {
-                return Spell1;
-            }
-
+            var mod = turnNumber % (3 * Spells.Length);
+            return Spells[mod / 3];
         }
 
         public static void EndEvent(Player donna)

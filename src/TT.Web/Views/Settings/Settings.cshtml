@@ -77,8 +77,10 @@
                 <p>You can restart your character <b>now</b>.</p>
             }
 
-            <p><a href="@Url.Action(MVC.Item.SetSoulbindingConsent(true))">Set soulbinding consent to TRUE</a><br></p>
-            <p><a href="@Url.Action(MVC.Item.SetSoulbindingConsent(false))">Set soulbinding consent to FALSE</a><br></p>
+            <p>You currently <b>@(Model.PlayerItem.ConsentsToSoulbinding ? "consent" : "do not consent")</b> to being soulbound.</p>
+            <p><a href="@Url.Action(MVC.Item.SetSoulbindingConsent(!Model.PlayerItem.ConsentsToSoulbinding))">
+                @(!Model.PlayerItem.ConsentsToSoulbinding ? "Consent" : "Refuse consent") to be soulbound
+            </a><br></p>
         }
 
 

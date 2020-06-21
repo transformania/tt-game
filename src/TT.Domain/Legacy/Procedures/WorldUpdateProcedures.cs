@@ -225,6 +225,12 @@ namespace TT.Domain.Procedures
 
                 foreach (var player in playersToSave)
                 {
+                    //Skip regen stuff for those in quests.
+                    if (player.InQuest > 0)
+                    {
+                        continue;
+                    }
+
                     var buffs = ItemProcedures.GetPlayerBuffs(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();

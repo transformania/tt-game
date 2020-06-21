@@ -29,6 +29,7 @@ namespace TT.Domain.Legacy.Procedures
                     DELETE FROM [dbo].[AuthorArtistBios] WHERE OwnerMembershipId = @membershipId;
                     DELETE FROM [dbo].[CaptchaEntries] WHERE User_Id = @membershipId;
                     DELETE FROM [dbo].[BlacklistEntries] WHERE CreatorMembershipId = @membershipId OR TargetMembershipId = @membershipId;
+                    DELETE FROM [dbo].[ReservedNames] WHERE MembershipId = @membershipId;
                     
                     UPDATE [dbo].[Contributions] SET OwnerMembershipId = NULL WHERE OwnerMembershipId = @membershipId;
                     UPDATE [dbo].[EffectContributions] SET OwnerMemberhipId = NULL WHERE OwnerMemberhipId = @membershipId;

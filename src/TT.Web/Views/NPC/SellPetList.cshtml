@@ -20,17 +20,21 @@
     <h1>Sell to Wüffie</h1>
 
     @{
-        if (Model.Any() && Model.First().IsPermanent)
+        if (Model.Any() && Model.First().SoulboundToPlayer != null)
         {
-            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().FormerPlayer.FullName</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
+            <p>While you have a pet, it is soulbound so you cannot sell it to Wüffie.</p>
+        }
+        else if (Model.Any() && Model.First().IsPermanent)
+        {
+            <p>You can sell your pet to Wüffie.  Wüffie will make sure <b>@Model.First().FormerPlayer.FullName</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
         }
         else if (Model.Any() && !Model.First().IsPermanent)
         {
-            <p>While you have a pet, Wuffie only takes care of pets who have been permanently sealed in their new form.</p>
+            <p>While you have a pet, Wüffie only takes care of pets who have been permanently sealed in their new form.</p>
         }
         else
         {
-            <p>You can sell your pet to Wuffie later.  Unfortunately you don't have a pet right now.</p>
+            <p>You can sell your pet to Wüffie later.  Unfortunately you don't have a pet right now.</p>
         }
     }
 
@@ -38,7 +42,8 @@
 
     @{
 
-        foreach (var i in Model.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
+        foreach (var i in Model.Where(i => i.SoulboundToPlayer == null && i.IsPermanent)
+                               .OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
         {
             <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
 

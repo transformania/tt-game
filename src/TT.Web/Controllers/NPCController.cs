@@ -370,9 +370,7 @@ namespace TT.Web.Controllers
             // show the permanent and consumable items the player is carrying
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
                 .Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet &&
-                            i.IsEquipped &&
-                            i.SoulboundToPlayer == null &&
-                            i.IsPermanent);
+                            i.IsEquipped);
 
             return View(MVC.NPC.Views.SellPetList, output);
         }

@@ -553,7 +553,7 @@ namespace TT.Web.Controllers
             CovenantProcedures.SendCovenantMoneyToPlayer((int)me.Covenant, giftee, amount);
 
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, (float) -amount);
+            StatsProcedures.AddStat(giftee.MembershipId, StatsProcedures.Stat__CovenantNetDonation, (float) -amount);
 
             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";
             return RedirectToAction(MVC.Covenant.MyCovenant());

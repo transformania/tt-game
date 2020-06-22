@@ -14,15 +14,6 @@ namespace TT.Domain.Items.DTOs
         public int PvPEnabled { get; set; }
         public ICollection<PlayPageItemRuneDetail> Runes { get; set; }
 
-        public string GetFullName()
-        {
-            if (FormerPlayer.Nickname.IsNullOrEmpty())
-            {
-                return $"{FormerPlayer.FirstName} {FormerPlayer.LastName}";
-            }
-            return $"{FormerPlayer.FirstName} '{FormerPlayer.Nickname}' {FormerPlayer.LastName}";
-        }
-
         public class PlayPagePlayerDetail
         {
             public int Id { get; set; }

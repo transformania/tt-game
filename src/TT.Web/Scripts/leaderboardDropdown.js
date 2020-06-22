@@ -15,7 +15,11 @@ function buildDropdown() {
     var dropdown = $("#list");
     for (var i = 0; i < roundData.rounds.length; i++) {
         var round = roundData.rounds[i];
-        dropdown.append("<option value='" + round.number + "'>" + round.name + "</option>");
+        dropdown.append($("<option />").val(round.number).text(round.name));
+    }
+
+    if (selectedRound) {
+        dropdown.val(selectedRound)
     }
 }
 

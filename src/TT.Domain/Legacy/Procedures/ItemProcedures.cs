@@ -233,30 +233,37 @@ namespace TT.Domain.Procedures
             var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
             var owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == (int)GameModeStatics.GameModes.Any)
+            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == (int)GameModeStatics.GameModes.Any)
+            {
+                if (owner.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
-                    if (owner.GameMode == (int)GameModeStatics.GameModes.PvP)
-                    {
-                        item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
-                    }
-                    else
-                    {
-                        item.PvPEnabled = (int)GameModeStatics.GameModes.Protection;
-                    }
+                    item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
                 }
-                DomainRegistry.Repository.Execute(new ChangeItemOwner {ItemId = item.Id, OwnerId = newOwnerId, GameMode = item.PvPEnabled});
-                ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
-
-                // if item is not an animal
-                if (item.ItemSource.ItemType != PvPStatics.ItemType_Pet) { 
-                    return "You picked up a " + item.ItemSource.FriendlyName + " and put it into your inventory.";
+                else
+                {
+                    item.PvPEnabled = (int)GameModeStatics.GameModes.Protection;
                 }
+            }
+            DomainRegistry.Repository.Execute(new ChangeItemOwner {ItemId = item.Id, OwnerId = newOwnerId, GameMode = item.PvPEnabled});
+            ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
 
-                // item is an animal
+            // if item is not an animal
+            if (item.ItemSource.ItemType != PvPStatics.ItemType_Pet) { 
+                return "You picked up a " + item.ItemSource.FriendlyName + " and put it into your inventory.";
+            }
+
+            // item is an animal
+            else
+            {
+                if (item.FormerPlayer == null)
+                {
+                    return "You tame a " + item.ItemSource.FriendlyName + " and are now keeping them as a pet.";
+                }
                 else
                 {
                     return "You tame " + item.FormerPlayer.FullName + " the " + item.ItemSource.FriendlyName + " and are now keeping them as a pet.";
                 }
+            }
         }
 
         public static string GiveNewItemToPlayer(Player player, DbStaticItem item)
@@ -324,7 +331,14 @@ namespace TT.Domain.Procedures
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
-                return "You released " + item.FormerPlayer.FullName + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
+                if (item.FormerPlayer == null)
+                {
+                    return "You released the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
+                }
+                else
+                {
+                    return "You released " + item.FormerPlayer.FullName + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
+                }
             }
 
             // item is a regular item

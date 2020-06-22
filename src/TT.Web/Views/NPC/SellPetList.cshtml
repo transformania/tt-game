@@ -26,7 +26,7 @@
         }
         else if (Model.Any() && Model.First().IsPermanent)
         {
-            <p>You can sell your pet to Wüffie.  Wüffie will make sure <b>@Model.First().FormerPlayer.FullName</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
+            <p>You can sell your pet to Wüffie.  Wüffie will make sure <b>@(Model.First().FormerPlayer == null ? "" : Model.First().FormerPlayer.FullName)</b> your <b>@Model.First().ItemSource.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
         }
         else if (Model.Any() && !Model.First().IsPermanent)
         {

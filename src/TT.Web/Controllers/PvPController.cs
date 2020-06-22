@@ -1332,21 +1332,21 @@ namespace TT.Web.Controllers
             // assert player is in an okay form to do this
             if (me.Mobility != PvPStatics.MobilityFull)
             {
-                TempData["Error"] = "You must be animate in order to attempt to attempt to restore yourself to your base form.";
+                TempData["Error"] = "You must be animate in order to attempt to restore yourself to your base form.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
-                TempData["Error"] = "You must finish your duel before you can attempt to attempt to restore yourself to your base form.";
+                TempData["Error"] = "You must finish your duel before you can attempt to restore yourself to your base form.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
-                TempData["Error"] = "You must finish your quest before you cattempt to attempt to restore yourself to your base form";
+                TempData["Error"] = "You must finish your quest before you can attempt to restore yourself to your base form";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

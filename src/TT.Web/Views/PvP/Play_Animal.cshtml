@@ -25,6 +25,12 @@
             <li><a href="@Url.Action(MVC.PvP.MyPerks())">My Effects</a></li>
             <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">Look at Yourself</a></li>
             <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.You.MembershipId))">My Statistics</a></li>
+            @{
+                if (PvPStatics.ChaosMode)
+                {
+                    <li><a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Chaos Mode: Instant Restore</a></li>
+                }
+            }
         </ul>
     </li>
     <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
@@ -200,6 +206,12 @@
                     <p class="center-block">
                         <span class="place">Chance to return human: @Model.StruggleChance %.</span>
                         <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
+                    </p>
+                }
+                if(PvPStatics.ChaosMode)
+                {
+                    <p>
+                        In Chaos Mode you can immediately change back into base form through the <b>My Player</b> menu.
                     </p>
                 }
             }

@@ -24,6 +24,12 @@
             <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Player.Id))">Look at Yourself</a></li>
             <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.You.Player.MembershipId))">My Statistics</a></li>
             <li><a href="@Url.Action(MVC.PvP.SelfRestore())">Self Restore (3 AP, 10 Mana)</a></li>
+            @{
+                if (PvPStatics.ChaosMode)
+                {
+                    <li><a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Chaos Mode: Instant Restore</a></li>
+                }
+            }
         </ul>
     </li>
     <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>

@@ -170,18 +170,9 @@
         <div class="col-md-8 covenDescription">
             <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
 
-            @Model.Location.GetDescription()
+            @Model.Location.GetDescription()<br />
             @{
-
-                if (Model.You.Player.GameMode >= 2 && !Model.You.Player.IsInDungeon() && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
-                {
-                    <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (30 AP)</a>
-                }
-                else if (Model.You.Player.IsInDungeon())
-                {
-                    <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
-                }
-
+                var enchanted = false;
                 if (Model.Location.CovenantController != null)
                 {
                     try
@@ -191,6 +182,7 @@
                         if (temp2 != null)
                         {
                             <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
+                            enchanted = true;
                         }
                     }
                     catch
@@ -199,9 +191,26 @@
                     }
                 }
 
-                if (Model.You.Player.GameMode == 2 && !Model.You.Player.IsInDungeon())
+                if (Model.You.Player.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
-                    <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a>
+                    if (enchanted)
+                    {
+                        <br />
+                    }
+
+                    if (Model.You.Player.IsInDungeon())
+                    {
+                        <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a> <span>&nbsp;</span>
+                        if (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north")
+                        {
+                            <br /><br />
+                            <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (30 AP)</a>
+                        }
+                    }
                 }
             }
 

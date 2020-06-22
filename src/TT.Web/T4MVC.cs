@@ -207,9 +207,6 @@ namespace Links
             public static readonly string jquery_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.min.js") ? Url("jquery.min.js") : Url("jquery.js");
             public static readonly string jquery_min_js = Url("jquery.min.js");
             public static readonly string jquery_min_map = Url("jquery.min.map");
-            public static readonly string jquery_slim_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.slim.min.js") ? Url("jquery.slim.min.js") : Url("jquery.slim.js");
-            public static readonly string jquery_slim_min_js = Url("jquery.slim.min.js");
-            public static readonly string jquery_slim_min_map = Url("jquery.slim.min.map");
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -445,8 +442,6 @@ namespace Links
                 {
                     public static readonly string jquery_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.js"); 
                     public static readonly string jquery_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.min.js"); 
-                    public static readonly string jquery_slim_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.slim.js"); 
-                    public static readonly string jquery_slim_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jquery/jquery.slim.min.js"); 
                 }
             }
             public static partial class jquery_ajax_unobtrusive 

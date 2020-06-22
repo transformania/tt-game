@@ -10,11 +10,11 @@ namespace TT.Web.Hubs
 {
     public class NoticeHub : Hub
     {
-        public override Task OnDisconnected(bool stopCalled)
+        public override Task OnDisconnected()
         {
             DomainRegistry.AttackNotificationBroker.NotificationRaised -= NotificationRaised;
 
-            return base.OnDisconnected(stopCalled);
+            return base.OnDisconnected();
         }
 
         private void NotificationRaised(object sender, NotificationRaisedEventArgs args)

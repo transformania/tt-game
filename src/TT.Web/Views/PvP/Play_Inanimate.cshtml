@@ -116,7 +116,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>
-                Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be.
+                Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, or at least it used to be.
 
                 @{
                     if (!Model.Item.IsPermanent)
@@ -130,6 +130,10 @@
                         if (Model.Item.SoulboundToPlayer != null)
                         {
                             @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.Item)
+                        }
+                        else
+                        {
+                            <span>You have <a href="@Url.Action(MVC.Settings.Settings())">@(Model.Item.ConsentsToSoulbinding ? "consented" : "not consented")</a> to let your current or future owner soulbind you.</span>
                         }
                     }
                 }

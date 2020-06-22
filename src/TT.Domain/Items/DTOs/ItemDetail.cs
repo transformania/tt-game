@@ -22,6 +22,7 @@ namespace TT.Domain.Items.DTOs
         public ICollection<ItemRuneDetail> Runes { get; set; }
         public ItemRuneDetail EmbeddedOnItem { get; set; }
         public PlayPageItemDetail.PlayPagePlayerDetail SoulboundToPlayer { get; set; }
+        public bool ConsentsToSoulbinding { get; set; }
     }
 
     public class InventoryItemSource

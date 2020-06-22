@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -37,6 +38,7 @@ namespace TT.Web.Controllers
                 TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
                 TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
                 Player = me,
+                PlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id }),
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
                 ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId})
             };

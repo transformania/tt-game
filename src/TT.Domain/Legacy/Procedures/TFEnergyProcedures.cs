@@ -134,13 +134,15 @@ namespace TT.Domain.Procedures
 
             var eventualForm = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
 
-            output.AttackerLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
-            output.VictimLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
+            var energyAmount = $"  [{totalEnergy:0.00} / {eventualForm.TFEnergyRequired:0.00} TF energy]  ";
+            output.AttackerLog += energyAmount;
+            output.VictimLog += energyAmount;
 
             if (victim.FormSourceId == eventualForm.Id)
             {
-                output.AttackerLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
-                output.VictimLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
+                var noTransformMessage = $"Since {victim.GetFullName()} is already in this form, the spell has no transforming effect.";
+                output.AttackerLog += noTransformMessage;
+                output.VictimLog += noTransformMessage;
                 return output;
             }
 

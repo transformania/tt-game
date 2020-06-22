@@ -40,7 +40,7 @@
                     <p>@i.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, i)</p>
 
                     @HtmlHelpers.PrintPvPIcon(i)
-                    <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(i, "sell") Arpeyjis</span>
+                    <span class="price">Price:  @($"{TT.Domain.Procedures.ItemProcedures.GetCostOfItem(i, "sell"):0}") Arpeyjis</span>
 
                     <a href="@Url.Action(MVC.NPC.Sell(i.Id))" class="attackLink">Sell</a>
 

@@ -232,7 +232,7 @@ namespace TT.Web.Controllers
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float) cost);
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float) cost);
 
-            TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
+            TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Lindella for {cost:0} Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
@@ -429,7 +429,7 @@ namespace TT.Web.Controllers
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float) -cost);
 
-            TempData["Result"] = "You sold your " + itemBeingSold.ItemSource.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
+            TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Wüffie for {cost:0} Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
@@ -943,7 +943,7 @@ namespace TT.Web.Controllers
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
 
-            TempData["Result"] = "You purchased " + purchased.ItemSource.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
+            TempData["Result"] = $"You purchased {purchased.ItemSource.FriendlyName} from {loremaster.GetFullName()} for {cost:0} Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());
 
         }

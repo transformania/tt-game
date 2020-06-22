@@ -171,7 +171,7 @@ namespace TT.Domain.Procedures
             }
             else
             {
-                resultMessage = $"  You have gained {xpGain:0.#} xp.  ({xp.Amount:0.#}/{ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level)}:0.# to next level).";
+                resultMessage = $"  You have gained {xpGain:0.#} xp.  ({xp.Amount:0.#}/{ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level):0.#} to next level).";
             }
 
             inanimXpRepo.SaveInanimateXP(xp);

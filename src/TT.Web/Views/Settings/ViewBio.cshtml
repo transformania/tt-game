@@ -12,9 +12,17 @@
         if (Model.Player?.BotId == TT.Domain.Statics.AIStatics.ActivePlayerBotId)
         {
             <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">Look at Player</a></li>
-            <li><a href="@Url.Action(MVC.Messages.Write(Model.Player.Id, -1))">Send a Message</a></li>
-            <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.Player.Id))">Add Friend</a></li>
-            <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id))">Blacklist player</a></li>
+            if (Model.IsMyBio)
+            {
+                <li><a href="@Url.Action(MVC.Settings.SetBio())">Update Bio</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action(MVC.Messages.Write(Model.Player.Id, -1))">Send a Message</a></li>
+                <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.Player.Id))">Add Friend</a></li>
+                <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id))">Blacklist Player</a></li>
+                <li><a href="@Url.Action(MVC.Report.Report(Model.Player.MembershipId))">Report Player</a></li>
+            }
         }
     }
 }

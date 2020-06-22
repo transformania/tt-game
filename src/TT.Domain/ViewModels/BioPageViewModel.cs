@@ -8,5 +8,6 @@ namespace TT.Domain.ViewModels
         public Player Player { get; set; }
         public PlayerBio PlayerBio { get; set; }
         public IEnumerable<AchievementBadge> Badges { get; set; }
+        public bool IsMyBio { get; set; }
     }
 }

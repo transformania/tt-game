@@ -5,7 +5,7 @@
 
 @{
     var XPtoLevel = TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
-    var XpWidth = Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100);
+    var XpWidth = Math.Min(100, Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100));
     if (Model.Player.Level >= PvPStatics.MaxPlayerLevel)
     {
         XPtoLevel = (float)Model.Player.XP;

@@ -2072,7 +2072,7 @@ namespace TT.Web.Controllers
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
-
+            ViewBag.IsMe = User.Identity.GetUserId() == playerLookedAt.Player.MembershipId;
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
@@ -2096,13 +2096,13 @@ namespace TT.Web.Controllers
 
                 if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
-                    ViewBag.IsWorn = playerItem.Owner == null
+                    ViewBag.WornMessage = playerItem.Owner == null
                         ? "This creature has not been tamed as is running around feral."
                         : "This creature has been tamed and is following their master.";
                 }
                 else
                 {
-                    ViewBag.IsWorn = playerItem.Owner == null
+                    ViewBag.WornMessage = playerItem.Owner == null
                         ? "This item is not currently owned and is lying around available to be claimed by whoever comes across them."
                         : "This item is currently being carried and possibly worn by another player.";
                 }

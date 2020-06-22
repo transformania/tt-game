@@ -16,22 +16,23 @@
                     {
                         <li><a href="@Url.Action(MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))">View Bio</a></li>
                     }
+                    else if (ViewBag.IsMe)
+                    {
+                        <li><a href="@Url.Action(MVC.Settings.SetBio())">Create bio</a></li>
+                    }
+
                     if (ViewBag.HasArtistAuthorBio)
                     {
-                        <li>
-                            <a href="@Url.Action(MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))">View Artist/Author Bio</a>
-                        </li>
+                        <li><a href="@Url.Action(MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))">View Artist/Author Bio</a></li>
                     }
-                }
 
-                @{
-                    if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                    <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
+
+                    if (!ViewBag.IsMe)
                     {
-
                         <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist player</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist Player</a></li>
                         <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>
                     }
                 }
@@ -58,20 +59,20 @@
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <h3 class="center-block">@Model.PlayerForm.Form.FriendlyName</h3>
-            @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityFull)
+            @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
                 {
                     <span class="textMobility">
                         Once human, this player has become inanimate and poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
+                        @ViewBag.WornMessage
                     </span>
-
                 }}
 
             @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
                 {
                     <span class="textMobility">
                         Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.
+                        @ViewBag.WornMessage
                     </span>
-
                 }}
             <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
         </div>

@@ -182,7 +182,7 @@ namespace TT.Web.Controllers
             }
 
             output.Badges = StatsProcedures.GetPlayerBadges(player.MembershipId);
-
+            output.IsMyBio = User.Identity.GetUserId() == player.MembershipId;
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 

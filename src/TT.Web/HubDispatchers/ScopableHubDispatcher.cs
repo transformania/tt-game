@@ -29,9 +29,9 @@ namespace TT.Web.HubDispatchers
             return next(request, connectionId, () => base.OnConnected(request, connectionId));
         }
 
-        protected override Task OnDisconnected(IRequest request, string connectionId, bool stopCalled)
+        protected override Task OnDisconnected(IRequest request, string connectionId)
         {
-            return next(request, connectionId, () => base.OnDisconnected(request, connectionId, stopCalled));
+            return next(request, connectionId, () => base.OnDisconnected(request, connectionId));
         }
 
         protected override Task OnReconnected(IRequest request, string connectionId)

@@ -24,15 +24,13 @@ namespace TT.Web.Controllers
             CovenantViewModel output;
 
             output = CovenantProcedures.GetCovenantViewModel(me);
-            if (output == null)
+            if (output == null || me.Covenant == null || me.Covenant <= 0)
             {
-                output = new CovenantViewModel();
-                ViewBag.LocationsControlled = 0;
+                TempData["Error"] = "You are not currently in a covenant.";
+                return RedirectToAction(MVC.Covenant.CovenantList());
             }
-            else
-            {
-                ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
-            }
+
+            ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -44,14 +42,20 @@ namespace TT.Web.Controllers
 
             ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
 
-
-
             return View(MVC.Covenant.Views.MyCovenant, output);
         }
 
         public virtual ActionResult CovenantList()
         {
             var output = CovenantProcedures.GetCovenantsList();
+
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            ViewBag.Player = me;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return View(MVC.Covenant.Views.CovenantList, output);
         }
 
@@ -231,6 +235,10 @@ namespace TT.Web.Controllers
 
             ViewBag.FlagURLS = flagURLs;
 
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return View(MVC.Covenant.Views.ChangeCovenantDescription, myCov);
         }
 
@@ -240,15 +248,16 @@ namespace TT.Web.Controllers
             // assert model is okay
             if (!ModelState.IsValid)
             {
-                ViewBag.ValidationMessage = "Your description was not saved.  Covenant description must be between 25 and 200 characters long.";
-                return View(MVC.Covenant.Views.ChangeCovenantDescription);
+                TempData["Error"] = "Your description was not saved";
+                TempData["SubError"] = "Covenant description must be between 25 and 200 characters long.";
+                return ChangeCovenantDescription();
             }
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
-                TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
+                TempData["Error"] = "You are not in a covenant and cannot change the covenant's self description.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
@@ -296,6 +305,13 @@ namespace TT.Web.Controllers
             }
 
             var output = new Covenant();
+
+            ViewBag.Player = me;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return View(MVC.Covenant.Views.StartNewCovenant, output);
         }
 
@@ -304,7 +320,8 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
-                ViewBag.ValidationMessage = "Your covenant was not created.  Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
+                TempData["Error"] = "Your covenant was not created.";
+                TempData["SubError"] = "Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
                 return View(MVC.Covenant.Views.StartNewCovenant);
             }
 
@@ -340,7 +357,14 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult LookAtCovenant(int id)
         {
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            if (me.Covenant == id)
+            {
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             var output = CovenantProcedures.GetCovenantViewModel(id);
+            ViewBag.Player = me;
             ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
             return View(MVC.Covenant.Views.LookAtCovenant, output);
         }
@@ -615,6 +639,7 @@ namespace TT.Web.Controllers
 
             // assert that the player is a covenant leader
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";

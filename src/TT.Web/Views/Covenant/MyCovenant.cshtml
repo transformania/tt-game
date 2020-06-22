@@ -1,10 +1,12 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
 @using TT.Domain.Statics
+@{
+    ViewBag.Title = "My Covenant";
+}
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.Covenant.StartNewCovenant())">Create your own Covenant</a></li>
     <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View all Covenants</a></li>
     <li><a href="@Url.Action(MVC.Covenant.ViewAvailableFurniture())">Buy Furniture</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenantFurniture())">Use Furniture</a></li>

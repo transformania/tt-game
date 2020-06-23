@@ -2365,6 +2365,7 @@ namespace TT.Web.Controllers
                 if (!PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message))
                 {
                     PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
+                    TempData["Result"] = "You have sent a friend request to " + friend.FirstName + " " + friend.LastName + "!";
                 }
             }
             else

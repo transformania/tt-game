@@ -65,7 +65,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 // if the merchant has arrived, set a new target for next time.
-                if (directive.TargetLocation == merchant.dbLocationName)
+                // Does this count as turning Lindella into a snail?
+                if (directive.TargetLocation == merchant.dbLocationName && turnNumber%2 == 0)
                 {
                     if (merchant.dbLocationName == "270_west_9th_ave")
                     {

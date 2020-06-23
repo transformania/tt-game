@@ -179,7 +179,7 @@ namespace TT.Tests.TFEnergies.Commands
                 .With(p => p.OriginalFormSource, originalForm)
                 .With(p => p.ActionPoints, 100)
                 .With(p => p.Mana, 25)
-                .With(p => p.CleansesMeditatesThisRound, 3)
+                .With(p => p.CleansesMeditatesThisRound, PvPStatics.MaxCleansesMeditatesPerUpdate)
                 .BuildAndSave();
 
             var cmd = new SelfRestoreToBase { PlayerId = player.Id, Buffs = buffs };

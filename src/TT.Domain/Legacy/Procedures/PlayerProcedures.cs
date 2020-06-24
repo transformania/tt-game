@@ -809,16 +809,18 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)
+        public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost, bool timestamp = true)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             AIProcedures.MoveTo(dbPlayer, destinationDbName, 100000);
             dbPlayer.ActionPoints -= actionPointCost;
             dbPlayer.dbLocationName = destinationDbName;
-            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            if(timestamp)
+            {
+                dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            }
             playerRepo.SavePlayer(dbPlayer);
-
         }
 
         public static string TeleportPlayer(Player player, string destination, bool showDestinationInLocationLog)

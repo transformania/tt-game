@@ -495,7 +495,7 @@ namespace TT.Web.Controllers
 
 
             // success; move the victim.
-            PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
+            PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost, false);
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__MovementFormSourceId);
 
             var attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";

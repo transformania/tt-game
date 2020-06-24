@@ -249,7 +249,7 @@ namespace TT.Web.Controllers
                 if (halfHealth < me.Health)
                 {
                     drop = me.Health - halfHealth;
-                    PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -drop, 0, me.Id);
+                    PlayerProcedures.ChangePlayerActionMana(0, -drop, 0, me.Id, false);
                     TempData["Result"] = "You voluntarily lower your willpower down to half of its maximum, making yourself completely vulnerable to animate transformations.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
@@ -265,7 +265,7 @@ namespace TT.Web.Controllers
                 if (me.Health > 0)
                 {
                     // drop = me.MaxHealth - me.Health;
-                    PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -me.Health, 0, me.Id);
+                    PlayerProcedures.ChangePlayerActionMana(0, -me.Health, 0, me.Id, false);
                     TempData["Result"] = "You voluntarily decrease your willpower to nothing, making yourself vulnerable to any type of transformation.";
                     return RedirectToAction(MVC.PvP.Play());
                 }

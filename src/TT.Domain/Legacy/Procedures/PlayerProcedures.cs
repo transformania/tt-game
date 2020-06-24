@@ -871,7 +871,7 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana, int playerId)
+        public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana, int playerId, bool timestamp = true)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
@@ -879,7 +879,10 @@ namespace TT.Domain.Procedures
             player.Mana += mana;
             player.Health += health;
 
-            player.LastActionTimestamp = DateTime.UtcNow;
+            if(timestamp) 
+            {
+                player.LastActionTimestamp = DateTime.UtcNow;
+            }
 
             if (player.Mana > player.MaxMana)
             {
@@ -896,26 +899,6 @@ namespace TT.Domain.Procedures
             if (player.Health < 0)
             {
                 player.Health = 0;
-            }
-
-            playerRepo.SavePlayer(player);
-        }
-
-        public static void ChangePlayerActionManaNoTimestamp(decimal actionPoints, decimal health, decimal mana, int playerId)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            player.ActionPoints -= actionPoints;
-            player.Mana += mana;
-            player.Health += health;
-
-            if (player.Mana > player.MaxMana)
-            {
-                player.Mana = player.MaxMana;
-            }
-            if (player.Health > player.MaxHealth)
-            {
-                player.Health = player.MaxHealth;
             }
 
             playerRepo.SavePlayer(player);
@@ -1421,7 +1404,7 @@ namespace TT.Domain.Procedures
                 meditateManaRestore = 0;
             }
 
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id);
+            PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id, false);
 
 
             var result = "Your mind partially possessed by " + mindcontroller.GetFullName() +", your head swims with strange and random thoughts implanted by your agressor, shattering your focus and leaving your mana drained.";

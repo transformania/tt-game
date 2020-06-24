@@ -275,6 +275,7 @@ __pycache__/
 MachineKey.config
 ConnectionStrings.config
 AppSettings.config
+Rewrite.config
 src/TT.Web/Images/PvP/
 custom.css
 custom.min.css

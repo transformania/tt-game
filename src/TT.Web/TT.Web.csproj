@@ -126,7 +126,6 @@
     <Compile Include="DuelController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="HubDispatchers\ScopableHubDispatcher.cs" />
     <Compile Include="HubDispatchers\ScopableHubDispatcherExtensions.cs" />
@@ -309,6 +308,7 @@
     <Content Include="lib\vis\vis.js.map" />
     <Content Include="lib\vis\vis.map" />
     <Content Include="lib\jquery\jquery.min.map" />
+    <None Include="Rewrite.config" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>

@@ -54,9 +54,16 @@ namespace TT.Domain.Players.Commands
                     player.ClearPvPScore();
                 }
 
+                var itemGameMode = GameMode;
+
+                if(itemGameMode == (int)GameModeStatics.GameModes.Superprotection)
+                {
+                    itemGameMode = (int)GameModeStatics.GameModes.Protection;
+                }
+
                 foreach (var i in player.Items)
                 {
-                    i.ChangeGameMode(GameMode);
+                    i.ChangeGameMode(itemGameMode);
                 }
 
                 player.ChangeGameMode(GameMode);

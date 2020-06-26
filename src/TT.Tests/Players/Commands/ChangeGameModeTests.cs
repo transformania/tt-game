@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
+using TT.Domain.Items.Entities;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Identity;
+using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Players.Commands
@@ -47,6 +51,40 @@ namespace TT.Tests.Players.Commands
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes."));
+        }
+
+        [Test]
+        public void should_not_change_PvP_to_SP_in_not_chaos_with_recent_combat()
+        {
+
+            var player = new PlayerBuilder()
+                .With(u => u.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
+                .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-28))
+                .BuildAndSave();
+
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = false };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes."));
+        }
+
+        [Test]
+        public void should_change_PvP_to_SP_in_not_chaos_no_recent_combat()
+        {
+
+            var player = new PlayerBuilder()
+                .With(u => u.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
+                .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-31))
+                .BuildAndSave();
+
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = false };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.Nothing);
+            
+            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
+                Is.EqualTo((int)GameModeStatics.GameModes.Superprotection));
         }
 
         [Test]
@@ -108,6 +146,63 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
                 Is.EqualTo((int) GameModeStatics.GameModes.Protection));
+        }
+
+        [Test]
+        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.PvP)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.Protection)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Superprotection, GameModeStatics.GameModes.Protection)]
+        public void should_change_item_mode(int playerStartMode, int playerEndMode, int expectedItemEndMode)
+        {
+            var playerItems = new List<Item>();
+
+            var pvpItem = new ItemBuilder()
+                .With(i => i.Owner, null)
+                .With(i => i.Id, 87)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.PvP)
+                .BuildAndSave();
+
+            playerItems.Add(pvpItem);
+
+            var pItem = new ItemBuilder()
+                .With(i => i.Owner, null)
+                .With(i => i.Id, 88)
+                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Protection)
+                .BuildAndSave();
+
+            playerItems.Add(pItem);
+
+            var player = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
+                .With(p => p.GameMode, (int)playerStartMode)
+                .With(p => p.Items, playerItems)
+                .BuildAndSave();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = player.User.Id,
+                    GameMode = (int)playerEndMode,
+                    InChaos = true
+                });
+            }
+            catch (Exception ex)
+            {
+                Assert.Inconclusive("Mode change unsuccessful due to exception - cannot validate items", ex);
+            }
+
+            var playerMode = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode;
+            if (playerMode != playerEndMode)
+            {
+                Assert.Inconclusive("Mode change unsuccessful due to unexpected player mode - cannot validate items", playerMode);
+            }
+
+            var previouslyPVPItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 87);
+            Assert.That(previouslyPVPItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+
+            var previouslyPItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 88);
+            Assert.That(previouslyPItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
         }
 
         [Test]

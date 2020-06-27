@@ -239,6 +239,11 @@
                                             @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                         }
 
+                                        if (p.Player.MindControlIsActive && MindControlProcedures.PlayerWithIdIsMindControlledWithSomeType(p.Player.Id, ViewBag.PlayersUnderMyMindControl))
+                                        {
+                                            <a href="@Url.Action(MVC.MindControl.MindControlList())" class="attackLink">Mind Control</a>
+                                        }
+
                                         if (p.Player.BotId == AIStatics.LindellaBotId)
                                         {
                                             <a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))" class="attackLink">Trade</a>

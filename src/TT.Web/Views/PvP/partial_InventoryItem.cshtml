@@ -54,9 +54,16 @@
                             <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
                         }
 
-                        if (Model.IsEquipped && !Model.EquippedThisTurn)
+                        if (Model.IsEquipped)
                         {
-                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
+                            if (Model.EquippedThisTurn)
+                            {
+                                <a href="#" class="disabled attackLink" title="You have already equipped this item this turn.  You can take it off next turn.">Take off</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
+                            }
                         }
 
                     }

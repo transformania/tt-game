@@ -14,6 +14,12 @@
         }
     }
     <li><a href="@Url.Action(MVC.Covenant.StartNewCovenant())">Create your own Covenant</a></li>
+    @{
+        if (ViewBag.HasApplication)
+        {
+            <li><a href="@Url.Action(MVC.Covenant.WithdrawApplication())">Withdraw Coven Application</a></li>
+        }
+    }
 }
 
 <div class="containerInner">

@@ -15,10 +15,7 @@
         {
             <li><a href="javascript:confirmDeletion()">Leave Covenant</a></li>
         }
-        if (ViewBag.HasApplication)
-        {
-            <li><a href="@Url.Action(MVC.Covenant.WithdrawApplication())">Withdraw Coven Application</a></li>
-        }
+
         if (Model.dbCovenant != null && ViewBag.Player.Id == Model.dbCovenant.LeaderId)
         {
             <li><a href="@Url.Action(MVC.Covenant.CovenantLeaderAdmin())">Leader</a></li>

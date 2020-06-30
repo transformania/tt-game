@@ -40,8 +40,6 @@ namespace TT.Web.Controllers
 
             ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(output.dbCovenant, me);
 
-            ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
-
             return View(MVC.Covenant.Views.MyCovenant, output);
         }
 
@@ -55,6 +53,8 @@ namespace TT.Web.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
+
+            ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
 
             return View(MVC.Covenant.Views.CovenantList, output);
         }

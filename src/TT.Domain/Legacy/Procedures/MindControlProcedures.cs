@@ -72,6 +72,12 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static IEnumerable<MindControl> GetAllMindControlledByPlayer(Player player)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            return mcRepo.MindControls.Where(m => m.MasterId == player.Id);
+        }
+
         public static string GetMCFriendlyName(int id)
         {
             var formRepo = new EFDbStaticFormRepository();
@@ -234,7 +240,12 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
         {
-            return controls.Any(p => p.VictimId == player.Id);
+            return PlayerWithIdIsMindControlledWithSomeType(player.Id, controls);
+        }
+
+        public static bool PlayerWithIdIsMindControlledWithSomeType(int id, IEnumerable<MindControl> controls)
+        {
+            return controls.Any(p => p.VictimId == id);
         }
 
         public static void AddCommandUsedToMindControl(Player master, Player victim, int formSourceId)

@@ -327,6 +327,10 @@ namespace TT.Web.Controllers
             output.CurrentCarryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = me.Id});
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
+            loadtime += "Start get mind controlled players:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            ViewBag.PlayersUnderMyMindControl = MindControlProcedures.GetAllMindControlledByPlayer(me);
+            loadtime += "End get mind controlled players:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";

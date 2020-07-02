@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Exceptions;
@@ -148,38 +149,14 @@ namespace TT.Tests.Players.Commands
                 Is.EqualTo((int) GameModeStatics.GameModes.Protection));
         }
 
-        [Test]
-        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.PvP)]
-        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.Protection)]
-        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Superprotection, GameModeStatics.GameModes.Protection)]
-        public void should_change_item_mode(int playerStartMode, int playerEndMode, int expectedItemEndMode)
+        // Performs a player mode switch, in order to test that the items have changed mode.
+        // Any failures to switch the user's mode will cause the test to be skipped.
+        private static void SwitchPlayerModeForItems(Player player, int playerEndMode)
         {
-            var playerItems = new List<Item>();
-
-            var pvpItem = new ItemBuilder()
-                .With(i => i.Owner, null)
-                .With(i => i.Id, 87)
-                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.PvP)
-                .BuildAndSave();
-
-            playerItems.Add(pvpItem);
-
-            var pItem = new ItemBuilder()
-                .With(i => i.Owner, null)
-                .With(i => i.Id, 88)
-                .With(i => i.PvPEnabled, (int)GameModeStatics.GameModes.Protection)
-                .BuildAndSave();
-
-            playerItems.Add(pItem);
-
-            var player = new PlayerBuilder()
-                .With(p => p.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
-                .With(p => p.GameMode, (int)playerStartMode)
-                .With(p => p.Items, playerItems)
-                .BuildAndSave();
-
             try
             {
+                // If this fails, the unit tests that check the player mode switch should
+                // also fail, so we can skip this test instead of failing again.
                 DomainRegistry.Repository.Execute(new ChangeGameMode
                 {
                     MembershipId = player.User.Id,
@@ -189,20 +166,202 @@ namespace TT.Tests.Players.Commands
             }
             catch (Exception ex)
             {
-                Assert.Inconclusive("Mode change unsuccessful due to exception - cannot validate items", ex);
+                Assert.Inconclusive($"Mode change unsuccessful due to exception - cannot validate items: {ex.Message}", ex);
             }
 
-            var playerMode = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode;
-            if (playerMode != playerEndMode)
+            if (player.GameMode != playerEndMode)
             {
-                Assert.Inconclusive("Mode change unsuccessful due to unexpected player mode - cannot validate items", playerMode);
+                Assert.Inconclusive($"Mode change unsuccessful due to unexpected player mode {player.GameMode} - cannot validate items");
             }
+        }
 
-            var previouslyPVPItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 87);
-            Assert.That(previouslyPVPItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+        private static void GivePlayerItemWithRune(Player player, int offset, GameModeStatics.GameModes mode,
+                                       out Item item, out Item rune)
+        {
+            item = new ItemBuilder()
+                .With(i => i.Id, 500 + offset)
+                .With(i => i.PvPEnabled, (int)mode)
+                .BuildAndSave();
 
-            var previouslyPItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 88);
-            Assert.That(previouslyPItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            rune = new ItemBuilder()
+                .With(i => i.Id, 200 + offset)
+                .With(i => i.PvPEnabled, (int)mode)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                   .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                   .BuildAndSave()
+                )
+                .BuildAndSave();
+
+            item.AttachRune(rune);
+            player.GiveItem(item);
+        }
+
+        private static void SetUpPlayerWithItems(out Player player, int playerStartMode, out Item pvpItem, out Item pvpRune, out Item pItem, out Item pRune, out Item commonItem, out Item commonRune)
+        {
+            player = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "current")
+                    .BuildAndSave()
+                )
+                .With(p => p.Id, 100)
+                .With(p => p.GameMode, (int)playerStartMode)
+                .BuildAndSave();
+
+            GivePlayerItemWithRune(player, 1, GameModeStatics.GameModes.PvP, out pvpItem, out pvpRune);
+            GivePlayerItemWithRune(player, 2, GameModeStatics.GameModes.Protection, out pItem, out pRune);
+            GivePlayerItemWithRune(player, 3, GameModeStatics.GameModes.Any, out commonItem, out commonRune);
+        }
+
+        [Test]
+        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.PvP)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.Protection)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Superprotection, GameModeStatics.GameModes.Protection)]
+        public void should_change_item_mode(int playerStartMode, int playerEndMode, int expectedItemEndMode)
+        {
+            Player player;
+            Item pvpItem, pvpRune, pItem, pRune, commonItem, commonRune;
+            SetUpPlayerWithItems(out player, playerStartMode,
+                                 out pvpItem, out pvpRune,
+                                 out pItem, out pRune,
+                                 out commonItem, out commonRune);
+
+            SwitchPlayerModeForItems(player, playerEndMode);
+
+            Assert.That(pvpItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pvpRune.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pRune.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(commonItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+            Assert.That(commonRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+        }
+
+        [Test]
+        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection)]
+        public void should_not_change_unrelated_item_mode(int playerStartMode, int playerEndMode)
+        {
+            Player player;
+            Item pvpItem, pvpRune, pItem, pRune, commonItem, commonRune;
+            SetUpPlayerWithItems(out player, playerStartMode, 
+                                 out pvpItem, out pvpRune,
+                                 out pItem, out pRune,
+                                 out commonItem, out commonRune);
+
+            var someOtherPlayer = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "other")
+                    .BuildAndSave()
+                )
+                .With(p => p.Id, 199)
+                .With(p => p.GameMode, (int)playerStartMode)
+                .BuildAndSave();
+
+            SwitchPlayerModeForItems(someOtherPlayer, playerEndMode);
+
+            Assert.That(pvpItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.PvP));
+            Assert.That(pvpRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.PvP));
+            Assert.That(pItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection));
+            Assert.That(pRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection));
+            Assert.That(commonItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+            Assert.That(commonRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+        }
+
+        private static void GivePlayerSoulboundItemWithRune(Player player, int offset, GameModeStatics.GameModes mode, out Item item, out Item rune)
+        {
+            var formerPlayer = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "former")
+                    .BuildAndSave()
+                )
+                .With(p => p.Id, 100 + offset)
+                .BuildAndSave();
+
+            item = new ItemBuilder()
+                .With(i => i.Id, 500 + offset)
+                .With(i => i.FormerPlayer, formerPlayer)
+                .With(i => i.PvPEnabled, (int)mode)
+                .BuildAndSave();
+
+            rune = new ItemBuilder()
+                .With(i => i.Id, 600 + offset)
+                .With(i => i.PvPEnabled, (int)mode)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Rune)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            item.SoulbindToPlayer(player);
+            item.AttachRune(rune);
+        }
+
+        private static void SetUpPlayerWithSoulboundItems(out Player player, int playerStartMode, out Item pvpItem, out Item pvpRune, out Item pItem, out Item pRune, out Item commonItem, out Item commonRune)
+        {
+            player = new PlayerBuilder()
+                .With(p => p.Id, 100)
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "player")
+                    .BuildAndSave()
+                )
+                .With(p => p.GameMode, (int)playerStartMode)
+                .BuildAndSave();
+
+            GivePlayerSoulboundItemWithRune(player, 1, GameModeStatics.GameModes.PvP, out pvpItem, out pvpRune);
+            GivePlayerSoulboundItemWithRune(player, 2, GameModeStatics.GameModes.Protection, out pItem, out pRune);
+            GivePlayerSoulboundItemWithRune(player, 3, GameModeStatics.GameModes.Any, out commonItem, out commonRune);
+        }
+
+        [Test]
+        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.PvP)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.Protection)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Superprotection, GameModeStatics.GameModes.Protection)]
+        public void should_change_mode_of_soulbound_items_and_their_runes(int playerStartMode, int playerEndMode, int expectedItemEndMode)
+        {
+            Player player;
+            Item pvpItem, pvpRune, pItem, pRune, commonItem, commonRune;
+            SetUpPlayerWithSoulboundItems(out player, playerStartMode,
+                                          out pvpItem, out pvpRune,
+                                          out pItem, out pRune,
+                                          out commonItem, out commonRune);
+
+            SwitchPlayerModeForItems(player, playerEndMode);
+
+            Assert.That(pItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pRune.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pvpItem.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(pvpRune.PvPEnabled, Is.EqualTo(expectedItemEndMode));
+            Assert.That(commonItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+            Assert.That(commonRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+        }
+
+        [Test]
+        [TestCase(GameModeStatics.GameModes.Protection, GameModeStatics.GameModes.PvP)]
+        [TestCase(GameModeStatics.GameModes.PvP, GameModeStatics.GameModes.Protection)]
+        public void should_not_change_mode_of_unrelated_soulbound_items_and_their_runes(int playerStartMode, int playerEndMode)
+        {
+            Player player;
+            Item pvpItem, pvpRune, pItem, pRune, commonItem, commonRune;
+            SetUpPlayerWithSoulboundItems(out player, playerStartMode, 
+                                          out pvpItem, out pvpRune,
+                                          out pItem, out pRune,
+                                          out commonItem, out commonRune);
+
+            var someOtherPlayer = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "other")
+                    .BuildAndSave()
+                )
+                .With(p => p.Id, 199)
+                .With(p => p.GameMode, (int)playerStartMode)
+                .BuildAndSave();
+
+            SwitchPlayerModeForItems(someOtherPlayer, playerEndMode);
+
+            Assert.That(pItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection));
+            Assert.That(pRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection));
+            Assert.That(pvpItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.PvP));
+            Assert.That(pvpRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.PvP));
+            Assert.That(commonItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
+            Assert.That(commonRune.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Any));
         }
 
         [Test]

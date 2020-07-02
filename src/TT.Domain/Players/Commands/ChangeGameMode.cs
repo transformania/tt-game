@@ -7,6 +7,7 @@ using TT.Domain.Players.Entities;
 using TT.Domain.Items.Entities;
 using TT.Domain.Statics;
 using TT.Domain.Procedures;
+using TT.Domain.Items.Commands;
 
 namespace TT.Domain.Players.Commands
 {
@@ -22,8 +23,11 @@ namespace TT.Domain.Players.Commands
         {
             ContextQuery = ctx =>
             {
+                var player = ctx.AsQueryable<Player>()
+                    .Include(p => p.Items)
+                    .Include(p => p.Items.Select(i => i.ItemSource))
+                    .SingleOrDefault(cr => cr.User.Id == MembershipId);
 
-                var player = ctx.AsQueryable<Player>().Include(p => p.Items).SingleOrDefault(cr => cr.User.Id == MembershipId);
                 if (player == null)
                     throw new DomainException($"Player with MembershipID '{MembershipId}' could not be found");
 
@@ -61,16 +65,42 @@ namespace TT.Domain.Players.Commands
                     itemGameMode = (int)GameModeStatics.GameModes.Protection;
                 }
 
-                foreach (var i in player.Items)
-                {
-                    i.ChangeGameMode(itemGameMode);
-                }
+                ChangeItemsAndRunesMode(player.Items, itemGameMode);
+
+                var soulboundItems = context.AsQueryable<Item>()
+                        .Where(i => i.SoulboundToPlayer != null
+                                 && i.SoulboundToPlayer.Id == player.Id)
+                        .ToList();
+                ChangeItemsAndRunesMode(soulboundItems, itemGameMode);
 
                 player.ChangeGameMode(GameMode);
+
                 ctx.Commit();
             };
 
             ExecuteInternal(context);
+        }
+
+        private static void ChangeItemsAndRunesMode(System.Collections.Generic.IEnumerable<Item> items, int mode)
+        {
+            foreach (var item in items)
+            {
+                if (item.PvPEnabled != (int)GameModeStatics.GameModes.Any)
+                {
+                    item.ChangeGameMode(mode);
+                }
+
+                if (item.Runes != null)
+                {
+                    foreach (var rune in item.Runes)
+                    {
+                        if (item.PvPEnabled != (int)GameModeStatics.GameModes.Any)
+                        {
+                            rune.ChangeGameMode(mode);
+                        }
+                    }
+                }
+            }
         }
 
         protected override void Validate()

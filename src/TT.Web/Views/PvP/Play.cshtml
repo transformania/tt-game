@@ -129,7 +129,18 @@
             foreach (var item in Model.PlayerItems.Where(i => i.IsEquipped && i.ItemSource.ItemType != PvPStatics.ItemType_Rune))
             {
                 <div class="col-md-1">
-                    <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName'></div>
+                    @{
+                        if (item.FormerPlayer == null)
+                        {
+                            <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName'></div>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))">
+                                <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName, formerly @item.FormerPlayer.FullName'></div>
+                            </a>
+                        }
+                    }
                 </div>
             }
         }

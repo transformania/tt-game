@@ -26,6 +26,7 @@ namespace TT.Tests.Players.Commands
             var player = new PlayerBuilder()
                 .With(u => u.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.PvPScore, 123)
                 .BuildAndSave();
 
             Assert.That(
@@ -34,8 +35,9 @@ namespace TT.Tests.Players.Commands
                     MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection, InChaos = true
                 }), Throws.Nothing);
 
-            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
-                Is.EqualTo((int) GameModeStatics.GameModes.Protection));
+            var foundPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
+            Assert.That(foundPlayer.GameMode, Is.EqualTo((int) GameModeStatics.GameModes.Protection));
+            Assert.That(foundPlayer.PvPScore, Is.EqualTo(123));
         }
 
         [Test]
@@ -77,15 +79,17 @@ namespace TT.Tests.Players.Commands
             var player = new PlayerBuilder()
                 .With(u => u.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.PvPScore, 123)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-31))
                 .BuildAndSave();
 
             var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.Nothing);
-            
-            Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
-                Is.EqualTo((int)GameModeStatics.GameModes.Superprotection));
+
+            var foundPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
+            Assert.That(foundPlayer.GameMode, Is.EqualTo((int)GameModeStatics.GameModes.Superprotection));
+            Assert.That(foundPlayer.PvPScore, Is.EqualTo(0));
         }
 
         [Test]

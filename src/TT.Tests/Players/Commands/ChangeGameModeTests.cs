@@ -106,6 +106,23 @@ namespace TT.Tests.Players.Commands
         }
 
         [Test]
+        [TestCase(GameModeStatics.GameModes.Superprotection)]
+        [TestCase(GameModeStatics.GameModes.Protection)]
+        public void should_not_change_not_from_PvP_when_in_dungeon(int mode)
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.User, new UserBuilder().With(u => u.Id, "abcde").BuildAndSave())
+                .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.Location, "dungeon_location")
+                .BuildAndSave();
+
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = mode, InChaos = true };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message
+                    .EqualTo("You cannot switch out of PvP mode while you are in the dungeon."));
+        }
+
+        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void should_change_P_to_SP_anytime(bool inChaos)

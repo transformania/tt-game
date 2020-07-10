@@ -34,6 +34,9 @@ namespace TT.Domain.Players.Commands
                 if (player.GameMode == GameMode)
                     throw new DomainException("You are already in this game mode.");
 
+                if (player.GameMode == (int)GameModeStatics.GameModes.PvP && player.IsInDungeon())
+                    throw new DomainException("You cannot switch out of PvP mode while you are in the dungeon.");
+
                 if (!InChaos)
                 {
                     var WhenLastCombat = player.LastCombatTimestamp;
@@ -53,7 +56,7 @@ namespace TT.Domain.Players.Commands
 
                     if ((player.GameMode == (int)GameModeStatics.GameModes.Protection || player.GameMode == (int)GameModeStatics.GameModes.Superprotection) && GameMode == (int)GameModeStatics.GameModes.PvP)
                         throw new DomainException("You cannot switch into that mode during regular gameplay.");
-                    
+
                     //Remove a player's Dungeon Points whenever they switch into P/SP
                     player.ClearPvPScore();
                 }

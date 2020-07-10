@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures
 
                // spell is evaded
                 }
-                else if (basehitChance < (double)criticalMissPercentChance + (double)(evasionPercentChance - criticalMissPercentChance))
+                else if (basehitChance < (double)criticalMissPercentChance + (double)(evasionPercentChance - criticalPercentChance))
                 {
                     logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
                     logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";

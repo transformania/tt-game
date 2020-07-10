@@ -61,7 +61,7 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(playerLoaded.PlayerLogs.First().Message,
                 Is.EqualTo("You cleansed at Street: 200 Main Street."));
-            Assert.That(playerLoaded.Health, Is.EqualTo(8));
+            Assert.That(playerLoaded.Health, Is.EqualTo(50));
             Assert.That(playerLoaded.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(1).Seconds);
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();

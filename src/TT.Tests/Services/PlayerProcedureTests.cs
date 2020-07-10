@@ -22,10 +22,10 @@ namespace TT.Tests.Services
             }
 
             [Test]
-            [TestCase(1, 50)]
-            [TestCase(2, 55)]
-            [TestCase(7, 80)]
-            [TestCase(55, 320)]
+            [TestCase(1, 300)]
+            [TestCase(2, 300)]
+            [TestCase(7, 300)]
+            [TestCase(55, 300)]
             public void Should_retrieve_correct_mana_base_by_level(int level, int expectedMana)
             {
                 Assert.That(PlayerProcedures.GetManaBaseByLevel(level), Is.EqualTo(expectedMana));
@@ -33,10 +33,10 @@ namespace TT.Tests.Services
 
 
             [Test]
-            [TestCase(1, 100)]
-            [TestCase(2, 110)]
-            [TestCase(7, 160)]
-            [TestCase(55, 640)]
+            [TestCase(1, 1000)]
+            [TestCase(2, 1000)]
+            [TestCase(7, 1000)]
+            [TestCase(55, 1000)]
             public void Should_retrieve_correct_wp_base_by_level(int level, int expectedWillpower)
             {
                 Assert.That(PlayerProcedures.GetWillpowerBaseByLevel(level), Is.EqualTo(expectedWillpower));

@@ -295,7 +295,9 @@ namespace TT.Domain.Players.Entities
             var result = "";
 
             var cleanseBonusTFEnergyRemovalPercent = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
-            var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth() + Level;
+            // Old Value
+            // var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth() + Level;
+            var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth();
 
             if (cleanseWPRestore <= 0)
             {
@@ -329,8 +331,9 @@ namespace TT.Domain.Players.Entities
             LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
-
-            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + Level;
+            // Old Value
+            // var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + Level;
+            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana();
 
             if (meditateManaRestore < 0)
             {
@@ -484,13 +487,21 @@ namespace TT.Domain.Players.Entities
 
         private float GetManaBaseByLevel(int level)
         {
-            float manaBase = 5 * (level - 1) + 50;
+            // Old Value
+            // float manaBase = 5 * (level - 1) + 50;
+
+            float manaBase = 300;
+
             return manaBase;
         }
 
         private static float GetWillpowerBaseByLevel(int level)
         {
-            var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+            // Old Value
+            // var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+
+            var willpowerBase = 1000;
+
             return willpowerBase;
         }
 

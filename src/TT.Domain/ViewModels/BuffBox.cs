@@ -673,7 +673,7 @@ namespace TT.Domain.ViewModels
                       	{"Discipline", .25F},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", .20F},
+	                    {"Fortitude", 1F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
@@ -688,10 +688,10 @@ namespace TT.Domain.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", 0},
+	                    {"Fortitude", 0.5F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
-	                    {"Magicka", 1.5F},
+	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
                     }
@@ -703,11 +703,11 @@ namespace TT.Domain.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", 0},
+	                    {"Agility", 0.08F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .21F},
+	                    {"Luck", .375F},
                     }
                 },
                 {
@@ -720,7 +720,7 @@ namespace TT.Domain.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", 1.05F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -734,7 +734,7 @@ namespace TT.Domain.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", .15F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -773,7 +773,7 @@ namespace TT.Domain.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", .5F},
+	                    {"Agility", .375F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -784,7 +784,7 @@ namespace TT.Domain.ViewModels
                 "EvasionNegationPercent",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", .8F},
+	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
@@ -802,7 +802,7 @@ namespace TT.Domain.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", .1F}, // restoration
+	                    {"Allure", .15F}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0}, 
                         {"Luck", 0},
@@ -816,7 +816,7 @@ namespace TT.Domain.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", .1F}, // restoration
+	                    {"Allure", .35F}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0}, 
 	                    {"Luck", 0},
@@ -841,11 +841,11 @@ namespace TT.Domain.ViewModels
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
 	                    {"Perception", 0},
-	                    {"Charisma", 0.2F},
+	                    {"Charisma", 0F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
-	                    {"Magicka", .5F},
+	                    {"Magicka", 1F},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
                     }
@@ -881,24 +881,24 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellMisfireChanceReduction",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0},
-	                    {"Perception", .1F},
+                      	{"Discipline", 0.08F},
+	                    {"Perception", .15F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .05F},
+	                    {"Luck", .08F},
                     }
                 },
                 {
                 "SpellHealthDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0.5F},
+                      	{"Discipline", 0.375F},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", 0},
+	                    {"Fortitude", 0.1F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
@@ -909,10 +909,10 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellTFEnergyDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0.5F},
+                      	{"Discipline", 0.375F},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", 0},
+	                    {"Fortitude", 0.1F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},

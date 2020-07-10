@@ -90,6 +90,8 @@ namespace TT.Domain.Procedures
                 var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
                 var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
+                var criticalPercentChance = meBuffs.ExtraSkillCriticalPercent();
+
                 // clamp evasion at 66% max
                 if (evasionPercentChance > 66)
                 {
@@ -113,7 +115,7 @@ namespace TT.Domain.Procedures
 
                // spell is evaded
                 }
-                else if (basehitChance < (double)criticalMissPercentChance + (double)evasionPercentChance)
+                else if (basehitChance < (double)criticalMissPercentChance + (double)(evasionPercentChance - criticalMissPercentChance))
                 {
                     logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
                     logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
@@ -129,7 +131,7 @@ namespace TT.Domain.Procedures
                     var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
-                    if (criticalHitChance < (double)(PvPStatics.CriticalHitPercentChance + meBuffs.ExtraSkillCriticalPercent()))
+                    if (criticalHitChance < (double)(PvPStatics.CriticalHitPercentChance + (meBuffs.ExtraSkillCriticalPercent() - evasionPercentChance)))
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";
@@ -149,7 +151,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = .5M;
                         }
 
-                        // cap the modifier at at 200 % IF the target is a human
+                        // cap the modifier at 200 % IF the target is a human
                         if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             willpowerDamageModifierFromBonuses = 2;

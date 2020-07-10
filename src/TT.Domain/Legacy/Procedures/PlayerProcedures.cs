@@ -1188,13 +1188,15 @@ namespace TT.Domain.Procedures
 
         public static float GetManaBaseByLevel(int level)
         {
-            float manaBase = 5 * (level - 1) + 50;
+            float manaBase = 300;
+
             return manaBase;
         }
 
         public static float GetWillpowerBaseByLevel(int level)
         {
-            var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+            var willpowerBase = 1000;
+
             return willpowerBase;
         }
 

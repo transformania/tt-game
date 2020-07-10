@@ -95,8 +95,8 @@ namespace TT.Domain.Statics
 
         public const decimal CleanseManaCost = 3M;
         public const decimal CleanseTFEnergyPercentDecrease = 2.0M;
-        public const decimal MeditateManaRestoreBase = 10.0M;
-        public const decimal CleanseHealthRestoreBase = 7.0M;
+        public const decimal MeditateManaRestoreBase = 30.0M;
+        public const decimal CleanseHealthRestoreBase = 50.0M;
         public const decimal SearchAPCost = 4.0M;
 
         public const int MaxCarryableItemCountBase = 6;

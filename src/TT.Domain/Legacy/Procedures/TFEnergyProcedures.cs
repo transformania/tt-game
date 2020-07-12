@@ -336,7 +336,7 @@ namespace TT.Domain.Procedures
                 {
                     var HealthDamage = 50 * spellExtraTFEnergyPercentDamageModifierFromBonuses;
                     output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
-                    output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " 6 willpower damage.";
+                    output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);
@@ -345,7 +345,7 @@ namespace TT.Domain.Procedures
                 {
                     var HealthDamage = 25 * spellExtraTFEnergyPercentDamageModifierFromBonuses;
                     output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra 3 willpower damage.";
-                    output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra 3 willpower damage.";
+                    output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);

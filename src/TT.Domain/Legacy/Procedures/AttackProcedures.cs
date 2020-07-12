@@ -88,17 +88,19 @@ namespace TT.Domain.Procedures
                 var targetProt = targetedBuffs.SpellHealthDamageResistance();
 
                 var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
+
+                var criticalPercentChance = meBuffs.ExtraSkillCriticalPercent() + PvPStatics.CriticalHitPercentChance;
+                var modifiedCriticalPercentChance = criticalPercentChance - targetedBuffs.EvasionPercent();
                 var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
+                var modifiedEvasionPercentChance = evasionPercentChance - meBuffs.ExtraSkillCriticalPercent();
 
-                var criticalPercentChance = meBuffs.ExtraSkillCriticalPercent();
-
-                // clamp evasion at 66% max
-                if (evasionPercentChance > 66)
+                // clamp modifiedEvasion at 66% max
+                if (modifiedEvasionPercentChance > 66)
                 {
-                    evasionPercentChance = 66;
+                    modifiedEvasionPercentChance = 66;
                 }
 
-                // critical miss!  damange caster instead
+                // critical miss!  damage caster instead
                 if (basehitChance < (double)criticalMissPercentChance)
                 {
                     // check if there is a health damage aspect to this spell
@@ -115,7 +117,7 @@ namespace TT.Domain.Procedures
 
                // spell is evaded
                 }
-                else if (basehitChance < (double)criticalMissPercentChance + (double)(evasionPercentChance - criticalPercentChance))
+                else if (basehitChance < (double)criticalMissPercentChance + (double)modifiedEvasionPercentChance)
                 {
                     logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
                     logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
@@ -125,13 +127,11 @@ namespace TT.Domain.Procedures
               // not a  miss, so let's deal some damage, possibly
                 else
                 {
-
-
                     var rand2 = new Random();
                     var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
-                    if (criticalHitChance < (double)(PvPStatics.CriticalHitPercentChance + (meBuffs.ExtraSkillCriticalPercent() - evasionPercentChance)))
+                    if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)modifiedCriticalPercentChance)
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";

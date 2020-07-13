@@ -585,7 +585,10 @@ namespace TT.Domain.Players.Entities
             this.Location = destination;
             AddLog(playerLog, false);
             var movementCost = PvPStatics.LocationMoveCost - MoveActionPointDiscount;
-            this.ActionPoints -= movementCost;
+            if(movementCost > 0)
+            {
+                this.ActionPoints -= movementCost;
+            }
             this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
             this.LastActionTimestamp = DateTime.UtcNow;
 

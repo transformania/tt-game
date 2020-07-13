@@ -231,13 +231,6 @@ namespace TT.Domain.Procedures
                         continue;
                     }
 
-                    var buffs = ItemProcedures.GetPlayerBuffs(player);
-                    player.Health += buffs.HealthRecoveryPerUpdate();
-                    player.Mana += buffs.ManaRecoveryPerUpdate();
-
-
-                    player.ReadjustMaxes(buffs);
-
                     // extra AP condition checks
                     if (player.Covenant > 0)
                     {
@@ -287,32 +280,11 @@ namespace TT.Domain.Procedures
 
                     }
 
-                    if (player.MaxHealth < 1)
-                    {
-                        player.MaxHealth = 1;
-                    }
+                    var buffs = ItemProcedures.GetPlayerBuffs(player);
+                    player.Health += buffs.HealthRecoveryPerUpdate();
+                    player.Mana += buffs.ManaRecoveryPerUpdate();
 
-                    if (player.MaxMana < 1)
-                    {
-                        player.MaxMana = 1;
-                    }
-
-                    if (player.Health > player.MaxHealth)
-                    {
-                        player.Health = player.MaxHealth;
-                    }
-                    if (player.Mana > player.MaxMana)
-                    {
-                        player.Mana = player.MaxMana;
-                    }
-                    if (player.Health < 0)
-                    {
-                        player.Health = 0;
-                    }
-                    if (player.Mana < 0)
-                    {
-                        player.Mana = 0;
-                    }
+                    player.ReadjustMaxes(buffs);
 
                     playerRepo.SavePlayer(player);
 

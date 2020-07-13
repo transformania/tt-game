@@ -17,7 +17,7 @@ namespace TT.Migrations
             // Level 7
             Execute.Sql("Update DbStaticEffects set Discipline = '25', Perception = '30', Charisma = '75', Fortitude = '50', Agility = '20', Allure = '0', Magicka = '75', Succour = '0', Luck = '40' Where Id = 22");
             // Level 9
-            Execute.Sql("Update DbStaticEffects set Discipline = '50', Perception = 45', Charisma = '90', Fortitude = 75', Agility = '25', Allure = '0', Magicka = '90', Succour = '0', Luck = '40' Where Id = 23");
+            Execute.Sql("Update DbStaticEffects set Discipline = '50', Perception = '45', Charisma = '90', Fortitude = '75', Agility = '25', Allure = '0', Magicka = '90', Succour = '0', Luck = '40' Where Id = 23");
 
             // Minibosses
             // Pop Goddess

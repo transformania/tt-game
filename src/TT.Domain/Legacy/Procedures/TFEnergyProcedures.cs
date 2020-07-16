@@ -304,13 +304,13 @@ namespace TT.Domain.Procedures
             var target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
             var attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
 
-            // Collect the attacker & victim spellBuffs
-            var attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
-            var victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
+            // Collect the attacker & victim TFE related buffs
+            var attackerTFEnergyBonus= ItemProcedures.GetPlayerBuffs(attacker).SpellExtraTFEnergyPercent();
+            var victimTFEnergyReduction = ItemProcedures.GetPlayerBuffs(victim).SpellTFEnergyDamageResistance();
             // Collect the attacker ExtraTFEnergyPercent and modify it by the defenders TFEnergyDamageResistance
-            var modifiedTFEnergyPercent = 1 + (attackerBuffs.SpellExtraTFEnergyPercent() - victimBuffs.SpellTFEnergyDamageResistance() / 100M);
+            var modifiedTFEnergyPercent = 1 + ((attackerTFEnergyBonus - victimTFEnergyReduction) / 100M);
 
-            // Cap the damage modifier at 0.5 / 2.0
+            // Cap the damage modifier at 0.5 / 2.0 
             if (modifiedTFEnergyPercent < 0.5M)
             {
                 modifiedTFEnergyPercent = 0.5M;
@@ -320,13 +320,18 @@ namespace TT.Domain.Procedures
                 modifiedTFEnergyPercent = 2.0M;
             }
 
-
             // add in some extra WP damage if TF energy high enough for TF but WP is still high
             if (target.BotId == AIStatics.ActivePlayerBotId || target.BotId == AIStatics.PsychopathBotId)
             {
                 if (energyAccumulated > targetForm.TFEnergyRequired * 3M)
                 {
-                    var HealthDamage = Math.Floor(100 * modifiedTFEnergyPercent);
+                    var HealthDamage = Math.Round(100 * modifiedTFEnergyPercent, 2);
+                    // Make NPC's deal half base damage with TFEnergy buildup
+                    if (attacker.BotId == AIStatics.PsychopathBotId)
+                    {
+                        HealthDamage = Math.Round(50 * modifiedTFEnergyPercent, 2);
+                    }
+
                     output.VictimLog += "  You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
@@ -335,7 +340,12 @@ namespace TT.Domain.Procedures
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 2M)
                 {
-                    var HealthDamage = Math.Floor(50 * modifiedTFEnergyPercent);
+                    var HealthDamage = Math.Round(50 * modifiedTFEnergyPercent, 2);
+                    // Make NPC's deal half base damage with TFEnergy buildup
+                    if (attacker.BotId == AIStatics.PsychopathBotId)
+                    {
+                        HealthDamage = Math.Round(25 * modifiedTFEnergyPercent, 2);
+                    }
                     output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
@@ -344,7 +354,12 @@ namespace TT.Domain.Procedures
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 1M)
                 {
-                    var HealthDamage = Math.Floor(25 * modifiedTFEnergyPercent);
+                    var HealthDamage = Math.Round(25 * modifiedTFEnergyPercent, 2);
+                    // Make NPC's deal half base damage with TFEnergy buildup
+                    if (attacker.BotId == AIStatics.PsychopathBotId)
+                    {
+                        HealthDamage = Math.Round(12 * modifiedTFEnergyPercent, 2);
+                    }
                     output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;

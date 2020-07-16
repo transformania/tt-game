@@ -306,17 +306,18 @@ namespace TT.Domain.Procedures
 
             // Collect the attacker & victim spellBuffs
             var attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
+            var victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
+            // Collect the attacker ExtraTFEnergyPercent and modify it by the defenders TFEnergyDamageResistance
+            var modifiedTFEnergyPercent = 1 + (attackerBuffs.SpellExtraTFEnergyPercent() - victimBuffs.SpellTFEnergyDamageResistance() / 100M);
 
-            // Collect the attacker TFE modifier and store it for future Health Damage modifiers
-            var spellExtraTFEnergyPercentDamageModifierFromBonuses = 1 + ((attackerBuffs.SpellExtraTFEnergyPercent()) / 100.0M);
             // Cap the damage modifier at 0.5 / 2.0
-            if (spellExtraTFEnergyPercentDamageModifierFromBonuses < 0.5M)
+            if (modifiedTFEnergyPercent < 0.5M)
             {
-                spellExtraTFEnergyPercentDamageModifierFromBonuses = 0.5M;
+                modifiedTFEnergyPercent = 0.5M;
             }
-            if (spellExtraTFEnergyPercentDamageModifierFromBonuses > 2.0M)
+            if (modifiedTFEnergyPercent > 2.0M)
             {
-                spellExtraTFEnergyPercentDamageModifierFromBonuses = 2.0M;
+                modifiedTFEnergyPercent = 2.0M;
             }
 
 
@@ -325,7 +326,7 @@ namespace TT.Domain.Procedures
             {
                 if (energyAccumulated > targetForm.TFEnergyRequired * 3M)
                 {
-                    var HealthDamage = Math.Floor(100 * spellExtraTFEnergyPercentDamageModifierFromBonuses);
+                    var HealthDamage = Math.Floor(100 * modifiedTFEnergyPercent);
                     output.VictimLog += "  You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
@@ -334,7 +335,7 @@ namespace TT.Domain.Procedures
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 2M)
                 {
-                    var HealthDamage = Math.Floor(50 * spellExtraTFEnergyPercentDamageModifierFromBonuses);
+                    var HealthDamage = Math.Floor(50 * modifiedTFEnergyPercent);
                     output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;
@@ -343,7 +344,7 @@ namespace TT.Domain.Procedures
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 1M)
                 {
-                    var HealthDamage = Math.Floor(25 * spellExtraTFEnergyPercentDamageModifierFromBonuses);
+                    var HealthDamage = Math.Floor(25 * modifiedTFEnergyPercent);
                     output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra " + HealthDamage + " willpower damage.";
                     output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
                     target.Health -= HealthDamage;

@@ -318,14 +318,16 @@ namespace TT.Web.Controllers
         public virtual ActionResult StartNewCovenantSubmit(Covenant input)
         {
             var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
             if (!ModelState.IsValid)
             {
+                ViewBag.Player = me;
+
                 TempData["Error"] = "Your covenant was not created.";
                 TempData["SubError"] = "Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
                 return View(MVC.Covenant.Views.StartNewCovenant);
             }
-
-            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that a covenant of this name does not already exists
             if (CovenantProcedures.CovenantOfNameExists(input.Name))

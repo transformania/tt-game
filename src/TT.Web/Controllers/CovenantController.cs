@@ -137,14 +137,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            // assert that the covenant doesn't already have too many animate players
-            if (response == "yes" && CovenantProcedures.GetPlayerCountInCovenant(myCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
-            {
-                TempData["Error"] = "The maximum number of animate players in your covenant has already been reached.";
-                TempData["SubError"] = "You will not be able to accept this player's covenant request until there is room in the covent or they are no longer animate.";
-                return RedirectToAction(MVC.Covenant.MyCovenant());
-            }
-
             // assert that the last acceptance wasn't too soon if it's past the first full day of the turn
             var minutesAgo = Math.Abs(Math.Floor(myCov.LastMemberAcceptance.Subtract(DateTime.UtcNow).TotalMinutes));
             if ((PvPWorldStatProcedures.GetWorldTurnNumber() > 144) && minutesAgo < 120)
@@ -154,11 +146,21 @@ namespace TT.Web.Controllers
 
             // get the application from the database
             var app = CovenantProcedures.GetCovenantApplication(id);
+            var submitter = PlayerProcedures.GetPlayer(app.OwnerId);
 
             // assert that the application is for the same covenant
             if (app.CovenantId != myCov.Id)
             {
                 TempData["Error"] = "This application is not for your covenant.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the covenant doesn't already have too many animate players
+            if (response == "yes" && submitter.Mobility == PvPStatics.MobilityFull &&
+                CovenantProcedures.GetPlayerCountInCovenant(myCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
+            {
+                TempData["Error"] = "The maximum number of animate players in your covenant has already been reached.";
+                TempData["SubError"] = "You will not be able to accept this player's covenant request until there is room in the covent or they are no longer animate.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
@@ -178,8 +180,6 @@ namespace TT.Web.Controllers
                 TempData["Result"] = "You have rejected the application.";
             }
 
-
-            var submitter = PlayerProcedures.GetPlayer(app.OwnerId);
             CovenantProcedures.RevokeApplication(submitter);
 
             return RedirectToAction(MVC.Covenant.MyCovenant());

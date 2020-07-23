@@ -221,6 +221,7 @@ namespace TT.Web.Controllers
         {
             public readonly string ProofreadingContributions = ("ProofreadingContributions").ToLowerInvariant();
             public readonly string Contribute = ("Contribute").ToLowerInvariant();
+            public readonly string ContributeSpell = ("ContributeSpell").ToLowerInvariant();
             public readonly string ContributePreview = ("ContributePreview").ToLowerInvariant();
             public readonly string ContributeBalanceCalculatorEffect = ("ContributeBalanceCalculatorEffect").ToLowerInvariant();
             public readonly string ContributeBalanceCalculator2 = ("ContributeBalanceCalculator2").ToLowerInvariant();
@@ -252,11 +253,11 @@ namespace TT.Web.Controllers
         }
 
 
-        static readonly ActionParamsClass_Contribute s_params_Contribute = new ActionParamsClass_Contribute();
+        static readonly ActionParamsClass_ContributeSpell s_params_ContributeSpell = new ActionParamsClass_ContributeSpell();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Contribute ContributeParams { get { return s_params_Contribute; } }
+        public ActionParamsClass_ContributeSpell ContributeSpellParams { get { return s_params_ContributeSpell; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Contribute
+        public class ActionParamsClass_ContributeSpell
         {
             public readonly string Id = ("Id").ToLowerInvariant();
         }
@@ -468,6 +469,7 @@ namespace TT.Web.Controllers
                 public readonly string ContributeEffect = "ContributeEffect";
                 public readonly string ContributeGraphicsNeeded = "ContributeGraphicsNeeded";
                 public readonly string ContributeSetGraphicStatus = "ContributeSetGraphicStatus";
+                public readonly string ContributeSpell = "ContributeSpell";
                 public readonly string DMRoll = "DMRoll";
                 public readonly string GetContributionTable = "GetContributionTable";
                 public readonly string MyDMRolls = "MyDMRolls";
@@ -480,6 +482,7 @@ namespace TT.Web.Controllers
             public readonly string ContributeEffect = "~/Views/Contribution/ContributeEffect.cshtml";
             public readonly string ContributeGraphicsNeeded = "~/Views/Contribution/ContributeGraphicsNeeded.cshtml";
             public readonly string ContributeSetGraphicStatus = "~/Views/Contribution/ContributeSetGraphicStatus.cshtml";
+            public readonly string ContributeSpell = "~/Views/Contribution/ContributeSpell.cshtml";
             public readonly string DMRoll = "~/Views/Contribution/DMRoll.cshtml";
             public readonly string GetContributionTable = "~/Views/Contribution/GetContributionTable.cshtml";
             public readonly string MyDMRolls = "~/Views/Contribution/MyDMRolls.cshtml";
@@ -518,14 +521,25 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ContributeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+        partial void ContributeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Contribute(int Id)
+        public override System.Web.Mvc.ActionResult Contribute()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Contribute);
+            ContributeOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ContributeSpellOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ContributeSpell(int Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ContributeSpell);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            ContributeOverride(callInfo, Id);
+            ContributeSpellOverride(callInfo, Id);
             return callInfo;
         }
 

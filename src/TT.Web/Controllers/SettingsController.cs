@@ -933,7 +933,6 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetArtistBioVisibility(bool isLive)
         {
-
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not on the artist whitelist.";

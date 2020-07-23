@@ -1,6 +1,11 @@
 ﻿@model TT.Domain.Models.JewdewfaeEncounter
 
-
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
+    <li><a href="@Url.Action(MVC.PvPAdmin.FaeList())">Back to Jewdewfae encounters</a></li>
+}
 
 @using (Html.BeginForm(MVC.PvPAdmin.WriteFaeSend(), FormMethod.Post))
 {

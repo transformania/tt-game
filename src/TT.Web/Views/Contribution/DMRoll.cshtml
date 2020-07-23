@@ -1,9 +1,18 @@
 ﻿@model TT.Domain.Models.DMRoll
+@using TT.Domain.Statics
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
     <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Back to my encounter list</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatCommands())">Using DM encounters</a></li>
+    @{
+        if (User.IsInRole(PvPStatics.Permissions_Admin))
+        {
+            <li><a href="@Url.Action(MVC.Contribution.ReviewDMRolls())">Approve DM encounters</a></li>
+        }
+    }
 }
 
 <h1>DM Encounter Contribution</h1>
@@ -87,6 +96,7 @@
         height: 200px;
         border: 1px solid lightblue;
     }
+
     .wide2 {
         width: 100%;
         height: 50px;

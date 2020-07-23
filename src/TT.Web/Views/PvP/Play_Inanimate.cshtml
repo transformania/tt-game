@@ -35,18 +35,7 @@
     <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
-
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell/Form/Item/Pet</a></li>
-            <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Blessing/Curse</a></li>
-            @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
-            {
-                <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
-            }
-        </ul>
-    </li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Contribute</a></li>
 
     @{
         if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))

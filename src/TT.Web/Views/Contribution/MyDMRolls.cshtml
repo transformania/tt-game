@@ -1,18 +1,21 @@
 ﻿@model IEnumerable<TT.Domain.Models.DMRoll>
 @using Microsoft.AspNet.Identity;
+@using TT.Domain.Statics
 
 <div class="result">@ViewBag.Result</div>
-
-@{
-    if (User.Identity.GetUserId() == "69")
-    {
-       <p><a href="@Url.Action(MVC.Contribution.ReviewDMRolls())">Approve DM Encounters</a></p>
-    }
-}
 
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.DMRoll(-1))">New DM encounter</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatCommands())">Using DM encounters</a></li>
+    @{
+        if (User.IsInRole(PvPStatics.Permissions_Admin))
+        {
+            <li><a href="@Url.Action(MVC.Contribution.ReviewDMRolls())">Approve DM encounters</a></li>
+        }
+    }
 }
 
 <h1>Your DM Encounter Contributions</h1>
@@ -25,7 +28,7 @@
 
 @foreach (var roll in Model.OrderBy(r => r.Tags))
 {
-  
+
     <p><span style="color: darkblue;">@roll.Tags.ToUpper()</span>  <span style="color: darkred;">@roll.ActionType.ToUpper()</span></p>
     if (roll.IsLive)
     {

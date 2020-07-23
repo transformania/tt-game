@@ -478,6 +478,17 @@ li {
   background-image: url("../Images/PvP/Icons/donator_1.gif");
 }
 
+.icon-donate-inline {
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.3em;
+  display: inline-block;
+  background-image: url('../../Images/PvP/Icons/donator_1.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .portraitIconRP {
   position: relative;
   left: 10px;
@@ -870,14 +881,6 @@ li {
   background-size: 100% 100%;
 }
 
-.contributionsBox {
-  height: 250px;
-  resize: vertical;
-  overflow-y: scroll;
-  border: $border;
-  padding: 5px;
-}
-
 .playPageInventoryItem {
   width: 50px;
   height: 50px;
@@ -1235,10 +1238,6 @@ strong {
   line-height: 18px;
 }
 
-.contributionsBox a {
-  line-height: 25px;
-}
-
 .specialHeader {
   background-color: #EDAF6B !important;
 }
@@ -1418,6 +1417,32 @@ strong {
   border-top: 2px $navbarDark solid;
   background: #DFCBBF;
   overflow: hidden;
+}
+
+.contribution-type-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: stretch
+}
+
+.contribution-type-box {
+  padding: 15px;
+  width: 400px;
+  margin: 15px;
+  border: 2px $navbarDark dashed;
+  border-top: 2px $navbarDark solid;
+  background: #DFCBBF;
+  flex-grow: 1;
+}
+
+.contribution-type-box h3 {
+  text-align: center;
+  border-bottom: 1px $navbarDark dashed;
+}
+
+.contribution-type-box p {
+ margin: inherit;
 }
 
 #statsBox, #playerBox {

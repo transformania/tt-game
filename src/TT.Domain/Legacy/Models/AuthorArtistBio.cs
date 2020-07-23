@@ -20,5 +20,6 @@ namespace TT.Domain.Models
         public string AnimateImages { get; set; }
         public string InanimateImages { get; set; }
         public string AnimalImages { get; set; }
+        public bool IsLive { get; set; }
     }
 }

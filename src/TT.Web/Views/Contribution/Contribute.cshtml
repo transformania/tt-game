@@ -13,7 +13,7 @@
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.ContributeSpell())">Spells</a></li>
     <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Curses</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">DM Encounters</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">DM encounters</a></li>
     @{
         if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
         {
@@ -23,15 +23,16 @@
         if (User.IsInRole(PvPStatics.Permissions_Admin))
         {
             <li><a href="@Url.Action(MVC.PvPAdmin.FaeList())">Jewdewfae</a></li>
+            <li><a href="@Url.Action(MVC.Tome.List())">Tomes</a></li>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_Previewer) || User.IsInRole(PvPStatics.Permissions_SpellApprover))
         {
-            <li><a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Approvals</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Awaiting approval</a></li>
         }
     }
-    <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Awaiting Release</a></li>
-    <li><a href="https://gitlab.com/transformania/tt-game">Source Code</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Awaiting release</a></li>
+    <li><a href="https://gitlab.com/transformania/tt-game">Source code</a></li>
 }
 
 <div class="containerInner">
@@ -55,9 +56,12 @@
             <h3>Writing</h3>
             <p>
                 Do you enjoy creative writing?  There are plenty of opportunities to contribute your work to the game!
+            </p><p>
+                The main way to contribute is to <a href="@Url.Action(MVC.Contribution.ContributeSpell())">write a spell</a> that turns players into a new item, pet or animate form.
+            </p><p>
+                Other written contributions do not contribute to custom forms:
             </p>
             <ul class="listdots">
-                <li><a href="@Url.Action(MVC.Contribution.ContributeSpell())">Write a spell</a> that turns players into a new item, pet or animate form.</li>
                 <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Create a curse or blessing</a> that gives an effect to players who find it, or gives the owners of an item special abilities.</li>
                 <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Add a DM encounter</a> to provide some roleplay inspiration in the chatrooms.</li>
                 @{
@@ -73,10 +77,11 @@
                     if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         <li><a href="@Url.Action(MVC.PvPAdmin.FaeList())">Author a Jewdewfae encounter</a> that rewards players in the right form.</li>
+                        <li><a href="@Url.Action(MVC.Tome.List())">Write a tome</a> that builds the lore around Sunnyglade.</li>
                     }
                     else
                     {
-                        <li>Author a Jewdewfae encounter.  Let us know on <a href="https://discord.gg/z66CYzX">Discord</a> if you are interested in this.</li>
+                        <li>Author a Jewdewfae encounter or write a tome of Sunnyglade lore.  Let us know on <a href="https://discord.gg/z66CYzX">Discord</a> if you are interested in this.</li>
                     }
                 }
             </ul>
@@ -84,6 +89,10 @@
                 You can also help improve the quality of existing in-game text by reporting mistakes in the #proofreading channel on <a href="https://discord.gg/z66CYzX">Discord</a>.
             </p>
             @{
+                if (User.IsInRole(PvPStatics.Permissions_Proofreader))
+                {
+                    <p class="good">You are registered as a proofreader.</p>
+                }
                 if (User.IsInRole(PvPStatics.Permissions_Previewer) || User.IsInRole(PvPStatics.Permissions_SpellApprover))
                 {
                     <p>
@@ -106,7 +115,7 @@
                 if (User.IsInRole(PvPStatics.Permissions_Artist))
                 {
                     <p class="good">
-                        You are on the artists list.
+                        You are registered as an artist.
                     </p>
                     <ul class="listdots">
                         <li><a href="@Url.Action(MVC.Settings.WriteAuthorArtistBio())">Update your artist bio</a></li>
@@ -219,7 +228,7 @@
             </ul>
         </li>
         <li><a href="https://gitlab.com/transformania/tt-game/-/graphs/master">Developers</a></li>
-        <li>Everyone else who has <a href="@Url.Action(MVC.Info.Donate())">donated</a> or contributed to the game</li>
+        <li>Everyone else who has contributed to the game!</li>
     </ul>
 
 </div>

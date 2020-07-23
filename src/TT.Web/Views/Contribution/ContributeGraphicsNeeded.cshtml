@@ -9,7 +9,7 @@
     <li><a href="@Url.Action(MVC.Contribution.ContributeEffect())">Curses</a></li>
     @if (User.IsInRole(PvPStatics.Permissions_Previewer) || User.IsInRole(PvPStatics.Permissions_SpellApprover))
     {
-        <li><a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Approvals</a></li>
+        <li><a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Awaiting approval</a></li>
     }
 }
 

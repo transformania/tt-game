@@ -3,13 +3,14 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
 }
 
 <div class="containerInner">
     <h1>Tomes</h1>
 
     <a href="@Url.Action(MVC.Tome.Create())">New Tome</a>
-   
+
     <table id="tomes">
         <thead>
             <tr>
@@ -35,10 +36,10 @@
                 }
             }
 
-          
+
         </tbody>
 
-       
+
 
     </table>
 

@@ -455,6 +455,17 @@ namespace TT.Web.Controllers
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 
+            if (me != null && me.Covenant > 0 && newCharacterViewModel.InanimateForm == null)
+            {
+                var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+                if(CovenantProcedures.GetPlayerCountInCovenant(myCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
+                {
+                    TempData["Error"] = "The maximum number of animate players in your covenant has already been reached.";
+                    TempData["SubError"] = "You will not be able to reroll as an animate character until there is room in the covenant or you leave it.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             var result = PlayerProcedures.SaveNewPlayer(newCharacterViewModel, myMembershipId);
 
             if (result != "saved")

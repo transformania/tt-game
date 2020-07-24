@@ -7,7 +7,12 @@
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
     <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">New curse</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Contributions in review</a></li>
+
+    @if (User.IsInRole(PvPStatics.Permissions_Admin))
+    {
+         <li><a href="@Url.Action(MVC.PvPAdmin.ApproveEffectContributionList())">Awaiting approval</a></li>
+    }
+
     @if (User.IsInRole(PvPStatics.Permissions_Proofreader))
     {
         <li><a href="@Url.Action(MVC.Contribution.UnlockEffectContribution(Model.Id))">Unlock but DO NOT Save</a></li>

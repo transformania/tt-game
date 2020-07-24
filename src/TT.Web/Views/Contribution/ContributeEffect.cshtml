@@ -5,10 +5,14 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Contributions in review</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell / Form / Item</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Submit DM Encounter</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">New Contribution</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">New curse</a></li>
+
+    @if (User.IsInRole(PvPStatics.Permissions_Admin))
+    {
+         <li><a href="@Url.Action(MVC.PvPAdmin.ApproveEffectContributionList())">Awaiting approval</a></li>
+    }
+
     @if (User.IsInRole(PvPStatics.Permissions_Proofreader))
     {
         <li><a href="@Url.Action(MVC.Contribution.UnlockEffectContribution(Model.Id))">Unlock but DO NOT Save</a></li>

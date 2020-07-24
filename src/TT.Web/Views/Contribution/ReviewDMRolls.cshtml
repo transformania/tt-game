@@ -1,5 +1,13 @@
 ﻿@model IEnumerable<TT.Domain.Models.DMRoll>
 
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Back to my encounter list</a></li>
+    <li><a href="@Url.Action(MVC.Chat.ChatCommands())">Using DM encounters</a></li>
+}
+
 <h1>Review DM Encounter Contributions</h1>
 
 <hr>
@@ -11,8 +19,8 @@
     <p><span style="color: darkblue;">@roll.Tags.ToUpper()</span>  <span style="color: darkred;">@roll.ActionType.ToUpper()</span></p>
 
     <p>@roll.Message</p>
-    
-    
+
+
     <a href="@Url.Action(MVC.Contribution.ApproveDMRoll(roll.Id))">Approve</a>
     <a href="@Url.Action(MVC.Contribution.DMRoll(roll.Id))">Edit</a>
 

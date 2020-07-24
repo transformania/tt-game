@@ -39,7 +39,6 @@ namespace TT.Web.Controllers
 
             var output = new NewsPageViewModel
             {
-                ArtistBios = DomainRegistry.Repository.Find(new GetArtistBios()),
                 NewsPosts = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp) // 1 == Live
             };
 

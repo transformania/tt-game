@@ -148,7 +148,7 @@ namespace TT.Domain.Procedures
                     AnimateImages = "",
                     InanimateImages = "",
                     AnimalImages = "",
-
+                    IsLive = true
                 };
                 return output;
             }
@@ -177,6 +177,7 @@ namespace TT.Domain.Procedures
             saveMe.AnimateImages = input.AnimateImages;
             saveMe.AnimalImages = input.AnimalImages;
             saveMe.InanimateImages = input.InanimateImages;
+            saveMe.IsLive = input.IsLive;
             saveMe.LastUpdated = DateTime.UtcNow;
             repo.SaveAuthorArtistBio(saveMe);
         }
@@ -185,14 +186,8 @@ namespace TT.Domain.Procedures
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
             var bio = repo.AuthorArtistBios.FirstOrDefault(p => p.OwnerMembershipId == id);
-            if (bio != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return bio != null && bio.IsLive;
         }
 
 

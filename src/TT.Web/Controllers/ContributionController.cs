@@ -14,6 +14,7 @@ using TT.Domain;
 using TT.Domain.Exceptions;
 using TT.Domain.Forms.Commands;
 using TT.Domain.Skills.Commands;
+using TT.Domain.Identity.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -48,7 +49,23 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult Contribute(int Id = -1)
+        public virtual ActionResult Contribute()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var model = new ContributePageViewModel
+            {
+                Me = me,
+                HasPublicArtistBio = SettingsProcedures.PlayerHasArtistAuthorBio(myMembershipId),
+                ArtistBios = DomainRegistry.Repository.Find(new GetArtistBios())
+            };
+
+            return View(MVC.Contribution.Views.Contribute, model);
+        }
+
+        [Authorize]
+        public virtual ActionResult ContributeSpell(int Id = -1)
         {
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -163,7 +180,7 @@ namespace TT.Web.Controllers
             }
             #endregion
 
-            return View(MVC.Contribution.Views.Contribute, contribution);
+            return View(MVC.Contribution.Views.ContributeSpell, contribution);
         }
 
         [Authorize]

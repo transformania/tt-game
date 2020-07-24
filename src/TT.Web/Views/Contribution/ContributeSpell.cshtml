@@ -1,0 +1,961 @@
+﻿@model TT.Domain.Models.Contribution
+@using TT.Domain.Statics
+@using TT.Domain.Models
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeSpell(-1))">New spell</a></li>
+
+    @if (User.IsInRole(PvPStatics.Permissions_Previewer) || User.IsInRole(PvPStatics.Permissions_SpellApprover))
+    {
+        <li><a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Awaiting approval</a></li>
+    }
+
+    <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Awaiting release</a></li>
+
+    @if (User.IsInRole(PvPStatics.Permissions_Proofreader))
+    {
+        <li><a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a></li>
+    }
+}
+
+<div class="containerInner">
+    <p>
+        Click below to load one of your existing contributions (save first before navigating away if you need to!):<br>
+        @{
+
+            if (ViewBag.DisableLinks == null)
+            {
+                <table id="YourContributions" class="table table-hover messageTable dt-responsive">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">Update</th>
+                            <th style="width: 7%;">Live</th>
+                            <th style="width: 25%;">Spell</th>
+                            <th style="width: 25%;">Form</th>
+                            <th style="width: 7%;">Copy</th>
+                            <th style="width: 15%;">Proofreader</th>
+                            <th style="width: 15%;">Lock time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Contribution contribution in ViewBag.OtherContributions)
+                        {
+                            if (contribution.Form_FriendlyName == null)
+                            {
+                                contribution.Form_FriendlyName = "(Form name not set)";
+                            }
+                            if (contribution.Skill_FriendlyName == null)
+                            {
+                                contribution.Skill_FriendlyName = "(StaticSkill name not set)";
+                            }
+                            <tr>
+                                <td>
+                                    @if (contribution.NeedsToBeUpdated)
+                                    {
+                                        <span class="icon icon-timesattacking"></span>
+                                    }
+                                </td>
+                                @if (contribution.IsLive)
+                                {
+                                    <td><span class="good">Y</span></td>
+                                    <td><span class='newlink'><a href="@Url.Action(MVC.Contribution.ContributeSpell(contribution.Id))">@contribution.Skill_FriendlyName</a></span></td>
+                                    <td><span class='newlink'><a href="@Url.Action(MVC.Contribution.ContributeSpell(contribution.Id))">@contribution.Form_FriendlyName</a></span></td>
+                                }
+                                else
+                                {
+                                    <td><span class="bad">N</span></td>
+                                    <td><a href="@Url.Action(MVC.Contribution.ContributeSpell(contribution.Id))">@contribution.Skill_FriendlyName</a></td>
+                                    <td><a href="@Url.Action(MVC.Contribution.ContributeSpell(contribution.Id))">@contribution.Form_FriendlyName</a></td>
+                                }
+                                <td>
+                                    @if (contribution.ProofreadingCopy)
+                                    {
+                                        <span class="good">Y</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="bad">N</span>
+                                    }
+                                </td>
+                                @if (contribution.ProofreadingLockIsOn)
+                                {
+                                    <td><span class="bad">@contribution.CheckedOutBy</span></td>
+                                    <td>@contribution.CreationTimestamp.ToString("u")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+        }
+        <br>
+        @{
+
+
+            if (User.IsInRole(PvPStatics.Permissions_Proofreader))
+            {
+
+            <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
+            <table id="ProofContributions" class="table table-hover messageTable dt-responsive">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">Update</th>
+                        <th style="width: 7%;">Live</th>
+                        <th style="width: 25%;">Spell</th>
+                        <th style="width: 25%;">Form</th>
+                        <th style="width: 7%;">Copy</th>
+                        <th style="width: 15%;">Proofreader</th>
+                        <th style="width: 15%;">Lock time</th>
+                    </tr>
+                </thead>
+            </table>
+        }
+        }
+
+        <h1>Would you like to contribute to the Game?</h1>
+
+        <p>If you would like to see a greater diversity in the game and would like to contribute new spells / forms / items / graphics, you can use this page to write up and submit new content.  You will receive credits for your work in the Contributions section of the Game News page.  And it will be greatly appreciated!</p>
+
+        <p>
+            Some basic rules and things to be aware of:
+            <ul class="listdots">
+                <li>
+                    No plagiarism.
+                </li>
+
+                <li>
+                    With few exceptions, spells will not be released until they have accompanying graphics.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
+                </li>
+                <li>
+                    Due to sexual content in this game, you <b>>cannot include underage characters</b> (less than 18 years old.)
+                </li>
+                <li>
+                    If your spell or form is a <b>parody</b> or <b>reference to copyrighted material</b>, please contact Judoo on the forums for an extended approval process first as it is far more likely the contribution will need heavier modieration to comply with legalities.
+                </li>
+                <li>The administrator or proofreaders may alter portions of the spell to adapt to new locations in the game, correct for grammer, or other needed tweaks to work within the game's theme or mechanics.   These are usually minimal and the original author will still retain credit for the contribution.</li>
+                <li>
+                    (Effective June 1, 2014) When you post contributions and graphics, you retain your creator's rights. This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content. However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
+                </li>
+                <li>To see what happens after you believe your spell is ready, <a href="@Url.Action(MVC.Info.FAQ())#contributions" target="_blank">this on the FAQ page</a>.</li>
+            </ul>
+        </p>
+
+        <p><b>NOTE:  I would STRONGLY recommend saving your longer inputs somewhere on your computer, particularly item / form descriptions and transformation messages.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
+
+        @{ if (User.IsInRole(PvPStatics.Permissions_Proofreader))
+            {
+                <a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a>
+            }
+        }
+
+
+
+        @using (Html.BeginForm(MVC.Contribution.SendContribution(), FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.Id);
+            @Html.HiddenFor(m => m.IsLive);
+            @Html.HiddenFor(m => m.OwnerMembershipId)
+
+            <h2>Spell</h2>
+
+
+            if (Model.ProofreadingCopy)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
+
+            <p><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMembershipId))">Look at this author's player profile</a></p>
+
+
+            <div class="form__panel group" style="background-color: lightpink;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_FriendlyName)
+                    @Html.TextBoxFor(m => m.Skill_FriendlyName)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_Description)
+                    @Html.TextAreaFor(m => m.Skill_Description, new { @data_suggested_length = "125" })
+                </div>
+
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Skill_FormFriendlyName)
+                    @Html.TextBoxFor(m => m.Skill_FormFriendlyName)
+                </div>
+
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Skill_ManaCost)
+                    @Html.TextBoxFor(m => m.Skill_ManaCost)
+                </div>
+
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Skill_TFPointsAmount)
+                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount)
+                </div>
+
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Skill_HealthDamageAmount)
+                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_LearnedAtLocationOrRegion)
+                    @Html.DropDownListFor(m => m.Skill_LearnedAtLocationOrRegion, new SelectList(
+                  new List<Object>{
+                       new { value = "region"  , text = "Region"  },
+                       new { value = "location"  , text = "Location"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_LearnedAtRegion)
+                    @Ajax.ActionLink("Help", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "skillLearnedAt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
+                    @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
+                    <div id="skillLearnedAt"></div>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_DiscoveryMessage)
+                    @Html.TextAreaFor(m => m.Skill_DiscoveryMessage, new { @data_suggested_length = "250" })
+                </div>
+
+            </div>
+
+            if (Model.ProofreadingCopy)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
+
+            if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save">
+            }
+
+            <h2>Form</h2>
+            <div class="form__panel group" style="background-color: lightblue;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_FriendlyName)
+                    @Html.TextBoxFor(m => m.Form_FriendlyName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_Description)
+                    @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Form_TFEnergyRequired)
+                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_Gender)
+                    @Html.DropDownListFor(m => m.Form_Gender, new SelectList(
+                  new List<Object>{
+                       new { value = PvPStatics.GenderMale, text = "Male"  },
+                       new { value = PvPStatics.GenderFemale, text = "Female"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_MobilityType)
+                    @Html.DropDownListFor(m => m.Form_MobilityType, new SelectList(
+                  new List<Object>{
+                       new { value = PvPStatics.MobilityFull, text = "Full (Animate)"  },
+                       new { value = PvPStatics.MobilityInanimate, text = "Inanimate"  },
+                        new { value = PvPStatics.MobilityPet, text = "Animal"  },
+                        new { value = PvPStatics.MobilityMindControl  , text = "Mind Control (not open to public submissions)"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+                </div>
+                <div class="form__panel deprecated" id="Form_BecomesItemPanel">
+                    @Html.LabelFor(m => m.Form_BecomesItemDbName)
+                    @Html.TextBoxFor(m => m.Form_BecomesItemDbName)
+                </div>
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Form_Bonuses)
+                    @Html.TextAreaFor(m => m.Form_Bonuses)
+                </div>
+
+                <div class="form__panel externalMessage">
+                    <b class="tldr">NOTE TO AUTHORS:</b>  If you want the victim's name to appear in the text, write $VICTIM_NAME$ and it will be replaced with the victim's actual name when displayed.  Similarly, if you write $ATTACKER_NAME$ it will be replaced with the attacker's full name.<br><br>
+                    This will work for any of the transformation description texts.
+                </div>
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These make no assumptions as to the victim's gender.
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are either male or female)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
+                </div>
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
+                    <span class="icon icon-male"></span>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change.. (you are male).", @data_suggested_length = "600" })
+                </div>
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
+                    <span class="icon icon-female"></span>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are female)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
+                </div>
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by the CASTER of the spell and describes the transformation process in the third person perspective.  These make no assumptions as to the victim's gender and should not use gendered pronouns like "he", "she", "his", "her", etc.  Instead use phrasings like "your target" or "your victim" or "their".
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
+                </div>
+
+
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
+                    <span class="icon icon-male"></span>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
+                </div>
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
+                    <span class="icon icon-female"></span>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "180" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "275" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
+                </div>
+            </div>
+            if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save">
+            }
+
+            <h2>Item or Pet Created by a Completed Transformation</h2>
+            <div class="form__panel group" id="itemCreatedPanel" style="background-color: #FFE0A3;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_FriendlyName)
+                    @Html.TextBoxFor(m => m.Item_FriendlyName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_Description)
+                    @Html.TextAreaFor(m => m.Item_Description, new { @placeholder = "Ex) This item is a _____.  When its owner holds it, they gain extra power.  Once human, this item likes to shake and rub against its owner affectionately and likes it when people compliment on how pretty it is.  (Refer to this item in third person in a generality--don't use words like 'You' or 'Your' here since this item may not be something that 'You' own.", @data_suggested_length = "450" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_ItemType)
+                    @Html.DropDownListFor(m => m.Item_ItemType, new SelectList(
+                  new List<Object>{
+                       new { value = @PvPStatics.ItemType_Hat  , text = "Hat"  },
+                       new { value = @PvPStatics.ItemType_Shirt  , text = "Shirt"  },
+                       new { value = @PvPStatics.ItemType_Undershirt  , text = "Undershirt (bras, corsets, muscle shirts)"  },
+                       new { value = @PvPStatics.ItemType_Pants  , text = "Pants (jeans, skirts, capris)"  },
+                       new { value = @PvPStatics.ItemType_Underpants  , text = "Underpants (boxers, briefs, panties, thongs)"  },
+                       new { value = @PvPStatics.ItemType_Shoes  , text = "Shoes"  },
+                       new { value = @PvPStatics.ItemType_Accessory  , text = "Accessories (purses, toys, jewelry, etc)"  },
+                       new { value = @PvPStatics.ItemType_Consumable_Reuseable  , text = "Reuseable Consumables (canteens, perfume bottles, items that have useable contents)"  },
+                       new { value = @PvPStatics.ItemType_Pet  , text = "Pet"  },
+                    },
+                  "value",
+                  "text",
+                  2))
+                </div>
+
+                <div id="Item_UseCooldownPanel">
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UseCooldown)
+                        @Html.TextBoxFor(m => m.Item_UseCooldown)
+                    </div>
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UsageMessage_Item)
+                        @Html.TextAreaFor(m => m.Item_UsageMessage_Item, new { @placeholder = "Your owner unscrews your lid and places their lip to your top.  You shiver in ecstasy as your warm liquid passes through into their body, happy to provide your owner with sustenance." }))
+                    </div>
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UsageMessage_Player)
+                        @Html.TextAreaFor(m => m.Item_UsageMessage_Player, new { @placeholder = "You unscrew the lid from your flask and take a few large swigs, feeling the flask shiver in ecstasy as you swallow its fluids, happy to provide you with sustenance." }))
+                    </div>
+                </div>
+
+
+                <div class="form__panel deprecated">
+                    @Html.LabelFor(m => m.Item_Bonuses)
+                    @Html.TextAreaFor(m => m.Item_Bonuses)
+                </div>
+
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are to give the ability to items and pets to have a chance of transforming their owner.  Provide the name of an animate form that this item can change its owner into and provide some text to describe how it feels TO THE OWNER when the item fails to transform its owner and when it succeeds in transforming its owner.
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_FormSourceId) @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "curseFormModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
+                    @Html.TextBoxFor(m => m.CursedTF_FormSourceId, new { })
+                    <div id="curseFormModal"></div>
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail)
+                    @Html.TextAreaFor(m => m.CursedTF_Fail, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail!  Luckily you resist their influence and changes back to your previous form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Fail_M, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail and breasts!  Luckily you resist their influence and changes back to your previous male form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Fail_F, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail and grows your breasts larger!  Luckily you resist their influence and changes back to your previous form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed)
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail!  The power is too much and you transform into a bunnygirl!" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed_M) <span class="icon icon-male"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed_M, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail!  The power is too much and you transform into a woman, then into a bunnygirl!" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed_F) <span class="icon icon-female"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed_F, new { @placeholder = "Your skirt wiggles against you, making you grow a rabbit tail  and grows your breasts larger!  The power is too much and you transform into a bunnygirl!" })
+                </div>
+
+            </div>
+
+            <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
+                <div class="form__panel externalMessage">
+                    Because the form type is not set to inanimate, no item will be created.
+                </div>
+            </div>
+
+            if (Model.ProofreadingCopy)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
+
+            <h2>Give this Form/Item bonuses</h2>
+
+            <div class="form__panel group" style="background-color: #82ffe0; ">
+
+                <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score of 0.  Items should have a balance scoreof 10 and pets should have a balance score close to 20.</div>
+
+                <p>
+                    <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculator2(Model.Id))">Use calculator (save contribution before doing this!)</a><br>
+                </p>
+            </div>
+
+            <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
+                <div class="form__panel externalMessage">
+                    Because the form type is not set to inanimate, no item or pet will be created.
+                </div>
+            </div>
+
+            <h2>Finishing up</h2>
+            <div class="form__panel group" style="background-color: #D1FFBB; ">
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.SubmitterName)
+                    @Html.TextBoxFor(m => m.SubmitterName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.AdditionalSubmitterNames)
+                    @Html.TextBoxFor(m => m.AdditionalSubmitterNames)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.SubmitterUrl)
+                    @Html.TextBoxFor(m => m.SubmitterUrl)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.AssignedToArtist)
+                    <p class="bad">GRAPHICS MUST BE PROVIDED IN A 600X600 RESOLUTION WITHOUT WATERMARKS OR TRANSPARENT BACKGROUNDS.  Be aware that graphics will be moderated by their quality and may be rejected if standards are not met.</p>
+                    @Html.TextAreaFor(m => m.AssignedToArtist)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Notes)
+                    @Html.TextAreaFor(m => m.Notes)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.IsReadyForReview, new { @class = "biglabel" })
+                    @Html.CheckBoxFor(m => m.IsReadyForReview)
+                </div>
+            </div>
+
+            if (Model.ProofreadingCopy)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+                <div class="form__panel group" style="background-color: #ffc278; ">
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.NeedsToBeUpdated)
+                        @Html.CheckBoxFor(m => m.NeedsToBeUpdated)
+                    </div>
+                    <div class="form__panel">
+                        <label>Proofreading edit history:</label>
+                        @Html.Raw(Model.History)
+                    </div>
+                </div>
+
+            }
+
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+
+                <div class="form__panel group" style="background-color: #ffc278; ">
+                    <div class="form__panel">
+                        <label>Image URL:</label>
+                        @Html.TextBoxFor(m => m.ImageURL)
+                        @Html.Partial(MVC.Contribution.Views.partial.ContributionGraphic, Model)
+                    </div>
+
+                    <div class="form__panel">
+                        <label>Is Nonstandard:</label>
+                        @Html.CheckBoxFor(m => m.IsNonstandard)
+                    </div>
+                    <div class="form__panel">
+                        <label>Is Player Learnable:</label>
+                        @Html.CheckBoxFor(m => m.Skill_IsPlayerLearnable)
+                    </div>
+                </div>
+
+            }
+
+            <br><br>
+            if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save">
+            }
+
+            if (User.IsInRole(PvPStatics.Permissions_Proofreader))
+            {
+                <a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a>
+            }
+
+
+
+        }
+
+
+        <a href="@Url.Action(MVC.PvP.Play())">Back to game (Don't forget to save!)</a>
+
+        @{
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
+            {
+                <br><br>
+                <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
+                <p>@Html.Raw(ViewBag.StaticFormExists)</p>
+                <p>@Html.Raw(ViewBag.StaticItemExists)</p>
+                <a href="@Url.Action(MVC.Contribution.PublishSpell(Model.Id))">Publish Spell</a><br>
+                <a href="@Url.Action(MVC.Contribution.PublishForm(Model.Id))">Publish Form</a><br>
+                <a href="@Url.Action(MVC.Contribution.PublishItem(Model.Id))">Publish Item</a><br>
+                <p class="playerSearchingNotification">Note: always publish in this order: items, forms, spells.  Because foreign key stuff.</p>
+
+            }
+
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br>
+                <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br>
+            }
+
+        }
+
+        <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)">
+
+    </div>
+    @section scripts
+{
+        <script src="@Links.Scripts.suggestedLength_js"></script>
+        <script>
+
+        var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();
+
+        $(document).ready(function () {
+            $('#YourContributions').DataTable({
+                "order": [[ 1, "asc" ], [2, "asc"]],
+                "columnDefs": [{
+                    "targets": [6],
+                    "render": function (data, type, full, meta) {
+                        if (type == "display" && data != "") return moment(data).fromNow();
+                        return data;
+                    }
+                }]
+            });
+            $('#ProofContributions').DataTable({
+                "ajax": {
+                    "url": '../ProofreadingContributions',
+                    "dataSrc": ""
+                },
+                "order": [[ 1, "asc" ], [2, "asc"]],
+                "lengthMenu": [ [ 10, 25, 50, 75, 100, -1 ], [ 10, 25, 50, 75, 100, "All" ] ],
+                "deferRender": true,
+                "columns": [
+            { "data": "NeedsToBeUpdated" },
+            { "data": "IsLive" },
+            { "data": "Skill_FriendlyName" },
+            { "data": "Form_FriendlyName" },
+            { "data": "ProofreadingCopy" },
+            { "data": "CheckedOutBy" },
+            { "data": "CreationTimestamp" }
+                ],
+                "columnDefs": [{
+                    "targets": [0],
+                    "render": function (data, type, full, meta) {
+                        if (type == "display")
+                        {
+                            if(data)
+                            {
+                                return '<span class="icon icon-timesattacking"></span>';
+                            }
+                            else
+                            {
+                                return "";
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [1, 4],
+                    "render": function (data, type, full, meta) {
+                        if (type == "display")
+                        {
+                            if(data)
+                            {
+                                return '<span class="good">Y</span>';
+                            }
+                            else
+                            {
+                                return '<span class="bad">N</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [2, 3],
+                    "render": function (data, type, full, meta) {
+                        if(data == null)
+                        {
+                            data = "(name not set)";
+                        }
+                        if (type == "display")
+                        {
+                            if(full.IsLive)
+                            {
+                                return '<span class="newlink"><a href="'+full.Id+'">'+data+'</a></span>';
+                            }
+                            else
+                            {
+                                return '<a href="'+full.Id+'">'+data+'</a>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [6],
+                    "render": function (data, type, full, meta) {
+                        if (!full.ProofreadingLockIsOn) return "";
+                        if (type == "display" && data != "") return moment.utc(data).fromNow();
+                        return data;
+                    }
+                }]
+            });
+
+            if ($("#Form_MobilityType").val() == "full") {
+                displayForAnimate();
+            } else if ($("#Form_MobilityType").val() == "animal" || $("#Form_MobilityType").val() == "inanimate") {
+                displayForInanimate();
+            } else if ($("#Form_MobilityType").val() == "mindcontrol") {
+                displayForAnimate();
+            }
+
+            if ($("#Item_ItemType").val() != "consumable_reuseable") {
+                $("#Item_UseCooldownPanel").hide();
+            } else {
+                $("#Item_UseCooldownPanel").show();
+            }
+
+            $("#Form_MobilityType").change(function () {
+                if ($("#Form_MobilityType").val() == "full") {
+                    displayForAnimate();
+                } else if ($("#Form_MobilityType").val() == "animal") {
+                    alert("Be sure to set 'What type of item is this?' to 'Pet' at the bottom of this page.  Treat the 'item created' panel as if the word 'item' were replaced with 'animal' since the game mechanics work the same: tamed animals give bonuses to the player who owns them.");
+                    displayForInanimate();
+                } else if ($("#Form_MobilityType").val() == "inanimate" ) {
+                    displayForInanimate();
+                } else if ($("#Form_MobilityType").val() == "mindcontrol" ) {
+                    displayForAnimate();
+                }
+            });
+
+
+            $("#Item_ItemType").change(function () {
+
+                if ($("#Item_ItemType").val() != "consumable_reuseable") {
+                    $("#Item_UseCooldownPanel").hide();
+                } else {
+                    $("#Item_UseCooldownPanel").show();
+                }
+
+            });
+
+            $("#disableReadonly").click(function() {
+                alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
+                $(".deprecated").each(function() {
+                    $(this).show();
+                });
+            });
+
+            if ($("#Id").val() == -1) {
+
+            } else {
+                if (proofreadingCopy==false) {
+                    alert("Load successful");
+                } else {
+                    alert("Load successful.  PLEASE NOTE:  This is proofreading copy and it will remain 'checked out' by you until you hit save or click the 'Unlock but DO NOT Save' link at the bottom of this page.  Please click either of these links when you are finished so others know it is safe to edit this proofreading copy.");
+                }
+
+            }
+
+        });
+
+        function displayForInanimate() {
+            $("#itemCreatedPanel").show();
+            $("#itemCreatedPanelNotPresent").hide();
+            $("#Form_Description").attr("placeholder", "Ex) You are inanimate, a _______.  Although you can't move or talk, you enjoy your new existance in your owner's hands and every time they touch you, you feel a surge of love and affection for your new master.  PLEASE NOTE:  This changes for animate forms.");
+
+        }
+
+        function displayForAnimate() {
+            $("#itemCreatedPanel").hide();
+            $("#itemCreatedPanelNotPresent").show();
+
+            $("#Form_Description").attr("placeholder", "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.");
+
+        }
+        </script>
+    }
+    @section head
+{
+        <style>
+            red {
+                color: red;
+            }
+
+            .good {
+                color: green;
+                font-weight: 900;
+            }
+
+            #bonusesList {
+                width: 50%;
+                height: 400px;
+                overflow: scroll;
+                background-color: black;
+                color: white;
+                z-index: 500;
+                padding: 10px;
+                position: fixed;
+                left: 25%;
+                top: 25%;
+                display: none;
+            }
+
+            .showBonusesLink {
+                color: darkblue;
+                font-weight: 600;
+                text-transform: uppercase;
+                cursor: pointer;
+            }
+
+            .fingerCursor {
+                cursor: pointer;
+            }
+
+            .redbutton {
+                border: 2px solid red;
+                border-radius: 5px;
+            }
+
+                .redbutton:hover {
+                    color: darkviolet;
+                    border: 2px solid darkviolet;
+                    border-radius: 5px;
+                }
+
+            input:-moz-read-only { /* For Firefox */
+                background-color: lightgray;
+            }
+
+            input:read-only {
+                background-color: lightgray;
+            }
+
+            textarea:-moz-read-only { /* For Firefox */
+                background-color: lightgray;
+            }
+
+            textarea:read-only {
+                background-color: lightgray;
+            }
+
+            .deprecated {
+                display: none;
+            }
+
+            .biglabel {
+                font-size: x-large;
+            }
+        </style>
+    }

@@ -3,7 +3,7 @@
 Thank you for your interest in making Transformania Time better!
 
 ## Spells and curses
-[Spells]((https://www.transformaniatime.com/contribution/contribute/-1)) and 
+[Spells]((https://www.transformaniatime.com/contribution/contributespell/-1)) and
 [curses](https://www.transformaniatime.com/contribution/contributeeffect/-1) may
 be contributed on the website.
 

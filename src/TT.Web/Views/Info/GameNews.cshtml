@@ -10,7 +10,8 @@
     <li><a href="@Url.Action(MVC.Info.Rules())">Rules of Play</a></li>
     <li><a href="@Url.Action(MVC.Info.GearTool())">Equipment Helper</a></li>
     <li><a href="@Url.Action(MVC.Info.ServerPopulation())">Server Population By Turn</a></li>
-    <li><a href="https://gitlab.com/transformania/tt-game">Source Code on GitLab</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.Contribute())">Contribute</a></li>
+    <li><a href="https://gitlab.com/transformania/tt-game">Source Code</a></li>
     @{if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
         {
             <li><a href="@Url.Action(MVC.Moderator.ListNewsPosts())">Edit News</a></li>
@@ -25,7 +26,7 @@
 
 
     <h1>Updates, News, and Announcements</h1>
-    <h4>We will be posting game updates, news, and a list of <a href="#contributorsTable">community contributors</a> here.</h4>
+    <h4>We will be posting game updates, news, and a list of <a href="@Url.Action(MVC.Contribution.Contribute())">community contributors</a> here.</h4>
 
     @{
         foreach (var n in Model.NewsPosts)
@@ -44,29 +45,13 @@
         }
     }
     <div style="text-align:center;">
-        <h2><a id="contributorsTable">Contributions and Contributors</a></h2>
-        <h3>Artist Biographies</h3>
+        <h2>Contributions and Contributors</h2>
 
-        @{
-            foreach (var n in Model.ArtistBios)
-            {
-                if (!string.IsNullOrEmpty(n.OtherNames))
-                {
-                    <a href="@Url.Action(MVC.Settings.AuthorArtistBio(n.Owner.Id))">@n.OtherNames</a><br>
-                }
-                else
-                {
-                    <a href="@Url.Action(MVC.Settings.AuthorArtistBio(n.Owner.Id))">@n.Owner.UserName</a><br>
-                }
-
-            }
-        }
-
-        <br>
-
-        <p class="bad">A complete count of all authors and their spell counts can be viewed <a href="@Url.Action(MVC.Contribution.GetContributionTable())">here.</a></p>
         <p>
-            If you are interested in contributing new content to the game, click <a href="@Url.Action(MVC.Contribution.Contribute(-1))">here</a>.
+            Thank you to the many <a href="@Url.Action(MVC.Contribution.Contribute())#credits">people who have contributed to the game</a>.
+        </p><p>
+            If you would like to join them, take a look at the ways you can <a href="@Url.Action(MVC.Contribution.Contribute())">contribute game content</a>.
         </p>
     </div>
+
 </div>

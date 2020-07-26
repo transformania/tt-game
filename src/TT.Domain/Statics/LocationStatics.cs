@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TT.Domain.Procedures;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Statics
@@ -48,7 +49,8 @@ namespace TT.Domain.Statics
         }
 
         /// <summary>
-        /// Returns the price of a bus ticket to get from one location to another.  Currently this price is merely the 1x delta X plus delta Y.
+        /// Returns the price of a bus ticket to get from one location to another.
+        /// Currently this price is merely 2x the steps along the shortest route.
         /// </summary>
         /// <param name="departure">Location the player is leaving from</param>
         /// <param name="destination">Location the player is arriving to</param>
@@ -59,7 +61,8 @@ namespace TT.Domain.Statics
         }
 
         /// <summary>
-        /// Returns the distance between two locations, calculated as the delta of X plus the delta of Y
+        /// Returns the distance between two locations, calculated as the number of steps needed
+        /// to reach the destination from the departure point along the shortest path.
         /// </summary>
         /// <param name="departure">Location the player is leaving from</param>
         /// <param name="destination">Location the player is arriving to</param>
@@ -68,8 +71,7 @@ namespace TT.Domain.Statics
         {
             var departureLocation = LocationList.GetLocation.First(l => l.dbName == departure);
             var destinationLocation = LocationList.GetLocation.First(l => l.dbName == destination);
-
-            return Math.Abs(departureLocation.X - destinationLocation.X) + Math.Abs(departureLocation.Y - destinationLocation.Y);
+            return PathfindingProcedures.GetNumSteps(departureLocation, destinationLocation);
         }
 
         /// <summary>

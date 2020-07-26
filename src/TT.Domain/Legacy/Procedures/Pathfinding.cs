@@ -82,16 +82,11 @@ namespace TT.Domain.Procedures
 
     public static class PathfindingProcedures
     {
-
-        public static string GetMovementPath(Location start, Location end)
+        private static List<string> CalculatePath(Location start, Location end)
         {
-
-            var updateTimer = new Stopwatch();
-            updateTimer.Start();
-
             if (start == null || end == null || start.dbName == end.dbName)
             {
-                return "";
+                return new List<string>();
             }
 
             var nodes = new List<LocationNode>();
@@ -154,14 +149,14 @@ namespace TT.Domain.Procedures
 
             while (!done && breakoutCurrent < breakoutMax)
             {
-                
+
                 LocationNode nextNode;
                 if (breakoutCurrent == 0) {
                     nextNode = startingNode;
                 } else {
                     nextNode = openList.OrderBy(n => n.Fx).First();
                 }
-                
+
                 done = Search(nextNode, nodes, openList, closedList, endingNode);
                 breakoutCurrent++;
             }
@@ -178,9 +173,18 @@ namespace TT.Domain.Procedures
                 next = parent.dbName;
             }
 
-            var output = "";
+            return pathList;
+        }
 
+        public static string GetMovementPath(Location start, Location end)
+        {
+            var updateTimer = new Stopwatch();
+            updateTimer.Start();
+
+            var pathList = CalculatePath(start, end);
             pathList.Reverse();
+
+            var output = "";
 
             foreach (var s in pathList)
             {
@@ -189,11 +193,14 @@ namespace TT.Domain.Procedures
 
             output += updateTimer.ElapsedMilliseconds.ToString();
 
-            
             updateTimer.Stop();
 
             return output;
+        }
 
+        public static int GetNumSteps(Location start, Location end)
+        {
+            return CalculatePath(start, end).Count;
         }
 
         public static bool Search(LocationNode currentNode, List<LocationNode> nodes, List<LocationNode> openList, List<LocationNode> closedList, LocationNode finish)

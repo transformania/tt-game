@@ -325,7 +325,7 @@ namespace TT.Domain.Procedures
 
                 if (PvPStatics.ChaosMode)
                 {
-                    msg += " [CHAOS MODE:  struggle value overriden to 5% per struggle.";
+                    msg += $" [CHAOS MODE:  Struggle value overriden to {strugglebonus:0}% per struggle.]";
                 }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, msg, false);

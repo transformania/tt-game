@@ -1188,7 +1188,7 @@ namespace TT.Domain.Procedures
 
         public static float GetManaBaseByLevel(int level)
         {
-            float manaBase = 300;
+            float manaBase = 210;
 
             return manaBase;
         }

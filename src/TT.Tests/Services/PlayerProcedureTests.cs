@@ -22,10 +22,10 @@ namespace TT.Tests.Services
             }
 
             [Test]
-            [TestCase(1, 300)]
-            [TestCase(2, 300)]
-            [TestCase(7, 300)]
-            [TestCase(55, 300)]
+            [TestCase(1, 210)]
+            [TestCase(2, 210)]
+            [TestCase(7, 210)]
+            [TestCase(55, 210)]
             public void Should_retrieve_correct_mana_base_by_level(int level, int expectedMana)
             {
                 Assert.That(PlayerProcedures.GetManaBaseByLevel(level), Is.EqualTo(expectedMana));

@@ -599,6 +599,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 76,
+      "name": "Alpha 76 (Era of Loyal Maids)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

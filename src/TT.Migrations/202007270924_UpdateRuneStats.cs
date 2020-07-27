@@ -38,11 +38,11 @@ namespace TT.Migrations
             // Fortitude -> Renamed to Rune of Glass
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Minor Rune of Glass', Charisma = '15', Luck = '15', Perception = '0', Fortitude = '-6' WHERE id = '448'");
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Standard Rune of Glass', Charisma = '16', Luck = '15', Perception = '0', Fortitude = '-7' WHERE id = '457'");
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Great Rune of the Glass', Charisma = '18', Luck = '18', Perception = '0', Fortitude = '-7' WHERE id = '475'");
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Major Rune of the Glass', Charisma = '19', Luck = '19', Perception = '0', Fortitude = '-8' WHERE id = '466'");
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Superior Rune of the Glass', Charisma = '21', Luck = '21', Perception = '0', Fortitude = '-8' WHERE id = '506'");
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Supreme Rune of the Glass', Charisma = '22', Luck = '22', Perception = '0', Fortitude = '-9' WHERE id = '484'");
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Legendary Rune of the Glass', Charisma = '24', Luck = '24', Perception = '0', Fortitude = '-10' WHERE id = '493'");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Great Rune of Glass', Charisma = '18', Luck = '18', Perception = '0', Fortitude = '-7' WHERE id = '475'");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Major Rune of Glass', Charisma = '19', Luck = '19', Perception = '0', Fortitude = '-8' WHERE id = '466'");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Superior Rune of Glass', Charisma = '21', Luck = '21', Perception = '0', Fortitude = '-8' WHERE id = '506'");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Supreme Rune of Glass', Charisma = '22', Luck = '22', Perception = '0', Fortitude = '-9' WHERE id = '484'");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Legendary Rune of Glass', Charisma = '24', Luck = '24', Perception = '0', Fortitude = '-10' WHERE id = '493'");
 
             // Agility
             Execute.Sql("Update DbStaticItems SET Perception = '20', Fortitude = '10' WHERE id = '450'");
@@ -131,7 +131,7 @@ namespace TT.Migrations
             // Miniboss - Musician
             Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '20', Fortitude = '15', Agility = '20', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '565'");
             // Miniboss - Maid
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '00', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '20', Succour = '0', Luck = '20'  WHERE id = '566'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '20', Succour = '0', Luck = '20'  WHERE id = '566'");
             // Miniboss - Groundskeeper
             Execute.Sql("Update DbStaticItems SET Discipline = '20', Perception = '0', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '0', Succour = '20', Luck = '0'  WHERE id = '573'");
             // Miniboss - Threadmistress

@@ -383,6 +383,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_74.cshtml" />
     <Content Include="Views\PvPAdmin\AdminRename.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_75.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_76.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

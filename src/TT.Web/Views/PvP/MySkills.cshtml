@@ -1,5 +1,6 @@
 ﻿@model TT.Web.ViewModels.MySkillsViewModel
 @using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
 @{
     ViewBag.Title = "My Spells";
 }
@@ -7,12 +8,19 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    @if (ViewBag.CanBuySpells)
+    {
+        <li><a href="@Url.Action(MVC.NPC.TalkToLorekeeper())">Buy Spells</a></li>
+    }
     <li><a href="@Url.Action(MVC.Settings.ArchiveAllMySpells("true"))">Archive All My Spells</a></li>
     <li><a href="@Url.Action(MVC.Settings.ArchiveAllMySpells("false"))">Restore All My Spells</a></li>
+    <li><a href="@Url.Action(MVC.Info.GearTool())">Equipment Helper</a></li>
+    <li><a href="http://portalz.xyz/newwiki/browse.php" title="Alyx Portalz's Unofficial TT Wiki">Unofficial Wiki</a></li>
     <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.skills.Count() / @ViewBag.TotalLearnableSkills)</a></li>
 }
 
 <div class="containerInner">
+
     <div id="resultPrompt"></div>
     <table id="MySkills" class="table table-hover messageTable dt-responsive">
         <thead>
@@ -56,7 +64,16 @@
                             @{
                                 if (Model.ShouldDisplayGraphic(skill))
                                 {
-                                    <img width="100px" height="100px" src="@Model.GetGraphic(skill)">
+                                    <div class="portrait" style="background-image: url(@Model.GetGraphic(skill)); float: right; bottom: 0;">
+                                        @if (skill.SkillSource.MobilityType == PvPStatics.MobilityInanimate || skill.SkillSource.MobilityType == PvPStatics.MobilityPet)
+                                        {
+                                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(skill.SkillSource.FormSource.ItemSource.ItemType)</span>
+                                        }
+                                        else if (skill.SkillSource.MobilityType == PvPStatics.MobilityFull)
+                                        {
+                                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(skill.SkillSource.FormSource.Gender)</span>
+                                        }
+                                    </div>
                                 }
                             }
                         </td>

@@ -33,11 +33,11 @@ namespace TT.Web.CustomHtmlHelpers
 
             if (gender == PvPStatics.GenderMale)
             {
-                output += "'icon icon-male'>";
+                output += "'icon icon-male' alt='male' title='male'>";
             }
             else
             {
-                output += "'icon icon-female'>";
+                output += "'icon icon-female' alt='female' title='female'>";
             }
 
             output += "</span>";

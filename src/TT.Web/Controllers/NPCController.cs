@@ -968,6 +968,7 @@ namespace TT.Web.Controllers
             var output =
                 Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = filter, playerId = me.Id });
 
+            ViewBag.Filter = filter;
             ViewBag.Money = Math.Floor(me.Money);
 
             ViewBag.ErrorMessage = TempData["Error"];

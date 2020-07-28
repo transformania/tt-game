@@ -1456,6 +1456,15 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.TotalLearnableSkills = SkillProcedures.GetCountOfLearnableSpells();
             var mySkills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer {playerId = me.Id});
+
+            bool withLoremaster = false;
+            var lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            if (lorekeeper != null)
+            {
+                withLoremaster = me.dbLocationName == lorekeeper.dbLocationName;
+            }
+            ViewBag.CanBuySpells = withLoremaster;
+
             return View(MVC.PvP.Views.MySkills, new MySkillsViewModel(mySkills));
         }
 

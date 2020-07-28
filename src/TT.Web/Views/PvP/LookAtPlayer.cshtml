@@ -72,7 +72,7 @@
     <center>
         <div class="leftDisplay" style="background-image: url(../../Images/PvP/portraits/@Model.PlayerForm.Form.PortraitUrl);">
             <span class="icon icon-level"><b>@Model.PlayerForm.Player.Level</b></span>
-            <span class="icon icon-@Model.PlayerForm.Player.Gender" style="float:right;"></span>
+            <span style="float:right;">@HtmlHelpers.PrintGenderIcon(Model.PlayerForm.Player.Gender)</span>
             <span class="iconPortrait">
                 @HtmlHelpers.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
                 @HtmlHelpers.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())

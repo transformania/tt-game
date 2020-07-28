@@ -1,4 +1,19 @@
-﻿<h1>Equipment Helper Tool</h1>
+﻿@{
+    ViewBag.Title = "Equipment Helper";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.PvP.MySkills())">My spells</a></li>
+    @if (ViewBag.CanBuySpells)
+    {
+        <li><a href="@Url.Action(MVC.NPC.TalkToLorekeeper())">Buy spells</a></li>
+    }
+    <li><a href="http://portalz.xyz/newwiki/browse.php">Alyx Portalz's unofficial TT wiki</a></li>
+}
+
+<h1>Equipment Helper Tool</h1>
 
 <p>You can help plan your desired equipment and pets using the table below.</p>
 
@@ -14,6 +29,7 @@
     <input type="radio" name="filter" value="shoes"> Shoes 	&nbsp;
     <input type="radio" name="filter" value="underpants"> Underpants 	&nbsp;
     <input type="radio" name="filter" value="undershirt"> Undershirt 	&nbsp;
+    <input type="radio" name="filter" value="rune"> Rune 	&nbsp;
 </form>
 
 <div style="overflow-x: scroll;">
@@ -43,17 +59,13 @@
         { "data": "PortraitUrl" },
         { "data": "FriendlyName" },
         { "data": "ItemType" },
-       
+
             ],
             "columnDefs": [{
                 "targets": [0],
                 "render": function (data, type, full, meta) {
                     if (type == "display") {
-                        if (full.ItemType == 'pet') {
-                            return "<img src='/Images/PvP/animalPortraits/Thumbnails/100/" + data + "' width=50; height=50;>";
-                        } else {
-                            return "<img src='/Images/PvP/itemsPortraits/Thumbnails/100/" + data + "' width=50; height=50;>";
-                        }
+                        return "<img src='" + data + "' width=50; height=50;>";
                     }
                     return data;
                 }

@@ -12,6 +12,8 @@ using TT.Domain.ClassifiedAds.Queries;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Queries;
 using TT.Domain.Players.Queries;
+using TT.Web.CustomHtmlHelpers;
+using Microsoft.AspNet.Identity;
 
 namespace TT.Web.Controllers
 {
@@ -98,6 +100,17 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult GearTool()
         {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            bool withLoremaster = false;
+            var lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            if (lorekeeper != null)
+            {
+                withLoremaster = me.dbLocationName == lorekeeper.dbLocationName;
+            }
+            ViewBag.CanBuySpells = withLoremaster;
+
             return View(MVC.Info.Views.GearTool);
         }
 
@@ -109,22 +122,21 @@ namespace TT.Web.Controllers
         {
             IDbStaticItemRepository repo = new EFDbStaticItemRepository();
 
-            var output = from c in repo.DbStaticItems
-                         select new
-                         {
-                             FriendlyName = c.FriendlyName,
-                             ItemType = c.ItemType,
-                             PortraitUrl = c.PortraitUrl,
-                             Discipline = c.Discipline,
-                             Perception = c.Perception,
-                             Charisma = c.Charisma,
-                             Fortitude = c.Fortitude,
-                             Agility = c.Agility,
-                             Allure = c.Allure,
-                             Magicka = c.Magicka,
-                             Succour = c.Succour,
-                             Luck = c.Luck
-                         };
+            var output = repo.DbStaticItems.AsEnumerable().Select(
+                c => new {
+                    FriendlyName = c.FriendlyName,
+                    ItemType = c.ItemType,
+                    PortraitUrl = HtmlHelpers.GetImageUrl(c.PortraitUrl, c.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true).ToString(),
+                    Discipline = c.Discipline,
+                    Perception = c.Perception,
+                    Charisma = c.Charisma,
+                    Fortitude = c.Fortitude,
+                    Agility = c.Agility,
+                    Allure = c.Allure,
+                    Magicka = c.Magicka,
+                    Succour = c.Succour,
+                    Luck = c.Luck
+            });
 
             return Json(output, JsonRequestBehavior.AllowGet);
         }

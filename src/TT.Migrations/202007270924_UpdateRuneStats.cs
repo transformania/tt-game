@@ -45,13 +45,13 @@ namespace TT.Migrations
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Legendary Rune of Glass', Charisma = '24', Luck = '24', Perception = '0', Fortitude = '-10' WHERE id = '493'");
 
             // Agility
-            Execute.Sql("Update DbStaticItems SET Perception = '20', Fortitude = '10' WHERE id = '450'");
-            Execute.Sql("Update DbStaticItems SET Perception = '22', Fortitude = '11' WHERE id = '459'");
-            Execute.Sql("Update DbStaticItems SET Perception = '24', Fortitude = '12' WHERE id = '477'");
-            Execute.Sql("Update DbStaticItems SET Perception = '26', Fortitude = '13' WHERE id = '468'");
-            Execute.Sql("Update DbStaticItems SET Perception = '28', Fortitude = '14' WHERE id = '508'");
-            Execute.Sql("Update DbStaticItems SET Perception = '30', Fortitude = '15' WHERE id = '486'");
-            Execute.Sql("Update DbStaticItems SET Perception = '32', Fortitude = '16' WHERE id = '495'");
+            Execute.Sql("Update DbStaticItems SET Agility = '20', Perception = '0', Fortitude = '10' WHERE id = '450'");
+            Execute.Sql("Update DbStaticItems SET Agility = '22', Perception = '0', Fortitude = '11' WHERE id = '459'");
+            Execute.Sql("Update DbStaticItems SET Agility = '24', Perception = '0', Fortitude = '12' WHERE id = '477'");
+            Execute.Sql("Update DbStaticItems SET Agility = '26', Perception = '0', Fortitude = '13' WHERE id = '468'");
+            Execute.Sql("Update DbStaticItems SET Agility = '28', Perception = '0', Fortitude = '14' WHERE id = '508'");
+            Execute.Sql("Update DbStaticItems SET Agility = '30', Perception = '0', Fortitude = '15' WHERE id = '486'");
+            Execute.Sql("Update DbStaticItems SET Agility = '32', Perception = '0', Fortitude = '16' WHERE id = '495'");
 
             // Restoration aka Allure
             Execute.Sql("Update DbStaticItems SET Allure = '20', Fortitude = '10' WHERE id = '451'");

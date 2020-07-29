@@ -293,9 +293,18 @@ namespace TT.Domain.Players.Entities
             LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
-
             var cleanseBonusTFEnergyRemovalPercent = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
             var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth();
+            var outOfCombat = false;
+
+            // If a character has been out of combat for 3 rounds (9 minutes) triple the rate of cleansing and meditating
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            if (lastAttackTimeAgo < 18)
+            {
+                cleanseBonusTFEnergyRemovalPercent = cleanseBonusTFEnergyRemovalPercent * 5;
+                cleanseWPRestore = cleanseWPRestore * 5;
+                outOfCombat = true;
+            }
 
             if (cleanseWPRestore <= 0)
             {
@@ -304,7 +313,14 @@ namespace TT.Domain.Players.Entities
             else
             {
                 AddHealth(cleanseWPRestore);
-                result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+                if (outOfCombat)
+                {
+                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore} willpower.";
+                }
+                else
+                {
+                    result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+                }
             }
 
             if (cleanseBonusTFEnergyRemovalPercent > 0)

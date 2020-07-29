@@ -522,8 +522,8 @@ namespace TT.Domain.Procedures
                                 Covenant = -1,
                                 Location = randDungeon,
                                 Level = level,
-                                MaxHealth = 500,
-                                MaxMana = 500,
+                                MaxHealth = 10000,
+                                MaxMana = 10000,
                             };
 
                             var id = DomainRegistry.Repository.Execute(cmd);

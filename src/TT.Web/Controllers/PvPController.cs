@@ -143,6 +143,11 @@ namespace TT.Web.Controllers
                 }
             }
 
+            var unopenedMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
+            var openedUnreadMessageCount = DomainRegistry.Repository.FindSingle(new GetReadAndMarkedAsUnreadMessageCountByPlayer { OwnerId = me.Id });
+            var hasNewMessages = unopenedMessageCount != 0;
+            var unreadMessageCount = unopenedMessageCount + openedUnreadMessageCount;
+
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
@@ -158,8 +163,8 @@ namespace TT.Web.Controllers
                     {
                         PlayerId = me.Id
                     }),
-                    NewMessageCount =
-                        DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer {OwnerId = me.Id}),
+                    HasNewMessages = hasNewMessages,
+                    UnreadMessageCount = unreadMessageCount,
                     PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse(),
                     StruggleChance = InanimateXPProcedures.GetStruggleChance(me)
                 };
@@ -259,7 +264,8 @@ namespace TT.Web.Controllers
 
                 animalOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
-                animalOutput.NewMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
+                animalOutput.HasNewMessages = hasNewMessages;
+                animalOutput.UnreadMessageCount = unreadMessageCount;
 
                 ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
@@ -336,7 +342,9 @@ namespace TT.Web.Controllers
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();
-            output.UnreadMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
+
+            output.HasNewMessages = hasNewMessages;
+            output.UnreadMessageCount = unreadMessageCount;
             output.WorldStats = PlayerProcedures.GetWorldPlayerStats();
             output.AttacksMade = me.TimesAttackingThisUpdate;
             ViewBag.AttacksMade = me.TimesAttackingThisUpdate;

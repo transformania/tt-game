@@ -12,7 +12,8 @@ namespace TT.Domain.ViewModels.Quest
         public PlayerFormViewModel Player { get; set; }
         public BuffBox BuffBox { get; set; }
         public IEnumerable<QuestPlayerVariable> QuestPlayerVariables { get; set; }
-        public int NewMessages { get; set; }
+        public bool HasNewMessages { get; set; }
+        public int UnreadMessageCount { get; set; }
         public string ConnectionText { get; set; }
 
         /// <summary>

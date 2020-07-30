@@ -57,16 +57,7 @@
         }
     }
 
-    @{
-        if (Model.NewMessageCount > 0)
-        {
-            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.NewMessageCount)</a></li>
-        }
-        else
-        {
-            <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
-        }
-    }
+    <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope @(Model.HasNewMessages ? "inboxNew" : "")">(@Model.UnreadMessageCount)</a></li>
 
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>

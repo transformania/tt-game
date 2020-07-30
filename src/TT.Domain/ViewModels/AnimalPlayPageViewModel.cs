@@ -23,7 +23,8 @@ namespace TT.Domain.ViewModels
 
         public DateTime LastUpdateTimestamp { get; set; }
 
-        public int NewMessageCount { get; set; }
+        public bool HasNewMessages { get; set; }
+        public int UnreadMessageCount { get; set; }
 
         public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
         public IEnumerable<PlayPageItemDetail> LocationItems { get; set; }
@@ -33,6 +34,5 @@ namespace TT.Domain.ViewModels
         public decimal StruggleChance { get; set; }
 
         public bool RenderCaptcha { get; set; }
-
     }
 }

@@ -130,6 +130,9 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            var unopenedMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
+            var openedUnreadMessageCount = DomainRegistry.Repository.FindSingle(new GetReadAndMarkedAsUnreadMessageCountByPlayer { OwnerId = me.Id });
+
             var output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
@@ -137,7 +140,8 @@ namespace TT.Web.Controllers
             output.QuestConnections = QuestProcedures.GetChildQuestConnections(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffs(me);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
-            output.NewMessages = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
+            output.HasNewMessages = unopenedMessageCount != 0;
+            output.UnreadMessageCount = unopenedMessageCount + openedUnreadMessageCount;
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

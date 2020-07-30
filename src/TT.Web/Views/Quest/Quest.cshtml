@@ -101,10 +101,12 @@
 }
 
 <script>
-    newMsgCount = @Model.NewMessages;
+    unreadMessages = @(Model.HasNewMessages ? "true" : "false");
+    newMsgCount = @Model.UnreadMessageCount;
 
-    if (newMsgCount > 0) {
-        $("#newMessagesLink").html("(" + newMsgCount + ")").addClass("inboxNew");
+    $("#newMessagesLink").html("(" + newMsgCount + ")");
+    if (unreadMessages) {
+        $("#newMessagesLink").addClass("inboxNew");
     }
 
 </script>

@@ -34,9 +34,25 @@ namespace TT.Tests.Messages.Queries
                 .With(m => m.ReadStatus, MessageStatics.Unread)
                 .BuildAndSave();
 
+            new MessageBuilder().With(m => m.Id, 37)
+                .With(m => m.Receiver, receiver)
+                .With(m => m.ReadStatus, MessageStatics.ReadAndMarkedAsUnread)
+                .BuildAndSave();
+
             new MessageBuilder().With(m => m.Id, 49)
                 .With(m => m.Receiver, receiver)
                 .With(m => m.ReadStatus, MessageStatics.Read)
+                .BuildAndSave();
+
+            // Somebody else
+            new MessageBuilder().With(m => m.Id, 52)
+                .With(m => m.Receiver, otherPlayer)
+                .With(m => m.ReadStatus, MessageStatics.ReadAndMarkedAsUnread)
+                .BuildAndSave();
+
+            new MessageBuilder().With(m => m.Id, 53)
+                .With(m => m.Receiver, otherPlayer)
+                .With(m => m.ReadStatus, MessageStatics.ReadAndMarkedAsUnread)
                 .BuildAndSave();
 
             new MessageBuilder().With(m => m.Id, 51)
@@ -51,8 +67,13 @@ namespace TT.Tests.Messages.Queries
                 .With(p => p.IsDeleted, true)
                .BuildAndSave();
 
-            var cmd = new GetUnreadMessageCountByPlayer { OwnerId = receiver.Id };
-            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.EqualTo(2));
+            var repo = DomainRegistry.Repository;
+
+            var unopenedCmd = new GetUnreadMessageCountByPlayer { OwnerId = receiver.Id };
+            Assert.That(repo.FindSingle(unopenedCmd), Is.EqualTo(2));
+
+            var markedUnreadCmd = new GetReadAndMarkedAsUnreadMessageCountByPlayer { OwnerId = receiver.Id };
+            Assert.That(repo.FindSingle(markedUnreadCmd), Is.EqualTo(1));
         }
 
         [Test]

@@ -8,6 +8,11 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     @{
+        if (ViewBag.OwnedByMe)
+        {
+            <li><a href="@Url.Action(MVC.Item.MyInventory())">Back to inventory</a></li>
+        }
+
         if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
         {
             <p>
@@ -75,6 +80,51 @@
                     </span>
                 }}
             <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
+            @if (ViewBag.OwnedByMe)
+            {
+                <div>
+                    @if (ViewBag.ItemSkills.Count > 0)
+                    {
+                        if (ViewBag.IsEquipped)
+                        {
+                            <text>
+                                By @((Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet) ? "taming this pet" : "wearing this item")
+                                you have been granted the following skills:
+                            </text>
+                        }
+                        else
+                        {
+                            <text>If you wear this item you will gain the following skills:</text>
+                        }
+
+                        <ul>
+                            @foreach (var effect in ViewBag.ItemSkills)
+                            {
+                                <li>@effect.FriendlyName</li>
+                            }
+                        </ul>
+                    }
+                    else if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
+                    {
+                        <text>You currently own this pet.</text>
+                    }
+                    else
+                    {
+                        if (ViewBag.IsConsumable)
+                        {
+                            <text>You currently own this item.</text>
+                            if (!MvcHtmlString.IsNullOrEmpty(ViewBag.ConsumableEffect))
+                            {
+                                <text>Using it will give you the @ViewBag.ConsumableEffect effect.</text>
+                            }
+                        }
+                        else
+                        {
+                            <text>You currently own this item and are @(!ViewBag.IsEquipped ? "" : "not") wearing it.</text>
+                        }
+                    }
+                </div>
+            }
         </div>
     </center>
 </div>

@@ -619,7 +619,12 @@ namespace TT.Domain.Procedures
 
         public static PlayerFormViewModel BeingWornBy(Player player)
         {
-            var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+            return BeingWornBy(player.Id);
+        }
+
+        public static PlayerFormViewModel BeingWornBy(int playerId)
+        {
+            var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerId });
 
             return item.Owner == null ? null : PlayerProcedures.GetPlayerFormViewModel(item.Owner.Id);
         }

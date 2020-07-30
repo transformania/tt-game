@@ -325,7 +325,11 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult ShowItemDetails(int id)
         {
-            var output = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
+            var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
+            var skills = SkillStatics.GetItemSpecificSkills(item.ItemSource.Id);
+
+            var output = new ItemDetailsModel { Item = item, Skills = skills };
+
             return PartialView(MVC.Item.Views.partial.ItemDetails, output);
         }
 

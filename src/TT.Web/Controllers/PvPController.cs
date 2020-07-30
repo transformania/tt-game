@@ -2102,15 +2102,17 @@ namespace TT.Web.Controllers
             };
 
 
-            ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
-            ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
-            ViewBag.IsMe = User.Identity.GetUserId() == playerLookedAt.Player.MembershipId;
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var lookedAtPlayerId = playerLookedAt.Player.MembershipId;
+            ViewBag.IsMe = myMembershipId == lookedAtPlayerId;
+
+            ViewBag.HasBio = SettingsProcedures.PlayerHasBio(lookedAtPlayerId);
+            ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
             {
-
-
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = playerLookedAt.Player.Id});
 
                 if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
@@ -2122,9 +2124,27 @@ namespace TT.Web.Controllers
                     ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
 
-
                 ViewBag.ItemLevel = playerItem.Level;
+                ViewBag.IsEquipped = playerItem.IsEquipped;
                 ViewBag.FormDescriptionItem = playerItem.ItemSource.Description;
+                ViewBag.ItemSkills = SkillStatics.GetItemSpecificSkills(playerItem.ItemSource.Id).ToList();
+                ViewBag.IsConsumable = (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) ||
+                                       (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Consumable);
+
+                MvcHtmlString consumableEffect = new MvcHtmlString("");
+                if (playerItem.ItemSource.GivesEffectSourceId != null)
+                {
+                    consumableEffect = HtmlHelpers.GetEffectFriendlyName(playerItem.ItemSource.GivesEffectSourceId.Value);
+                }
+                ViewBag.ConsumableEffect = consumableEffect;
+
+                var ownedByMe = false;
+                if (playerItem.FormerPlayer != null)
+                {
+                    var owner = ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
+                    ownedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
+                }
+                ViewBag.OwnedByMe = ownedByMe;
 
                 if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
@@ -2139,16 +2159,13 @@ namespace TT.Web.Controllers
                         : "This item is currently being carried and possibly worn by another player.";
                 }
 
-
-
-
                 return View(MVC.PvP.Views.LookAtPlayerInanimate, output);
             }
             else
             {
 
                 ViewBag.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == output.PlayerForm.Player.dbLocationName).Name;
-
+                ViewBag.FormSkills = SkillStatics.GetFormSpecificSkills(playerLookedAt.Player.FormSourceId).ToList();
                 return View(MVC.PvP.Views.LookAtPlayer, output);
             }
         }

@@ -108,6 +108,19 @@
                 <h3>@Model.PlayerForm.Form.FriendlyName</h3>
             </center>
             <p>@Model.PlayerForm.Form.Description</p>
+
+            @if (ViewBag.IsMe && ViewBag.FormSkills.Count > 0)
+            {
+                <div>
+                    Being in this form grants you the following skills:
+                    <ul>
+                        @foreach (var effect in ViewBag.FormSkills)
+                        {
+                            <li>@effect.FriendlyName</li>
+                        }
+                    </ul>
+                </div>
+            }
         </div>
     </center>
 

@@ -1563,21 +1563,26 @@ strong {
     overflow-y: scroll;
 }
 
-.portraitBorder {
+.portraitFrame {
     width: 103px;
     height: 103px;
     margin-left: auto;
     margin-right: auto;
+    background-color: #AAA8;
+    background-image: linear-gradient(#AAA8, #888);
 }
 
 .border-bot {
-    background-color: red;
+    border-left: 3px solid red;
+    border-bottom: 3px solid red;
 }
 
 .border-npc {
-    background-color: blue;
+    border-left: 3px solid blue;
+    border-bottom: 3px solid blue;
 }
 
 .border-player {
-    background-color: green;
+    border-left: 3px solid green;
+    border-bottom: 3px solid green;
 }

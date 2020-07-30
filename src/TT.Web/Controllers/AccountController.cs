@@ -258,7 +258,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = $"FAILED to delete account.  Reason: {e}.";
                 return RedirectToAction(MVC.PvP.Play());
             }
-            return View(MVC.Account.Views.Register);
+            return RedirectToAction(MVC.Account.Register());
         }
 
         [AllowAnonymous]

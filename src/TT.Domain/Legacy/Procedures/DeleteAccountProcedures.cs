@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using TT.Domain.Concrete;
 using TT.Domain.Messages.Commands;
+using TT.Domain.Procedures;
 
 namespace TT.Domain.Legacy.Procedures
 {
@@ -11,6 +12,12 @@ namespace TT.Domain.Legacy.Procedures
         public static void DeleteAccount(string membershipId, int playerId)
         {
             DomainRegistry.Repository.Execute(new DeleteAllMessagesOwnedByPlayer { OwnerId = playerId });
+
+            var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
+            if (me.Covenant > 0)
+            {
+                CovenantProcedures.RemovePlayerFromCovenant(me);
+            }
 
             using (var context = new StatsContext())
             {

@@ -221,6 +221,12 @@ namespace TT.Domain.Procedures
                 output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "complete", "first") + " (" + percentPrintedOutput + "%)";
             }
 
+            // Don't give XP if attacker and victim are part of the same covenant
+            if (attacker.Covenant != null && attacker.Covenant == victim.Covenant)
+            {
+                return output;
+            }
+
             // calculate the xp earned for this transformation
             var xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
 
@@ -426,8 +432,8 @@ namespace TT.Domain.Procedures
 
                 var levelDifference = attacker.Level - target.Level;
 
-                // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
-                if (levelDifference <= 5)
+                // only give the lump sum XP if the target is within 5 levels of the attacker AND the victim is not in the same covenant
+                if (levelDifference <= 5 && (attacker.Covenant == null || attacker.Covenant != target.Covenant))
                 {
 
                     var xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);

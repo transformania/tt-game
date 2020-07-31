@@ -93,7 +93,7 @@ namespace TT.Migrations
 
             // Fox
 
-            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Minor Rune of the Fox', Discipline = '-6', Perception = '0', Charisma = '15', Fortitude = '0', Agility = '15', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = ''525");
+            Execute.Sql("Update DbStaticItems SET FriendlyName = 'Minor Rune of the Fox', Discipline = '-6', Perception = '0', Charisma = '15', Fortitude = '0', Agility = '15', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '525");
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Standard Rune of the Fox', Discipline = '-7', Perception = '0', Charisma = '16', Fortitude = '0', Agility = '16', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '526'");
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Great Rune of the Fox', Discipline = '-7', Perception = '0', Charisma = '18', Fortitude = '0', Agility = '18', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '527'");
             Execute.Sql("Update DbStaticItems SET FriendlyName = 'Major Rune of the Fox', Discipline = '-8', Perception = '0', Charisma = '19', Fortitude = '0', Agility = '19', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '528'");

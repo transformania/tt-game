@@ -9,6 +9,11 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.NPC.TalkToLorekeeper())">Talk</a></li>
+    <li><a href="@Url.Action(MVC.PvP.MySkills())">My spells</a></li>
+    @if (ViewBag.Filter == PvPStatics.MobilityInanimate || ViewBag.Filter == PvPStatics.MobilityPet)
+    {
+        <li><a href="@Url.Action(MVC.Info.GearTool())">Equipment helper</a></li>
+    }
 }
 
 <div class="containerInner">
@@ -42,23 +47,27 @@
         {
             <tr>
                 <td class="playerMediatingNotification"><b>@s.FriendlyName</b></td>
-            <td><b>@s.FormSource.FriendlyName</b></td>
-                    
+                <td><b>@s.FormSource.FriendlyName</b></td>
+                <td>
                 @{
                     if (s.MobilityType == PvPStatics.MobilityFull)
                     {
-                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
+                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
+                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.Gender)</span>
+                        </div>
                     }
                     else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
                     {
-                        <td><img src="@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
+                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
+                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.ItemSource.ItemType)</span>
+                        </div>
                     }
                     else
                     {
-                        <td>(no image)</td>
+                        <text>(no image)</text>
                     }
                 }
-
+                </td>
                 <td><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpellSend(s.Id))">Purchase Training</a></td>
             </tr>
         }

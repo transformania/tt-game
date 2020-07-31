@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <a href="@Url.Action(MVC.PvP.LookAtPlayer(p.Id))">@p.GetFullName()</a>
-                        <span class="icon icon-@p.Gender"></span>
+                        @HtmlHelpers.PrintGenderIcon(p.Gender)
 
                         @{
                 if (!PlayerProcedures.PlayerIsOffline(p))

@@ -19,6 +19,7 @@ namespace TT.Domain.Skills.Queries
                             .Include(s => s.SkillSource)
                             .Include(s => s.SkillSource.FormSource)
                             .Include(s  => s.SkillSource.FormSource.ItemSource)
+                            .Include(s => s.SkillSource.FormSource.Gender)
                             .Include(s => s.SkillSource.GivesEffectSource)
                            .Where(s => s.Owner.Id == playerId)
                            .ProjectToQueryable<SkillSourceFormSourceDetail>();

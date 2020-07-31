@@ -148,11 +148,11 @@
                     <a href="@Url.Action(MVC.PvP.Bus())" class="bus">Take Bus</a>
                 }
 
-                var temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
+                var safegroundCoven = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
 
-                if (temp.Value != null)
+                if (safegroundCoven.Value != null)
                 {
-                    <span class="covSafeground">Safeground for the <b>@temp.Value.Name</b> Covenant</span>
+                    <span class="covSafeground">Safeground for the <b>@safegroundCoven.Value.Name</b> Covenant</span>
                 }
             }
         </div>
@@ -182,7 +182,7 @@
 
                 if (Model.You.Player.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
-                    if (enchanted)
+                    if (enchanted && safegroundCoven.Value == null)
                     {
                         <br />
                     }
@@ -193,7 +193,10 @@
                     }
                     else
                     {
-                        <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a> <span>&nbsp;</span>
+                        if (safegroundCoven.Value == null)
+                        {
+                            <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a> <span>&nbsp;</span>
+                        }
                         if (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north")
                         {
                             <br /><br />

@@ -1874,7 +1874,41 @@ namespace TT.Web.Controllers
 
             using (var context = new StatsContext())
             {
-                context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Players] SET GameMode = {(int)GameModeStatics.GameModes.Superprotection} WHERE BotId = 0");
+                var myMembershipId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var players = playerRepo.Players.Where(player =>
+                                                       player.GameMode != (int)(GameModeStatics.GameModes.Superprotection) &&
+                                                       player.BotId == AIStatics.ActivePlayerBotId)
+                                                .AsEnumerable()
+                                                .Select(player => new
+                                                {
+                                                    Name = player.GetFullName(),
+                                                    Id = player.Id,
+                                                    MembershipId = player.MembershipId
+                                                });
+
+                foreach (var player in players)
+                {
+                    try
+                    {
+                        DomainRegistry.Repository.Execute(new ChangeGameMode
+                        {
+                            MembershipId = player.MembershipId,
+                            GameMode = (int)GameModeStatics.GameModes.Superprotection,
+                            InChaos = true
+                        });
+
+                        PlayerLogProcedures.AddPlayerLog(player.Id,
+                            "<strong>The game is in Chaos and you have been moved to SuperProtection mode.</strong> " +
+                            "You can switch your game mode at any time during Chaos from the Settings page.", true);
+                    }
+                    catch (DomainException e)
+                    {
+                        PlayerLogProcedures.AddPlayerLog(me.Id, $"Could not move {player.Name} ({player.Id}, {player.MembershipId}) to SP: {e.Message}", true);
+                    }
+                }
             }
 
             TempData["Result"] = "All human players have been set to SuperProtection game mode.";

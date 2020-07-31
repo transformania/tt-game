@@ -73,7 +73,6 @@ namespace TT.Domain.Procedures
             // the spell is a regular attack
             else
             {
-
                 logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".</span>";
                 logs.AttackerLog = "You cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against you.</span>  ";
@@ -113,7 +112,6 @@ namespace TT.Domain.Procedures
                         logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by {amountToDamage:N2}.";
                         result += logs.AttackerLog;
                     }
-
 
                // spell is evaded
                 }

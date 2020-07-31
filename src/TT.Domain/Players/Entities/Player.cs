@@ -20,6 +20,7 @@ using InanimateXP = TT.Domain.Items.Entities.InanimateXP;
 using Item = TT.Domain.Items.Entities.Item;
 using Skill = TT.Domain.Entities.Skills.Skill;
 
+
 namespace TT.Domain.Players.Entities
 {
 
@@ -297,12 +298,10 @@ namespace TT.Domain.Players.Entities
             var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth();
             var outOfCombat = false;
 
-            // If a character has been out of combat for 3 rounds (9 minutes) triple the rate of cleansing and meditating
-            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (lastAttackTimeAgo < 18)
+            //  Increase the rate of cleansing outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 6 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
-                cleanseBonusTFEnergyRemovalPercent = cleanseBonusTFEnergyRemovalPercent * 5;
-                cleanseWPRestore = cleanseWPRestore * 5;
                 outOfCombat = true;
             }
 
@@ -312,13 +311,15 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                AddHealth(cleanseWPRestore);
+
                 if (outOfCombat)
                 {
-                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore} willpower.";
+                    AddHealth(cleanseWPRestore * 5) ;
+                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 5} willpower.";
                 }
                 else
                 {
+                    AddHealth(cleanseWPRestore);
                     result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
                 }
             }
@@ -346,6 +347,15 @@ namespace TT.Domain.Players.Entities
 
             var result = "";
             var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana();
+            var outOfCombat = false;
+
+            //  Increase the rate of meditation outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 6 * TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                meditateManaRestore = meditateManaRestore * 5;
+                outOfCombat = true;
+            }
 
             if (meditateManaRestore < 0)
             {
@@ -353,8 +363,16 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
                 AddMana(meditateManaRestore);
+                if (outOfCombat)
+                {
+                    result = "You take your time meditating, restoring " + meditateManaRestore + " mana.";
+                }
+                else
+                {
+                    result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
+                }
+
             }
 
             if (BotId == AIStatics.ActivePlayerBotId)

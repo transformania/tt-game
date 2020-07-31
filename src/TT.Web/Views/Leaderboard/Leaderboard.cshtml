@@ -16,6 +16,15 @@
 <div class="specialBox"><b>XP Leaderboard -- @PvPStatics.AlphaRound</b><br>
     These are the most experienced magic casters in the town</div>
 
+@if (PvPStatics.ChaosMode)
+{
+    <div class="specialBox specialBox2">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        During <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos Mode</a> leaderboard rankings do not reflect the standings at the end of the round and are not saved.
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    </div>
+}
+
 <div class="containerInner">
     <table>
 

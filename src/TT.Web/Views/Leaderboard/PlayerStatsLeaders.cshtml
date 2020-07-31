@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.PlayerAchievementViewModel>
 @using TT.Domain.Procedures
+@using TT.Domain.Statics
 @{
     ViewBag.Title = "Statistics Leaders";
 }
@@ -10,6 +11,15 @@
     <li><a href="@Url.Action(MVC.Leaderboard.ItemLeaderboard())">View Item Leaderboard</a></li>
     <li><a href="@Url.Action(MVC.Leaderboard.PvPLeaderboard())">View Dungeon Leaderboard</a></li>
     <li><a href="@Url.Action(MVC.Leaderboard.Leaderboard())">View XP Leaderboard</a></li>
+}
+
+@if (PvPStatics.ChaosMode)
+{
+    <div class="specialBox specialBox2">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        No achievements are awarded for statistics leaders during <a href="@Url.Action(MVC.Info.FAQ())#chaosMode">Chaos Mode</a>.
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    </div>
 }
 
 <div class="containerInner">

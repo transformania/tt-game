@@ -6,7 +6,6 @@
 
 @section menu
 {
-    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions {UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting"}, new {@class = ""})</li>
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
 

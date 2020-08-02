@@ -121,12 +121,14 @@ namespace TT.Web.Controllers
             }
             else
             {
-                contribution = new Contribution();
-                contribution.Skill_ManaCost = 7;
-                contribution.Form_TFEnergyRequired = 100;
-                contribution.Skill_TFPointsAmount = 10;
-                contribution.Skill_HealthDamageAmount = 4.5M;
-                contribution.Skill_IsPlayerLearnable = true;
+                contribution = new Contribution
+                {
+                    Skill_ManaCost = 7,
+                    Form_TFEnergyRequired = 100,
+                    Skill_TFPointsAmount = 10,
+                    Skill_HealthDamageAmount = 10,
+                    Skill_IsPlayerLearnable = true
+                };
             }
 
             ViewBag.Result = TempData["Result"];

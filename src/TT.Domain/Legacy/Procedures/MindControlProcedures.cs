@@ -208,7 +208,7 @@ namespace TT.Domain.Procedures
         {
             var oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             var newLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
-            decimal output = Math.Abs(oldLocationl.X - newLocationl.X) + Math.Abs(oldLocationl.Y - newLocationl.Y);
+            decimal output = PathfindingProcedures.GetNumSteps(oldLocationl, newLocationl);
             output *= 1-player.MoveActionPointDiscount;
 
             return output;

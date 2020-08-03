@@ -204,7 +204,7 @@ namespace TT.Web.Controllers
             var balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
-            return View(MVC.Contribution.Views.Contribute, contribution);
+            return View(MVC.Contribution.Views.ContributeSpell, contribution);
         }
 
 

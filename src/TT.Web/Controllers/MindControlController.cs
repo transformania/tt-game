@@ -45,16 +45,11 @@ namespace TT.Web.Controllers
 
             ViewBag.Victim = victim;
 
-            if (victim.IsInDungeon())
-            {
-                var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
-                return View(MVC.MindControl.Views.MoveVictim, output);
-            }
-            else
-            {
-                var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
-                return View(MVC.MindControl.Views.MoveVictim, output);
-            }
+            var output = victim.IsInDungeon()
+                ? LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon" && l.dbName != victim.dbLocationName)
+                : LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon" && l.dbName != victim.dbLocationName);
+
+            return View(MVC.MindControl.Views.MoveVictim, output.OrderBy(l => MindControlProcedures.GetAPCostToMove(victim, l.dbName)).ThenBy(l => l.Name));
         }
 
         public virtual ActionResult StripVictim(int id)

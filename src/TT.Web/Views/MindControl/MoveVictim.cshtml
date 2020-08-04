@@ -15,7 +15,7 @@
         foreach (var loc in Model)
         {
             <a href="@Url.Action(MVC.NPC.MoveVictimSend((int)ViewBag.Victim.Id, loc.dbName))">@loc.Name</a>
-            <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Victim, loc.dbName) AP)</span><br>
+            <span>(@($"{TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Victim, loc.dbName):N2}") AP)</span><br>
         }
 
     }

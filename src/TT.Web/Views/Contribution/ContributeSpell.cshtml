@@ -6,7 +6,7 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeSpell(-1))">New spell</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeSpell())">New spell</a></li>
 
     @if (User.IsInRole(PvPStatics.Permissions_Previewer) || User.IsInRole(PvPStatics.Permissions_SpellApprover))
     {

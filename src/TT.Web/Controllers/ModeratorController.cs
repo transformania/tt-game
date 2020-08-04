@@ -149,10 +149,10 @@ namespace TT.Web.Controllers
         /// </summary>
         /// <param name="Id">Id of the news post to make changes to.  -1 indicates a new post.</param>
         /// <returns></returns>
-        public virtual ActionResult EditNewsPost(int Id)
+        public virtual ActionResult EditNewsPost(int id = -1)
         {
             INewsPostRepository repo = new EFNewsPostRepository();
-            var output = repo.NewsPosts.FirstOrDefault(f => f.Id == Id) ?? new NewsPost();
+            var output = repo.NewsPosts.FirstOrDefault(f => f.Id == id) ?? new NewsPost();
 
             return View(MVC.Moderator.Views.EditNewsPost, output);
 

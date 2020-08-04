@@ -746,7 +746,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
-                return RedirectToAction(MVC.Contribution.ContributeEffect(-1));
+                return RedirectToAction(MVC.Contribution.ContributeEffect());
             }
 
             if (input.Id != -1)
@@ -1465,7 +1465,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult DMRoll(int id)
+        public virtual ActionResult DMRoll(int id = -1)
         {
             IDMRollRepository repo = new EFDMRollRepository();
             var output = repo.DMRolls.FirstOrDefault(r => r.Id == id);

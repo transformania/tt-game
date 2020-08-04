@@ -26,12 +26,12 @@ namespace TT.Web.Controllers
             return View(MVC.QuestWriter.Views.Index, output);
         }
 
-        public virtual ActionResult QuestStart(int Id)
+        public virtual ActionResult QuestStart(int id = -1)
         {
 
             IQuestRepository repo = new EFQuestRepository();
 
-            var questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
+            var questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == id);
 
             if (questStart == null)
             {

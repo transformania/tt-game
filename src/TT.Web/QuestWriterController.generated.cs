@@ -61,12 +61,6 @@ namespace TT.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult QuestStart()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuestStart);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult QuestStartSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuestStartSend);
@@ -283,7 +277,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_QuestStart
         {
-            public readonly string Id = ("Id").ToLowerInvariant();
+            public readonly string id = ("id").ToLowerInvariant();
         }
         static readonly ActionParamsClass_QuestStartSend s_params_QuestStartSend = new ActionParamsClass_QuestStartSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -573,14 +567,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void QuestStartOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+        partial void QuestStartOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult QuestStart(int Id)
+        public override System.Web.Mvc.ActionResult QuestStart(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuestStart);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            QuestStartOverride(callInfo, Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            QuestStartOverride(callInfo, id);
             return callInfo;
         }
 

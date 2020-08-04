@@ -4,7 +4,7 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
-    <li><a href="@Url.Action(MVC.PvPAdmin.WriteFae(-1))">New encounter</a></li>
+    <li><a href="@Url.Action(MVC.PvPAdmin.WriteFae())">New encounter</a></li>
 }
 
 <h1>Jewdewfae encounter list (@Model.Count(e => e.IsLive) live)</h1>
@@ -33,5 +33,5 @@
 
     <hr>
 
-    <a href="@Url.Action(MVC.PvPAdmin.WriteFae(-1))">NEW ENCOUNTER</a>
+    <a href="@Url.Action(MVC.PvPAdmin.WriteFae())">NEW ENCOUNTER</a>
 }

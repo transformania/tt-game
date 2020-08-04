@@ -962,7 +962,7 @@ namespace TT.Web.Controllers
 
         }
 
-        public virtual ActionResult WriteFae(int id)
+        public virtual ActionResult WriteFae(int id = -1)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
@@ -1327,7 +1327,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult RenamePlayer(int id)
+        public virtual ActionResult RenamePlayer(int id = -1)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
@@ -1767,7 +1767,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult EditCustomForm(int Id)
+        public virtual ActionResult EditCustomForm(int id = -1)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
@@ -1775,7 +1775,7 @@ namespace TT.Web.Controllers
             }
 
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
-            var output = customFormRepo.ContributorCustomForms.FirstOrDefault(c => c.Id == Id);
+            var output = customFormRepo.ContributorCustomForms.FirstOrDefault(c => c.Id == id);
 
             if (output == null)
             {

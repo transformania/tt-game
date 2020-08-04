@@ -9,7 +9,7 @@
     }
 
     <p>
-        @Ajax.ActionLink("-- New Quest --", MVC.QuestWriter.QuestStart(-1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
+        @Ajax.ActionLink("-- New Quest --", MVC.QuestWriter.QuestStart(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
     </p>
 
 }

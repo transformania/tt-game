@@ -97,12 +97,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult EditNewsPost()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult EditNewsPostSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPostSend);
@@ -199,7 +193,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_EditNewsPost
         {
-            public readonly string Id = ("Id").ToLowerInvariant();
+            public readonly string id = ("id").ToLowerInvariant();
         }
         static readonly ActionParamsClass_EditNewsPostSend s_params_EditNewsPostSend = new ActionParamsClass_EditNewsPostSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -369,14 +363,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void EditNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+        partial void EditNewsPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult EditNewsPost(int Id)
+        public override System.Web.Mvc.ActionResult EditNewsPost(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditNewsPost);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            EditNewsPostOverride(callInfo, Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            EditNewsPostOverride(callInfo, id);
             return callInfo;
         }
 

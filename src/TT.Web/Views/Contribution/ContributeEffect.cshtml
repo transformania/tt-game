@@ -6,7 +6,7 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.Contribute())">Back to contributions</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">New curse</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect())">New curse</a></li>
 
     @if (User.IsInRole(PvPStatics.Permissions_Admin))
     {
@@ -85,7 +85,7 @@
         </tbody>
     </table>
 
-    <a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">[Start a new contribution]</a>
+    <a href="@Url.Action(MVC.Contribution.ContributeEffect())">[Start a new contribution]</a>
 </p>
 
 @*--------------------------------------*@

@@ -109,12 +109,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult WriteFae()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WriteFae);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult WriteFaeSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WriteFaeSend);
@@ -157,12 +151,6 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult RenamePlayer()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenamePlayer);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult RenamePlayerSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenamePlayerSend);
@@ -172,12 +160,6 @@ namespace TT.Web.Controllers
         public virtual System.Web.Mvc.ActionResult ModDeleteClassified()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ModDeleteClassified);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult EditCustomForm()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditCustomForm);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -447,7 +429,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_EditCustomForm
         {
-            public readonly string Id = ("Id").ToLowerInvariant();
+            public readonly string id = ("id").ToLowerInvariant();
         }
         static readonly ActionParamsClass_EditCustomFormSend s_params_EditCustomFormSend = new ActionParamsClass_EditCustomFormSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1168,14 +1150,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void EditCustomFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+        partial void EditCustomFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult EditCustomForm(int Id)
+        public override System.Web.Mvc.ActionResult EditCustomForm(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditCustomForm);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            EditCustomFormOverride(callInfo, Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            EditCustomFormOverride(callInfo, id);
             return callInfo;
         }
 

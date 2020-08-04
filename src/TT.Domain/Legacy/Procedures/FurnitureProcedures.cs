@@ -19,7 +19,7 @@ namespace TT.Domain.Procedures
 
         public const double FurnitureContractVariation = .15D;
 
-        public static IEnumerable<FurnitureViewModel> GetCovenantFurnitureViewModels(int covenantId)
+        public static IEnumerable<FurnitureViewModel> GetCovenantFurnitureViewModels(int covenantId = -1)
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
           //  IDbStaticFurnitureRepository furnStaticRepo = new EFDbStaticFurnitureRepository();
@@ -66,7 +66,7 @@ namespace TT.Domain.Procedures
 
         public static IEnumerable<FurnitureViewModel> GetAvailableFurnitureViewModels()
         {
-            return GetCovenantFurnitureViewModels(-1);
+            return GetCovenantFurnitureViewModels();
         }
 
         public static Furniture GetdbFurniture(int id)

@@ -12,7 +12,7 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Contribution.ContributeSpell())">Spells</a></li>
-    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Curses</a></li>
+    <li><a href="@Url.Action(MVC.Contribution.ContributeEffect())">Curses</a></li>
     <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">DM encounters</a></li>
     @{
         if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
@@ -63,7 +63,7 @@
                 Other written contributions do not contribute to custom forms:
             </p>
             <ul class="listdots">
-                <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Create a curse or blessing</a> that gives an effect to players who find it, or gives the owners of an item special abilities.</li>
+                <li><a href="@Url.Action(MVC.Contribution.ContributeEffect())">Create a curse or blessing</a> that gives an effect to players who find it, or gives the owners of an item special abilities.</li>
                 <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Add a DM encounter</a> to provide some roleplay inspiration in the chatrooms.</li>
                 @{
                     if (User.IsInRole(PvPStatics.Permissions_QuestWriter))

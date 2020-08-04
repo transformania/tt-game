@@ -622,7 +622,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult ContributeEffect(int id)
+        public virtual ActionResult ContributeEffect(int id = -1)
         {
             var myMembershipId = User.Identity.GetUserId();
             // get all of this players effect contributions

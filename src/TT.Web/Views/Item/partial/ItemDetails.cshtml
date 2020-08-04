@@ -1,35 +1,35 @@
-﻿@model TT.Domain.Items.DTOs.ItemDetail
+﻿@model TT.Domain.ViewModels.ItemDetailsModel
 
 @using TT.Domain.Items.DTOs
 @using TT.Domain.Statics
 @using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 
-<div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true));">
-    @HtmlHelpers.PrintItemTypeIcon(Model.ItemSource.ItemType)
-    @HtmlHelpers.PrintSouledIcon(Model)
+<div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(Model.Item.ItemSource.ItemType, Model.Item.ItemSource.PortraitUrl, true));">
+    @HtmlHelpers.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
+    @HtmlHelpers.PrintSouledIcon(Model.Item)
 </div>
 
 <b>
     
-    @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
+    @Model.Item.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model.Item)
 
     @{
 
-        if (Model.Level > 0)
+        if (Model.Item.Level > 0)
         {
-            <span>(Lvl @Model.Level)</span>
+            <span>(Lvl @Model.Item.Level)</span>
         }
 
-        if (Model.IsEquipped)
+        if (Model.Item.IsEquipped)
         {
             <span> (Equipped)</span>
         }
 
-        if (Model.FormerPlayer != null)
+        if (Model.Item.FormerPlayer != null)
         {
-            <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.FormerPlayer.Id))">@Model.FormerPlayer.FullName</a></span>
-            @HtmlHelpers.PrintPermanencyIcon(Model.IsPermanent)
+            <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
+            @HtmlHelpers.PrintPermanencyIcon(Model.Item.IsPermanent)
         }
 
     }
@@ -38,27 +38,32 @@
 </b>
 
 
-@Model.ItemSource.Description <br>
+@Model.Item.ItemSource.Description <br>
 
 <div class="bonuses">
 
     <ul>
         @{
-            if (Model.ItemSource.GivesEffectSourceId != null)
+            foreach (var skill in Model.Skills)
             {
-                <li>Gives the @HtmlHelpers.GetEffectFriendlyName(Model.ItemSource.GivesEffectSourceId.Value) effect</li>
+                <li>Gives the @skill.FriendlyName ability when equipped</li>
+            }
+
+            if (Model.Item.ItemSource.GivesEffectSourceId != null)
+            {
+                <li>Gives the @HtmlHelpers.GetEffectFriendlyName(Model.Item.ItemSource.GivesEffectSourceId.Value) effect</li>
             }
         }
 
     </ul>
     
     @{
-        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
+        if (Model.Item.ItemSource.ItemType == PvPStatics.ItemType_Rune)
         {
-            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail{ ItemSource = Model.ItemSource}, false))
+            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail{ ItemSource = Model.Item.ItemSource}, false))
         }
     
-        foreach (var rune in Model.Runes)
+        foreach (var rune in Model.Item.Runes)
         {
             @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(rune))
         }

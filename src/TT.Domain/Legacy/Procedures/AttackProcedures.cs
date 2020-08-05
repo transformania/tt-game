@@ -89,14 +89,14 @@ namespace TT.Domain.Procedures
                 var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
 
                 var criticalPercentChance = meBuffs.ExtraSkillCriticalPercent() + PvPStatics.CriticalHitPercentChance;
-                var modifiedCriticalPercentChance = criticalPercentChance - targetedBuffs.EvasionPercent();
                 var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
-                var modifiedEvasionPercentChance = evasionPercentChance - meBuffs.ExtraSkillCriticalPercent();
+                var evasionUpgrade = false;
+                var failedAttack = false;
 
-                // clamp modifiedEvasion at 66% max
-                if (modifiedEvasionPercentChance > 66)
+                // clamp modifiedEvasion at 50% max
+                if (evasionPercentChance > 50)
                 {
-                    modifiedEvasionPercentChance = 66;
+                    evasionPercentChance = 50;
                 }
 
                 // critical miss!  damage caster instead
@@ -112,30 +112,44 @@ namespace TT.Domain.Procedures
                         logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by {amountToDamage:N2}.";
                         result += logs.AttackerLog;
                     }
-
-               // spell is evaded
+                    failedAttack = true;
                 }
-                else if (basehitChance < (double)criticalMissPercentChance + (double)modifiedEvasionPercentChance)
+                // spell is evaded
+                else if (basehitChance < (double)criticalMissPercentChance + (double)evasionPercentChance)
                 {
-                    logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
-                    logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
-                    result = logs.AttackerLog;
+                    // Check for a crit to upgrade the miss to a hit
+                    var criticalHitChance = rand.NextDouble() * 100;
+                    if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
+                    {
+                        evasionUpgrade = true;
+                    }
+                    else
+                    {
+                        logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
+                        logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
+                        result = logs.AttackerLog;
+                        failedAttack = true;
+                    }
                 }
 
-              // not a  miss, so let's deal some damage, possibly
-                else
+                // not a  miss, so let's deal some damage, possibly
+                if (!failedAttack)
                 {
                     var rand2 = new Random();
                     var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
-                    if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)modifiedCriticalPercentChance)
+                    if (evasionUpgrade)
+                    {
+                        logs.AttackerLog += "<b>Piercing hit!</b>  ";
+                        logs.VictimLog += "<b>Piercing hit!</b>  ";
+                    }
+                    else if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";
                         logs.VictimLog += "<b>Critical hit!</b>  ";
                     }
-
 
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
@@ -167,6 +181,7 @@ namespace TT.Domain.Procedures
 
                         // even though it's been done in the db, change the player health here as well
                         targeted.Health -= totalHealthDamage;
+
 
                         logs.AttackerLog += $"Your spell lowered {GetPronoun_hisher(victim.Gender)} willpower by {Math.Round(totalHealthDamage,2)}.  ";
                         logs.VictimLog += $"{GetPronoun_HisHer(attacker.Gender)} spell lowered your willpower by {Math.Round(totalHealthDamage,2)}.  ";

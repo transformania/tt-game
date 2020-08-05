@@ -300,7 +300,7 @@ namespace TT.Domain.Players.Entities
 
             //  Increase the rate of cleansing outside of combat
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo > 6 * TurnTimesStatics.GetTurnLengthInSeconds())
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
                 outOfCombat = true;
             }
@@ -314,8 +314,8 @@ namespace TT.Domain.Players.Entities
 
                 if (outOfCombat)
                 {
-                    AddHealth(cleanseWPRestore * 5) ;
-                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 5} willpower.";
+                    AddHealth(cleanseWPRestore * 3) ;
+                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 3} willpower.";
                 }
                 else
                 {
@@ -351,9 +351,9 @@ namespace TT.Domain.Players.Entities
 
             //  Increase the rate of meditation outside of combat
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo > 6 * TurnTimesStatics.GetTurnLengthInSeconds())
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
-                meditateManaRestore = meditateManaRestore * 5;
+                meditateManaRestore = meditateManaRestore * 3;
                 outOfCombat = true;
             }
 
@@ -391,6 +391,14 @@ namespace TT.Domain.Players.Entities
         public void CleanseTFEnergies(BuffBox buffs)
         {
             var cleansePercentage = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
+
+
+            //  Increase the rate of TFE cleansing outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                cleansePercentage = (cleansePercentage * 5);
+            }
 
             foreach (var energy in TFEnergies)
             {

@@ -253,22 +253,16 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         private static int GetCounterAttackTimes(decimal currentHealth, decimal maxHealth, int turnNumber)
         {
             decimal value = currentHealth / maxHealth;
-            var maxBonusAttackTimes = turnNumber / 1250;
-            var bonusAttackTimes = (int)(.5 + rand.NextDouble() * maxBonusAttackTimes);
-            if (value > .5m)
+            if (value > .25m)
             {
-                return  1 + bonusAttackTimes;
-            }
-            else if (value > .25m)
-            {
-                return 2 + bonusAttackTimes;
+                return  1;
             }
             else if (value > .1m)
             { 
-                return 3 + bonusAttackTimes;
+                return 2;
             }
 
-            return 4 + bonusAttackTimes;
+            return 3;
         }
 
     }

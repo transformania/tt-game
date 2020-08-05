@@ -394,7 +394,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(malethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
@@ -403,7 +402,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(femalethief, attacker, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(femalethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(femalethief, attacker, false, 2);
                     }

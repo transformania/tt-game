@@ -179,7 +179,7 @@ namespace TT.Domain.Procedures.BossProcedures
             AIProcedures.DealBossDamage(donna, personAttacking, true, 1);
 
             var rand = new Random();
-            var roll = rand.NextDouble() * 4;
+            var roll = rand.NextDouble() * 3;
 
             for (var i = 0; i < roll; i++)
             {

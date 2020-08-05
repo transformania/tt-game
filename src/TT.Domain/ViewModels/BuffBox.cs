@@ -720,7 +720,7 @@ namespace TT.Domain.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", 0.62F}, // regeneration
+	                    {"Succour", 0.9F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -745,7 +745,7 @@ namespace TT.Domain.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", .75F},
+	                    {"Agility", .25F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -756,7 +756,7 @@ namespace TT.Domain.ViewModels
                 "AntiSneakPercent",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", 1.0F},
+	                    {"Perception", 0.25F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
@@ -816,7 +816,7 @@ namespace TT.Domain.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", .35F}, // restoration
+	                    {"Allure", .5F}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0}, 
 	                    {"Luck", 0},
@@ -872,7 +872,7 @@ namespace TT.Domain.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", .02F}, // restoration
+	                    {"Allure", .01F}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
@@ -926,7 +926,7 @@ namespace TT.Domain.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", .065F},
+	                    {"Fortitude", .04F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},

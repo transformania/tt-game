@@ -133,7 +133,7 @@ namespace TT.Tests.Players.Entities
                 .BuildAndSave();
 
             player.CleanseTFEnergies(new BuffBox());
-            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(48));
+            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(40));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace TT.Tests.Players.Entities
         {
             var tfEnergies = new List<TFEnergy>
             {
-                new TFEnergyBuilder().With(t => t.Amount, 50).BuildAndSave()
+                new TFEnergyBuilder().With(t => t.Amount, 100).BuildAndSave()
             };
 
             var player = new PlayerBuilder()
@@ -155,7 +155,7 @@ namespace TT.Tests.Players.Entities
             };
 
             player.CleanseTFEnergies(buffs);
-            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(38));
+            Assert.That(player.TFEnergies.First().Amount, Is.EqualTo(40));
         }
 
         [Test]

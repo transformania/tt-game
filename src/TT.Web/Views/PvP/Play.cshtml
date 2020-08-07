@@ -463,10 +463,17 @@
             $("#timeReport").show();
         });
 
-    }); // end document.ready
+        $( "#attackModal" ).draggable();
+        $( "#attackModal" ).resizable();
+        $( document ).keydown(function(evt){
+            evt = evt || window.event;
+            if ((evt.key && (evt.key == "Escape" || evt.key == "Esc")) ||
+                (evt.keyCode && evt.keyCode == 27)) {
+                closeAttackModal();
+            }
+        });
 
-    $( "#attackModal" ).draggable();
-    $( "#attackModal" ).resizable();
+    }); // end document.ready
 
     </script>
 }

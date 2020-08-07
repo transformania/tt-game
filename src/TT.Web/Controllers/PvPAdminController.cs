@@ -1886,7 +1886,8 @@ namespace TT.Web.Controllers
                                                 {
                                                     Name = player.GetFullName(),
                                                     Id = player.Id,
-                                                    MembershipId = player.MembershipId
+                                                    MembershipId = player.MembershipId,
+                                                    Mobility = player.Mobility
                                                 });
 
                 foreach (var player in players)
@@ -1900,9 +1901,12 @@ namespace TT.Web.Controllers
                             InChaos = true
                         });
 
-                        PlayerLogProcedures.AddPlayerLog(player.Id,
-                            "<strong>The game is in Chaos and you have been moved to SuperProtection mode.</strong> " +
-                            "You can switch your game mode at any time during Chaos from the Settings page.", true);
+                        if(player.Mobility == PvPStatics.MobilityFull)
+                        {
+                            PlayerLogProcedures.AddPlayerLog(player.Id,
+                                "<strong>The game is in Chaos and you have been moved to SuperProtection mode.</strong> " +
+                                "You can switch your game mode at any time during Chaos from the Settings page.", true);
+                        }
                     }
                     catch (DomainException e)
                     {

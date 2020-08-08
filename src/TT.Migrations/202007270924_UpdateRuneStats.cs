@@ -144,13 +144,13 @@ namespace TT.Migrations
             // Boss - Rats
             Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '22', Allure = '0', Magicka = '0', Succour = '0', Luck = '22' WHERE id = '513'");
             // Boss - Road Lady
-            Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '22', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '557'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '557'");
             // Boss - Bimboss 
             Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '22', Succour = '0', Luck = '0'   WHERE id = '518'");
             // Boss - Donna
             Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '22', Succour = '0', Luck = '22'   WHERE id = '515'");
             // Boss - Narcissa
-            Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '0'   WHERE id = '517'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '22'   WHERE id = '517'");
             // Boss - The smart one
             Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '22', Luck = '0'   WHERE id = '516'");
         }

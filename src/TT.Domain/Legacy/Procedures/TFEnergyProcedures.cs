@@ -331,6 +331,9 @@ namespace TT.Domain.Procedures
                 target.Health -= HealthDamage;
                 target.NormalizeHealthMana();
                 playerRepo.SavePlayer(target);
+
+                // Causes the victim to 'explode' and deal damage in their area
+                AttackProcedures.SuddenDeathExplosion(attacker, victim, 240);
             }
             else if (energyAccumulated > targetForm.TFEnergyRequired * 3M)
             {

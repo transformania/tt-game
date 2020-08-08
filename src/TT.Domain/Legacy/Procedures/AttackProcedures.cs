@@ -316,6 +316,68 @@ namespace TT.Domain.Procedures
             return attackerMessage;
         }
 
+        public static string SuddenDeathExplosion(Player attacker, Player victim, decimal damage)
+        {
+
+            IPlayerRepository playerREpo = new EFPlayerRepository();
+
+            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+
+            var playersHere = new List<Player>();
+            var playersHereOnline = new List<Player>();
+            if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
+            {
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
+                    p.Mobility == PvPStatics.MobilityFull &&
+                     p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
+            }
+            else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection || attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    p.BotId < AIStatics.RerolledPlayerBotId &&
+                    p.Mobility == PvPStatics.MobilityFull &&
+                    p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
+            }
+
+            // filter out offline players as well as the attacker
+            foreach (var p in playersHere)
+            {
+                if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != attacker.Id)
+                {
+                    playersHereOnline.Add(p);
+                }
+            }
+
+            foreach (var p in playersHereOnline)
+            {
+                p.Health -= damage;
+                if (p.Health < 0)
+                {
+                    p.Health = 0;
+                }
+                playerREpo.SavePlayer(p);
+                var message = "<span class='playerAttackNotification'>" + victim.GetFullName() + " convulses and shakes before exploding into a roiling tide of chaotic energies damaging you for " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
+            }
+
+            var logMessage = victim.FirstName + " " + victim.LastName + " exploded into a violent shower of chaotic energies.";
+            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
+
+            var attackerMessage = "The explosion caused by " + victim.FirstName + " "  + victim.LastName + " scattered violent energies throughout  " + here + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
+            PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
+
+            // set the player's last action flag
+            var dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
+            dbAttacker.LastActionTimestamp = DateTime.UtcNow;
+            dbAttacker.TimesAttackingThisUpdate++;
+            playerREpo.SavePlayer(dbAttacker);
+
+            return attackerMessage;
+        }
+
         public static void InstantTakeoverLocation(Covenant cov, string location)
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();

@@ -253,7 +253,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         private static int GetCounterAttackTimes(decimal currentHealth, decimal maxHealth, int turnNumber)
         {
             decimal value = currentHealth / maxHealth;
-            if (value > .25m)
+            if (value > .5m)
             {
                 return  1;
             }

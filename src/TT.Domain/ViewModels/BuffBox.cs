@@ -769,7 +769,7 @@ namespace TT.Domain.ViewModels
                 {
                 "EvasionPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0},
+                      	{"Discipline", -0.1F},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},

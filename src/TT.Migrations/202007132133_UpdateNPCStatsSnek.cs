@@ -9,7 +9,7 @@ namespace TT.Migrations
         {
             // Psychopaths
             // Level 1
-            Execute.Sql("Update DbStaticEffects set Discipline = '-25', Perception = '-15', Charisma = '15', Fortitude = '-25', Agility = '5', Allure = '5', Magicka = '10', Succour = '5', Luck = '10' Where Id = 19 ");
+            Execute.Sql("Update DbStaticEffects set Discipline = '-25', Perception = '-15', Charisma = '15', Fortitude = '-25', Agility = '5', Allure = '5', Magicka = '10', Succour = '5', Luck = '10' Where Id = 19");
             // Level 3
             Execute.Sql("Update DbStaticEffects set Discipline = '0', Perception = '0', Charisma = '30', Fortitude = '0', Agility = '10', Allure = '10', Magicka = '20', Succour = '10', Luck = '20' Where Id = 20");
             // Level 5
@@ -18,6 +18,9 @@ namespace TT.Migrations
             Execute.Sql("Update DbStaticEffects set Discipline = '25', Perception = '10', Charisma = '60', Fortitude = '50', Agility = '20', Allure = '20', Magicka = '40', Succour = '20', Luck = '40' Where Id = 22");
             // Level 9
             Execute.Sql("Update DbStaticEffects set Discipline = '50', Perception = '15', Charisma = '75', Fortitude = '75', Agility = '25', Allure = '25', Magicka = '50', Succour = '25', Luck = '50' Where Id = 23");
+
+            // Dungeon Demon
+            Execute.Sql("Update DbStaticEffects set Discipline = '50', Perception = '100', Charisma = '0', Fortitude = '50', Agility = '0', Allure = '0', Magicka = '0', Succour = '50', Luck = '50' Where Id = 371");
 
             // Minibosses
             // Pop Goddess
@@ -50,9 +53,6 @@ namespace TT.Migrations
             Execute.Sql("Update DbStaticForms set HealthBonusPercent = '4000', Discipline = '0', Perception = '50', Charisma = '75', Fortitude = '50', Agility = '50', Allure = '0', Magicka = '50', Succour = '0', Luck = '15' Where Id = 522");
             // Corrupted Lunar Fae
             Execute.Sql("Update DbStaticForms set HealthBonusPercent = '4000', Discipline = '0', Perception = '0', Charisma = '50', Fortitude = '200', Agility = '100', Allure = '0', Magicka = '50', Succour = '0', Luck = '20' Where Id = 582");
-
-            // Dungeon NPC's aren't going to be included in this as I want to look at the dungeon overall rather than just tweaking a few things and hoping for the best
-            // Similarly vendors aren't included as there's no reason they should be used in any normal setting
 
             // Update base spelldamage
             // TFEnergy builders

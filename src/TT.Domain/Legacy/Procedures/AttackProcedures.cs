@@ -372,7 +372,6 @@ namespace TT.Domain.Procedures
             // set the player's last action flag
             var dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
             dbAttacker.LastActionTimestamp = DateTime.UtcNow;
-            dbAttacker.TimesAttackingThisUpdate++;
             playerREpo.SavePlayer(dbAttacker);
 
             return attackerMessage;

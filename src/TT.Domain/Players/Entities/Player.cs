@@ -353,7 +353,6 @@ namespace TT.Domain.Players.Entities
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
             if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
-                meditateManaRestore = meditateManaRestore * 3;
                 outOfCombat = true;
             }
 
@@ -363,13 +362,14 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                AddMana(meditateManaRestore);
                 if (outOfCombat)
                 {
+                    AddMana(meditateManaRestore * 3);
                     result = "You take your time meditating, restoring " + meditateManaRestore + " mana.";
                 }
                 else
                 {
+                    AddMana(meditateManaRestore);
                     result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
                 }
 

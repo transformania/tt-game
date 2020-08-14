@@ -365,12 +365,12 @@ namespace TT.Domain.Players.Entities
                 if (outOfCombat)
                 {
                     AddMana(meditateManaRestore * 3);
-                    result = "You take your time meditating, restoring " + meditateManaRestore + " mana.";
+                    result = $"You take your time meditating, restoring {meditateManaRestore * 3} mana.";
                 }
                 else
                 {
                     AddMana(meditateManaRestore);
-                    result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
+                    result = $"You quickly meditate, restoring {meditateManaRestore} mana.";
                 }
 
             }

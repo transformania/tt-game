@@ -71,10 +71,10 @@ namespace TT.Domain.Players.Commands
 
         public CreatePlayer()
         {
-            Health = 100;
-            MaxHealth = 100;
-            Mana = 100;
-            MaxMana = 100;
+            Health = 1000;
+            MaxHealth = 1000;
+            Mana = 210;
+            MaxMana = 210;
             Level = 1;
             XP = 0;
             TimesAttackingThisUpdate = 0;

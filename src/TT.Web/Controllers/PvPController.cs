@@ -623,6 +623,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player is at least level 4
+            if (me.Level < 4)
+            {
+                TempData["Error"] = "You must be at least level four to enter the dungeon.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player is not currently under the effects of back on your feet
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
+            {
+                TempData["Error"] = "You must wait until you are no longer under the effects of 'Back on your feet'.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player is in a correct location to do this if in overworld
             if (!me.IsInDungeon() && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
             {

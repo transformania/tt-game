@@ -34,10 +34,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     LastName = LastName,
                     Location = "ranch_bedroom",
                     Gender = PvPStatics.GenderFemale,
-                    Health = 9999,
-                    Mana = 9999,
-                    MaxHealth = 9999,
-                    MaxMana = 9999,
+                    Health = 100000,
+                    Mana = 100000,
+                    MaxHealth = 100000,
+                    MaxMana = 100000,
                     FormSourceId = DonnaFormSourceId,
                     Money = 1000,
                     Level = 20,
@@ -179,7 +179,7 @@ namespace TT.Domain.Procedures.BossProcedures
             AIProcedures.DealBossDamage(donna, personAttacking, true, 1);
 
             var rand = new Random();
-            var roll = rand.NextDouble() * 4;
+            var roll = rand.NextDouble() * 3;
 
             for (var i = 0; i < roll; i++)
             {

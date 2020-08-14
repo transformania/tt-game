@@ -73,7 +73,6 @@ namespace TT.Domain.Procedures
             // the spell is a regular attack
             else
             {
-
                 logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".</span>";
                 logs.AttackerLog = "You cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against you.</span>  ";
@@ -88,15 +87,19 @@ namespace TT.Domain.Procedures
                 var targetProt = targetedBuffs.SpellHealthDamageResistance();
 
                 var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
-                var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
-                // clamp evasion at 66% max
-                if (evasionPercentChance > 66)
+                var criticalPercentChance = meBuffs.ExtraSkillCriticalPercent() + PvPStatics.CriticalHitPercentChance;
+                var evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
+                var evasionUpgrade = false;
+                var failedAttack = false;
+
+                // clamp modifiedEvasion at 50% max
+                if (evasionPercentChance > 50)
                 {
-                    evasionPercentChance = 66;
+                    evasionPercentChance = 50;
                 }
 
-                // critical miss!  damange caster instead
+                // critical miss!  damage caster instead
                 if (basehitChance < (double)criticalMissPercentChance)
                 {
                     // check if there is a health damage aspect to this spell
@@ -109,33 +112,44 @@ namespace TT.Domain.Procedures
                         logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by {amountToDamage:N2}.";
                         result += logs.AttackerLog;
                     }
-
-
-               // spell is evaded
+                    failedAttack = true;
                 }
+                // spell is evaded
                 else if (basehitChance < (double)criticalMissPercentChance + (double)evasionPercentChance)
                 {
-                    logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
-                    logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
-                    result = logs.AttackerLog;
+                    // Check for a crit to upgrade the miss to a hit
+                    var criticalHitChance = rand.NextDouble() * 100;
+                    if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
+                    {
+                        evasionUpgrade = true;
+                    }
+                    else
+                    {
+                        logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
+                        logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
+                        result = logs.AttackerLog;
+                        failedAttack = true;
+                    }
                 }
 
-              // not a  miss, so let's deal some damage, possibly
-                else
+                // not a  miss, so let's deal some damage, possibly
+                if (!failedAttack)
                 {
-
-
                     var rand2 = new Random();
                     var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
-                    if (criticalHitChance < (double)(PvPStatics.CriticalHitPercentChance + meBuffs.ExtraSkillCriticalPercent()))
+                    if (evasionUpgrade)
+                    {
+                        logs.AttackerLog += "<b>Piercing hit!</b>  ";
+                        logs.VictimLog += "<b>Piercing hit!</b>  ";
+                    }
+                    else if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";
                         logs.VictimLog += "<b>Critical hit!</b>  ";
                     }
-
 
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
@@ -149,7 +163,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = .5M;
                         }
 
-                        // cap the modifier at at 200 % IF the target is a human
+                        // cap the modifier at 200 % IF the target is a human
                         if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             willpowerDamageModifierFromBonuses = 2;
@@ -167,6 +181,7 @@ namespace TT.Domain.Procedures
 
                         // even though it's been done in the db, change the player health here as well
                         targeted.Health -= totalHealthDamage;
+
 
                         logs.AttackerLog += $"Your spell lowered {GetPronoun_hisher(victim.Gender)} willpower by {Math.Round(totalHealthDamage,2)}.  ";
                         logs.VictimLog += $"{GetPronoun_HisHer(attacker.Gender)} spell lowered your willpower by {Math.Round(totalHealthDamage,2)}.  ";
@@ -297,6 +312,67 @@ namespace TT.Domain.Procedures
             dbAttacker.TimesAttackingThisUpdate++;
             playerREpo.SavePlayer(dbAttacker);
 
+
+            return attackerMessage;
+        }
+
+        public static string SuddenDeathExplosion(Player attacker, Player victim, decimal damage)
+        {
+
+            IPlayerRepository playerREpo = new EFPlayerRepository();
+
+            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+
+            var playersHere = new List<Player>();
+            var playersHereOnline = new List<Player>();
+            if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
+            {
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
+                    p.Mobility == PvPStatics.MobilityFull &&
+                     p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
+            }
+            else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection || attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    p.BotId < AIStatics.RerolledPlayerBotId &&
+                    p.Mobility == PvPStatics.MobilityFull &&
+                    p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
+            }
+
+            // filter out offline players as well as the attacker
+            foreach (var p in playersHere)
+            {
+                if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != attacker.Id)
+                {
+                    playersHereOnline.Add(p);
+                }
+            }
+
+            foreach (var p in playersHereOnline)
+            {
+                p.Health -= damage;
+                if (p.Health < 0)
+                {
+                    p.Health = 0;
+                }
+                playerREpo.SavePlayer(p);
+                var message = "<span class='playerAttackNotification'>" + victim.GetFullName() + " convulses and shakes before exploding into a roiling tide of chaotic energies damaging you for " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
+            }
+
+            var logMessage = victim.FirstName + " " + victim.LastName + " exploded into a violent shower of chaotic energies.";
+            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
+
+            var attackerMessage = "The explosion caused by " + victim.FirstName + " "  + victim.LastName + " scattered violent energies throughout  " + here + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
+            PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
+
+            // set the player's last action flag
+            var dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
+            dbAttacker.LastActionTimestamp = DateTime.UtcNow;
+            playerREpo.SavePlayer(dbAttacker);
 
             return attackerMessage;
         }

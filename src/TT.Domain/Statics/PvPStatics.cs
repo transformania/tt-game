@@ -95,8 +95,8 @@ namespace TT.Domain.Statics
 
         public const decimal CleanseManaCost = 3M;
         public const decimal CleanseTFEnergyPercentDecrease = 2.0M;
-        public const decimal MeditateManaRestoreBase = 10.0M;
-        public const decimal CleanseHealthRestoreBase = 7.0M;
+        public const decimal MeditateManaRestoreBase = 21.0M;
+        public const decimal CleanseHealthRestoreBase = 50.0M;
         public const decimal SearchAPCost = 4.0M;
 
         public const int MaxCarryableItemCountBase = 6;
@@ -128,9 +128,9 @@ namespace TT.Domain.Statics
         public const int Dungeon_ArtifactCurseEffectSourceId = 102;
 
         public const decimal DungeonArtifact_Value = 2;
-        public const int DungeonArtifact_SpawnLimit = 3;
+        public const int DungeonArtifact_SpawnLimit = 9;
         public const int DungeonDemonFormSourceId = 371;
-        public const int DungeonDemon_Limit = 5;
+        public const int DungeonDemon_Limit = 8;
 
         public const int Dungeon_VanquishSpellSourceId = 686;
 

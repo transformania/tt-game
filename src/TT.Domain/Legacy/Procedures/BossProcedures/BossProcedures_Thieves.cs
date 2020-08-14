@@ -39,10 +39,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     LastName = MaleBossLastName,
                     Location = "tavern_pool",
                     Gender = PvPStatics.GenderMale,
-                    Health = 10000,
-                    Mana = 10000,
-                    MaxHealth = 10000,
-                    MaxMana = 10000,
+                    Health = 100000,
+                    Mana = 100000,
+                    MaxHealth = 100000,
+                    MaxMana = 100000,
                     FormSourceId = MaleBossFormSourceId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
@@ -89,10 +89,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     LastName = FemaleBossLastName,
                     Location = "tavern_pool",
                     Gender = PvPStatics.GenderFemale,
-                    Health = 10000,
-                    Mana = 10000,
-                    MaxHealth = 10000,
-                    MaxMana = 10000,
+                    Health = 100000,
+                    Mana = 100000,
+                    MaxHealth = 100000,
+                    MaxMana = 100000,
                     FormSourceId = FemaleBossFormSourceId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
@@ -394,7 +394,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(malethief, attacker, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(malethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
@@ -403,7 +402,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     for (var i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(femalethief, attacker, PvPStatics.Spell_WeakenId);
                         AttackProcedures.Attack(femalethief, attacker, GoldenTrophySpellSourceId);
                         AIProcedures.DealBossDamage(femalethief, attacker, false, 2);
                     }

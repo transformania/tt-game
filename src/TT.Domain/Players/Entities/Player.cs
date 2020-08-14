@@ -20,6 +20,7 @@ using InanimateXP = TT.Domain.Items.Entities.InanimateXP;
 using Item = TT.Domain.Items.Entities.Item;
 using Skill = TT.Domain.Entities.Skills.Skill;
 
+
 namespace TT.Domain.Players.Entities
 {
 
@@ -293,9 +294,16 @@ namespace TT.Domain.Players.Entities
             LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
-
             var cleanseBonusTFEnergyRemovalPercent = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
-            var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth() + Level;
+            var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth();
+            var outOfCombat = false;
+
+            //  Increase the rate of cleansing outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                outOfCombat = true;
+            }
 
             if (cleanseWPRestore <= 0)
             {
@@ -303,8 +311,17 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                AddHealth(cleanseWPRestore);
-                result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+
+                if (outOfCombat)
+                {
+                    AddHealth(cleanseWPRestore * 3) ;
+                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 3} willpower.";
+                }
+                else
+                {
+                    AddHealth(cleanseWPRestore);
+                    result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+                }
             }
 
             if (cleanseBonusTFEnergyRemovalPercent > 0)
@@ -329,8 +346,15 @@ namespace TT.Domain.Players.Entities
             LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
+            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana();
+            var outOfCombat = false;
 
-            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + Level;
+            //  Increase the rate of meditation outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                outOfCombat = true;
+            }
 
             if (meditateManaRestore < 0)
             {
@@ -338,8 +362,17 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
-                AddMana(meditateManaRestore);
+                if (outOfCombat)
+                {
+                    AddMana(meditateManaRestore * 3);
+                    result = $"You take your time meditating, restoring {meditateManaRestore * 3} mana.";
+                }
+                else
+                {
+                    AddMana(meditateManaRestore);
+                    result = $"You quickly meditate, restoring {meditateManaRestore} mana.";
+                }
+
             }
 
             if (BotId == AIStatics.ActivePlayerBotId)
@@ -358,6 +391,14 @@ namespace TT.Domain.Players.Entities
         public void CleanseTFEnergies(BuffBox buffs)
         {
             var cleansePercentage = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
+
+
+            //  Increase the rate of TFE cleansing outside of combat
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            {
+                cleansePercentage = (cleansePercentage * 5);
+            }
 
             foreach (var energy in TFEnergies)
             {
@@ -484,13 +525,15 @@ namespace TT.Domain.Players.Entities
 
         private float GetManaBaseByLevel(int level)
         {
-            float manaBase = 5 * (level - 1) + 50;
+            float manaBase = 210;
+
             return manaBase;
         }
 
         private static float GetWillpowerBaseByLevel(int level)
         {
-            var willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
+            var willpowerBase = 1000;
+
             return willpowerBase;
         }
 

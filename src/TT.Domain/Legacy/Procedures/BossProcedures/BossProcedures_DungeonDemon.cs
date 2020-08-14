@@ -35,7 +35,6 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
-                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
             }
 
         }

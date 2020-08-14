@@ -23,10 +23,10 @@ namespace TT.Tests.Builders.Players
             With(p => p.LastCombatAttackedTimestamp, DateTime.UtcNow.AddHours(-1) );
             With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-1));
             With(p => p.BotId, AIStatics.ActivePlayerBotId );
-            With(p => p.Health, 100 );
-            With(p => p.MaxHealth, 100 );
-            With(p => p.Mana, 100);
-            With(p => p.MaxMana, 100);
+            With(p => p.Health, 1000 );
+            With(p => p.MaxHealth, 1000 );
+            With(p => p.Mana, 210);
+            With(p => p.MaxMana, 210);
             With(p => p.GameMode, (int)GameModeStatics.GameModes.Protection);
             With(p => p.XP, 0);
             With(p => p.Level, 1);

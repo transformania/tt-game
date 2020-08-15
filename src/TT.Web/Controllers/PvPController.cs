@@ -1273,6 +1273,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            var iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
+
+            // assert player does not have more than 1 accounts already
+            if (!iAmWhitelisted && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me))
+            {
+                TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to enchant.";
+                TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player update is in not in progress
             if (PvPStatics.AnimateUpdateInProgress)
             {

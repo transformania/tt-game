@@ -129,30 +129,30 @@ namespace TT.Migrations
 
             // Special Runes
             // Miniboss - Housemother
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '20', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '20' WHERE id = '564'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '15', Fortitude = '5', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '15' WHERE id = '564'");
             // Miniboss - Musician
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '20', Fortitude = '15', Agility = '20', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '565'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '15', Fortitude = '5', Agility = '15', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '565'");
             // Miniboss - Maid
-            Execute.Sql("Update DbStaticItems SET Discipline = '20', Perception = '0', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '20', Magicka = '0', Succour = '0', Luck = '0'  WHERE id = '566'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '15', Perception = '0', Charisma = '0', Fortitude = '5', Agility = '0', Allure = '15', Magicka = '0', Succour = '0', Luck = '0'  WHERE id = '566'");
             // Miniboss - Groundskeeper
-            Execute.Sql("Update DbStaticItems SET Discipline = '20', Perception = '0', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '20', Succour = '0', Luck = '0'  WHERE id = '573'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '15', Perception = '0', Charisma = '0', Fortitude = '5', Agility = '0', Allure = '0', Magicka = '15', Succour = '0', Luck = '0'  WHERE id = '573'");
             // Miniboss - Threadmistress
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '20', Succour = '0', Luck = '20' WHERE id = '567'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '5', Agility = '0', Allure = '0', Magicka = '15', Succour = '0', Luck = '15' WHERE id = '567'");
             // Miniboss - Professor
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '20', Charisma = '0', Fortitude = '15', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '20' WHERE id = '574'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '15', Charisma = '0', Fortitude = '5', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '15' WHERE id = '574'");
 
             // Boss - Rats
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '22', Allure = '0', Magicka = '0', Succour = '0', Luck = '22' WHERE id = '513'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '10', Agility = '15', Allure = '0', Magicka = '0', Succour = '0', Luck = '10' WHERE id = '513'");
             // Boss - Road Lady
-            Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '557'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '10', Perception = '0', Charisma = '15', Fortitude = '10', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '0' WHERE id = '557'");
             // Boss - Bimboss 
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '22', Succour = '0', Luck = '0'   WHERE id = '518'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '15', Fortitude = '10', Agility = '0', Allure = '0', Magicka = '10', Succour = '0', Luck = '0'   WHERE id = '518'");
             // Boss - Donna
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '22', Succour = '0', Luck = '22'   WHERE id = '515'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '0', Fortitude = '10', Agility = '0', Allure = '0', Magicka = '15', Succour = '0', Luck = '10'   WHERE id = '515'");
             // Boss - Narcissa
-            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '22', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '22'   WHERE id = '517'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '0', Perception = '0', Charisma = '15', Fortitude = '10', Agility = '0', Allure = '0', Magicka = '0', Succour = '0', Luck = '10'   WHERE id = '517'");
             // Boss - The smart one
-            Execute.Sql("Update DbStaticItems SET Discipline = '22', Perception = '0', Charisma = '0', Fortitude = '17', Agility = '0', Allure = '0', Magicka = '0', Succour = '22', Luck = '0'   WHERE id = '516'");
+            Execute.Sql("Update DbStaticItems SET Discipline = '15', Perception = '0', Charisma = '0', Fortitude = '10', Agility = '0', Allure = '0', Magicka = '0', Succour = '10', Luck = '0'   WHERE id = '516'");
         }
     }
 }

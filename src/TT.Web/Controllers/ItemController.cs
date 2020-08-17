@@ -267,7 +267,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "You have successfully removed the curse <b>" + curseToRemove.FriendlyName + "</b> from your body!";
 
-            if (itemToUse.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId)
+            if (itemToUse.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId && itemToUse.dbItem.FormerPlayerId != null)
             {
                 PlayerLogProcedures.AddPlayerLog((int)itemToUse.dbItem.FormerPlayerId, "Your owner just used you to remove the curse <b>" +curseToRemove.FriendlyName + "</b>! Doesn't that make you feel all warm and tingly?", true);
             }

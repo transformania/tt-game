@@ -433,6 +433,10 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 var damage = damages_male.ElementAt(i);
                 var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                if (victor == null)
+                {
+                    continue;
+                }
                 var reward = Math.Floor(maxReward_Male);
                 victor.Money += maxReward_Male;
 

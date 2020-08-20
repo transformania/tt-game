@@ -134,14 +134,6 @@ namespace TT.Domain.Items.Entities
             var now = DateTime.UtcNow;
             TimeDropped = now;
 
-            foreach (var rune in Runes)
-            {
-                rune.dbLocationName = string.Empty;
-                rune.IsEquipped = true;
-                rune.Owner = null;
-                rune.TimeDropped = now;
-            }
-
             return this;
         }
 
@@ -167,16 +159,6 @@ namespace TT.Domain.Items.Entities
 
             PvPEnabled = gameModeValue;
             
-            foreach (var rune in Runes)
-            {
-                rune.Owner = newOwner;
-                rune.IsEquipped = true;
-                rune.dbLocationName = string.Empty;
-                rune.PvPEnabled = gameModeValue;
-                rune.TimeDropped = now;
-                rune.LastSold = now;
-            }
-
             if (!newOwner.Items.Contains(this))
             {
                 newOwner.Items.Add(this);
@@ -246,8 +228,8 @@ namespace TT.Domain.Items.Entities
         {
             Runes.Add(rune);
             rune.EmbeddedOnItem = this;
-            rune.IsEquipped = true;
-            rune.Owner = Owner;
+            rune.Owner = null;
+            rune.dbLocationName = string.Empty;
             rune.EquippedThisTurn = true;
         }
 
@@ -263,19 +245,27 @@ namespace TT.Domain.Items.Entities
         public void RemoveRune(Item rune)
         {
             rune.EmbeddedOnItem = null;
-            rune.IsEquipped = false;
             rune.EquippedThisTurn = true;
 
             if (Owner == null || Owner.BotId == AIStatics.WuffieBotId)
             {
                 rune.Owner = null;
+                rune.PvPEnabled = (int) GameModeStatics.GameModes.Any;
                 rune.dbLocationName = dbLocationName;
                 rune.TimeDropped = DateTime.Now;
             }
             else
             {
                 rune.Owner = Owner;
+                rune.PvPEnabled = Owner.BotId == AIStatics.ActivePlayerBotId
+                    ? Owner.GameMode
+                    : (int) GameModeStatics.GameModes.Any;
                 rune.dbLocationName = string.Empty;
+            }
+
+            if (rune.PvPEnabled == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                rune.PvPEnabled = (int) GameModeStatics.GameModes.Protection;
             }
 
             Runes.Remove(rune);

@@ -24,6 +24,7 @@ namespace TT.Domain.Items.Commands
                     .Include(i => i.Owner)
                     .Include(i => i.ItemSource)
                     .Include(i => i.EmbeddedOnItem)
+                    .Include(i => i.EmbeddedOnItem.Owner)
                     .Include(i => i.Runes.Select(r => r.EmbeddedOnItem))
                     .FirstOrDefault(i => i.Id == ItemId);
 
@@ -34,7 +35,7 @@ namespace TT.Domain.Items.Commands
                     throw new DomainException("This rune is not currently embdded on an item.");
 
 
-                if (rune.Owner == null || PlayerId != rune.Owner.Id)
+                if (rune.EmbeddedOnItem.Owner == null || PlayerId != rune.EmbeddedOnItem.Owner.Id)
                     throw new DomainException("You don't own this rune!");
 
                 if (rune.EquippedThisTurn)

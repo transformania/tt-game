@@ -47,7 +47,7 @@ namespace TT.Tests.Players.Entities
 
             var embeddedRune = new ItemBuilder()
                 .With(i => i.Id, 3)
-                .With(i => i.IsEquipped, true)
+                .With(i => i.IsEquipped, false)
                 .With(i => i.Owner, player)
                 .With(i => i.ItemSource, new ItemSourceBuilder()
                     .With(i => i.ItemType, PvPStatics.ItemType_Rune)
@@ -72,8 +72,8 @@ namespace TT.Tests.Players.Entities
             Assert.That(nonRuneItem.dbLocationName, Is.EqualTo("street_70e9th"));
 
             Assert.That(embeddedRune.Owner, Is.Null);
-            Assert.That(embeddedRune.IsEquipped, Is.True);
             Assert.That(embeddedRune.dbLocationName, Is.Empty);
+            Assert.That(embeddedRune.EmbeddedOnItem, Is.EqualTo(nonRuneItem));
         }
 
         [Test]

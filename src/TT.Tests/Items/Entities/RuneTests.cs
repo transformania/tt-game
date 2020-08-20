@@ -128,10 +128,8 @@ namespace TT.Tests.Items.Entities
             Assert.That(item.Runes, Has.Exactly(1).Items);
             Assert.That(item.Runes.First().ItemSource.FriendlyName, Is.EqualTo("Rune of Mana"));
 
-            Assert.That(rune.IsEquipped, Is.True);
             Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(item.Id));
-            Assert.That(rune.Owner.Id, Is.EqualTo(owner.Id));
-            Assert.That(rune.Owner.FirstName, Is.EqualTo(owner.FirstName));
+            Assert.That(rune.Owner, Is.Null);
             Assert.That(rune.EquippedThisTurn, Is.EqualTo(true));
         }
 

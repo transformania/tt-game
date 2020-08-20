@@ -26,12 +26,13 @@ namespace TT.Domain.Items.Commands
                     .Where(i => i.Owner.Id == PlayerId &&
                         i.Runes.Count > 0 );
 
-                var itemCount = playerItemsWithRunes.Count();
+                var itemCount = 0;
 
                 foreach (var item in playerItemsWithRunes)
                 {
                     item.RemoveRunes();
                     ctx.Update(item);
+                    ++itemCount;
                 }
 
                 ctx.Commit();

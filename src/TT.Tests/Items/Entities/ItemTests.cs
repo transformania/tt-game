@@ -94,10 +94,7 @@ namespace TT.Tests.Items.Entities
             Assert.That(item.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
             Assert.That(rune.IsEquipped, Is.True);
-            Assert.That(rune.Owner, Is.Null);
             Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(item.Id));
-            Assert.That(rune.dbLocationName, Is.Empty);
-            Assert.That(rune.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
             unembeddedRune.Drop(owner);
 
@@ -149,11 +146,8 @@ namespace TT.Tests.Items.Entities
             Assert.That(item.Runes, Has.Exactly(1).Items);
             Assert.That(item.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
 
-            Assert.That(rune.Owner.Id, Is.EqualTo(newOwner.Id));
             Assert.That(rune.EmbeddedOnItem.Id, Is.EqualTo(100));
             Assert.That(rune.IsEquipped, Is.True);
-            Assert.That(rune.dbLocationName, Is.Empty);
-            Assert.That(rune.TimeDropped, Is.EqualTo(DateTime.UtcNow).Within(1).Minutes);
         }
 
         [Test]

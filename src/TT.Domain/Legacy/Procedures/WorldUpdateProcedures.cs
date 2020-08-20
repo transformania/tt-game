@@ -838,12 +838,9 @@ namespace TT.Domain.Procedures
                             "DELETE FROM [dbo].[TFEnergies] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                         context.Database.ExecuteSqlCommand(
                             "DELETE FROM [dbo].[SelfRestoreEnergies] WHERE Timestamp < DATEADD(hour, -4, GETUTCDATE())");
-                        context.Database.ExecuteSqlCommand(
-                            $"UPDATE [dbo].[Items] SET EmbeddedOnItemId = NULL WHERE (OwnerId = {lindella.Id} OR OwnerId = {wuffie.Id}) AND EmbeddedOnItemId IS NOT NULL AND LastSold < DATEADD(hour, -12, GETUTCDATE())");
 
-                        // move soulbound items on the ground to the soulbinding NPC.  First query moves the runes on those items, second moves the items themselves.
+                        // move soulbound items on the ground to the soulbinding NPC.
                         context.Database.ExecuteSqlCommand(
-                            $"UPDATE[dbo].[Items] SET OwnerId = {soulbinderId}, dbLocationName = '' FROM Items WHERE Id IN (SELECT Id FROM Items WHERE dbLocationName <> '' AND SoulboundToPlayerId IS NOT NULL);" +
                             $"UPDATE[dbo].[Items] SET OwnerId = {soulbinderId}, dbLocationName = '' WHERE dbLocationName <> '' AND SoulboundToPlayerId IS NOT NULL;");
 
                     }

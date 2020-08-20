@@ -242,6 +242,10 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 var damage = damages.ElementAt(r);
                 var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                if (victor == null)
+                {
+                    continue;
+                }
                 var reward = maxReward - (i * 40);
                 victor.XP += reward;
                 i++;

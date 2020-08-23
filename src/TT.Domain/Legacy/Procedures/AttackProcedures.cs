@@ -119,7 +119,7 @@ namespace TT.Domain.Procedures
                 {
                     // Check for a crit to upgrade the miss to a hit
                     var criticalHitChance = rand.NextDouble() * 100;
-                    if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
+                    if (criticalHitChance < (double)criticalPercentChance)
                     {
                         evasionUpgrade = true;
                     }
@@ -144,7 +144,7 @@ namespace TT.Domain.Procedures
                         logs.AttackerLog += "<b>Piercing hit!</b>  ";
                         logs.VictimLog += "<b>Piercing hit!</b>  ";
                     }
-                    else if (criticalHitChance < (double)PvPStatics.CriticalHitPercentChance + (double)criticalPercentChance)
+                    else if (criticalHitChance < (double)criticalPercentChance)
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";

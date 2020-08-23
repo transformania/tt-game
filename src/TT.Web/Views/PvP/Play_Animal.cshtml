@@ -209,7 +209,7 @@
 </div>
 
 @*all players who are online*@
-
+<div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="showHidePlayers()">Show/Hide online players</a></div>
 <div class="onlinePlayersWrapperBG">
     <div class="row boxContainer">
         @*all players who are online*@
@@ -241,6 +241,7 @@
 
 @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
     {
+        <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.Play())">Hide the @Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) offline players</a></div>
         <div class="offlinePlayersWrapperBG">
             <div class="row boxContainer">
 

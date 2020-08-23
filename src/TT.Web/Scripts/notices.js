@@ -326,9 +326,8 @@ function closeAttackModal() {
     $("#modalBackdrop").hide();
 }
 
-function hidePlayers() {
-    document.getElementsByClassName('onlinePlayersWrapperBG')[0].style.display = 'none';
-    document.getElementsByClassName('onlinePlayersButton')[0].style.display = 'none';
+function showHidePlayers() {    
+    $(".onlinePlayersWrapperBG").toggle();
 }
 
 function updateRoundCountdownTimer() {

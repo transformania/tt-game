@@ -164,6 +164,17 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
+            // assert that the applicant is not currently in a different covenant (e.g. of their own creation)
+            if (submitter.Covenant != null || submitter.Covenant >0)
+            {
+                PlayerLogProcedures.AddPlayerLog(app.OwnerId, "<b style='color: red;'>Your application for " + myCov.Name + " covenant has been revoked as you are currently a member of a different covenant. Please leave your existing covenant before applying to a new one.</b>", true);
+                TempData["Error"] = "This player is already in another covenant, thus the application was revoked.";
+
+                CovenantProcedures.RevokeApplication(submitter);
+                
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             if (response == "yes")
             {
 
@@ -301,6 +312,14 @@ namespace TT.Web.Controllers
             if (me.Covenant > 0)
             {
                 TempData["Error"] = "You must leave your current covenant before you can found a new one.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the player does not have pending coven applications
+            if (CovenantProcedures.PlayerHasPendingApplication(me))
+            {
+                TempData["Error"] = "You have a pending application to a covenant.";
+                TempData["SubError"] = "Please withdraw your covenant application before creating a new covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

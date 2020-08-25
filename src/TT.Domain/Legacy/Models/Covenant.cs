@@ -19,6 +19,8 @@ namespace TT.Domain.Models
         [Required(ErrorMessage = "Covenant description is required.")]
         public string SelfDescription { get; set; }
 
+        [StringLength(200, ErrorMessage = "Noticeboard message cannot exceed 200 characters.")]
+        public string NoticeboardMessage { get; set; }
 
         public DateTime LastMemberAcceptance { get; set; }
         public int LeaderId { get; set; }

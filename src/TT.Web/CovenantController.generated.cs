@@ -73,6 +73,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChangeNoticeboardMessageSubmit()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeNoticeboardMessageSubmit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ChangeCovenantDescriptionSubmit()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeCovenantDescriptionSubmit);
@@ -153,6 +159,8 @@ namespace TT.Web.Controllers
             public readonly string ReviewMyCovenantApplications = ("ReviewMyCovenantApplications").ToLowerInvariant();
             public readonly string ApplicationResponse = ("ApplicationResponse").ToLowerInvariant();
             public readonly string LeaveCovenant = ("LeaveCovenant").ToLowerInvariant();
+            public readonly string ChangeNoticeboardMessage = ("ChangeNoticeboardMessage").ToLowerInvariant();
+            public readonly string ChangeNoticeboardMessageSubmit = ("ChangeNoticeboardMessageSubmit").ToLowerInvariant();
             public readonly string ChangeCovenantDescription = ("ChangeCovenantDescription").ToLowerInvariant();
             public readonly string ChangeCovenantDescriptionSubmit = ("ChangeCovenantDescriptionSubmit").ToLowerInvariant();
             public readonly string StartNewCovenant = ("StartNewCovenant").ToLowerInvariant();
@@ -195,6 +203,14 @@ namespace TT.Web.Controllers
         {
             public readonly string id = ("id").ToLowerInvariant();
             public readonly string response = ("response").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChangeNoticeboardMessageSubmit s_params_ChangeNoticeboardMessageSubmit = new ActionParamsClass_ChangeNoticeboardMessageSubmit();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeNoticeboardMessageSubmit ChangeNoticeboardMessageSubmitParams { get { return s_params_ChangeNoticeboardMessageSubmit; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeNoticeboardMessageSubmit
+        {
+            public readonly string input = ("input").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ChangeCovenantDescriptionSubmit s_params_ChangeCovenantDescriptionSubmit = new ActionParamsClass_ChangeCovenantDescriptionSubmit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -288,6 +304,7 @@ namespace TT.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string ChangeCovenantDescription = "ChangeCovenantDescription";
+                public readonly string ChangeNoticeboardMessage = "ChangeNoticeboardMessage";
                 public readonly string ClaimLocation = "ClaimLocation";
                 public readonly string CovenantLeaderAdmin = "CovenantLeaderAdmin";
                 public readonly string CovenantList = "CovenantList";
@@ -303,6 +320,7 @@ namespace TT.Web.Controllers
                 public readonly string ViewAvailableFurniture = "ViewAvailableFurniture";
             }
             public readonly string ChangeCovenantDescription = "~/Views/Covenant/ChangeCovenantDescription.cshtml";
+            public readonly string ChangeNoticeboardMessage = "~/Views/Covenant/ChangeNoticeboardMessage.cshtml";
             public readonly string ClaimLocation = "~/Views/Covenant/ClaimLocation.cshtml";
             public readonly string CovenantLeaderAdmin = "~/Views/Covenant/CovenantLeaderAdmin.cshtml";
             public readonly string CovenantList = "~/Views/Covenant/CovenantList.cshtml";
@@ -405,6 +423,29 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LeaveCovenant);
             LeaveCovenantOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeNoticeboardMessageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeNoticeboardMessage()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeNoticeboardMessage);
+            ChangeNoticeboardMessageOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeNoticeboardMessageSubmitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Models.Covenant input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeNoticeboardMessageSubmit(TT.Domain.Models.Covenant input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeNoticeboardMessageSubmit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            ChangeNoticeboardMessageSubmitOverride(callInfo, input);
             return callInfo;
         }
 

@@ -252,6 +252,21 @@ li {
   text-align: justify;
 }
 
+#noticeboardTitle {
+    font-size: 25px;
+    padding: 4px 10px;
+    text-align: center;
+    color: black;
+}
+
+#noticeboardMessage {
+    font-size: 15px;
+    border: 1px solid black;
+    padding: 4px 10px;
+    text-align: center;
+    color: black;
+}
+
 #RecentActivityLog {
   clear: both;
   background: $notificationBoxColor;

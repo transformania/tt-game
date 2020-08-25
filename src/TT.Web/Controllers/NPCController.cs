@@ -595,6 +595,116 @@ namespace TT.Web.Controllers
                     ViewBag.Speech = "Unfortunately I do not have any information on " + lorekeeper.GetFullName() + " at this time.  Is there anything else I can assist you with?";
                 }
             }
+            else if (question == "soulbinder")
+            {
+                var soulbinder = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
+                if (soulbinder != null)
+                {
+                    var temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == soulbinder.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, Karin is at <b>" + temp.Name + "</b>. Nothing but trouble, that demoness... But I have to admit, I admire her entrepreneurial spirit! \"";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on Karin at this time.  Is there anything else I can assist you with?";
+                }
+            }
+            else if (question == "psychos")
+            {
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility=="full" && (b.OriginalFormSourceId == 13|| b.OriginalFormSourceId == 14));
+                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
+                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
+                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
+                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
+
+                if (psychoCount+fierceCount+wrathfulCount+loathfulCount+soullessCount > 0)
+                {
+                    var output = "\"This city's never truly safe. But well, let's see here... </br>";
+
+                    if (psychoCount>0)
+                    {
+                        output+= "Folks have mentioned seeing a large brawl between no less than <b>" + psychoCount + " psychopaths</b> out on the streets. </br>";
+                    }
+                    if (fierceCount > 0)
+                    {
+                        output += "I'd guess that about <b>" + fierceCount + " fierce psychopaths</b> are roaming about, based on the constant commotion. </br>";
+                    }
+                    if (wrathfulCount > 0)
+                    {
+                        output += "At least <b>" + wrathfulCount + "</b> separate times today <b>wrathful psyhopaths</b> tried to break in here.</br>";
+                    }
+                    if (loathfulCount > 0)
+                    {
+                        output += "There's also been a few mentions of <b>loathful psychopaths</b> prowling about... at least <b>" + loathfulCount + "</b> of them, I'd wager.</br>";
+                    }
+                    if (soullessCount > 0)
+                    {
+                        output += "Some alarming reports came in about <b>" + soullessCount + " souless psychopaths</b> out there. Those truly are deragned monsters, I'd recommend to steer well clear if you see one.</br>";
+                    }
+                    output += "And well, that just about sums it up. Watch your step out there. Anything else I can assist you with?\"";
+
+                    ViewBag.Speech = output;
+                }
+                else
+                {
+                    ViewBag.Speech = "It's a marvel, but the streets are really peaceful today. Is there anything else I can assist you with?";
+                }
+            }
+            else if (question == "miniboss")
+            {
+                var output = "\"";
+                var sororityMother = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossSororityMotherId);
+                var popGoddess = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossPopGoddessId);
+                var possessedMaid = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossPossessedMaidId);
+                var seamstress = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossSeamstressId);
+                var groundsKeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossGroundskeeperId);
+                var exchangeProfessor = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossExchangeProfessorId);
+                var fiendishFarmhand = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossFiendishFarmhandId);
+                var lazyLifeguard = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossLazyLifeguardId);
+
+                if (sororityMother != null)
+                {
+                    output += "There was quite a stir at the <b>Sorority House</b>, from what I know. Something about their management being a little overprotective.</br>";
+                }
+                if (popGoddess != null)
+                {
+                    output += "The <b>concert hall</b> is abuzz right now - the townsfolk are flocking in to see some kind of big star...</br>";
+                }
+                if (possessedMaid != null)
+                {
+                    output += "There's a rumor of a maid spirit claiming another victim in <b>the estate</b>. The poor sap needs to be freed from their misery if that is the case.</br>";
+                }
+                if (seamstress != null)
+                {
+                    output += "Word is, a dangerous seamstress is gathering a congregation at <b>one of the clothing stores</b> around town. She has a way with words, so I urge you to be careful with her gospel. </br>";
+                }
+                if (groundsKeeper != null)
+                {
+                    output += "<b>Sunnyglade Park</b> is not safe to tread right now - the groundskeeper is on patrol and not to be trifled with.</br>";
+                }
+                if (exchangeProfessor != null)
+                {
+                    output += "An exchange professor is in town - I don't know much about her, but the rumors seem to link her to a string of recent disappearances around the <b>research lab</b>.</br>";
+                }
+                if (fiendishFarmhand != null)
+                {
+                    output += "Something's afoot at the <b>farm</b> - I've heard troubling whispers that those who come by don't return, while farm's pens are growing ever fuller. </br>";
+                }
+                if (lazyLifeguard != null)
+                {
+                    output += "The lifeguard is on post at the <b>pool</b>, though that doesn't really amount to much with that slacker. She'd rather just turn the patrons into pool toys than do her job. Unacceptable conduct for any establishment, if you ask me.</br>";
+                }
+
+                if (output.Length<3)
+                {
+                    output += "I've not heard of any notable figures prowling about, sorry. Is there anything else I can assist you with?\"";
+                } else
+                {
+                    output += "And that about sums it up. Is there anything else I can assist you with?\"";
+                }
+                ViewBag.Speech = output;
+
+            }
             else if (question == "boss")
             {
                 var stats = PvPWorldStatProcedures.GetWorldStats();

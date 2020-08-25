@@ -213,13 +213,77 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
+
+        public virtual ActionResult ChangeNoticeboardMessage()
+        {
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            // assert that player is in a covenant
+            if (me.Covenant == null || me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot change the covenant's noticeboard.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the player is a covenant leader or captain
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
+            {                
+                TempData["Error"] = "You are not authorized to change the notice.";
+                TempData["SubError"] = "Only covenant leaders and captains can change a covenant's noticeboard.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.Covenant.Views.ChangeNoticeboardMessage, myCov);
+        }
+
+        public virtual ActionResult ChangeNoticeboardMessageSubmit(Covenant input)
+        {
+
+            // assert model is okay
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Noticeboard was not updated";
+                TempData["SubError"] = "Maximum message length is 200 characters.";
+                return ChangeNoticeboardMessage();
+            }
+
+            var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            // assert that player is in a covenant
+            if (me.Covenant == null || me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot change the covenant's noticeboard.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the player is a covenant leader or captain
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
+            {
+                TempData["Error"] = "You are not authorized to change the notice.";
+                TempData["SubError"] = "Only covenant leaders and captains can change a covenant's noticeboard.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // finally update the covenant
+            CovenantProcedures.ChangeNoticeboardMessage(myCov.Id, input.NoticeboardMessage);
+            TempData["Result"] = "Noticeboard updated.";
+
+
+            return RedirectToAction(MVC.Covenant.MyCovenant());
+        }
+
+
         public virtual ActionResult ChangeCovenantDescription()
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant == null || me.Covenant <= 0)
             {
-                TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
+                TempData["Error"] = "You are not in a covenant and cannot change the covenant's self description.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

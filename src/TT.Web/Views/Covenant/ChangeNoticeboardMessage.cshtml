@@ -1,0 +1,31 @@
+﻿@model TT.Domain.Models.Covenant
+@{
+    ViewBag.Title = "Change Noticeboard Message";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
+}
+<div class="containerInner">
+    <h3>Change Noticeboard Message</h3>
+
+    <p>Noticeboard message will be visible to all coven members on the covenant page.</p>
+
+    @using (Html.BeginForm(MVC.Covenant.ChangeNoticeboardMessageSubmit(), FormMethod.Post))
+    {
+        @Html.TextAreaFor(m => m.NoticeboardMessage, new { @class = "form__panel textarea", autofocus = true })
+
+        <input type="submit" value="Save">
+
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.FlagUrl)
+        @Html.HiddenFor(m => m.LastMemberAcceptance)
+        @Html.HiddenFor(m => m.IsPvP)
+        @Html.HiddenFor(m => m.LeaderId)
+        @Html.HiddenFor(m => m.SelfDescription)
+    }
+
+</div>

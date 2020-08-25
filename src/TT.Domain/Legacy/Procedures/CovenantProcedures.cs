@@ -292,6 +292,14 @@ namespace TT.Domain.Procedures
             covRepo.SaveCovenant(oldcov);
         }
 
+        public static void ChangeNoticeboardMessage(int covId, string newMessage)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            var oldcov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
+            oldcov.NoticeboardMessage = newMessage;
+            covRepo.SaveCovenant(oldcov);
+        }
+
         public static void SetLastMemberJoinTimestamp(Covenant covenant)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();

@@ -20,6 +20,13 @@
         {
             <li><a href="@Url.Action(MVC.Covenant.CovenantLeaderAdmin())">Leader</a></li>
         }
+
+        //leader and captains have access to this
+        if (Model.dbCovenant != null && (TT.Domain.Procedures.CovenantProcedures.PlayerIsCaptain(Model.dbCovenant, ViewBag.Player)|| ViewBag.Player.Id == Model.dbCovenant.LeaderId))
+        {
+            <li><a href="@Url.Action(MVC.Covenant.ChangeNoticeboardMessage())">Update notice</a></li>
+        }
+
         <li><a href="@Url.Action(MVC.Covenant.MyCovenantLog())">Coven Log</a></li>
     }
 }
@@ -32,6 +39,13 @@
     </div>
 
     @{
+
+        if (!Model.dbCovenant.NoticeboardMessage.IsNullOrEmpty())
+        {
+            <p id="noticeboardTitle">Noticeboard:</p>
+            <p id="noticeboardMessage">@Model.dbCovenant.NoticeboardMessage</p>
+        }
+
         if (Model.dbCovenant != null)
         {
             <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@Model.dbCovenant.FlagUrl)"></div>

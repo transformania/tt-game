@@ -1676,7 +1676,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me, 0) && pickup.ItemSource.ItemType != PvPStatics.ItemType_Pet && pickup.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id)
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me, true) && pickup.ItemSource.ItemType != PvPStatics.ItemType_Pet && pickup.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id)
             {
                 TempData["Error"] = "You are carrying too many items to pick this up.";
                 TempData["SubError"] = "Use, drop, or wear/equip something you are carrying to make more room.  Some accessories may also allow you to carry more.";

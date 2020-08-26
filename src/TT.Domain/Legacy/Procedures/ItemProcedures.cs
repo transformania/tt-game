@@ -219,13 +219,18 @@ namespace TT.Domain.Procedures
             return output.First();
         }
 
-        public static bool PlayerIsCarryingTooMuch(Player newOwner, int offset)
+        public static bool PlayerIsCarryingTooMuch(Player newOwner, bool checkInventoryFull = false)
         {
-            var carryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = newOwner.Id}) - offset;
+            var carryWeight = DomainRegistry.Repository.FindSingle(new GetCurrentCarryWeight {PlayerId = newOwner.Id});
 
             var max = GetInventoryMaxSize(newOwner);
 
-            return carryWeight >= max;
+            if (checkInventoryFull)
+            {
+                return carryWeight >= max;
+            }
+
+            return carryWeight > max;
         }
 
         public static string GiveItemToPlayer(int itemId, int newOwnerId)

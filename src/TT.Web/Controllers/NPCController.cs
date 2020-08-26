@@ -122,7 +122,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has room in their inventory
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me, 0))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me, true))
             {
                 TempData["Error"] = "You are carrying too many items to purchase a new one.";
                 TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
@@ -474,7 +474,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the victim is not carrying too much to move
-            if (ItemProcedures.PlayerIsCarryingTooMuch(victim, 0))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(victim))
             {
                 TempData["Error"] = "Your victim is carrying too much to be able to move.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -482,11 +482,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is not TPing into the dungeon from out in or vice versa
-            var destinationIsInDungeon = false;
-            if (to.Contains("dungeon_"))
-            {
-                destinationIsInDungeon = true;
-            }
+            var destinationIsInDungeon = to.Contains("dungeon_");
             if (victim.IsInDungeon() != destinationIsInDungeon)
             {
                 TempData["Error"] = "You can't order your victim to move into the dungeon from outside of it or the other way around.";

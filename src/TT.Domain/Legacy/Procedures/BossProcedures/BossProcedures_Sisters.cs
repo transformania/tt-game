@@ -98,7 +98,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public static string SpellIsValid(Player attacker, Player target, int spellSourceId)
         {
 
-            // only allow nerd mouse girls to attack bimbo boss
+            // only allow bimbo mouse girls to attack nerd boss
             if (target.BotId == AIStatics.MouseNerdBotId && attacker.FormSourceId != BimboSpellFormSourceId)
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Adrianna.  Maybe you'd have better luck if you were casting magic against her as a Bimbo Mousegirl...";
@@ -109,9 +109,8 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 return "You can't seem to find the right peeved-off mindset to cast this spell against Candice.  Maybe you'd have better luck if you were casting magic against her as a Nerdy Mousegirl...";
             }
-            // only allow bimbo mouse girls to attack nerd boss
 
-            // only allow bimbo spell against nerd boss
+            // only allow bimbo spell against nerd boss and nerd spells against bimbo boss
             if (target.FormSourceId == NerdBossFormSourceId && spellSourceId != BimboSpellSourceId)
             {
                 return "This spell won't work against Adrianna.";
@@ -138,7 +137,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             var spell = ChooseSpell(bossTarget);
 
-            // nerd counters with nerd spell unless she has changed form
+            // nerd/bimbo counters with nerd/bimbo spell unless she has changed form
             if (bossTarget.BotId == AIStatics.MouseNerdBotId && bossTarget.FormSourceId == NerdBossFormSourceId || bossTarget.BotId == AIStatics.MouseBimboBotId && bossTarget.FormSourceId == BimboBossFormSourceId)
             {
                 AttackProcedures.Attack(bossTarget, attacker, spell);
@@ -246,7 +245,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 damages  = AIProcedures.GetTopAttackers(bimboBoss.BotId, 10);
             }
 
-            // top player gets 500 XP, each player down the line receives 25 fewer
+            // top player gets maximum XP reward, each player down the line receives a little less
             var i = 0;
             var maxReward = 1000;
 
@@ -267,7 +266,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + nerdBoss.GetFullName() + ", " + bimboBoss.GetFullName() + " gifts you with " + reward + " XP from her powerful magic of seduction!</b>", true);
 
                     // top three get runes
-                    if (r <= 2)
+                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
                     {
                         DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.HEADMISTRESS_RUNE, PlayerId = victor.Id });
                     }

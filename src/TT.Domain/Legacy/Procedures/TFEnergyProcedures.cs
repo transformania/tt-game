@@ -518,7 +518,57 @@ namespace TT.Domain.Procedures
                     }
                 }
 
+                // Heals the victorious player provided that the target was eligible
+                if (attacker.BotId == AIStatics.ActivePlayerBotId) 
+                {
+                    // Provide no healing if the victim shared a coven with the attacker or if the victim was in Protected / Super Protected mode
+                    if (attacker.Covenant != null && attacker.Covenant == victim.Covenant || victim.GameMode == (int)GameModeStatics.GameModes.Protection || victim.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+                    {
+                        output.AttackerLog += "  <br>There is no glory to be had in this victory, your willpower & mana are not restored.<b>";
+                    }
+                    else
+                    {
+                        // Figure out the modifier to be used
+                        var modifier = (levelDifference * 5) / 10;
+                        // Cap the modifier to prevent too much / too little healing.
+                        if (modifier > 25)
+                        {
+                            modifier = 25;
+                        }
+                        if (modifier < -25)
+                        {
+                            modifier = -25;
+                        }
+                        var healingPercent = 0.6M - modifier;
 
+                        if (victim.BotId != AIStatics.ActivePlayerBotId)
+                        {
+                            // The victim is not a player, provide half of the healing.
+                            healingPercent = healingPercent * 0.5M;
+                        }
+                        // Calculate the final amount of health to provide
+                        var healingTotal = attacker.MaxHealth * healingPercent;
+                        // Cap the healing to prevent over healing
+                        if (attacker.Health + healingTotal > attacker.MaxHealth)
+                        {
+                            healingTotal = (attacker.MaxHealth - attacker.Health);
+                        }
+                        // Calculate the final amount of mana to provide
+                        var manaRestoredTotal = attacker.MaxMana * healingPercent;
+                        // Cap the mana restoration to prevent over healing
+                        if (attacker.Mana + manaRestoredTotal > attacker.MaxMana)
+                        {
+                            manaRestoredTotal = (attacker.MaxMana - attacker.Mana);
+                        }
+
+                        // Heal the attacker
+                        attacker.Health += healingTotal;
+                        // Restore the attackers Mana
+                        attacker.Mana += attacker.MaxMana * healingPercent;
+
+                        output.AttackerLog += "  <br>Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.<b>";
+                    }
+                }
 
                 output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
 

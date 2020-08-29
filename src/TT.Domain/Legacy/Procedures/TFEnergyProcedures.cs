@@ -531,13 +531,13 @@ namespace TT.Domain.Procedures
                         // Figure out the modifier to be used
                         var modifier = (levelDifference * 5) / 10;
                         // Cap the modifier to prevent too much / too little healing.
-                        if (modifier > 25)
+                        if (modifier > 30)
                         {
-                            modifier = 25;
+                            modifier = 30;
                         }
-                        if (modifier < -25)
+                        if (modifier < -30)
                         {
-                            modifier = -25;
+                            modifier = -30;
                         }
                         var healingPercent = 0.6M - modifier;
 

@@ -24,7 +24,7 @@ else
         <a href="@Url.Action(MVC.Chat.PrivateChat())">Create/Join Private Room</a>
     </li>
     <li>
-        <a href="@Url.Action(MVC.Chat.ChatLog("global", "lasth"))" target="_blank">Chat Log</a>
+        <a href="@Url.Action(MVC.Chat.ChatLog(ViewData["room"] == null ? "global" : (string)ViewData["room"], "lasth"))" target="_blank">Chat Log</a>
     </li>
     <li><a href="@Url.Action(MVC.Chat.ChatCommands())" target="_blank">Commands</a></li>
     <li><a href="#" id="showIgnore">Ignore</a></li>

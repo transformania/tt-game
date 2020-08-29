@@ -8,6 +8,12 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View all Covenants</a></li>
+    @{
+        if (Model.dbCovenant != null)
+        {
+            <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.dbCovenant.Id}"))" target="_blank">Chat</a></li>
+        }
+    }
     <li><a href="@Url.Action(MVC.Covenant.ViewAvailableFurniture())">Buy Furniture</a></li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenantFurniture())">Use Furniture</a></li>
     @{

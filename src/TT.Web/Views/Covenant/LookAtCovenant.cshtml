@@ -15,6 +15,12 @@
         }
     }
     <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View All Covenants</a></li>
+    @{
+        if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
+        {
+            <li><a href="@Url.Action(MVC.Chat.ChatLog($"coven_{Model.dbCovenant.Id}", "lasth"))" target="_blank">Moderate Chat</a></li>
+        }
+    }
 }
 
 <div class="containerInner text-center">
@@ -23,7 +29,7 @@
         <b>@Model.dbCovenant.SelfDescription</b>
     </p>
     <p>
-                @{
+        @{
             if (!Model.dbCovenant.HomeLocation.IsNullOrEmpty())
             {
                 <i>This covenant has a safeground at <b>@LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</b> and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>

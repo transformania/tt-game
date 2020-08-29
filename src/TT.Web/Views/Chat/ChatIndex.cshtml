@@ -5,7 +5,7 @@
 
 @section menu
 {
-    @Html.Partial(MVC.Chat.Views._ChatMenu)
+    @Html.Partial(MVC.Chat.Views._ChatMenu, new ViewDataDictionary { { "room", Model.Room } })
 }
 
 <p class="infoMessage error" id="connectionStatus" style="display: none;">
@@ -49,7 +49,7 @@
     
     <script type="text/javascript">
         $(function () {
-            ChatModule.initialize({ roomName : '@Model.RoomName', currentPlayer : '@Model.ChatUser', currentPlayerChatColor : '@Model.ChatColor' });
+            ChatModule.initialize({ roomName : '@Model.Room', currentPlayer : '@Model.ChatUser', currentPlayerChatColor : '@Model.ChatColor' });
         });
     </script>
 }

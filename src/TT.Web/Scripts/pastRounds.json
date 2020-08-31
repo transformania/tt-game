@@ -607,6 +607,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 77,
+      "name": "Alpha 77 (Era of the Tournament Arc!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

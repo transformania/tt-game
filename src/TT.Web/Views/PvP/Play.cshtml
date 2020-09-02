@@ -43,6 +43,7 @@
                     <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.You.Player.Covenant}"))" target="_blank">Chat with my covenant</a></li>
                 }
             }
+            <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.You.Player.Id}"))" target="_blank">Chat with my pet and items</a></li>
             <li><a href="@Url.Action(MVC.Chat.ChatLog("global", "lasth"))" target="_blank">Chat logs</a></li>
         </ul>
     </li>

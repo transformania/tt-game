@@ -103,7 +103,7 @@ namespace TT.Migrations
             Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 20, Succour = 0, Luck = 20, Duration  = 12, Cooldown  = 12 WHERE id = '192'");
 
                 // Readjusts Espresso Jitters 
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 20, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, MeditationExtraMana = 0, EvasionPercent = 0, EvasionNegationPercent = 0, MoveActionPointDiscount = 0, SpellMisfireChanceReduction = 0, Duration  = 6, Cooldown  = 12 WHERE id = '192'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 20, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, MeditationExtraMana = 0, EvasionPercent = 0, EvasionNegationPercent = 0, MoveActionPointDiscount = 0, SpellMisfireChanceReduction = 0, Duration  = 6, Cooldown  = 12 WHERE id = '39'");
         }
     }
 }

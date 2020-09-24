@@ -672,15 +672,15 @@ namespace TT.Domain.Procedures
                     var output = "";
                     if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombWeakItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 10, "Weak");
+                        output = AttackProcedures.ThrowGrenade(owner, 200, "Weak");
                     }
                     else if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombStrongItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 25, "Strong");
+                        output = AttackProcedures.ThrowGrenade(owner, 300, "Strong");
                     }
                     else if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombVolatileItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 50, "Volatile");
+                        output = AttackProcedures.ThrowGrenade(owner, 400, "Volatile");
                     }
 
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);

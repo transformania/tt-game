@@ -14,9 +14,9 @@ namespace TT.Migrations
             Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 720, InstantManaRestore = 0 WHERE id = '2'");
             //Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 0, InstantManaRestore = 0 WHERE id = '11'");
             // Spellweaver Petals
-            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 21, InstantManaRestore = 0 WHERE id = '3'");
-            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 126, InstantManaRestore = 0 WHERE id = '4'");
-            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 252, InstantManaRestore = 0 WHERE id = '5'");
+            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 0, InstantManaRestore = 21 WHERE id = '3'");
+            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 0, InstantManaRestore = 126 WHERE id = '4'");
+            Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 0, InstantManaRestore = 252 WHERE id = '5'");
             //Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 0, InstantManaRestore = 0 WHERE id = '12'");
             // Throwables
             //Execute.Sql("Update DbStaticItems SET InstantHealthRestore = 240, InstantManaRestore = 0 WHERE id = '10'");

@@ -480,7 +480,7 @@ namespace TT.Domain.Procedures
                 var levelDifference = attacker.Level - target.Level;
 
                 // only give the lump sum XP if the victim is not in the same covenant
-                if (attacker.Covenant != target.Covenant)
+                if (attacker.Covenant == null || attacker.Covenant != target.Covenant)
                 {
 
                     var xpGain = 100 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
@@ -521,30 +521,30 @@ namespace TT.Domain.Procedures
                 // Heals the victorious player provided that the target was eligible
                 if (attacker.BotId == AIStatics.ActivePlayerBotId) 
                 {
-                    // Provide no healing if the victim shared a coven with the attacker or if the victim was in Protected / Super Protected mode
-                    if (attacker.Covenant != null && attacker.Covenant == victim.Covenant || victim.GameMode == (int)GameModeStatics.GameModes.Protection || victim.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+                    // Provide no healing if the victim shared a coven with the attacker
+                    if (attacker.Covenant != null && attacker.Covenant == victim.Covenant)
                     {
                         output.AttackerLog += "  <br>There is no glory to be had in this victory, your willpower & mana are not restored.<b>";
                     }
-                    else
+                    else 
                     {
                         // Figure out the modifier to be used
-                        var modifier = (levelDifference * 5) / 10;
+                        double modifier = (levelDifference * 5) / 100;
                         // Cap the modifier to prevent too much / too little healing.
-                        if (modifier > 30)
+                        if (modifier > 0.3)
                         {
-                            modifier = 30;
+                            modifier = 0.3;
                         }
-                        if (modifier < -30)
+                        if (modifier < -0.3)
                         {
-                            modifier = -30;
+                            modifier = -0.3;
                         }
-                        var healingPercent = 0.6M - modifier;
+                        decimal healingPercent = (decimal)(0.6 + modifier);
 
                         if (victim.BotId != AIStatics.ActivePlayerBotId)
                         {
                             // The victim is not a player, provide half of the healing.
-                            healingPercent = healingPercent * 0.5M;
+                            healingPercent = healingPercent / 2;
                         }
                         // Calculate the final amount of health to provide
                         var healingTotal = attacker.MaxHealth * healingPercent;
@@ -567,7 +567,7 @@ namespace TT.Domain.Procedures
                         attacker.Mana += manaRestoredTotal;
                         playerRepo.SavePlayer(target);
 
-                        output.AttackerLog += "  <br>Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.<b>";
+                        output.AttackerLog += "  Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.";
                     }
                 }
 

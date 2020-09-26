@@ -28,23 +28,23 @@ namespace TT.Migrations
             // Reusable Consumables
             // Willpower & Mana
                 // Sex Doll
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 725, ReusableManaRestore = 0, UseCooldown = 12 WHERE id = '30'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = 0, UseCooldown = 12 WHERE id = '30'");
                 // Bondage Magazine
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 725, ReusableManaRestore = 0, UseCooldown = 12 WHERE id = '48'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = 0, UseCooldown = 12 WHERE id = '48'");
                 // Onahole
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 200, ReusableManaRestore = -21, UseCooldown = 3 WHERE id = '82'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 200, ReuseableManaRestore = -21, UseCooldown = 3 WHERE id = '82'");
                 // Double-Ended Dildo
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 725, ReusableManaRestore = 0, UseCooldown = 3 WHERE id = '286'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = 0, UseCooldown = 3 WHERE id = '286'");
                 // Eternal Condom
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 363, ReusableManaRestore = 126, UseCooldown = 12 WHERE id = '286'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 363, ReuseableManaRestore = 126, UseCooldown = 12 WHERE id = '286'");
                 // Delicious Cupcake
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 360, ReusableManaRestore = 0, UseCooldown = 6 WHERE id = '361'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 360, ReuseableManaRestore = 0, UseCooldown = 6 WHERE id = '361'");
                 // Humanoid Onahole
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 725, ReusableManaRestore = -63, UseCooldown = 9 WHERE id = '440'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = -63, UseCooldown = 9 WHERE id = '440'");
                 // Self-refilling silver whiskey flask
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 0, ReusableManaRestore = 252, UseCooldown = 12 WHERE id = '21'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 0, ReuseableManaRestore = 252, UseCooldown = 12 WHERE id = '21'");
                 // Candy Cane Girl
-            Execute.Sql("Update DbStaticItems SET ReusableHealthRestore = 0, ReusableManaRestore = 252, UseCooldown = 12 WHERE id = '379'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 0, ReuseableManaRestore = 252, UseCooldown = 12 WHERE id = '379'");
 
             // Buff Items
                 // Strawberry Cheesecake

@@ -1902,12 +1902,19 @@ namespace TT.Web.Controllers
                 TempData["SubError"] = "You'll have to wait until you are out of combat to do that.";
                 return RedirectToAction(MVC.PvP.Play());
             }
+            // assert that the player is not in combat if they are trying to swap a reusable consumable item.
+            if (lastAttackTimeAgo < 3 * TurnTimesStatics.GetTurnLengthInSeconds() && item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+            {
+                TempData["Error"] = "You cannot swap consumable items during combat";
+                TempData["SubError"] = "You'll have to wait until you are out of combat to do that.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             if (putOn)
             {
 
                 // if item is not accessory, you can only wear one
-                if (item.Item.ItemType != PvPStatics.ItemType_Accessory && (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 0))
+                if (item.Item.ItemType != PvPStatics.ItemType_Accessory || item.Item.ItemType != PvPStatics.ItemType_Consumable || item.Item.ItemType != PvPStatics.ItemType_Consumable_Reuseable && (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 0))
                 {
                     TempData["Error"] = "You are already wearing a " + item.Item.ItemType + ".";
                     TempData["SubError"] = "Remove the one you are currently wearing first.";
@@ -1923,7 +1930,7 @@ namespace TT.Web.Controllers
                 }
 
                 // if item is an accessory, you can't wear two of the same thing
-                if (item.Item.ItemType == PvPStatics.ItemType_Accessory && ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
+                else if (item.Item.ItemType == PvPStatics.ItemType_Accessory && ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
                 {
                     TempData["Error"] = "You are already equipped with an accessory of this type.";
                     TempData["SubError"] = "You can't equip two of the same accessory at a time.";
@@ -1932,6 +1939,14 @@ namespace TT.Web.Controllers
 
                 // if the item is a consumable you may wear up to three. 
                 else if (item.Item.ItemType == PvPStatics.ItemType_Consumable && (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 2))
+                {
+                    TempData["Error"] = "You are already equipped three conmsumables.";
+                    TempData["SubError"] = "Remove at least one you are currently equipping first.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                // if the item is a reusable consumable you may wear up to three minus your consumables equipped. 
+                else if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > (2 - ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Consumable))))
                 {
                     TempData["Error"] = "You are already equipped three conmsumables.";
                     TempData["SubError"] = "Remove at least one you are currently equipping first.";

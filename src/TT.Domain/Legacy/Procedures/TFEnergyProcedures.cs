@@ -564,7 +564,8 @@ namespace TT.Domain.Procedures
                         // Heal the attacker
                         attacker.Health += healingTotal;
                         // Restore the attackers Mana
-                        attacker.Mana += attacker.MaxMana * healingPercent;
+                        attacker.Mana += manaRestoredTotal;
+                        playerRepo.SavePlayer(target);
 
                         output.AttackerLog += "  <br>Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.<b>";
                     }

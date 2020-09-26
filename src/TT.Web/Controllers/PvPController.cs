@@ -2008,7 +2008,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that if the item is a consumable, it is equipped
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable && item.dbItem.IsEquipped)
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable && !item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that if the item is a reusable consumable, it is equipped
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && !item.dbItem.IsEquipped)
             {
                 TempData["Error"] = "You cannot use an item you do not have equipped.";
                 return RedirectToAction(MVC.PvP.Play());

@@ -888,7 +888,7 @@ namespace TT.Domain.Procedures
                     // there is both a health and mana restoration / loss effect to this spell
                     if (itemPlus.Item.ReuseableHealthRestore != 0 && itemPlus.Item.ReuseableManaRestore != 0)
                     {
-                        owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore;
+                        owner.Health += itemPlus.Item.ReuseableHealthRestore;
                         if (owner.Health > owner.MaxHealth)
                         {
                             owner.Health = owner.MaxHealth;

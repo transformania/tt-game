@@ -230,13 +230,13 @@ namespace TT.Domain.Procedures
             // calculate the xp earned for this transformation
             var xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
 
-            if (xpEarned < 0)
+            if (xpEarned < 1)
             {
-                xpEarned = 0;
+                xpEarned = 1;
             }
-            if (xpEarned > 15)
+            if (xpEarned > 5)
             {
-                xpEarned = 15;
+                xpEarned = 5;
             }
 
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
@@ -479,18 +479,18 @@ namespace TT.Domain.Procedures
 
                 var levelDifference = attacker.Level - target.Level;
 
-                // only give the lump sum XP if the target is within 5 levels of the attacker AND the victim is not in the same covenant
-                if (levelDifference <= 5 && (attacker.Covenant == null || attacker.Covenant != target.Covenant))
+                // only give the lump sum XP if the victim is not in the same covenant
+                if (attacker.Covenant != target.Covenant)
                 {
 
-                    var xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
+                    var xpGain = 100 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
 
-                    if (xpGain < 5)
+                    if (xpGain < 50)
                     {
-                        xpGain = 5;
-                    } else if (xpGain > 75)
+                        xpGain = 50;
+                    } else if (xpGain > 200)
                     {
-                        xpGain = 75;
+                        xpGain = 200;
                     }
 
                     // give the attacker a nice lump sum for having completed the transformation

@@ -745,7 +745,7 @@ namespace TT.Domain.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", 0},
+	                    {"Agility", 0.25F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -756,7 +756,7 @@ namespace TT.Domain.ViewModels
                 "AntiSneakPercent",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", 0},
+	                    {"Perception", 0.5F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},

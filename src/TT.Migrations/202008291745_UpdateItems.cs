@@ -68,39 +68,39 @@ namespace TT.Migrations
 
             // Buff Effects 
             // Concealment Cookie
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 40, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '48'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 60, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '48'");
                 // Fire Fritter
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 40, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '49'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 60, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '49'");
                 // Barricade Brownies
-            Execute.Sql("Update DbStaticEffects SET Discipline = 40, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '50'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 60, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '50'");
                 // Running_Hot
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 40, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '61'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 60, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '61'");
                 // Trueshot truffles
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 40, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '62'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 60, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '62'");
                 // Nirvana Nougat
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 40, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '64'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 60, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '64'");
                 // Sugar_Rush
-            Execute.Sql("Update DbStaticEffects SET Discipline = 6, Perception = 6, Charisma = 6, Fortitude = 6, Agility = 6, Allure = 6, Magicka = 6, Succour = 6, Luck = 6, Duration  = 12, Cooldown  = 12 WHERE id = '103'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 8, Perception = 8, Charisma = 8, Fortitude = 8, Agility = 8, Allure = 8, Magicka = 8, Succour = 8, Luck = 8, Duration  = 6, Cooldown  = 12 WHERE id = '103'");
                 // Perception Puff
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 40, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '161'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 60, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '161'");
                 // Lucky Lemoncake
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 40, Duration  = 12, Cooldown  = 12 WHERE id = '162'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 60, Duration  = 6, Cooldown  = 12 WHERE id = '162'");
                 // Brain Freeze
-            Execute.Sql("Update DbStaticEffects SET Discipline = 15, Perception = 0, Charisma = 15, Fortitude = 0, Agility = 0, Allure = 15, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '163'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 25, Perception = 0, Charisma = 25, Fortitude = 0, Agility = 0, Allure = 25, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '163'");
                 // Squeaky_Clean
             Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = -20, Allure = 80, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '174'");
                 // Chocolate_Rush
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 40, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '167'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 60, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '167'");
                 // Blunderbus_Bubblegum
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 40, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '178'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 60, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '178'");
                 // Narcissa
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 80, Magicka = 0, Succour = 0, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '179'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 120, Magicka = 0, Succour = 0, Luck = 0, Duration  = 3, Cooldown  = 12 WHERE id = '179'");
                 // Tampon
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 40, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '180'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = 60, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '180'");
                 // Soup
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 40, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = -10, Luck = 0, Duration  = 12, Cooldown  = 12 WHERE id = '186'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 80, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 0, Succour = -20, Luck = 0, Duration  = 6, Cooldown  = 12 WHERE id = '186'");
                 // Cards
-            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 20, Succour = 0, Luck = 20, Duration  = 12, Cooldown  = 12 WHERE id = '192'");
+            Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 0, Allure = 0, Magicka = 30, Succour = 0, Luck = 30, Duration  = 6, Cooldown  = 12 WHERE id = '192'");
 
                 // Readjusts Espresso Jitters 
             Execute.Sql("Update DbStaticEffects SET Discipline = 0, Perception = 0, Charisma = 0, Fortitude = 0, Agility = 20, Allure = 0, Magicka = 0, Succour = 0, Luck = 0, MeditationExtraMana = 0, EvasionPercent = 0, EvasionNegationPercent = 0, MoveActionPointDiscount = 0, SpellMisfireChanceReduction = 0, Duration  = 6, Cooldown  = 12 WHERE id = '39'");

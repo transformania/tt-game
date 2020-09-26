@@ -677,7 +677,7 @@ namespace TT.Web.Controllers
                 LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");
             }
 
-            PlayerProcedures.ChangePlayerActionMana(30, 0, 0, me.Id);
+            PlayerProcedures.ChangePlayerActionMana(10, 0, 0, me.Id);
 
 
             return RedirectToAction(MVC.PvP.Play());
@@ -1894,6 +1894,15 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert that the player is not in combat if they are trying to swap a consumable item.
+            var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo < 3 * TurnTimesStatics.GetTurnLengthInSeconds() && item.Item.ItemType == PvPStatics.ItemType_Consumable)
+            {
+                TempData["Error"] = "You cannot swap consumable items during combat";
+                TempData["SubError"] = "You'll have to wait until you are out of combat to do that.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             if (putOn)
             {
 
@@ -1921,6 +1930,13 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
+                // if the item is a consumable you may wear up to three. 
+                else if (item.Item.ItemType == PvPStatics.ItemType_Consumable && (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 2))
+                {
+                    TempData["Error"] = "You are already equipped three conmsumables.";
+                    TempData["SubError"] = "Remove at least one you are currently equipping first.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
             }
             else
             {
@@ -1988,6 +2004,13 @@ namespace TT.Web.Controllers
             if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && item.dbItem.TurnsUntilUse > 0)
             {
                 TempData["Error"] = "This item is still on cooldown and cannot be used again yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that if the item is a consumable, it is equipped
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable && item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

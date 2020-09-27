@@ -425,6 +425,15 @@ namespace TT.Domain.Procedures
             return itemsOfThisType.Count();
         }
 
+        public static int PlayerTotalConsumableCount(int playerID)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            var consumables = GetAllPlayerItems(playerID).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable && i.dbItem.IsEquipped);
+            var resusableConsumables = GetAllPlayerItems(playerID).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.dbItem.IsEquipped);
+            var consumableTotal = consumables.Count() + resusableConsumables.Count();
+            return consumableTotal;
+        }
+
         public static int PlayerIsWearingNumberOfThisExactItem(int playerId, int itemSourceId)
         {
             IItemRepository itemRepo = new EFItemRepository();

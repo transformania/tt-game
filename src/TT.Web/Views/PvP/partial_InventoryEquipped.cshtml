@@ -16,8 +16,8 @@
     var rhand = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped).Skip(1).SingleOrDefault();
 
     var consumable_0 = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped);
-    var consumable_1 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(1).SingleOrDefault();
-    var consumable_2 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(2).SingleOrDefault();
+    var consumable_1 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(1).FirstOrDefault();
+    var consumable_2 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(2).FirstOrDefault();
 }
 
 <div id="fullDetails">

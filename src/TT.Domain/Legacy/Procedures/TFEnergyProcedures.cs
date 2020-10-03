@@ -524,7 +524,7 @@ namespace TT.Domain.Procedures
                     // Provide no healing if the victim shared a coven with the attacker
                     if (attacker.Covenant != null && attacker.Covenant == victim.Covenant)
                     {
-                        output.AttackerLog += "  <br>There is no glory to be had in this victory, your willpower & mana are not restored.<b>";
+                        output.AttackerLog += "  <br>There is no glory to be had in this victory, your willpower & mana are not restored.";
                     }
                     else 
                     {

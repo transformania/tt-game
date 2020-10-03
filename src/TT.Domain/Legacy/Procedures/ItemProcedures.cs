@@ -667,6 +667,11 @@ namespace TT.Domain.Procedures
 
             if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
+                // Assert that the item is currently equipped
+                if (!itemPlus.dbItem.IsEquipped)
+                {
+                    return (false, "You cannot use an item you do not have equipped.");
+                }
 
                 // if this is the grenade type, redirect to attack procedure
                 if (itemPlus.Item.ConsumableSubItemType == (int)ItemStatics.ConsumableSubItemTypes.WillpowerBomb)
@@ -874,7 +879,11 @@ namespace TT.Domain.Procedures
 
             else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
             {
-
+                // Assert that the item is currently equipped
+                if (!itemPlus.dbItem.IsEquipped)
+                {
+                    return (false, "You cannot use an item you do not have equipped.");
+                }
                 // assert item is still not on cooldown
                 if (itemPlus.dbItem.TurnsUntilUse > 0)
                 {
@@ -891,8 +900,6 @@ namespace TT.Domain.Procedures
                     // add waiting time back on to the item
                     var thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
                     thisdbItem.TurnsUntilUse = itemPlus.Item.UseCooldown;
-
-                    // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
 
                     // there is both a health and mana restoration / loss effect to this spell
                     if (itemPlus.Item.ReuseableHealthRestore != 0 && itemPlus.Item.ReuseableManaRestore != 0)

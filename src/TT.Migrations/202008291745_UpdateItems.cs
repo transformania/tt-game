@@ -34,7 +34,7 @@ namespace TT.Migrations
                 // Onahole
             Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 200, ReuseableManaRestore = -21, UseCooldown = 3 WHERE id = '82'");
                 // Double-Ended Dildo
-            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = 0, UseCooldown = 3 WHERE id = '286'");
+            Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 725, ReuseableManaRestore = 0, UseCooldown = 12 WHERE id = '286'");
                 // Eternal Condom
             Execute.Sql("Update DbStaticItems SET ReuseableHealthRestore = 363, ReuseableManaRestore = 126, UseCooldown = 12 WHERE id = '286'");
                 // Delicious Cupcake

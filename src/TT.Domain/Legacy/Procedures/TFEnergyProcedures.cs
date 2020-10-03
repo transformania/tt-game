@@ -535,9 +535,9 @@ namespace TT.Domain.Procedures
                         {
                             modifier = 0.3;
                         }
-                        if (modifier < -0.3)
+                        if (modifier < -0.55)
                         {
-                            modifier = -0.3;
+                            modifier = -0.55;
                         }
                         decimal healingPercent = (decimal)(0.6 + modifier);
 

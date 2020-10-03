@@ -189,7 +189,7 @@
 
                     if (Model.You.Player.IsInDungeon())
                     {
-                        <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (30 AP)</a>
+                        <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (10 AP)</a>
                     }
                     else
                     {
@@ -200,7 +200,7 @@
                         if (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north")
                         {
                             <br /><br />
-                            <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (30 AP)</a>
+                            <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (10 AP)</a>
                         }
                     }
                 }

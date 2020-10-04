@@ -2,22 +2,33 @@
 @using TT.Domain.Statics
 
 @{
-    var hat = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Hat && i.IsEquipped);
-    var shirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shirt && i.IsEquipped);
+    var items = Model.Where(i => i.IsEquipped &&
+        i.ItemSource.ItemType != PvPStatics.ItemType_Consumable_Reuseable &&
+        i.ItemSource.ItemType != PvPStatics.ItemType_Consumable &&
+        i.ItemSource.ItemType != PvPStatics.ItemType_Pet).ToList();
+    var consumables = Model.Where(i => i.IsEquipped &&
+        (i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable || 
+         i.ItemSource.ItemType == PvPStatics.ItemType_Consumable)).ToArray();
+    var pets = Model.Where(i => i.IsEquipped && i.ItemSource.ItemType == PvPStatics.ItemType_Pet).ToList();
 
-    var undershirt = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Undershirt && i.IsEquipped);
-    var pants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pants && i.IsEquipped);
-    var underpants = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Underpants && i.IsEquipped);
-    var shoes = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shoes && i.IsEquipped);
+    if(pets.Count() == 0)
+    {
+        pets.Add(null);
+    }
 
-    var pet = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet && i.IsEquipped);
+    var hat = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Hat);
+    var shirt = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shirt);
+    var undershirt = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Undershirt);
+    var pants = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pants);
+    var underpants = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Underpants);
+    var shoes = items.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Shoes);
 
-    var lhand = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped);
-    var rhand = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Accessory && i.IsEquipped).Skip(1).SingleOrDefault();
-
-    var consumable_0 = Model.FirstOrDefault(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped);
-    var consumable_1 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(1).FirstOrDefault();
-    var consumable_2 = Model.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.IsEquipped || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.IsEquipped).Skip(2).FirstOrDefault();
+    items.Remove(hat);
+    items.Remove(shirt);
+    items.Remove(undershirt);
+    items.Remove(pants);
+    items.Remove(underpants);
+    items.Remove(shoes);
 }
 
 <div id="fullDetails">
@@ -134,106 +145,67 @@
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Shoes</p></div>
         }
 
-        if (lhand != null)
+        for (var index = 0; index < items.Count(); ++index)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(lhand.ItemSource.ItemType, lhand.ItemSource.PortraitUrl, true)); " title="@lhand.ItemSource.FriendlyName--@lhand.ItemSource.Description">
-                <span class="icon icon-level"><b>@lhand.Level</b></span>
+            var item = items[index];
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true)); " title="@item.ItemSource.FriendlyName--@item.ItemSource.Description">
+                <span class="icon icon-level"><b>@item.Level</b></span>
                 <p class="slotName">
-                    Acc 1
+                    Acc @(index + 1)
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(lhand.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(item.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
         }
-        else
+
+        // Pad out to show empty slots
+        for (var index = items.Count(); index < 2; ++index)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc 1</p></div>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc @(index + 1)</p></div>
         }
 
-        if (rhand != null)
+        foreach(var pet in pets)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(rhand.ItemSource.ItemType, rhand.ItemSource.PortraitUrl, true)); " title="@rhand.ItemSource.FriendlyName--@rhand.ItemSource.Description">
-                <span class="icon icon-level"><b>@rhand.Level</b></span>
-                <p class="slotName">
-                    Acc 2
+            if (pet != null)
+            {
+                <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(pet.ItemSource.ItemType, pet.ItemSource.PortraitUrl, true)); " title="@pet.ItemSource.FriendlyName--@pet.ItemSource.Description">
+                    <span class="icon icon-level"><b>@pet.Level</b></span>
+                    <p class="slotName">
+                        Pet
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(rhand.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                        @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pet.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
-                </p>
-            </div>
-        }
-        else
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc 2</p></div>
-        }
-        if (pet != null)
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(pet.ItemSource.ItemType, pet.ItemSource.PortraitUrl, true)); " title="@pet.ItemSource.FriendlyName--@pet.ItemSource.Description">
-                <span class="icon icon-level"><b>@pet.Level</b></span>
-                <p class="slotName">
-                    Pet
-
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pet.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
-
-                </p>
-            </div>
-        }
-        else
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Pet</p></div>
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Pet</p></div>
+            }
         }
     }
 </div>
 <div class="row rowP">
     @{
-        if (consumable_0 != null)
+        for (var index = 0; index < consumables.Count(); ++index)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(consumable_0.ItemSource.ItemType, consumable_0.ItemSource.PortraitUrl, true)); " title="@consumable_0.ItemSource.FriendlyName--@consumable_0.ItemSource.Description">
-                <span class="icon icon-level"><b>@consumable_0.Level</b></span>
+            var consumable = consumables[index];
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(consumable.ItemSource.ItemType, consumable.ItemSource.PortraitUrl, true)); " title="@consumable.ItemSource.FriendlyName--@consumable.ItemSource.Description">
+                <span class="icon icon-level"><b>@consumable.Level</b></span>
                 <p class="slotName slotConsumable">
-                    Cons 1
+                    Cons @(index + 1)
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(consumable_0.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(consumable.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
         }
-        else
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Cons 1</p></div>
-        }
-        if (consumable_1 != null)
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(consumable_1.ItemSource.ItemType, consumable_1.ItemSource.PortraitUrl, true)); " title="@consumable_1.ItemSource.FriendlyName--@consumable_1.ItemSource.Description">
-                <span class="icon icon-level"><b>@consumable_1.Level</b></span>
-                <p class="slotName slotConsumable">
-                    Cons 2
 
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(consumable_1.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
-
-                </p>
-            </div>
-        }
-        else
+        // Pad out to show empty slots
+        for(var index = consumables.Count(); index < 3; ++index)
         {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Cons 2</p></div>
-        }
-        if (consumable_2 != null)
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(consumable_2.ItemSource.ItemType, consumable_2.ItemSource.PortraitUrl, true)); " title="@consumable_2.ItemSource.FriendlyName--@consumable_2.ItemSource.Description">
-                <span class="icon icon-level"><b>@consumable_2.Level</b></span>
-                <p class="slotName slotConsumable">
-                    Cons 3
-
-                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(consumable_2.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
-
-                </p>
-            </div>
-        }
-        else
-        {
-            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Cons 3</p></div>
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName slotConsumable">Cons @(index + 1)</p></div>
         }
     }
 </div>

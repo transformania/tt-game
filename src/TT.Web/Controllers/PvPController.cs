@@ -1912,53 +1912,47 @@ namespace TT.Web.Controllers
 
             if (putOn)
             {
-
-                // If the item is an accessory, consumable or reuseable_consumable allow the player to wear multiple
-                if (item.Item.ItemType == PvPStatics.ItemType_Accessory || item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                // Disallows the player from equipping multiple items of the same type
+                if (ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
                 {
-                    // If the item is an accessory allow the player to only wear a maximum two
-                    if (item.Item.ItemType == PvPStatics.ItemType_Accessory && ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 1)
-                    {
-                        TempData["Error"] = "You have already equipped two accessories.";
-                        TempData["SubError"] = "You must remove at least one accessory before you can equip another.";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-                    // If the item is a consumable or a reusable consumable, allow the player to wear a maximum of three
-                    if (item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
-                    {
-                        if (ItemProcedures.PlayerTotalConsumableCount(me.Id) > 2)
-                        {
-                            TempData["Error"] = "You have already equipped three consumables.";
-                            TempData["SubError"] = "You must remove at least one consumable before you can equip another.";
-                            return RedirectToAction(MVC.PvP.Play());
-                        }
-                    }
-                    // Disallows the player from equipping multiple of the same type of Accessory or consumables.
-                    if (ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
-                    {
-                        TempData["Error"] = "You are already have a " + item.Item.FriendlyName + " equipped.";
-                        TempData["SubError"] = "You can't equip two of the same " + item.Item.ItemType + " at a time.";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
-
-                }
-                else if (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, item.Item.ItemType) > 0)
-                {
-                    TempData["Error"] = "You are already wearing a " + item.Item.ItemType + ".";
-                    TempData["SubError"] = "Remove the one you are currently wearing first.";
+                    TempData["Error"] = "You are already have a " + item.Item.FriendlyName + " equipped.";
+                    TempData["SubError"] = "You can't equip two of the same item.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
-            }
-            else
-            {
 
-            }
+                // If the item is a consumable or a reusable consumable, allow the player to wear a maximum of three
+                if ((item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable) &&
+                     ItemProcedures.PlayerTotalConsumableCount(me.Id) > 2)
+                {
+                    TempData["Error"] = "You have already equipped three consumables.";
+                    TempData["SubError"] = "You must remove at least one consumable before you can equip another.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+                else if (item.Item.ItemType != PvPStatics.ItemType_Pet)
+                {
+                    // Count items per type (non-accessory empty slots count as 1)
+                    var numHats = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Hat));
+                    var numShirts = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Shirt));
+                    var numUndershirts = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Undershirt));
+                    var numPants = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pants));
+                    var numUnderpants = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Underpants));
+                    var numShoes = Math.Max(1, ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Shoes));
+                    var numAccessories = ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Accessory);
 
+                    var numItemsEquipped = numHats + numShirts + numUndershirts + numPants + numUnderpants + numShoes + numAccessories;
+
+                    if (numItemsEquipped >= 8)
+                    {
+                        TempData["Error"] = "There is no room to equip this item because all your accessory slots are in use.";
+                        TempData["SubError"] = "You must remove at least one item of the same type before you can equip another.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+                }
+            }
 
             TempData["Result"] = ItemProcedures.EquipItem(itemId, putOn);
 
             return RedirectToAction(MVC.Item.MyInventory());
-
         }
 
         public virtual ActionResult Use(int itemId)

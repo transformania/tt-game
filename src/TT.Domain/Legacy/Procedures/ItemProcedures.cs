@@ -427,10 +427,8 @@ namespace TT.Domain.Procedures
 
         public static int PlayerTotalConsumableCount(int playerID)
         {
-            IItemRepository itemRepo = new EFItemRepository();
-            var consumables = GetAllPlayerItems(playerID).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable && i.dbItem.IsEquipped);
-            var resusableConsumables = GetAllPlayerItems(playerID).Where(i => i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && i.dbItem.IsEquipped);
-            var consumableTotal = consumables.Count() + resusableConsumables.Count();
+            var playerItems = GetAllPlayerItems(playerID).Where(i => i.dbItem.IsEquipped);
+            var consumableTotal = playerItems.Count(i => (i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable || i.Item.ItemType == PvPStatics.ItemType_Consumable) && i.dbItem.IsEquipped);
             return consumableTotal;
         }
 

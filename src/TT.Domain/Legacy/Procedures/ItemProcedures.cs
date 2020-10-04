@@ -425,6 +425,13 @@ namespace TT.Domain.Procedures
             return itemsOfThisType.Count();
         }
 
+        public static int PlayerTotalConsumableCount(int playerID)
+        {
+            var playerItems = GetAllPlayerItems(playerID).Where(i => i.dbItem.IsEquipped);
+            var consumableTotal = playerItems.Count(i => (i.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable || i.Item.ItemType == PvPStatics.ItemType_Consumable) && i.dbItem.IsEquipped);
+            return consumableTotal;
+        }
+
         public static int PlayerIsWearingNumberOfThisExactItem(int playerId, int itemSourceId)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -658,6 +665,11 @@ namespace TT.Domain.Procedures
 
             if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable)
             {
+                // Assert that the item is currently equipped
+                if (!itemPlus.dbItem.IsEquipped)
+                {
+                    return (false, "You cannot use an item you do not have equipped.");
+                }
 
                 // if this is the grenade type, redirect to attack procedure
                 if (itemPlus.Item.ConsumableSubItemType == (int)ItemStatics.ConsumableSubItemTypes.WillpowerBomb)
@@ -672,15 +684,15 @@ namespace TT.Domain.Procedures
                     var output = "";
                     if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombWeakItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 10, "Weak");
+                        output = AttackProcedures.ThrowGrenade(owner, 200, "Weak");
                     }
                     else if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombStrongItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 25, "Strong");
+                        output = AttackProcedures.ThrowGrenade(owner, 300, "Strong");
                     }
                     else if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombVolatileItemSourceId)
                     {
-                        output = AttackProcedures.ThrowGrenade(owner, 50, "Volatile");
+                        output = AttackProcedures.ThrowGrenade(owner, 400, "Volatile");
                     }
 
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
@@ -865,7 +877,11 @@ namespace TT.Domain.Procedures
 
             else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
             {
-
+                // Assert that the item is currently equipped
+                if (!itemPlus.dbItem.IsEquipped)
+                {
+                    return (false, "You cannot use an item you do not have equipped.");
+                }
                 // assert item is still not on cooldown
                 if (itemPlus.dbItem.TurnsUntilUse > 0)
                 {
@@ -883,19 +899,10 @@ namespace TT.Domain.Procedures
                     var thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
                     thisdbItem.TurnsUntilUse = itemPlus.Item.UseCooldown;
 
-                    // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
-
                     // there is both a health and mana restoration / loss effect to this spell
                     if (itemPlus.Item.ReuseableHealthRestore != 0 && itemPlus.Item.ReuseableManaRestore != 0)
                     {
-
-                        // get the bonus from this item being leveled
-                        
-
-                        var bonusFromLevelHealth = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
-                        var bonusFromLevelMana = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
-
-                        owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth;
+                        owner.Health += itemPlus.Item.ReuseableHealthRestore;
                         if (owner.Health > owner.MaxHealth)
                         {
                             owner.Health = owner.MaxHealth;
@@ -905,7 +912,7 @@ namespace TT.Domain.Procedures
                             return (false, "You don't have enough willpower to use this item.");
                         }
 
-                        owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana;
+                        owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore;
                         if (owner.Mana > owner.MaxMana)
                         {
                             owner.Mana = owner.MaxMana;
@@ -921,18 +928,14 @@ namespace TT.Domain.Procedures
                         
                         
 
-                        return (true, name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana");
+                        return (true, name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore) + " willpower and " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana");
 
                     }
 
                     // just a health gain
                     else if (itemPlus.Item.ReuseableHealthRestore != 0)
                     {
-
-                          // get the bonus from this item being leveled
-                        var bonusFromLevel = itemPlus.Item.ReuseableHealthRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
-
-                        owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore + bonusFromLevel;
+                        owner.Health = owner.Health += itemPlus.Item.ReuseableHealthRestore;
                         if (owner.Health > owner.MaxHealth)
                         {
                             owner.Health = owner.MaxHealth;
@@ -944,20 +947,16 @@ namespace TT.Domain.Procedures
                         if (itemPlus.dbItem.ItemSourceId == ItemStatics.InflatableDollItemSourceId)
                         {
                             StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored,
-                                (float) (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel));
+                                (float) (itemPlus.Item.ReuseableHealthRestore));
                         }
 
-                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP");
+                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP");
                     }
 
                    // just a mana gain
                     else if (itemPlus.Item.ReuseableManaRestore != 0)
                     {
-
-                        // get the bonus from this item being leveled
-                        var bonusFromLevel = itemPlus.Item.ReuseableManaRestore * (thisdbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier;
-
-                        owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevel;
+                        owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore;
                         if (owner.Mana > owner.MaxMana)
                         {
                             owner.Mana = owner.MaxMana;
@@ -966,7 +965,7 @@ namespace TT.Domain.Procedures
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
-                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
+                        return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
                     }
 
                     else if (itemPlus.Item.GivesEffectSourceId != null)

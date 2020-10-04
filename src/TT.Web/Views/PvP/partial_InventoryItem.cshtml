@@ -27,74 +27,64 @@
         {
 
 
-            <div style="text-align: center;">
-                <p>
-                    @if (Model.SoulboundToPlayer != null)
-                        {
-                            <span class="playerMediatingNotification"><b>[SB]</b></span>
-                        }
+        <div style="text-align: center;">
+            <p>
+                @if (Model.SoulboundToPlayer != null)
+                {
+                    <span class="playerMediatingNotification"><b>[SB]</b></span>
+                }
 
-                    @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
-                </p>
+                @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
+            </p>
 
-                @{
-                    if (Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable_Reuseable && Model.ItemSource.ItemType != PvPStatics.ItemType_Pet)
+            @{
+                if (Model.ItemSource.ItemType != PvPStatics.ItemType_Pet)
+                {
+
+                    if (!Model.IsEquipped)
                     {
-
-                        if (!Model.IsEquipped)
+                        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
                         {
-                            if (Model.ItemSource.ItemType == PvPStatics.ItemType_Rune)
-                            {
-                                <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
-                            }
-                            else
-                            {
-                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
-                            }
-                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-                        }
-
-                        if (Model.IsEquipped)
-                        {
-                            if (Model.EquippedThisTurn)
-                            {
-                                <a href="#" class="disabled attackLink" title="You have already equipped this item this turn.  You can take it off next turn.">Take off</a>
-                            }
-                            else
-                            {
-                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
-                            }
-                        }
-
-                    }
-                    if (Model.ItemSource.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || !ViewBag.DisableReleaseLink))
-                    {
-                        <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Release</a>
-                    }
-                    else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
-                    {
-                        <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
-                        <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
-                    }
-                    else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
-                    {
-
-                        if (Model.TurnsUntilUse > 0)
-                        {
-                            <span style="color: red;">Reuse in <b>@Model.TurnsUntilUse</b> turns.</span>
-                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                            <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
                         }
                         else
                         {
-                            <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
-                            <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
+                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
                         }
-
-
+                        <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Drop</a>
                     }
-                }
 
-            </div>
+                    if (Model.IsEquipped)
+                    {
+                        if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable || Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                        {
+                            if (Model.TurnsUntilUse > 0)
+                            {
+                                <span style="color: red;">Reuse in <b>@Model.TurnsUntilUse</b> turns.</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
+                            }
+                        }
+                        if (Model.EquippedThisTurn)
+                        {
+                            <a href="#" class="disabled attackLink" title="You have already equipped this item this turn.  You can take it off next turn.">Take off</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Take off</a>
+                        }
+                    }
+
+                }
+                if (Model.ItemSource.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || !ViewBag.DisableReleaseLink))
+                {
+                    <a href="@Url.Action(MVC.PvP.Drop(Model.Id))" class="attackLink">Release</a>
+                }
+            }
+
+        </div>
 
         }
 

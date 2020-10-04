@@ -230,13 +230,13 @@ namespace TT.Domain.Procedures
             // calculate the xp earned for this transformation
             var xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
 
-            if (xpEarned < 0)
+            if (xpEarned < 1)
             {
-                xpEarned = 0;
+                xpEarned = 1;
             }
-            if (xpEarned > 15)
+            if (xpEarned > 5)
             {
-                xpEarned = 15;
+                xpEarned = 5;
             }
 
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
@@ -479,18 +479,18 @@ namespace TT.Domain.Procedures
 
                 var levelDifference = attacker.Level - target.Level;
 
-                // only give the lump sum XP if the target is within 5 levels of the attacker AND the victim is not in the same covenant
-                if (levelDifference <= 5 && (attacker.Covenant == null || attacker.Covenant != target.Covenant))
+                // only give the lump sum XP if the victim is not in the same covenant
+                if (attacker.Covenant == null || attacker.Covenant != target.Covenant)
                 {
 
-                    var xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
+                    var xpGain = 100 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
 
-                    if (xpGain < 5)
+                    if (xpGain < 50)
                     {
-                        xpGain = 5;
-                    } else if (xpGain > 75)
+                        xpGain = 50;
+                    } else if (xpGain > 200)
                     {
-                        xpGain = 75;
+                        xpGain = 200;
                     }
 
                     // give the attacker a nice lump sum for having completed the transformation
@@ -518,7 +518,58 @@ namespace TT.Domain.Procedures
                     }
                 }
 
+                // Heals the victorious player provided that the target was eligible
+                if (attacker.BotId == AIStatics.ActivePlayerBotId) 
+                {
+                    // Provide no healing if the victim shared a coven with the attacker
+                    if (attacker.Covenant != null && attacker.Covenant == victim.Covenant)
+                    {
+                        output.AttackerLog += "  <br>There is no glory to be had in this victory, your willpower & mana are not restored.";
+                    }
+                    else 
+                    {
+                        // Figure out the modifier to be used
+                        double modifier = (levelDifference * 5) / 100;
+                        // Cap the modifier to prevent too much / too little healing.
+                        if (modifier > 0.3)
+                        {
+                            modifier = 0.3;
+                        }
+                        if (modifier < -0.55)
+                        {
+                            modifier = -0.55;
+                        }
+                        decimal healingPercent = (decimal)(0.6 + modifier);
 
+                        if (victim.BotId != AIStatics.ActivePlayerBotId)
+                        {
+                            // The victim is not a player, provide half of the healing.
+                            healingPercent = healingPercent / 2;
+                        }
+                        // Calculate the final amount of health to provide
+                        var healingTotal = attacker.MaxHealth * healingPercent;
+                        // Cap the healing to prevent over healing
+                        if (attacker.Health + healingTotal > attacker.MaxHealth)
+                        {
+                            healingTotal = (attacker.MaxHealth - attacker.Health);
+                        }
+                        // Calculate the final amount of mana to provide
+                        var manaRestoredTotal = attacker.MaxMana * healingPercent;
+                        // Cap the mana restoration to prevent over healing
+                        if (attacker.Mana + manaRestoredTotal > attacker.MaxMana)
+                        {
+                            manaRestoredTotal = (attacker.MaxMana - attacker.Mana);
+                        }
+
+                        // Heal the attacker
+                        attacker.Health += healingTotal;
+                        // Restore the attackers Mana
+                        attacker.Mana += manaRestoredTotal;
+                        playerRepo.SavePlayer(target);
+
+                        output.AttackerLog += "  Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.";
+                    }
+                }
 
                 output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
 

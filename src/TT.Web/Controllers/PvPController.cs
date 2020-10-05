@@ -1652,6 +1652,12 @@ namespace TT.Web.Controllers
 
             var pickup = DomainRegistry.Repository.FindSingle(cmd);
 
+            if (pickup == null)
+            {
+                TempData["Error"] = "That item has been already been consumed or does not exist.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             //assert that the item is indeed at this location and on the ground
             if (pickup.dbLocationName != me.dbLocationName)
             {

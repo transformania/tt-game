@@ -1921,7 +1921,7 @@ namespace TT.Web.Controllers
                 // Disallows the player from equipping multiple items of the same type
                 if (ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
                 {
-                    TempData["Error"] = "You are already have a " + item.Item.FriendlyName + " equipped.";
+                    TempData["Error"] = "You already have a " + item.Item.FriendlyName + " equipped.";
                     TempData["SubError"] = "You can't equip two of the same item.";
                     return RedirectToAction(MVC.PvP.Play());
                 }

@@ -600,7 +600,8 @@ namespace TT.Domain.Procedures
                        SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn.Id);
 
                         // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
-                       var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();
+                       var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id)
+                            .Where(item => item.Item.ItemType != PvPStatics.ItemType_Rune);
 
                        foreach (var i in psychoItems)
                        {

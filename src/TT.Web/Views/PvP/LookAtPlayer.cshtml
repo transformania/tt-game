@@ -126,10 +126,13 @@
 
     <div style="clear:both"></div>
 
+    @{
+        if (Model.ShowInventory)
+        {
+            @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
+        }
+    }
 
-
-
-    @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
     <div style="clear:both"></div>
     @Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)
     <div style="clear:both"></div>

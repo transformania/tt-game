@@ -1794,7 +1794,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't drop this item.";
                 TempData["SubError"] = "Unequip this item first if you are wearing it.";
-                return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
@@ -1837,7 +1837,7 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
 
-            return RedirectToAction(MVC.PvP.Play());
+            return RedirectToAction(MVC.Item.MyInventory());
 
             // remove this item from the player's inventory
 

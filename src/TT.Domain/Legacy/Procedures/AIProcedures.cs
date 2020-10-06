@@ -347,17 +347,9 @@ namespace TT.Domain.Procedures
                                 )
                             {
                                 playerRepo.SavePlayer(bot);
-                                if (bot.Mana >= 7)
-                                {
-                                    AttackProcedures.Attack(bot, myTarget, skill);
-                                }
 
-                                if (bot.Mana >= 14)
-                                {
-                                    AttackProcedures.Attack(bot, myTarget, skill);
-                                }
-
-                                if (bot.Mana >= 21)
+                                var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
+                                for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
                                 {
                                     AttackProcedures.Attack(bot, myTarget, skill);
                                 }

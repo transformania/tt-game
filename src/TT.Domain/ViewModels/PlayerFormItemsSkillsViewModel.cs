@@ -9,5 +9,6 @@ namespace TT.Domain.ViewModels
         public IEnumerable<SkillViewModel> Skills { get; set; }
         public IEnumerable<ItemDetail> Items { get; set; }
         public BuffBox Bonuses { get; set; }
+        public bool ShowInventory { get; set; }
     }
 }

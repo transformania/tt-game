@@ -1,5 +1,5 @@
 ﻿@using TT.Web.CustomHtmlHelpers
-@model IEnumerable<TT.Domain.Skills.DTOs.SkillSourceFormSourceDetail>
+@model TT.Domain.ViewModels.SelfCastViewModel
 
 @section menu
 {
@@ -24,14 +24,14 @@
         </thead>
         <tbody>
 
-        @foreach (var s in Model)
+        @foreach (var s in Model.Skills)
         {
             <tr>
                 <td><b class="playerMediatingNotification">@s.SkillSource.FriendlyName</b></td>
                 <td><b>@s.SkillSource.FormSource.FriendlyName</b></td>
                 <td><img src="@HtmlHelpers.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
                 <td class="tableCellDescription">@s.SkillSource.FormSource.Description</td>
-                <td><a href="@Url.Action(MVC.Item.SelfCastSend(s.SkillSource.Id))">Cast</a></td>
+                <td><a href="@Url.Action(MVC.Item.SelfCastSend(Model.ItemId, s.SkillSource.Id))">Cast</a></td>
             </tr>
         }
         </tbody>

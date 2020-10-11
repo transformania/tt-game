@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.Location>
+﻿@model TT.Domain.ViewModels.TeleportMapViewModel
 @{
     ViewBag.Title = "Teleport";
 }
@@ -19,12 +19,12 @@
         <th></th>
         </thead>
         <tbody>
-            @foreach (var loc in Model)
+            @foreach (var loc in Model.Destinations)
             {
             <tr>
                 <td>@loc.Name</td>
                 <td>@loc.Region</td>
-                <td> <a href="@Url.Action(MVC.PvP.Teleport(loc.dbName))">Go</a></td>
+                <td> <a href="@Url.Action(MVC.PvP.Teleport(Model.ItemId, loc.dbName))">Go</a></td>
             </tr>
             }
         </tbody>

@@ -61,6 +61,12 @@ namespace TT.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SelfCast()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCast);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SelfCastSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCastSend);
@@ -146,12 +152,21 @@ namespace TT.Web.Controllers
         }
 
 
+        static readonly ActionParamsClass_SelfCast s_params_SelfCast = new ActionParamsClass_SelfCast();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SelfCast SelfCastParams { get { return s_params_SelfCast; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SelfCast
+        {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_SelfCastSend s_params_SelfCastSend = new ActionParamsClass_SelfCastSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_SelfCastSend SelfCastSendParams { get { return s_params_SelfCastSend; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SelfCastSend
         {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
             public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_RemoveCurse s_params_RemoveCurse = new ActionParamsClass_RemoveCurse();
@@ -282,25 +297,27 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SelfCastOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void SelfCastOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SelfCast()
+        public override System.Web.Mvc.ActionResult SelfCast(int itemId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCast);
-            SelfCastOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            SelfCastOverride(callInfo, itemId);
             return callInfo;
         }
 
         [NonAction]
-        partial void SelfCastSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skillSourceId);
+        partial void SelfCastSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId, int skillSourceId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SelfCastSend(int skillSourceId)
+        public override System.Web.Mvc.ActionResult SelfCastSend(int itemId, int skillSourceId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCastSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skillSourceId", skillSourceId);
-            SelfCastSendOverride(callInfo, skillSourceId);
+            SelfCastSendOverride(callInfo, itemId, skillSourceId);
             return callInfo;
         }
 

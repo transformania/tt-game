@@ -59,17 +59,40 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.Inventory, output);
         }
 
-        public virtual ActionResult SelfCast()
+        public virtual ActionResult SelfCast(int itemId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // assert player owns at least one of the type of item needed
-            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId);
-            if (itemToUse == null)
+            var item = ItemProcedures.GetItemViewModel(itemId);
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
             {
-                TempData["Error"] = "You do not own the item needed to do this.";
+                TempData["Error"] = "You don't own that item.";
                 return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a transmog
+            if (item.dbItem.ItemSourceId != ItemStatics.AutoTransmogItemSourceId)
+            {
+                TempData["Error"] = "You cannot change form with that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert that this player is not in a duel
@@ -86,12 +109,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var output = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull);
+            var model = new SelfCastViewModel
+            {
+                ItemId = itemId,
+                Skills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull)
+            };
 
-            return View(MVC.Item.Views.SelfCast, output);
+            return View(MVC.Item.Views.SelfCast, model);
         }
 
-        public virtual ActionResult SelfCastSend(int skillSourceId)
+        public virtual ActionResult SelfCastSend(int itemId, int skillSourceId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -125,12 +152,35 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Item.MyInventory());
             }
 
-            // assert player owns at least one of the type of item needed
-            var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId);
-            if (itemToUse == null)
+            var item = ItemProcedures.GetItemViewModel(itemId);
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
             {
-                TempData["Error"] = "You do not own the item needed to do this.";
+                TempData["Error"] = "You don't own that item.";
                 return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a transmog
+            if (item.dbItem.ItemSourceId != ItemStatics.AutoTransmogItemSourceId)
+            {
+                TempData["Error"] = "You cannot change form with that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert player does own this skill
@@ -156,13 +206,13 @@ namespace TT.Web.Controllers
             }
 
             PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormSourceId.Value);
-            ItemProcedures.DeleteItemOfItemSourceId(me, itemToUse.dbItem.ItemSourceId);
+            ItemProcedures.DeleteItem(itemId);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
             var form = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
-            TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
+            TempData["Result"] = "You use a " + item.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1);
 

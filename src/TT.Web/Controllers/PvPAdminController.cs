@@ -1352,12 +1352,15 @@ namespace TT.Web.Controllers
                 if (id != -1)
                 {
                     var pm = PlayerProcedures.GetPlayerFormViewModel(id);
-                    output.Id = id;
-                    output.NewFirstName = pm.Player.FirstName;
-                    output.NewLastName = pm.Player.LastName;
-                    output.NewFormSourceId = person.FormSourceId;
-                    output.Level = pm.Player.Level;
-                    output.Money = pm.Player.Money;
+                    if (pm != null)
+                    {
+                        output.Id = id;
+                        output.NewFirstName = pm.Player.FirstName;
+                        output.NewLastName = pm.Player.LastName;
+                        output.NewFormSourceId = person.FormSourceId;
+                        output.Level = pm.Player.Level;
+                        output.Money = pm.Player.Money;
+                    }
                 }
 
                 return View(MVC.PvPAdmin.Views.RenamePlayer, output);
@@ -1931,6 +1934,12 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var player = PlayerProcedures.GetPlayerFormViewModel(id);
+
+            if (player == null)
+            {
+                TempData["Result"] = "This is not an active player.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             var output = new PlayerNameViewModel
             {

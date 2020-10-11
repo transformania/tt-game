@@ -77,7 +77,11 @@ namespace TT.Domain.Procedures
 
             foreach (var p in duel.Combatants)
             {
-                output.Add(PlayerProcedures.GetPlayerFormViewModel(p.PlayerId));
+                var player = PlayerProcedures.GetPlayerFormViewModel(p.PlayerId);
+                if (player != null)
+                {
+                    output.Add(player);
+                }
             }
 
             return output;

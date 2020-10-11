@@ -2055,21 +2055,30 @@ namespace TT.Web.Controllers
 
                 if (me.IsInDungeon())
                 {
-                    var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
-                    return View(MVC.PvP.Views.TeleportMap, output);
+                    var model = new TT.Domain.ViewModels.TeleportMapViewModel
+                    {
+                        ItemId = itemId,
+                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon")
+                    };
 
+                    return View(MVC.PvP.Views.TeleportMap, model);
                 }
                 else
                 {
-                    var output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
-                    return View(MVC.PvP.Views.TeleportMap, output);
+                    var model = new TT.Domain.ViewModels.TeleportMapViewModel
+                    {
+                        ItemId = itemId,
+                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon")
+                    };
+
+                    return View(MVC.PvP.Views.TeleportMap, model);
                 }
             }
 
             // if this item is the self recaster, redirect to the animate spell listing page
             if (item.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId)
             {
-                return RedirectToAction(MVC.Item.SelfCast());
+                return RedirectToAction(MVC.Item.SelfCast(itemId));
             }
 
             // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
@@ -2773,7 +2782,7 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.ViewEffects, output);
         }
 
-        public virtual ActionResult Teleport(string to)
+        public virtual ActionResult Teleport(int itemId, string to)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2782,21 +2791,37 @@ namespace TT.Web.Controllers
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
-                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                TempData["Error"] = "You must finish your duel before you can teleport.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InQuest > 0)
             {
-                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
+                TempData["Error"] = "You must finish your quest before you can teleport.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player actually does own one of this
-            if (ItemProcedures.PlayerHasNumberOfThisItem(me, ItemStatics.TeleportationScrollItemSourceId) <= 0)
+            var item = ItemProcedures.GetItemViewModel(itemId);
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
             {
-                TempData["Error"] = "You don't have one of these.";
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a teleportation scroll
+            if (item.dbItem.ItemSourceId != ItemStatics.TeleportationScrollItemSourceId)
+            {
+                TempData["Error"] = "You cannot teleport with an item that is not a teleportation scroll.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -2829,7 +2854,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
-            ItemProcedures.DeleteItemOfItemSourceId(me, ItemStatics.TeleportationScrollItemSourceId);
+            ItemProcedures.DeleteItem(itemId);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);

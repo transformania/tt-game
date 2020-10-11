@@ -438,6 +438,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Teleport
         {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
             public readonly string to = ("to").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ShoutSend s_params_ShoutSend = new ActionParamsClass_ShoutSend();
@@ -978,14 +979,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void TeleportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string to);
+        partial void TeleportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId, string to);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Teleport(string to)
+        public override System.Web.Mvc.ActionResult Teleport(int itemId, string to)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Teleport);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "to", to);
-            TeleportOverride(callInfo, to);
+            TeleportOverride(callInfo, itemId, to);
             return callInfo;
         }
 

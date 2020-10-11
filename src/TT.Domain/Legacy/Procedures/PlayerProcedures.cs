@@ -127,7 +127,7 @@ namespace TT.Domain.Procedures
 
                                                       };
 
-            return output.First();
+            return output.FirstOrDefault();
         }
 
         public static PlayerFormViewModel GetPlayerFormViewModel_FromMembership(string membershipId)

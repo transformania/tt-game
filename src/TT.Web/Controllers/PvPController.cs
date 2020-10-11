@@ -2163,6 +2163,12 @@ namespace TT.Web.Controllers
 
             var playerLookedAt = PlayerProcedures.GetPlayerFormViewModel(id);
 
+            if (playerLookedAt == null)
+            {
+                TempData["Result"] = "This character is not active in the current round.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var output = new PlayerFormItemsSkillsViewModel
             {
                 PlayerForm = playerLookedAt,

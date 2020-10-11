@@ -29,6 +29,11 @@ namespace TT.Domain.Procedures
 
             var attackerPlus = PlayerProcedures.GetPlayerFormViewModel(animalPlayerId);
 
+            if (attackerPlus == null)
+            {
+                return "";
+            }
+
             var victimMessage = "";
             var attackerMessage = "";
             var locationMessage = "";

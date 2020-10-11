@@ -44,6 +44,9 @@ namespace TT.Domain.Items.Commands
                 if (itemToEmbedOn.Owner.Id != PlayerId)
                     throw new DomainException("You do not own the item you are attempting to embed runes on.");
 
+                if (rune.Owner == null)
+                    throw new DomainException("This rune is already embedded or has no owner.");
+
                 if (rune.Owner.Id != PlayerId)
                     throw new DomainException("You do not own the rune you are attempting to embed.");
 

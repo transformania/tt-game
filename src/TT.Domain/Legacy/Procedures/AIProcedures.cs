@@ -46,7 +46,7 @@ namespace TT.Domain.Procedures
         private const int PsychopathicForLevelSevenEffectSourceId = 22;
         private const int PsychopathicForLevelNineEffectSourceId = 23;
 
-        private static Tuple<int,string> GetPsychoFormFromLevelAndSex(int level, string sex)
+        private static Tuple<int, string> GetPsychoFormFromLevelAndSex(int level, string sex)
         {
             if (level == 1)
             {
@@ -140,7 +140,7 @@ namespace TT.Domain.Procedures
                 // give this bot a random skill
                 var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
 
-                double max = eligibleSkills.Count();
+                double max = eligibleSkills.Count;
                 var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 var skillToLearn = eligibleSkills.ElementAt(randIndex);
@@ -181,11 +181,11 @@ namespace TT.Domain.Procedures
                     strength += 2;
                 }
 
-                var quantity = Math.Floor(random.NextDouble()*2) + 1; // 1 or 2
+                var quantity = Math.Floor(random.NextDouble() * 2) + 1; // 1 or 2
 
                 for (var c = 0; c < quantity; c++)
                 {
-                    var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength, Random = random});
+                    var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength, Random = random });
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = id });
                 }
 
@@ -198,6 +198,7 @@ namespace TT.Domain.Procedures
 
         public static List<Exception> RunPsychopathActions(WorldDetail worldDetail)
         {
+            var rand = new Random(DateTime.Now.Millisecond);
 
             var errors = new List<Exception>();
 
@@ -242,23 +243,31 @@ namespace TT.Domain.Procedures
                     {
                         if (botItems.Count(i => i.ItemSource.ItemType == typeToDrop) > 1)
                         {
-                            var dropList = botItems.Where(i => i.ItemSource.ItemType == typeToDrop).Skip(1).ToList();
+                            var dropList = botItems.Where(i => i.ItemSource.ItemType == typeToDrop)
+                                                   .Select(i => new
+                                                   {
+                                                       i.Id,
+                                                       i.ItemSource.ItemType,
+                                                       PlayerName = i.FormerPlayer.FullName,
+                                                       ItemName = i.ItemSource.FriendlyName
+                                                   })
+                                                   .Skip(1);
 
                             foreach (var i in dropList)
                             {
                                 ItemProcedures.DropItem(i.Id);
 
-                                if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                                if (i.ItemType == PvPStatics.ItemType_Pet)
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.FormerPlayer.FullName +
-                                        "</b> the pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.PlayerName +
+                                        "</b> the pet <b>" + i.ItemName + "</b> here.");
                                 }
                                 else
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.FormerPlayer.FullName +
-                                        "</b> the <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.PlayerName +
+                                        "</b> the <b>" + i.ItemName + "</b> here.");
                                 }
                             }
                         }
@@ -273,8 +282,7 @@ namespace TT.Domain.Procedures
                     // meditate if needed
                     if (bot.Mana < bot.MaxMana * .5M)
                     {
-                        var manarand = new Random(DateTime.Now.Millisecond);
-                        var manaroll = (int) Math.Floor(manarand.NextDouble() * 4.0D);
+                        var manaroll = (int)Math.Floor(rand.NextDouble() * 4.0D);
                         for (var i = 0; i < manaroll; i++)
                         {
                             DomainRegistry.Repository.Execute(new Meditate
@@ -290,8 +298,7 @@ namespace TT.Domain.Procedures
                     // cleanse if needed, less if psycho has cleansed lately
                     if (bot.Health < bot.MaxHealth * .5M)
                     {
-                        var healthrand = new Random(DateTime.Now.Millisecond);
-                        var healthroll = (int) Math.Floor(healthrand.NextDouble() * 4.0D);
+                        var healthroll = (int)Math.Floor(rand.NextDouble() * 4.0D);
                         for (var i = meditates; i < healthroll; i++)
                         {
                             DomainRegistry.Repository.Execute(new Cleanse
@@ -346,8 +353,6 @@ namespace TT.Domain.Procedures
                                 CanAttack(worldDetail, bot, myTarget)
                                 )
                             {
-                                playerRepo.SavePlayer(bot);
-
                                 var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
                                 for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
                                 {
@@ -370,27 +375,25 @@ namespace TT.Domain.Procedures
 
 
                         // attack stage
-                        var playersHere = playerRepo.Players.Where(p =>
-                                p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull &&
-                                p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level)
-                            .ToList(); // don't attack the merchant
+                        var playersHere = playerRepo.Players.Where
+                            (p => p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull &&
+                                p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList();
 
                         // filter out offline players and Lindella
                         var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();
 
-                        if (onlinePlayersHere.Any())
+                        if (onlinePlayersHere.Count > 0)
                         {
-                            var rand = new Random(DateTime.Now.Millisecond);
-                            var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());
-                            var victim = onlinePlayersHere.ElementAt((int) roll);
+                            var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count);
+                            var victim = onlinePlayersHere.ElementAt((int)roll);
                             AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
-                            playerRepo.SavePlayer(bot);
-                            AttackProcedures.Attack(bot, victim, skill);
-                            AttackProcedures.Attack(bot, victim, skill);
-                            AttackProcedures.Attack(bot, victim, skill);
+
+                            var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
+                            for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
+                            {
+                                AttackProcedures.Attack(bot, victim, skill);
+                            }
                         }
-
-
                     }
 
                     playerRepo.SavePlayer(bot);
@@ -408,16 +411,14 @@ namespace TT.Domain.Procedures
 
         public static void CounterAttack(Player personAttackin, Player bot)
         {
+            if (personAttackin.BotId == AIStatics.ActivePlayerBotId)
+            {
+                var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
 
-            var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
+                var rand = new Random(personAttackin.LastName.GetHashCode());
+                var roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
 
-            var rand = new Random(personAttackin.LastName.GetHashCode());
-            var roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
-
-
-            var selectedSkill = myskills.ElementAt((int)roll);
-
-            if (personAttackin.BotId == AIStatics.ActivePlayerBotId) {
+                var selectedSkill = myskills.ElementAt((int)roll);
                 AttackProcedures.Attack(bot, personAttackin, selectedSkill);
             }
         }
@@ -527,20 +528,19 @@ namespace TT.Domain.Procedures
 
         public static string MoveTo(Player bot, string locationDbName, int distance)
         {
-            var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == bot.dbLocationName);
-            var end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locationDbName);
+            var botLocation = bot.dbLocationName;
 
-            if (bot.dbLocationName == locationDbName)
+            if (botLocation == locationDbName)
             {
-                return bot.dbLocationName;
+                return botLocation;
             }
 
-            var path = PathfindingProcedures.GetMovementPath(start, end);
+            var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == botLocation);
+            var end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locationDbName);
 
-            var pathTiles = (bot.dbLocationName + ";" + path).Split(';');
-            pathTiles = pathTiles.Take(pathTiles.Length - 1).ToArray();
+            var pathTiles = PathfindingProcedures.GetMovementPath(start, end);
 
-            if (pathTiles.Length == 1)
+            if (pathTiles.Count == 1)
             {
                 return pathTiles[0];
             }
@@ -549,7 +549,7 @@ namespace TT.Domain.Procedures
             var nextTile = pathTiles[currentTileIndex];
             var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-            var numberOfSteps = Math.Min(distance, pathTiles.Length - 1);
+            var numberOfSteps = Math.Min(distance, pathTiles.Count - 1);
 
             while (currentTileIndex < numberOfSteps)
             {
@@ -576,9 +576,10 @@ namespace TT.Domain.Procedures
             // 5 = wrathful
             // 7 = loathful
             // 9 = soulless
-            
+
             // regular psychopath
-            if (turnNumber < 300) {
+            if (turnNumber < 300)
+            {
                 return 1;
             }
 
@@ -659,7 +660,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        
+
 
         public static void DealBossDamage(Player boss, Player attacker, bool humanAttacker, int attackCount)
         {
@@ -680,8 +681,10 @@ namespace TT.Domain.Procedures
             if (humanAttacker)
             {
                 damage.PlayerAttacksOnBoss += attackCount;
-               
-            } else {
+
+            }
+            else
+            {
                 damage.BossAttacksOnPlayer += attackCount;
             }
 

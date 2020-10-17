@@ -164,7 +164,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Any())
                 {
                     var weakestItem = donnasPlayerPets.First();
-                    ItemProcedures.DropItem(weakestItem.Id);
+                    ItemProcedures.DropItem(weakestItem.Id, donna.dbLocationName);
                     LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.FormerPlayer.FullName + ", here.");
                     var luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.FormerPlayer.FullName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);

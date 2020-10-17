@@ -40,14 +40,14 @@ namespace TT.Web.Controllers
             try
             {
                 DomainRegistry.Repository.FindSingle(
-                    new CanInteractWith {BotId = AIStatics.LindellaBotId, PlayerId = me.Id});
+                    new CanInteractWith { BotId = AIStatics.LindellaBotId, PlayerId = me.Id });
             }
             catch (DomainException e)
             {
                 TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
-            
+
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -55,7 +55,7 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableLinks = "true";
 
-            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter})
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayerOfType { OwnerId = merchant.Id, ItemType = filter })
                 .Where(i => i.EmbeddedOnItem == null);
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -88,7 +88,7 @@ namespace TT.Web.Controllers
 
             var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
-            var purchased = DomainRegistry.Repository.FindSingle(new GetItem {ItemId = id});
+            var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that the item is in fact owned by the merchant
             if (purchased.Owner.Id != merchant.Id)
@@ -140,9 +140,9 @@ namespace TT.Web.Controllers
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float)cost);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float)cost);
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -167,9 +167,9 @@ namespace TT.Web.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer {OwnerId = me.Id})
-                .Where(i => i.ItemSource.ItemType != PvPStatics.ItemType_Pet && 
-                !i.IsEquipped && 
+            var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
+                .Where(i => i.ItemSource.ItemType != PvPStatics.ItemType_Pet &&
+                !i.IsEquipped &&
                 i.SoulboundToPlayer == null &&
                 (i.IsPermanent || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable || i.ItemSource.ItemType == PvPStatics.ItemType_Rune));
 
@@ -211,7 +211,7 @@ namespace TT.Web.Controllers
 
             // assert that the item is either permanent or consumable
             if (!itemBeingSold.IsPermanent &&
-                itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Consumable && 
+                itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Consumable &&
                 itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Rune)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
@@ -229,8 +229,8 @@ namespace TT.Web.Controllers
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float) cost);
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost);
 
             TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Lindella for {cost:0} Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
@@ -258,7 +258,16 @@ namespace TT.Web.Controllers
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
 
-            var pets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id }).Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet);
+            var playerGameMode = me.GameMode;
+            if (playerGameMode == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                playerGameMode = (int)GameModeStatics.GameModes.Protection;
+            }
+
+            var pets = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id })
+                                                .Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet &&
+                                                            (i.PvPEnabled == (int)GameModeStatics.GameModes.Any ||
+                                                             i.PvPEnabled == (int)playerGameMode));
 
             var output = new WuffieTradeViewModel
             {
@@ -317,7 +326,24 @@ namespace TT.Web.Controllers
             if (purchased.Owner.Id != merchant.Id)
             {
                 TempData["Error"] = "Wüffie does not own this pet.";
-                return RedirectToAction(MVC.NPC.TradeWithMerchant());
+                return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
+            }
+
+
+            if (purchased.PvPEnabled != (int)GameModeStatics.GameModes.Any)
+            {
+                var playerGameMode = me.GameMode;
+
+                if (playerGameMode == (int)GameModeStatics.GameModes.Superprotection)
+                {
+                    playerGameMode = (int)GameModeStatics.GameModes.Protection;
+                }
+
+                if (purchased.PvPEnabled != playerGameMode)
+                {
+                    TempData["Error"] = "You cannot purchase a pet in this game mode.";
+                    return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
+                }
             }
 
             var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
@@ -342,8 +368,8 @@ namespace TT.Web.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float) -cost);
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)-cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)cost);
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -425,9 +451,9 @@ namespace TT.Web.Controllers
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float) cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)cost);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float) -cost);
+            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)-cost);
 
             TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Wüffie for {cost:0} Arpeyjis.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
@@ -607,19 +633,19 @@ namespace TT.Web.Controllers
             else if (question == "psychos")
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility=="full" && (b.OriginalFormSourceId == 13|| b.OriginalFormSourceId == 14));
+                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
                 var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
                 var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
                 var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
                 var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
 
-                if (psychoCount+fierceCount+wrathfulCount+loathfulCount+soullessCount > 0)
+                if (psychoCount + fierceCount + wrathfulCount + loathfulCount + soullessCount > 0)
                 {
                     var output = "\"This city's never truly safe. But well, let's see here... </br>";
 
-                    if (psychoCount>0)
+                    if (psychoCount > 0)
                     {
-                        output+= "Folks have mentioned seeing a large brawl between no less than <b>" + psychoCount + " psychopaths</b> out on the streets. </br>";
+                        output += "Folks have mentioned seeing a large brawl between no less than <b>" + psychoCount + " psychopaths</b> out on the streets. </br>";
                     }
                     if (fierceCount > 0)
                     {
@@ -691,10 +717,11 @@ namespace TT.Web.Controllers
                     output += "The lifeguard is on post at the <b>pool</b>, though that doesn't really amount to much with that slacker. She'd rather just turn the patrons into pool toys than do her job. Unacceptable conduct for any establishment, if you ask me.</br>";
                 }
 
-                if (output.Length<3)
+                if (output.Length < 3)
                 {
                     output += "I've not heard of any notable figures prowling about, sorry. Is there anything else I can assist you with?\"";
-                } else
+                }
+                else
                 {
                     output += "And that about sums it up. Is there anything else I can assist you with?\"";
                 }
@@ -1203,7 +1230,7 @@ namespace TT.Web.Controllers
             var output = new TalkToSoulbinderViewModel
             {
                 Items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = me.Id }).ToList(),
-                AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id})
+                AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id })
             };
             output.NPCOwnedSoulboundItems = output.AllSoulboundItems.Where(i => i.Owner != null && i.Owner.Id == npc.Id);
 
@@ -1259,7 +1286,7 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new RetrieveSoulboundItems { PlayerId = me.Id});
+                TempData["Result"] = DomainRegistry.Repository.Execute(new RetrieveSoulboundItems { PlayerId = me.Id });
             }
             catch (DomainException e)
             {
@@ -1329,7 +1356,7 @@ namespace TT.Web.Controllers
             {
                 ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
             }
-                
+
             if (item == null)
             {
                 TempData["Error"] = "This player is not soul bound to you";

@@ -119,9 +119,27 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>
-                Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.
-
                 @{
+                    if (Model.YouItem.SoulboundToPlayer == null)
+                    {
+                        if (!Model.IsPermanent)
+                        {
+                            <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.</span>
+                        }
+                        else if (Model.YouItem.Owner == null)
+                        {
+                            <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, perhaps by a previous owner.</span>
+                        }
+                        else
+                        {
+                            <span>Your answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.  Somehow it no longer seems to suit you.</span>
+                        }
+                    }
+                    else
+                    {
+                        <span>Whatever you used to be called, your forever owner now calls you <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+                    }
+
                     if (!Model.IsPermanent)
                     {
                         <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>

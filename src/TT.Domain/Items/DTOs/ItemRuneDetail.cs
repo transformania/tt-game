@@ -15,7 +15,7 @@ namespace TT.Domain.Items.DTOs
         {
             if (FormerPlayer != null)
             {
-                return $"(Formerly {FormerPlayer.FirstName} {FormerPlayer.LastName})";
+                return $"(Known as {FormerPlayer.FirstName} {FormerPlayer.LastName})";
             }
             return "";
         }

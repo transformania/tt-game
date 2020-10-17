@@ -11,7 +11,7 @@
 </div>
 
 <b>
-    
+
     @Model.Item.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model.Item)
 
     @{
@@ -28,7 +28,14 @@
 
         if (Model.Item.FormerPlayer != null)
         {
-            <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
+            if (Model.Item.IsPermanent)
+            {
+                <span class="formerly">Known as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
+            }
+            else
+            {
+                <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
+            }
             @HtmlHelpers.PrintPermanencyIcon(Model.Item.IsPermanent)
         }
 
@@ -56,13 +63,13 @@
         }
 
     </ul>
-    
+
     @{
         if (Model.Item.ItemSource.ItemType == PvPStatics.ItemType_Rune)
         {
             @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail{ ItemSource = Model.Item.ItemSource}, false))
         }
-    
+
         foreach (var rune in Model.Item.Runes)
         {
             @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(rune))

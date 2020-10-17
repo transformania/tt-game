@@ -65,7 +65,7 @@ namespace TT.Domain.Players.Commands
                 ctx.Update(player);
 
                 // TODO: Perform this as part of the Meditate method on the Player entity once known how
-                var locationLog = LocationLog.Create(player.Location, $"<span class='playerMediatingNotification'>{player.GetFullName()} meditated here.</span>", 0);
+                var locationLog = LocationLog.Create(player.Location, $"<span class='playerMediatingNotification'>{player.GetFullName()} meditated here.</span>");
                 ctx.Add(locationLog);
 
                 ctx.Commit();

@@ -24,17 +24,7 @@ namespace TT.Domain.Concrete
             {
                 context.Players.Add(Player);
             }
-            else
-            {
-                var editMe = context.Players.Find(Player.Id);
-                if (editMe != null)
-                {
-                    // dbEntry.Name = Player.Name;
-                    // dbEntry.Message = Player.Message;
-                    // dbEntry.TimeStamp = Player.TimeStamp;
 
-                }
-            }
             context.SaveChanges();
         }
 

@@ -17,10 +17,7 @@ namespace TT.Domain.Procedures
 
             var result = "";
 
-            var me = PlayerProcedures.GetPlayer(attacker.Id);
-            var targeted = PlayerProcedures.GetPlayer(victim.Id);
-
-            if (targeted.Mobility != PvPStatics.MobilityFull || me.Mobility != PvPStatics.MobilityFull)
+            if (victim.Mobility != PvPStatics.MobilityFull || attacker.Mobility != PvPStatics.MobilityFull)
             {
                 return "";
             }
@@ -28,12 +25,12 @@ namespace TT.Domain.Procedures
             var logs = new LogBox();
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, me.Id);
+            PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, attacker.Id);
 
-            PlayerProcedures.LogCombatTimestampsAndAddAttackCount(targeted, me);
+            PlayerProcedures.LogCombatTimestampsAndAddAttackCount(victim, attacker);
 
-            var attackerFullName = me.GetFullName();
-            var victimFullName = targeted.GetFullName();
+            var attackerFullName = attacker.GetFullName();
+            var victimFullName = victim.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
             if (skillBeingUsed.StaticSkill.GivesEffectSourceId != null)
@@ -61,13 +58,13 @@ namespace TT.Domain.Procedures
                 }
 
                 logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".</span>";
-                logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName +".";
+                logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".";
                 logs.AttackerLog += "  (+1 XP)  ";
                 logs.AttackerLog += PlayerProcedures.GiveXP(attacker, 1);
                 logs.VictimLog = effectBeingGiven.MessageWhenHit;
                 logs.VictimLog += "  <span class='playerAttackNotification'>" + attackerFullName + " cursed you with <b>" + skillBeingUsed.StaticSkill.FriendlyName + "</b>.</b></span>  ";
                 result = logs.AttackerLog;
-                
+
             }
 
             // the spell is a regular attack
@@ -77,14 +74,13 @@ namespace TT.Domain.Procedures
                 logs.AttackerLog = "You cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against you.</span>  ";
 
-                var meBuffs = ItemProcedures.GetPlayerBuffs(me);
-                var targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
+                var meBuffs = ItemProcedures.GetPlayerBuffs(attacker);
+                var targetedBuffs = ItemProcedures.GetPlayerBuffs(victim);
 
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 var basehitChance = rand.NextDouble() * 100;
 
                 var meDmgExtra = meBuffs.SpellExtraHealthDamagePercent();
-                var targetProt = targetedBuffs.SpellHealthDamageResistance();
 
                 var criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
 
@@ -106,8 +102,8 @@ namespace TT.Domain.Procedures
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
                         var amountToDamage = skillBeingUsed.StaticSkill.HealthDamageAmount *
-                                             (1 + meBuffs.SpellExtraHealthDamagePercent() / 100);
-                        PlayerProcedures.DamagePlayerHealth(me.Id, amountToDamage);
+                                             (1 + meDmgExtra / 100);
+                        PlayerProcedures.DamagePlayerHealth(attacker.Id, amountToDamage);
                         logs.AttackerLog += $"Misfire!  Your spell accidentally lowered your own willpower by {amountToDamage:N2}.  ";
                         logs.VictimLog += $"Misfire!  {GetPronoun_HisHer(attacker.Gender)} spell accidentally lowered {GetPronoun_hisher(attacker.Gender)} own willpower by {amountToDamage:N2}.";
                         result += logs.AttackerLog;
@@ -135,8 +131,6 @@ namespace TT.Domain.Procedures
                 // not a  miss, so let's deal some damage, possibly
                 if (!failedAttack)
                 {
-                    var rand2 = new Random();
-                    var criticalHitChance = rand.NextDouble() * 100;
                     decimal criticalModifier = 1;
 
                     if (evasionUpgrade)
@@ -144,7 +138,7 @@ namespace TT.Domain.Procedures
                         logs.AttackerLog += "<b>Piercing hit!</b>  ";
                         logs.VictimLog += "<b>Piercing hit!</b>  ";
                     }
-                    else if (criticalHitChance < (double)criticalPercentChance)
+                    else if (rand.NextDouble() * 100 < (double)criticalPercentChance)
                     {
                         criticalModifier = 2;
                         logs.AttackerLog += "<b>Critical hit!</b>  ";
@@ -154,6 +148,8 @@ namespace TT.Domain.Procedures
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
+                        var targetProt = targetedBuffs.SpellHealthDamageResistance();
+
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
                         var willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
 
@@ -177,14 +173,14 @@ namespace TT.Domain.Procedures
                             totalHealthDamage = 0;
                         }
 
-                        PlayerProcedures.DamagePlayerHealth(targeted.Id, totalHealthDamage);
+                        PlayerProcedures.DamagePlayerHealth(victim.Id, totalHealthDamage);
 
                         // even though it's been done in the db, change the player health here as well
-                        targeted.Health -= totalHealthDamage;
+                        victim.Health -= totalHealthDamage;
 
 
-                        logs.AttackerLog += $"Your spell lowered {GetPronoun_hisher(victim.Gender)} willpower by {Math.Round(totalHealthDamage,2)}.  ";
-                        logs.VictimLog += $"{GetPronoun_HisHer(attacker.Gender)} spell lowered your willpower by {Math.Round(totalHealthDamage,2)}.  ";
+                        logs.AttackerLog += $"Your spell lowered {GetPronoun_hisher(victim.Gender)} willpower by {Math.Round(totalHealthDamage, 2)}.  ";
+                        logs.VictimLog += $"{GetPronoun_HisHer(attacker.Gender)} spell lowered your willpower by {Math.Round(totalHealthDamage, 2)}.  ";
                         result += logs.AttackerLog;
                     }
 
@@ -212,11 +208,11 @@ namespace TT.Domain.Procedures
 
                         var totalTFEnergyModifier = criticalModifier * tfEnergyDamageModifierFromBonuses;
 
-                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(targeted, me, skillBeingUsed, totalTFEnergyModifier);
+                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(victim, attacker, skillBeingUsed, totalTFEnergyModifier);
 
 
                         logs.Add(tfEnergyResult);
-                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(targeted, skillBeingUsed.StaticSkill.Id, me.Id);
+                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(victim, skillBeingUsed.StaticSkill.Id, attacker.Id);
                         logs.Add(formChangeLog);
                         result = logs.AttackerLog;
 
@@ -226,11 +222,11 @@ namespace TT.Domain.Procedures
 
             }
 
-            LocationLogProcedures.AddLocationLog(me.dbLocationName, logs.LocationLog);
-            PlayerLogProcedures.AddPlayerLog(me.Id, logs.AttackerLog, false);
-            PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
-            
-            DomainRegistry.AttackNotificationBroker.Notify(targeted.Id, logs.VictimLog);
+            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logs.LocationLog);
+            PlayerLogProcedures.AddPlayerLog(attacker.Id, logs.AttackerLog, false);
+            PlayerLogProcedures.AddPlayerLog(victim.Id, logs.VictimLog, true);
+
+            DomainRegistry.AttackNotificationBroker.Notify(victim.Id, logs.VictimLog);
 
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
             if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
@@ -257,13 +253,14 @@ namespace TT.Domain.Procedures
 
             IPlayerRepository playerREpo = new EFPlayerRepository();
 
-            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+            var attackerLocation = attacker.dbLocationName;
+            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attackerLocation);
 
             var playersHere = new List<Player>();
             var playersHereOnline = new List<Player>();
             if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attackerLocation &&
                     (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == PvPStatics.MobilityFull &&
                      p.InDuel <= 0 &&
@@ -271,7 +268,7 @@ namespace TT.Domain.Procedures
             }
             else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection || attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attackerLocation &&
                     p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == PvPStatics.MobilityFull &&
                     p.InDuel <= 0 &&
@@ -295,15 +292,15 @@ namespace TT.Domain.Procedures
                     p.Health = 0;
                 }
                 playerREpo.SavePlayer(p);
-                var message = "<span class='playerAttackNotification'>" + attacker.GetFullName() + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                var message = "<span class='playerAttackNotification'>" + attacker.GetFullName() + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count - 1) + " others.</span>";
                 PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
 
             }
 
             var logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
-            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
+            LocationLogProcedures.AddLocationLog(attackerLocation, logMessage);
 
-            var attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
+            var attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag
@@ -321,13 +318,14 @@ namespace TT.Domain.Procedures
 
             IPlayerRepository playerREpo = new EFPlayerRepository();
 
-            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+            var attackerLocation = attacker.dbLocationName;
+            var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attackerLocation);
 
             var playersHere = new List<Player>();
             var playersHereOnline = new List<Player>();
             if (attacker.GameMode == (int)GameModeStatics.GameModes.PvP)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attackerLocation &&
                     (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == PvPStatics.MobilityFull &&
                      p.InDuel <= 0 &&
@@ -335,7 +333,7 @@ namespace TT.Domain.Procedures
             }
             else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection || attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attackerLocation &&
                     p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == PvPStatics.MobilityFull &&
                     p.InDuel <= 0 &&
@@ -359,14 +357,14 @@ namespace TT.Domain.Procedures
                     p.Health = 0;
                 }
                 playerREpo.SavePlayer(p);
-                var message = "<span class='playerAttackNotification'>" + victim.GetFullName() + " convulses and shakes before exploding into a roiling tide of chaotic energies damaging you for " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                var message = "<span class='playerAttackNotification'>" + victim.GetFullName() + " convulses and shakes before exploding into a roiling tide of chaotic energies damaging you for " + damage + " along with " + (playersHereOnline.Count - 1) + " others.</span>";
                 PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
             }
 
             var logMessage = victim.FirstName + " " + victim.LastName + " exploded into a violent shower of chaotic energies.";
-            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
+            LocationLogProcedures.AddLocationLog(attackerLocation, logMessage);
 
-            var attackerMessage = "The explosion caused by " + victim.FirstName + " "  + victim.LastName + " scattered violent energies throughout  " + here + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
+            var attackerMessage = "The explosion caused by " + victim.FirstName + " " + victim.LastName + " scattered violent energies throughout  " + here + ", lowering " + playersHereOnline.Count + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag
@@ -404,19 +402,20 @@ namespace TT.Domain.Procedures
             var info = repo.LocationInfos.ToList();
             foreach (var loc in LocationsStatics.LocationList.GetLocation)
             {
-                var temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
+                var locName = loc.dbName;
+                var temp = info.FirstOrDefault(l => l.dbName == locName);
                 if (temp == null)
                 {
-                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = null;
-                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = 0;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locName).CovenantController = null;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locName).TakeoverAmount = 0;
                 }
                 else
                 {
                     if (temp.CovenantId != null)
                     {
-                        LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = (int)temp.CovenantId;
+                        LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locName).CovenantController = (int)temp.CovenantId;
                     }
-                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = temp.TakeoverAmount;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locName).TakeoverAmount = temp.TakeoverAmount;
 
                 }
             }

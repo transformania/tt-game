@@ -176,26 +176,11 @@ namespace TT.Domain.Procedures
             return pathList;
         }
 
-        public static string GetMovementPath(Location start, Location end)
+        public static List<string> GetMovementPath(Location start, Location end)
         {
-            var updateTimer = new Stopwatch();
-            updateTimer.Start();
-
             var pathList = CalculatePath(start, end);
             pathList.Reverse();
-
-            var output = "";
-
-            foreach (var s in pathList)
-            {
-                output += LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == s).dbName + ";";
-            }
-
-            output += updateTimer.ElapsedMilliseconds.ToString();
-
-            updateTimer.Stop();
-
-            return output;
+            return pathList;
         }
 
         public static int GetNumSteps(Location start, Location end)

@@ -2215,13 +2215,9 @@ namespace TT.Web.Controllers
                 }
                 ViewBag.ConsumableEffect = consumableEffect;
 
-                var ownedByMe = false;
-                if (playerItem.FormerPlayer != null)
-                {
-                    var owner = ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
-                    ownedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
-                }
-                ViewBag.OwnedByMe = ownedByMe;
+                var owner = (playerItem.FormerPlayer == null) ? null : ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
+                ViewBag.Owner = owner;
+                ViewBag.OwnedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
 
                 if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {

@@ -127,8 +127,7 @@ namespace TT.Web.Controllers
                 var owner = PlayerProcedures.GetPlayerFormViewModel(ownerId);
                 if (owner != null && owner.Player != null)
                 {
-                    var ownerName = $"{owner.Player.FirstName} {owner.Player.LastName}";
-                    roomName = $"{ownerName} (owner chat)";
+                    roomName = $"{owner.Player.GetFullName()} (owner chat)";
                 }
             }
 

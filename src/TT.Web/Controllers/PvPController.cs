@@ -674,7 +674,7 @@ namespace TT.Web.Controllers
                 TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labyrinth of the dungeon.  ";
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " cast an earthmoving spell, tunneling back up to the town.");
-                LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");
+                LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal reaching deep into the dungeon.");
             }
 
             PlayerProcedures.ChangePlayerActionMana(10, 0, 0, me.Id);
@@ -1057,7 +1057,7 @@ namespace TT.Web.Controllers
 
                 if (me.Level <= 3)
                 {
-                    TempData["Error"] = "You feel too intimdated by your target and find yourself unable to launch your spell.";
+                    TempData["Error"] = "You feel too intimidated by your target and find yourself unable to launch your spell.";
                     TempData["SubError"] = "You must gain some more experience before trying to take this target on.";
                     return RedirectToAction(MVC.PvP.Play());
                 }

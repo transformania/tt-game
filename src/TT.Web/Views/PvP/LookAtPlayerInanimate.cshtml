@@ -123,6 +123,33 @@
                             <text>You currently own this item and are @(ViewBag.IsEquipped ? "" : "not") wearing it.</text>
                         }
                     }
+
+                    @if (ViewBag.OwnedByMe && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <p>
+                            As an owner, you can reward or punish your @(Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate ? "item" : "pet"):
+                            <ul class="inanimateActionList">
+                                @if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
+                                {
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("flaunt", (int)ViewBag.ItemId))" class="check inanimateAction">Proudly flaunt your @Model.PlayerForm.Form.FriendlyName</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName</a>
+                                    </li>
+                                }
+                                else if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
+                                {
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold",  (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName</a>
+                                    </li>
+                                }
+                            </ul>
+                        </p>
+                    }
                 </div>
             }
         </div>

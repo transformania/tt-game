@@ -1,7 +1,7 @@
 ﻿@model TT.Domain.ViewModels.ChatLogViewModel
 @using TT.Web.CustomHtmlHelpers
 @{
-    ViewBag.Title = $"Chat Log - {Model.Room}";
+    ViewBag.Title = $"Chat Log - {Model.RoomName}";
 }
 
 @section menu
@@ -42,7 +42,7 @@
 }
 
 <div class="containerInner">
-    <h2>Chat Log for Room '@Model.Room'</h2>
+    <h2>Chat Log for Room '@Model.RoomName'</h2>
     <p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
     <p>Chat log for private room:</p>
     @using (Html.BeginForm(MVC.Chat.ChatLog(), FormMethod.Get))

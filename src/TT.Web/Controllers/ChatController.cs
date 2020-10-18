@@ -41,18 +41,64 @@ namespace TT.Web.Controllers
             if (me.Player.IsBannedFromGlobalChat && room == "global")
             {
                 TempData["Error"] = "A moderator has temporarily banned you from global chat.";
-                TempData["SubError"] = "To restore your chat priveliges please make an appeal on the forums.";
+                TempData["SubError"] = "To restore your chat privileges please make an appeal on Discord.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var roomName = room;
+
+            if (!UserCanSeeRoom(ref roomName))
+            {
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             var model = new ChatViewModel
             {
-                RoomName = room,
+                Room = room,
+                RoomName = roomName,
                 ChatUser = me.Player.GetDescriptor().Item1,
                 ChatColor = me.Player.ChatColor,
             };
 
+            ViewBag.Result = TempData["Result"];
+
             return View(MVC.Chat.Views.ChatIndex, model);
+        }
+
+        private bool UserCanSeeRoom(ref string roomName)
+        {
+            if (roomName.StartsWith("coven_"))
+            {
+                var userId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(userId);
+
+                if (me.Covenant == null || me.Covenant <= 0)
+                {
+                    TempData["Error"] = "You are not in a covenant and cannot access this covenant chat room.";
+                    return false;
+                }
+                else if (roomName != $"coven_{me.Covenant}")
+                {
+                    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
+                    {
+                        TempData["Result"] = "You are in this covenant chat room for moderation purposes.";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "You do not have access to this covenant chat room.";
+                        return false;
+                    }
+                }
+
+                var covenId = roomName.Substring(6).Parse<int>();
+                var coven = CovenantProcedures.GetDbCovenant(covenId);
+                if (coven != null)
+                {
+                    roomName = $"{coven.Name} (covenant)";
+                }
+            }
+
+            return true;
         }
 
         private ActionResult ChatV2()
@@ -84,12 +130,23 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            var roomName = room;
+
+            if (!UserCanSeeRoom(ref roomName))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var model = new ChatLogViewModel
             {
                 Room = room,
+                RoomName = roomName,
                 Filter = filter,
                 ChatLog = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter })
             };
+
+            ViewBag.Result = TempData["Result"];
+
             return View(MVC.Chat.Views.ChatLog, model);
         }
 

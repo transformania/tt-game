@@ -90,7 +90,7 @@ namespace TT.Domain.Items.Commands
                 {
                     result = "You throw your TG Splash Orb, but unfortunately nobody is affected in this location.";
                 }
-                var locationLog = LocationLog.Create(player.Location, $"{player.GetFullName()} threw a TG splash orb, affecting {affectedPlayers.Count()} mages.", 0);
+                var locationLog = LocationLog.Create(player.Location, $"{player.GetFullName()} threw a TG splash orb, affecting {affectedPlayers.Count()} mages.");
                 ctx.Add(locationLog);
                 ctx.Update(player);
                 ctx.Remove(item);
@@ -105,7 +105,7 @@ namespace TT.Domain.Items.Commands
 
         protected override void Validate()
         {
-           if (PlayerId == 0)
+            if (PlayerId == 0)
                 throw new DomainException("PlayerId is required.");
 
             if (ItemId == 0)

@@ -11,7 +11,7 @@ namespace TT.Domain.Entities.LocationLogs
 
         private LocationLog() { }
 
-        public static LocationLog Create(String dbLocationName, String message, int concealmentLevel)
+        public static LocationLog Create(String dbLocationName, String message, int concealmentLevel = -999)
         {
             return new LocationLog
             {

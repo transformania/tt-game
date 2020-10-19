@@ -21,6 +21,7 @@ using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Players.Commands;
 using TT.Web.ViewModels;
+using TT.Domain.Players.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -40,7 +41,7 @@ namespace TT.Web.Controllers
                 Player = me,
                 PlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id }),
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
-                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId})
+                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId })
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -524,54 +525,72 @@ namespace TT.Web.Controllers
         }
 
         /// <summary>
-        /// Allows a player to claim a new base form if they have earned one through being a contributor or artist.  Multiple custom forms can be toggled through by clicking the link mulitple times; each click will advance to the next available form and upon reaching the final form loop back to the first one.
+        /// Allows a player to claim a new base form if they have earned one.
         /// </summary>
         /// <returns></returns>
-        public virtual ActionResult UseMyCustomForm()
+        public virtual ActionResult SetBaseForm(int baseId)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
-            var customForms = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId).ToList();
-
-            if (!customForms.Any())
+            if (baseId != me.OriginalFormSourceId)
             {
-                TempData["Error"] = "You do not have any custom base forms.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
+                IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
+                var customMatches = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId &&
+                                                                     c.CustomForm.Id == baseId).Count();
 
-            var newForm = customForms.First();
-
-            var index = 0;
-            foreach (var c in customForms)
-            {
-                if (me.OriginalFormSourceId == c.CustomForm.Id)
+                if (customMatches == 0)
                 {
-                    if (index + 1 < customForms.Count())
+                    var formRepo = new EFDbStaticFormRepository();
+                    var baseMatches = formRepo.DbStaticForms.Where(f => f.Id == baseId &&
+                            (f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl")).Count();
+
+                    if (baseMatches == 0)
                     {
-                        newForm = customForms.ElementAt(index + 1);
+                        TempData["Error"] = "You do not own that custom base form.";
+                        return RedirectToAction(MVC.PvP.Play());
                     }
-                    break;
                 }
-                index++;
             }
 
-            // player is already in their original form so change them instantly.  Otherwise they'll have to find a way to be restored themselves
+            // When player is already in their base form change them instantly.
             if (me.FormSourceId == me.OriginalFormSourceId)
             {
-                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.Id);
-                me.OriginalFormSourceId = newForm.CustomForm.Id;
+                PlayerProcedures.SetCustomBase(me, baseId);
+                me.OriginalFormSourceId = baseId;
                 PlayerProcedures.InstantRestoreToBase(me);
             }
             else
             {
-                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.Id);
+                PlayerProcedures.SetCustomBase(me, baseId);
             }
-
 
             TempData["Result"] = "Your custom form has been set.";
             return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult MyBaseForms()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var customRepo = new EFContributorCustomFormRepository();
+            var customForms = customRepo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId)
+                                                               .Select(c => c.CustomForm).ToList();
+
+            var formRepo = new EFDbStaticFormRepository();
+            var currentBaseForm = formRepo.DbStaticForms.Where(f => f.Id == me.OriginalFormSourceId).First();
+
+            if (customForms.Where(f => f.Id == currentBaseForm.Id).Count() == 0)
+            {
+                // In a standard base form
+                return View(MVC.Settings.Views.MyBaseForms, customForms.Append(currentBaseForm));
+            }
+
+            // In a custom - also offer to switch to a standard base form
+            var baseForms = formRepo.DbStaticForms.Where(f => f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl");
+            customForms.AddRange(baseForms);
+            return View(MVC.Settings.Views.MyBaseForms, customForms);
         }
 
         public virtual ActionResult ArchiveSpell(int skillSourceId)
@@ -926,7 +945,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Failed to change chaos changes enabled/disabled.";
             }
-           
+
             return RedirectToAction(MVC.PvP.Play());
 
         }

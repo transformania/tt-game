@@ -157,6 +157,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetBaseForm()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBaseForm);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ArchiveSpell()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ArchiveSpell);
@@ -259,7 +265,8 @@ namespace TT.Web.Controllers
             public readonly string WriteAuthorArtistBio = ("WriteAuthorArtistBio").ToLowerInvariant();
             public readonly string WriteAuthorArtistSend = ("WriteAuthorArtistSend").ToLowerInvariant();
             public readonly string AuthorArtistBio = ("AuthorArtistBio").ToLowerInvariant();
-            public readonly string UseMyCustomForm = ("UseMyCustomForm").ToLowerInvariant();
+            public readonly string SetBaseForm = ("SetBaseForm").ToLowerInvariant();
+            public readonly string MyBaseForms = ("MyBaseForms").ToLowerInvariant();
             public readonly string ArchiveSpell = ("ArchiveSpell").ToLowerInvariant();
             public readonly string ArchiveAllMySpells = ("ArchiveAllMySpells").ToLowerInvariant();
             public readonly string PlayerStats = ("PlayerStats").ToLowerInvariant();
@@ -407,6 +414,14 @@ namespace TT.Web.Controllers
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_SetBaseForm s_params_SetBaseForm = new ActionParamsClass_SetBaseForm();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetBaseForm SetBaseFormParams { get { return s_params_SetBaseForm; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetBaseForm
+        {
+            public readonly string baseId = ("baseId").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_ArchiveSpell s_params_ArchiveSpell = new ActionParamsClass_ArchiveSpell();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ArchiveSpell ArchiveSpellParams { get { return s_params_ArchiveSpell; } }
@@ -516,6 +531,7 @@ namespace TT.Web.Controllers
             {
                 public readonly string AuthorArtistBio = "AuthorArtistBio";
                 public readonly string CreateOrUpdateRPClassifiedAd = "CreateOrUpdateRPClassifiedAd";
+                public readonly string MyBaseForms = "MyBaseForms";
                 public readonly string MyBlacklistEntries = "MyBlacklistEntries";
                 public readonly string MyRPClassifiedAds = "MyRPClassifiedAds";
                 public readonly string PlayerStats = "PlayerStats";
@@ -530,6 +546,7 @@ namespace TT.Web.Controllers
             }
             public readonly string AuthorArtistBio = "~/Views/Settings/AuthorArtistBio.cshtml";
             public readonly string CreateOrUpdateRPClassifiedAd = "~/Views/Settings/CreateOrUpdateRPClassifiedAd.cshtml";
+            public readonly string MyBaseForms = "~/Views/Settings/MyBaseForms.cshtml";
             public readonly string MyBlacklistEntries = "~/Views/Settings/MyBlacklistEntries.cshtml";
             public readonly string MyRPClassifiedAds = "~/Views/Settings/MyRPClassifiedAds.cshtml";
             public readonly string PlayerStats = "~/Views/Settings/PlayerStats.cshtml";
@@ -893,13 +910,25 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void UseMyCustomFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void SetBaseFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int baseId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UseMyCustomForm()
+        public override System.Web.Mvc.ActionResult SetBaseForm(int baseId)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UseMyCustomForm);
-            UseMyCustomFormOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBaseForm);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "baseId", baseId);
+            SetBaseFormOverride(callInfo, baseId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void MyBaseFormsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult MyBaseForms()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MyBaseForms);
+            MyBaseFormsOverride(callInfo);
             return callInfo;
         }
 

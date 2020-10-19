@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TT.Domain.Models.DbStaticForm>
+@using TT.Web.CustomHtmlHelpers
+@{
+    ViewBag.Title = "My Base Forms";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Settings.Settings())">Back to settings</a></li>
+}
+
+<div class="containerInner">
+    <h1>Choose Your Base Form</h1>
+    <p>
+        <strong>Note:</strong>  You may need to use the Self-Restore feature in order to use your new base form.
+    </p>
+
+    <table id="MySkills" class="table table-hover messageTable dt-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Portrait</th>
+                <th>Description</th>
+                <th>Choose</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var form in Model)
+            {
+                <tr>
+                    <td>
+                        @form.FriendlyName
+                    </td>
+                    <td>
+                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetFormImageURL(form.PortraitUrl, true)); float: right; bottom: 0;">
+                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(form.Gender)</span>
+                        </div>
+                    </td>
+                    <td>
+                        @form.Description
+                    </td>
+                    <td>
+                        <a href="@Url.Action(MVC.Settings.SetBaseForm(form.Id))">Select</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>
+        You can earn more custom base forms through <a href="@Url.Action(MVC.Contribution.Contribute())">contributing to the game</a> and <a href="@Url.Action(MVC.Info.GameNews())">achieving round victories</a>.
+    </p>
+</div>
+
+@section head
+{
+    <style>
+        tr {
+            border: 1px dashed rgb(161, 105, 105);
+            text-align: center;
+        }
+    </style>
+}

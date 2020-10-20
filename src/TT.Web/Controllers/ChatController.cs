@@ -4,6 +4,7 @@ using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Chat.Queries;
+using TT.Domain.Items.Queries;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -95,6 +96,38 @@ namespace TT.Web.Controllers
                 if (coven != null)
                 {
                     roomName = $"{coven.Name} (covenant)";
+                }
+            }
+            else if (roomName.StartsWith("owner_"))
+            {
+                var userId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(userId);
+
+                if (roomName != $"owner_{me.Id}")
+                {
+                    // Not the owner
+                    var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+
+                    if (item == null || item.Owner == null || roomName != $"owner_{item.Owner.Id}")
+                    {
+                        // Not owned by the player
+                        if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
+                        {
+                            TempData["Result"] = "You are in this owner chat room for moderation purposes.";
+                        }
+                        else
+                        {
+                            TempData["Error"] = "You do not have access to this owner chat room.";
+                            return false;
+                        }
+                    }
+                }
+
+                var ownerId = roomName.Substring(6).Parse<int>();
+                var owner = PlayerProcedures.GetPlayerFormViewModel(ownerId);
+                if (owner != null && owner.Player != null)
+                {
+                    roomName = $"{owner.Player.GetFullName()} (owner chat)";
                 }
             }
 

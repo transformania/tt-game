@@ -42,6 +42,11 @@
                 {
                     <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.Player.Covenant}"))" target="_blank">Chat with my covenant</a></li>
                 }
+
+                if (Model.Item.Owner != null)
+                {
+                    <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.Item.Owner.Id}"))" target="_blank">Chat with my owner</a></li>
+                }
             }
             <li><a href="@Url.Action(MVC.Chat.ChatLog("global", "lasth"))" target="_blank">Chat logs</a></li>
         </ul>

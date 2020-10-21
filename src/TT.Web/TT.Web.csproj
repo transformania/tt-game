@@ -386,6 +386,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_76.cshtml" />
     <Content Include="Views\Covenant\ChangeNoticeboardMessage.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_77.cshtml" />
+    <Content Include="Views\Settings\MyBaseForms.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

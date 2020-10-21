@@ -615,6 +615,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 78,
+      "name": "Alpha 78 (Era of the Nerdy Road Transmogrifiers!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

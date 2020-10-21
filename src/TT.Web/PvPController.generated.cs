@@ -151,6 +151,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult OwnerAction()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OwnerAction);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AddFriend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddFriend);
@@ -246,6 +252,7 @@ namespace TT.Web.Controllers
             public readonly string PlayerLookupSend = ("PlayerLookupSend").ToLowerInvariant();
             public readonly string InanimateAction = ("InanimateAction").ToLowerInvariant();
             public readonly string AnimalAction = ("AnimalAction").ToLowerInvariant();
+            public readonly string OwnerAction = ("OwnerAction").ToLowerInvariant();
             public readonly string MyFriends = ("MyFriends").ToLowerInvariant();
             public readonly string AddFriend = ("AddFriend").ToLowerInvariant();
             public readonly string RespondToFriendRequest = ("RespondToFriendRequest").ToLowerInvariant();
@@ -390,6 +397,15 @@ namespace TT.Web.Controllers
         {
             public readonly string actionName = ("actionName").ToLowerInvariant();
             public readonly string targetId = ("targetId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_OwnerAction s_params_OwnerAction = new ActionParamsClass_OwnerAction();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_OwnerAction OwnerActionParams { get { return s_params_OwnerAction; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_OwnerAction
+        {
+            public readonly string actionName = ("actionName").ToLowerInvariant();
+            public readonly string itemId = ("itemId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_AddFriend s_params_AddFriend = new ActionParamsClass_AddFriend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -881,6 +897,19 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
             AnimalActionOverride(callInfo, actionName, targetId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void OwnerActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult OwnerAction(string actionName, int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OwnerAction);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            OwnerActionOverride(callInfo, actionName, itemId);
             return callInfo;
         }
 

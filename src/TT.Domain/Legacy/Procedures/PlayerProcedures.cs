@@ -88,6 +88,8 @@ namespace TT.Domain.Procedures
                                                               MobilityType = form.MobilityType,
                                                               ItemSourceId = form.ItemSourceId,
                                                               PortraitUrl = form.PortraitUrl,
+                                                              SecondaryPortraitUrl = form.SecondaryPortraitUrl,
+                                                              TertiaryPortraitUrl = form.TertiaryPortraitUrl,
                                                               IsUnique = form.IsUnique,
 
                                                               HealthBonusPercent = form.HealthBonusPercent,

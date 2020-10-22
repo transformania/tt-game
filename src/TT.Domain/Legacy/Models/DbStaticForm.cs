@@ -11,6 +11,8 @@
         public string MobilityType { get; set; }
         public int? ItemSourceId { get; set; }
         public string PortraitUrl { get; set; }
+        public string SecondaryPortraitUrl { get; set; }
+        public string TertiaryPortraitUrl { get; set; }
         public bool IsUnique { get; set; }
 
         public decimal HealthBonusPercent { get; set; }

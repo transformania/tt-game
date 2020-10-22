@@ -70,7 +70,40 @@
 <div class="containerInner">
 
     <center>
-        <div class="leftDisplay" style="background-image: url(../../Images/PvP/portraits/@Model.PlayerForm.Form.PortraitUrl);">
+
+        @{
+            /* Given this is only for one form and I want to do this, I'm probably doing this a little dirty.
+             * The form 'Tainted Angel' seemed interesting enough to have me doing this stuff.
+             * Will it cause confusion? Of that I have no doubt at all!
+             * But, I'm setting it up so potentially in the future, three different images can be set.
+             * With those things set, it can do this kind of shenanigans: 33% of the time or 1% of the time.
+             * 
+             * I may expand this to other view models, such as thumbnails.
+             * I just wanted to include a tiny little easter egg!
+             * 
+             * Entries into the database for secondary and tertiary portraits has to be manually entered.
+             * Why? Because I don't expect this to be a common occurrence.  There is no tool for this right now.
+             */
+
+            String getImage;
+            Random rnd = new Random();
+            int d100 = rnd.Next(1, 101);
+
+            if (!String.IsNullOrEmpty(Model.PlayerForm.Form.TertiaryPortraitUrl) && d100 == 100)
+            {
+                getImage = Model.PlayerForm.Form.TertiaryPortraitUrl;
+            }
+            else if (!String.IsNullOrEmpty(Model.PlayerForm.Form.SecondaryPortraitUrl) && d100 >= 66)
+            {
+                getImage = Model.PlayerForm.Form.SecondaryPortraitUrl;
+            }
+            else
+            {
+                getImage = Model.PlayerForm.Form.PortraitUrl;
+            }
+        }
+
+        <div class="leftDisplay" style="background-image: url(../../Images/PvP/portraits/@getImage);">
             <span class="icon icon-level"><b>@Model.PlayerForm.Player.Level</b></span>
             <span style="float:right;">@HtmlHelpers.PrintGenderIcon(Model.PlayerForm.Player.Gender)</span>
             <span class="iconPortrait">

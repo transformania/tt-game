@@ -21,7 +21,6 @@ using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Players.Commands;
 using TT.Web.ViewModels;
-using TT.Domain.Players.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -533,25 +532,40 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (baseId != me.OriginalFormSourceId)
+            if (baseId == me.OriginalFormSourceId)
             {
-                IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
-                var customMatches = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId &&
-                                                                     c.CustomForm.Id == baseId).Count();
+                TempData["Error"] = "You already have this form selected as your base.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-                if (customMatches == 0)
+            // Prevent switching to existing form as a means of quickly escaping a TG orb's effects
+            if (baseId == me.FormSourceId && me.Mobility == PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You cannot select your current form as your base form.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Look for a match among custom forms
+            IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
+            var match = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId &&
+                                                                c.CustomForm.Id == baseId)
+                                                   .Select(c => c.CustomForm).FirstOrDefault();
+
+            if (match == null)
+            {
+                // Look for a match among standard starter forms
+                var formRepo = new EFDbStaticFormRepository();
+                match = formRepo.DbStaticForms.Where(f => f.Id == baseId &&
+                        (f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl")).FirstOrDefault();
+
+                if (match == null)
                 {
-                    var formRepo = new EFDbStaticFormRepository();
-                    var baseMatches = formRepo.DbStaticForms.Where(f => f.Id == baseId &&
-                            (f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl")).Count();
-
-                    if (baseMatches == 0)
-                    {
-                        TempData["Error"] = "You do not own that custom base form.";
-                        return RedirectToAction(MVC.PvP.Play());
-                    }
+                    TempData["Error"] = "You do not own that custom base form.";
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
+
+            var instant = false;
 
             // When player is already in their base form change them instantly.
             if (me.FormSourceId == me.OriginalFormSourceId)
@@ -559,13 +573,29 @@ namespace TT.Web.Controllers
                 PlayerProcedures.SetCustomBase(me, baseId);
                 me.OriginalFormSourceId = baseId;
                 PlayerProcedures.InstantRestoreToBase(me);
+                instant = true;
             }
             else
             {
                 PlayerProcedures.SetCustomBase(me, baseId);
             }
 
-            TempData["Result"] = "Your custom form has been set.";
+            if (me.Mobility == PvPStatics.MobilityFull)
+            {
+                if (instant)
+                {
+                    TempData["Result"] = $"You are suddenly overwhelmed as you spontaneously transform into a {match.FriendlyName}!";
+                }
+                else
+                {
+                    TempData["Result"] = $"Your inner {match.FriendlyName} is begging to be let out, if only you could return yourself to base form...";
+                }
+            }
+            else
+            {
+                TempData["Result"] = $"Your dreams of becoming a {match.FriendlyName} could come true, if only you could return to animacy...";
+            }
+
             return RedirectToAction(MVC.PvP.Play());
         }
 
@@ -579,16 +609,25 @@ namespace TT.Web.Controllers
                                                                .Select(c => c.CustomForm).ToList();
 
             var formRepo = new EFDbStaticFormRepository();
-            var currentBaseForm = formRepo.DbStaticForms.Where(f => f.Id == me.OriginalFormSourceId).First();
+            var baseForms = formRepo.DbStaticForms.Where(f => f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl").ToArray();
 
-            if (customForms.Where(f => f.Id == currentBaseForm.Id).Count() == 0)
+            // Shuffle non-custom base forms so players don't always pick the first one
+            var rand = new Random();
+            for(var backstop = baseForms.Length; backstop > 1; backstop--)
             {
-                // In a standard base form
-                return View(MVC.Settings.Views.MyBaseForms, customForms.Append(currentBaseForm));
+                var dest = backstop - 1;
+                var src = rand.Next(0, backstop);
+                var temp = baseForms[dest];
+                baseForms[dest] = baseForms[src];
+                baseForms[src] = temp;
             }
 
-            // In a custom - also offer to switch to a standard base form
-            var baseForms = formRepo.DbStaticForms.Where(f => f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl");
+            if (me.Mobility == PvPStatics.MobilityFull)
+            {
+                ViewBag.CurrentForm = me.FormSourceId;
+            }
+            ViewBag.CurrentBaseForm = me.OriginalFormSourceId;
+
             customForms.AddRange(baseForms);
             return View(MVC.Settings.Views.MyBaseForms, customForms);
         }

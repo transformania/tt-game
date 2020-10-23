@@ -12,9 +12,12 @@
 
 <div class="containerInner">
     <h1>Choose Your Base Form</h1>
-    <p>
-        <strong>Note:</strong>  You may need to use the Self-Restore feature in order to use your new base form.
-    </p>
+    @if (ViewBag.CurrentForm != null && ViewBag.CurrentBaseForm != null && ViewBag.CurrentForm != ViewBag.CurrentBaseForm)
+    {
+        <p>
+            <strong>Note:</strong>  You will need to switch to base form in order to see your changes, e.g. by using Self-Restore, Classic Me! Restorative Lotion, or escaping to animate form.
+        </p>
+    }
 
     <table id="MySkills" class="table table-hover messageTable dt-responsive">
         <thead>
@@ -41,7 +44,18 @@
                         @form.Description
                     </td>
                     <td>
-                        <a href="@Url.Action(MVC.Settings.SetBaseForm(form.Id))">Select</a>
+                        @if (ViewBag.CurrentBaseForm != null && ViewBag.CurrentBaseForm == form.Id)
+                        {
+                            <text>Current base form</text>
+                        }
+                        else if (ViewBag.CurrentForm != null && ViewBag.CurrentForm == form.Id)
+                        {
+                            <text>Current form</text>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action(MVC.Settings.SetBaseForm(form.Id))">Select</a>
+                        }
                     </td>
                 </tr>
             }
@@ -49,7 +63,7 @@
     </table>
 
     <p>
-        You can earn more custom base forms through <a href="@Url.Action(MVC.Contribution.Contribute())">contributing to the game</a> and <a href="@Url.Action(MVC.Info.GameNews())">achieving round victories</a>.
+        You can earn custom base forms through <a href="@Url.Action(MVC.Contribution.Contribute())">contributing to the game</a> and <a href="@Url.Action(MVC.Info.GameNews())">achieving round victories</a>.
     </p>
 </div>
 

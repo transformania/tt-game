@@ -7,8 +7,16 @@ $(document).ready(function () {
     nextRoundCountdownInitialValue = $("#nextRound").html();
     updateRoundCountdownTimer();
 
-    var tabTitle = $('title');
+    if ($("#notificationBox").length) {
+        initNotificationBox();
+    }
 
+    if ($("#turn_countdown").length) {
+        initClock($('title'));
+    }
+});
+
+function initNotificationBox() {
     if ($("#notificationBox").html().length > 10) {
         $("#notificationBox").show();
         $("#dismissNotficationBox").show();
@@ -123,6 +131,10 @@ $(document).ready(function () {
             setupWASDKeys();
         }
     }
+}
+
+function initClock(tabTitle) {
+    var titleText = tabTitle.text();
 
     // javascript for ticking down clocks
     setInterval(function () {
@@ -140,7 +152,7 @@ $(document).ready(function () {
             $("#turn_countdown").addClass("good");
             blinkEnabled = 1;
         } else {
-            tabTitle.text('Transformania Time [' + timer_minutes + ":" + timer_seconds + "]");
+            tabTitle.text(titleText + ' [' + timer_minutes + ":" + timer_seconds + "]");
         }
 
         $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
@@ -150,9 +162,9 @@ $(document).ready(function () {
 
     }, 1000);
 
-    setInterval(function () { titleToggle() }, 1000);
+    setInterval(function () { titleToggle(titleText) }, 1000);
 
-});
+}
 
 function backgroundPulse() {
     if (attackPulse == 1) {
@@ -172,10 +184,10 @@ function dismissNotificationsFail() {
 }
 
 
-function titleToggle() {
+function titleToggle(titleText) {
     if (blinkEnabled == 1) {
         if (togglestate == 0) {
-            $('title').text('Transformania Time!');
+            $('title').text(titleText);
             togglestate = 1;
         } else if (togglestate == 1) {
             $('title').text('[UPDATED--reload page!]');

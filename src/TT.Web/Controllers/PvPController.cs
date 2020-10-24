@@ -2204,8 +2204,21 @@ namespace TT.Web.Controllers
                 ViewBag.ConsumableEffect = consumableEffect;
 
                 var owner = (playerItem.FormerPlayer == null) ? null : ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
+                var ownedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
+
                 ViewBag.Owner = owner;
-                ViewBag.OwnedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
+                ViewBag.OwnedByMe = ownedByMe;
+
+                if (ownedByMe)
+                {
+                    var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+                    var secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                    ViewBag.SecondsUntilUpdate = TurnTimesStatics.GetTurnLengthInSeconds() - (int)secondsSinceUpdate;
+
+                    var playerCanInteract = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
+                    var itemCanInteract = playerItem.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
+                    ViewBag.InteractionsRemaining = (playerCanInteract && itemCanInteract) ? 1 : 0;
+                }
 
                 if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
@@ -2458,7 +2471,8 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
-            var itemPlayer = item?.FormerPlayer;
+            var itemFormerPlayer = item?.FormerPlayer;
+            var itemPlayer = itemFormerPlayer == null ? null : PlayerProcedures.GetPlayer(itemFormerPlayer.Id);
 
             if (itemPlayer == null)
             {
@@ -2486,36 +2500,82 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            var posession = itemPlayer.Mobility == PvPStatics.MobilityPet ? "pet" : "item";
+
             // assert player owns item/pet
             if (item.Owner.Id != me.Id)
             {
-                TempData["Error"] = "You do not currently own this player.";
+                TempData["Error"] = $"You do not currently own this {posession}.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = $"You don't have enough time to devote to your {posession} right now.";
+                TempData["SubError"] = "Try again in a few moments.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item has not acted too many times already
+            if (itemPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
+            {
+                TempData["Error"] = $"Your {posession} is not currently receptive to your actions.";
+                TempData["SubError"] = "Try again in a few moments.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var inanimXpRepo = new EFInanimateXPRepository();
+            var xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == itemPlayer.Id);
+
+            // check item has performed an action
+            if (xp == null)
+            {
+                TempData["Error"] = $"Your {posession} is currently unresponsive.";
+
+                if (itemPlayer.Mobility == PvPStatics.MobilityPet)
+                {
+                    TempData["SubError"] = "Perhaps you should train them to be more obedient.";
+                }
+                else
+                {
+                    TempData["SubError"] = "Perhaps you should remind them who's in charge?";
+                }
+
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Generate RP messages for owner and item/pet
             var secondP = "";
             var firstP = "";
+            var their = me.Gender == PvPStatics.GenderFemale ? "her" : "his";
+            var Their = me.Gender == PvPStatics.GenderFemale ? "Her" : "His";
+            var didStuffTo = $"{actionName}ed";
+            var boost = true;
 
             if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "flaunt")
             {
-                secondP = $"<span class='petActionGood'>Your proud owner, {me.GetFullName()}, confidently flaunts you for everyone to see!</span>";
+                secondP = $"Your proud owner, {me.GetFullName()}, confidently flaunts you for everyone to see!";
                 firstP = $"You proudly flaunt {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "shun")
             {
-                var their = me.Gender == PvPStatics.GenderFemale ? "her" : "his";
-                secondP = $"<span class='petActionBad'>Your embarrassed owner, {me.GetFullName()}, is disappointed in you and shuns you in favor of {their} other items.</span>";
+                secondP = $"Your embarrassed owner, {me.GetFullName()}, is disappointed in you and shuns you in favor of {their} other items.";
                 firstP = $"You disappointedly shun {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}.";
+                didStuffTo = "shunned";
+                boost = false;
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "praise")
             {
-                secondP = $"<span class='petActionGood'>Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good pet!</span>";
+                secondP = $"Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good {posession}!";
                 firstP = $"You heap praise upon {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}!";
+                didStuffTo = "praised";
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "scold")
             {
-                secondP = $"<span class='petActionBad'>Your angry owner, {me.GetFullName()}, bitterly scolds you in front of everyone as punishment for your misbehavior!</span>";
+                secondP = $"Your angry owner, {me.GetFullName()}, bitterly scolds you in front of everyone as punishment for your misbehavior!";
                 firstP = $"You bitterly scold {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
+                boost = false;
             }
             else
             {
@@ -2523,11 +2583,52 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // Roll chance to gain/lose a turn's worth of XP, owner TF or struggle.
+            // Owner cannot level up/lock the item.
+            var rand = new Random();
+            if (rand.NextDouble() < 0.2)  // 1 XP per turn average for single account item (5 x 20%)
+            {
+                var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+                if (boost && xp.LastActionTurnstamp > 0)
+                {
+                    secondP += $"  {Their} actions gives you a little boost!";
+                    firstP += "  Your action gives them a little boost!";
+                    xp.LastActionTurnstamp--;
+                }
+                else if (!boost && xp.LastActionTurnstamp < currentGameTurn)
+                {
+                    secondP += "  You are left feeling somewhat dispirited.";
+                    firstP += "  Your action leaves them feeling somewhat dispirited.";
+                    xp.LastActionTurnstamp++;
+                }
+
+                inanimXpRepo.SaveInanimateXP(xp);
+            }
+
+            // Format item's message
+            if (boost)
+            {
+                secondP = $"<span class='petActionGood'>{secondP}</span>";
+            }
+            else
+            {
+                secondP = $"<span class='petActionBad'>{secondP}</span>";
+            }
+
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+
+            // Subtract cost - owner item use, item attack
+            PlayerProcedures.AddItemUses(me.Id, 1);
+            PlayerProcedures.AddAttackCount(itemPlayer);
+
+            // Bring player online
+            PlayerProcedures.SetTimestampToNow(me);
 
             TempData["Result"] = firstP;
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, false);
             PlayerLogProcedures.AddPlayerLog(itemPlayer.Id, secondP, true);
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {itemPlayer.GetFullName()}, a {item.ItemSource.FriendlyName}, here.");
 
             return RedirectToAction(MVC.PvP.LookAtPlayer(itemPlayer.Id));
         }
@@ -2966,7 +3067,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not acted too many times already
-            if (me.TimesAttackingThisUpdate >= 1)
+            if (me.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
                 TempData["Error"] = "You don't have enough energy to fight your transformation right now.";
                 TempData["SubError"] = "Wait a bit.";
@@ -3015,7 +3116,7 @@ namespace TT.Web.Controllers
 
 
             // assert player has not acted too many times already
-            if (me.TimesAttackingThisUpdate >= 1)
+            if (me.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
                 TempData["Error"] = "You don't have enough energy to try and transform your owner.";
                 TempData["SubError"] = "Wait a bit.";

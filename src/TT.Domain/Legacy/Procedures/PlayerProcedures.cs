@@ -746,6 +746,33 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
+        public static bool CheckAllowedInDungeon(Player me, out string message)
+        {
+            // assert player is in PvP mode
+            if (me.GameMode < (int)GameModeStatics.GameModes.PvP)
+            {
+                message = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
+                return false;
+            }
+
+            // assert player is at least level 4
+            if (me.Level < 4)
+            {
+                message = "You must be at least level four to enter the dungeon.";
+                return false;
+            }
+
+            // assert player is not currently under the effects of back on your feet
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
+            {
+                message = "You must wait until you are no longer under the effects of 'Back on your feet'.";
+                return false;
+            }
+
+            message = "";
+            return true;
+        }
+
         public static void InstantRestoreToBase(Player player)
         {
 
@@ -770,6 +797,12 @@ namespace TT.Domain.Procedures
 
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
 
+            var message = "";
+            if (player.IsInDungeon() && !CheckAllowedInDungeon(player, out message))
+            {
+                var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
+                TeleportPlayer(player, overworldLocation, false);
+            }
         }
 
         public static void InstantChangeToForm(Player player, int formSourceId)

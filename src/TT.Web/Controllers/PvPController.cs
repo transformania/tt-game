@@ -616,24 +616,11 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player is in PvP mode
-            if (me.GameMode < (int)GameModeStatics.GameModes.PvP)
+            // assert player is allowed in the dungeon (level, game mode, effects)
+            var message = "";
+            if (!PlayerProcedures.CheckAllowedInDungeon(me, out message))
             {
-                TempData["Error"] = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is at least level 4
-            if (me.Level < 4)
-            {
-                TempData["Error"] = "You must be at least level four to enter the dungeon.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert player is not currently under the effects of back on your feet
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
-            {
-                TempData["Error"] = "You must wait until you are no longer under the effects of 'Back on your feet'.";
+                TempData["Error"] = message;
                 return RedirectToAction(MVC.PvP.Play());
             }
 

@@ -34,6 +34,8 @@ namespace TT.Domain.Items.DTOs
                         $"{FirstName} '{Nickname}' {LastName}";
                 }
             }
+
+            public int TimesAttackingThisUpdate { get; set; }
         }
 
         public class PlayPageSoulboundToPlayerDetail

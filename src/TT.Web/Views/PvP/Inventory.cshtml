@@ -43,7 +43,7 @@
 
     <p>You are carrying <b>@Model.CurrentCarryCount / @Model.MaxInventorySize</b> items.</p>
 
-    <p>You have used <b>@ViewBag.ItemsUsedThisTurn @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxItemUsesPerUpdate)</b> consumable type items this turn.</p>
+    <p>You have used or interacted with <b>@ViewBag.ItemsUsedThisTurn @(PvPStatics.ChaosMode ? "" : "/ " + PvPStatics.MaxItemUsesPerUpdate)</b> items this turn.</p>
 </div>
 
 <div class="containerInner">

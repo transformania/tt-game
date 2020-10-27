@@ -6,6 +6,13 @@
 
 @section menu
 {
+    @if (ViewBag.OwnedByMe && Model.PlayerForm?.Player != null && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+    {
+        <li>
+            <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            <span id="turn_countdown">-:--</span>
+        </li>
+    }
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     @{
         if (ViewBag.OwnedByMe)
@@ -82,7 +89,7 @@
             <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
             @if (ViewBag.OwnedByMe)
             {
-                <div>
+                <div style="font-size:14px;">
                     @if (ViewBag.ItemSkills.Count > 0)
                     {
                         if (ViewBag.IsEquipped)
@@ -132,22 +139,23 @@
                                 @if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
                                 {
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("flaunt", (int)ViewBag.ItemId))" class="check inanimateAction">Proudly flaunt your @Model.PlayerForm.Form.FriendlyName</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("flaunt", (int)ViewBag.ItemId))" class="check inanimateAction">Proudly flaunt your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName (Dispirit chance)</a>
                                     </li>
                                 }
                                 else if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
                                 {
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold",  (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold",  (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName (Dispirit chance)</a>
                                     </li>
                                 }
                             </ul>
+                            Interactions offer a chance to help speed up or slow down your item or pet's progress and cost an item action for you and an action for your item or pet.
                         </p>
                     }
                 </div>
@@ -215,11 +223,26 @@
 
 @section scripts
 {
-    <script>
+    @if (ViewBag.OwnedByMe)
+    {
+        <script src="@Links.Scripts.notices_js"></script>
+        <script>
 
+        var blinkEnabled = 0;
+        var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+        var togglestate = 0;
+        var playUpdateSound = false;
+        var canInteract = @((ViewBag.InteractionsRemaining != null && ViewBag.InteractionsRemaining > 0) ? "true" : "false");
+        </script>
+    }
+    <script>
     $(document).ready(function () {
         // get current url that the page is on
         var currentUrl = new URL(window.location);
+
+        if (!canInteract) {
+            $(".check").attr("href", "#").addClass("disabled");
+        }
 
         $("#ForceUserLogout").on("click", function () {
             $.ajax({

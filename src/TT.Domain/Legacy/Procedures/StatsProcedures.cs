@@ -106,6 +106,9 @@ namespace TT.Domain.Procedures
         // Buses
         public const string Stat__BusRides = "busrides";
 
+        // Temporary
+        public const string Stat__ItemPetInteractions = "item_pet_interaction";
+
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
         {
@@ -665,7 +668,21 @@ namespace TT.Domain.Procedures
                     Active = true,
                     ResetsOnReroll = true
                 }
+            },
+
+            //Temporary Achievements
+            {
+                //Image licensed as CC0 from https://opengameart.org/content/heart-achievement-effect-animation
+                Stat__ItemPetInteractions,
+                new StatsDetailsMap{
+                    FriendlyName="Tender Affection",
+                    Description="Times interacting with souled possessions",
+                    ImageUrl="tender_affection.gif",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
             }
+
 
             };
 

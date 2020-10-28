@@ -2557,6 +2557,7 @@ namespace TT.Web.Controllers
             {
                 secondP = $"Your proud owner, {me.GetFullName()}, confidently flaunts you for everyone to see!";
                 firstP = $"You proudly flaunt {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "shun")
             {
@@ -2564,18 +2565,21 @@ namespace TT.Web.Controllers
                 firstP = $"You disappointedly shun {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}.";
                 didStuffTo = "shunned";
                 boost = false;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "praise")
             {
                 secondP = $"Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good {posession}!";
                 firstP = $"You heap praise upon {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}!";
                 didStuffTo = "praised";
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "scold")
             {
                 secondP = $"Your angry owner, {me.GetFullName()}, bitterly scolds you in front of everyone as punishment for your misbehavior!";
                 firstP = $"You bitterly scold {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
                 boost = false;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else
             {

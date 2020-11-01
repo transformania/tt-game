@@ -2634,7 +2634,7 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(itemPlayer.Id, secondP, true);
             LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {itemPlayer.GetFullName()}, a {item.ItemSource.FriendlyName}, here.");
 
-            return RedirectToAction(MVC.PvP.LookAtPlayer(itemPlayer.Id));
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         public virtual ActionResult MyFriends()

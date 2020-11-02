@@ -2004,7 +2004,7 @@ namespace TT.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(MVC.NPC.Views.SoulboundRename, input);
+                return View(MVC.PvPAdmin.Views.AdminRename, input);
             }
 
             playerRepo.SavePlayer(player);

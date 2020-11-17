@@ -87,6 +87,8 @@ namespace TT.Web.Hubs
                 {
                     case "d465db1c-ba4f-4347-b666-4dfd1c9a5e33": //Because Martha wants to be a filthy casual.
                         break;
+                    case "08b476c3-d262-45b6-9e6a-7d94b472fefe":
+                        break; //So is this one.
                     default:
                         name = name + " (Mod)";
                         break;

@@ -144,6 +144,9 @@
                                     <li>
                                         <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
                                     </li>
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("hush",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Sternly hush your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                                    </li>
                                 }
                                 else if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
                                 {
@@ -151,11 +154,14 @@
                                         <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold",  (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold", (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("restrain",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Forcibly restrain your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
                                     </li>
                                 }
                             </ul>
-                            Interactions offer a chance to help speed up or slow down your item or pet's progress and cost an item action for you and an action for your item or pet.
+                            Interactions offer a chance to help speed up or slow down your item or pet's progress and cost you one item action.
                         </p>
                     }
                 </div>
@@ -232,7 +238,8 @@
         var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
         var togglestate = 0;
         var playUpdateSound = false;
-        var canInteract = @((ViewBag.InteractionsRemaining != null && ViewBag.InteractionsRemaining > 0) ? "true" : "false");
+        var playerCanInteract = @((ViewBag.PlayerInteractionsRemain != null && ViewBag.PlayerInteractionsRemain) ? "true" : "false");
+        var itemCanInteract = @((ViewBag.ItemInteractionsRemain != null && ViewBag.ItemInteractionsRemain) ? "true" : "false");
         </script>
     }
     <script>
@@ -240,8 +247,11 @@
         // get current url that the page is on
         var currentUrl = new URL(window.location);
 
-        if (!canInteract) {
+        if (!playerCanInteract) {
             $(".check").attr("href", "#").addClass("disabled");
+        }
+        else if (!itemCanInteract) {
+            $(".itemCheck").attr("href", "#").addClass("disabled");
         }
 
         $("#ForceUserLogout").on("click", function () {

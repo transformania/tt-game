@@ -2214,10 +2214,8 @@ namespace TT.Web.Controllers
                     var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                     var secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
                     ViewBag.SecondsUntilUpdate = TurnTimesStatics.GetTurnLengthInSeconds() - (int)secondsSinceUpdate;
-
-                    var playerCanInteract = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
-                    var itemCanInteract = playerItem.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
-                    ViewBag.InteractionsRemaining = (playerCanInteract && itemCanInteract) ? 1 : 0;
+                    ViewBag.PlayerInteractionsRemain = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
+                    ViewBag.ItemInteractionsRemain = playerItem.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
                 }
 
                 if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
@@ -2530,10 +2528,10 @@ namespace TT.Web.Controllers
             }
 
             // assert item has not acted too many times already
-            if (itemPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
+            if ((actionName == "hush" || actionName == "restrain") && itemPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
-                TempData["Error"] = $"Your {posession} is not currently receptive to your actions.";
-                TempData["SubError"] = "Try again in a few moments.";
+                TempData["Error"] = $"Your {posession} has already acted this turn.";
+                TempData["SubError"] = "Maybe you can block their actions next turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -2563,12 +2561,14 @@ namespace TT.Web.Controllers
             var their = me.Gender == PvPStatics.GenderFemale ? "her" : "his";
             var Their = me.Gender == PvPStatics.GenderFemale ? "Her" : "His";
             var didStuffTo = $"{actionName}ed";
-            var boost = true;
+            var block = false;
+            var boost = false;
 
             if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "flaunt")
             {
                 secondP = $"Your proud owner, {me.GetFullName()}, confidently flaunts you for everyone to see!";
                 firstP = $"You proudly flaunt {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
+                boost = true;
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "shun")
@@ -2576,7 +2576,13 @@ namespace TT.Web.Controllers
                 secondP = $"Your embarrassed owner, {me.GetFullName()}, is disappointed in you and shuns you in favor of {their} other items.";
                 firstP = $"You disappointedly shun {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}.";
                 didStuffTo = "shunned";
-                boost = false;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
+            }
+            else if (itemPlayer.Mobility == PvPStatics.MobilityInanimate && actionName == "hush")
+            {
+                secondP = $"Your distracted owner, {me.GetFullName()}, is tired of your noise and sternly hushes you, preventing you from acting this turn.";
+                firstP = $"You sternly hush {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, preventing them from acting this turn.";
+                block = true;
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "praise")
@@ -2584,13 +2590,20 @@ namespace TT.Web.Controllers
                 secondP = $"Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good {posession}!";
                 firstP = $"You heap praise upon {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}!";
                 didStuffTo = "praised";
+                boost = true;
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "scold")
             {
                 secondP = $"Your angry owner, {me.GetFullName()}, bitterly scolds you in front of everyone as punishment for your misbehavior!";
                 firstP = $"You bitterly scold {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, for everyone to see!";
-                boost = false;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
+            }
+            else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "restrain")
+            {
+                secondP = $"Your irritated owner, {me.GetFullName()}, is fed up with your yapping and forcibly restrains you, preventing you from acting this turn.";
+                firstP = $"You forcibly restrain {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}, preventing them from acting this turn.";
+                block = true;
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
             }
             else
@@ -2599,27 +2612,35 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // Roll chance to gain/lose a turn's worth of XP, owner TF or struggle.
-            // Owner cannot level up/lock the item.
-            var rand = new Random();
-            if (rand.NextDouble() < 0.2)  // 1 XP per turn average for single account item (5 x 20%)
+            if (block)
             {
-                var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
-
-                if (boost && xp.LastActionTurnstamp > 0)
+                // Drain item of all their actions this turn
+                PlayerProcedures.SetAttackCount(itemPlayer, PvPStatics.MaxActionsPerUpdate);
+            }
+            else
+            {
+                // Roll chance to gain/lose a turn's worth of XP, owner TF or struggle.
+                // Owner cannot level up/lock the item.
+                var rand = new Random();
+                if (rand.NextDouble() < 0.2)  // 1 XP per turn average for single account item (5 x 20%)
                 {
-                    secondP += $"  {Their} actions gives you a helpful little boost!";
-                    firstP += "  Your action gives them a helpful little boost!";
-                    xp.LastActionTurnstamp--;
-                }
-                else if (!boost && xp.LastActionTurnstamp < currentGameTurn)
-                {
-                    secondP += $"  {Their} actions hinder your progress and leave you feeling disheartened.";
-                    firstP += "  Your action hinders their progress and leaves them feeling disheartened.";
-                    xp.LastActionTurnstamp++;
-                }
+                    var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-                inanimXpRepo.SaveInanimateXP(xp);
+                    if (boost && xp.LastActionTurnstamp > 0)
+                    {
+                        secondP += $"  {Their} actions gives you a helpful little boost!";
+                        firstP += "  Your action gives them a helpful little boost!";
+                        xp.LastActionTurnstamp--;
+                    }
+                    else if (!boost && xp.LastActionTurnstamp < currentGameTurn)
+                    {
+                        secondP += $"  {Their} actions hinder your progress and leave you feeling disheartened.";
+                        firstP += "  Your action hinders their progress and leaves them feeling disheartened.";
+                        xp.LastActionTurnstamp++;
+                    }
+
+                    inanimXpRepo.SaveInanimateXP(xp);
+                }
             }
 
             // Format item's message
@@ -2634,9 +2655,8 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-            // Subtract cost - owner item use, item attack
+            // Subtract cost (owner item use)
             PlayerProcedures.AddItemUses(me.Id, 1);
-            PlayerProcedures.AddAttackCount(itemPlayer);
 
             // Bring player online
             PlayerProcedures.SetTimestampToNow(me);
@@ -2644,7 +2664,11 @@ namespace TT.Web.Controllers
             TempData["Result"] = firstP;
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, false);
             PlayerLogProcedures.AddPlayerLog(itemPlayer.Id, secondP, true);
-            LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {itemPlayer.GetFullName()}, a {item.ItemSource.FriendlyName}, here.");
+
+            if (!block)
+            {
+                LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {itemPlayer.GetFullName()}, a {item.ItemSource.FriendlyName}, here.");
+            }
 
             return RedirectToAction(MVC.PvP.Play());
         }

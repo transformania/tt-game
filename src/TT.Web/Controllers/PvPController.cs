@@ -2470,6 +2470,18 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can interact with your pet and items.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can interact with your pet and items.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var item = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
             var itemFormerPlayer = item?.FormerPlayer;
             var itemPlayer = itemFormerPlayer == null ? null : PlayerProcedures.GetPlayer(itemFormerPlayer.Id);
@@ -2596,14 +2608,14 @@ namespace TT.Web.Controllers
 
                 if (boost && xp.LastActionTurnstamp > 0)
                 {
-                    secondP += $"  {Their} actions gives you a little boost!";
-                    firstP += "  Your action gives them a little boost!";
+                    secondP += $"  {Their} actions gives you a helpful little boost!";
+                    firstP += "  Your action gives them a helpful little boost!";
                     xp.LastActionTurnstamp--;
                 }
                 else if (!boost && xp.LastActionTurnstamp < currentGameTurn)
                 {
-                    secondP += "  You are left feeling somewhat dispirited.";
-                    firstP += "  Your action leaves them feeling somewhat dispirited.";
+                    secondP += $"  {Their} actions hinder your progress and leave you feeling disheartened.";
+                    firstP += "  Your action hinders their progress and leaves them feeling disheartened.";
                     xp.LastActionTurnstamp++;
                 }
 

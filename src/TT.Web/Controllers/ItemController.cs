@@ -175,14 +175,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player has not already used an item this turn
-            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
-            {
-                TempData["Error"] = "You've already used an item this turn.";
-                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
-                return RedirectToAction(MVC.Item.MyInventory());
-            }
-
             // assert player does own this skill
             var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
             if (skill == null)
@@ -230,6 +222,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
+            }
+
             // assert player owns at least one of the type of item needed
             var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.Id == itemId);
 
@@ -265,6 +265,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be animate in order to use this.";
                 return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             // assert player owns this item
@@ -314,6 +322,7 @@ namespace TT.Web.Controllers
                 ItemProcedures.ResetUseCooldown(itemToUse);
             }
 
+            PlayerProcedures.AddItemUses(me.Id, 1);
 
             TempData["Result"] = "You have successfully removed the curse <b>" + curseToRemove.FriendlyName + "</b> from your body!";
 
@@ -335,6 +344,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This curse is too strong to be lifted.";
                 return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             var book = ItemProcedures.GetItemViewModel(id);
@@ -365,6 +382,7 @@ namespace TT.Web.Controllers
             ItemProcedures.DeleteItem(book.dbItem.Id);
             ItemProcedures.AddBookReading(me, book.dbItem.ItemSourceId);
             PlayerProcedures.GiveXP(me, 35);
+            PlayerProcedures.AddItemUses(me.Id, 1);
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1);
 

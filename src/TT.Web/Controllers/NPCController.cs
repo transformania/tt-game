@@ -661,7 +661,7 @@ namespace TT.Web.Controllers
                     }
                     if (soullessCount > 0)
                     {
-                        output += "Some alarming reports came in about <b>" + soullessCount + " souless psychopaths</b> out there. Those truly are deragned monsters, I'd recommend to steer well clear if you see one.</br>";
+                        output += "Some alarming reports came in about <b>" + soullessCount + " soulless psychopaths</b> out there. Those truly are deranged monsters, I'd recommend to steer well clear if you see one.</br>";
                     }
                     output += "And well, that just about sums it up. Watch your step out there. Anything else I can assist you with?\"";
 

@@ -42,10 +42,13 @@ namespace TT.Domain.Legacy.Procedures
                     UPDATE [dbo].[EffectContributions] SET OwnerMemberhipId = NULL WHERE OwnerMemberhipId = @membershipId;
                     UPDATE [dbo].[DMRolls] SET MembershipOwnerId = NULL WHERE MembershipOwnerId = @membershipId;
                     UPDATE [dbo].[Players] SET BotId = -1, IpAddress = CONCAT(IpAddress, '-deleted') WHERE MembershipId = @membershipId;
+                    UPDATE [dbo].[Items] SET IsPermanent = 'True' WHERE FormerPlayerId = @playerId;
                     
                     UPDATE [dbo].[Players] SET MembershipId = NULL WHERE MembershipId = @membershipId;
                     
-                    DELETE FROM [dbo].[AspNetUsers] WHERE Id = @membershipId;", new SqlParameter("@membershipId", membershipId));
+                    DELETE FROM [dbo].[AspNetUsers] WHERE Id = @membershipId;",
+                       new SqlParameter("@membershipId", membershipId),
+                       new SqlParameter("@playerId", playerId));
             }
 
         }

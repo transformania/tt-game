@@ -79,22 +79,14 @@
                 var regex = new RegExp(regexs, "i")
                 var smatch = tagstring.match(regex);
 
-                // currently exists; increment its state
+                var numberValue = -1;
                 if (smatch !== null) {
                     //console.log("Match found:  " + smatch);
-                    var numberValue = smatch[0].match(/[0-9]/);
+                    numberValue = smatch[0].match(/[0-9]/);
                     //console.log("Value of match:  " + numberValue);
-
-                    if (numberValue == 0) {
-                        jQthis.addClass("neg2");
-                    } else if (numberValue == 1) {
-                        jQthis.addClass("neg1");
-                    } else if (numberValue == 2) {
-                        jQthis.addClass("pos1");
-                    } else if (numberValue == 3) {
-                        jQthis.addClass("pos2");
-                    }
                 }
+
+                setTag(jQthis, numberValue);
             });
 
             // assign onclick logic to buttons
@@ -107,10 +99,11 @@
                 var smatch = tagstring.match(regex);
 
                 // currently exists; increment its state
+                var numberValue = 0;
                 if (smatch !== null) {
 
                     //console.log("Click match found:  " + smatch);
-                    var numberValue = parseInt(smatch[0].match(/[0-9]/));
+                    numberValue = parseInt(smatch[0].match(/[0-9]/));
                     //console.log("Value of click match:  " + numberValue);
 
                     var oldstring = ";" + code + "." + numberValue + ";";
@@ -118,28 +111,26 @@
 
                     //console.log("replacing " + oldstring + " with " + newstring);
 
-                    cleanClasses(jQthis);
-
                     if (numberValue == 0) {
-                        jQthis.addClass("neg1");
                         tagstring = tagstring.replace(oldstring, newstring);
                     } else if (numberValue == 1) {
-                        jQthis.addClass("pos1");
                         tagstring = tagstring.replace(oldstring, newstring);
                     } else if (numberValue == 2) {
-                        jQthis.addClass("pos2");
                         tagstring = tagstring.replace(oldstring, newstring);
                     } else if (numberValue == 3) {
                         tagstring = tagstring.replace(oldstring, "");
                     }
+
+                    numberValue++;
                 }
 
                 // does not exist; add it with default (lowest) value
                 else {
-                    tagstring += ";" + code + "." + 0 + ";";
-                    jQthis.addClass("neg2");
+                    tagstring += ";" + code + ".0;";
                 }
 
+                cleanClasses(jQthis);
+                setTag(jQthis, numberValue)
                 $("#Tags").val(tagstring);
             });
 
@@ -147,11 +138,9 @@
                 $("#Tags").val("");
                 tagstring = "";
                 $(".rpTag").each(function () {
-                    var jQthis = $(this);
-                    jQthis.removeClass("neg2");
-                    jQthis.removeClass("neg1");
-                    jQthis.removeClass("pos1");
-                    jQthis.removeClass("pos2");
+                    cleanClasses($(this));
+                    $(this).children(".rpIcon").addClass("glyphicon-question-sign");
+                    $(this).children(".sr-only").text("Neutral white:");
                 });
             });
 
@@ -168,11 +157,47 @@
             });
         });
 
+        function setTag(jQthis, numberValue) {
+            var icon = jQthis.children(".rpIcon");
+            var flag = jQthis.children(".sr-only");
+
+            if (numberValue == 0) {
+                jQthis.addClass("neg2");
+                icon.addClass("glyphicon-remove-sign");
+                flag.text("Strong red:");
+            } else if (numberValue == 1) {
+                jQthis.addClass("neg1");
+                icon.addClass("glyphicon-remove-circle");
+                flag.text("Light red:");
+            } else if (numberValue == 2) {
+                jQthis.addClass("pos1");
+                icon.addClass("glyphicon-ok-circle");
+                flag.text("Light green:");
+            } else if (numberValue == 3) {
+                jQthis.addClass("pos2");
+                icon.addClass("glyphicon-ok-sign");
+                flag.text("Strong green:");
+            } else {
+                jQthis.addClass("neutral");
+                icon.addClass("glyphicon-question-sign");
+                flag.text("Neutral white:");
+            }
+        }
+
         function cleanClasses(tag) {
             tag.removeClass("neg2");
             tag.removeClass("neg1");
             tag.removeClass("pos1");
             tag.removeClass("pos2");
+
+            var icon = tag.children(".rpIcon");
+            icon.removeClass("glyphicon-question-sign");
+            icon.removeClass("glyphicon-remove-sign");
+            icon.removeClass("glyphicon-remove-circle");
+            icon.removeClass("glyphicon-ok-sign");
+            icon.removeClass("glyphicon-ok-circle");
+
+            tag.children(".sr-only").text("");
         }
 
         function confirmDeletion() {

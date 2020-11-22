@@ -1132,6 +1132,7 @@ strong {
   padding: 4px;
   line-height: 2.5em;
   white-space: nowrap;
+  user-select: none;
 }
 
 .buttonSetBio {
@@ -1170,6 +1171,14 @@ strong {
 
 .pos2 {
   background-color: #25C325;
+}
+
+.neutral {
+  background-color: #FFFFFF;
+}
+
+.neutral .rpIcon {
+  color: #888888;
 }
 
 .donateButton {

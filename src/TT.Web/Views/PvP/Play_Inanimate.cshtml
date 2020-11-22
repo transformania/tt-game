@@ -92,7 +92,7 @@
 
 <div class="specialBox specialBox2">
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
-    <span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    <span id="liveConnectionNotice" class="noticeOff" title="If this icon is a green tick, you are connected to the server and will receive live notifications when attacked or messaged."><span id="liveConnectionIcon" class="glyphicon glyphicon-remove-circle"> </span><span class="sr-only">Disconnected:</span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 

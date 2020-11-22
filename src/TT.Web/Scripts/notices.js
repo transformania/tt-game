@@ -83,12 +83,18 @@ function initNotificationBox() {
 
                 $("#liveConnectionNotice").addClass("noticeOn");
                 $("#liveConnectionNotice").removeClass("noticeOff");
+                $("#liveConnectionIcon").addClass("glyphicon-ok-circle");
+                $("#liveConnectionIcon").removeClass("glyphicon-remove-circle");
+                $("#liveConnectionNotice").children(".sr-only").text("Connected:");
 
             });
 
             $.connection.hub.disconnected(function () {
                 $("#liveConnectionNotice").addClass("noticeOff");
                 $("#liveConnectionNotice").removeClass("noticeOn");
+                $("#liveConnectionIcon").addClass("glyphicon-remove-circle");
+                $("#liveConnectionIcon").removeClass("glyphicon-ok-circle");
+                $("#liveConnectionNotice").children(".sr-only").text("Disconnected:");
             });
 
             // load whether or not to play audio notifications for updates

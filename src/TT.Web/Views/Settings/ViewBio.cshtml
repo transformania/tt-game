@@ -114,27 +114,42 @@
 
             // assign the proper styling onload
             $(".rpTag").each(function () {
+                var jQthis = $(this);
+                var icon = jQthis.children(".rpIcon");
+                var flag = jQthis.children(".sr-only");
 
                 var code = $(this).attr("tagcode");
                 var regexs = ";" + code + ".[0-9];";
                 var regex = new RegExp(regexs, "i")
                 var smatch = tagstring.match(regex);
 
-                // currently exists; increment its state
+                var numberValue = -1;
                 if (smatch !== null) {
                     console.log("Match found:  " + smatch);
-                    var numberValue = smatch[0].match(/[0-9]/);
+                    numberValue = smatch[0].match(/[0-9]/);
                     console.log("Value of match:  " + numberValue);
+                }
 
-                    if (numberValue == 0) {
-                        $(this).addClass("neg2");
-                    } else if (numberValue == 1) {
-                        $(this).addClass("neg1");
-                    } else if (numberValue == 2) {
-                        $(this).addClass("pos1");
-                    } else if (numberValue == 3) {
-                        $(this).addClass("pos2");
-                    }
+                if (numberValue == 0) {
+                    jQthis.addClass("neg2");
+                    icon.addClass("glyphicon-remove-sign");
+                    flag.text("Strong red:");
+                } else if (numberValue == 1) {
+                    jQthis.addClass("neg1");
+                    icon.addClass("glyphicon-remove-circle");
+                    flag.text("Light red:");
+                } else if (numberValue == 2) {
+                    jQthis.addClass("pos1");
+                    icon.addClass("glyphicon-ok-circle");
+                    flag.text("Light green:");
+                } else if (numberValue == 3) {
+                    jQthis.addClass("pos2");
+                    icon.addClass("glyphicon-ok-sign");
+                    flag.text("Strong green:");
+                } else {
+                    jQthis.addClass("neutral");
+                    icon.addClass("glyphicon-question-sign");
+                    flag.text("Neutral white:");
                 }
             });
 

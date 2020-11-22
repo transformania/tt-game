@@ -1128,11 +1128,15 @@ strong {
 
 .rpTag {
   border: 1px black solid;
-  cursor: pointer;
+  cursor: default;
   padding: 4px;
   line-height: 2.5em;
   white-space: nowrap;
   user-select: none;
+}
+
+.editRegion .rpTag {
+  cursor: pointer;
 }
 
 .buttonSetBio {

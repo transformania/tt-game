@@ -41,8 +41,9 @@
 
         <p>RP interest tags: Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
 
-        @Html.Partial(MVC.Settings.Views.partial.rptags);
-        <br>
+        <div class="editRegion">
+            @Html.Partial(MVC.Settings.Views.partial.rptags)
+        </div>
 
         <input id="resetTags" type="button" value="Click here to reset tags" class="btn">
         <input type="submit" value="Send" class="btn">
@@ -139,6 +140,7 @@
                 tagstring = "";
                 $(".rpTag").each(function () {
                     cleanClasses($(this));
+                    $(this).addClass("neutral");
                     $(this).children(".rpIcon").addClass("glyphicon-question-sign");
                     $(this).children(".sr-only").text("Neutral white:");
                 });
@@ -189,6 +191,7 @@
             tag.removeClass("neg1");
             tag.removeClass("pos1");
             tag.removeClass("pos2");
+            tag.removeClass("neutral");
 
             var icon = tag.children(".rpIcon");
             icon.removeClass("glyphicon-question-sign");

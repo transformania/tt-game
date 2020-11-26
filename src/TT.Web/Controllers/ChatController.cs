@@ -73,24 +73,27 @@ namespace TT.Web.Controllers
                 var userId = User.Identity.GetUserId();
                 var me = PlayerProcedures.GetPlayerFromMembership(userId);
 
-                if (me.Covenant == null || me.Covenant <= 0)
+                if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
+                {
+                    // Always grant access for moderators
+                    if (me.Covenant == null || me.Covenant <= 0 || roomName != $"coven_{me.Covenant}")
+                    {
+                        // User is not a member of this coven
+                        TempData["Result"] = "You are in this covenant chat room for moderation purposes.";
+                    }
+                }
+                else if (me.Covenant == null || me.Covenant <= 0)
                 {
                     TempData["Error"] = "You are not in a covenant and cannot access this covenant chat room.";
                     return false;
                 }
                 else if (roomName != $"coven_{me.Covenant}")
                 {
-                    if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
-                    {
-                        TempData["Result"] = "You are in this covenant chat room for moderation purposes.";
-                    }
-                    else
-                    {
-                        TempData["Error"] = "You do not have access to this covenant chat room.";
-                        return false;
-                    }
+                    TempData["Error"] = "You are not in this covenant and cannot access its chat room.";
+                    return false;
                 }
 
+                // Player is in coven or a moderator
                 var covenId = roomName.Substring(6).Parse<int>();
                 var coven = CovenantProcedures.GetDbCovenant(covenId);
                 if (coven != null)

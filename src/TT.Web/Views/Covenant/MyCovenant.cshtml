@@ -34,6 +34,11 @@
         }
 
         <li><a href="@Url.Action(MVC.Covenant.MyCovenantLog())">Coven Log</a></li>
+
+        if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin))
+        {
+            <li><a href="@Url.Action(MVC.Chat.ChatLog($"coven_{Model.dbCovenant.Id}", "lasth"))" target="_blank">Moderate Chat</a></li>
+        }
     }
 }
 

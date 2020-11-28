@@ -989,7 +989,13 @@ namespace TT.Domain.Procedures
                         if (world.IsValentineAvailable())
                         {
                             BossProcedures_Valentine.SpawnValentine();
-                            PvPWorldStatProcedures.Boss_StartValentine();
+                            /* To stop the prevention of other bosses from spawning,
+                             * opting to comment this out. I'm not removing it because
+                             * this is still a reskin in my mind and the boss may be
+                             * returned at some point in some similar capacity.
+                             * 
+                             * PvPWorldStatProcedures.Boss_StartValentine();
+                            */
                             var summontext = BossSummonDictionary.GetActivationText("Valentine");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;

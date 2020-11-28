@@ -1170,6 +1170,14 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
 
+            //Why would the Krampus talk to someone when there are more important things that need doing?
+            if (PvPWorldStatProcedures.IsAnyBossActive())
+            {
+                TempData["Error"] = "The Krampus appears to be ignoring you for the moment.";
+                TempData["SubError"] = "Perhaps you should go pester someone else for now.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             try
             {
                 DomainRegistry.Repository.FindSingle(

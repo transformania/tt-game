@@ -1137,6 +1137,11 @@ namespace TT.Domain.Procedures
             {
                 var price = 50 + (10 * item.Level);
 
+                if (price >= Int32.MaxValue)
+                {
+                    price = 999999999;
+                }
+
                 // item is not permanent, charge less
                 if (!item.IsPermanent)
                 {

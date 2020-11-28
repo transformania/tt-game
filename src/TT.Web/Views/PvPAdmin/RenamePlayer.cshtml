@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.PlayerNameViewModel
+@model TT.Domain.ViewModels.PlayerNameViewModel
 
 <div class="containerInner">
 
@@ -33,10 +33,10 @@
         @Html.TextBoxFor(m => m.NewFormSourceId, new { @type = "number" })<br><br>
 
         <span>Level:</span>
-        @Html.TextBoxFor(m => m.Level)<br><br>
+        @Html.TextBoxFor(m => m.Level, new { id = "level", @class = "checkInt" })<br><br>
 
         <span>Arpeyjis:</span>
-        @Html.TextBoxFor(m => m.Money)<br><br>
+        @Html.TextBoxFor(m => m.Money, new { id = "money", @class = "checkInt" })<br><br>
 
         <input type="submit" value="Send">
     }
@@ -44,3 +44,27 @@
     <div id="modal" class="helpModal"></div>
 
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".checkInt").focusout(function () {
+
+                // Get the values of each box.
+                var levelValue = parseInt($("#level").val());
+                var moneyValue = parseInt($("#money").val());
+
+                // Check for values over max and set accordingly.
+                if (levelValue > 999999999)
+                {
+                    $("#level").val("999999999");
+                }
+
+                if (moneyValue > 999999999) {
+                    $("#money").val("999999999");
+                }
+            })
+        });
+    </script>
+}

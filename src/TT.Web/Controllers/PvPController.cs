@@ -1061,6 +1061,14 @@ namespace TT.Web.Controllers
                 if (targeted.BotId == AIStatics.ValentineBotId)
                 {
 
+                    //The Krampus should not be attackable while other bosses are active.
+                    if (PvPWorldStatProcedures.IsAnyBossActive())
+                    {
+                        TempData["Error"] = "You cannot attack the Krampus right now.";
+                        TempData["SubError"] = "It seems there are more pressing matters right now.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+
                     if (!BossProcedures_Valentine.IsAttackableInForm(me))
                     {
                         TempData["Error"] = BossProcedures_Valentine.GetWrongFormText();

@@ -318,8 +318,9 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             var stance = GetStance();
 
-
-            if (stance == BossProcedures_Valentine.DayStance)
+            // Player should not be able to attack Krampus while another boss is active.
+            // This check is also made here in the event someone attempts to use a bookmark to attack the Krampus.
+            if (stance == BossProcedures_Valentine.DayStance && !PvPWorldStatProcedures.IsAnyBossActive())
             {
                 if (player.FormSourceId != DayVampireFemaleFormSourceId && player.FormSourceId != DayVampireMaleFormSourceId)
                 {

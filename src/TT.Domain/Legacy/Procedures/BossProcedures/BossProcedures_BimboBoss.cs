@@ -275,8 +275,8 @@ namespace TT.Domain.Procedures.BossProcedures
             if (ShouldHeal(bimboBoss, turnNumber))
             {
                 
-                var activeCurses = effectRepo.Effects.Count(eff => eff.EffectSourceId == KissEffectSourceId) *3;
-                activeCurses = activeCurses > 75 ? 75 : activeCurses;
+                var activeCurses = effectRepo.Effects.Count(eff => eff.EffectSourceId == KissEffectSourceId) * 5;
+                activeCurses = activeCurses > 130 ? 130 : activeCurses;
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);
                 var message = "<b>" + bimboBoss.GetFullName() + " draws energy from her bimbo horde, regenerating her own willpower by " + activeCurses + ".</b>";

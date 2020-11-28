@@ -178,6 +178,13 @@
     {
         @section menubottom
         {
+
+            <div style="text-align:center;padding-top:25px;">
+                <p class="rowDivider">
+                    <b>User: </b>@User.Identity.Name || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress
+                </p>
+            </div>
+
             @if (Model.PlayerForm.Player.FlaggedForAbuse)
             {
                 <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
@@ -188,6 +195,7 @@
             }
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             @if (ViewBag.Owner?.Player != null)
             {
                 <li><a href="@Url.Action(MVC.Chat.ChatLog($"owner_{ViewBag.Owner.Player.Id}", "lasth"))">Item chat log</a></li>

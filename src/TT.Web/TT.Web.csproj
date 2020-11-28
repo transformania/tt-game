@@ -389,6 +389,7 @@
     <Content Include="Views\Settings\MyBaseForms.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_78.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_79.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewPlayerLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

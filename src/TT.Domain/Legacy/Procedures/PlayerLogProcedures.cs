@@ -48,7 +48,8 @@ namespace TT.Domain.Procedures
 
             foreach (var log in myLogs)
             {
-                playerLogRepo.DeletePlayerLog(log.Id);
+                log.HideLog = true;
+                playerLogRepo.SavePlayerLog(log);
             }
         }
 

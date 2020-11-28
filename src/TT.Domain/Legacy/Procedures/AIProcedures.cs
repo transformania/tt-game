@@ -532,23 +532,23 @@ namespace TT.Domain.Procedures
 
             var pathTiles = PathfindingProcedures.GetMovementPath(start, end);
 
-            if (pathTiles.Count == 1)
+            if (pathTiles.Count == 0)
             {
-                return pathTiles[0];
+                return botLocation;
             }
 
-            var currentTileIndex = 0;
-            var nextTile = pathTiles[currentTileIndex];
+            var nextTileIndex = 0;
+            var nextTile = botLocation;
             var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-            var numberOfSteps = Math.Min(distance, pathTiles.Count - 1);
+            var numberOfSteps = Math.Min(distance, pathTiles.Count);
 
-            while (currentTileIndex < numberOfSteps)
+            while (nextTileIndex < numberOfSteps)
             {
                 var currentTile = nextTile;
                 var currentTileName = nextTileName;
 
-                nextTile = pathTiles[++currentTileIndex];
+                nextTile = pathTiles[nextTileIndex++];
                 nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
                 var botName = bot.FirstName + " " + bot.LastName;

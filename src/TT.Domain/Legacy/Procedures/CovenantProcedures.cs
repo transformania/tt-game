@@ -558,7 +558,7 @@ namespace TT.Domain.Procedures
 
             try
             {
-                XPGain = 30 / Math.Round(Convert.ToDecimal(100 - Math.Abs(info.TakeoverAmount)), 1);
+                XPGain = 40 / Math.Round(Convert.ToDecimal(101 - Math.Abs(info.TakeoverAmount)), 1);
             }
             catch (Exception)
             {

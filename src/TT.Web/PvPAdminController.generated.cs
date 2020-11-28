@@ -145,6 +145,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ViewPlayerLog()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewPlayerLog);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ViewItemTransferLog()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewItemTransferLog);
@@ -251,6 +257,7 @@ namespace TT.Web.Controllers
             public readonly string KillswitchRestore = ("KillswitchRestore").ToLowerInvariant();
             public readonly string FindMissingThumbnails = ("FindMissingThumbnails").ToLowerInvariant();
             public readonly string ViewPlayerItems = ("ViewPlayerItems").ToLowerInvariant();
+            public readonly string ViewPlayerLog = ("ViewPlayerLog").ToLowerInvariant();
             public readonly string ViewItemTransferLog = ("ViewItemTransferLog").ToLowerInvariant();
             public readonly string RenamePlayer = ("RenamePlayer").ToLowerInvariant();
             public readonly string RenamePlayerSend = ("RenamePlayerSend").ToLowerInvariant();
@@ -391,6 +398,14 @@ namespace TT.Web.Controllers
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_ViewPlayerLog s_params_ViewPlayerLog = new ActionParamsClass_ViewPlayerLog();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ViewPlayerLog ViewPlayerLogParams { get { return s_params_ViewPlayerLog; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ViewPlayerLog
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_ViewItemTransferLog s_params_ViewItemTransferLog = new ActionParamsClass_ViewItemTransferLog();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ViewItemTransferLog ViewItemTransferLogParams { get { return s_params_ViewItemTransferLog; } }
@@ -500,6 +515,7 @@ namespace TT.Web.Controllers
                 public readonly string UpdateWorld = "UpdateWorld";
                 public readonly string ViewItemTransferLog = "ViewItemTransferLog";
                 public readonly string ViewPlayerItems = "ViewPlayerItems";
+                public readonly string ViewPlayerLog = "ViewPlayerLog";
                 public readonly string ViewServerLog = "ViewServerLog";
                 public readonly string ViewUpdateLogs = "ViewUpdateLogs";
                 public readonly string WriteFae = "WriteFae";
@@ -524,6 +540,7 @@ namespace TT.Web.Controllers
             public readonly string UpdateWorld = "~/Views/PvPAdmin/UpdateWorld.cshtml";
             public readonly string ViewItemTransferLog = "~/Views/PvPAdmin/ViewItemTransferLog.cshtml";
             public readonly string ViewPlayerItems = "~/Views/PvPAdmin/ViewPlayerItems.cshtml";
+            public readonly string ViewPlayerLog = "~/Views/PvPAdmin/ViewPlayerLog.cshtml";
             public readonly string ViewServerLog = "~/Views/PvPAdmin/ViewServerLog.cshtml";
             public readonly string ViewUpdateLogs = "~/Views/PvPAdmin/ViewUpdateLogs.cshtml";
             public readonly string WriteFae = "~/Views/PvPAdmin/WriteFae.cshtml";
@@ -1032,6 +1049,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewPlayerItems);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ViewPlayerItemsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ViewPlayerLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ViewPlayerLog(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewPlayerLog);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ViewPlayerLogOverride(callInfo, id);
             return callInfo;
         }
 

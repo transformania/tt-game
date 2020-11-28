@@ -1,0 +1,20 @@
+﻿﻿@model IEnumerable<TT.Domain.Models.PlayerLog>
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.ViewModels
+@{ ViewBag.Title = "Player Log"; }
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Moderator.Index())">Back to moderator panel</a></li>
+}
+
+<h1>Viewing Player Log</h1>
+
+<div class="containerInner listdots">
+    <ul>
+        @{ foreach (var log in Model)
+                        {
+            <li>@Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span></li> } }
+    </ul>
+</div>

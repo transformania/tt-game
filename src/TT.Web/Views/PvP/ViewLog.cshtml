@@ -1,5 +1,5 @@
-﻿@model IEnumerable<TT.Domain.Models.PlayerLog>
-           @using TT.Web.CustomHtmlHelpers
+﻿﻿@model IEnumerable<TT.Domain.Models.PlayerLog>
+@using TT.Web.CustomHtmlHelpers
 @{
     ViewBag.Title = "Last Actions";
 }
@@ -15,7 +15,10 @@
         @{
             foreach (var log in Model)
             {
-                <li>@Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span></li>
+                if (log.HideLog == false)
+                {
+                    <li>@Html.Raw(log.Message) <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span></li>
+                }
             }
         }
     </ul>

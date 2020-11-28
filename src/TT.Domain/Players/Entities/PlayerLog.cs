@@ -11,6 +11,8 @@ namespace TT.Domain.Players.Entities
         public string Message { get; protected set; }
         public DateTime Timestamp { get; protected set; }
         public bool IsImportant { get; protected set; }
+        public bool HideLog { get; protected set; }
+
 
         private PlayerLog()
         {
@@ -23,7 +25,8 @@ namespace TT.Domain.Players.Entities
                 Owner = owner,
                 Message = message,
                 Timestamp = timestamp,
-                IsImportant = isImportant
+                IsImportant = isImportant,
+                HideLog = false
             };
         }
     }

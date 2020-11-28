@@ -77,10 +77,10 @@
              * Will it cause confusion? Of that I have no doubt at all!
              * But, I'm setting it up so potentially in the future, three different images can be set.
              * With those things set, it can do this kind of shenanigans: 33% of the time or 1% of the time.
-             * 
+             *
              * I may expand this to other view models, such as thumbnails.
              * I just wanted to include a tiny little easter egg!
-             * 
+             *
              * Entries into the database for secondary and tertiary portraits has to be manually entered.
              * Why? Because I don't expect this to be a common occurrence.  There is no tool for this right now.
              */
@@ -180,6 +180,13 @@
     {
         @section menubottom
         {
+
+            <div style="text-align:center;padding-top:25px;">
+                <p class="rowDivider">
+                    <b>User: </b>@User.Identity.Name || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress
+                </p>
+            </div>
+
             @if (Model.PlayerForm.Player.FlaggedForAbuse)
             {
                 <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
@@ -191,6 +198,7 @@
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             <li><a href="@Url.Action(MVC.Chat.ChatLog($"owner_{Model.PlayerForm.Player.Id}", "lasth"))">Owner chat log</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.AdminRename(Model.PlayerForm.Player.Id))">Rename</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>

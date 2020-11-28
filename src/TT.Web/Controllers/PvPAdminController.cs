@@ -1311,6 +1311,20 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        public virtual ActionResult ViewPlayerLog(int id)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
+            {
+                return View(MVC.PvPAdmin.Views.ViewPlayerLog, PlayerLogProcedures.GetAllPlayerLogs(id).Reverse());
+            }
+            else
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View(MVC.PvPAdmin.Views.Index);
+            }
+        }
+
+        [Authorize]
         public virtual ActionResult ViewItemTransferLog(int id)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))

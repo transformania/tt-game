@@ -1,12 +1,19 @@
 ﻿@model TT.Domain.Models.QuestStart
+@using TT.Domain.Procedures
 @using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
+
 @{
     ViewBag.Title = "Questing";
 }
 
 @section menu
 {
-    <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions {UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting"}, new {@class = ""})</li>
+    <li>
+        <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+        <span id="turn_countdown">-:--</span>
+    </li>
+    <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
     <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
 
     @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
@@ -67,13 +74,33 @@
 
 
     </script>
+
+    <script src="@Links.Scripts.notices_js"></script>
+    <script>
+
+        var blinkEnabled = 0;
+        var notificationsEnabled = false;
+
+        var timer_minutes = "";
+        var timer_seconds = "";
+        var turnLengthInSeconds = @TurnTimesStatics.GetTurnLengthInSeconds();
+
+        var secondsSinceUpdate = @Math.Abs(Math.Floor(PvPWorldStatProcedures.GetLastWorldUpdate().Subtract(DateTime.UtcNow).TotalSeconds));
+        var secondsToUpdate = turnLengthInSeconds - secondsSinceUpdate;
+
+        $(document).ready(function () {
+            $( "#timerBox" ).click(function() {
+                alert("The last update was  @HtmlHelpers.DatetimeToTimeago_WithSeconds(PvPWorldStatProcedures.GetLastWorldUpdate()) (based on when this page was loaded.)  Turns last " + turnLengthInSeconds + " seconds.");
+            });
+        });
+    </script>
 }
 
 @section head
 {
     <style>
-    #continueQuest {
-        display:none;
-    }
+        #continueQuest {
+            display: none;
+        }
     </style>
 }

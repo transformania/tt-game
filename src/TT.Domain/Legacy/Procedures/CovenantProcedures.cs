@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
@@ -333,6 +333,11 @@ namespace TT.Domain.Procedures
             var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == giftee.Id);
 
+            if (amount >= Int32.MaxValue)
+            {
+                amount += 999999999;
+            }
+
             dbCov.Money -= amount;
 
             // taxes...
@@ -340,7 +345,7 @@ namespace TT.Domain.Procedures
             amount = Math.Floor(amount);
 
             dbPlayer.Money += amount;
-            
+
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
 

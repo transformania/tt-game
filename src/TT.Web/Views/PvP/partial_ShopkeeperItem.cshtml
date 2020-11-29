@@ -3,13 +3,13 @@
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
     
-    @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, Model)
-
     @{
-            <div style="text-align: center;">
-                <p>@Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)</p>
-
-                @HtmlHelpers.PrintPvPIcon(Model)
+            <div class="itemDisplay">
+                <div>
+                    @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, Model)
+                    @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
+                </div>
+                    @HtmlHelpers.PrintPvPIcon(Model)
                 <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
 
                 @{
@@ -44,5 +44,13 @@
 
         .attackLink {
             text-align: center;
+        }
+
+        .itemDisplay {
+            display: block;
+            text-align: center;
+            height: 185px;
+            width: 150px;
+            margin: 0 auto;
         }
     </style>

@@ -77,5 +77,7 @@ namespace TT.Domain.Concrete
         public DbSet<QuestPlayerVariable> QuestPlayerVariables { get; set; }
         public DbSet<QuestWriterPermission> QuestWriterPermissions { get; set; }
 
+        public DbSet<Models.SelfRestoreEnergies> SelfRestoreEnergies { get; set; }
+
     }
 }

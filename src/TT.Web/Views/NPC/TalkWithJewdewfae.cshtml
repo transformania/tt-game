@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.NPCs.JewdewfaeEncounterViewModel
+@model TT.Domain.ViewModels.NPCs.JewdewfaeEncounterViewModel
 @{
     ViewBag.Title = "Talk to Jewdewfae";
 }
@@ -10,10 +10,12 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
-            <img class="img-responsive center-block" src="../Images/PvP/portraits/jewdewfae_Luxianne.png">
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+        <div class="col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+
+            <div class="imgfloat">
+                <img class="img-responsive center-block" src="../Images/PvP/portraits/jewdewfae_Luxianne.png">
+            </div>
+
             @{
                 if (!Model.ShowSuccess && !Model.HadRecentInteraction)
                 {
@@ -29,7 +31,7 @@
                     }
                     else
                     {
-                        <p><a href="@Url.Action(MVC.NPC.PlayWithJewdewfae())" class="inanimateAction center-block">Play with Jewfewfae (5 AP)</a></p>
+                        <div style="display:grid;"><a href="@Url.Action(MVC.NPC.PlayWithJewdewfae())" class="inanimateAction center-block">Play with Jewfewfae (5 AP)</a></div>
                     }
                 }
                 else if (Model.HadRecentInteraction)
@@ -53,6 +55,13 @@
 <style>
     .faevoice,fae {
         color: darkviolet;
+    }
+
+    .imgfloat {
+        float: left;
+        margin: 0px 25px 15px 0px;
+        max-width: 90%;
+        height: auto;
     }
 
 </style>

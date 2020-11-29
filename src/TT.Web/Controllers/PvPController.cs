@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -2183,7 +2183,7 @@ namespace TT.Web.Controllers
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
+            if ((playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerLookedAt.Player.Id });
 

@@ -32,22 +32,22 @@
         <br>
         Show by type:<br>
         <table style="width: 100%; text-align: center;">
-            <tr style="width: 25%;">
+            <tr>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Hat))">Hats / Headwear</a></td>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt))">Shirts and Dresses</a></td>
                 <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Undershirt))">Bras and Undershirts</a></td>
             </tr>
-            <tr style="width: 25%;">
+            <tr>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Pants))">Skirts and Pants</a></td>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Underpants))">Underwear</a></td>
                 <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shoes))">Shoes</a></td>
             </tr>
-            <tr style="width: 25%;">
+            <tr>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Accessory))">Accessories</a></td>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable_Reuseable))">Reusable Consumables</a></td>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable))">Consumables</a></td>
             </tr>
-            <tr style="width: 25%;">
+            <tr>
                 <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Rune))">Runes</a></td>
                 <td></td>
                 <td></td>
@@ -70,3 +70,9 @@
         }
     </div>
 </div>
+
+<style>
+    td {
+        width: 25%;
+    }
+</style>

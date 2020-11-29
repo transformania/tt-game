@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
@@ -399,6 +399,9 @@ namespace TT.Domain.Procedures
                         target.Mana = 0;
                     }
 
+                    // Remove any Self Restore entires.
+                    RemoveSelfRestore(target);
+
                     var targetbuffs = ItemProcedures.GetPlayerBuffs(target);
                     target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
 
@@ -565,6 +568,10 @@ namespace TT.Domain.Procedures
                         attacker.Health += healingTotal;
                         // Restore the attackers Mana
                         attacker.Mana += manaRestoredTotal;
+
+                        // Remove any Self Restore entires.
+                        RemoveSelfRestore(target);
+
                         playerRepo.SavePlayer(target);
 
                         output.AttackerLog += "  Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.";
@@ -627,6 +634,8 @@ namespace TT.Domain.Procedures
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
+                    // Remove any Self Restore entires.
+                    RemoveSelfRestore(target);
 
                     // give curse debuff
                     if (targetForm.Id == MindControlStatics.MindControl__MovementFormSourceId)
@@ -670,6 +679,18 @@ namespace TT.Domain.Procedures
                 }
 
                 return output;
+
+        }
+
+        public static void RemoveSelfRestore(Player player)
+        {
+            ISelfRestoreEnergies repo = new EFSelfRestoreEnergies();
+            IEnumerable<Models.SelfRestoreEnergies> CleanseSelfRestore = repo.SelfRestoreEnergies.Where(q => q.OwnerId == player.Id).ToList();
+
+            foreach (var t in CleanseSelfRestore)
+            {
+                repo.DeleteSelfRestoreEnergies(t.Id);
+            }
 
         }
 
@@ -1107,8 +1128,6 @@ namespace TT.Domain.Procedures
 
             return modifier;
         }
-
-
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
@@ -637,8 +637,8 @@ namespace TT.Domain.Procedures
                     // Remove any Self Restore entires.
                     RemoveSelfRestore(target);
 
-                // give curse debuff
-                if (targetForm.Id == MindControlStatics.MindControl__MovementFormSourceId)
+                    // give curse debuff
+                    if (targetForm.Id == MindControlStatics.MindControl__MovementFormSourceId)
                     {
                         EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffectSourceId, target);
                     }

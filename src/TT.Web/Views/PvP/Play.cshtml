@@ -48,7 +48,21 @@
         </ul>
     </li>
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
-    <li><a href="@Url.Action(MVC.Quest.QuestsAvailableHere())">Quest</a></li>
+
+    @{
+        var AvailableQuests = QuestProcedures.GetAvailableQuestsAtLocation(PlayerProcedures.GetPlayer(Model.You.Player.Id), PvPWorldStatProcedures.GetWorldTurnNumber()).Count(q => q.Location == Model.You.Player.dbLocationName);
+        var AllQuests = QuestProcedures.GetAllQuestStartsAtLocation(Model.You.Player.dbLocationName).Count(q => q.IsLive);
+
+        if (AvailableQuests == 0)
+        {
+            <li><a style="cursor: not-allowed; opacity: 0.6;">Quest (@AvailableQuests/@AllQuests)</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(MVC.Quest.QuestsAvailableHere())">Quest (@AvailableQuests/@AllQuests)</a></li>
+        }
+    }
+
     <li><a href="@Url.Action(MVC.Contribution.Contribute())">Contribute</a></li>
     @{
         if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
@@ -142,14 +156,15 @@
 
     @Html.Partial(MVC.PvP.Views.partial_FrontPageAvatar, Model.You)
 
-   <div id="playerActionBox">
+    <div id="playerActionBox">
         <a href="@Url.Action(MVC.PvP.Cleanse())" id="actionCleanse" class="actionButton">Cleanse (4 AP, 3 Mana)</a>
         <a href="@Url.Action(MVC.PvP.Meditate())" id="actionMeditate" class="actionButton">Meditate (4 AP)</a>
         <a href="@Url.Action(MVC.PvP.Search())" id="actionSearch" class="actionButton">Search this Area (@String.Format("{0:0.#}", Model.APSearchCost) AP)</a>
     </div>
 
     <div class="row">
-        <div class="col-md-4" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, true))
+        <div class="col-md-4" style="text-align: center;">
+            @Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, true))
             @{
                 if (Model.You.Player.ShoutsRemaining > 0)
                 {
@@ -179,7 +194,7 @@
                 {
                     try
                     {
-                        var temp2 = CovenantDictionary.IdNameFlagLookup[(int) Model.Location.CovenantController];
+                        var temp2 = CovenantDictionary.IdNameFlagLookup[(int)Model.Location.CovenantController];
 
                         if (temp2 != null)
                         {

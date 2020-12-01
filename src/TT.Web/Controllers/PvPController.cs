@@ -2170,7 +2170,8 @@ namespace TT.Web.Controllers
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
                 Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = playerLookedAt.Player.Id }).Where(i => i.IsEquipped == true),
                 Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer()),
-                ShowInventory = !AIStatics.IsAFriendly(playerLookedAt.Player.BotId)
+                ShowInventory = !AIStatics.IsAFriendly(playerLookedAt.Player.BotId),
+                PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = playerLookedAt.Player.MembershipId })
             };
 
 

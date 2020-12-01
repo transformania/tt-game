@@ -5,7 +5,7 @@
     
     @{
             <div class="itemDisplay">
-                <div id="itemListed">
+                <div id="itemListed" title="@Model.ItemSource.FriendlyName">
                     @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, Model)
                     @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
                 </div>

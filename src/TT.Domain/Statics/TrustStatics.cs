@@ -21,7 +21,8 @@ namespace TT.Domain.Statics
            "Jewdewfae",
            "Wuffie",
            "Lovebringer",
-           "Narcissa"
+           "Narcissa",
+           "Wüffie"
            };
 
 

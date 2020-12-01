@@ -1,11 +1,11 @@
 ﻿@model TT.Domain.Items.DTOs.ItemDetail
-           @using TT.Web.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
     
     @{
             <div class="itemDisplay">
-                <div>
+                <div id="itemListed">
                     @Html.Partial(MVC.PvP.Views.partial.partial_ItemDetail, Model)
                     @Model.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, Model)
                 </div>
@@ -30,27 +30,35 @@
     }
 </div>
     
-    <style>
-        .itemName {
-            font-size: 20px;
-            font-weight: bold;
-        }
+<style>
+    .itemName {
+        font-size: 20px;
+        font-weight: bold;
+    }
 
-        .WasPerson {
-            font-size: 15px;
-            color: chocolate;
-            font-style: italic;
-        }
+    .WasPerson {
+        font-size: 15px;
+        color: chocolate;
+        font-style: italic;
+    }
 
-        .attackLink {
-            text-align: center;
-        }
+    .attackLink {
+        text-align: center;
+    }
 
-        .itemDisplay {
-            display: block;
-            text-align: center;
-            height: 185px;
-            width: 150px;
-            margin: 0 auto;
-        }
-    </style>
+    .itemDisplay {
+        display: block;
+        text-align: center;
+        height: 185px;
+        width: 150px;
+        margin: 0 auto;
+    }
+
+    #itemListed {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 150px;
+        white-space: nowrap;
+    }
+</style>

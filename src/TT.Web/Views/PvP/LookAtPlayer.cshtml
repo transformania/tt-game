@@ -181,11 +181,16 @@
         @section menubottom
         {
 
-            <div style="text-align:center;padding-top:25px;">
-                <p class="rowDivider">
-                    <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress
-                </p>
-            </div>
+            @{ if (Model.PlayerForm.Player.MembershipId != null)
+                {
+                    <div style="text-align:center;padding-top:25px;">
+                        <p class="rowDivider">
+
+                            <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress
+                        </p>
+                    </div>
+                }
+            }
 
             @if (Model.PlayerForm.Player.FlaggedForAbuse)
             {

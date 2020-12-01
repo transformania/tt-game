@@ -126,7 +126,7 @@ namespace TT.Web.Controllers
                     Skill_ManaCost = 7,
                     Form_TFEnergyRequired = 100,
                     Skill_TFPointsAmount = 10,
-                    Skill_HealthDamageAmount = 10,
+                    Skill_HealthDamageAmount = 50,
                     Skill_IsPlayerLearnable = true
                 };
             }

@@ -189,35 +189,57 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 // we should hopefully by now have a valid target.  Hopefully.  Now move to them and loot away.
-                try { 
-                    malethief.dbLocationName = target.dbLocationName;
-                    femalethief.dbLocationName = target.dbLocationName;
+                try {
 
-                    // take money from victim and give some to the thieves with an uneven split.  Multiple the thieves' gain by 3
-                    // because only about a third of Arpeyis are actually collected from a completed inanimation
-                    target.Money = Math.Floor(target.Money * .90M);
-                    malethief.Money += Math.Floor(target.Money * .025M);
-                    femalethief.Money += Math.Floor(target.Money * .075M);
 
-                    playerRepo.SavePlayer(target);
-                    playerRepo.SavePlayer(malethief);
-                    playerRepo.SavePlayer(femalethief);
-
-                    AttackProcedures.Attack(femalethief, target, StunSpellSourceId);
-                    AIProcedures.DealBossDamage(femalethief, target, false, 1);
-
-                    var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
-                    var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
-                    PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
-                    LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
-
-                    maleAI.Var1++;
-
-                    if (maleAI.Var1 >= 20)
+                    // Sometimes the rats will still teleport to a person in the dungeon if they move after being targetted.
+                    // Check target location again.
+                    var player = PlayerProcedures.GetPlayer(target.Id);
+                    
+                    // This check should prevent that at the cost of the rats losing their turn, which seems alright to me.
+                    if (!player.dbLocationName.Contains("dungeon_"))
                     {
-                        maleAI.Var1 = 0;
+                        malethief.dbLocationName = target.dbLocationName;
+                        femalethief.dbLocationName = target.dbLocationName;
+
+                        // take money from victim and give some to the thieves with an uneven split.  Multiple the thieves' gain by 3
+                        // because only about a third of Arpeyis are actually collected from a completed inanimation
+                        target.Money = Math.Floor(target.Money * .90M);
+                        malethief.Money += Math.Floor(target.Money * .025M);
+                        femalethief.Money += Math.Floor(target.Money * .075M);
+
+                        playerRepo.SavePlayer(target);
+                        playerRepo.SavePlayer(malethief);
+                        playerRepo.SavePlayer(femalethief);
+
+                        AttackProcedures.Attack(femalethief, target, StunSpellSourceId);
+                        AIProcedures.DealBossDamage(femalethief, target, false, 1);
+
+                        var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
+                        var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
+                        PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
+                        LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
+
+                        maleAI.Var1++;
+
+                        if (maleAI.Var1 >= 20)
+                        {
+                            maleAI.Var1 = 0;
+                        }
+                        aiRepo.SaveAIDirective(maleAI);
                     }
-                    aiRepo.SaveAIDirective(maleAI);
+                    else
+                    {
+                        // If the target is in the dungeon, move it on to the next target.
+                        maleAI.Var1++;
+
+                        if (maleAI.Var1 >= 20)
+                        {
+                            maleAI.Var1 = 0;
+                        }
+                        aiRepo.SaveAIDirective(maleAI);
+
+                    }
                 }
                 catch
                 {

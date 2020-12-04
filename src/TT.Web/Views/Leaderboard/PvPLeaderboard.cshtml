@@ -200,9 +200,9 @@
                 }
             });
 
-        var myName = "@ViewBag.MyName";
+        var myName = "@ViewBag.MyId";
         if (myName !== "") {
-            $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
+            $("a[href$='" + myName + "']").closest('tr').css("background-color", "pink");
         }
     </script>
 }

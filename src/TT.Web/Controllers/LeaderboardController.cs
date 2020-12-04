@@ -31,11 +31,13 @@ namespace TT.Web.Controllers
             if (myMembershipId.IsNullOrEmpty())
             {
                 ViewBag.MyName = "";
+                ViewBag.MyId = "";
             }
             else
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
+                ViewBag.MyId = me.Id;
             }
             return View(MVC.Leaderboard.Views.Leaderboard, PlayerProcedures.GetLeadingPlayers__XP(100));
         }
@@ -46,11 +48,13 @@ namespace TT.Web.Controllers
             if (myMembershipId.IsNullOrEmpty())
             {
                 ViewBag.MyName = "";
+                ViewBag.MyId = "";
             }
             else
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
+                ViewBag.MyId = me.Id;
             }
             return View(MVC.Leaderboard.Views.PvPLeaderboard, PlayerProcedures.GetLeadingPlayers__PvP(100));
         }
@@ -61,11 +65,13 @@ namespace TT.Web.Controllers
             if (myMembershipId.IsNullOrEmpty())
             {
                 ViewBag.MyName = "";
+                ViewBag.MyId = "";
             }
             else
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
+                ViewBag.MyId = me.Id;
             }
 
             var output = await mediator.Send(new ItemLeaderboardRequest { Limit = 100 });

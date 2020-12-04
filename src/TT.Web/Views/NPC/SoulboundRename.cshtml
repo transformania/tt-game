@@ -4,32 +4,54 @@
 
         <h1>Rename Soulbound Item / Pet</h1>
 
-        <p>You can use this tool to rename a soulbound object or pet.  Some rules:</p>
-        <ul class="listdots">
-            <li>This tool only works if the person has consented to being soulbound..</li>
-            <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
-            <li>Do not make any words so long that it cannot text wrap comfortably.</li>
-            <li>Names are limited to 30 characters, with apostrophes and hyphens allowed.</li>
-            <li><b>Do not use apostrophes to give your items nicknames</b>. You may only use apostrophes for such forms as "Owner's Pet" or for similar things.</li>
-        </ul>
+        <div>
+            <p>You can use this tool to rename a soulbound object or pet.  Some rules:</p>
+            <ul class="listdots">
+                <li>This tool only works if the person has consented to being soulbound..</li>
+                <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
+                <li>Do not make any words so long that it cannot text wrap comfortably.</li>
+                <li>Names are limited to 30 characters, with apostrophes and hyphens allowed.</li>
+                <li><b>Do not use apostrophes to give your items nicknames</b>. You may only use apostrophes for such forms as "Owner's Pet" or for similar things.</li>
+            </ul>
+        </div>
 
-        @using (Html.BeginForm(MVC.NPC.SoulboundRename(), FormMethod.Post))
-        {
-            @Html.ValidationSummary()
-            @Html.AntiForgeryToken()
+        <div>
+            @using (Html.BeginForm(MVC.NPC.SoulboundRename(), FormMethod.Post))
+            {
+                <div style="font-weight: bold;">
+                    @Html.ValidationSummary("",new { @class = "alert alert-danger text-center" })
+                </div>
 
-            @Html.HiddenFor(m => m.Id)
+                @Html.AntiForgeryToken()
 
-            <p><span>First Name:</span>
-            @Html.TextAreaFor(m => m.NewFirstName)
-            <b>@Html.ValidationMessageFor(m => m.NewFirstName)</b></p>
+                @Html.HiddenFor(m => m.Id)
+                
+                <div class="center-block">
+                    <p class="input-group col-md-5" style="margin: 0 auto; padding: 5px;">
+                        <span class="input-group-addon">First Name:</span>
+                        @Html.TextBoxFor(m => m.NewFirstName, new { placeholder = "First Name", autofocus = true, @class = "form-control" })
+                    </p>
 
-            <p><span>Last Name:</span>
-            @Html.TextAreaFor(m => m.NewLastName)
-            <b>@Html.ValidationMessageFor(m => m.NewLastName)</b></p>
+                    <p class="input-group col-md-5" style="margin: 0 auto; padding: 5px;">
+                        <span class="input-group-addon">Last Name:</span>
+                        @Html.TextBoxFor(m => m.NewLastName, new { placeholder = "Last Name", @class = "form-control" })
+                    </p>
+                </div>
 
-            <input type="submit" value="Send">
-        }
-
+                <div class="col text-center">
+                    <input type="submit" class="btn btn-default" style="margin: 0 auto;" value="Send">
+                </div>
+            }
+        </div>
     </div>
 
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($(".validation-summary-errors li:visible").length === 0) {
+                $(".validation-summary-valid").hide();
+            }
+        });
+    </script>
+}

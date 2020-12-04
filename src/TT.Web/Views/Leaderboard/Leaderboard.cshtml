@@ -161,9 +161,9 @@
 @section scripts
 {
     <script>
-    var myName = "@ViewBag.MyName";
-    if (myName !== "") {
-        $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
-    }
+        var myName = "@ViewBag.MyId";
+        if (myName !== "") {
+            $("a[href$='" + myName + "']").closest('tr').css("background-color", "pink");
+        }
     </script>
 }

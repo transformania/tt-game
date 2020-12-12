@@ -10,58 +10,58 @@ namespace TT.Migrations
 
             //NPCs and Vendors
             //Rusty
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Steamstein', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Bartender', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Automaton', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Steamstein', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Bartender', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Rusty Automaton', GETUTCDATE());");
             //Jewdewfae
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Jewdewfae Pervfae', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Jewdewfae Pervfae', GETUTCDATE());");
             //Lindella
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lindella Vendor', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lindella Soul', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lindella Vendor', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lindella Soul', GETUTCDATE());");
             //Snek
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Skaldrlyr Forbidden', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Skaldrlyr Forbidden', GETUTCDATE());");
             //Woof
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Soul', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Pet', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Vendor', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Soul', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Pet', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Vendor', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Soul', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Pet', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wüffie Vendor', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Soul', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Pet', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Wuffie Vendor', GETUTCDATE());");
             //Succubutt
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Karin Kezesul-Adriz', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Karin Soulbinder', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Karin Kezesul-Adriz', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Karin Soulbinder', GETUTCDATE());");
 
             //Bosses
             //Bimboss
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lady Lovebringer', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lady Lovebringer', GETUTCDATE());");
             //Not-Circe
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Donna Milton', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Aunt Donna', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Donna Milton', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Aunt Donna', GETUTCDATE());");
             //Faeboss
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Narcissa Exile', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Narcissa Exiled', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Narcissa Exile', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Narcissa Exiled', GETUTCDATE());");
             //Vroom Boss
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Road Queen', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Harley Punksplitter', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Road Queen', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Harley Punksplitter', GETUTCDATE());");
             //Nerd Sister
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Headmistress Brisby', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Adrianna Brisby', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Headmistress Adrianna', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Headmistress Brisby', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Adrianna Brisby', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Headmistress Adrianna', GETUTCDATE());");
             //Bimbo Sister
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Beautician Brisby', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Beautician Candice', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Candice Brisby', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Beautician Brisby', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Beautician Candice', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Candice Brisby', GETUTCDATE());");
             //Brother Thief
-            Execute.Sql("INSERT INTO ReservedNames( FullName, TimeStamp) VALUES('Brother Seekshadow', GETDATE()); ");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lujako Seekshadow', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Brother Lujako', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames( FullName, TimeStamp) VALUES('Brother Seekshadow', GETUTCDATE()); ");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lujako Seekshadow', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Brother Lujako', GETUTCDATE());");
             //Sister Thied
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Sister Seekshadow', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lujienne Seekshadow', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Sister Lujienne', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Sister Seekshadow', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lujienne Seekshadow', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Sister Lujienne', GETUTCDATE());");
             //Krampus
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lord Valentine', GETDATE());");
-            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lady Krampus', GETDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lord Valentine', GETUTCDATE());");
+            Execute.Sql("INSERT INTO ReservedNames (FullName,TimeStamp) VALUES ('Lady Krampus', GETUTCDATE());");
 
         }
     }

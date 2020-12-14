@@ -12,10 +12,13 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
-        public static string Attack(Player attacker, Player victim, SkillViewModel skillBeingUsed)
+        public static string Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed)
         {
 
             var result = "";
+
+            var attacker = PlayerProcedures.GetPlayer(attackingPlayer.Id);
+            var victim = PlayerProcedures.GetPlayer(attackedPlayer.Id);
 
             if (victim.Mobility != PvPStatics.MobilityFull || attacker.Mobility != PvPStatics.MobilityFull)
             {

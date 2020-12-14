@@ -76,19 +76,14 @@ Task("Clean")
 );
 
 Task("Restore-NuGet-Packages")
-    .Does(() =>
-{
-    NuGetRestore("./src/TT.sln", new NuGetRestoreSettings {
-        Source = new List<string> {
-            "https://www.nuget.org/api/v2/",
-            "https://www.myget.org/F/roslyn-nightly/"
-        }
-    });
-});
+    .Does(() => {
+        NuGetRestore("./src/TT.sln");
+    }
+);
 
 Task("Build")
-    .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Clean")
     .Does(() => {
     MSBuild("./src/TT.sln", settings =>
         settings.SetConfiguration(configuration)

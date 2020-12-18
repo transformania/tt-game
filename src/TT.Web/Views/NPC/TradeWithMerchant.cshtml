@@ -8,6 +8,38 @@
 @section scripts
 {
     <script src="@Links.Scripts.itemDetailModal_js"></script>
+    <script>
+        $("#filtersoul input:radio").change(function () {
+            var selectedVal = $("#filtersoul input:radio:checked").val();
+            var valsMap = {
+                "all": "div",
+                "souled0": ".icon-souled0",
+                "souled1": ".icon-souled1",
+                "souled2": ".icon-souled2"
+            }
+            if (selectedVal == "unsouled") {
+                $(".charaBox").each(function (index) {
+                    if ($(this).find(".icon-souled0, .icon-souled1, .icon-souled2").length) {
+                        $(this).css("display", "none");
+                    }
+                    else {
+                        $(this).css("display", "");
+                    }
+                });
+            } else {
+                $(".charaBox").each(function (index) {
+                    if ($(this).find(valsMap[selectedVal]).length) {
+                        $(this).css("display", "");
+                    }
+                    else {
+                        $(this).css("display", "none");
+                    }
+                });
+            }
+            
+
+        });
+    </script>
 }
 
 @section menu
@@ -60,6 +92,45 @@
     <div id="fullDetails">
 
     </div>
+    <br>
+    <form id="filtersoul" action="">
+        <div style="text-align: center;">
+            <span style="white-space:nowrap;margin:5px;">
+                <input type="radio" name="filter" value="all" id="filter-all" checked="">
+                <label for="filter-all">
+                    All
+                </label>
+            </span>
+            <span style="white-space:nowrap;margin:5px;">
+                <input type="radio" name="filter" value="souled0" id="filter-souled0">
+                <label for="filter-souled0">
+                    <span class="icon icon-souled0"></span>
+                    Recently Online
+                </label>
+            </span>
+            <span style="white-space:nowrap;margin:5px;">
+                <input type="radio" name="filter" value="souled1" id="filter-souled1">
+                <label for="filter-souled1">
+                    <span class="icon icon-souled1"></span>
+                    Online Today
+                </label>
+            </span>
+            <span style="white-space:nowrap;margin:5px;">
+                <input type="radio" name="filter" value="souled2" id="filter-souled2">
+                <label for="filter-souled2">
+                    <span class="icon icon-souled2"></span>
+                    Online Within Last 3 Days
+                </label>
+            </span>
+            <span style="white-space:nowrap;margin:5px;">
+                <input type="radio" name="filter" value="unsouled" id="filter-unsouled">
+                <label for="filter-unsouled">
+                    Dormant Soul
+                </label>
+            </span>
+        </div>
+    </form>
+    <br>
     <div class="row boxContainer">
 
         @{

@@ -631,6 +631,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 80,
+      "name": "Alpha 80 (Era of Krampus Fun 2, Electric Boogaloo)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

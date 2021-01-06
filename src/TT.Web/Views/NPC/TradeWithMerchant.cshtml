@@ -9,6 +9,9 @@
 {
     <script src="@Links.Scripts.itemDetailModal_js"></script>
     <script>
+        $(document).ready(function () {
+            $('#filtersoul').css('visibility', 'visible');
+        });
         $("#filtersoul input:radio").change(function () {
             var selectedVal = $("#filtersoul input:radio:checked").val();
             var valsMap = {
@@ -93,7 +96,7 @@
 
     </div>
     <br>
-    <form id="filtersoul" action="">
+    <form id="filtersoul" action="" style="visibility:hidden;">
         <div style="text-align: center;">
             <span style="white-space:nowrap;margin:5px;">
                 <input type="radio" name="filter" value="all" id="filter-all" checked="">

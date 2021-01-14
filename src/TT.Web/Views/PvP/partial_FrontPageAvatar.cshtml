@@ -14,7 +14,7 @@
     <div class="col-md-4 col-sm-6 hidden-xs">
         <div class="frontOuter">
             <div class="avatarText">
-                <p class="avatarName">@Model.Player.GetFullName()</p>
+                <p class="avatarName"><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a></p>
                 <p class="avatarFormName">@Model.Form.FriendlyName</p>
                 <p class="avatarCoven">@HtmlHelpers.GetCovenantInfo(Model.Player.ToDbPlayer())</p>
             </div>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="visible-xs center-block">
-        <p class="avatarFormName">@Model.Player.GetFullName()</p>
+        <p class="avatarFormName"><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a></p>
         <p><span style="font-size: 12px">Level: <b>@Model.Player.Level</b></span> - @Model.Form.FriendlyName @HtmlHelpers.PrintGenderIcon(Model.Player.Gender)</p>
         <div class="portraitMobile" style="background-image: url(@HtmlHelpers.GetImageURL(Model, false));" title="@Model.Form.Description">
             @{if (PlayerProcedures.PlayerIsOffline(Model.Player))

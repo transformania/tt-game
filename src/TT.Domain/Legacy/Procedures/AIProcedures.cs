@@ -345,6 +345,8 @@ namespace TT.Domain.Procedures
                                 CanAttack(worldDetail, bot, myTarget)
                                 )
                             {
+                                playerRepo.SavePlayer(bot);
+
                                 var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
                                 for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
                                 {
@@ -379,6 +381,7 @@ namespace TT.Domain.Procedures
                             var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count);
                             var victim = onlinePlayersHere.ElementAt((int)roll);
                             AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
+                            playerRepo.SavePlayer(bot);
 
                             var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
                             for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)

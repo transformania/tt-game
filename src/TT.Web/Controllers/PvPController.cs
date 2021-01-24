@@ -2129,11 +2129,22 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
+            var playerMessage = item.Item.UsageMessage_Player;
+            if (string.IsNullOrEmpty(playerMessage))
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
+            }
+            else
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"{playerMessage}<br /><b>{result}</b>", item.dbItem.FormerPlayerId != null);
+            }
 
             if (item.dbItem.FormerPlayerId != null)
             {
-                PlayerLogProcedures.AddPlayerLog((int)item.dbItem.FormerPlayerId, "Your owner just used you!", true);
+                var itemMessage = item.Item.UsageMessage_Item;
+                var context = "<b>Your owner just used you!</b>";
+                itemMessage = string.IsNullOrEmpty(itemMessage) ? context : $"{itemMessage}<br />{context}";
+                PlayerLogProcedures.AddPlayerLog((int)item.dbItem.FormerPlayerId, itemMessage, true);
             }
 
             return RedirectToAction(MVC.Item.MyInventory());

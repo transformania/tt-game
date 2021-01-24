@@ -324,11 +324,25 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.AddItemUses(me.Id, 1);
 
-            TempData["Result"] = "You have successfully removed the curse <b>" + curseToRemove.FriendlyName + "</b> from your body!";
+            var result = $"You have successfully removed the curse <b>{curseToRemove.FriendlyName}</b> from your body!";
+            TempData["Result"] = result;
+
+            var playerMessage = itemToUse.Item.UsageMessage_Player;
+            if (string.IsNullOrEmpty(playerMessage))
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, result, false);
+            }
+            else
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"{playerMessage}<br />{result}", itemToUse.dbItem.FormerPlayerId != null);
+            }
 
             if (itemToUse.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId && itemToUse.dbItem.FormerPlayerId != null)
             {
-                PlayerLogProcedures.AddPlayerLog((int)itemToUse.dbItem.FormerPlayerId, "Your owner just used you to remove the curse <b>" +curseToRemove.FriendlyName + "</b>! Doesn't that make you feel all warm and tingly?", true);
+                var itemMessage = itemToUse.Item.UsageMessage_Item;
+                var context = $"Your owner just used you to remove the curse <b>{curseToRemove.FriendlyName}</b>! Doesn't that make you feel all warm and tingly?";
+                itemMessage = string.IsNullOrEmpty(itemMessage) ? context : $"{itemMessage}<br />{context}";
+                PlayerLogProcedures.AddPlayerLog((int)itemToUse.dbItem.FormerPlayerId, itemMessage, true);
             }
 
             return RedirectToAction(MVC.PvP.Play());

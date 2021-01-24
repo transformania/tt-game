@@ -66,13 +66,6 @@ namespace TT.Domain.Procedures
                         FormSourceId = skill.StaticSkill.FormSourceId
                     };
 
-                    var form = FormStatics.GetForm(skill.StaticSkill.Id);
-
-                    if (form != null)
-                    {
-                        cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.Id).Id;
-                    }
-
                     DomainRegistry.Repository.Execute(cmd);
                 }
                 else
@@ -101,13 +94,6 @@ namespace TT.Domain.Procedures
                     CasterId = attacker.Id,
                     FormSourceId = skill.StaticSkill.FormSourceId
                 };
-
-                var form = FormStatics.GetForm(skill.StaticSkill.Id);
-
-                if (form != null)
-                {
-                    cmd.FormSourceId = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value).Id;
-                }
 
                 DomainRegistry.Repository.Execute(cmd);
 

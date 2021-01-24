@@ -24,9 +24,9 @@
 
 <div id="playnum-@Model.Player.Id">
     <div class="portraitFrame @HtmlHelpers.GetPortraitBorderClass(Model.Player.BotId)">
-        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageURL(Model, true)); float: right; bottom: 0;">
+        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageURL(Model, true)); position: relative;">
 
-            <span style="float: right;">@HtmlHelpers.PrintGenderIcon(Model.Player.Gender)</span>
+            <span style="position: absolute; top: 2px; right: 2px;">@HtmlHelpers.PrintGenderIcon(Model.Player.Gender)</span>
             <span class="icon icon-level"><b>@Model.Player.Level</b></span>
 
             <span class="portraitIconRP">@HtmlHelpers.PrintRPIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintPvPIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintMCIcon(Model.Player.ToDbPlayer()) @HtmlHelpers.PrintDonatorIcon(Model.Player.ToDbPlayer())</span>

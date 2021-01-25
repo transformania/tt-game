@@ -388,23 +388,63 @@ namespace TT.Domain.Procedures
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
             var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == playerItem.ItemSource.CurseTFFormSourceId);
 
-            var ownerMessage = "";
+            var ownerSuccessMessage = "";
+            var ownerFailureMessage = "";
             var playerMessage = "";
 
+            var newFormSourceId = -1;
+
+            if (playerItem.ItemSource.CurseTFFormSourceId == null)
+            {
+                // No item-provided TF curse - reduce chance of transforming to a preset form
+                chanceOfSuccess /= 4.0;
+                newFormSourceId = FormStatics.DefaultTFCurseForms[rand.Next(FormStatics.DefaultTFCurseForms.Length)];
+            }
+            else
+            {
+                // Regular TF curse - load its details
+                newFormSourceId = playerItem.ItemSource.CurseTFFormSourceId.Value;
+
+                if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                {
+                    ownerSuccessMessage = tf.CursedTF_Succeed_M;
+                }
+                else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
+                {
+                    ownerSuccessMessage = tf.CursedTF_Succeed_F;
+                }
+                else if (!tf.CursedTF_Succeed.IsNullOrEmpty())
+                {
+                    ownerSuccessMessage = tf.CursedTF_Succeed;
+                }
+
+                if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                {
+                    ownerFailureMessage = tf.CursedTF_Succeed_M;
+                }
+                else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
+                {
+                    ownerFailureMessage = tf.CursedTF_Succeed_F;
+                }
+                else if (!tf.CursedTF_Succeed.IsNullOrEmpty())
+                {
+                    ownerFailureMessage = tf.CursedTF_Succeed;
+                }
+            }
 
 
             // success; owner is transformed!
             if (roll < chanceOfSuccess)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var newForm = FormStatics.GetForm(playerItem.ItemSource.CurseTFFormSourceId.Value);
+                var newForm = FormStatics.GetForm(newFormSourceId);
 
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
                         PlayerId = playerItem.Owner.Id,
-                        FormSourceId = playerItem.ItemSource.CurseTFFormSourceId.Value
+                        FormSourceId = newFormSourceId
                     });
 
                     var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == playerItem.Owner.Id);
@@ -413,21 +453,13 @@ namespace TT.Domain.Procedures
                     dbOwner.NormalizeHealthMana();
                     playerRepo.SavePlayer(dbOwner);
 
-                    if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                    if (ownerSuccessMessage.IsNullOrEmpty())
                     {
-                        ownerMessage = tf.CursedTF_Succeed_M;
+                        ownerSuccessMessage = $"One of your items, {playerItem.FormerPlayer.FullName}, attempts to trigger a curse placed upon it.  Suddenly you are overwhelmed as you find yourself transformed into a {newForm.FriendlyName}!";
                     }
-                    else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
-                    {
-                        ownerMessage = tf.CursedTF_Succeed_F;
-                    }
-                    else if (!tf.CursedTF_Succeed.IsNullOrEmpty())
-                    {
-                        ownerMessage = tf.CursedTF_Succeed;
-                    }
-
                     playerMessage = "Your subtle transformation curse overwhelms your owner, transforming them into a " + newForm.FriendlyName + "!";
-                    PlayerLogProcedures.AddPlayerLog(playerItem.Owner.Id, ownerMessage, true);
+
+                    PlayerLogProcedures.AddPlayerLog(playerItem.Owner.Id, ownerSuccessMessage, true);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.FormerPlayer.FullName + " the " + playerItem.ItemSource.FriendlyName + ", one of their belongings!</b>");
                 }
             }
@@ -436,21 +468,13 @@ namespace TT.Domain.Procedures
             // fail; owner is not transformed
             else
             {
-                if (owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Fail_M.IsNullOrEmpty())
+                if (ownerFailureMessage.IsNullOrEmpty())
                 {
-                    ownerMessage = tf.CursedTF_Fail_M;
+                    ownerFailureMessage = "One of your items attempts to trigger a curse placed upon it, but it fails to transform you.";
                 }
-                else if (owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Fail_F.IsNullOrEmpty())
-                {
-                    ownerMessage = tf.CursedTF_Fail_F;
-                }
-                else if (!tf.CursedTF_Fail.IsNullOrEmpty())
-                {
-                    ownerMessage = tf.CursedTF_Fail;
-                }
-
                 playerMessage = "Unfortunately your subtle transformation curse fails to transform your owner.";
-                PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
+
+                PlayerLogProcedures.AddPlayerLog(owner.Id, ownerFailureMessage, true);
             }
             
             PlayerProcedures.AddAttackCount(player);

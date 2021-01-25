@@ -186,7 +186,7 @@
                             </li>
 
                             @{
-                                if (!Model.Item.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
+                                if (Model.Item.ItemSource.CurseTFFormSourceId != null || (FormStatics.DefaultTFCurseForms != null && !FormStatics.DefaultTFCurseForms.IsEmpty()))
                                 {
                                     <li>
                                         <a href="@Url.Action(MVC.PvP.CurseTransformOwner())" class="check inanimateAction">Attempt to transform your owner!</a>

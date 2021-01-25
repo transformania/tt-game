@@ -36,7 +36,6 @@ namespace TT.Domain.Items.DTOs
         public decimal MoneyValueSell { get; set; }
         public string ItemType { get; set; }
         public int? GivesEffectSourceId { get; set; }
-        public string CurseTFFormdbName { get; set; }
 
         public int? CurseTFFormSourceId { get; set; }
 

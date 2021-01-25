@@ -18,7 +18,6 @@ namespace TT.Domain.Items.DTOs
         public double FindWeight { get; set; }
         public EffectSourceDetail GivesEffectSource { get; set; }
         public bool IsUnique { get; set; }
-        public string CurseTFFormdbName { get; set; }
 
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }

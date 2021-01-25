@@ -3194,7 +3194,7 @@ namespace TT.Web.Controllers
             var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
 
             // assert item does have the ability to curse transform
-            if (itemMe.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
+            if (itemMe.ItemSource.CurseTFFormSourceId == null && (FormStatics.DefaultTFCurseForms == null || FormStatics.DefaultTFCurseForms.IsEmpty()))
             {
                 TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -3225,11 +3225,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the form does exist
-            var form = FormStatics.GetForm(itemMe.ItemSource.CurseTFFormSourceId.Value);
-            if (form == null || form.IsUnique)
+            if (itemMe.ItemSource.CurseTFFormSourceId != null)
             {
-                TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
-                return RedirectToAction(MVC.PvP.Play());
+                var form = FormStatics.GetForm(itemMe.ItemSource.CurseTFFormSourceId.Value);
+                if (form == null || form.IsUnique)
+                {
+                    TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
             }
 
             // all checks pass

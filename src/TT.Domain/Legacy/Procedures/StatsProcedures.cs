@@ -31,8 +31,8 @@ namespace TT.Domain.Procedures
         public const string Stat__TimesEnchanted = "times_enchanted";
 
         // Covenants
-        public const string Stat__CovenantDonationTotal = "covenant_donations";
-        public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
+        public const string Stat__CovenantDonationTotal = "covenant_donations"; // RETIRED
+        public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved"; // RETIRED
         public const string Stat__CovenantFurnitureUsed = "covenant_furniture_used";
         public const string Stat__CovenantNetDonation = "covenant_net_donations";
 
@@ -95,7 +95,7 @@ namespace TT.Domain.Procedures
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
         public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
-        public const string Stat__DungeonMovements = "dungeon_movements";
+        public const string Stat__DungeonMovements = "dungeon_movements"; // RETIRED
 
         public const string Stat__SuccessfulStruggles = "times_struggled_free";
 
@@ -178,7 +178,7 @@ namespace TT.Domain.Procedures
                 Stat__CovenantNetDonation,
                     new StatsDetailsMap{
                         FriendlyName = "Covenant Benefactor",
-                        Description="Net Arpyjis donated to covenant",
+                        Description="Net Arpeyjis donated to covenant",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures
                 Stat__CovenantGiftsReceived,  // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="The Embezzler",
-                        Description="Arpeyhis received from covenant",
+                        Description="Arpeyjis received from covenant",
                         ImageUrl="trophy.jpg",
                         Active = false
                         }
@@ -198,7 +198,7 @@ namespace TT.Domain.Procedures
                 Stat__CovenantDonationTotal, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName = "Fundraiser Fanatic",
-                        Description="Arpyjis donated to covenant",
+                        Description="Arpeyjis donated to covenant",
                         ImageUrl="trophy.jpg",
                         Active = false
                         }
@@ -331,7 +331,7 @@ namespace TT.Domain.Procedures
                 Stat__PetXPEarned,
                     new StatsDetailsMap{
                         FriendlyName="Petter off this Way",
-                        Description="XP gained as an pet.",
+                        Description="XP gained as a pet.",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
@@ -381,7 +381,7 @@ namespace TT.Domain.Procedures
                 Stat__WuffieNetProfit,
                     new StatsDetailsMap{
                         FriendlyName="Puppy Profit!",
-                        Description="Profit from selling to Wuffie",
+                        Description="Profit from selling to Wüffie",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
@@ -391,7 +391,7 @@ namespace TT.Domain.Procedures
                 Stat__WuffieNetLoss,
                     new StatsDetailsMap{
                         FriendlyName="Puppy Purchaser",
-                        Description="Loss from buying from Wuffie",
+                        Description="Loss from buying from Wüffie",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
@@ -401,7 +401,7 @@ namespace TT.Domain.Procedures
                 Stat__WuffieCostsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Puppy Miller",
-                        Description="Arpeyjis spent buying from Wuffie",
+                        Description="Arpeyjis spent buying from Wüffie",
                         ImageUrl="trophy.jpg",
                         Active = false
                         }
@@ -411,14 +411,14 @@ namespace TT.Domain.Procedures
                 Stat__WuffieProfitsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Puppy Power!",
-                        Description="Most Arpeyjis earned selling to Wuffie",
+                        Description="Most Arpeyjis earned selling to Wüffie",
                         ImageUrl="trophy.jpg",
                         Active = false
                         }
                 },
 
                 {
-                Stat__LorekeeperSpellsLearned, // RETIRED
+                Stat__LorekeeperSpellsLearned,
                     new StatsDetailsMap{
                         FriendlyName="Exiled's Apprentice",
                         Description="Most spells learned from Skaldrlyr the Forbidden",
@@ -458,7 +458,7 @@ namespace TT.Domain.Procedures
                 },
 
                 {
-                Stat__DungeonMovements,
+                Stat__DungeonMovements, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Dungeon Crawler",
                         Description="Times moved in the dungeon.",

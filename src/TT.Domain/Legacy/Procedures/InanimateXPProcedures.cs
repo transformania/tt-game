@@ -398,7 +398,7 @@ namespace TT.Domain.Procedures
             {
                 // No item-provided TF curse - reduce chance of transforming to a preset form
                 chanceOfSuccess /= 4.0;
-                newFormSourceId = FormStatics.DefaultTFCurseForms[rand.Next(FormStatics.DefaultTFCurseForms.Length)];
+                newFormSourceId = PvPStatics.DefaultTFCurseForms[rand.Next(PvPStatics.DefaultTFCurseForms.Length)];
             }
             else
             {
@@ -479,6 +479,23 @@ namespace TT.Domain.Procedures
             
             PlayerProcedures.AddAttackCount(player);
             return playerMessage + GiveInanimateXP(player.MembershipId, isWhitelist);
+        }
+
+        public static bool CanShowTFCurseButton(ItemDetail item)
+        {
+            //  Does the item have an associated TF curse
+            if (item.ItemSource.CurseTFFormSourceId != null)
+            {
+                return true;
+            }
+
+            // Is there a theme TF curse available?
+            if (PvPStatics.ChaosMode && PvPStatics.DefaultTFCurseForms != null && !PvPStatics.DefaultTFCurseForms.IsEmpty())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

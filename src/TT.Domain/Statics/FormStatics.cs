@@ -20,9 +20,6 @@ namespace TT.Domain.Statics
             IPlayerRepository playerRepo = new EFPlayerRepository();
             return playerRepo.DbStaticForms.Where(s => s.MobilityType == PvPStatics.MobilityFull);
         }
-
-        // IDs of animate forms an item can curse its owner into if no TF curse is specified for the item.
-        // Set to empty or null to disable.
-        public static readonly int[] DefaultTFCurseForms = { };
     }
+
 }

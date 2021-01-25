@@ -123,6 +123,10 @@ namespace TT.Domain.Statics
         public const string ItemType_Pet = "pet";
         public const string ItemType_Rune = "rune";
 
+        // IDs of animate forms an item can curse its owner into if no TF curse is specified for the item.
+        // Set to empty or null to disable.
+        public static readonly int[] DefaultTFCurseForms = { };
+
         public const int ItemType_DungeonArtifact_Id = 218;
 
         public const int Dungeon_ArtifactCurseEffectSourceId = 102;

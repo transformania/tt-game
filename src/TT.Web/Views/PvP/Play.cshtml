@@ -18,6 +18,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
         <ul class="dropdown-menu">
             <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions (@Model.PlayerLog.Count(i => i.HideLog == false))</a></li>
+            <li class="hidden-xs"><a href="@Url.Action(MVC.Item.MyInventory())">Inventory</a></li>
             <li><a href="@Url.Action(MVC.PvP.MySkills())">Spells</a></li>
             <li><a href="@Url.Action(MVC.PvP.MyPerks())">My Effects</a></li>
             <li><a href="@Url.Action(MVC.MindControl.MindControlList())">Mind Control</a></li>

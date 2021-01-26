@@ -32,6 +32,9 @@ namespace TT.Domain.Players.Entities
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
 
+        public string OriginalFirstName { get; protected set; }
+        public string OriginalLastName { get; protected set; }
+
         [Column("dbLocationName")]
         public string Location { get; protected set; }
         public ICollection<Item> Items { get; protected set; }
@@ -121,6 +124,8 @@ namespace TT.Domain.Players.Entities
                 User = user,
                 FirstName = cmd.FirstName,
                 LastName = cmd.LastName,
+                OriginalFirstName = cmd.FirstName,
+                OriginalLastName = cmd.LastName,
                 Location = cmd.Location,
                 //Form = cmd.Form,
                 FormSource = form,

@@ -14,6 +14,11 @@
         {
             <p>
                 @{
+                    if (ViewBag.IsMe)
+                    {
+                        <li><a href="@Url.Action(MVC.Item.MyInventory())">Inventory</a></li>
+                    }
+
                     if (ViewBag.HasBio)
                     {
                         <li><a href="@Url.Action(MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))">View Bio</a></li>

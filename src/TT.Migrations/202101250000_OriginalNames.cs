@@ -11,9 +11,6 @@ namespace TT.Migrations
             Alter.Table("Players").AddColumn("OriginalLastName").AsCustom("nvarchar(MAX)").Nullable();
 
             Execute.Sql("UPDATE Players SET OriginalFirstName = FirstName, OriginalLastName = LastName");
-
-            Alter.Table("Players").AlterColumn("OriginalFirstName").AsCustom("nvarchar(MAX)").NotNullable();
-            Alter.Table("Players").AlterColumn("OriginalLastName").AsCustom("nvarchar(MAX)").NotNullable();
         }
     }
 }

@@ -186,7 +186,7 @@
                         </ul>
                     </p>
 
-                    if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
+                    if (InanimateXPProcedures.CanShowTFCurseButton(Model.YouItem))
                     {
                         <p>
                             <a href="@Url.Action(MVC.PvP.CurseTransformOwner())" class="check inanimateAction">Attempt to transform your owner!</a>

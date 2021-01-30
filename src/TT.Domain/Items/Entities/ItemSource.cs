@@ -21,7 +21,6 @@ namespace TT.Domain.Items.Entities
         public double FindWeight { get; protected set; }
         public EffectSource GivesEffectSource { get; protected set; }
         public bool IsUnique { get; protected set; }
-        public string CurseTFFormdbName { get; protected set; }
         public int? CurseTFFormSourceId { get; protected set; } // TODO: Use FormSource entity here instead
 
         public decimal HealthBonusPercent { get; protected set; }

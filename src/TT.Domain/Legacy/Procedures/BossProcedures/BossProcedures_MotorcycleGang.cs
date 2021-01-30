@@ -120,7 +120,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                         .First(l => l.dbName == followerNewLocation).Name;
 
                     LocationLogProcedures.AddLocationLog(followerNewLocation, $"{followerEF.GetFullName()} rode off to <b>{newlocationFriendlyName}</b> to help protect {boss.GetFullName()}.");
-                    followerEF.ActionPoints = followerEF.ActionPoints >= SummonToBossAPPenalty ? followerEF.ActionPoints - SummonToBossAPPenalty : 0;
+                    followerEF.ActionPoints = Math.Max(0, followerEF.ActionPoints - SummonToBossAPPenalty);
                 }
 
                 followerEF.dbLocationName = followerNewLocation;
@@ -238,7 +238,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             var allFollowers = GetFollowers();
             var followersHere = allFollowers.Where(f => f.dbLocationName == boss.dbLocationName &&
                                                           f.Id != victim.Id &&
-                                                          f.TimesAttackingThisUpdate < 3
+                                                          f.TimesAttackingThisUpdate < 3 &&
+                                                          f.ActionPoints >= PvPStatics.AttackCost
                                                           ).ToList();
 
 

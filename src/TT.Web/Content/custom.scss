@@ -307,6 +307,7 @@ li {
   height: 100px;
   width: 100px;
   background-size: 100% 100%;
+  text-align: left;
 }
 
 .charInfoWrapper {
@@ -363,6 +364,7 @@ li {
   border-bottom-right-radius: 10px;
   top: 0px;
   left: 0;
+  vertical-align: top;
 }
 
 .icon-female {
@@ -803,6 +805,7 @@ li {
   background-size: contain;
   border: 4px solid #A16969;
   position: relative;
+  text-align: left;
 }
 
 .barWrapper {

@@ -478,6 +478,14 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static Player GetAnimatePlayerFromBotId(int id)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.BotId == id && p.Mobility == PvPStatics.MobilityFull);
+
+            return player;
+        }
+
         public static Player GetPlayer(int? playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

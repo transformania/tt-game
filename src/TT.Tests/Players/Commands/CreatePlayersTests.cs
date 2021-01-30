@@ -55,6 +55,8 @@ namespace TT.Tests.Players.Commands
             var player = DataContext.AsQueryable<Player>().First();
             Assert.That(player.FirstName, Is.EqualTo("Bob"));
             Assert.That(player.LastName, Is.EqualTo("McBobbinson"));
+            Assert.That(player.OriginalFirstName, Is.EqualTo("Bob"));
+            Assert.That(player.OriginalLastName, Is.EqualTo("McBobbinson"));
             Assert.That(player.User.Id, Is.EqualTo(user.Id));
             Assert.That(player.DonatorLevel, Is.EqualTo(2));
 
@@ -70,6 +72,8 @@ namespace TT.Tests.Players.Commands
             var player = DataContext.AsQueryable<Player>().First();
             Assert.That(player.FirstName, Is.EqualTo("Bob"));
             Assert.That(player.LastName, Is.EqualTo("McBobbinson"));
+            Assert.That(player.OriginalFirstName, Is.EqualTo("Bob"));
+            Assert.That(player.OriginalLastName, Is.EqualTo("McBobbinson"));
             Assert.That(player.User, Is.Null);
             Assert.That(player.DonatorLevel, Is.EqualTo(0));
             Assert.That(DataContext.AsQueryable<Player>().Where(p =>

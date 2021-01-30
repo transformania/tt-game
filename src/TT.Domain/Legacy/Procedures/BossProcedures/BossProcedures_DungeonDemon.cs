@@ -4,6 +4,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
 using TT.Domain.Models;
+using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -35,6 +36,12 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
+
+                var dbDemonBuffs = ItemProcedures.GetPlayerBuffs(dbDemon);
+                if (dbDemon.Mana < PvPStatics.AttackManaCost * 6)
+                {
+                    DomainRegistry.Repository.Execute(new Meditate { PlayerId = dbDemon.Id, Buffs = dbDemonBuffs, NoValidate = true });
+                }
             }
 
         }

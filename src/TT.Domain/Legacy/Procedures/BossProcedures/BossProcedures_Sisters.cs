@@ -196,6 +196,17 @@ namespace TT.Domain.Procedures.BossProcedures
                     p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
 
+
+                if (nerdBoss.Mana < nerdBoss.MaxMana/2)
+                {
+                    var nerdBuffs = ItemProcedures.GetPlayerBuffs(nerdBoss);
+
+                    for (var i = 0; i < 3; i++)
+                    {
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = nerdBoss.Id, Buffs = nerdBuffs, NoValidate = true });
+                    }
+                }
+
                 foreach (var p in playersByNerd)
                 {
                     AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
@@ -204,6 +215,16 @@ namespace TT.Domain.Procedures.BossProcedures
                     AIProcedures.DealBossDamage(nerdBoss, p, false, 3);
                 }
 
+
+                if (bimboBoss.Mana < bimboBoss.MaxMana/2)
+                {
+                    var bimboBuffs = ItemProcedures.GetPlayerBuffs(bimboBoss);
+
+                    for (var i = 0; i < 3; i++)
+                    {
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBuffs, NoValidate = true });
+                    }
+                }
 
                 foreach (var p in playersByBimbo)
                 {

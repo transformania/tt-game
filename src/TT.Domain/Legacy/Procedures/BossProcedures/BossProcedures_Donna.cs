@@ -80,6 +80,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 if (donna.Mana < donna.MaxMana)
                 {
                     DomainRegistry.Repository.Execute(new Meditate { PlayerId = donna.Id, Buffs = donnasBuffs, NoValidate = true});
+                    DomainRegistry.Repository.Execute(new Meditate { PlayerId = donna.Id, Buffs = donnasBuffs, NoValidate = true});
                 }
 
                 var directive = AIDirectiveProcedures.GetAIDirective(donna.Id);

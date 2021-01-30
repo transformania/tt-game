@@ -5,9 +5,9 @@
 
 @{
 
-    var HealthWidth = Math.Min(100, Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100));
-    var ManaWidth = Math.Min(100, Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100));
-    var ActionWidth = Math.Min(100, Convert.ToInt32(Model.Player.ActionPoints / TurnTimesStatics.GetActionPointLimit() * 100));
+    var HealthWidth = Math.Max(0, Math.Min(100, Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100)));
+    var ManaWidth = Math.Max(0, Math.Min(100, Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100)));
+    var ActionWidth = Math.Max(0, Math.Min(100, Convert.ToInt32(Model.Player.ActionPoints / TurnTimesStatics.GetActionPointLimit() * 100)));
 
 }
 <div class="row">

@@ -157,6 +157,24 @@ namespace TT.Domain.Procedures.BossProcedures
 
             playerRepo.SavePlayer(bimboBoss);
             bimboBoss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BimboBossBotId);
+            var bimboBossBuffs = ItemProcedures.GetPlayerBuffs(bimboBoss);
+
+            // Get mana back up
+            if (bimboBoss.Mana < bimboBoss.MaxMana / 4)
+            {
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+            }
+            else if (bimboBoss.Mana < bimboBoss.MaxMana / 3)
+            {
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+            }
+            else if (bimboBoss.Mana < bimboBoss.MaxMana / 2)
+            {
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = bimboBoss.Id, Buffs = bimboBossBuffs, NoValidate = true });
+            }
 
             var rand = new Random(Guid.NewGuid().GetHashCode());
 

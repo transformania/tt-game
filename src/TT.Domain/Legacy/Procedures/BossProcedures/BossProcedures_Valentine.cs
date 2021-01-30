@@ -267,6 +267,13 @@ namespace TT.Domain.Procedures.BossProcedures
 
             var turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
 
+            if (valentine.Mana < valentine.MaxMana / 3)
+            {
+                var valentineBuffs = ItemProcedures.GetPlayerBuffs(valentine);
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = valentine.Id, Buffs = valentineBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = valentine.Id, Buffs = valentineBuffs, NoValidate = true });
+            }
+
             foreach (var p in playersHere)
             {
 

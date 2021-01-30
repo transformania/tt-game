@@ -43,7 +43,7 @@ namespace TT.Domain.Players.Commands
                 if (player.Mobility == PvPStatics.MobilityFull && player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
                     throw new DomainException("You can't move since you have been immobilized!");
 
-                if (player.ActionPoints < Math.Max(0, PvPStatics.LocationMoveCost - player.MoveActionPointDiscount))
+                if (player.Mobility == PvPStatics.MobilityFull && player.ActionPoints < Math.Max(0, PvPStatics.LocationMoveCost - player.MoveActionPointDiscount))
                     throw new DomainException("You don't have enough action points to move.");
 
                 if (player.Mobility == PvPStatics.MobilityInanimate)

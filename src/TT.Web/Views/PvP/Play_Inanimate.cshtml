@@ -114,7 +114,9 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.ItemSource.PortraitUrl);">
                 @HtmlHelpers.PrintOwnerSubPortrait(Model.WornBy)
-                @HtmlHelpers.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
+                <span style="float: right; margin: 10px;" class="icon">
+                    @HtmlHelpers.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
+                </span>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
@@ -160,7 +162,7 @@
                 }
                 else if (Model.WornBy != null)
                 {
-                    <p>You are currently being worn by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+                    <p>You are currently @(Model.Item.IsEquipped ? "being worn" : "owned") by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
                     if (Model.WornBy.Player.BotId == AIStatics.ActivePlayerBotId)
                     {

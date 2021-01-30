@@ -289,21 +289,24 @@ namespace TT.Domain.Items.Entities
         public void SoulbindToPlayer(Player player)
         {
             SoulboundToPlayer = player;
-            if (player != null)
+            if (FormerPlayer != null)
             {
+                if (player != null)
+                {
 
-                if (FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+                    if (FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
+                            $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.",
+                            DateTime.UtcNow, true));
+                    }
+                }
+                else
                 {
                     FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
-                        $"{player.GetFullName()} has soulbound you!  No other players will be able to claim you as theirs.",
+                        "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",
                         DateTime.UtcNow, true));
                 }
-            }
-            else
-            {
-                FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
-                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",
-                    DateTime.UtcNow, true));
             }
         }
 

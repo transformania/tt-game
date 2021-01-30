@@ -47,7 +47,12 @@ namespace TT.Domain.Items.Commands
                 foreach (var item in soulboundItems)
                 {
                     item.SoulbindToPlayer(null);
-                    item.SetSoulbindingConsent(false);
+
+                    if (item.FormerPlayer?.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        item.SetSoulbindingConsent(false);
+                    }
+
                     if (item.Owner.BotId == AIStatics.SoulbinderBotId)
                     {
                         if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)

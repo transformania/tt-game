@@ -16,11 +16,14 @@ namespace TT.Tests.Items.Commands
         private Player player;
         private Player formerPlayerInanimate;
         private Player formerPlayerPet;
+        private Player formerPlayerPsycho;
         private Player lindella;
         private Player wuffie;
         private Player soulbinder;
         private Item soulboundItem;
         private Item soulboundPet;
+        private Item soulboundPsychoItem;
+        private Item soulboundRecycledItem;
 
         [SetUp]
         public override void SetUp()
@@ -43,6 +46,12 @@ namespace TT.Tests.Items.Commands
             formerPlayerPet = new PlayerBuilder()
                 .With(p => p.Id, 21235)
                 .With(p => p.BotId, AIStatics.ActivePlayerBotId)
+                .With(p => p.PlayerLogs, new List<PlayerLog>())
+                .BuildAndSave();
+
+            formerPlayerPsycho = new PlayerBuilder()
+                .With(p => p.Id, 22345)
+                .With(p => p.BotId, AIStatics.PsychopathBotId)
                 .With(p => p.PlayerLogs, new List<PlayerLog>())
                 .BuildAndSave();
 
@@ -86,8 +95,32 @@ namespace TT.Tests.Items.Commands
                     .BuildAndSave())
                 .BuildAndSave();
 
+            soulboundPsychoItem = new ItemBuilder()
+                .With(i => i.Id, 125)
+                .With(i => i.Owner, soulbinder)
+                .With(i => i.SoulboundToPlayer, player)
+                .With(i => i.FormerPlayer, formerPlayerPsycho)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Pants)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            soulboundRecycledItem = new ItemBuilder()
+                .With(i => i.Id, 126)
+                .With(i => i.Owner, soulbinder)
+                .With(i => i.SoulboundToPlayer, player)
+                .With(i => i.FormerPlayer, null)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.ItemType, PvPStatics.ItemType_Pants)
+                    .BuildAndSave())
+                .BuildAndSave();
+
             soulbinder.GiveItem(soulboundItem);
             soulbinder.GiveItem(soulboundPet);
+            soulbinder.GiveItem(soulboundPsychoItem);
+            soulbinder.GiveItem(soulboundRecycledItem);
 
         }
 
@@ -100,8 +133,10 @@ namespace TT.Tests.Items.Commands
 
             var lindellaLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == lindella.Id);
             Assert.That(lindellaLoaded, Is.Not.Null);
-            Assert.That(lindellaLoaded.Items, Has.Exactly(1).Items);
+            Assert.That(lindellaLoaded.Items, Has.Exactly(3).Items);
             Assert.That(lindellaLoaded.Items.ElementAt(0).Id, Is.EqualTo(soulboundItem.Id));
+            Assert.That(lindellaLoaded.Items.ElementAt(1).Id, Is.EqualTo(soulboundPsychoItem.Id));
+            Assert.That(lindellaLoaded.Items.ElementAt(2).Id, Is.EqualTo(soulboundRecycledItem.Id));
 
             var wuffieLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == wuffie.Id);
             Assert.That(wuffieLoaded, Is.Not.Null);
@@ -119,6 +154,18 @@ namespace TT.Tests.Items.Commands
             Assert.That(soulboundPetLoaded.SoulboundToPlayer, Is.Null);
             Assert.That(soulboundPetLoaded.Owner, Is.EqualTo(wuffie));
             Assert.That(soulboundPetLoaded.ConsentsToSoulbinding, Is.False);
+
+            var soulboundPsychoLoaded = DataContext.AsQueryable<Item>().FirstOrDefault(p => p.Id == soulboundPsychoItem.Id);
+            Assert.That(soulboundPsychoLoaded, Is.Not.Null);
+            Assert.That(soulboundPsychoLoaded.SoulboundToPlayer, Is.Null);
+            Assert.That(soulboundPsychoLoaded.Owner, Is.EqualTo(lindella));
+            Assert.That(soulboundPsychoLoaded.ConsentsToSoulbinding, Is.True);
+
+            var soulboundRecycledLoaded = DataContext.AsQueryable<Item>().FirstOrDefault(p => p.Id == soulboundRecycledItem.Id);
+            Assert.That(soulboundRecycledLoaded, Is.Not.Null);
+            Assert.That(soulboundRecycledLoaded.SoulboundToPlayer, Is.Null);
+            Assert.That(soulboundRecycledLoaded.Owner, Is.EqualTo(lindella));
+            Assert.That(soulboundRecycledLoaded.ConsentsToSoulbinding, Is.True);
 
             var formerPlayerInanimateLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == this.formerPlayerInanimate.Id);
             Assert.That(formerPlayerInanimateLoaded, Is.Not.Null);

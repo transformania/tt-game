@@ -1,8 +1,10 @@
 ﻿using System.Data.Entity;
 using System.Data.SqlClient;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Commands;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Procedures;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Legacy.Procedures
 {
@@ -17,6 +19,18 @@ namespace TT.Domain.Legacy.Procedures
             if (me.Covenant > 0)
             {
                 CovenantProcedures.RemovePlayerFromCovenant(me);
+            }
+
+            // Move soulbound items (including with Karin) to merchants and break the soulbind
+            DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems { PlayerId = me.Id });
+
+            // Move remaining non-soulbound items off player
+            DomainRegistry.Repository.Execute(new RemoveAllItemsFromPlayer { PlayerId = me.Id });
+
+            // Husk of player should consent to soulbinding like an NPC would
+            if (me.Mobility == PvPStatics.MobilityInanimate || me.Mobility == PvPStatics.MobilityPet)
+            {
+                DomainRegistry.Repository.Execute(new SetSoulbindingConsent { IsConsenting = true, PlayerId = me.Id });
             }
 
             using (var context = new StatsContext())

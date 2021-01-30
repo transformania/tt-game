@@ -675,14 +675,14 @@ namespace TT.Web.Controllers
             else if (question == "miniboss")
             {
                 var output = "\"";
-                var sororityMother = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossSororityMotherId);
-                var popGoddess = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossPopGoddessId);
-                var possessedMaid = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossPossessedMaidId);
-                var seamstress = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossSeamstressId);
-                var groundsKeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossGroundskeeperId);
-                var exchangeProfessor = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossExchangeProfessorId);
-                var fiendishFarmhand = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossFiendishFarmhandId);
-                var lazyLifeguard = PlayerProcedures.GetPlayerFromBotId(AIStatics.MinibossLazyLifeguardId);
+                var sororityMother = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossSororityMotherId);
+                var popGoddess = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPopGoddessId);
+                var possessedMaid = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPossessedMaidId);
+                var seamstress = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossSeamstressId);
+                var groundsKeeper = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossGroundskeeperId);
+                var exchangeProfessor = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossExchangeProfessorId);
+                var fiendishFarmhand = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossFiendishFarmhandId);
+                var lazyLifeguard = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossLazyLifeguardId);
 
                 if (sororityMother != null)
                 {

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
+using TT.Domain.Items.DTOs;
 
 namespace TT.Domain.ViewModels
 {
@@ -26,5 +27,8 @@ namespace TT.Domain.ViewModels
         public int NewFormSourceId { get; set; }
         public int Level { get; set; }
         public decimal Money { get; set; }
+
+        public decimal OwnerMoney { get; set; }
+        public int SoulboundCount { get; set; }
     }
 }

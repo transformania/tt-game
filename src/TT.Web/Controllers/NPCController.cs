@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
@@ -9,6 +9,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Items.Services;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
@@ -1318,13 +1319,26 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Count();
+            var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 10;
+
+            if (me.Money < price)
+            {
+                TempData["Error"] = "You do not have enough money to rename this item.";
+                TempData["SubError"] = "You need " + price + " arpeyjis to do this.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            PlayerProcedures.GiveMoneyToPlayer(me, -price);
+
             var output = new PlayerNameViewModel
             {
+                OwnerMoney = me.Money,
+                SoulboundCount = itemSoulboundCount,
                 Id = item.FormerPlayer.Id,
                 NewFirstName = item.FormerPlayer.FirstName,
                 NewLastName = item.FormerPlayer.LastName
             };
-
 
             return View(MVC.NPC.Views.SoulboundRename, output);
         }

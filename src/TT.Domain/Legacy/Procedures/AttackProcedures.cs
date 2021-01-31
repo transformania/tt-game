@@ -28,7 +28,7 @@ namespace TT.Domain.Procedures
             var logs = new LogBox();
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, attacker.Id);
+            PlayerProcedures.ChangePlayerActionMana(-PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, attacker.Id);
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(victim, attacker);
 

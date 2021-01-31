@@ -920,7 +920,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            player.ActionPoints -= actionPoints;
+            player.ActionPoints += actionPoints;
             player.Mana += mana;
             player.Health += health;
 
@@ -1454,7 +1454,7 @@ namespace TT.Domain.Procedures
                 meditateManaRestore = 0;
             }
 
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id, false);
+            PlayerProcedures.ChangePlayerActionMana(-PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id, false);
 
 
             var result = "Your mind partially possessed by " + mindcontroller.GetFullName() +", your head swims with strange and random thoughts implanted by your agressor, shattering your focus and leaving your mana drained.";

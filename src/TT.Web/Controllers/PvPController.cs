@@ -664,7 +664,7 @@ namespace TT.Web.Controllers
                 LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal reaching deep into the dungeon.");
             }
 
-            PlayerProcedures.ChangePlayerActionMana(10, 0, 0, me.Id);
+            PlayerProcedures.ChangePlayerActionMana(-10, 0, 0, me.Id);
 
 
             return RedirectToAction(MVC.PvP.Play());
@@ -1344,7 +1344,7 @@ namespace TT.Web.Controllers
             var output = CovenantProcedures.AttackLocation(me, myBuffs);
 
             PlayerProcedures.AddAttackCount(me);
-            PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
+            PlayerProcedures.ChangePlayerActionMana(-3, 0, -10, me.Id);
 
             // record into statistics
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1);
@@ -1544,11 +1544,11 @@ namespace TT.Web.Controllers
 
             if (mybuffs.HasSearchDiscount)
             {
-                PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost - 1, 0, 0, me.Id);
+                PlayerProcedures.ChangePlayerActionMana(-(PvPStatics.SearchAPCost - 1), 0, 0, me.Id);
             }
             else
             {
-                PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost, 0, 0, me.Id);
+                PlayerProcedures.ChangePlayerActionMana(-PvPStatics.SearchAPCost, 0, 0, me.Id);
             }
 
 

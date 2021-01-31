@@ -892,7 +892,7 @@ namespace TT.Web.Controllers
             {
                 var xpGained = BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
-                PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
+                PlayerProcedures.ChangePlayerActionMana(-5, 0, 0, me.Id);
                 output.XPGain = xpGained;
                 output.ShowSuccess = true;
                 output.HadRecentInteraction = false;

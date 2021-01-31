@@ -229,7 +229,7 @@ namespace TT.Web.Controllers
             QuestProcedures.PlayerSetQuestState(me, nextState);
             QuestProcedures.ProcessQuestStatePreactions(me, nextState);
 
-            PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id, false);
+            PlayerProcedures.ChangePlayerActionMana(-1, 0, 0, me.Id, false);
 
             TempData["ConnectionText"] = desiredConnection.Text;
 

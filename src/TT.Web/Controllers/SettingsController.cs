@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -973,7 +973,7 @@ namespace TT.Web.Controllers
 
             playerRepo.SavePlayer(player);
 
-            TempData["Result"] = "You have been restored yourself to normal.";
+            TempData["Result"] = "You have restored yourself to normal.";
             return RedirectToAction(MVC.PvP.Play());
 
         }

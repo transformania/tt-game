@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -11,6 +11,7 @@ using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Models;
+using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -192,6 +193,51 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "News Post " + Id + " deleted successfully!";
             return RedirectToAction(MVC.Moderator.ListNewsPosts());
+        }
+
+        [Authorize]
+        public virtual ActionResult RevertToBase(int Id)
+        {
+            // Get Moderator info.
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var checkModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
+            if (!checkModerator)
+            {
+                TempData["Result"] = "You do not have permission to do that.";
+                return RedirectToAction(MVC.PvP.LookAtPlayer(Id));
+            }
+
+            // Get the player info needed
+            var playerMembershipId = PlayerProcedures.GetPlayer(Id);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == playerMembershipId.MembershipId);
+
+            // Check for empty field
+            if (player.OriginalFirstName == null || player.OriginalLastName == null)
+            {
+                TempData["Result"] = "The player is missing their original first or last name. Please contact an admin to get this fixed.";
+                return RedirectToAction(MVC.PvP.LookAtPlayer(Id));
+            }
+
+            // Revert the player to their original self.
+            player.FirstName = player.OriginalFirstName;
+            player.LastName = player.OriginalLastName;
+
+            playerRepo.SavePlayer(player);
+
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = Id,
+                FormSourceId = player.OriginalFormSourceId
+            });
+
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have reverted " + player.OriginalFirstName + " " + player.OriginalLastName + " back to their starting identity.", true);
+            return RedirectToAction(MVC.PvP.Play());
+
         }
     }
 }

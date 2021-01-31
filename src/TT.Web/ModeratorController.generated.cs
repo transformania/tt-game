@@ -107,6 +107,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RevertToBase()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RevertToBase);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -136,6 +142,7 @@ namespace TT.Web.Controllers
             public readonly string EditNewsPost = ("EditNewsPost").ToLowerInvariant();
             public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
             public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
+            public readonly string RevertToBase = ("RevertToBase").ToLowerInvariant();
         }
 
 
@@ -208,6 +215,14 @@ namespace TT.Web.Controllers
         public ActionParamsClass_DeleteNewsPost DeleteNewsPostParams { get { return s_params_DeleteNewsPost; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_DeleteNewsPost
+        {
+            public readonly string Id = ("Id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_RevertToBase s_params_RevertToBase = new ActionParamsClass_RevertToBase();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RevertToBase RevertToBaseParams { get { return s_params_RevertToBase; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RevertToBase
         {
             public readonly string Id = ("Id").ToLowerInvariant();
         }
@@ -395,6 +410,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteNewsPost);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             DeleteNewsPostOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RevertToBaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RevertToBase(int Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RevertToBase);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            RevertToBaseOverride(callInfo, Id);
             return callInfo;
         }
 

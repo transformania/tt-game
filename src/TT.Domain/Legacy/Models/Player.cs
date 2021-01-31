@@ -55,6 +55,8 @@ namespace TT.Domain.Models
         [Index("IX_MembershipIdAndCovenant", 2)]
         public int? Covenant { get; set; }
         public int OriginalFormSourceId { get; set; }
+        public string OriginalFirstName { get; set; }
+        public string OriginalLastName { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }

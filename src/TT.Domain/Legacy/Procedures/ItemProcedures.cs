@@ -679,7 +679,12 @@ namespace TT.Domain.Procedures
                     {
                         return (false,"You have attacked too many times this update.");
                     }
-                  
+
+                    // Disable splash orbs during chaos.
+                    if (PvPStatics.ChaosMode)
+                    {
+                        return (false, "Maybe you should try throwing hands instead of throwing orbs.");
+                    }
 
                     var output = "";
                     if (itemPlus.dbItem.ItemSourceId == ItemStatics.WillpowerBombWeakItemSourceId)

@@ -306,9 +306,10 @@ namespace TT.Domain.Procedures
             var attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
-            // set the player's last action flag
+            // set the player's last action flag, combat time
             var dbAttacker = playerREpo.Players.First(p => p.Id == attacker.Id);
             dbAttacker.LastActionTimestamp = DateTime.UtcNow;
+            dbAttacker.LastCombatTimestamp = DateTime.UtcNow;
             dbAttacker.TimesAttackingThisUpdate++;
             playerREpo.SavePlayer(dbAttacker);
 

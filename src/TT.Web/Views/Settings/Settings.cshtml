@@ -196,7 +196,7 @@
                 <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
                 <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
             }
-            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br>
+            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Revert to your base form and original name</a><br>
 
             @{
                 if (Model.ChaosChangesEnabled)

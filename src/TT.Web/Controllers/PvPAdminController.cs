@@ -1374,6 +1374,8 @@ namespace TT.Web.Controllers
                         output.NewFormSourceId = person.FormSourceId;
                         output.Level = pm.Player.Level;
                         output.Money = pm.Player.Money;
+                        output.OriginalFirstName = pm.Player.OriginalFirstName;
+                        output.OriginalLastName = pm.Player.OriginalLastName;
                     }
                 }
 

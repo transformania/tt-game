@@ -74,7 +74,8 @@ namespace TT.Domain.Procedures
                                                               InDuel = player.InDuel,
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
-
+                                                              OriginalFirstName = player.OriginalFirstName,
+                                                              OriginalLastName = player.OriginalLastName,
 
                                                           },
 
@@ -186,6 +187,8 @@ namespace TT.Domain.Procedures
                                                               InDuel = player.InDuel,
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
+                                                              OriginalFirstName = player.OriginalFirstName,
+                                                              OriginalLastName = player.OriginalLastName
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -295,6 +298,8 @@ namespace TT.Domain.Procedures
                                                               InDuel = player.InDuel,
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
+                                                              OriginalFirstName = player.OriginalFirstName,
+                                                              OriginalLastName = player.OriginalLastName
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -405,6 +410,8 @@ namespace TT.Domain.Procedures
                                                               InDuel = player.InDuel,
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
+                                                              OriginalFirstName = player.OriginalFirstName,
+                                                              OriginalLastName = player.OriginalLastName
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form

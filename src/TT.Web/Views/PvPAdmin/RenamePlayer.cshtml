@@ -15,7 +15,7 @@
 
     @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "attackLink" })
 
-    @using (Html.BeginForm(MVC.PvPAdmin.RenamePlayerSend(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvPAdmin.RenamePlayerSend(), FormMethod.Post, new { id = "renamePlayer" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
@@ -23,11 +23,14 @@
         <span>Player Id:</span>
         @Model.Id<br><br>
 
+        <span>Original Name: <b id="origName" style ="cursor: pointer;" title="Click here to restore the player's original name.">@Model.OriginalFirstName @Model.OriginalLastName <i class="glyphicon glyphicon-repeat"></i></b></span>
+        <br><br>
+
         <span>First Name:</span>
-        @Html.TextBoxFor(m => m.NewFirstName)<br><br>
+        @Html.TextBoxFor(m => m.NewFirstName, new { id = "firstName" })<br><br>
 
         <span>Last Name:</span>
-        @Html.TextBoxFor(m => m.NewLastName)<br><br>
+        @Html.TextBoxFor(m => m.NewLastName, new { id = "lastName" })<br><br>
 
         <span>Form Source Id:</span>
         @Html.TextBoxFor(m => m.NewFormSourceId, new { @type = "number" })<br><br>
@@ -65,6 +68,25 @@
                     $("#money").val("999999999");
                 }
             })
+        });
+
+        $(document).ready(function () {
+            $("#origName").click(function () {
+                // Get the values of the name.
+                var origValue = $("#origName").text();
+
+                // Split the name up.
+                var splitName = origValue.split(" ");
+                var firstName = splitName[0];
+                var lastName = splitName[1];
+
+                // Apply the name
+                $('#firstName').val(firstName).text(firstName);
+                $('#lastName').val(lastName).text(lastName);
+
+                // Submit the form.
+                $("#renamePlayer").submit();
+            });
         });
     </script>
 }

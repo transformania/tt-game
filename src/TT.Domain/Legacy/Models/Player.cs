@@ -186,6 +186,8 @@ namespace TT.Domain.Models
         public string MembershipId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string OriginalFirstName { get; set; }
+        public string OriginalLastName { get; set; }
         public string dbLocationName { get; set; }
         public int FormSourceId { get; set; }
         public decimal Health { get; set; }

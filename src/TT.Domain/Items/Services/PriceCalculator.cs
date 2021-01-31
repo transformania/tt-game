@@ -14,7 +14,9 @@
                 price = 100;
                 for (var i = 0; i < itemCount - 1; i++)
                 {
-                    price *= 2 * 7 / 8;
+                    price *= 2;
+                    price *= 7;
+                    price /= 8;
                 }
             }
             return price;

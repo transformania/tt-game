@@ -30,5 +30,8 @@ namespace TT.Domain.ViewModels
 
         public decimal OwnerMoney { get; set; }
         public int SoulboundCount { get; set; }
+
+        public string OriginalFirstName { get; set; }
+        public string OriginalLastName { get; set; }
     }
 }

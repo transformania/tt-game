@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -955,7 +955,25 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.InstantRestoreToBase(me);
 
-            TempData["Result"] = "You have been restored to your base form.";
+            // Start the original naming process.
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == me.MembershipId);
+
+            // Check for empty field
+            if (player.OriginalFirstName == null || player.OriginalLastName == null)
+            {
+                TempData["Error"] = "You restored yourself to normal, but you can't seem to recall your name.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Revert the player to their original self.
+            player.FirstName = player.OriginalFirstName;
+            player.LastName = player.OriginalLastName;
+
+            playerRepo.SavePlayer(player);
+
+            TempData["Result"] = "You have restored yourself to normal.";
             return RedirectToAction(MVC.PvP.Play());
 
         }

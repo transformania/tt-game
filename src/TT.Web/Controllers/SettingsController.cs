@@ -935,7 +935,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
-        public virtual ActionResult ChaosRestoreBase()
+        public virtual ActionResult ChaosRestoreBase(int option)
         {
 
             if (!PvPStatics.ChaosMode)
@@ -944,38 +944,46 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // Get the player's membershipID
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (me.FormSourceId == me.OriginalFormSourceId)
+            // Restore Form
+            if (option == 0 || option == 2)
             {
-                TempData["Error"] = "You are already in your original form.";
-                return RedirectToAction(MVC.PvP.Play());
+                if (me.FormSourceId == me.OriginalFormSourceId)
+                {
+                    TempData["Error"] = "You are already in your original form.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                PlayerProcedures.InstantRestoreToBase(me);
+            }
+            
+            //Restore name
+            if (option == 1 || option == 2)
+            {
+                // Start the original naming process.
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+
+                var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == me.MembershipId);
+
+                // Check for empty field
+                if (player.OriginalFirstName == null || player.OriginalLastName == null)
+                {
+                    TempData["Error"] = "You can't seem to recall your name.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                // Revert the player to their original self.
+                player.FirstName = player.OriginalFirstName;
+                player.LastName = player.OriginalLastName;
+
+                playerRepo.SavePlayer(player);
             }
 
-            PlayerProcedures.InstantRestoreToBase(me);
-
-            // Start the original naming process.
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == me.MembershipId);
-
-            // Check for empty field
-            if (player.OriginalFirstName == null || player.OriginalLastName == null)
-            {
-                TempData["Error"] = "You restored yourself to normal, but you can't seem to recall your name.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // Revert the player to their original self.
-            player.FirstName = player.OriginalFirstName;
-            player.LastName = player.OriginalLastName;
-
-            playerRepo.SavePlayer(player);
-
-            TempData["Result"] = "You have restored yourself to normal.";
+            TempData["Result"] = "You have chosen to restore parts of yourself to normal.";
             return RedirectToAction(MVC.PvP.Play());
-
         }
 
         public virtual ActionResult AllowChaosChanges(bool allowChanges)

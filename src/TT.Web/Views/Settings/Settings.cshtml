@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.SettingsPageViewModel
+@model TT.Domain.ViewModels.SettingsPageViewModel
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "Settings";
@@ -199,8 +199,8 @@
                 <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
                 <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
             }
-            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Revert to your base form and original name</a><br>
-
+            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(0))">Revert to your base form.</a><br>
+            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(1))">Revert to your original name.</a><br>
             @{
                 if (Model.ChaosChangesEnabled)
                 {

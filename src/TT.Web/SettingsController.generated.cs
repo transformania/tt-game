@@ -217,6 +217,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChaosRestoreBase()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChaosRestoreBase);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AllowChaosChanges()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowChaosChanges);
@@ -502,6 +508,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_DeleteRPClassifiedAd
         {
             public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChaosRestoreBase s_params_ChaosRestoreBase = new ActionParamsClass_ChaosRestoreBase();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChaosRestoreBase ChaosRestoreBaseParams { get { return s_params_ChaosRestoreBase; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChaosRestoreBase
+        {
+            public readonly string option = ("option").ToLowerInvariant();
         }
         static readonly ActionParamsClass_AllowChaosChanges s_params_AllowChaosChanges = new ActionParamsClass_AllowChaosChanges();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1087,13 +1101,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ChaosRestoreBaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ChaosRestoreBaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int option);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ChaosRestoreBase()
+        public override System.Web.Mvc.ActionResult ChaosRestoreBase(int option)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChaosRestoreBase);
-            ChaosRestoreBaseOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "option", option);
+            ChaosRestoreBaseOverride(callInfo, option);
             return callInfo;
         }
 

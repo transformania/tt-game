@@ -19,6 +19,8 @@ namespace TT.Domain.Items.DTOs
             public int Id { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public string OriginalFirstName { get; set; }
+            public string OriginalLastName { get; set; }
             public string Nickname { get; set; }
             public string Gender { get; set; }
             public int DonatorLevel { get; set; }
@@ -33,6 +35,11 @@ namespace TT.Domain.Items.DTOs
                         $"{FirstName} {LastName}" :
                         $"{FirstName} '{Nickname}' {LastName}";
                 }
+            }
+
+            public bool IsUsingOriginalName()
+            {
+                return FirstName == OriginalFirstName && LastName == OriginalLastName;
             }
 
             public int TimesAttackingThisUpdate { get; set; }

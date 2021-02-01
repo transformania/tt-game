@@ -119,9 +119,42 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>
-                Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.
-
                 @{
+                    if (Model.YouItem.SoulboundToPlayer == null)
+                    {
+                        if (!Model.IsPermanent)
+                        {
+                            <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.</span>
+                        }
+                        else if (Model.YouItem.Owner == null)
+                        {
+                            <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                            if (!Model.You.IsUsingOriginalName())
+                            {
+                                <span>Perhaps you were given that name by a previous owner?</span>
+                            }
+                        }
+                        else
+                        {
+                            <span>You answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                            if (Model.You.IsUsingOriginalName())
+                            {
+                                <span>Somehow it no longer seems to suit you.</span>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <span>To your forever owner you are known simply as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                        if(!Model.You.IsUsingOriginalName())
+                        {
+                            <span>Any thoughts of your past life as @Model.You.OriginalFirstName @Model.You.OriginalLastName are but a faint and distant memory.</span>
+                        }
+                    }
+
                     if (!Model.IsPermanent)
                     {
                         <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>

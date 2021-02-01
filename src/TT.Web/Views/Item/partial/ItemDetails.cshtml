@@ -28,14 +28,7 @@
 
         if (Model.Item.FormerPlayer != null)
         {
-            if (Model.Item.IsPermanent)
-            {
-                <span class="formerly">Known as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
-            }
-            else
-            {
-                <span class="formerly">Formerly <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
-            }
+            <span class="formerly">@(Model.Item.FormerPlayer.IsUsingOriginalName() ? "Formerly" : "Known as") <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.FormerPlayer.Id))">@Model.Item.FormerPlayer.FullName</a></span>
             @HtmlHelpers.PrintPermanencyIcon(Model.Item.IsPermanent)
         }
 

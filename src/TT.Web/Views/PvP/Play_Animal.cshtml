@@ -128,16 +128,31 @@
                         }
                         else if (Model.YouItem.Owner == null)
                         {
-                            <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, perhaps by a previous owner.</span>
+                            <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                            if (!Model.You.IsUsingOriginalName())
+                            {
+                                <span>Perhaps you were given that name by a previous owner?</span>
+                            }
                         }
                         else
                         {
-                            <span>Your answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.  Somehow it no longer seems to suit you.</span>
+                            <span>You answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                            if (Model.You.IsUsingOriginalName())
+                            {
+                                <span>Somehow it no longer seems to suit you.</span>
+                            }
                         }
                     }
                     else
                     {
-                        <span>Whatever you used to be called, your forever owner now calls you <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+                        <span>To your forever owner you are known simply as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                        if(!Model.You.IsUsingOriginalName())
+                        {
+                            <span>Any thoughts of your past life as @Model.You.OriginalFirstName @Model.You.OriginalLastName are but a faint and distant memory.</span>
+                        }
                     }
 
                     if (!Model.IsPermanent)

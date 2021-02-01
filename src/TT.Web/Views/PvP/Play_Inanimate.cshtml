@@ -130,16 +130,41 @@
                         }
                         else if (Model.Item.Owner == null)
                         {
-                            <span>You have hazy memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.  But that's just silly.  Items don't have names.</span>
+                            <span>You have hazy memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
+
+                            if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                            {
+                                <span>But that's just silly - items don't have names.</span>
+                            }
+                            else
+                            {
+                                <span>Oh how you miss the person who once called you that.</span>
+                            }
                         }
                         else
                         {
-                            <span>Your owner sometimes refers to you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.  What a strange thing to be called!</span>
+                            <span>Your owner sometimes refers to you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
+
+                            if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                            {
+                                <span>What a strange thing to be called!</span>
+                            }
+                            else
+                            {
+                                <span>It's the closest thing you have to a name now.</span>
+                            }
                         }
                     }
                     else
                     {
-                        <span>Your forever owner secretly thinks of you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but what use would you have for a name now that the last of your humanity has gone?</span>
+                        if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                        {
+                            <span>Your once were called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but what use would you have for a name now that the last of your humanity has gone?</span>
+                        }
+                        else
+                        {
+                            <span>Your forever owner secretly thinks of you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but you don't really have a name.  You don't need one.  All you need it to be there for your owner.</span>
+                        }
                     }
 
                     if (!Model.Item.IsPermanent)

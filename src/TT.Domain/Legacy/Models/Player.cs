@@ -81,6 +81,11 @@ namespace TT.Domain.Models
             }
         }
 
+        public bool IsUsingOriginalName()
+        {
+            return FirstName == OriginalFirstName && LastName == OriginalLastName;
+        }
+
         public void NormalizeHealthMana()
         {
 

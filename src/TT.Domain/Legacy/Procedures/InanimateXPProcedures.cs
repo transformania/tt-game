@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using TT.Domain.Abstract;
@@ -418,17 +418,17 @@ namespace TT.Domain.Procedures
                     ownerSuccessMessage = tf.CursedTF_Succeed;
                 }
 
-                if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                if (playerItem.Owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Fail_M.IsNullOrEmpty())
                 {
-                    ownerFailureMessage = tf.CursedTF_Succeed_M;
+                    ownerFailureMessage = tf.CursedTF_Fail_M;
                 }
-                else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
+                else if (playerItem.Owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Fail_F.IsNullOrEmpty())
                 {
-                    ownerFailureMessage = tf.CursedTF_Succeed_F;
+                    ownerFailureMessage = tf.CursedTF_Fail_F;
                 }
-                else if (!tf.CursedTF_Succeed.IsNullOrEmpty())
+                else if (!tf.CursedTF_Fail.IsNullOrEmpty())
                 {
-                    ownerFailureMessage = tf.CursedTF_Succeed;
+                    ownerFailureMessage = tf.CursedTF_Fail;
                 }
             }
 

@@ -1159,6 +1159,21 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static bool ItemIncursDungeonPenalty(ItemDetail item)
+        {
+            // Give items/pets a struggle penalty if their owner is in the dungeon
+            if (item.Owner != null)
+            {
+                var owner = PlayerProcedures.GetPlayer(item.Owner.Id);
+                if (owner.IsInDungeon())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void LockItem(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();

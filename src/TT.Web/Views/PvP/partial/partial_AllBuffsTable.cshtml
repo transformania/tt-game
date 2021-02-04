@@ -138,11 +138,11 @@
                 <tr>
                     <td>Extra willpower % maximum:</td>
                     <td>
-                        @Model.HealthBonusPercent()
+                        @Model.HealthBonusPercent().ToString("0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_HealthBonusPercent</td>
-                    <td class="mobile">@Model.FromItems_HealthBonusPercent</td>
-                    <td class="mobile">@Model.FromEffects_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromForm_HealthBonusPercent.ToString("0")%</td>
+                    <td class="mobile">@Model.FromItems_HealthBonusPercent.ToString("0")%</td>
+                    <td class="mobile">@Model.FromEffects_HealthBonusPercent.ToString("0")%</td>
                 </tr>
             }
         }
@@ -153,11 +153,11 @@
                 <tr>
                     <td>Extra mana % maximum:</td>
                     <td>
-                        @Model.ManaBonusPercent()
+                        @Model.ManaBonusPercent().ToString("0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_ManaBonusPercent</td>
-                    <td class="mobile">@Model.FromItems_ManaBonusPercent</td>
-                    <td class="mobile">@Model.FromEffects_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromForm_ManaBonusPercent.ToString("0")%</td>
+                    <td class="mobile">@Model.FromItems_ManaBonusPercent.ToString("0")%</td>
+                    <td class="mobile">@Model.FromEffects_ManaBonusPercent.ToString("0")%</td>
                 </tr>
             }
         }
@@ -168,11 +168,11 @@
                 <tr>
                     <td>Willpower recovery per update:</td>
                     <td>
-                        @Model.HealthRecoveryPerUpdate()
+                        @Model.HealthRecoveryPerUpdate().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_HealthRecoveryPerUpdate</td>
-                    <td class="mobile">@Model.FromItems_HealthRecoveryPerUpdate</td>
-                    <td class="mobile">@Model.FromEffects_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromForm_HealthRecoveryPerUpdate.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_HealthRecoveryPerUpdate.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_HealthRecoveryPerUpdate.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -183,11 +183,11 @@
                 <tr>
                     <td>Mana recovery per update:</td>
                     <td>
-                        @Model.ManaRecoveryPerUpdate()
+                        @Model.ManaRecoveryPerUpdate().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_ManaRecoveryPerUpdate</td>
-                    <td class="mobile">@Model.FromItems_ManaRecoveryPerUpdate</td>
-                    <td class="mobile">@Model.FromEffects_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromForm_ManaRecoveryPerUpdate.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_ManaRecoveryPerUpdate.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_ManaRecoveryPerUpdate.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -198,11 +198,11 @@
                 <tr>
                     <td>Sneak chance percent:</td>
                     <td>
-                        @Model.SneakPercent()
+                        @Model.SneakPercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_SneakPercent</td>
-                    <td class="mobile">@Model.FromItems_SneakPercent</td>
-                    <td class="mobile">@Model.FromEffects_SneakPercent</td>
+                    <td class="mobile">@Model.FromForm_SneakPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_SneakPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_SneakPercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -213,24 +213,9 @@
                 <tr>
                     <td>Sneak level detection:</td>
                     <td>
-                        @Model.AntiSneakPercent()
+                        @Model.AntiSneakPercent().ToString("0.0")%
                     </td>
                     <td class="mobile" colspan="3">&nbsp;</td>
-                </tr>
-            }
-        }
-
-        @{
-            if (Model.MeditationExtraMana() != 0.0M)
-            {
-                <tr>
-                    <td>Extra mana recovered from meditating</td>
-                    <td>
-                        @Model.MeditationExtraMana()
-                    </td>
-                    <td class="mobile">@Model.FromForm_MeditationExtraMana</td>
-                    <td class="mobile">@Model.FromItems_MeditationExtraMana</td>
-                    <td class="mobile">@Model.FromEffects_MeditationExtraMana</td>
                 </tr>
             }
         }
@@ -241,11 +226,26 @@
                 <tr>
                     <td>Extra willpower recovered from cleansing:</td>
                     <td>
-                        @Model.CleanseExtraHealth()
+                        @Model.CleanseExtraHealth().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_CleanseExtraHealth</td>
-                    <td class="mobile">@Model.FromItems_CleanseExtraHealth</td>
-                    <td class="mobile">@Model.FromEffects_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraHealth.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraHealth.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraHealth.ToString("0.00")</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.MeditationExtraMana() != 0.0M)
+            {
+                <tr>
+                    <td>Extra mana recovered from meditating</td>
+                    <td>
+                        @Model.MeditationExtraMana().ToString("0.00")
+                    </td>
+                    <td class="mobile">@Model.FromForm_MeditationExtraMana.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_MeditationExtraMana.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_MeditationExtraMana.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -256,11 +256,11 @@
                 <tr>
                     <td>Action point discount when moving:</td>
                     <td>
-                        @Model.MoveActionPointDiscount()
+                        @Model.MoveActionPointDiscount().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_MoveActionPointDiscount</td>
-                    <td class="mobile">@Model.FromItems_MoveActionPointDiscount</td>
-                    <td class="mobile">@Model.FromEffects_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromForm_MoveActionPointDiscount.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_MoveActionPointDiscount.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_MoveActionPointDiscount.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -272,11 +272,11 @@
                 <tr>
                     <td>Extra chance of spell critical hits:</td>
                     <td>
-                        @Model.ExtraSkillCriticalPercent()
+                        @Model.ExtraSkillCriticalPercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_ExtraSkillCriticalPercent</td>
-                    <td class="mobile">@Model.FromItems_ExtraSkillCriticalPercent</td>
-                    <td class="mobile">@Model.FromEffects_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromForm_ExtraSkillCriticalPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_ExtraSkillCriticalPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_ExtraSkillCriticalPercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -288,11 +288,11 @@
                 <tr>
                     <td>Percent chance to evade an attack:</td>
                     <td>
-                        @Model.EvasionPercent()
+                        @Model.EvasionPercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_EvasionPercent</td>
-                    <td class="mobile">@Model.FromItems_EvasionPercent</td>
-                    <td class="mobile">@Model.FromEffects_EvasionPercent</td>
+                    <td class="mobile">@Model.FromForm_EvasionPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_EvasionPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_EvasionPercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -303,11 +303,11 @@
                 <tr>
                     <td>Percent negation of opponent's ability to evade a spell:</td>
                     <td>
-                        @Model.EvasionNegationPercent()
+                        @Model.EvasionNegationPercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_EvasionNegationPercent</td>
-                    <td class="mobile">@Model.FromItems_EvasionNegationPercent</td>
-                    <td class="mobile">@Model.FromEffects_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromForm_EvasionNegationPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_EvasionNegationPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_EvasionNegationPercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -318,11 +318,11 @@
                 <tr>
                     <td>Extra spell willpower damage percent:</td>
                     <td>
-                        @Model.SpellExtraHealthDamagePercent()
+                        @Model.SpellExtraHealthDamagePercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_SpellExtraHealthDamagePercent</td>
-                    <td class="mobile">@Model.FromItems_SpellExtraHealthDamagePercent</td>
-                    <td class="mobile">@Model.FromEffects_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromForm_SpellExtraHealthDamagePercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraHealthDamagePercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraHealthDamagePercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -333,11 +333,11 @@
                 <tr>
                     <td>Extra transformation damage percent dealt from spells: </td>
                     <td>
-                        @Model.SpellExtraTFEnergyPercent()
+                        @Model.SpellExtraTFEnergyPercent().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_SpellExtraTFEnergyPercent</td>
-                    <td class="mobile">@Model.FromItems_SpellExtraTFEnergyPercent</td>
-                    <td class="mobile">@Model.FromEffects_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromForm_SpellExtraTFEnergyPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraTFEnergyPercent.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraTFEnergyPercent.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -348,11 +348,11 @@
                 <tr>
                     <td>Extra transformation energy removed when cleansing:</td>
                     <td>
-                        @Model.CleanseExtraTFEnergyRemovalPercent()
+                        @Model.CleanseExtraTFEnergyRemovalPercent().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_CleanseExtraTFEnergyRemovalPercent</td>
-                    <td class="mobile">@Model.FromItems_CleanseExtraTFEnergyRemovalPercent</td>
-                    <td class="mobile">@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraTFEnergyRemovalPercent.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraTFEnergyRemovalPercent.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -363,11 +363,11 @@
                 <tr>
                     <td>Misfire percent chance reduction: </td>
                     <td>
-                        @Model.SpellMisfireChanceReduction()
+                        @Model.SpellMisfireChanceReduction().ToString("0.0")%
                     </td>
-                    <td class="mobile">@Model.FromForm_SpellMisfireChanceReduction</td>
-                    <td class="mobile">@Model.FromItems_SpellMisfireChanceReduction</td>
-                    <td class="mobile">@Model.FromEffects_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromForm_SpellMisfireChanceReduction.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromItems_SpellMisfireChanceReduction.ToString("0.0")%</td>
+                    <td class="mobile">@Model.FromEffects_SpellMisfireChanceReduction.ToString("0.0")%</td>
                 </tr>
             }
         }
@@ -378,11 +378,11 @@
                 <tr>
                     <td>Willpower damage reduction when hit by spells:</td>
                     <td>
-                        @Model.SpellHealthDamageResistance()
+                        @Model.SpellHealthDamageResistance().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_SpellHealthDamageResistance</td>
-                    <td class="mobile">@Model.FromItems_SpellHealthDamageResistance</td>
-                    <td class="mobile">@Model.FromEffects_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromForm_SpellHealthDamageResistance.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_SpellHealthDamageResistance.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_SpellHealthDamageResistance.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -393,11 +393,11 @@
                 <tr>
                     <td>Transformation energy reduction when hit by spells:</td>
                     <td>
-                        @Model.SpellTFEnergyDamageResistance()
+                        @Model.SpellTFEnergyDamageResistance().ToString("0.00")
                     </td>
-                    <td class="mobile">@Model.FromForm_SpellTFEnergyDamageResistance</td>
-                    <td class="mobile">@Model.FromItems_SpellTFEnergyDamageResistance</td>
-                    <td class="mobile">@Model.FromEffects_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromForm_SpellTFEnergyDamageResistance.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromItems_SpellTFEnergyDamageResistance.ToString("0.00")</td>
+                    <td class="mobile">@Model.FromEffects_SpellTFEnergyDamageResistance.ToString("0.00")</td>
                 </tr>
             }
         }
@@ -408,11 +408,11 @@
                 <tr>
                     <td>Extra inventory space:</td>
                     <td>
-                        @Model.ExtraInventorySpace()
+                        @Model.ExtraInventorySpace().ToString("0.#")
                     </td>
-                    <td class="mobile">@Model.FromForm_ExtraInventorySpace</td>
-                    <td class="mobile">@Model.FromItems_ExtraInventorySpace</td>
-                    <td class="mobile">@Model.FromEffects_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromForm_ExtraInventorySpace.ToString("0.#")</td>
+                    <td class="mobile">@Model.FromItems_ExtraInventorySpace.ToString("0.#")</td>
+                    <td class="mobile">@Model.FromEffects_ExtraInventorySpace.ToString("0.#")</td>
                 </tr>
             }
         }

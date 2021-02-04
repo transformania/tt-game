@@ -1518,6 +1518,10 @@ namespace TT.Web.Controllers
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpellSourceId);
                 }
 
+                var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+                newPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newPlayer));
+                playerRepo.SavePlayer(newPlayer);
+
                 var cm = changed_name + changed_form + changed_level + changed_money;
                 cm = cm.TrimEnd(cm[cm.Length - 1]);
 

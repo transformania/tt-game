@@ -1,4 +1,7 @@
-﻿using TT.Domain.Players.Commands;
+﻿using System.Linq;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 
@@ -31,7 +34,12 @@ namespace TT.Domain.Procedures.BossProcedures
                     Level = 15,
                     BotId = AIStatics.BartenderBotId,
                 };
-                DomainRegistry.Repository.Execute(cmd);
+                var id = DomainRegistry.Repository.Execute(cmd);
+
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newBartender = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                newBartender.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newBartender));
+                playerRepo.SavePlayer(newBartender);
             }
         }
     }

@@ -1379,6 +1379,24 @@ namespace TT.Web.Controllers
                 ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
             }
 
+
+            var ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == input.NewFirstName && p.LastName == input.NewLastName);
+
+            if (ghost != null)
+            {
+                ModelState.AddModelError("", "A character of this name already exists.  Choose another.");
+            }
+            else
+            {
+                var originalGhost = playerRepo.Players.FirstOrDefault(p => p.OriginalFirstName == input.NewFirstName && p.OriginalLastName == input.NewLastName && p.BotId == AIStatics.ActivePlayerBotId);
+
+                if (originalGhost != null && originalGhost.MembershipId != player.MembershipId)
+                {
+                    ModelState.AddModelError("", "An existing character is eligible to reclaim this name.  Choose another.");
+                }
+            }
+
+
             if (item == null)
             {
                 TempData["Error"] = "This player is not soul bound to you";

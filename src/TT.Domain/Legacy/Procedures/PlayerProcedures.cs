@@ -514,6 +514,13 @@ namespace TT.Domain.Procedures
                 return "A character of this name already exists.";
             }
 
+            var originalGhost = playerRepo.Players.FirstOrDefault(p => p.OriginalFirstName == newCharacterViewModel.FirstName && p.OriginalLastName == noGenerationLastName && p.BotId == AIStatics.ActivePlayerBotId);
+
+            if (originalGhost != null && originalGhost.MembershipId != membershipId)
+            {
+                    return "An existing character is eligible to reclaim this name.";
+            }
+
             var generationTitle = "";
 
             if (ghost != null && (ghost.BotId == AIStatics.RerolledPlayerBotId || ghost.MembershipId == membershipId) && ghost.FirstName == newCharacterViewModel.FirstName && ghost.LastName == newCharacterViewModel.LastName)

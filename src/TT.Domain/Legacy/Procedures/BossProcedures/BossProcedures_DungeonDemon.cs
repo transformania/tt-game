@@ -28,9 +28,9 @@ namespace TT.Domain.Procedures.BossProcedures
                 var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = dbDemon.Id});
                 ItemProcedures.DeleteItem(item.Id);
 
+                DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = demon.Id});
+
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonDemonsDefeated, 1);
-
-
             }
             else if (dbDemon != null && dbDemon.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
             {

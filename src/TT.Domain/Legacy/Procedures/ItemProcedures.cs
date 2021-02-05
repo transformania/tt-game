@@ -801,6 +801,11 @@ namespace TT.Domain.Procedures
                     EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId, owner);
                     EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectSourceId, owner);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
+
+                    var newOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
+                    newOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newOwner));
+                    playerRepo.SavePlayer(newOwner);
+
                     return (true,"You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...");
                 }
 

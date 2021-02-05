@@ -819,6 +819,11 @@ namespace TT.Domain.Procedures
 
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
 
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            newPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newPlayer));
+            playerRepo.SavePlayer(newPlayer);
+
             var message = "";
             if (player.IsInDungeon() && !CheckAllowedInDungeon(player, out message))
             {

@@ -87,7 +87,7 @@ namespace TT.Domain.Procedures
                     var soulbinder = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.SoulbinderBotId);
                     if (soulbinder == null)
                     {
-                        DomainRegistry.Repository.Execute(new CreatePlayer
+                        var id = DomainRegistry.Repository.Execute(new CreatePlayer
                         {
                             FirstName = "Karin",
                             LastName = "Kezesul-Adriz the Soulbinder",
@@ -104,6 +104,10 @@ namespace TT.Domain.Procedures
                             OnlineActivityTimestamp = DateTime.UtcNow,
                             BotId = AIStatics.SoulbinderBotId
                         });
+
+                    var newSoulbinder = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                    newSoulbinder.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newSoulbinder));
+                    playerRepo.SavePlayer(newSoulbinder);
                     }
                 }
                 #endregion
@@ -528,7 +532,7 @@ namespace TT.Domain.Procedures
 
                             var id = DomainRegistry.Repository.Execute(cmd);
 
-                            var newDemon = new EFPlayerRepository().Players.FirstOrDefault(p => p.Id == id);
+                            var newDemon = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                             
                             if (cmd.Level <= 5)
                             {
@@ -544,6 +548,8 @@ namespace TT.Domain.Procedures
                                 ItemProcedures.GiveNewItemToPlayer(newDemon, ItemStatics.SpellbookGiantItemSourceId);
                             }
 
+                            newDemon.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newDemon));
+                            playerRepo.SavePlayer(newDemon);
                         }
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
 

@@ -365,7 +365,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // checks have passed.  Transfer the item
+            // checks have passed.  Transfer the item, update abilities and stats
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
 
@@ -374,6 +374,11 @@ namespace TT.Web.Controllers
 
             ItemProcedures.GiveItemToPlayer(purchased.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+            newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+            playerRepo.SavePlayer(newMe);
 
             TempData["Result"] = "You have purchased a " + purchased.ItemSource.FriendlyName + " from Wüffie.";
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
@@ -451,6 +456,12 @@ namespace TT.Web.Controllers
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+            newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+            playerRepo.SavePlayer(newMe);
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)cost);
 

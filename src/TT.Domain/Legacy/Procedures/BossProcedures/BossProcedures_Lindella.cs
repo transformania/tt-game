@@ -37,6 +37,10 @@ namespace TT.Domain.Procedures.BossProcedures
                 };
                 var id = DomainRegistry.Repository.Execute(cmd);
 
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var newMerchant = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                newMerchant.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMerchant));
+                playerRepo.SavePlayer(newMerchant);
 
                 AIDirectiveProcedures.GetAIDirective(id);
                 AIDirectiveProcedures.SetAIDirective_MoveTo(id, "street_15th_south");

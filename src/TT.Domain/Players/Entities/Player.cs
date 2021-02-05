@@ -320,12 +320,12 @@ namespace TT.Domain.Players.Entities
                 if (outOfCombat)
                 {
                     AddHealth(cleanseWPRestore * 3) ;
-                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 3} willpower.";
+                    result = $"You take your time cleansing yourself, restoring {cleanseWPRestore * 3:#} willpower.";
                 }
                 else
                 {
                     AddHealth(cleanseWPRestore);
-                    result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+                    result = $"You quickly cleanse, restoring {cleanseWPRestore:#} willpower.";
                 }
             }
 
@@ -370,12 +370,12 @@ namespace TT.Domain.Players.Entities
                 if (outOfCombat)
                 {
                     AddMana(meditateManaRestore * 3);
-                    result = $"You take your time meditating, restoring {meditateManaRestore * 3} mana.";
+                    result = $"You take your time meditating, restoring {meditateManaRestore * 3:#} mana.";
                 }
                 else
                 {
                     AddMana(meditateManaRestore);
-                    result = $"You quickly meditate, restoring {meditateManaRestore} mana.";
+                    result = $"You quickly meditate, restoring {meditateManaRestore:#} mana.";
                 }
 
             }

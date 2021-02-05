@@ -39,8 +39,7 @@ namespace TT.Domain.Procedures
 
             // Add the spell text to the player logs
             var percentTransformed = CalculateTransformationProgress(victim, totalEnergy, eventualForm);
-            var percentPrintedOutput = Math.Round(percentTransformed * 100, 3);
-            LogTransformationMessages(victim, attacker, output, eventualForm, percentTransformed, percentPrintedOutput);
+            LogTransformationMessages(victim, attacker, output, eventualForm, percentTransformed);
 
             // Only give XP if attacker and victim are not part of the same covenant
             if (attacker.Covenant == null || attacker.Covenant != victim.Covenant)
@@ -182,38 +181,38 @@ namespace TT.Domain.Procedures
             return Math.Min(percentTransformedByEnergy, percentTransformedByHealth);
         }
 
-        private static void LogTransformationMessages(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm, decimal percentTransformed, decimal percentPrintedOutput)
+        private static void LogTransformationMessages(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm, decimal percentTransformed)
         {
+            string stage;
+
             if (percentTransformed < 0.20m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "20", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "20", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "20";
             }
             else if (percentTransformed < 0.40m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "40", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "40", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "40";
             }
             else if (percentTransformed < 0.60m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "60", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "60", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "60";
             }
             else if (percentTransformed < 0.80m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "80", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "80", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "80";
             }
             else if (percentTransformed < 1)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "100", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "100", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "100";
             }
             else
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "complete", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "complete", "first") + " (" + percentPrintedOutput + "%)";
+                stage = "complete";
             }
+
+            var percentPrintedOutput = $" ({percentTransformed.ToString("0.00%")})";
+            output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, stage, "third") + percentPrintedOutput;
+            output.VictimLog += GetTFMessage(eventualForm, victim, attacker, stage, "first") + percentPrintedOutput;
         }
 
         private static void AwardXP(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm)
@@ -345,10 +344,10 @@ namespace TT.Domain.Procedures
             {
                 if (energyAccumulated > targetForm.TFEnergyRequired * 10M && attacker.BotId == AIStatics.ActivePlayerBotId && victim.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    var HealthDamage = Math.Round(9999 * modifiedTFEnergyPercent, 2);
+                    var HealthDamage = 9999 * modifiedTFEnergyPercent;
 
-                    output.VictimLog += " <br />Despite your iron will there is only so much transformation energy that a single person can contain within their body, unfortunately for you that limit has been reached. In a spectacular shower of vibrant energy you are consumed. You take an extra " + HealthDamage + " willpower damage.";
-                    output.AttackerLog += "<br />Your victim stands resolute for their final moments before a brilliant cascade of chaos errupts from inside of their form. They suffer an extra " + HealthDamage + " willpower damage.";
+                    output.VictimLog += $" <br />Despite your iron will there is only so much transformation energy that a single person can contain within their body, unfortunately for you that limit has been reached. In a spectacular shower of vibrant energy you are consumed. You take an extra {HealthDamage:#} willpower damage.";
+                    output.AttackerLog += $"<br />Your victim stands resolute for their final moments before a brilliant cascade of chaos errupts from inside of their form. They suffer an extra {HealthDamage:#} willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);
@@ -358,43 +357,43 @@ namespace TT.Domain.Procedures
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 3M)
                 {
-                    var HealthDamage = Math.Round(60 * modifiedTFEnergyPercent, 2);
+                    var HealthDamage = 60 * modifiedTFEnergyPercent;
                     // Make players deal full damage with TFEnergy buildup
                     if (attacker.BotId == AIStatics.ActivePlayerBotId)
                     {
-                        HealthDamage = Math.Round(120 * modifiedTFEnergyPercent, 2);
+                        HealthDamage *= 2;
                     }
 
-                    output.VictimLog += "<br />You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
-                    output.AttackerLog += "<br />Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
+                    output.VictimLog += $"<br />You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {HealthDamage:#} willpower damage.";
+                    output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 2M)
                 {
-                    var HealthDamage = Math.Round(30 * modifiedTFEnergyPercent, 2);
+                    var HealthDamage = 30 * modifiedTFEnergyPercent;
                     // Make players deal full damage with TFEnergy buildup
                     if (attacker.BotId == AIStatics.ActivePlayerBotId)
                     {
-                        HealthDamage = Math.Round(60 * modifiedTFEnergyPercent, 2);
+                        HealthDamage *= 2;
                     }
-                    output.VictimLog += "<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra " + HealthDamage + " willpower damage.";
-                    output.AttackerLog += "<br />Your victim has an extremely high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
+                    output.VictimLog += $"<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {HealthDamage:#} willpower damage.";
+                    output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);
                 }
                 else if (energyAccumulated > targetForm.TFEnergyRequired * 1M)
                 {
-                    var HealthDamage = Math.Round(15 * modifiedTFEnergyPercent, 2);
+                    var HealthDamage = 15 * modifiedTFEnergyPercent;
                     // Make players deal full damage with TFEnergy buildup
                     if (attacker.BotId == AIStatics.ActivePlayerBotId)
                     {
-                        HealthDamage = Math.Round(30 * modifiedTFEnergyPercent, 2);
+                        HealthDamage *= 2;
                     }
-                    output.VictimLog += "<br />You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra " + HealthDamage + " willpower damage.";
-                    output.AttackerLog += "<br />Your victim has a high amount of transformation energy built up and takes an extra " + HealthDamage + " willpower damage.";
+                    output.VictimLog += $"<br />You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra {HealthDamage:#} willpower damage.";
+                    output.AttackerLog += $"<br />Your victim has a high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
                     target.Health -= HealthDamage;
                     target.NormalizeHealthMana();
                     playerRepo.SavePlayer(target);
@@ -616,7 +615,7 @@ namespace TT.Domain.Procedures
 
                     playerRepo.SavePlayer(target);
 
-                    output.AttackerLog += "<br />Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for " + healingTotal + " willpower and " + manaRestoredTotal + " mana.";
+                    output.AttackerLog += $"<br />Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for {healingTotal:#} willpower and {manaRestoredTotal:#} mana.";
                 }
             }
 

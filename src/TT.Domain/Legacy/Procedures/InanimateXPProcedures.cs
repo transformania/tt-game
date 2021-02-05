@@ -15,20 +15,87 @@ namespace TT.Domain.Procedures
     public static class InanimateXPProcedures
     {
 
-        public static decimal GetStruggleChance(Player player)
+        public static decimal GetStruggleChance(Player player, bool dungeonPenalty)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             decimal output = -6 * player.Level;
             var myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
+            var quotient = dungeonPenalty ? 3.0m : 1.0m;
+
             if (myItemXP != null)
             {
-                return myItemXP.TimesStruggled;
+                return myItemXP.TimesStruggled / quotient;
             }
             else
             {
-                return output;
+                return output / quotient;
             }
+        }
+
+        public static string GetProspectsMessage(Player player)
+        {
+            IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
+            IItemRepository itemRep = new EFItemRepository();
+
+            var inanimateMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+            var meItem = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMe.Id);
+            var myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
+
+            if (meItem == null || myItemXP == null)
+            {
+                return null;
+            }
+
+            var turnsSinceLastAction = Math.Max(0, PvPWorldStatProcedures.GetWorldTurnNumber() - myItemXP.LastActionTurnstamp);
+
+            // Time until lock - at 2% per turn  (negative threshold)
+            var turnsUntilLocked = (myItemXP.TimesStruggled - TurnTimesStatics.GetStruggleXPBeforeItemPermanentLock()) / 2 - turnsSinceLastAction;
+
+            if (!meItem.IsPermanent && turnsUntilLocked <= TurnTimesStatics.GetItemMaxTurnsBuildup())
+            {
+                if (turnsUntilLocked <= 1)
+                {
+                    return "<b style=\"color: red;\">Be careful!</b>  Just one more move and you might never be human again!";
+                }
+                else
+                {
+                    var time = turnsUntilLocked * TurnTimesStatics.GetTurnLengthInSeconds();
+
+                    return $"If you keep enjoying your current form you might find yourself into it forever.  That could happen in as little as <b>{SecondsToDurationString(time)}</b> or so!";
+                }
+            }
+
+            // Time until chance of escaping - at 1% per turn outside Chaos
+            var turnsUntilAbleToStruggle = 1 - myItemXP.TimesStruggled - turnsSinceLastAction;
+            if (ItemProcedures.ItemIncursDungeonPenalty(inanimateMe))
+            {
+                turnsUntilAbleToStruggle *= 3;
+            }
+
+            if (!PvPStatics.ChaosMode && turnsUntilAbleToStruggle > 1 && turnsUntilAbleToStruggle <= TurnTimesStatics.GetItemMaxTurnsBuildup())
+            {
+                var time = turnsUntilAbleToStruggle * TurnTimesStatics.GetTurnLengthInSeconds();
+
+                return $"You could be free in approximately <b>{SecondsToDurationString(time)}</b> if you keep fighting!";
+            }
+
+            return null;
+        }
+
+        private static string SecondsToDurationString(int numSeconds)
+        {
+            var unit = "minute";
+            var amount = Math.Round(numSeconds / 60.0);
+
+            if (amount > 60)
+            {
+                unit = "hour";
+                amount = Math.Round(amount / 60.0);
+            }
+
+            var s = (amount == 1) ? "" : "s";
+            return $"{(int)amount} {unit}{s}";
         }
 
         public static string GiveInanimateXP(string membershipId, bool isWhitelist)
@@ -53,7 +120,6 @@ namespace TT.Domain.Procedures
             {
                 playerCount = 1;
             }
-            xpGain = xpGain / playerCount;
 
             var xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == me.Id);
 
@@ -195,7 +261,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string ReturnToAnimate(Player player, bool dungeonHalfPoints)
+        public static string ReturnToAnimate(Player player, bool dungeonPenalty)
         {
 
 
@@ -243,16 +309,10 @@ namespace TT.Domain.Procedures
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate++;
 
-            var strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
+            var strugglesMade = Convert.ToDouble(GetStruggleChance(player, dungeonPenalty));
 
             var rand = new Random();
             var roll = rand.NextDouble() * 100;
-
-            // if player is in dungeon, make struggling chance much lower
-            if (dungeonHalfPoints)
-            {
-                roll = roll * 3;
-            }
 
             var dbPlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
@@ -350,13 +410,13 @@ namespace TT.Domain.Procedures
 
                 if (dbPlayerItem.Owner != null)
                 {
-                    var message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance next struggle:  " + inanimXP.TimesStruggled + "%]";
+                    var message = $"{player.FirstName} {player.LastName}, your {itemPlus.FriendlyName}, struggles but fails to return to an animate form.  [Recovery chance next struggle:  {(int)GetStruggleChance(player, dungeonPenalty)}%]";
                     PlayerLogProcedures.AddPlayerLog(dbPlayerItem.Owner.Id, message, true);
                 }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, "You struggled to return to a human form.", false);
 
-                return "Unfortunately you are not able to struggle free from your form as " + itemPlus.FriendlyName + ".  Keep trying and you might succeed later... [Recovery chance next struggle:  " + inanimXP.TimesStruggled + "%]";
+                return $"Unfortunately you are not able to struggle free from your form as {itemPlus.FriendlyName}.  Keep trying and you might succeed later... [Recovery chance next struggle:  {(int)GetStruggleChance(player, dungeonPenalty)}%]";
             }
         }
 

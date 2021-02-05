@@ -623,7 +623,7 @@ namespace TT.Domain.Procedures
             output.AttackerLog += "  You collect " + Math.Round(moneygain, 0) + " Arpeyjis your victim dropped during the transformation.";
 
             // create inanimate XP for the victim
-            InanimateXPProcedures.GetStruggleChance(victim);
+            InanimateXPProcedures.GetStruggleChance(victim, false);
 
             // if this victim is a bot, clear out some old stuff that is not needed anymore
             if (victim.BotId < AIStatics.ActivePlayerBotId)

@@ -234,14 +234,46 @@
                 if (!Model.IsPermanent)
                 {
                     <p class="center-block">
-                        <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+                        <span class="place">Struggle free from this form</span>
+                    </p>
+                    if (Model.StruggleChance <= -100)
+                    {
+                        <p>If you enjoy being a pet too much <strong>you might find youself trapped like this forever!</strong>  You still have a chance of escape if you can bring yourself to fight your transformation.  (@Model.StruggleChance% chance)</p>
+                    }
+                    else if (Model.StruggleChance <= 0)
+                    {
+                        <p>You cannot escape this turn (@Model.StruggleChance% chance), but <b>keep struggling</b> to increase your chances of escape on a future turn.</p>
+                    }
+                    else if (Model.StruggleChance >= 100)
+                    {
+                        <p>Keep struggling and <b>you should be able to escape very soon!</b>  (@Model.StruggleChance% chance)</p>
+                    }
+                    else
+                    {
+                        <p>If you struggle this turn you have a <b>@Model.StruggleChance% chance</b> of escaping your current form.</p>
+                    }
+                    <p class="center-block">
                         <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
                     </p>
                 }
+
                 if(PvPStatics.ChaosMode)
                 {
                     <p>
-                        In Chaos Mode you can immediately change back into base form through the <b>My Player</b> menu.
+                        In Chaos Mode you can immediately change back into base form through the <b>My Player</b> menu or the <a href="@Url.Action(MVC.Settings.Settings())">Settings</a> page.
+                    </p>
+                }
+                else
+                {
+                    if (!Model.Message.IsNullOrEmpty())
+                    {
+                        <p>
+                            @(new MvcHtmlString(Model.Message))
+                        </p>
+                        <br />
+                    }
+                    <p>
+                        While you're waiting, why not check out the <a href="https://tt-gameshow.transformaniatime.com/" target="_blank">Transformania Gameshow</a>?
                     </p>
                 }
             }

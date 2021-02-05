@@ -151,6 +151,11 @@ namespace TT.Web.Controllers
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
+                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
+                {
+                    PlayerId = me.Id
+                });
+
                 var inanimateOutput = new InanimatePlayPageViewModel
                 {
                     RenderCaptcha = renderCaptcha,
@@ -159,14 +164,12 @@ namespace TT.Web.Controllers
                     World = world,
                     Player = me,
                     Form = FormStatics.GetForm(me.FormSourceId),
-                    Item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
-                    {
-                        PlayerId = me.Id
-                    }),
+                    Item = itemMe,
                     HasNewMessages = hasNewMessages,
                     UnreadMessageCount = unreadMessageCount,
                     PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse(),
-                    StruggleChance = InanimateXPProcedures.GetStruggleChance(me)
+                    StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(itemMe))),
+                    Message = InanimateXPProcedures.GetProspectsMessage(me)
                 };
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
 
@@ -271,7 +274,8 @@ namespace TT.Web.Controllers
 
                 animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
 
-                animalOutput.StruggleChance = InanimateXPProcedures.GetStruggleChance(me);
+                animalOutput.StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(animalOutput.YouItem)));
+                animalOutput.Message = InanimateXPProcedures.GetProspectsMessage(me);
 
                 return View(MVC.PvP.Views.Play_Animal, animalOutput);
 
@@ -3140,21 +3144,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            bool dungeonPenalty = ItemProcedures.ItemIncursDungeonPenalty(itemMe);
 
-            var dungeonHalfPoints = false;
-
-            // Give items/pets a struggle penalty if their owner isn't a bot and is in the dungeon
-            if (itemMe.Owner != null)
-            {
-                var owner = PlayerProcedures.GetPlayer(itemMe.Owner.Id);
-                if (owner.IsInDungeon())
-                {
-                    dungeonHalfPoints = true;
-                }
-            }
-
-
-            TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonHalfPoints);
+            TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonPenalty);
             return RedirectToAction(MVC.PvP.Play());
         }
 

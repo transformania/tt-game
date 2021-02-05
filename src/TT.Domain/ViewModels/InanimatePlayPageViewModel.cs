@@ -21,6 +21,7 @@ namespace TT.Domain.ViewModels
         public IEnumerable<PlayerLog> PlayerLogImportant { get; set; }
 
         public decimal StruggleChance { get; set; }
+        public string Message {  get; set; }
 
         public WorldStats WorldStats { get; set; }
 

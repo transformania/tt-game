@@ -34,8 +34,9 @@
 <div id="fullDetails">
 
 </div>
-
+    
 <div class="row rowP">
+    <span>
     @{
 
         if (hat != null)
@@ -48,9 +49,6 @@
                     @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(hat.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
-
-
-
             </div>
         }
         else
@@ -144,7 +142,10 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Shoes</p></div>
         }
-
+    }
+    </span>
+    <div style="float: left;">
+    @{
         for (var index = 0; index < items.Count(); ++index)
         {
             var item = items[index];
@@ -164,7 +165,10 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc @(index + 1)</p></div>
         }
-
+    }
+    </div>
+    <div style="float: left;">
+    @{
         foreach(var pet in pets)
         {
             if (pet != null)
@@ -185,8 +189,8 @@
             }
         }
     }
-</div>
-<div class="row rowP">
+    </div>
+    <div style="float: left;">
     @{
         for (var index = 0; index < consumables.Count(); ++index)
         {
@@ -208,6 +212,7 @@
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName slotConsumable">Cons @(index + 1)</p></div>
         }
     }
+    </div>
 </div>
 <style>
     .slotName{

@@ -674,7 +674,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // VALENTINE
-                if (worldStats.Boss_Valentine == AIStatics.ACTIVE)
+                if (worldStats.Boss_Valentine == AIStatics.ACTIVE || PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.ValentineBotId) != null)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
                     serverLogRepo.SaveServerLog(log);

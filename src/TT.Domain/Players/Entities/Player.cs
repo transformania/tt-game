@@ -726,7 +726,7 @@ namespace TT.Domain.Players.Entities
             if (this.SelfRestoreEnergy.Amount < PvPStatics.SelfRestoreTFnergyRequirement)
             {
                 var output = $"You rest and attempt to restore yourself to your base form.  [+{(int)actualAmount}, {(int)this.SelfRestoreEnergy.Amount}/{PvPStatics.SelfRestoreTFnergyRequirement}].  Keep trying and you'll find yourself in a familiar form in no time...";
-                this.AddLog(output, true);
+                this.AddLog(output, false);
                 return output;
             }
             else
@@ -735,7 +735,7 @@ namespace TT.Domain.Players.Entities
                 this.FormSource = this.OriginalFormSource;
                 this.Gender = this.OriginalFormSource.Gender;
                 var output = "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + OriginalFormSource.FriendlyName + "</b>!<span>";
-                this.AddLog(output, true);
+                this.AddLog(output, false);
                 return output;
             }
 

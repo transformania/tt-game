@@ -6,6 +6,7 @@
     var reconnectTimer;
     var connectAttempts = 0;
     var maxConnectAttempts = 20;
+    var addingMessages = 0;
     
     var pub = {};
 
@@ -51,10 +52,22 @@
             ConfigModule.save();
         }
 
-        if (ConfigModule.chat.autoScrollEnabled)
+        updateAutoScrollText();
+    }
+
+    function setAutoScroll(flag) {
+        ConfigModule.chat.autoScrollEnabled = flag;
+        updateAutoScrollText();
+        ConfigModule.save();
+    }
+
+    function updateAutoScrollText() {
+        if (ConfigModule.chat.autoScrollEnabled) {
             $('#autoScrollToggle').text('Autoscroll ON');
-        else
+        }
+        else {
             $('#autoScrollToggle').text('Autoscroll OFF');
+        }
     }
 
     function playAudio(isAlert) {
@@ -113,12 +126,29 @@
         window.setInterval(function() { cooldownActive = false; }, 3000);
     }
 
+    function onScrollDiscussion() {
+        if (addingMessages == 0) {
+            var panel = $('#discussion');
+            setAutoScroll(panel.prop('scrollHeight') < Math.abs(panel.prop('scrollTop')) + panel.prop('clientHeight') + 5);
+        }
+    }
+
+    function onResizeUserList() {
+        $('#discussion').height($('.userlist-chat').height());
+    }
+
     function onChatHubStarted() {
         pub.chat.server.joinRoom(roomName);
         pub.chat.state.toRoom = roomName;
 
         $(window).focus(onGainFocus);
         $('#sendmessage').click(onSendMessage);
+        $('#discussion').scroll(onScrollDiscussion);
+
+        // resize event doesn't work on div
+        $('.userlist-chat').hover(onResizeUserList);
+        $('.userlist-chat').mouseup(onResizeUserList);
+        $('.userlist-chat').mousemove(onResizeUserList);
 
         $(document).keypress(function(e) { 
             if (e.which === 13) {
@@ -168,8 +198,10 @@
         }
         $('#discussion').append($(output));
 
-        if (ConfigModule.chat.autoScrollEnabled)
-            $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
+        if (ConfigModule.chat.autoScrollEnabled) {
+            addingMessages++;
+            $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500, function () { addingMessages--; } );
+        }
 
         playAudio(model.Message.indexOf(pub.currentPlayer) > 0);
 
@@ -235,14 +267,10 @@
 
     $("#autoScrollToggle").click(function () {
         if (ConfigModule.chat.autoScrollEnabled === false) {
-            ConfigModule.chat.autoScrollEnabled = true;
-            $(this).text("Autoscroll ON");
+            setAutoScroll(true);
         } else {
-            ConfigModule.chat.autoScrollEnabled = false;
-            $(this).text("Autoscroll OFF");
+            setAutoScroll(false);
         }
-
-        ConfigModule.save();
     });
 
     $("#toggleImages").click(function () {

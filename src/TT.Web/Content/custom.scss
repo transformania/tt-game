@@ -956,12 +956,12 @@ li {
 #discussion {
   max-width: 100%;
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   text-wrap: normal;
   padding: 0;
   background-color: #E1E1E1;
   margin-top: 5px;
-  resize: vertical;
+  resize: none;
   border: $border;
   word-break: break-all;
   margin-bottom: 0;

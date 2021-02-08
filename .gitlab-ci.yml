@@ -4,7 +4,7 @@ before_script:
 ps_build:
   stage: build
   script:
-    - .\build.ps1 -target "CI-Build"
+    - .\build.ps1 --target="CI-Build"
   artifacts:
     paths:
       - ./*-test-result.xml

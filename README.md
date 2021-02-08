@@ -74,7 +74,7 @@ For example, if you want to change dbType, set a variable named TT_DBTYPE.
 When schema changes have been made, you can use the build system to update your development database simply by running the default build. If you only specifically want to run migrations and nothing else, use:
 
 ```powershell
-./build.ps1 -target "Migrate"
+./build.ps1 --target="Migrate"
 ```
 
 If you need to force a specific migration to retrigger, you can delete the row created by the migration you wish to rerun in the table dbo.VersionInfo .
@@ -86,7 +86,7 @@ Again, you can use the `--dbType=` argument suitable for your environment.
 To re-create your DB from scratch you can do the following
 
 ```powershell
-./build.ps1 -target "Recreate-DB"
+./build.ps1 --target="Recreate-DB"
 ```
 
 This will drop your existing database, recreate from migrations and apply the seed data.  For convenience's sake, a default user with username "Developer" and password "password" is automatically seeded with full permissions.
@@ -96,7 +96,7 @@ This will drop your existing database, recreate from migrations and apply the se
 To download up-to-date images from the server you can do the following
 
 ```powershell
-./build.ps1 -target "Recreate-Images"
+./build.ps1 --target="Recreate-Images"
 ```
 
 ### Running turn updates in dev environment
@@ -104,7 +104,7 @@ To download up-to-date images from the server you can do the following
 To run turn updates in a dev environment, you can do the following
 
 ```powershell
-./build.ps1 -target "Turn-Update"
+./build.ps1 --target="Turn-Update"
 ```
 
 ### Feature Toggles

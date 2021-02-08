@@ -956,15 +956,22 @@ li {
 #discussion {
   max-width: 100%;
   height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll;
   text-wrap: normal;
   padding: 0;
   background-color: #E1E1E1;
   margin-top: 5px;
-  resize: none;
+  resize: vertical;
   border: $border;
   word-break: break-all;
   margin-bottom: 0;
+}
+
+@media (min-width: 992px) {
+  #discussion {
+    overflow-y: auto;
+    resize: none;
+  }
 }
 
 .btn,

@@ -137,6 +137,10 @@
         $('#discussion').height($('.userlist-chat').height());
     }
 
+    function onResizeWindow() {
+        $('.userlist-chat').height($('#discussion').height());
+    }
+
     function onChatHubStarted() {
         pub.chat.server.joinRoom(roomName);
         pub.chat.state.toRoom = roomName;
@@ -149,6 +153,8 @@
         $('.userlist-chat').hover(onResizeUserList);
         $('.userlist-chat').mouseup(onResizeUserList);
         $('.userlist-chat').mousemove(onResizeUserList);
+
+        $(window).resize(onResizeWindow);
 
         $(document).keypress(function(e) { 
             if (e.which === 13) {

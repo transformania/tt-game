@@ -1056,10 +1056,14 @@ strong {
   color: white;
 }
 
-#autoScrollToggle {
-  width: 100px;
+.autoScroll {
   float: right;
   cursor: pointer;
+}
+
+#autoScrollToggle {
+  width: 100px;
+  margin-right: 5px;
 }
 
 .pollTextArea {

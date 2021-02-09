@@ -7,6 +7,7 @@
     var connectAttempts = 0;
     var maxConnectAttempts = 20;
     var addingMessages = 0;
+    var autoScrollLock = false;
     
     var pub = {};
 
@@ -52,6 +53,7 @@
             ConfigModule.save();
         }
 
+        setAutoScrollLock(false);
         updateAutoScrollText();
     }
 
@@ -59,6 +61,11 @@
         ConfigModule.chat.autoScrollEnabled = flag;
         updateAutoScrollText();
         ConfigModule.save();
+    }
+
+    function setAutoScrollLock(flag) {
+        autoScrollLock = flag;
+        $('#autoScrollLock').css('opacity', flag ? '1' : '0.4');
     }
 
     function updateAutoScrollText() {
@@ -127,7 +134,7 @@
     }
 
     function onScrollDiscussion() {
-        if (addingMessages == 0) {
+        if (addingMessages == 0 && !autoScrollLock) {
             var panel = $('#discussion');
             setAutoScroll(panel.prop('scrollHeight') < Math.abs(panel.prop('scrollTop')) + panel.prop('clientHeight') + 5);
         }
@@ -272,11 +279,11 @@
     /* Events */
 
     $("#autoScrollToggle").click(function () {
-        if (ConfigModule.chat.autoScrollEnabled === false) {
-            setAutoScroll(true);
-        } else {
-            setAutoScroll(false);
-        }
+        setAutoScroll(ConfigModule.chat.autoScrollEnabled === false);
+    });
+
+    $("#autoScrollLock").click(function () {
+        setAutoScrollLock(autoScrollLock === false);
     });
 
     $("#toggleImages").click(function () {

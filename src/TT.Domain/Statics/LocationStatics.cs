@@ -23,6 +23,8 @@ namespace TT.Domain.Statics
         public const string STREET_200_SUNNYGLADE_DRIVE = "street_200_sunnyglade_drive";
         public const string STREET_230_SUNNYGLADE_DRIVE = "street_230_sunnyglade_drive";
 
+        public const string JOKE_SHOP = "joke_shop";
+
         public static readonly string[] BusStops =
         {
             STREET_40_EAST_9TH_AVE,
@@ -435,6 +437,7 @@ namespace TT.Domain.Statics
                 Region="streets",
                 X = -1,
                 Y = 6,
+                Name_North=JOKE_SHOP,
                 Name_South="street_14th_north",
                 Name_East="tavern_counter",
             },
@@ -1873,10 +1876,171 @@ namespace TT.Domain.Statics
                 Y = 8,
                 Name_North="fairygrove_greathall",
                 Name_West="fairygrove_entrance",
-           }
+           },
+
+           new Location {
+                dbName = JOKE_SHOP,
+                Name = "Cursed Joke Shop",
+                Region="limbo",
+                X = -1,
+                Y = 7,
+                Name_South="street_15th_south"
+            },
 
         };
 
+        }
+
+        enum CompassPoint
+        {
+            North,
+            South,
+            East,
+            West
+        }
+
+        public static void MoveJokeShop()
+        {
+            var jokeShop = LocationList.GetLocation.FirstOrDefault(l => l.dbName == JOKE_SHOP);
+
+            if (jokeShop != null)
+            {
+                // Disconnect from other tiles
+                UnlinkLocation(jokeShop);
+
+                // Find new location
+                var foundLocation = false;
+
+                do
+                {
+                    var randomStreetTile = GetRandomLocation_InRegion("streets");
+                    var candidateTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == randomStreetTile);
+
+                    CompassPoint[] compassSearchOrder = {CompassPoint.North, CompassPoint.South, CompassPoint.East, CompassPoint.West};
+
+                    // Shuffle order in which we examine compass points around the candidate tile
+                    var rand = new Random();
+                    for(var backstop = compassSearchOrder.Length; backstop > 1; backstop--)
+                    {
+                        var dest = backstop - 1;
+                        var src = rand.Next(0, backstop);
+                        var temp = compassSearchOrder[dest];
+                        compassSearchOrder[dest] = compassSearchOrder[src];
+                        compassSearchOrder[src] = temp;
+                    }
+
+                    // Examine each compass point to try and find an empty space from which to link the joke shop
+                    for (var index = 0; !foundLocation && index < compassSearchOrder.Length; index++)
+                    {
+                        switch (compassSearchOrder[index])
+                        {
+                            case CompassPoint.North:
+                                if (jokeShop.Name_North == null &&
+                                    candidateTile.Name_South == null &&
+                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y - 1) == null)
+                                {
+                                    jokeShop.Name_North = candidateTile.dbName;
+                                    candidateTile.Name_South = jokeShop.dbName;
+                                    jokeShop.X = candidateTile.X;
+                                    jokeShop.Y = candidateTile.Y - 1;
+
+                                    foundLocation = true;
+                                }
+                                break;
+
+                            case CompassPoint.South:
+                                if (jokeShop.Name_South == null &&
+                                    candidateTile.Name_North == null &&
+                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y + 1) == null)
+                                {
+                                    jokeShop.Name_South = candidateTile.dbName;
+                                    candidateTile.Name_North = jokeShop.dbName;
+                                    jokeShop.X = candidateTile.X;
+                                    jokeShop.Y = candidateTile.Y + 1;
+
+                                    foundLocation = true;
+                                }
+                                break;
+
+                            case CompassPoint.East:
+                                if (jokeShop.Name_East == null &&
+                                    candidateTile.Name_West == null &&
+                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X - 1 && l.Y == candidateTile.Y) == null)
+                                {
+                                    jokeShop.Name_East = candidateTile.dbName;
+                                    candidateTile.Name_West = jokeShop.dbName;
+                                    jokeShop.X = candidateTile.X - 1;
+                                    jokeShop.Y = candidateTile.Y;
+
+                                    foundLocation = true;
+                                }
+                                break;
+
+                            case CompassPoint.West:
+                                if (jokeShop.Name_West == null &&
+                                    candidateTile.Name_East == null &&
+                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X + 1 && l.Y == candidateTile.Y) == null)
+                                {
+                                    jokeShop.Name_West = candidateTile.dbName;
+                                    candidateTile.Name_East = jokeShop.dbName;
+                                    jokeShop.X = candidateTile.X + 1;
+                                    jokeShop.Y = candidateTile.Y;
+
+                                    foundLocation = true;
+                                }
+                                break;
+                        }
+                    }
+
+                } while (!foundLocation);
+            }
+        }
+
+        private static void UnlinkLocation(Location locDbName)
+        {
+            var northExit = locDbName.Name_North;
+            if (northExit != null)
+            {
+                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == northExit);
+                if (adjoiningTile != null)
+                {
+                    adjoiningTile.Name_South = null;
+                }
+                locDbName.Name_North = null;
+            }
+
+            var southExit = locDbName.Name_South;
+            if (southExit != null)
+            {
+                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == southExit);
+                if (adjoiningTile != null)
+                {
+                    adjoiningTile.Name_North = null;
+                }
+                locDbName.Name_South = null;
+            }
+
+            var eastExit = locDbName.Name_East;
+            if (eastExit != null)
+            {
+                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == eastExit);
+                if (adjoiningTile != null)
+                {
+                    adjoiningTile.Name_West = null;
+                }
+                locDbName.Name_East = null;
+            }
+
+            var westExit = locDbName.Name_West;
+            if (westExit != null)
+            {
+                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == westExit);
+                if (adjoiningTile != null)
+                {
+                    adjoiningTile.Name_East = null;
+                }
+                locDbName.Name_West = null;
+            }
         }
 
         public static string GetConnectionName(string locDbName)

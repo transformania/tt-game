@@ -860,6 +860,26 @@ namespace TT.Domain.Procedures
                
                 serverLogRepo.SaveServerLog(log);
 
+
+                #region update joke shop
+//              if (new Random(Guid.NewGuid().GetHashCode()).NextDouble() < 0.05)  // TODO joke_shop Enable random movement interval
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop started.");
+                    try
+                    {
+                        LocationsStatics.MoveJokeShop();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Updating joke shop FAILED", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop completed.");
+                    serverLogRepo.SaveServerLog(log);
+                }
+                #endregion update joke shop
+
+
                 #region regenerate dungeon
                 if (turnNo % 30 == 7)
                 {

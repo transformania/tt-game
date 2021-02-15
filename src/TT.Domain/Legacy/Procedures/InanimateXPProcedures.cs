@@ -62,7 +62,7 @@ namespace TT.Domain.Procedures
                 {
                     var time = turnsUntilLocked * TurnTimesStatics.GetTurnLengthInSeconds();
 
-                    return $"If you keep enjoying your current form you might find yourself into it forever.  That could happen in as little as <b>{SecondsToDurationString(time)}</b> or so!";
+                    return $"If you keep enjoying your current form you might find yourself locked into it forever!  That could happen in as little as <b>{SecondsToDurationString(time)}</b> or so!";
                 }
             }
 

@@ -739,6 +739,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                TempData["Error"] = "This otherworldly realm is immune to your enchantments and you find yourself unable to establish a safeground in the Joke Shop.";
+                TempData["SubError"] = "Try establishing your safeground elsewhere.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             // assert that the covenant does not already have a safeground set
             if (CovenantProcedures.CovenantHasSafeground(myCov))
             {

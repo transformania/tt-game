@@ -5,6 +5,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -1083,6 +1084,16 @@ namespace TT.Domain.Procedures
                             return summontext;
                         }
                     }
+                }
+            }
+
+            if (dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.Search(player);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    return result;
                 }
             }
 

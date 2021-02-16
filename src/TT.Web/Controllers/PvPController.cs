@@ -23,6 +23,7 @@ using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -177,9 +178,11 @@ namespace TT.Web.Controllers
                 if (inanimateOutput.Item.Owner == null)
                 {
                     // Not owned
-                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == inanimateOutput.Item.dbLocationName)?.Name ?? "Unknown";
-                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = inanimateOutput.Item.dbLocationName, ConcealmentLevel = 0 });
-                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.Item.dbLocationName, myMembershipId);
+                    var loc = inanimateOutput.Item?.dbLocationName == null ? me.dbLocationName : inanimateOutput.Item.dbLocationName;
+                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc)?.Name ?? "Unknown";
+                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = loc, ConcealmentLevel = 0 });
+                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(loc, myMembershipId);
+
                 }
                 else
                 {
@@ -545,6 +548,16 @@ namespace TT.Web.Controllers
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // TODO joke_shop enable blocking banned players
+            /*
+            if (locname == LocationsStatics.JOKE_SHOP && JokeShopProcedures.CharacterIsBanned(me))
+            {
+                TempData["Error"] = "You cannot enter the Joke Shop.";
+                TempData["SubError"] = "You are currently banned from this location.";
+                // return RedirectToAction(MVC.PvP.Play());
+            }
+            */
 
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive)
@@ -1308,7 +1321,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that it is not too late in the round for this attack to happen
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                TempData["Error"] = "An otherworldly field prevents your enchantment having any effect on the Joke Shop.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is not too late in the turn for this attack to happen
             var lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             var secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
@@ -1404,6 +1423,17 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.SelfRestore(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             var buffs = ItemProcedures.GetPlayerBuffs(me);
 
             try
@@ -1436,6 +1466,17 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.Meditate(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new Meditate { PlayerId = me.Id, Buffs = mybuffs });
@@ -1460,6 +1501,17 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var mybuffs = ItemProcedures.GetPlayerBuffs(me);
+
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.Cleanse(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
 
             try
             {
@@ -2065,7 +2117,7 @@ namespace TT.Web.Controllers
                     var model = new TT.Domain.ViewModels.TeleportMapViewModel
                     {
                         ItemId = itemId,
-                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon")
+                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.dbName != LocationsStatics.JOKE_SHOP && l.Region != "dungeon")
                     };
 
                     return View(MVC.PvP.Views.TeleportMap, model);
@@ -3093,6 +3145,13 @@ namespace TT.Web.Controllers
             if (me.IsInDungeon() != destinationIsInDungeon)
             {
                 TempData["Error"] = "You can't teleport inside the dungeon from outside of it, nor can you teleport out of it from inside.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (to == LocationsStatics.JOKE_SHOP)
+            {
+                TempData["Error"] = "You cannot teleport to the Joke Shop.";
+                TempData["SubError"] = "There is a powerful magical shield around this place.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

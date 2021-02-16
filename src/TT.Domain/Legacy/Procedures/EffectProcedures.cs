@@ -292,5 +292,16 @@ namespace TT.Domain.Procedures
 
 
         }
+
+        public static bool PlayerHasActiveEffect(Player player, int effectSourceId)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+
+            return effectRepo.Effects.FirstOrDefault(
+                e => e.OwnerId == player.Id &&
+                     e.EffectSourceId == effectSourceId && 
+                     e.Duration > 0) != null;
+        }
+
     }
 }

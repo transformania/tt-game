@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.AnimalPlayPageViewModel
+@model TT.Domain.ViewModels.AnimalPlayPageViewModel
 @using TT.Domain.Procedures
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
@@ -238,7 +238,7 @@
                     </p>
                     if (Model.StruggleChance <= -100)
                     {
-                        <p>If you enjoy being a pet too much <strong>you might find youself trapped like this forever!</strong>  You still have a chance of escape if you can bring yourself to fight your transformation.  (@Model.StruggleChance% chance)</p>
+                        <p>If you enjoy being a pet too much <strong>you might find yourself trapped like this forever!</strong>  You still have a chance of escape if you can bring yourself to fight your transformation.  (@Model.StruggleChance% chance)</p>
                     }
                     else if (Model.StruggleChance <= 0)
                     {

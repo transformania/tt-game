@@ -78,6 +78,7 @@ namespace TT.Web.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
+            ViewBag.BodyClasses = $"location-{me.dbLocationName}";  // NB. This could leak location to owned items
 
             // redirect to Quest page if player is currently in a quest
             if (me.InQuest > 0)

@@ -33,6 +33,11 @@ body {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+body.location-joke_shop {
+  background: radial-gradient(circle, transparent 0%, 80%, #ffffff 100%),
+              linear-gradient(to right, #9090b4 0%, #000000 30% 70%, #9090b4);
+}
+
 // fix for margins of headers
 h1, h2, h3 {
   margin-top: 10px !important;
@@ -135,6 +140,10 @@ li {
   border-left: $border;
   border-right: $border;
   background: $containerColor;
+}
+
+body.location-joke_shop .container {
+    background: rgba(228, 224, 212, 0.75);
 }
 
 .containerInner {
@@ -778,6 +787,11 @@ li {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
+}
+
+body.location-joke_shop .avatarText,
+body.location-joke_shop .avatarBars {
+    background: $containerColor;
 }
 
 .avatarName {

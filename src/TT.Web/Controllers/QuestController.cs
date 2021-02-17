@@ -271,7 +271,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "It is too late to abandon this quest.";
                 TempData["SubError"] = "You must accept the consequences of your actions, be they for good or ill!";
-                return RedirectToAction(MVC.Quest.Quest());
+                return RedirectToAction(MVC.Quest.Questing());
             }
 
             QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);

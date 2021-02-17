@@ -81,7 +81,7 @@ namespace TT.Domain.Procedures
             {
                 return false;
             }
-            else if (questStart.MinStartLevel > gameWorldTurn)
+            else if (questStart.MinStartTurn > gameWorldTurn)
             {
                 return false;
             }

@@ -1241,9 +1241,16 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             var itemHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
-            var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemHack.Id); // TODO: Replace with proper command
-            item.LastSouledTimestamp = DateTime.UtcNow;
-            itemRepo.SaveItem(item);
+            if (itemHack != null)
+            {
+                var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemHack.Id); // TODO: Replace with proper command
+    
+                if(item != null)
+                {
+                    item.LastSouledTimestamp = DateTime.UtcNow;
+                    itemRepo.SaveItem(item);
+                }
+            }
         }
 
         /// <summary>

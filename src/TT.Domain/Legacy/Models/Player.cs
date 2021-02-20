@@ -103,7 +103,7 @@ namespace TT.Domain.Models
             }
             else if (this.Mana > this.MaxMana)
             {
-                this.Mana = this.Mana;
+                this.Mana = this.MaxMana;
             }
         }
 

@@ -13,28 +13,6 @@ namespace TT.Domain.Legacy.Procedures
 {
     public static class JokeShopProcedures
     {
-        // Potential pranks
-        // Random animate TF, body swap, tg, turned into psycho, body and name swap, temp inan, inan keeping inventory
-        // Summon a psycho/doppelganger
-        // Mind control e.g. force move
-        // Ban
-        // Nothing
-        // Find or spend cash
-        // Curse
-        // Teleport - kick out, town (rooted?), dungeon (rooted?) in combat
-        // Bounty
-        // Name change/family
-        // Join coven
-        // Shrink to SP item
-        // Invisibility
-        // Silenced
-        // Blinded
-        // Disorientated - move in random direction
-        // Psycho nip
-        // Challenge
-        // Dice roll
-        // Act as form MC
-
         // TODO joke_shop These IDs need to be synced with migration script
         const int FIRST_WARNING_EFFECT = 1006; //
         const int SECOND_WARNING_EFFECT = 1010; //
@@ -46,7 +24,12 @@ namespace TT.Domain.Legacy.Procedures
         {
             if (CharacterIsBanned(player))
             {
-                return EjectCharacter(player);
+                var attemptToEject = EjectCharacter(player);
+
+                if (attemptToEject != null)
+                {
+                    return attemptToEject;
+                }
             }
 
             var rand = new Random();
@@ -64,7 +47,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (roll < 60)  // 60% chance:
             {
-                return MildPrank();
+                return MildPrank(player);
             }
             else if (roll < 80)  // 20% chance:
             {
@@ -113,15 +96,18 @@ namespace TT.Domain.Legacy.Procedures
 
         #region Prank selection
 
-        private static string MildPrank()
+        private static string MildPrank(Player player)
         {
             var rand = new Random();
             var roll = rand.NextDouble() * 100;
 
-            // TODO joke_shop select prank
+            if (roll < 100)
+            {
+                return MildResourcePrank(player);
+            }
 
             // TODO joke_shop return value
-            return "Minor prank";
+            return "Mild prank";
             //return null;
         }
 
@@ -137,10 +123,13 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.NextDouble() * 100;
 
-            // TODO joke_shop select prank
+            if (roll < 100)
+            {
+                return MischievousResourcePrank(player);
+            }
 
             // TODO joke_shop return value
-            return "Regular prank";
+            return "Mischievous prank";
             //return null;
         }
 
@@ -156,10 +145,13 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.NextDouble() * 100;
 
-            // TODO joke_shop select prank
+            if (roll < 100)
+            {
+                return MeanResourcePrank(player);
+            }
 
             // TODO joke_shop return value
-            return "Major prank";
+            return "Mean prank";
             //return null;
         }
 
@@ -220,7 +212,7 @@ namespace TT.Domain.Legacy.Procedures
             var kickedOutMessage = EjectCharacter(player);
             EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
 
-            return "Your searching attracts the attention of the shopkeeper, who bans you from the shop!  " + kickedOutMessage;
+            return "Your actions attract the attention of the shopkeeper, who bans you from the shop!  " + kickedOutMessage;
         }
 
         private static string EjectCharacter(Player player)
@@ -232,10 +224,7 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
-            var street = jokeShop.Name_North;
-            street = (street == null) ? jokeShop.Name_South : street;
-            street = (street == null) ? jokeShop.Name_East : street;
-            street = (street == null) ? jokeShop.Name_West : street;
+            var street = jokeShop.Name_North ?? jokeShop.Name_South ?? jokeShop.Name_East ?? jokeShop.Name_West;
 
             if (street == null)
             {
@@ -269,5 +258,208 @@ namespace TT.Domain.Legacy.Procedures
 
         #endregion
 
+
+        #region Resource pranks
+
+        private static string MildResourcePrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
+
+            if (roll < 27)  // 27%
+            {
+                return ChangeHealth(player, (int)(rand.NextDouble() * 125 - 50));
+            }
+            else if (roll < 54)  // 27%
+            {
+                return ChangeMana(player, (int)(rand.NextDouble() * 25 - 10));
+            }
+            else if (roll < 60)  // 6%
+            {
+                return ChangeActionPoints(player, (int)(rand.NextDouble() * 6 - 3));
+            }
+            else  // 40%
+            {
+                return ChangeMoney(player, (int)(rand.NextDouble() * 5 - 2));
+            }
+        }
+
+        private static string MischievousResourcePrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
+
+            if (roll < 30)  // 30%
+            {
+                return ChangeHealth(player, (int)(rand.NextDouble() * 250 - 125));
+            }
+            else if (roll < 60)  // 30%
+            {
+                return ChangeMana(player, (int)(rand.NextDouble() * 40 - 20));
+            }
+            else if (roll < 65)  // 5%
+            {
+                return ChangeActionPoints(player, (int)(rand.NextDouble() * 30 - 10));
+            }
+            else if (roll < 95)  // 30%
+            {
+                return ChangeMoney(player, (int)(rand.NextDouble() * 10 - 5));
+            }
+            else  // 5%
+            {
+                return ChangeDungeonPoints(player, 1);
+            }
+        }
+
+        private static string MeanResourcePrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.NextDouble() * 100;
+
+            if (roll < 40)  // 40%
+            {
+                return ChangeHealth(player, (int)(rand.NextDouble() * 500 - 300));
+            }
+            else if (roll < 60)  // 25%
+            {
+                return ChangeMana(player, (int)(rand.NextDouble() * 55 - 35));
+            }
+            else if (roll < 65)  // 5%
+            {
+                return ChangeActionPoints(player, (int)(rand.NextDouble() * 60 - 10));
+            }
+            else if (roll < 95)  // 25%
+            {
+                return ChangeMoney(player, (int)(rand.NextDouble() * 25 - 15));
+            }
+            else  // 5%
+            {
+                return ChangeDungeonPoints(player, (int)(rand.NextDouble() * 10 - 5));
+            }
+        }
+
+        private static string ChangeHealth(Player player, int amount)
+        {
+            if(amount >= 0)
+            {
+                amount++;
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var before = target.Health;
+            target.Health += amount;
+            target.NormalizeHealthMana();
+            var after = target.Health;
+            playerRepo.SavePlayer(target);
+
+            var delta = after - before;
+            if (delta == 0)
+            {
+                return null;
+            }
+
+            return $"Health changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeMana(Player player, int amount)
+        {
+            if(amount >= 0)
+            {
+                amount++;
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var before = target.Mana;
+            target.Mana += amount;
+            target.NormalizeHealthMana();
+            var after = target.Mana;
+            playerRepo.SavePlayer(target);
+
+            var delta = after - before;
+            if (delta == 0)
+            {
+                return null;
+            }
+
+            return $"Mana changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeMoney(Player player, int amount)
+        {
+            if(amount >= 0)
+            {
+                amount++;
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var before = target.Money;
+            target.Money = Math.Max(0, target.Money + amount);
+            var after = target.Money;
+            playerRepo.SavePlayer(target);
+
+            var delta = after - before;
+            if (delta == 0)
+            {
+                return null;
+            }
+
+            return $"Arpeyjis changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeActionPoints(Player player, int amount)
+        {
+            if(amount >= 0)
+            {
+                amount++;
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var before = target.ActionPoints;
+            target.ActionPoints = Math.Min(Math.Max(0, target.ActionPoints + amount), TurnTimesStatics.GetActionPointLimit());
+            var after = target.ActionPoints;
+            playerRepo.SavePlayer(target);
+
+            var delta = after - before;
+            if (delta == 0)
+            {
+                return null;
+            }
+
+            return $"Action points changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeDungeonPoints(Player player, int amount)
+        {
+            if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
+            {
+                return null;
+            }
+
+            if(amount >= 0)
+            {
+                amount++;
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var before = target.PvPScore;
+            target.PvPScore = Math.Max(0, target.PvPScore + amount);
+            var after = target.PvPScore;
+            playerRepo.SavePlayer(target);
+
+            var delta = after - before;
+            if (delta == 0)
+            {
+                return null;
+            }
+
+            return $"Dungeon points changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        #endregion
     }
 }

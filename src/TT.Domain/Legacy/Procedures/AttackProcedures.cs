@@ -12,6 +12,54 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
+       public static string AttackSequence(Player attacker, Player victim, SkillViewModel skillBeingUsed)
+        {
+            // Actual attack
+            var message = AttackProcedures.Attack(attacker, victim, skillBeingUsed);
+
+            // record into statistics
+            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
+
+            if (AIStatics.IsABoss(victim.BotId))
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossAllAttacks, 1);
+            }
+
+            if (victim.BotId == AIStatics.FemaleRatBotId || victim.BotId == AIStatics.MaleRatBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossRatThiefAttacks, 1);
+            }
+            else if (victim.BotId == AIStatics.BimboBossBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossLovebringerAttacks, 1);
+            }
+            else if (victim.BotId == AIStatics.DonnaBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossDonnaAttacks, 1);
+            }
+            else if (victim.BotId == AIStatics.FaebossBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__FaebossAttacks, 1);
+            }
+            else if (victim.BotId == AIStatics.MouseNerdBotId || victim.BotId == AIStatics.MouseBimboBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MouseSisterAttacks, 1);
+            }
+            else if (victim.BotId == AIStatics.MotorcycleGangLeaderBotId)
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
+            }
+            else if (AIStatics.IsAMiniboss(victim.BotId))
+            {
+                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MinibossAttacks, 1);
+            }
+
+            // Trigger any counterattack
+            AIProcedures.CheckAICounterattackRoutine(attacker, victim);
+
+            return message;
+        }
+
         public static string Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed)
         {
 

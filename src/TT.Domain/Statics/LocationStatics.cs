@@ -86,6 +86,12 @@ namespace TT.Domain.Statics
             return GetRandom(spawnableLocations);
         }
 
+        public static string GetRandomLocationNotInDungeonOr(string excludedLocation)
+        {
+            var spawnableLocations = LocationList.GetLocation.Where(s => s.Region != "dungeon" && s.dbName != excludedLocation).Select(l => l.dbName).ToList();
+            return GetRandom(spawnableLocations);
+        }
+
         /// <summary>
         /// Return a random location dbName anywhere but in the streets or dungeon
         /// </summary>

@@ -540,6 +540,8 @@ namespace TT.Domain.Procedures
                 return botLocation;
             }
 
+            var botName = bot.FirstName + " " + bot.LastName;
+
             var nextTileIndex = 0;
             var nextTile = botLocation;
             var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
@@ -553,8 +555,6 @@ namespace TT.Domain.Procedures
 
                 nextTile = pathTiles[nextTileIndex++];
                 nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
-
-                var botName = bot.FirstName + " " + bot.LastName;
 
                 LocationLogProcedures.AddLocationLog(currentTile, botName + " left toward " + nextTileName);
                 LocationLogProcedures.AddLocationLog(nextTile, botName + " entered from " + currentTileName);

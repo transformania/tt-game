@@ -4,6 +4,7 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Commands;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -422,6 +423,97 @@ namespace TT.Domain.Procedures
             }
         }
 
+        public static IEnumerable<SkillViewModel> AvailableSkills(Player attacker, Player target, bool includeArchived)
+        {
+            IEnumerable<SkillViewModel> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(attacker.Id);
+            
+            if (!includeArchived)
+            {
+                output = output.Where(s => !s.dbSkill.IsArchived);
+            }
+
+            // filter out spells that you can't use on your target
+            if (FriendProcedures.PlayerIsMyFriend(attacker, target) || target.BotId < AIStatics.ActivePlayerBotId)
+            {
+                // do nothing, all spells are okay
+            }
+
+            // both players are in protection; only allow animate spells
+            else if (attacker.GameMode == (int)GameModeStatics.GameModes.Protection && target.GameMode == (int)GameModeStatics.GameModes.Protection)
+            {
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityFull);
+            }
+
+            // attack or the target is in superprotection and not a friend or bot; no spells work
+            else if (target.GameMode == (int)GameModeStatics.GameModes.Superprotection || (attacker.GameMode == (int)GameModeStatics.GameModes.Superprotection && target.BotId == AIStatics.ActivePlayerBotId))
+            {
+                output = output.Where(s => s.MobilityType == "NONEXISTANT");
+            }
+
+            // filter out MC spells for bots
+            if (target.BotId < AIStatics.ActivePlayerBotId)
+            {
+                output = output.Where(s => s.MobilityType != PvPStatics.MobilityMindControl);
+            }
+
+            // only show inanimates for rat thieves
+            if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
+            {
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate);
+            }
+
+            // only show Weaken for valentine
+            if (target.BotId == AIStatics.ValentineBotId)
+            {
+                output = output.Where(s => s.dbSkill.SkillSourceId == PvPStatics.Spell_WeakenId);
+            }
+
+            // only bimbo spell works on nerd mouse boss
+            if (target.BotId == AIStatics.MouseNerdBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.BimboSpellSourceId);
+            }
+
+            // only nerd spell works on nerd bimbo boss
+            if (target.BotId == AIStatics.MouseBimboBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.NerdSpellSourceId);
+            }
+
+            // Vanquish and weaken only works against dungeon demons
+            if (target.BotId == AIStatics.DemonBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id == PvPStatics.Dungeon_VanquishSpellSourceId || s.StaticSkill.Id == PvPStatics.Spell_WeakenId);
+            }
+
+            // Filter out Vanquish when attacking non-Dungeon Demon player
+            if (target.BotId != AIStatics.DemonBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id != PvPStatics.Dungeon_VanquishSpellSourceId);
+            }
+
+            // Fae-In-A-Bottle only works against Narcissa
+            if (target.BotId == AIStatics.FaebossBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id == BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
+            }
+
+            // Filter out Fae-In-A-Bottle when attacking non-Narcissa player
+            if (target.BotId != AIStatics.FaebossBotId)
+            {
+                output = output.Where(s => s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
+            }
+
+            // only inanimate and animal spells work on minibosses, donna, and lovebringer
+            if (AIStatics.IsAMiniboss(target.BotId) ||
+                target.BotId == AIStatics.MotorcycleGangLeaderBotId ||
+                target.BotId == AIStatics.BimboBossBotId)
+            {
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet);
+            }
+
+            return output;
+        }
 
     }
 }

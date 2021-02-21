@@ -7,6 +7,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Legacy.Procedures
@@ -37,13 +38,13 @@ namespace TT.Domain.Legacy.Procedures
             // TODOD joke_shop Re-enable regular search chance
             /*
             // Decide whether this is a regular or a prank search
-            if (rand.NextDouble() < 0.75)
+            if (rand.Next(3) != 0)  // Attempt a prank 1 time in 3, else normal search
             {
                 return null;
             }
             */
 
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 60)  // 60% chance:
             {
@@ -99,11 +100,12 @@ namespace TT.Domain.Legacy.Procedures
         private static string MildPrank(Player player)
         {
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 100)
             {
-                return MildResourcePrank(player);
+                // return MildResourcePrank(player);
+                return MildLocationPrank(player);
             }
 
             // TODO joke_shop return value
@@ -121,11 +123,12 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 100)
             {
-                return MischievousResourcePrank(player);
+                // return MischievousResourcePrank(player);
+                return MischievousLocationPrank(player);
             }
 
             // TODO joke_shop return value
@@ -143,11 +146,12 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 100)
             {
-                return MeanResourcePrank(player);
+                // return MeanResourcePrank(player);
+                return MeanLocationPrank(player);
             }
 
             // TODO joke_shop return value
@@ -159,9 +163,14 @@ namespace TT.Domain.Legacy.Procedures
 
         #region Warnings and access controls
 
+        private static bool PlayerHasBeenWarned(Player player)
+        {
+            return EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT);
+        }
+
         private static string EnsurePlayerIsWarned(Player player)
         {
-            if (!EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT))
+            if (!PlayerHasBeenWarned(player))
             {
                 EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player);
 
@@ -264,46 +273,46 @@ namespace TT.Domain.Legacy.Procedures
         private static string MildResourcePrank(Player player)
         {
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 27)  // 27%
             {
-                return ChangeHealth(player, (int)(rand.NextDouble() * 125 - 50));
+                return ChangeHealth(player, rand.Next(-50, 75));
             }
             else if (roll < 54)  // 27%
             {
-                return ChangeMana(player, (int)(rand.NextDouble() * 25 - 10));
+                return ChangeMana(player, rand.Next(-10, 15));
             }
             else if (roll < 60)  // 6%
             {
-                return ChangeActionPoints(player, (int)(rand.NextDouble() * 6 - 3));
+                return ChangeActionPoints(player, rand.Next(-3, 3));
             }
             else  // 40%
             {
-                return ChangeMoney(player, (int)(rand.NextDouble() * 5 - 2));
+                return ChangeMoney(player, rand.Next(-2, 3));
             }
         }
 
         private static string MischievousResourcePrank(Player player)
         {
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 30)  // 30%
             {
-                return ChangeHealth(player, (int)(rand.NextDouble() * 250 - 125));
+                return ChangeHealth(player, rand.Next(-125, 125));
             }
             else if (roll < 60)  // 30%
             {
-                return ChangeMana(player, (int)(rand.NextDouble() * 40 - 20));
+                return ChangeMana(player, rand.Next(-20, 20));
             }
             else if (roll < 65)  // 5%
             {
-                return ChangeActionPoints(player, (int)(rand.NextDouble() * 30 - 10));
+                return ChangeActionPoints(player, rand.Next(-10, 20));
             }
             else if (roll < 95)  // 30%
             {
-                return ChangeMoney(player, (int)(rand.NextDouble() * 10 - 5));
+                return ChangeMoney(player, rand.Next(-5, 5));
             }
             else  // 5%
             {
@@ -314,27 +323,27 @@ namespace TT.Domain.Legacy.Procedures
         private static string MeanResourcePrank(Player player)
         {
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.Next(100);
 
             if (roll < 40)  // 40%
             {
-                return ChangeHealth(player, (int)(rand.NextDouble() * 500 - 300));
+                return ChangeHealth(player, rand.Next(-300, 200));
             }
             else if (roll < 60)  // 25%
             {
-                return ChangeMana(player, (int)(rand.NextDouble() * 55 - 35));
+                return ChangeMana(player, rand.Next(-35, 20));
             }
             else if (roll < 65)  // 5%
             {
-                return ChangeActionPoints(player, (int)(rand.NextDouble() * 60 - 10));
+                return ChangeActionPoints(player, rand.Next(-30, 30));
             }
             else if (roll < 95)  // 25%
             {
-                return ChangeMoney(player, (int)(rand.NextDouble() * 25 - 15));
+                return ChangeMoney(player, rand.Next(-15, 10));
             }
             else  // 5%
             {
-                return ChangeDungeonPoints(player, (int)(rand.NextDouble() * 10 - 5));
+                return ChangeDungeonPoints(player, rand.Next(-5, 5));
             }
         }
 
@@ -458,6 +467,481 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             return $"Dungeon points changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        #endregion
+
+        #region Location pranks
+
+        private static string MildLocationPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 10)  // 10%
+            {
+                return TeleportToOverworld(player, false);
+            }
+            else if (roll < 30)  // 20%
+            {
+                return TeleportToDungeon(player, 0);
+            }
+            else if (roll < 40)  // 10%
+            {
+                return TeleportToBar(player, false);
+            }
+            else if (roll < 46)  // 6%
+            {
+                return TeleportToFriendlyNPC(player);
+            }
+            else if (roll < 50)  // 4%
+            {
+                return TeleportToQuest(player);
+            }
+            else if (roll < 75)  // 25%
+            {
+                return RunAway(player);
+            }
+            else  // 25%
+            {
+                return WanderAimlessly(player);
+            }
+        }
+
+        private static string MischievousLocationPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 25)  // 25%
+            {
+                return TeleportToOverworld(player, true);
+            }
+            else if (roll < 50)  // 25%
+            {
+                return TeleportToDungeon(player, rand.Next(1, 4));
+            }
+            else if (roll < 75)  // 25%
+            {
+                return TeleportToBar(player, true);
+            }
+            else  // 25%
+            {
+                return TeleportToHostileNPC(player, false);
+            }
+        }
+
+        private static string MeanLocationPrank(Player player)
+        {
+            return TeleportToHostileNPC(player, true);
+        }
+
+        private static bool Teleport(Player player, string location, bool logLocations)
+        {
+            if (location == null)
+            {
+                return false;
+            }
+
+            var destination = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == location);
+
+            if (destination == null)
+            {
+                return false;
+            }
+            
+            if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
+            {
+                // TODO joke_shop Also block if too many items, player.Items.Count(i => !i.IsEquipped) > GetMaxInventorySize()
+                return false;
+            }
+            
+            if (destination.dbName.Contains("dungeon_"))
+            {
+                SkillProcedures.GiveSkillToPlayer(player.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
+            }
+
+            PlayerProcedures.MovePlayer_InstantNoLog(player.Id, location);
+
+            if (logLocations)
+            {
+                LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"Strange forces propel {player.GetFullName()} off to {destination.Name}!");
+            }
+            else
+            {
+                LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} is whisked off to a faraway place!");
+            }
+            LocationLogProcedures.AddLocationLog(location, $"{player.GetFullName()} is surprised to find they are suddenly here!");
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You are sent to {destination.Name}", false);
+
+            return true;
+        }
+
+        private static string TeleportToOverworld(Player player, bool root)
+        {
+            var location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
+
+            if (!Teleport(player, location, new Random().Next(2) == 0))
+            {
+                return null;
+            }
+
+            if (root)
+            {
+                Root(player);
+            }
+
+            return "Teleport to overworld"; // TODO joke_shop flavor text
+        }
+
+        private static string TeleportToDungeon(Player player, int meanness)
+        {
+            if (!PlayerProcedures.CheckAllowedInDungeon(player, out _))
+            {
+                return null;
+            }
+
+            var lastAttackTimeAgo = Math.Abs(DateTime.UtcNow.Subtract(player.GetLastCombatTimestamp()).TotalMinutes);
+            if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
+            {
+                return null;
+            }
+
+            var location = LocationsStatics.GetRandomLocation_InDungeon();
+
+            if (!Teleport(player, location, new Random().Next(2) == 0))
+            {
+                return null;
+            }
+
+            if (meanness % 2 == 1)
+            {
+                ResetCombatTimer(player);
+            }
+
+            if (meanness >= 2)
+            {
+                Root(player);
+            }
+
+            return "Teleport to dungeon"; // TODO joke_shop flavor text
+        }
+
+        private static string TeleportToFriendlyNPC(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(6);
+
+            int npc = 0;
+            // View view = null;
+
+            switch(roll)
+            {
+                case 0:
+                    npc = AIStatics.BartenderBotId;
+                    // view = MVC.NPC.TalkToBartender("none");
+                    break;
+                case 1:
+                    npc = AIStatics.LoremasterBotId;
+                    // view = MVC.NPC.TalkToLorekeeper();
+                    break;
+                case 2:
+                    npc = AIStatics.SoulbinderBotId;
+                    // view = MVC.NPC.TalkToSoulbinder();
+                    break;
+                case 3:
+                    npc = AIStatics.JewdewfaeBotId;
+                    // view = MVC.NPC.TalkWithJewdewfae();
+                    break;
+                case 4:
+                    npc = AIStatics.LindellaBotId;
+                    // view = MVC.NPC.TradeWithMerchant("shirt");
+                    break;
+                case 5:
+                    npc = AIStatics.WuffieBotId;
+                    // view = MVC.NPC.TradeWithPetMerchant();
+                    break;
+            }
+
+            var npcPlayer = TeleportToNPC(player, npc);
+            if (npcPlayer == null)
+            {
+                return null;
+            }
+
+            if (npcPlayer.BotId == AIStatics.JewdewfaeBotId)
+            {
+                var encounter = BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(npcPlayer.dbLocationName);  // interface currently restricts to one encounter per location
+                TryAnimateTransform(player, encounter.RequiredFormSourceId);
+            }
+
+            // TODO joke_shop Redirect to the NPC's talk/trade page
+            return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  Then the room fades away.";
+        }
+
+        private static string TeleportToHostileNPC(Player player, bool attack)
+        {
+            var targetForm = -1;
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            // Bosses
+            var hostiles = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && (
+                                                         p.BotId == AIStatics.BimboBossBotId ||
+                                                         p.BotId == AIStatics.DonnaBotId ||
+                                                         p.BotId == AIStatics.FaebossBotId ||
+                                                         p.BotId == AIStatics.MotorcycleGangLeaderBotId ||
+                                                         p.BotId == AIStatics.MouseBimboBotId ||
+                                                         p.BotId == AIStatics.MouseNerdBotId ||
+                                                         p.BotId == AIStatics.FemaleRatBotId ||
+                                                         p.BotId == AIStatics.MaleRatBotId ||
+                                                         p.BotId == AIStatics.ValentineBotId)).ToList();
+
+            // Minibosses
+            if (hostiles == null || hostiles.Count() == 0)
+            {
+                hostiles = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && (
+                                                         p.BotId == AIStatics.MinibossExchangeProfessorId ||
+                                                         p.BotId == AIStatics.MinibossFiendishFarmhandId ||
+                                                         p.BotId == AIStatics.MinibossGroundskeeperId ||
+                                                         p.BotId == AIStatics.MinibossLazyLifeguardId ||
+                                                         p.BotId == AIStatics.MinibossPopGoddessId ||
+                                                         p.BotId == AIStatics.MinibossPossessedMaidId ||
+                                                         p.BotId == AIStatics.MinibossSeamstressId ||
+                                                         p.BotId == AIStatics.MinibossSororityMotherId)).ToList();
+            }
+
+            var rand = new Random();
+            Player npcPlayer = null;
+            if (hostiles != null && hostiles.Any())
+            {
+                npcPlayer = hostiles[rand.Next(hostiles.Count())];
+            }
+
+            // Psychopaths
+            if (npcPlayer == null)
+            {
+                npcPlayer = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
+                                                          p.BotId == AIStatics.PsychopathBotId &&
+                                                          p.Level <= player.Level)
+                                              .OrderByDescending(p => p.Level).FirstOrDefault();
+            }
+
+            if (npcPlayer == null)
+            {
+                return null;
+            }
+
+            // Turn into form needed to attack
+            if (npcPlayer.BotId == AIStatics.MouseBimboBotId)
+            {
+                targetForm = BossProcedures_Sisters.NerdSpellFormSourceId;
+            }
+            else if (npcPlayer.BotId == AIStatics.MouseNerdBotId)
+            {
+                targetForm = BossProcedures_Sisters.BimboSpellFormSourceId;
+            }
+
+            if (targetForm != -1)
+            {
+                TryAnimateTransform(player, targetForm);
+            }
+
+            // Move to same tile as NPC
+            if (!Teleport(player, npcPlayer.dbLocationName, rand.Next(2) == 0))
+            {
+                return null;
+            }
+
+            if (attack)
+            {
+                var spells = SkillProcedures.AvailableSkills(player, npcPlayer, true);
+                if (spells != null && spells.Any())
+                {
+                    var spellList = spells.ToArray();
+                    var spell = spellList[rand.Next(spellList.Count())];
+
+                    // Note we do not apply the full gamut of preconditions of a manual attack present in the controller
+                    AttackProcedures.AttackSequence(player, npcPlayer, spell);
+                }
+            }
+            
+            return "Teleport to hostile NPC";  // TODO joke_shop Add flavor text
+        }
+
+        private static Player TeleportToNPC(Player player, int npc)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var npcPlayer = playerRepo.Players.FirstOrDefault(p => p.BotId == npc);
+
+            if (npcPlayer == null || npcPlayer.dbLocationName == null)
+            {
+                return null;
+            }
+
+            if (!Teleport(player, npcPlayer.dbLocationName, new Random().Next(2) == 0))
+            {
+                return null;
+            }
+
+            return npcPlayer;
+        }
+
+        private static string TeleportToBar(Player player, bool root)
+        {
+            // Not all getaways can be clean..
+            if(!Teleport(player, "tavern_counter", true))
+            {
+                return null;
+            }
+
+            if (root)
+            {
+                Root(player);
+            }
+
+            return "Teleport to bar";  // TODO joke_shop Flavor text
+        }
+
+        private static string TeleportToQuest(Player player)
+        {
+            var lastAttackTimeAgo = Math.Abs(DateTime.UtcNow.Subtract(player.GetLastCombatTimestamp()).TotalMinutes);
+            if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
+            {
+                return null;
+            }
+
+            var quests = QuestProcedures.GetAllAvailableQuestsForPlayer(player, PvPWorldStatProcedures.GetWorldTurnNumber());
+
+            if (quests == null || !quests.Any())
+            {
+                return null;
+            }
+
+            var rand = new Random();
+            var index = rand.Next(quests.Count());
+            var quest = quests.ToArray()[index];
+
+            if (!Teleport(player, quest.dbName, rand.Next(2) == 0))
+            {
+                return null;
+            }
+
+            return $"You notice a gold chalice on the shelf, its engraving obscured by dirt.  You decide to blow the dust off and a cloud fills the room.  A frail man with a long white beard and crooked staff emerges from the mist.  \"So, it's a quest you seek?\" comes his shrill, wheezing voice.  \"Well, I have just the thing.  Seek out your victory, young mage.\"  He hands you a scroll.  At the top it is written <b>{quest.Name}</b>.  As you take it you feel yourself transported to a far-off place...";
+        }
+
+        private static string RunAway(Player player)
+        {
+            var destination = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
+
+            var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == LocationsStatics.JOKE_SHOP);
+            var end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
+
+            if (destination == null || start == null || end == null)
+            {
+                return null;
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+
+            var pathTiles = PathfindingProcedures.GetMovementPath(start, end);
+            var costPerTile = 1 - target.MoveActionPointDiscount;
+
+            // Cap distance, plus don't excees number of tiles or available AP
+            var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
+            var spacesToMove = (int)(Math.Min(maxDistance, pathTiles.Count()));
+            spacesToMove = Math.Min(15, spacesToMove);
+
+            if (spacesToMove == 0)
+            {
+                return null;
+            }
+
+            PlayerProcedures.MovePlayerMultipleLocations(player, pathTiles[spacesToMove - 1], spacesToMove * costPerTile);
+
+            return "Run away";  // TODO joke_shop flavor text
+        }
+
+        private static string WanderAimlessly(Player player)
+        {
+            var rand = new Random();
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            var name = target.GetFullName();
+
+            var costPerTile = 1 - target.MoveActionPointDiscount;
+            var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
+            var spacesToMove = (int)Math.Min(maxDistance, rand.Next(10, 16));
+
+            string nextTileId = player.dbLocationName;
+            var nextTile = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTileId);
+
+            for (var i = spacesToMove; i > 0; i--)
+            {
+                var currentTile = nextTile;
+
+                switch (rand.Next(4))
+                {
+                    case 0:
+                        nextTileId = currentTile.Name_North ?? currentTile.Name_South ?? currentTile.Name_East ?? currentTile.Name_West;
+                        break;
+                    case 1:
+                        nextTileId = currentTile.Name_South ?? currentTile.Name_East ?? currentTile.Name_West ?? currentTile.Name_North;
+                        break;
+                    case 2:
+                        nextTileId = currentTile.Name_East ?? currentTile.Name_West ?? currentTile.Name_North ?? currentTile.Name_South;
+                        break;
+                    case 3:
+                        nextTileId = currentTile.Name_West ?? currentTile.Name_North ?? currentTile.Name_South ?? currentTile.Name_East;
+                        break;
+                }
+
+                nextTile = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTileId);
+
+                LocationLogProcedures.AddLocationLog(currentTile.dbName, name + " left toward " + nextTile.Name);
+                LocationLogProcedures.AddLocationLog(nextTileId, name + " entered from " + currentTile.Name);
+            }
+
+            PlayerProcedures.MovePlayerMultipleLocations(player, nextTileId, spacesToMove * costPerTile);
+
+            return "Wander aimlessly";  // TODO joke_shop flavor text
+        }
+
+        #endregion
+
+        #region Effects and timers pranks
+
+        private static bool Root(Player player)
+        {
+            // TODO joke_shop implement
+            return false;
+        }
+
+        private static void ResetCombatTimer(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            target.LastCombatTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(player);
+        }
+
+        #endregion
+
+        #region Form, name and MC pranks
+
+        private static bool TryAnimateTransform(Player player, int formSourceId)
+        {
+            // Give extra warning for SP players, who might want to keep their form
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                return false;
+            }
+
+            PlayerProcedures.InstantChangeToForm(player, formSourceId);
+
+            return true;
         }
 
         #endregion

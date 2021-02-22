@@ -5,6 +5,7 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -862,7 +863,9 @@ namespace TT.Domain.Procedures
 
 
                 #region update joke shop
-//              if (new Random(Guid.NewGuid().GetHashCode()).NextDouble() < 0.05)  // TODO joke_shop Enable random movement interval
+                JokeShopProcedures.EjectOfflineCharacters();
+
+//              if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)  // TODO joke_shop Enable random movement interval
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop started.");
                     try

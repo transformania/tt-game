@@ -105,7 +105,8 @@ namespace TT.Domain.Legacy.Procedures
             if (roll < 100)
             {
                 // return MildResourcePrank(player);
-                return MildLocationPrank(player);
+                // return MildLocationPrank(player);
+                return MildQuotasAndTimerPrank(player);
             }
 
             // TODO joke_shop return value
@@ -128,7 +129,8 @@ namespace TT.Domain.Legacy.Procedures
             if (roll < 100)
             {
                 // return MischievousResourcePrank(player);
-                return MischievousLocationPrank(player);
+                // return MischievousLocationPrank(player);
+                return MischievousQuotasAndTimerPrank(player);
             }
 
             // TODO joke_shop return value
@@ -151,7 +153,8 @@ namespace TT.Domain.Legacy.Procedures
             if (roll < 100)
             {
                 // return MeanResourcePrank(player);
-                return MeanLocationPrank(player);
+                // return MeanLocationPrank(player);
+                return MeanQuotasAndTimerPrank(player);
             }
 
             // TODO joke_shop return value
@@ -166,6 +169,11 @@ namespace TT.Domain.Legacy.Procedures
         private static bool PlayerHasBeenWarned(Player player)
         {
             return EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT);
+        }
+
+        private static bool PlayerHasBeenWarnedTwice(Player player)
+        {
+            return EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT);
         }
 
         private static string EnsurePlayerIsWarned(Player player)
@@ -192,7 +200,7 @@ namespace TT.Domain.Legacy.Procedures
                 return warning;
             }
 
-            if (!EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT))
+            if (!PlayerHasBeenWarnedTwice(player))
             {
                 EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player);
 
@@ -263,6 +271,35 @@ namespace TT.Domain.Legacy.Procedures
 
             return null;
             // return playerLog;  // TODO joke_shop disabled while testing
+        }
+
+        public static void EjectOfflineCharacters()
+        {
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
+
+            var playerRepo = new EFPlayerRepository();
+            var players = playerRepo.Players.Where(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
+                                                        p.Mobility == PvPStatics.MobilityFull &&
+                                                        p.LastActionTimestamp < cutoff);
+
+            foreach (var player in players)
+            {
+                PlayerLogProcedures.AddPlayerLog(player.Id, "You wake with a start as you land on the sidewalk.  \"Hey!  No sleeping in my shop!  This isn't a hotel!\" shouts the shopkeeper.", true);
+                EjectCharacter(player);
+
+                if (PlayerHasBeenWarnedTwice(player))
+                {
+                    ResetActivityTimer(player);
+                    ChangeHealth(player, -50);
+                    ChangeMana(player, -10);
+                }
+                else if (PlayerHasBeenWarned(player))
+                {
+                    ResetActivityTimer(player, 0.5);
+                    ChangeHealth(player, -25);
+                    ChangeMana(player, -5);
+                }
+            }
         }
 
         #endregion
@@ -911,7 +948,7 @@ namespace TT.Domain.Legacy.Procedures
 
         #endregion
 
-        #region Effects and timers pranks
+        #region Effects pranks
 
         private static bool Root(Player player)
         {
@@ -919,11 +956,160 @@ namespace TT.Domain.Legacy.Procedures
             return false;
         }
 
-        private static void ResetCombatTimer(Player player)
+        #endregion
+
+        #region Quotas and timers pranks
+
+        private static string MildQuotasAndTimerPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 50)  // 50%
+            {
+                // Half-way through combat timer
+                return ResetCombatTimer(player, 0.5);
+            }
+            else  // 50%
+            {
+                // Clear combat timer
+                ResetCombatTimer(player, 1);
+                return "As you peruse the shelves of the joke shop all thoughts of battle leave your mind.";
+            }
+        }
+
+        private static string MischievousQuotasAndTimerPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 20)  // 20%
+            {
+                return ChangeAttacks(player, rand.Next(-1, 1));
+            }
+            else if (roll < 40)  // 20%
+            {
+                return ChangeCleanseMeditates(player, rand.Next(-1, 1));
+            }
+            else if (roll < 60)  // 20%
+            {
+                return ChangeItemUses(player, rand.Next(-1, 1));
+            }
+            else  // 40%
+            {
+                return ResetCombatTimer(player);
+            }
+        }
+
+        private static string MeanQuotasAndTimerPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 40)  // 40%
+            {
+                return BlockAttacks(player);
+            }
+            else if (roll < 75)  // 35%
+            {
+                return BlockCleanseMeditates(player);
+            }
+            else  // 25%
+            {
+                return BlockItemUses(player);
+            }
+        }
+
+        private static string ChangeAttacks(Player player, int delta)
+        {
+            if (delta >= 0)
+            {
+                delta++;
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.TimesAttackingThisUpdate += delta;
+            playerRepo.SavePlayer(player);
+
+            return "Attack counter changed";  // TODO joke_shop flavor text
+        }
+
+        private static string BlockAttacks(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
+            playerRepo.SavePlayer(player);
+
+            return "Attack counter blocked";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeCleanseMeditates(Player player, int delta)
+        {
+            if (delta >= 0)
+            {
+                delta++;
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.CleansesMeditatesThisRound += delta;
+            playerRepo.SavePlayer(player);
+
+            return "Meditate counter changed";  // TODO joke_shop flavor text
+        }
+
+        private static string BlockCleanseMeditates(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
+            playerRepo.SavePlayer(player);
+
+            return "Meditate counter blocked";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeItemUses(Player player, int delta)
+        {
+            if (delta >= 0)
+            {
+                delta++;
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.ItemsUsedThisTurn += delta;
+            playerRepo.SavePlayer(player);
+
+            return "Item use counter changed";  // TODO joke_shop flavor text
+        }
+
+        private static string BlockItemUses(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.ItemsUsedThisTurn = PvPStatics.MaxActionsPerUpdate;
+            playerRepo.SavePlayer(player);
+
+            return "Item use counter blocked";  // TODO joke_shop flavor text
+        }
+
+        private static string ResetCombatTimer(Player player, double proportionOutOfCombat = 0.0)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            target.LastCombatTimestamp = DateTime.UtcNow;
+            target.LastCombatTimestamp = DateTime.UtcNow.AddMinutes(-proportionOutOfCombat * TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling());
+            playerRepo.SavePlayer(player);
+
+            return "A whiff of magic passes under your nose, the acrid smell reminding you of your last battle.  It seems so recent...";
+        }
+
+        private static void ResetActivityTimer(Player player, double proportionOutOfOnline = 0.0)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            target.LastActionTimestamp = DateTime.UtcNow.AddMinutes(-proportionOutOfOnline * TurnTimesStatics.GetOfflineAfterXMinutes());
             playerRepo.SavePlayer(player);
         }
 

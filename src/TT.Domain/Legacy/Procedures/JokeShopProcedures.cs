@@ -106,7 +106,8 @@ namespace TT.Domain.Legacy.Procedures
             {
                 // return MildResourcePrank(player);
                 // return MildLocationPrank(player);
-                return MildQuotasAndTimerPrank(player);
+                // return MildQuotasAndTimerPrank(player);
+                return DiceGame(player);
             }
 
             // TODO joke_shop return value
@@ -1131,5 +1132,48 @@ namespace TT.Domain.Legacy.Procedures
         }
 
         #endregion
+
+        #region Harmless fun and games
+
+        private static string DiceGame(Player player)
+        {
+            var target = 69;
+
+            // /role 4d20
+            var die1 = PlayerProcedures.RollDie(20);
+            var die2 = PlayerProcedures.RollDie(20);
+            var die3 = PlayerProcedures.RollDie(20);
+            var die4 = PlayerProcedures.RollDie(20);
+            var total = die1 + die2 + die3 + die4;
+
+            // Arbitrary score calculation, trying to avoid any big advantage for those who roll more often
+            int score;
+            if (total == target)
+            {
+                score = total;
+            }
+            else
+            {
+                var distance = Math.Abs(total - target);
+                
+                if (distance <= 11)
+                {
+                    score = (11 - distance) * 4;
+                }
+                else
+                {
+                    score = (11 - distance) / 10;
+                }
+            }
+
+            StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__DiceGameScore, score);
+
+            LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
+
+            return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  You score is <b>{score}</b>.";
+        }
+
+        #endregion
+
     }
 }

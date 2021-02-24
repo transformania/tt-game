@@ -44,7 +44,7 @@
                     <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.You.Covenant}"))" target="_blank">Chat with my covenant</a></li>
                 }
 
-                if (Model.YouItem.Owner != null)
+                if (Model.YouItem?.Owner != null)
                 {
                     <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.YouItem.Owner.Id}"))" target="_blank">Chat with my owner</a></li>
                 }
@@ -113,67 +113,73 @@
 <div class="containerInner">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/animalPortraits/@Model.PortraitUrl);">
                 @HtmlHelpers.PrintOwnerSubPortrait(Model.OwnedBy)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>
                 @{
-                    if (Model.YouItem.SoulboundToPlayer == null)
+                    if (Model.YouItem == null)
                     {
-                        if (!Model.IsPermanent)
+                        <span>You are a lost pet, forgotten by the world and everyone in it</span>
+                    }
+                    else
+                    {
+                        if (Model.YouItem?.SoulboundToPlayer == null)
                         {
-                            <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.</span>
+                            if (!Model.IsPermanent)
+                            {
+                                <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>, or at least it used to be.</span>
+                            }
+                            else if (Model.YouItem.Owner == null)
+                            {
+                                <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                                if (!Model.You.IsUsingOriginalName())
+                                {
+                                    <span>Perhaps you were given that name by a previous owner?</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>You answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+
+                                if (Model.You.IsUsingOriginalName())
+                                {
+                                    <span>Somehow it no longer seems to suit you.</span>
+                                }
+                            }
                         }
-                        else if (Model.YouItem.Owner == null)
+                        else
                         {
-                            <span>You have vague memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+                            <span>To your forever owner you are known simply as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
 
                             if (!Model.You.IsUsingOriginalName())
                             {
-                                <span>Perhaps you were given that name by a previous owner?</span>
+                                <span>Any thoughts of your past life as @Model.You.OriginalFirstName @Model.You.OriginalLastName are but a faint and distant memory.</span>
                             }
+                        }
+
+                        if (!Model.IsPermanent)
+                        {
+                            <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
                         }
                         else
                         {
-                            <span>You answer to the name of <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
+                            <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
 
-                            if (Model.You.IsUsingOriginalName())
+                            if (Model.YouItem.SoulboundToPlayer != null)
                             {
-                                <span>Somehow it no longer seems to suit you.</span>
+                                @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.YouItem)
                             }
-                        }
-                    }
-                    else
-                    {
-                        <span>To your forever owner you are known simply as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.You.Id))">@Model.You.GetFullName()</a>.</span>
-
-                        if(!Model.You.IsUsingOriginalName())
-                        {
-                            <span>Any thoughts of your past life as @Model.You.OriginalFirstName @Model.You.OriginalLastName are but a faint and distant memory.</span>
-                        }
-                    }
-
-                    if (!Model.IsPermanent)
-                    {
-                        <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
-                    }
-                    else
-                    {
-                        <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
-
-                        if (Model.YouItem.SoulboundToPlayer != null)
-                        {
-                            @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.YouItem)
-                        }
-                        else
-                        {
-                            <span>You have <a href="@Url.Action(MVC.Settings.Settings())">@(Model.YouItem.ConsentsToSoulbinding ? "consented" : "not consented")</a> to let your current or future owner soulbind you.</span>
+                            else
+                            {
+                                <span>You have <a href="@Url.Action(MVC.Settings.Settings())">@(Model.YouItem.ConsentsToSoulbinding ? "consented" : "not consented")</a> to let your current or future owner soulbind you.</span>
+                            }
                         }
                     }
                 }
-
             </p>
             <br>
 
@@ -187,11 +193,11 @@
             <p>@Model.Form.Description</p>
             <br>
             @{
-                if (Model.YouItem.Owner == null)
+                if (Model.YouItem != null && Model.YouItem.Owner == null)
                 {
                     <span>You are feral and can move freely about the world until a new master tames you.</span>
                 }
-                else
+                else if (Model.YouItem != null)
                 {
                     <p>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.</p>
 
@@ -257,7 +263,7 @@
                     </p>
                 }
 
-                if(PvPStatics.ChaosMode)
+                if (PvPStatics.ChaosMode)
                 {
                     <p>
                         In Chaos Mode you can immediately change back into base form through the <b>My Player</b> menu or the <a href="@Url.Action(MVC.Settings.Settings())">Settings</a> page.
@@ -279,15 +285,18 @@
             }
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-4" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, Model.OwnedBy == null))</div>
-        <div class="col-md-8 covenDescription">
-            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y] <br> </span>
+    @if (Model.YouItem != null)
+    {
+        <br>
+        <div class="row">
+            <div class="col-md-4" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, Model.OwnedBy == null))</div>
+            <div class="col-md-8 covenDescription">
+                <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y] <br> </span>
 
-            @Model.Location.GetDescription()
+                @Model.Location.GetDescription()
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 @*all players who are online*@
@@ -304,7 +313,10 @@
                         <div>
                             <p>
                                 @Html.Partial(MVC.PvP.Views.Player_Partial, p)
-                                <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                @if (Model.YouItem != null)
+                                {
+                                    <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                }
                             </p>
                         </div>
                     </div>
@@ -335,7 +347,10 @@
                                 <div>
                                     <p>
                                         @Html.Partial(MVC.PvP.Views.Player_Partial, p)
-                                        <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                        @if (Model.YouItem != null)
+                                        {
+                                            <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                        }
                                     </p>
                                 </div>
                             </div>

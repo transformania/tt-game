@@ -1,11 +1,11 @@
 ﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Dynamic;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
@@ -15,11 +15,55 @@ namespace TT.Domain.Legacy.Procedures
     public static class JokeShopProcedures
     {
         // TODO joke_shop These IDs need to be synced with migration script
-        const int FIRST_WARNING_EFFECT = 1006; //
-        const int SECOND_WARNING_EFFECT = 1010; //
-        const int BANNED_FROM_JOKE_SHOP_EFFECT = 1012; //
+        private const int FIRST_WARNING_EFFECT = 1006; //
+        private const int SECOND_WARNING_EFFECT = 1010; //
+        private const int BANNED_FROM_JOKE_SHOP_EFFECT = 1012; //
 
-        # region Location action hooks
+        private const string LIMITED_MOBILITY = "immobile";
+
+        private static readonly List<FormDetail> StableForms = CandidateForms();
+
+        private static readonly int[] MischievousForms = {215, 221, 438};
+
+        internal class FormDetail
+        {
+            public int FormSourceId { get; }
+            public string FriendlyName { get; }
+            public string Category { get; }
+
+            public FormDetail(int formSourceId, string friendlyName, string category)
+            {
+                FormSourceId = formSourceId;
+                FriendlyName = friendlyName;
+                Category = category;
+            }
+        }
+
+        private static List<FormDetail> CandidateForms()
+        {
+            IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
+            var learnableSpells = skillsRepo.DbStaticSkills.Where(spell => spell.IsLive == "live" && spell.IsPlayerLearnable).Select(spell => new {spell.FormSourceId}).ToList();
+
+            IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
+            var forms = formsRepo.DbStaticForms.Select(form => new {form.FriendlyName, Immobile = form.MoveActionPointDiscount < -5, form.Id, form.MobilityType, form.ItemSourceId});
+
+            var learnableForms = learnableSpells.Join(forms, spell => spell.FormSourceId, form => form.Id, (spell, form) => new {form.Id, form.FriendlyName, form.Immobile, form.MobilityType, form.ItemSourceId});
+
+            IDbStaticItemRepository itemsRepo = new EFDbStaticItemRepository();
+            var itemTypes = itemsRepo.DbStaticItems.Select(i => new {i.Id, i.ItemType}).ToList();
+
+            var formDetails = learnableForms.Join(itemTypes, form => form.ItemSourceId, itemType => itemType.Id, (form, item) => new FormDetail(form.Id, form.FriendlyName, item.ItemType)).ToList();
+            formDetails.AddRange(learnableForms.Where(form => form.ItemSourceId == null && form.MobilityType == PvPStatics.MobilityFull).Select(form => new FormDetail(form.Id, form.FriendlyName, form.Immobile ? LIMITED_MOBILITY : form.MobilityType)));
+
+            return formDetails;
+        }
+
+        private static List<FormDetail> Forms(Func<FormDetail, bool> predicate)
+        {
+            return StableForms.Where(predicate).ToList();
+        }
+
+        #region Location action hooks
 
         public static string Search(Player player)
         {
@@ -107,7 +151,11 @@ namespace TT.Domain.Legacy.Procedures
                 // return MildResourcePrank(player);
                 // return MildLocationPrank(player);
                 // return MildQuotasAndTimerPrank(player);
-                return DiceGame(player);
+                return MildTransformationPrank(player);
+                // return DiceGame(player);
+
+                // return AnimateTransform(player);
+                //return ImmobileTransform(player, false);
             }
 
             // TODO joke_shop return value
@@ -131,7 +179,8 @@ namespace TT.Domain.Legacy.Procedures
             {
                 // return MischievousResourcePrank(player);
                 // return MischievousLocationPrank(player);
-                return MischievousQuotasAndTimerPrank(player);
+                // return MischievousQuotasAndTimerPrank(player);
+                return MischievousTransformationPrank(player);
             }
 
             // TODO joke_shop return value
@@ -155,7 +204,8 @@ namespace TT.Domain.Legacy.Procedures
             {
                 // return MeanResourcePrank(player);
                 // return MeanLocationPrank(player);
-                return MeanQuotasAndTimerPrank(player);
+                // return MeanQuotasAndTimerPrank(player);
+                return MeanTransformationPrank(player);
             }
 
             // TODO joke_shop return value
@@ -183,6 +233,7 @@ namespace TT.Domain.Legacy.Procedures
             {
                 EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player);
 
+                // TODO joke_shop Put this message in the effect and return the string from GivePerk, logging is handled by that
                 var logMessage = "Beware!  This cursed joke shop is a dangerous place!  If you stay here too long anything could happen.  Maybe you should keep your nose out of trouble and leave now?";
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
                 return logMessage;
@@ -205,6 +256,7 @@ namespace TT.Domain.Legacy.Procedures
             {
                 EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player);
 
+                // TODO joke_shop Put this message in the effect and return the string from GivePerk, will still need to add important log message for pop-up
                 var logMessage = "This is your final warning!  This cursed joke shop does not play by the normal rules of Sunnyglade.  If you stay here too long you could be risking your very soul!  Get out now - while you still can!";
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, true);
                 return logMessage;
@@ -223,11 +275,13 @@ namespace TT.Domain.Legacy.Procedures
         {
             if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT))
             {
-                return "Already banned!";
+                return "Already banned!";  // TODO joke_shop return null after testing
                 //return null;
             }
 
             var kickedOutMessage = EjectCharacter(player);
+
+            // TODO joke_shop Put this message in the effect and return the string from GivePerk
             EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
 
             return "Your actions attract the attention of the shopkeeper, who bans you from the shop!  " + kickedOutMessage;
@@ -951,6 +1005,12 @@ namespace TT.Domain.Legacy.Procedures
 
         #region Effects pranks
 
+        private static int GiveAutoRevertEffect(Player player)
+        {
+            // TODO joke_shop give effect and return turn on which it expires
+            return 0;
+        }
+
         private static bool Root(Player player)
         {
             // TODO joke_shop implement
@@ -1118,16 +1178,408 @@ namespace TT.Domain.Legacy.Procedures
 
         #region Form, name and MC pranks
 
+        private static string MildTransformationPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 55)  // 55%
+            {
+                return AnimateTransform(player);
+            }
+            else if (roll < 65)  // 10%
+            {
+                return TGTransform(player);
+            }
+            else if (roll < 75)  // 10%
+            {
+                return BodySwap(player, true);  // clone
+            }
+            else if (roll < 85)  // 10%
+            {
+                return RestoreBaseForm(player);
+            }
+            else  // 15%
+            {
+                return RestoreName(player);
+            }
+        }
+
+        private static string MischievousTransformationPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 15)  // 15%
+            {
+                return ImmobileTransform(player, rand.Next(2) == 0);
+            }
+            else if (roll < 30)  // 15%
+            {
+                return BodySwap(player, false);
+            }
+            else if (roll < 40) //  10%
+            {
+                return ChangeBaseForm(player);
+            }
+            else if (roll < 45)  // 5%
+            {
+                return SetBaseFormToCurrent(player);
+            }
+            else if (roll < 65)  // 20%
+            {
+                return IdentityChange(player);
+            }
+            else if (roll < 90)  // 25%
+            {
+                return TransformToMindControlledForm(player);
+            }
+            else  // 10%
+            {
+                return InanimateTransform(player, true);
+            }
+        }
+
+        private static string MeanTransformationPrank(Player player)
+        {
+            return InanimateTransform(player, false);
+        }
+
+        private static string AnimateTransform(Player player)
+        {
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                var warning = EnsurePlayerIsWarned(player);
+
+                if (!warning.IsNullOrEmpty())
+                {
+                    return warning;
+                }
+            }
+            
+            var forms = Forms(f => f.Category == PvPStatics.MobilityFull);
+
+            if (forms.Count() == 0)
+            {
+                return null;
+            }
+
+            var index = new Random().Next(forms.Count());
+            var form = forms.ElementAt(index);
+
+            if (!TryAnimateTransform(player, form.FormSourceId))
+            {
+                return null;
+            }
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+
+            return $"You are an animate {form.FriendlyName}.";  // TODO joke_shop flavor text
+        }
+
+        private static string ImmobileTransform(Player player, bool temporary)
+        {
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                var warning = EnsurePlayerIsWarned(player);
+
+                if (!warning.IsNullOrEmpty())
+                {
+                    return warning;
+                }
+            }
+            
+            var forms = Forms(f => f.Category == LIMITED_MOBILITY);
+
+            if (forms.Count() == 0)
+            {
+                return null;
+            }
+
+            FormDetail form;
+
+            if (temporary)
+            {
+                var expiryTurn = GiveAutoRevertEffect(player);
+                form = forms.ElementAt((expiryTurn + player.Id) % forms.Count());
+            }
+            else
+            {
+                var index = new Random().Next(forms.Count());
+                form = forms.ElementAt(index);
+            }
+
+            if (!TryAnimateTransform(player, form.FormSourceId))
+            {
+                return null;
+            }
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+
+            return $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
+        }
+
+        private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false)
+        {
+            var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
+
+            if (forms.Count() == 0)
+            {
+                return null;
+            }
+
+            FormDetail form;
+
+            if (temporary)
+            {
+                // TODO joke_shop Add temporay runes
+                var expiryTurn = GiveAutoRevertEffect(player);
+                //form = forms.ElementAt((expiryTurn + player.Id) % forms.Count());  // TODO joke_shop not needed if just reverting inan players with no player item?
+            }
+            //else
+            //{
+                var index = new Random().Next(forms.Count());
+                form = forms.ElementAt(index);
+            //}
+
+            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory, !temporary))
+            {
+                return null;
+            }
+
+            if (temporary)
+            {
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next ??? turns!", true);  // TODO joke_shop message
+            }
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+
+            return $"You are an inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
+        }
+
+        private static string TGTransform(Player player)
+        {
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                var warning = EnsurePlayerIsWarned(player);
+
+                if (!warning.IsNullOrEmpty())
+                {
+                    return warning;
+                }
+            }
+
+            IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
+            var altForm = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => new {form.AltSexFormSourceId, form.Gender}).FirstOrDefault();
+
+            if (altForm == null || !altForm.AltSexFormSourceId.HasValue)
+            {
+                return null;
+            }
+
+            TryAnimateTransform(player, altForm.AltSexFormSourceId.Value);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You suddenly became {altForm.Gender}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> suddenly became {altForm.Gender}.");
+
+            return "TG";  // TODO joke_shop flavor text
+        }
+
+        private static string BodySwap(Player player, bool clone)
+        {
+            var rand = new Random();
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
+            
+            var candidates = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP)
+                .Where(p => p.OnlineActivityTimestamp >= cutoff &&
+                            p.Id != player.Id &&
+                            p.InDuel <= 0 &&
+                            p.InQuest <= 0 &&
+                            p.BotId == AIStatics.ActivePlayerBotId)
+                .ToList();
+
+            Player victim = null;
+            var numCandidates = candidates.Count();
+
+            if (numCandidates == 0)
+            {
+                return null;
+            }
+
+            if (clone)
+            {
+                var index = rand.Next(numCandidates);
+                var candidate = candidates[index];
+
+                TryAnimateTransform(player, candidate.FormSourceId);
+
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have become a clone of {victim.GetFullName()}", false);
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> became a clone of <b>{victim.GetFullName()}</b>.");
+
+                return "Clone";  // TODO joke_shop flavor text
+            }
+            else
+            {
+                // Find nearboy player with sufficient consent
+                do
+                {
+                    var index = rand.Next(numCandidates);
+                    var candidate = candidates[index];
+
+                    if (candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || PlayerHasBeenWarned(candidate))
+                    {
+                        victim = candidate;
+                    }
+                    else
+                    {
+                        // Shuffle dismissed candidate out of the way
+                        candidates[index] = candidates[numCandidates - 1];
+                        candidates[numCandidates - 1] = candidate;
+                    }
+
+                    numCandidates--;
+                } while (victim == null && numCandidates > 0);
+
+                if (victim == null)
+                {
+                    return null;
+                }
+
+                // Swap forms
+                TryAnimateTransform(player, victim.FormSourceId);
+                TryAnimateTransform(victim, player.FormSourceId);
+
+                PlayerLogProcedures.AddPlayerLog(victim.Id, $"You have swapped bodies with {player.GetFullName()}", true);  // TODO joke_shop flavor text
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have swapped bodies with {victim.GetFullName()}", false);  // TODO joke_shop flavor text
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> swapped bodies with <b>{victim.GetFullName()}</b>.");
+
+                return "Body swap";  // TODO joke_shop flavor text
+            }
+        }
+
+        private static string RestoreBaseForm(Player player)
+        {
+            // Require extra warning for SP players, who might want to keep their form
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                return null;
+            }
+
+            // TODO joke_shop check this -- chaos restore, self-restore, struggle restore, classic me?  Need to delete item & reset skills
+            PlayerProcedures.InstantRestoreToBase(player);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);
+
+            return "Restore to base";  // TODO joke_shop flavor text
+        }
+
+        private static string ChangeBaseForm(Player player)
+        {
+            var formSourceId = MischievousForms[new Random().Next(MischievousForms.Count())];
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.OriginalFormSourceId = formSourceId;
+            playerRepo.SavePlayer(user);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form was changed.", false);
+
+            return "Base form changed";  // TODO joke_shop flavor text
+        }
+
+        private static string SetBaseFormToCurrent(Player player)
+        {
+            if (player.Id == player.FormSourceId)
+            {
+                return null;
+            }
+
+            var formSourceId = player.FormSourceId;
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.OriginalFormSourceId = formSourceId;
+            playerRepo.SavePlayer(user);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form has changed to your current form.", false);
+
+            return "Base form set to current";  // TODO joke_shop flavor text
+        }
+
+        private static string RestoreName(Player player)
+        {
+            if (player.FirstName == player.OriginalFirstName && player.LastName == player.OriginalLastName)
+            {
+                return null;
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.FirstName = user.OriginalFirstName;
+            user.LastName = user.OriginalLastName;
+            playerRepo.SavePlayer(user);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"Your name was changed back to {user.GetFullName()}.", false);
+
+            return "Name restored";  // TODO joke_shop flavor text
+        }
+
+        private static string IdentityChange(Player player)
+        {
+            return null;  // TODO joke_shop implement
+        }
+
+        private static string TransformToMindControlledForm(Player player)
+        {
+            return null;  // TODO joke_shop implement
+        }
+
         private static bool TryAnimateTransform(Player player, int formSourceId)
         {
-            // Give extra warning for SP players, who might want to keep their form
+            // Require extra warning for SP players, who might want to keep their form
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
             {
                 return false;
             }
 
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
+            DomainRegistry.Repository.Execute(new ReadjustMaxes
+            {
+                playerId = player.Id,
+                buffs = ItemProcedures.GetPlayerBuffs(player)
+            });
 
+            // TODO joke_shop log tf
+            return true;
+        }
+
+        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true)
+        {
+            if (!PlayerHasBeenWarnedTwice(player))
+            {
+                return false;
+            }
+
+            // TODO joke_shop Check change form logic, set initialinan XP
+            PlayerProcedures.InstantChangeToForm(player, formSourceId);
+
+            // If item is not created player will have no actions and not be visible to other players,
+            // so some external mechanism must be in place to restore the player to animate form.
+            if (createItem)
+            {
+                var form = FormStatics.GetForm(formSourceId);
+                var extra = ItemProcedures.PlayerBecomesItem(player, form, null, dropInventory);
+                // If inventory isn't dropped at point of TF then it will be dropped if/when player locks.
+            }
+            else if (dropInventory)
+            {
+                DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = player.Id, IgnoreRunes = false });
+            }
+            
+            // TODO joke_shop log tf
             return true;
         }
 

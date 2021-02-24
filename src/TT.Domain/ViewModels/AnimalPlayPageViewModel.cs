@@ -30,6 +30,7 @@ namespace TT.Domain.ViewModels
         public IEnumerable<PlayPageItemDetail> LocationItems { get; set; }
 
         public bool IsPermanent { get; set; }
+        public string PortraitUrl { get; set; }
 
         public decimal StruggleChance { get; set; }
         public string Message { get; set; }

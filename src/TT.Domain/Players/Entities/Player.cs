@@ -741,7 +741,7 @@ namespace TT.Domain.Players.Entities
 
         }
 
-        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource)
+        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, bool dropItems = true)
         {
             var logbox = new LogBox();
             this.FormSource = formSource;
@@ -750,7 +750,10 @@ namespace TT.Domain.Players.Entities
             var newItem = Item.CreateFromPlayer(this, itemSource, attacker);
             this.Item = newItem;
 
-            this.DropAllItems();
+            if (dropItems)
+            {
+                this.DropAllItems();
+            }
 
             if (attacker == null)
             {

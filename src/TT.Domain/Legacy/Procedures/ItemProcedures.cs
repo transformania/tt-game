@@ -615,9 +615,9 @@ namespace TT.Domain.Procedures
             return player.ExtraInventory + PvPStatics.MaxCarryableItemCountBase;
         }
 
-        public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker)
+        public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker, bool dropItems = true)
         {
-            var output = DomainRegistry.Repository.Execute(new PlayerBecomesItem { AttackerId = attacker?.Id, VictimId = victim.Id, NewFormId = targetForm.Id });
+            var output = DomainRegistry.Repository.Execute(new PlayerBecomesItem { AttackerId = attacker?.Id, VictimId = victim.Id, NewFormId = targetForm.Id, DropItems = dropItems });
 
             IItemRepository itemRepo = new EFItemRepository();
             var item = itemRepo.Items.First(i => i.FormerPlayerId.Value == victim.Id);
@@ -1167,7 +1167,7 @@ namespace TT.Domain.Procedures
         public static bool ItemIncursDungeonPenalty(ItemDetail item)
         {
             // Give items/pets a struggle penalty if their owner is in the dungeon
-            if (item.Owner != null)
+            if (item?.Owner != null)
             {
                 var owner = PlayerProcedures.GetPlayer(item.Owner.Id);
                 if (owner.IsInDungeon())
@@ -1181,6 +1181,9 @@ namespace TT.Domain.Procedures
 
         public static void LockItem(Player player)
         {
+            // Ensure that no items are left in the player's inventory
+            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = player.Id, IgnoreRunes = false });
+
             IItemRepository itemRepo = new EFItemRepository();
             var itemHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
             var item = itemRepo.Items.FirstOrDefault(i => i.Id == itemHack.Id); // TODO: Replace with proper command

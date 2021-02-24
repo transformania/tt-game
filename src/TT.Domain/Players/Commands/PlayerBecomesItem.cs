@@ -14,6 +14,7 @@ namespace TT.Domain.Players.Commands
         public int VictimId { get; set; }
         public int? AttackerId { get; set; }
         public int NewFormId { get; set; }
+        public bool DropItems { get; set; } = true;
 
         public override LogBox Execute(IDataContext context)
         {
@@ -59,7 +60,7 @@ namespace TT.Domain.Players.Commands
                     throw new DomainException("Form is not inanimate or pet");
                 }
 
-                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource);
+                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource, DropItems);
 
                 ctx.Commit();
                 

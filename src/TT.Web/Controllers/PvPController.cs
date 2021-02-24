@@ -173,8 +173,9 @@ namespace TT.Web.Controllers
                     Message = InanimateXPProcedures.GetProspectsMessage(me)
                 };
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
+                inanimateOutput.PortraitUrl = ItemStatics.GetStaticItem(inanimateOutput.Form.ItemSourceId.Value).PortraitUrl;
 
-                if (inanimateOutput.Item.Owner == null)
+                if (inanimateOutput.Item?.Owner == null)
                 {
                     // Not owned
                     var loc = inanimateOutput.Item?.dbLocationName == null ? me.dbLocationName : inanimateOutput.Item.dbLocationName;
@@ -229,7 +230,7 @@ namespace TT.Web.Controllers
                 animalOutput.Form = FormStatics.GetForm(me.FormSourceId);
 
                 animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-                if (animalOutput.YouItem.Owner != null)
+                if (animalOutput.YouItem?.Owner != null)
                 {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.Owner.Id);
 
@@ -273,9 +274,9 @@ namespace TT.Web.Controllers
                 animalOutput.HasNewMessages = hasNewMessages;
                 animalOutput.UnreadMessageCount = unreadMessageCount;
 
-                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
+                animalOutput.PortraitUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
-                animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
+                animalOutput.IsPermanent = animalOutput.YouItem == null ? true : animalOutput.YouItem.IsPermanent;
 
                 animalOutput.StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(animalOutput.YouItem)));
                 animalOutput.Message = InanimateXPProcedures.GetProspectsMessage(me);
@@ -3076,7 +3077,7 @@ namespace TT.Web.Controllers
 
             // assert player is not already locked into their current form
             var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-            if (itemMe.IsPermanent)
+            if (itemMe != null && itemMe.IsPermanent)
             {
                 TempData["Error"] = "You cannot return to an animate form again.";
                 TempData["SubError"] = "You have spent too long and performed too many actions as an item or animal and have lost your desire and ability to be human gain.";

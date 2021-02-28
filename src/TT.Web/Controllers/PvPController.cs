@@ -267,7 +267,7 @@ namespace TT.Web.Controllers
                 var animalLocationItemsCmd = new GetItemsAtLocationVisibleToGameMode { dbLocationName = animalOutput.Location.dbName, gameMode = me.GameMode };
                 animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
 
-                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
+                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
 
                 animalOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
@@ -314,7 +314,7 @@ namespace TT.Web.Controllers
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
             loadtime += "Start get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
+            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
@@ -2129,15 +2129,15 @@ namespace TT.Web.Controllers
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if ((playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
+            if ((playerLookedAt.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerLookedAt.Player.Id });
 
-                if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
+                if (playerLookedAt.Mobility == PvPStatics.MobilityInanimate)
                 {
                     ViewBag.ImgUrl = "itemsPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
-                else if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
+                else if (playerLookedAt.Mobility == PvPStatics.MobilityPet)
                 {
                     ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
@@ -2709,7 +2709,7 @@ namespace TT.Web.Controllers
 
             var myform = FormStatics.GetForm(me.FormSourceId);
 
-            if (myform.MobilityType == PvPStatics.MobilityFull)
+            if (me.Mobility == PvPStatics.MobilityFull)
             {
                 return true;
             }

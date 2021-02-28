@@ -145,6 +145,19 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating effects");
                 serverLogRepo.SaveServerLog(log);
 
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-related actions");
+                try
+                {
+                    JokeShopProcedures.RunEffectActions(temporaryEffects);
+                }
+                catch (Exception e)
+                {
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ERROR running effect-related actions", e));
+                }
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished running effect-related actions");
+                serverLogRepo.SaveServerLog(log);
+
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired effects");
                 foreach (var e in effectsToDelete)
                 {

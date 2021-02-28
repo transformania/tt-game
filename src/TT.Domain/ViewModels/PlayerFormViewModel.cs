@@ -7,6 +7,7 @@ namespace TT.Domain.ViewModels
     {
         public Player_VM Player { get; set; }
         public Form Form { get; set; }
+        public string Mobility { get; set; }
 
         public bool CanAccessChat()
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
@@ -14,10 +15,21 @@ namespace TT.Domain.Legacy.Procedures
 {
     public static class JokeShopProcedures
     {
-        // TODO joke_shop These IDs need to be synced with migration script
-        private const int FIRST_WARNING_EFFECT = 1006; //
-        private const int SECOND_WARNING_EFFECT = 1010; //
-        private const int BANNED_FROM_JOKE_SHOP_EFFECT = 1012; //
+        // Get the IDs for the desired effects in a cross-database safe way
+        private static readonly int? FIRST_WARNING_EFFECT = EffectWithName("effect_Joke_Shop_Warned");
+        private static readonly int? SECOND_WARNING_EFFECT = EffectWithName("effect_Joke_Shop_Warned_Twice");
+        private static readonly int? BANNED_FROM_JOKE_SHOP_EFFECT = EffectWithName("effect_Joke_Shop_Banned");
+
+        private static readonly int[] BOOST_EFFECTS = EffectsWithNamesStarting("effect_Joke_Shop_Boost_");
+        private static readonly int[] PENALTY_EFFECTS = EffectsWithNamesStarting("effect_Joke_Shop_Penalty_");
+
+        private static readonly int? ROOT_EFFECT = EffectWithName("effect_Joke_Shop_Penalty_Mobility");
+        private static readonly int? SNEAK_REVEAL_1 = EffectWithName("effect_Joke_Shop_Track_1");
+        private static readonly int? SNEAK_REVEAL_2 = EffectWithName("effect_Joke_Shop_Track_2");
+        private static readonly int? SNEAK_REVEAL_3 = EffectWithName("effect_Joke_Shop_Track_3");
+
+        private static readonly int? AUTO_RESTORE_EFFECT = EffectWithName("effect_Joke_Shop_Auto_Restore");
+        private static readonly int? INSTINCT_EFFECT = EffectWithName("effect_Joke_Shop_MC_Instinct");
 
         private const string LIMITED_MOBILITY = "immobile";
 
@@ -61,6 +73,31 @@ namespace TT.Domain.Legacy.Procedures
         private static List<FormDetail> Forms(Func<FormDetail, bool> predicate)
         {
             return StableForms.Where(predicate).ToList();
+        }
+
+        private static int? EffectWithName(string dbName)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+            return effectRepo.DbStaticEffects.Where(e => e.dbName == dbName).FirstOrDefault()?.Id;
+        }
+
+        private static int[] EffectsWithNamesStarting(string prefix)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+            return effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).Select(e => e.Id).ToArray();
+        }
+
+        internal static void RunEffectActions(List<Effect> temporaryEffects)
+        {
+            // Undo temporary TFs
+            if (AUTO_RESTORE_EFFECT.HasValue)
+            {
+                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+                foreach (var player in playersToRestore)
+                {
+                    UndoTemporaryForm(player);
+                }
+            }
         }
 
         #region Location action hooks
@@ -124,6 +161,12 @@ namespace TT.Domain.Legacy.Procedures
                 return EjectCharacter(player);
             }
 
+            // Mechanism through which a player can elect to restore their original name
+            if (player.Health >= player.MaxHealth)
+            {
+                return RestoreName(player);
+            }
+
             return null;
         }
 
@@ -151,7 +194,8 @@ namespace TT.Domain.Legacy.Procedures
                 // return MildResourcePrank(player);
                 // return MildLocationPrank(player);
                 // return MildQuotasAndTimerPrank(player);
-                return MildTransformationPrank(player);
+                // return MildTransformationPrank(player);
+                return MildEffectsPrank(player);
                 // return DiceGame(player);
 
                 // return AnimateTransform(player);
@@ -180,7 +224,9 @@ namespace TT.Domain.Legacy.Procedures
                 // return MischievousResourcePrank(player);
                 // return MischievousLocationPrank(player);
                 // return MischievousQuotasAndTimerPrank(player);
-                return MischievousTransformationPrank(player);
+                // return MischievousTransformationPrank(player);
+                // return MischievousTransformationPrank(player);
+                return MischievousEffectsPrank(player);
             }
 
             // TODO joke_shop return value
@@ -205,7 +251,7 @@ namespace TT.Domain.Legacy.Procedures
                 // return MeanResourcePrank(player);
                 // return MeanLocationPrank(player);
                 // return MeanQuotasAndTimerPrank(player);
-                return MeanTransformationPrank(player);
+                return MeanEffectsPrank(player);
             }
 
             // TODO joke_shop return value
@@ -219,19 +265,24 @@ namespace TT.Domain.Legacy.Procedures
 
         private static bool PlayerHasBeenWarned(Player player)
         {
-            return EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT);
+            return FIRST_WARNING_EFFECT.HasValue && EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT.Value);
         }
 
         private static bool PlayerHasBeenWarnedTwice(Player player)
         {
-            return EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT);
+            return SECOND_WARNING_EFFECT.HasValue && EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT.Value);
         }
 
         private static string EnsurePlayerIsWarned(Player player)
         {
             if (!PlayerHasBeenWarned(player))
             {
-                EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player);
+                if (!FIRST_WARNING_EFFECT.HasValue)
+                {
+                    return "Bug: Unable to give player first warning";
+                }
+
+                EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT.Value, player);
 
                 // TODO joke_shop Put this message in the effect and return the string from GivePerk, logging is handled by that
                 var logMessage = "Beware!  This cursed joke shop is a dangerous place!  If you stay here too long anything could happen.  Maybe you should keep your nose out of trouble and leave now?";
@@ -254,7 +305,12 @@ namespace TT.Domain.Legacy.Procedures
 
             if (!PlayerHasBeenWarnedTwice(player))
             {
-                EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player);
+                if (!SECOND_WARNING_EFFECT.HasValue)
+                {
+                    return "Bug: Unable to give player first warning";
+                }
+
+                EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT.Value, player);
 
                 // TODO joke_shop Put this message in the effect and return the string from GivePerk, will still need to add important log message for pop-up
                 var logMessage = "This is your final warning!  This cursed joke shop does not play by the normal rules of Sunnyglade.  If you stay here too long you could be risking your very soul!  Get out now - while you still can!";
@@ -268,12 +324,17 @@ namespace TT.Domain.Legacy.Procedures
 
         public static bool CharacterIsBanned(Player player)
         {
-            return EffectProcedures.PlayerHasActiveEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT);
+            return BANNED_FROM_JOKE_SHOP_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT.Value);
         }
 
         private static string BanCharacter(Player player)
         {
-            if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT))
+            if (!BANNED_FROM_JOKE_SHOP_EFFECT.HasValue)
+            {
+                return "Bug: Unable to ban player";
+            }
+
+            if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT.Value))
             {
                 return "Already banned!";  // TODO joke_shop return null after testing
                 //return null;
@@ -282,7 +343,7 @@ namespace TT.Domain.Legacy.Procedures
             var kickedOutMessage = EjectCharacter(player);
 
             // TODO joke_shop Put this message in the effect and return the string from GivePerk
-            EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
+            EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT.Value, player);
 
             return "Your actions attract the attention of the shopkeeper, who bans you from the shop!  " + kickedOutMessage;
         }
@@ -572,7 +633,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (roll < 10)  // 10%
             {
-                return TeleportToOverworld(player, false);
+                return TeleportToOverworld(player, false, rand.Next(2) == 0);
             }
             else if (roll < 30)  // 20%
             {
@@ -607,7 +668,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (roll < 25)  // 25%
             {
-                return TeleportToOverworld(player, true);
+                return TeleportToOverworld(player, true, true);
             }
             else if (roll < 50)  // 25%
             {
@@ -669,7 +730,7 @@ namespace TT.Domain.Legacy.Procedures
             return true;
         }
 
-        private static string TeleportToOverworld(Player player, bool root)
+        private static string TeleportToOverworld(Player player, bool root, bool curse)
         {
             var location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
 
@@ -680,7 +741,12 @@ namespace TT.Domain.Legacy.Procedures
 
             if (root)
             {
-                Root(player);
+                root = GiveEffect(player, ROOT_EFFECT) != null;
+            }
+
+            if (curse && !root)
+            {
+                applyLocalCurse(player, location);
             }
 
             return "Teleport to overworld"; // TODO joke_shop flavor text
@@ -713,7 +779,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (meanness >= 2)
             {
-                Root(player);
+                GiveEffect(player, ROOT_EFFECT);
             }
 
             return "Teleport to dungeon"; // TODO joke_shop flavor text
@@ -882,14 +948,20 @@ namespace TT.Domain.Legacy.Procedures
         private static string TeleportToBar(Player player, bool root)
         {
             // Not all getaways can be clean..
-            if(!Teleport(player, "tavern_counter", true))
+            string bar = "tavern_counter";
+
+            if(!Teleport(player, bar, true))
             {
                 return null;
             }
 
             if (root)
             {
-                Root(player);
+                GiveEffect(player, ROOT_EFFECT);
+            }
+            else
+            {
+                ApplyLocalCurse(player, bar);
             }
 
             return "Teleport to bar";  // TODO joke_shop Flavor text
@@ -1005,16 +1077,117 @@ namespace TT.Domain.Legacy.Procedures
 
         #region Effects pranks
 
-        private static int GiveAutoRevertEffect(Player player)
+        private static string MildEffectsPrank(Player player)
         {
-            // TODO joke_shop give effect and return turn on which it expires
-            return 0;
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 10)  // 10%
+            {
+                return GiveEffect(player, ROOT_EFFECT, 1);
+            }
+            else if (roll < 60)  // 50%
+            {
+                return GiveRandomEffect(player, BOOST_EFFECTS);
+            }
+            else if (roll < 90)  // 30%
+            {
+                return GiveRandomEffect(player, PENALTY_EFFECTS);
+            }
+            else  // 10%
+            {
+                return GiveRandomEffect(player, SNEAK_REVEAL_1);
+            }
         }
 
-        private static bool Root(Player player)
+        private static string MischievousEffectsPrank(Player player)
         {
-            // TODO joke_shop implement
-            return false;
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 10)  // 10%
+            {
+                return GiveEffect(player, ROOT_EFFECT, 2);
+            }
+            else if (roll < 40)  // 30%
+            {
+                return GiveRandomEffect(player, BOOST_EFFECTS);
+            }
+            else if (roll < 75)  // 35%
+            {
+                return GiveRandomEffect(player, PENALTY_EFFECTS);
+            }
+            else if (roll < 95)  // 20%
+            {
+                return GiveEffect(player, INSTINCT_EFFECT);
+            }
+            else  // 5%
+            {
+                return GiveRandomEffect(player, SNEAK_REVEAL_2);
+            }
+        }
+
+        private static string MeanEffectsPrank(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(100);
+
+            if (roll < 10)  // 10%
+            {
+                return GiveEffect(player, ROOT_EFFECT, 4);
+            }
+            else if (roll < 90)  // 80%
+            {
+                return GiveRandomEffect(player, PENALTY_EFFECTS);
+            }
+            else  // 10%
+            {
+                return GiveRandomEffect(player, SNEAK_REVEAL_3);
+            }
+        }
+
+        private static string GiveEffect(Player player, int? effect, int duration = 3)
+        {
+            if (!effect.HasValue || EffectProcedures.PlayerHasEffect(player, effect.Value))
+            {
+                return null;
+            }
+
+            return EffectProcedures.GivePerkToPlayer(effect.Value, player, Duration: duration, Cooldown: duration);
+        }
+
+        private static string GiveRandomEffect(Player player, int[] effects)
+        {
+            if (effects.Count() == 0)
+            {
+                return null;
+            }
+
+            var effect = effects[new Random().Next(effects.Count())];
+
+            if (EffectProcedures.PlayerHasEffect(player, effect))
+            {
+                return null;
+            }
+
+            return EffectProcedures.GivePerkToPlayer(effect, player);
+        }
+
+        private static string ApplyLocalCurse(Player player, string dbLocationName)
+        {
+            var effects = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToArray();
+
+            if (effects.Any())
+            {
+                var effect = effects[new Random{}.Next(effects.Count())];
+
+                if (!EffectProcedures.PlayerHasEffect(player, effect.Id))
+                {
+                    return GiveEffect(player, effect.Id);
+                }
+            }
+
+            return null;
         }
 
         #endregion
@@ -1210,11 +1383,15 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 15)  // 15%
+            if (roll < 15)  // 10%
             {
                 return ImmobileTransform(player, rand.Next(2) == 0);
             }
-            else if (roll < 30)  // 15%
+            else if (roll < 20)  // 10%
+            {
+                return MobileInanimateTransform(player);
+            }
+            else if (roll < 30)  // 10%
             {
                 return BodySwap(player, false);
             }
@@ -1273,7 +1450,7 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
 
             return $"You are an animate {form.FriendlyName}.";  // TODO joke_shop flavor text
         }
@@ -1301,14 +1478,11 @@ namespace TT.Domain.Legacy.Procedures
 
             if (temporary)
             {
-                var expiryTurn = GiveAutoRevertEffect(player);
-                form = forms.ElementAt((expiryTurn + player.Id) % forms.Count());
+                GiveEffect(player, AUTO_RESTORE_EFFECT, PlayerHasBeenWarnedTwice(player) ? 3 : 2);
             }
-            else
-            {
-                var index = new Random().Next(forms.Count());
-                form = forms.ElementAt(index);
-            }
+
+            var index = new Random().Next(forms.Count());
+            form = forms.ElementAt(index);
 
             if (!TryAnimateTransform(player, form.FormSourceId))
             {
@@ -1316,13 +1490,20 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
 
             return $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
         }
 
         private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false)
         {
+            var warning = EnsurePlayerIsWarned(player);
+
+            if (!warning.IsNullOrEmpty())
+            {
+                return warning;
+            }
+
             var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
 
             if (forms.Count() == 0)
@@ -1330,34 +1511,74 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
-            FormDetail form;
-
+            var duration = 0;
             if (temporary)
             {
-                // TODO joke_shop Add temporay runes
-                var expiryTurn = GiveAutoRevertEffect(player);
-                //form = forms.ElementAt((expiryTurn + player.Id) % forms.Count());  // TODO joke_shop not needed if just reverting inan players with no player item?
+                duration = PlayerHasBeenWarnedTwice(player) ? 10 : 5;
+                temporary = GiveEffect(player, AUTO_RESTORE_EFFECT, duration) != null;
             }
-            //else
-            //{
-                var index = new Random().Next(forms.Count());
-                form = forms.ElementAt(index);
-            //}
 
-            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory, !temporary))
+            var index = new Random().Next(forms.Count());
+            FormDetail form = forms.ElementAt(index);
+
+            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: dropInventory, createItem: !temporary, severe: true))
             {
                 return null;
             }
 
             if (temporary)
             {
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next ??? turns!", true);  // TODO joke_shop message
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next {duration} turns!", true);  // TODO joke_shop message
             }
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> spontaneously turned into a <b>{form.FriendlyName}</b>.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
 
             return $"You are an inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
+        }
+
+        private static string MobileInanimateTransform(Player player)
+        {
+            // Turning a player into a rune or consumable is a bit too involved as there are no forms for those items in the DB,
+            // however we can make a player inanimate without a player item and pretend they are fully mobile...
+
+            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            {
+                var warning = EnsurePlayerIsWarned(player);
+
+                if (!warning.IsNullOrEmpty())
+                {
+                    return warning;
+                }
+            }
+            
+            var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
+
+            if (forms.Count() == 0)
+            {
+                return null;
+            }
+
+            var index = new Random().Next(forms.Count());
+            FormDetail form = forms.ElementAt(index);
+
+            // Give player an inanimate form without creating a player item
+            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: false, createItem: false, severe: false))
+            {
+                return null;
+            }
+
+            // Coerce player into mobility
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            target.Mobility = PvPStatics.MobilityFull;
+            playerRepo.SavePlayer(target);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into an animate <b>{form.FriendlyName}</b>.");
+
+            return $"You are a mobile inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
         }
 
         private static string TGTransform(Player player)
@@ -1383,7 +1604,7 @@ namespace TT.Domain.Legacy.Procedures
             TryAnimateTransform(player, altForm.AltSexFormSourceId.Value);
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You suddenly became {altForm.Gender}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> suddenly became {altForm.Gender}.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} suddenly became {altForm.Gender}.");
 
             return "TG";  // TODO joke_shop flavor text
         }
@@ -1435,7 +1656,7 @@ namespace TT.Domain.Legacy.Procedures
                     }
                     else
                     {
-                        // Shuffle dismissed candidate out of the way
+                        // Shuffle the dismissed candidate out of the way
                         candidates[index] = candidates[numCandidates - 1];
                         candidates[numCandidates - 1] = candidate;
                     }
@@ -1460,16 +1681,55 @@ namespace TT.Domain.Legacy.Procedures
             }
         }
 
-        private static string RestoreBaseForm(Player player)
+        private static void UndoTemporaryForm(int playerId)
+        {
+            var player = PlayerProcedures.GetPlayer(playerId);
+
+            // Avoid reverting form if player is in a mobile animate form
+            var canRemove = false;
+            if (player.Mobility != PvPStatics.MobilityFull)
+            {
+                canRemove = true;
+            }
+            else
+            {
+                IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
+                var moveActionPointDiscount = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => form.MoveActionPointDiscount).FirstOrDefault();
+                canRemove = moveActionPointDiscount < -5;
+
+                if (!canRemove)
+                {
+                    // Can also revert if player is an inanimate posing as animate
+                    var inanimatePlayer = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerId });
+                    canRemove = inanimatePlayer != null;
+                }
+            }
+
+            if (canRemove)
+            {
+                RestoreBaseForm(player, true);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"As your mind begins to clear, the illusion gradually subsides.  It isn't long before you realize you are back in a familiar form.", true);
+            }
+        }
+
+        private static string RestoreBaseForm(Player player, bool force = false)
         {
             // Require extra warning for SP players, who might want to keep their form
-            if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
+            if (!force && player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
             {
                 return null;
             }
 
-            // TODO joke_shop check this -- chaos restore, self-restore, struggle restore, classic me?  Need to delete item & reset skills
+            // Use chaos restore.  Should delete item & reset skills.  Self-restore, struggle restore and classic me do similar
             PlayerProcedures.InstantRestoreToBase(player);
+
+            // No Back On Your Feet, but clear any XP ready for next inanimation - unless Chaos, where people like to lock fast
+            if (!PvPStatics.ChaosMode)
+            {
+                IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
+                var inanimXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
+                inanimXpRepo.DeleteInanimateXP(inanimXP.Id);
+            }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);
 
@@ -1492,12 +1752,21 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string SetBaseFormToCurrent(Player player)
         {
-            if (player.Id == player.FormSourceId)
+            if (player.OriginalFormSourceId == player.FormSourceId)
             {
                 return null;
             }
 
             var formSourceId = player.FormSourceId;
+
+            // Check we're not setting an inanimate/pet as base form, in case that causes problems...
+            IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
+            var mobility = formsRepo.DbStaticForms.Where(f => f.Id == formSourceId).Select(f => f.MobilityType).FirstOrDefault();
+
+            if(mobility != PvPStatics.MobilityFull)
+            {
+                return null;
+            }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
@@ -1556,14 +1825,13 @@ namespace TT.Domain.Legacy.Procedures
             return true;
         }
 
-        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true)
+        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true)
         {
-            if (!PlayerHasBeenWarnedTwice(player))
+            if ((severe && !PlayerHasBeenWarnedTwice(player)) || (!severe && !PlayerHasBeenWarned(player)))
             {
                 return false;
             }
 
-            // TODO joke_shop Check change form logic, set initialinan XP
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
 
             // If item is not created player will have no actions and not be visible to other players,

@@ -33,9 +33,17 @@ namespace TT.Domain.Legacy.Procedures
 
         private const string LIMITED_MOBILITY = "immobile";
 
-        private static readonly List<FormDetail> StableForms = CandidateForms();
+        private static readonly List<FormDetail> STABLE_FORMS = CandidateForms();
 
-        private static readonly int[] MischievousForms = {215, 221, 438};
+        public static readonly int[] MISCHIEVOUS_FORMS = {215, 221, 438};
+        public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 572, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
+        public static readonly int[] DOGS = {34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187};
+        public static readonly int[] RODENTS = {70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077};
+        public static readonly int[] TREES = {50, 741};
+        public static readonly int[] STRIPPERS = {153, 719, 880};
+        public static readonly int[] DRONES = {715, 930, 951, 1039, 1050};
+        public static readonly int[] SHEEP = {204, 950, 1022, 1035, 1198};
+        public static readonly int[] MAIDS = {65};  // TODO joke_shop more maid forms
 
         internal class FormDetail
         {
@@ -72,7 +80,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static List<FormDetail> Forms(Func<FormDetail, bool> predicate)
         {
-            return StableForms.Where(predicate).ToList();
+            return STABLE_FORMS.Where(predicate).ToList();
         }
 
         private static int? EffectWithName(string dbName)
@@ -97,6 +105,13 @@ namespace TT.Domain.Legacy.Procedures
                 {
                     UndoTemporaryForm(player);
                 }
+            }
+
+            // TODO joke_shop call this later on in world update?
+            if (INSTINCT_EFFECT.HasValue)
+            {
+                var playersToControl = temporaryEffects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
+                InstinctProcedures.ActOnInstinct(playersToControl);
             }
         }
 
@@ -125,15 +140,17 @@ namespace TT.Domain.Legacy.Procedures
             }
             */
 
-            var roll = rand.Next(100);
+            var roll = 101;  // TODO joke_shop temp // rand.Next(100);
 
             if (roll < 60)  // 60% chance:
             {
-                return MildPrank(player);
+                return IdentityChange(player);
+                //return MildPrank(player);
             }
             else if (roll < 80)  // 20% chance:
             {
-                return MischievousPrank(player);
+                return TransformToMindControlledForm(player);
+                // return MischievousPrank(player);
             }
             else if (roll < 87)  // 7% chance:
             {
@@ -141,7 +158,15 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             // 13% chance:
-            return BanCharacter(player);
+            //return BanCharacter(player);
+
+            // TODO joke_shop debug temp
+            EnsurePlayerIsWarned(player);
+            EnsurePlayerIsWarnedTwice(player);
+            TryAnimateTransform(player, MAIDS[0]);
+            //TryAnimateTransform(player, new Random().Next(2) == 0 ? CATS_AND_NEKOS[0] : RODENTS[0]);
+            GiveEffect(player, INSTINCT_EFFECT);
+            return "DEBUG DONE";
         }
 
         public static string Meditate(Player player)
@@ -396,7 +421,10 @@ namespace TT.Domain.Legacy.Procedures
             var playerRepo = new EFPlayerRepository();
             var players = playerRepo.Players.Where(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
                                                         p.Mobility == PvPStatics.MobilityFull &&
-                                                        p.LastActionTimestamp < cutoff);
+                                                        p.LastActionTimestamp < cutoff &&
+                                                        p.InDuel <= 0 &&
+                                                        p.InQuest <= 0 &&
+                                                        p.BotId == AIStatics.ActivePlayerBotId);
 
             foreach (var player in players)
             {
@@ -746,7 +774,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (curse && !root)
             {
-                applyLocalCurse(player, location);
+                ApplyLocalCurse(player, location);
             }
 
             return "Teleport to overworld"; // TODO joke_shop flavor text
@@ -856,7 +884,7 @@ namespace TT.Domain.Legacy.Procedures
                                                          p.BotId == AIStatics.ValentineBotId)).ToList();
 
             // Minibosses
-            if (hostiles == null || hostiles.Count() == 0)
+            if (hostiles == null || hostiles.IsEmpty())
             {
                 hostiles = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && (
                                                          p.BotId == AIStatics.MinibossExchangeProfessorId ||
@@ -998,7 +1026,17 @@ namespace TT.Domain.Legacy.Procedures
         {
             var destination = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
 
-            var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == LocationsStatics.JOKE_SHOP);
+            if (MovePlayer(player, destination, 15) == null)
+            {
+                return null;
+            }
+
+            return "Run away";  // TODO joke_shop flavor text
+        }
+
+        internal static string MovePlayer(Player player, string destination, int maxSpacesToMove, Action<Player, string> callback = null)
+        {
+            var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             var end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
 
             if (destination == null || start == null || end == null)
@@ -1012,19 +1050,20 @@ namespace TT.Domain.Legacy.Procedures
             var pathTiles = PathfindingProcedures.GetMovementPath(start, end);
             var costPerTile = 1 - target.MoveActionPointDiscount;
 
-            // Cap distance, plus don't excees number of tiles or available AP
+            // Cap distance, plus don't exceed number of tiles or available AP
             var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
             var spacesToMove = (int)(Math.Min(maxDistance, pathTiles.Count()));
-            spacesToMove = Math.Min(15, spacesToMove);
+            spacesToMove = Math.Min(maxSpacesToMove, spacesToMove);
 
             if (spacesToMove == 0)
             {
                 return null;
             }
 
-            PlayerProcedures.MovePlayerMultipleLocations(player, pathTiles[spacesToMove - 1], spacesToMove * costPerTile);
+            var stoppingTile = pathTiles[spacesToMove - 1];
+            PlayerProcedures.MovePlayerMultipleLocations(player, stoppingTile, spacesToMove * costPerTile, callback: callback);
 
-            return "Run away";  // TODO joke_shop flavor text
+            return stoppingTile;
         }
 
         private static string WanderAimlessly(Player player)
@@ -1096,7 +1135,7 @@ namespace TT.Domain.Legacy.Procedures
             }
             else  // 10%
             {
-                return GiveRandomEffect(player, SNEAK_REVEAL_1);
+                return GiveEffect(player, SNEAK_REVEAL_1);
             }
         }
 
@@ -1123,7 +1162,7 @@ namespace TT.Domain.Legacy.Procedures
             }
             else  // 5%
             {
-                return GiveRandomEffect(player, SNEAK_REVEAL_2);
+                return GiveEffect(player, SNEAK_REVEAL_2);
             }
         }
 
@@ -1142,7 +1181,7 @@ namespace TT.Domain.Legacy.Procedures
             }
             else  // 10%
             {
-                return GiveRandomEffect(player, SNEAK_REVEAL_3);
+                return GiveEffect(player, SNEAK_REVEAL_3);
             }
         }
 
@@ -1158,7 +1197,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string GiveRandomEffect(Player player, int[] effects)
         {
-            if (effects.Count() == 0)
+            if (effects.IsEmpty())
             {
                 return null;
             }
@@ -1436,7 +1475,7 @@ namespace TT.Domain.Legacy.Procedures
             
             var forms = Forms(f => f.Category == PvPStatics.MobilityFull);
 
-            if (forms.Count() == 0)
+            if (forms.IsEmpty())
             {
                 return null;
             }
@@ -1469,7 +1508,7 @@ namespace TT.Domain.Legacy.Procedures
             
             var forms = Forms(f => f.Category == LIMITED_MOBILITY);
 
-            if (forms.Count() == 0)
+            if (forms.IsEmpty())
             {
                 return null;
             }
@@ -1506,7 +1545,7 @@ namespace TT.Domain.Legacy.Procedures
 
             var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
 
-            if (forms.Count() == 0)
+            if (forms.IsEmpty())
             {
                 return null;
             }
@@ -1554,7 +1593,7 @@ namespace TT.Domain.Legacy.Procedures
             
             var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
 
-            if (forms.Count() == 0)
+            if (forms.IsEmpty())
             {
                 return null;
             }
@@ -1617,6 +1656,7 @@ namespace TT.Domain.Legacy.Procedures
             var candidates = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP)
                 .Where(p => p.OnlineActivityTimestamp >= cutoff &&
                             p.Id != player.Id &&
+                            p.Mobility == PvPStatics.MobilityFull &&
                             p.InDuel <= 0 &&
                             p.InQuest <= 0 &&
                             p.BotId == AIStatics.ActivePlayerBotId)
@@ -1738,7 +1778,14 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string ChangeBaseForm(Player player)
         {
-            var formSourceId = MischievousForms[new Random().Next(MischievousForms.Count())];
+            var availableForms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(MISCHIEVOUS_FORMS).ToArray();
+
+            if (availableForms.IsEmpty())
+            {
+                return null;
+            }
+
+            var formSourceId = availableForms[new Random().Next(availableForms.Count())];
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
@@ -1798,12 +1845,181 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string IdentityChange(Player player)
         {
-            return null;  // TODO joke_shop implement
+            var warning = EnsurePlayerIsWarned(player);
+
+            if (!warning.IsNullOrEmpty())
+            {
+                return warning;
+            }
+
+            var rand = new Random();
+
+            int[] forms = {};
+            var firstName = player.OriginalFirstName;
+            var lastName = player.OriginalLastName;
+            var mindControl = false;
+            var message = "";
+
+            var roll = rand.Next(4);
+
+            // Pick changes to name and form
+            if (roll == 0)  // Dogs
+            {
+                forms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(DOGS).ToArray();
+                mindControl = true;
+                message = "";  // TODO joke_shop flavor text
+
+                switch(rand.Next(2))
+                {
+                    case 0:
+                        string[] prefixes = {"Dog", "Doggy", "Canine", "Barker"}; 
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = {"Dogg", "Woof", "Barker"}; 
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                }
+            }
+            else if (roll == 1)  // Cats
+            {
+                forms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(CATS_AND_NEKOS).ToArray();
+                mindControl = true;
+                message = "";  // TODO joke_shop flavor text
+
+                switch(rand.Next(3))
+                {
+                    case 0:
+                        string[] prefixes = {"Kitty", "Cat", "Neko", "Feline"}; 
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = {"Cat", "Neko", "Feline"}; 
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                    case 2:
+                        firstName = firstName.ToLower().Replace("a", "nya");
+                        lastName = lastName.ToLower().Replace("a", "nya");
+                        firstName = firstName.Substring(0, 1).ToUpper() + firstName.Substring(1);
+                        lastName = lastName.Substring(0, 1).ToUpper() + lastName.Substring(1);
+                        break;
+                }
+            }
+            else if (roll == 2)  // Drones
+            {
+                forms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(DRONES).ToArray();
+                mindControl = false;
+                message = "";  // TODO joke_shop flavor text
+
+                string[] designators = {"Unit", "Drone", "Clone", "Entity", "Bot"}; 
+                var designator = designators[rand.Next(designators.Count())];
+
+                switch(rand.Next(3))
+                {
+                    case 0:
+                        var name = rand.Next(2) == 0 ? firstName : lastName;
+                        var order = rand.Next(2);
+                        firstName = order == 0 ? designator : name;
+                        lastName = order == 0 ? name : designator;
+                        break;
+                    case 1:
+                        firstName = designator;
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        lastName = lastName.ToUpper().Replace('I', '1')
+                                                     .Replace('L', '1')
+                                                     .Replace('Z', '2')
+                                                     .Replace('E', '3')
+                                                     .Replace('A', '4')
+                                                     .Replace('S', '5')
+                                                     .Replace('G', '6')
+                                                     .Replace('R', '7')
+                                                     .Replace('B', '8')
+                                                     .Replace('Q', '9')
+                                                     .Replace('O', '0');
+                        break;
+                    case 2:
+                        firstName = designator;
+                        lastName = $"#{rand.Next(100000)}";
+                        break;
+                }
+            }
+            else if (roll == 3)  // Renames
+            {
+                mindControl = false;
+                message = "";  // TODO joke_shop flavor text
+
+                switch(rand.Next(1))
+                {
+                    case 0:
+                        lastName = $"Mc{firstName}face";
+                        if (!firstName.EndsWith("y"))
+                        {
+                            firstName = $"{firstName}y";
+                        }
+                        break;
+                }
+            }
+
+            // Change form
+            if (forms != null && !forms.IsEmpty())
+            {
+                var formSourceId = forms[new Random().Next(forms.Count())];
+                if (!TryAnimateTransform(player, formSourceId))
+                {
+                    return null;
+                }
+            }
+
+            // Change name
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            playerRepo.SavePlayer(user);
+
+            // Impose behavior
+            if (mindControl)
+            {
+                GiveEffect(player, INSTINCT_EFFECT);
+            }
+
+            if (message.IsNullOrEmpty())
+            {
+                message = "You have taken on a whole new identity!";  // TODO joke_shop flavor text
+            }
+
+            return message;
         }
 
         private static string TransformToMindControlledForm(Player player)
         {
-            return null;  // TODO joke_shop implement
+            var warning = EnsurePlayerIsWarned(player);
+
+            if (!warning.IsNullOrEmpty())
+            {
+                return warning;
+            }
+
+            var rand = new Random();
+
+            int[][] mcForms = {CATS_AND_NEKOS, DOGS, MAIDS, SHEEP, STRIPPERS};
+            var genre = mcForms[rand.Next(mcForms.Count())];
+            var forms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(genre).ToArray();
+
+            if (forms == null || forms.IsEmpty())
+            {
+                return null;
+            }
+
+            if (!TryAnimateTransform(player, forms[rand.Next(forms.Count())]))
+            {
+                return null;
+            }
+
+            GiveEffect(player, INSTINCT_EFFECT);
+            return "You are now in a mind controlled form";  // TODO joke_shop flavor text
         }
 
         private static bool TryAnimateTransform(Player player, int formSourceId)

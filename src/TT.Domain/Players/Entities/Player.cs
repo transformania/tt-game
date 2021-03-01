@@ -205,15 +205,19 @@ namespace TT.Domain.Players.Entities
 
             if (this.Item != null)
             {
-                if (this.Item.Owner != null)
+                if (this.Item.Owner != null && !this.Item.Owner.Location.IsNullOrEmpty())
                 {
                     this.Location = this.Item.Owner.Location;
                 }
-                else
+                else if (!this.Item.dbLocationName.IsNullOrEmpty())
                 {
                     this.Location = this.Item.dbLocationName;
                 }
+            }
 
+            if (this.Location.IsNullOrEmpty())
+            {
+                this.Location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
             }
 
             FormSource = form;

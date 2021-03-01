@@ -521,7 +521,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string MoveTo(Player bot, string locationDbName, int distance)
+        public static string MoveTo(Player bot, string locationDbName, int distance, Action<Player, string> playerEnteredTile = null)
         {
             var botLocation = bot.dbLocationName;
 
@@ -558,6 +558,11 @@ namespace TT.Domain.Procedures
 
                 LocationLogProcedures.AddLocationLog(currentTile, botName + " left toward " + nextTileName);
                 LocationLogProcedures.AddLocationLog(nextTile, botName + " entered from " + currentTileName);
+
+                if (playerEnteredTile != null)
+                {
+                    playerEnteredTile(bot, nextTile);
+                }
             }
 
             return nextTile;

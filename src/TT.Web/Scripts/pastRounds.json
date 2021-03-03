@@ -647,6 +647,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 82,
+      "name": "Alpha 82 (Era of Nephthyma's Tomb)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

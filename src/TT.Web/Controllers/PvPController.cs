@@ -549,15 +549,12 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // TODO joke_shop enable blocking banned players
-            /*
             if (locname == LocationsStatics.JOKE_SHOP && JokeShopProcedures.CharacterIsBanned(me))
             {
                 TempData["Error"] = "You cannot enter the Joke Shop.";
                 TempData["SubError"] = "You are currently banned from this location.";
-                // return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.PvP.Play());
             }
-            */
 
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive)

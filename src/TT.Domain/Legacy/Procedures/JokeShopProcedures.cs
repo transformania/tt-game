@@ -43,7 +43,7 @@ namespace TT.Domain.Legacy.Procedures
         public static readonly int[] STRIPPERS = {153, 719, 880};
         public static readonly int[] DRONES = {715, 930, 951, 1039, 1050};
         public static readonly int[] SHEEP = {204, 950, 1022, 1035, 1198};
-        public static readonly int[] MAIDS = {65};  // TODO joke_shop more maid forms
+        public static readonly int[] MAIDS = {65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207};
 
         internal class FormDetail
         {
@@ -107,7 +107,7 @@ namespace TT.Domain.Legacy.Procedures
                 }
             }
 
-            // TODO joke_shop call this later on in world update?
+            // TODO joke_shop call this later on in world update (after AP update, psycho actions)?
             if (INSTINCT_EFFECT.HasValue)
             {
                 var playersToControl = temporaryEffects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
@@ -129,45 +129,32 @@ namespace TT.Domain.Legacy.Procedures
                 }
             }
 
-            // TODOD joke_shop Re-enable regular search chance
-            /*
             var rand = new Random();
 
             // Decide whether this is a regular or a prank search
-            if (rand.Next(3) != 0)  // Attempt a prank 1 time in 3, else normal search
+            if (rand.Next(5) < 3)  // Normal search 60% of the time, else attempt a prank
             {
                 return null;
             }
-            */
 
-            var roll = 101;  // TODO joke_shop temp // rand.Next(100);
+            var roll = rand.Next(100);
 
-            if (roll < 60)  // 60% chance:
+            if (roll < 65)  // 65%
             {
-                return IdentityChange(player);
-                //return MildPrank(player);
+                return MildPrank(player);
             }
-            else if (roll < 80)  // 20% chance:
+            else if (roll < 90)  // 25%
             {
-                return TransformToMindControlledForm(player);
-                // return MischievousPrank(player);
+                 return MischievousPrank(player);
             }
-            else if (roll < 87)  // 7% chance:
+            else if (roll < 95)  // 5%
             {
                 return MeanPrank(player);
             }
-
-            // 13% chance:
-            //return BanCharacter(player);
-
-            // TODO joke_shop debug temp
-            EnsurePlayerIsWarned(player);
-            EnsurePlayerIsWarnedTwice(player);
-            //TryAnimateTransform(player, MAIDS[0]);
-            //TryAnimateTransform(player, new Random().Next(2) == 0 ? CATS_AND_NEKOS[0] : RODENTS[0]);
-            //GiveEffect(player, INSTINCT_EFFECT);
-            return PlaceBountyOnPlayersHead(player);
-            //return "DEBUG DONE";
+            else  // 5%
+            {
+                return BanCharacter(player);
+            }
         }
 
         public static string Meditate(Player player)
@@ -215,22 +202,30 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 100)
+            if (roll < 20)  // 20%
             {
-                // return MildResourcePrank(player);
-                // return MildLocationPrank(player);
-                // return MildQuotasAndTimerPrank(player);
-                // return MildTransformationPrank(player);
-                return MildEffectsPrank(player);
-                // return DiceGame(player);
-
-                // return AnimateTransform(player);
-                //return ImmobileTransform(player, false);
+                return MildResourcePrank(player);
             }
-
-            // TODO joke_shop return value
-            return "Mild prank";
-            //return null;
+            else if (roll < 30)  // 10%
+            {
+                return MildLocationPrank(player);
+            }
+            else if (roll < 50)  // 20%
+            {
+                return MildQuotasAndTimerPrank(player);
+            }
+            else if (roll < 65)  // 15%
+            {
+                return MildTransformationPrank(player);
+            }
+            else if (roll < 80)  // 15%
+            {
+                return MildEffectsPrank(player);
+            }
+            else  // 20%
+            {
+                return DiceGame(player);
+            }
         }
 
         private static string MischievousPrank(Player player)
@@ -245,19 +240,26 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 100)
+            if (roll < 20)  // 20%
             {
-                // return MischievousResourcePrank(player);
-                // return MischievousLocationPrank(player);
-                // return MischievousQuotasAndTimerPrank(player);
-                // return MischievousTransformationPrank(player);
-                // return MischievousTransformationPrank(player);
+                return MischievousResourcePrank(player);
+            }
+            else if (roll < 40)  // 20%
+            {
+                return MischievousLocationPrank(player);
+            }
+            else if (roll < 60)  // 20%
+            {
+                return MischievousQuotasAndTimerPrank(player);
+            }
+            else if (roll < 80)  // 20%
+            {
+                return MischievousTransformationPrank(player);
+            }
+            else  // 20%
+            {
                 return MischievousEffectsPrank(player);
             }
-
-            // TODO joke_shop return value
-            return "Mischievous prank";
-            //return null;
         }
 
         private static string MeanPrank(Player player)
@@ -272,17 +274,30 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 100)
+            if (roll < 20)  // 20%
             {
-                // return MeanResourcePrank(player);
-                // return MeanLocationPrank(player);
-                // return MeanQuotasAndTimerPrank(player);
+                return MeanResourcePrank(player);
+            }
+            else if (roll < 40)  // 20%
+            {
+                return MeanLocationPrank(player);
+            }
+            else if (roll < 60)  // 20%
+            {
+                return MeanQuotasAndTimerPrank(player);
+            }
+            else if (roll < 70)  // 10%
+            {
+                return MeanTransformationPrank(player);
+            }
+            else if (roll < 90)  // 20%
+            {
                 return MeanEffectsPrank(player);
             }
-
-            // TODO joke_shop return value
-            return "Mean prank";
-            //return null;
+            else  // 10%
+            {
+                return PlaceBountyOnPlayersHead(player);
+            }
         }
 
         #endregion
@@ -308,10 +323,7 @@ namespace TT.Domain.Legacy.Procedures
                     return "Bug: Unable to give player first warning";
                 }
 
-                EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT.Value, player);
-
-                // TODO joke_shop Put this message in the effect and return the string from GivePerk, logging is handled by that
-                var logMessage = "Beware!  This cursed joke shop is a dangerous place!  If you stay here too long anything could happen.  Maybe you should keep your nose out of trouble and leave now?";
+                var logMessage = EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT.Value, player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
                 return logMessage;
             }
@@ -336,10 +348,7 @@ namespace TT.Domain.Legacy.Procedures
                     return "Bug: Unable to give player first warning";
                 }
 
-                EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT.Value, player);
-
-                // TODO joke_shop Put this message in the effect and return the string from GivePerk, will still need to add important log message for pop-up
-                var logMessage = "This is your final warning!  This cursed joke shop does not play by the normal rules of Sunnyglade.  If you stay here too long you could be risking your very soul!  Get out now - while you still can!";
+                var logMessage = EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT.Value, player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, true);
                 return logMessage;
             }
@@ -362,16 +371,13 @@ namespace TT.Domain.Legacy.Procedures
 
             if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT.Value))
             {
-                return "Already banned!";  // TODO joke_shop return null after testing
-                //return null;
+                return null;
             }
 
+            var message = EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT.Value, player);
             var kickedOutMessage = EjectCharacter(player);
 
-            // TODO joke_shop Put this message in the effect and return the string from GivePerk
-            EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT.Value, player);
-
-            return "Your actions attract the attention of the shopkeeper, who bans you from the shop!  " + kickedOutMessage;
+            return $"{message}  {kickedOutMessage}";
         }
 
         private static string EjectCharacter(Player player)
@@ -404,15 +410,14 @@ namespace TT.Domain.Legacy.Procedures
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            // user.dbLocationName = street;  // TODO joke_shop disabled while testing
+            user.dbLocationName = street;
             playerRepo.SavePlayer(user);
 
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLog, false);
             LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, leavingMessage);
             LocationLogProcedures.AddLocationLog(street, enteringMessage);
 
-            return null;
-            // return playerLog;  // TODO joke_shop disabled while testing
+            return playerLog;
         }
 
         public static void EjectOfflineCharacters()
@@ -733,10 +738,15 @@ namespace TT.Domain.Legacy.Procedures
             
             if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
             {
-                // TODO joke_shop Also block if too many items, player.Items.Count(i => !i.IsEquipped) > GetMaxInventorySize()
                 return false;
             }
             
+            if (ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped) > PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory)
+            {
+                // Carryiing too much
+                return false;
+            }
+
             if (destination.dbName.Contains("dungeon_"))
             {
                 SkillProcedures.GiveSkillToPlayer(player.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
@@ -862,7 +872,7 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             // TODO joke_shop Redirect to the NPC's talk/trade page
-            return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  Then the room fades away.";
+            return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  The room then fades away.";
         }
 
         private static string TeleportToHostileNPC(Player player, bool attack)
@@ -1488,9 +1498,6 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
-
             return $"You are an animate {form.FriendlyName}.";  // TODO joke_shop flavor text
         }
 
@@ -1528,9 +1535,6 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
-
             return $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
         }
 
@@ -1567,18 +1571,15 @@ namespace TT.Domain.Legacy.Procedures
 
             if (temporary)
             {
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next {duration} turns!", true);  // TODO joke_shop message
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next {duration} turns!", true);  // TODO joke_shop flavor text - ensure this message and effect message are consistent
             }
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>.");
 
             return $"You are an inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
         }
 
         private static string MobileInanimateTransform(Player player)
         {
-            // Turning a player into a rune or consumable is a bit too involved as there are no forms for those items in the DB,
+            // Turning a player into a rune or consumable is a bit too involved as there are no static forms for those items in the DB,
             // however we can make a player inanimate without a player item and pretend they are fully mobile...
 
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !PlayerHasBeenWarned(player))
@@ -1617,7 +1618,7 @@ namespace TT.Domain.Legacy.Procedures
 
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into an animate <b>{form.FriendlyName}</b>.");
 
-            return $"You are a mobile inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
+            return $"You are a mobile inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text
         }
 
         private static string TGTransform(Player player)
@@ -1662,20 +1663,16 @@ namespace TT.Domain.Legacy.Procedures
                             p.BotId == AIStatics.ActivePlayerBotId)
                 .ToList();
 
-            Player victim = null;
-            var numCandidates = candidates.Count();
-
-            if (numCandidates == 0)
+            if (candidates.Count() == 0)
             {
                 return null;
             }
 
             if (clone)
             {
-                var index = rand.Next(numCandidates);
-                var candidate = candidates[index];
+                var victim = candidates[rand.Next(candidates.Count())];
 
-                TryAnimateTransform(player, candidate.FormSourceId);
+                TryAnimateTransform(player, victim.FormSourceId);
 
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have become a clone of {victim.GetFullName()}", false);
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> became a clone of <b>{victim.GetFullName()}</b>.");
@@ -1685,9 +1682,11 @@ namespace TT.Domain.Legacy.Procedures
             else
             {
                 // Find nearboy player with sufficient consent
+                Player victim = null;
+
                 do
                 {
-                    var index = rand.Next(numCandidates);
+                    var index = rand.Next(candidates.Count());
                     var candidate = candidates[index];
 
                     if (candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || PlayerHasBeenWarned(candidate))
@@ -1696,13 +1695,9 @@ namespace TT.Domain.Legacy.Procedures
                     }
                     else
                     {
-                        // Shuffle the dismissed candidate out of the way
-                        candidates[index] = candidates[numCandidates - 1];
-                        candidates[numCandidates - 1] = candidate;
+                        candidates.RemoveAt(index);
                     }
-
-                    numCandidates--;
-                } while (victim == null && numCandidates > 0);
+                } while (victim == null && candidates.Count() > 0);
 
                 if (victim == null)
                 {
@@ -1810,7 +1805,7 @@ namespace TT.Domain.Legacy.Procedures
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
             var mobility = formsRepo.DbStaticForms.Where(f => f.Id == formSourceId).Select(f => f.MobilityType).FirstOrDefault();
 
-            if(mobility != PvPStatics.MobilityFull)
+            if (mobility != PvPStatics.MobilityFull)
             {
                 return null;
             }
@@ -2023,7 +2018,10 @@ namespace TT.Domain.Legacy.Procedures
                 buffs = ItemProcedures.GetPlayerBuffs(player)
             });
 
-            // TODO joke_shop log tf
+            var form = FormStatics.GetForm(formSourceId);
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+
             return true;
         }
 
@@ -2035,12 +2033,12 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
+            var form = FormStatics.GetForm(formSourceId);
 
             // If item is not created player will have no actions and not be visible to other players,
             // so some external mechanism must be in place to restore the player to animate form.
             if (createItem)
             {
-                var form = FormStatics.GetForm(formSourceId);
                 ItemProcedures.PlayerBecomesItem(player, form, null, dropInventory);
                 // If inventory isn't dropped at point of TF then it will be dropped if/when player locks.
             }
@@ -2049,7 +2047,9 @@ namespace TT.Domain.Legacy.Procedures
                 DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = player.Id, IgnoreRunes = false });
             }
             
-            // TODO joke_shop log tf
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+
             return true;
         }
 
@@ -2061,7 +2061,7 @@ namespace TT.Domain.Legacy.Procedures
         {
             var target = 69;
 
-            // /role 4d20
+            // /roll 4d20
             var die1 = PlayerProcedures.RollDie(20);
             var die2 = PlayerProcedures.RollDie(20);
             var die3 = PlayerProcedures.RollDie(20);

@@ -878,7 +878,7 @@ namespace TT.Domain.Procedures
                 #region update joke shop
                 JokeShopProcedures.EjectOfflineCharacters();
 
-//              if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)  // TODO joke_shop Enable random movement interval
+                if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop started.");
                     try

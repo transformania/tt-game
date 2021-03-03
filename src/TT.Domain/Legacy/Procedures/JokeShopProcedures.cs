@@ -33,7 +33,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private const string LIMITED_MOBILITY = "immobile";
 
-        private static readonly List<FormDetail> STABLE_FORMS = CandidateForms();
+        internal static readonly List<FormDetail> STABLE_FORMS = CandidateForms();
 
         public static readonly int[] MISCHIEVOUS_FORMS = {215, 221, 438};
         public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 572, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
@@ -129,10 +129,10 @@ namespace TT.Domain.Legacy.Procedures
                 }
             }
 
-            var rand = new Random();
-
             // TODOD joke_shop Re-enable regular search chance
             /*
+            var rand = new Random();
+
             // Decide whether this is a regular or a prank search
             if (rand.Next(3) != 0)  // Attempt a prank 1 time in 3, else normal search
             {
@@ -163,10 +163,11 @@ namespace TT.Domain.Legacy.Procedures
             // TODO joke_shop debug temp
             EnsurePlayerIsWarned(player);
             EnsurePlayerIsWarnedTwice(player);
-            TryAnimateTransform(player, MAIDS[0]);
+            //TryAnimateTransform(player, MAIDS[0]);
             //TryAnimateTransform(player, new Random().Next(2) == 0 ? CATS_AND_NEKOS[0] : RODENTS[0]);
-            GiveEffect(player, INSTINCT_EFFECT);
-            return "DEBUG DONE";
+            //GiveEffect(player, INSTINCT_EFFECT);
+            return PlaceBountyOnPlayersHead(player);
+            //return "DEBUG DONE";
         }
 
         public static string Meditate(Player player)
@@ -447,7 +448,6 @@ namespace TT.Domain.Legacy.Procedures
         }
 
         #endregion
-
 
         #region Resource pranks
 
@@ -1845,16 +1845,9 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string IdentityChange(Player player)
         {
-            var warning = EnsurePlayerIsWarned(player);
-
-            if (!warning.IsNullOrEmpty())
-            {
-                return warning;
-            }
-
             var rand = new Random();
 
-            int[] forms = {};
+            int[] forms = Array.Empty<int>();
             var firstName = player.OriginalFirstName;
             var lastName = player.OriginalLastName;
             var mindControl = false;
@@ -1995,13 +1988,6 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string TransformToMindControlledForm(Player player)
         {
-            var warning = EnsurePlayerIsWarned(player);
-
-            if (!warning.IsNullOrEmpty())
-            {
-                return warning;
-            }
-
             var rand = new Random();
 
             int[][] mcForms = {CATS_AND_NEKOS, DOGS, MAIDS, SHEEP, STRIPPERS};
@@ -2055,7 +2041,7 @@ namespace TT.Domain.Legacy.Procedures
             if (createItem)
             {
                 var form = FormStatics.GetForm(formSourceId);
-                var extra = ItemProcedures.PlayerBecomesItem(player, form, null, dropInventory);
+                ItemProcedures.PlayerBecomesItem(player, form, null, dropInventory);
                 // If inventory isn't dropped at point of TF then it will be dropped if/when player locks.
             }
             else if (dropInventory)
@@ -2069,7 +2055,7 @@ namespace TT.Domain.Legacy.Procedures
 
         #endregion
 
-        #region Harmless fun and games
+        #region Novel pranks
 
         private static string DiceGame(Player player)
         {
@@ -2107,6 +2093,47 @@ namespace TT.Domain.Legacy.Procedures
             LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
 
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  You score is <b>{score}</b>.";
+        }
+
+        private static string PlaceBountyOnPlayersHead(Player player)
+        {
+            // Only place bounties on PvP players
+            if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
+            {
+                return null;
+            }
+
+            var bountyEffect = BountyProcedures.PlaceBounty(player);
+
+            if (!bountyEffect.HasValue)
+            {
+                return null;
+            }
+
+            var details = BountyProcedures.BountyDetails(player, bountyEffect.Value);
+
+            if (details == null)
+            {
+                return null;
+            }
+
+            StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__BountyCount, 1);
+
+            var rand = new Random();
+            var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
+            var locationMessage = $"<b>Wanted:</b>  A reward is on offer to whoever turns <b>{player.GetFullName()}</b> into a <b>{details.Form?.FriendlyName}</b>!";
+
+            for (var i = 0; i < 5; i++)
+            {
+                var loc = locations[rand.Next(locations.Count())];
+                LocationLogProcedures.AddLocationLog(loc, locationMessage);
+                locations.Remove(loc);
+            }
+
+            var playerMessage = $"A bounty has been placed on your head!  Players will be trying to turn you into a <b>{details.Form?.FriendlyName}</b>!";  // TODO joke_shop flavor text
+            PlayerLogProcedures.AddPlayerLog(player.Id, playerMessage, true);
+
+            return playerMessage;
         }
 
         #endregion

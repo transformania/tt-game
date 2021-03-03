@@ -10,6 +10,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Items.Services;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
@@ -809,6 +810,24 @@ namespace TT.Web.Controllers
 
                 ViewBag.Speech = output;
 
+            }
+            else if (question == "bounties")
+            {
+                var bounties = BountyProcedures.OutstandingBounties();
+                if (bounties == null || bounties.IsEmpty())
+                {
+                    ViewBag.Speech = "\"I've not heard of anyone in town currently being sought by the authorities,\"";
+                }
+                else
+                {
+                    string summary = "";
+
+                    foreach (var bounty in bounties.OrderByDescending(b => b.CurrentReward))
+                    {
+                        summary += $"<li>There is a reward of up to <b>{bounty.CurrentReward} arpeyjis</b> to anybody who turns <b>{bounty.PlayerName}</b> into a <b>{bounty.Form?.FriendlyName}</b> by the end of turn {bounty.ExpiresTurn - 1}.</li>";
+                    }
+                    ViewBag.Speech = $"There are a number of wanted posters all over town.  The ones I remember are:<ul class=\"listdots\">{summary}</ul>";
+                }
             }
 
             return View(MVC.NPC.Views.TalkToBartender);

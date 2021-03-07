@@ -10,6 +10,7 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Legacy.Procedures
 {
@@ -36,14 +37,15 @@ namespace TT.Domain.Legacy.Procedures
         internal static readonly List<FormDetail> STABLE_FORMS = CandidateForms();
 
         public static readonly int[] MISCHIEVOUS_FORMS = {215, 221, 438};
-        public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 572, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
+        public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
         public static readonly int[] DOGS = {34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187};
         public static readonly int[] RODENTS = {70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077};
         public static readonly int[] TREES = {50, 741};
         public static readonly int[] STRIPPERS = {153, 719, 880};
         public static readonly int[] DRONES = {715, 930, 951, 1039, 1050};
         public static readonly int[] SHEEP = {204, 950, 1022, 1035, 1198};
-        public static readonly int[] MAIDS = {65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207};
+        public static readonly int[] MAIDS = {65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 951, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207};
+        public static readonly int[] MANA_FORMS = {834, 1149};
 
         internal class FormDetail
         {
@@ -58,6 +60,8 @@ namespace TT.Domain.Legacy.Procedures
                 Category = category;
             }
         }
+
+        #region Core mechanics and utilities
 
         private static List<FormDetail> CandidateForms()
         {
@@ -115,18 +119,33 @@ namespace TT.Domain.Legacy.Procedures
             }
         }
 
+        private static List<Player> ActivePlayersInJokeShopApartFrom(Player player)
+        {
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
+
+            var candidates = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP)
+                .Where(p => p.OnlineActivityTimestamp >= cutoff &&
+                            p.Id != player.Id &&
+                            p.Mobility == PvPStatics.MobilityFull &&
+                            p.InDuel <= 0 &&
+                            p.InQuest <= 0 &&
+                            p.BotId == AIStatics.ActivePlayerBotId)
+                .ToList();
+
+            return candidates;
+        }
+
+        #endregion
+
         #region Location action hooks
+
+        // Returning null from hooks opts to not override the default action
 
         public static string Search(Player player)
         {
             if (CharacterIsBanned(player))
             {
-                var attemptToEject = EjectCharacter(player);
-
-                if (attemptToEject != null)
-                {
-                    return attemptToEject;
-                }
+                return EjectCharacter(player);
             }
 
             var rand = new Random();
@@ -164,7 +183,127 @@ namespace TT.Domain.Legacy.Procedures
                 return EjectCharacter(player);
             }
 
-            return null;
+            // Ensure player can meditate
+            if (player.ActionPoints < PvPStatics.MeditateCost || player.Mana >= player.MaxMana || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+
+            // Decide whether this is a regular or a prank meditation
+            if (rand.Next(10) < 9)  // Prank 10% of the time
+            {
+                return null;
+            }
+
+            // Issue warnings
+            var message = EnsurePlayerIsWarned(player);
+
+            if (!message.IsNullOrEmpty())
+            {
+                return message;
+            }
+
+            if (rand.Next(10) == 0)
+            {
+                message = EnsurePlayerIsWarnedTwice(player);
+
+                if (!message.IsNullOrEmpty())
+                {
+                    return message;
+                }
+            }
+
+            // Pick a prank
+            var roll = rand.Next(100);
+
+            if (roll < 3)  // 3%
+            {
+                // Change to mana form
+                if (TryAnimateTransform(player, MANA_FORMS[rand.Next(MANA_FORMS.Count())]))
+                {
+                    PlayerProcedures.AddCleanseMeditateCount(player);
+                    message = "Oh dear, it looks like you've been meditating too hard!";
+                }
+            }
+            else if (roll < 28)  // 25%
+            {
+                // Toy with mana
+                message = ChangeMana(player, rand.Next(200) - 100);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 38)  // 10%
+            {
+                // Toy with health
+                message = ChangeHealth(player, rand.Next(400) - 200);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 48)  // 10%
+            {
+                // Mana recharge
+                ChangeMana(player, (int)(player.MaxMana - player.Mana + 1));
+                BlockCleanseMeditates(player);
+                message = "You feel full of magic, but it might take a moment to absorb all that new mana.";
+            }
+            else if (roll < 58)  // 10%
+            {
+                // Mana steal
+                var others = ActivePlayersInJokeShopApartFrom(player);
+                if (others.Count() > 0)
+                {
+                    var other = others[rand.Next(others.Count())];
+                    var proportion = rand.NextDouble() * 0.6 + 0.2;
+                    var amount = Math.Floor(other.Mana * (decimal)proportion);
+                    ChangeMana(player, (int)(amount));
+                    ChangeMana(other, (int)(-amount));
+                    PlayerProcedures.AddCleanseMeditateCount(player);
+                    PlayerLogProcedures.AddPlayerLog(other.Id, $"{player.GetFullName()} steals {amount} mana from you!", true);
+                    message = $"You steal {amount} mana from {other.GetFullName()}!";
+                }
+            }
+            else if (roll < 68)  // 10%
+            {
+                // Block cleans/meditate
+                message = BlockCleanseMeditates(player);
+            }
+            else if (roll < 93)  // 25%
+            {
+                // Other resource/effects prank
+                PlayerProcedures.AddCleanseMeditateCount(player);
+
+                var prankRoll = rand.Next(4);
+                if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
+                {
+                    message = rand.Next(2) == 0 ? MeanEffectsPrank(player) : MeanResourcePrank(player);
+                }
+                else if (prankRoll < 2 && PlayerHasBeenWarned(player))
+                {
+                    message = rand.Next(2) == 0 ? MischievousEffectsPrank(player) : MischievousResourcePrank(player);
+                }
+                else
+                {
+                    message = rand.Next(2) == 0 ? MildEffectsPrank(player) : MildResourcePrank(player);
+                }
+            }
+            else if (roll < 98)  // 5%
+            {
+                // Put in combat
+                message = ResetCombatTimer(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else  // 2%
+            {
+                message = BanCharacter(player);
+            }
+
+            // Charge player AP for the prank
+            if (message != null)
+            {
+                ChangeActionPoints(player, (int)(-PvPStatics.MeditateCost));
+            }
+
+            return message;
         }
 
         public static string Cleanse(Player player)
@@ -180,7 +319,143 @@ namespace TT.Domain.Legacy.Procedures
                 return RestoreName(player);
             }
 
-            return null;
+            // Ensure player can cleanse
+            if (player.ActionPoints < PvPStatics.CleanseCost || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+
+            // Decide whether this is a regular or a prank cleanse
+            if (rand.Next(10) < 9)  // Prank 10% of the time
+            {
+                return null;
+            }
+
+            // Issue warnings
+            var message = EnsurePlayerIsWarned(player);
+
+            if (!message.IsNullOrEmpty())
+            {
+                return message;
+            }
+
+            if (rand.Next(10) == 0)
+            {
+                message = EnsurePlayerIsWarnedTwice(player);
+
+                if (!message.IsNullOrEmpty())
+                {
+                    return message;
+                }
+            }
+
+            // Pick a prank
+            var roll = rand.Next(100);
+
+            if (roll < 5)  // 5%
+            {
+                // Change to cleanse form
+                if (TryAnimateTransform(player, MAIDS[rand.Next(MAIDS.Count())]))
+                {
+                    PlayerProcedures.AddCleanseMeditateCount(player);
+                    message = "You've been cleansing a lot.  Maybe you would like to clean the shop while you're at it?";
+                }
+            }
+            else if (roll < 10)  // 5%
+            {
+                // Change to base form
+                if (player.FormSourceId != player.OriginalFormSourceId && TryAnimateTransform(player, player.OriginalFormSourceId))
+                {
+                    RestoreBaseForm(player);
+                    BlockCleanseMeditates(player);
+                    message = "Oops.. You might have just cleansed a little too much!";
+                }
+            }
+            else if (roll < 15)  // 5%
+            {
+                message = SetBaseFormToRegular(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 20)  // 5%
+            {
+                message = RestoreName(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 36)  // 16%
+            {
+                // Toy with health
+                message = ChangeHealth(player, rand.Next(400) - 200);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 46)  // 10%
+            {
+                // Health recharge
+                ChangeHealth(player, (int)(player.MaxHealth - player.Health + 1));
+                PlayerProcedures.AddCleanseMeditateCount(player);
+                BlockAttacks(player);
+                GiveEffect(player, ROOT_EFFECT, 1);
+                message = "You feel completely rejuvenated, but the cleansing has drained you and you need a moment to recover.";
+            }
+            else if (roll < 56)  // 10%
+            {
+                // Health steal
+                var others = ActivePlayersInJokeShopApartFrom(player);
+                if (others.Count() > 0)
+                {
+                    var other = others[rand.Next(others.Count())];
+                    var proportion = rand.NextDouble() * 0.3 + 0.1;
+                    var amount = Math.Floor(other.Health * (decimal)proportion);
+                    ChangeHealth(player, (int)(amount));
+                    ChangeHealth(other, (int)(-amount));
+                    PlayerProcedures.AddCleanseMeditateCount(player);
+                    PlayerLogProcedures.AddPlayerLog(other.Id, $"{player.GetFullName()} steals {amount} of your willpower!", true);
+                    message = $"You steal {amount} willpower from {other.GetFullName()}!";
+                }
+            }
+            else if (roll < 68)  // 12%
+            {
+                // Block cleans/meditate
+                message = BlockCleanseMeditates(player);
+            }
+            else if (roll < 93)  // 25%
+            {
+                // Other resource/effects prank
+                PlayerProcedures.AddCleanseMeditateCount(player);
+
+                var prankRoll = rand.Next(4);
+                if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
+                {
+                    message = rand.Next(2) == 0 ? MeanEffectsPrank(player) : MeanResourcePrank(player);
+                }
+                else if (prankRoll < 2 && PlayerHasBeenWarned(player))
+                {
+                    message = rand.Next(2) == 0 ? MischievousEffectsPrank(player) : MischievousResourcePrank(player);
+                }
+                else
+                {
+                    message = rand.Next(2) == 0 ? MildEffectsPrank(player) : MildResourcePrank(player);
+                }
+            }
+            else if (roll < 98)  // 5%
+            {
+                // Put in combat
+                message = ResetCombatTimer(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else  // 2%
+            {
+                message = BanCharacter(player);
+            }
+
+            // Charge player AP for the prank
+            if (message != null)
+            {
+                ChangeActionPoints(player, (int)(-PvPStatics.CleanseCost));
+            }
+
+            return message;
         }
 
         public static string SelfRestore(Player player)
@@ -188,6 +463,372 @@ namespace TT.Domain.Legacy.Procedures
             if (CharacterIsBanned(player))
             {
                 return EjectCharacter(player);
+            }
+
+            // Ensure player can cleanse
+            if (player.ActionPoints < PvPStatics.CleanseCost || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate || player.FormSourceId == player.OriginalFormSourceId)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+
+            // Decide whether this is a regular or a prank self-restore
+            if (rand.Next(25) < 24)  // Prank 4% of the time
+            {
+                return null;
+            }
+
+            // Issue warnings
+            var message = EnsurePlayerIsWarned(player);
+
+            if (!message.IsNullOrEmpty())
+            {
+                return message;
+            }
+
+            if (rand.Next(10) == 0)
+            {
+                message = EnsurePlayerIsWarnedTwice(player);
+
+                if (!message.IsNullOrEmpty())
+                {
+                    return message;
+                }
+            }
+
+            // Pick a prank
+            var roll = rand.Next(100);
+
+            if (roll < 15)  // 15%
+            {
+                // Instantly change to base form
+                if (TryAnimateTransform(player, player.OriginalFormSourceId))
+                {
+                    BlockCleanseMeditates(player);
+                    BlockAttacks(player);
+                    GiveEffect(player, ROOT_EFFECT, 1);
+                    message = "You find yourself instantly in your base form!  The shock leaves you momentarily stunned!";
+                }
+            }
+            else if (roll < 25)  // 10%
+            {
+                // Regular base form
+                message = SetBaseFormToRegular(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 35)  // 10%
+            {
+                message = RestoreName(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else if (roll < 50)  // 15%
+            {
+                // Block cleans/meditate
+                message = BlockCleanseMeditates(player);
+            }
+            else if (roll < 80)  // 30%
+            {
+                // Other resource/effects prank
+                PlayerProcedures.AddCleanseMeditateCount(player);
+
+                var prankRoll = rand.Next(4);
+                if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
+                {
+                    message = rand.Next(2) == 0 ? MeanEffectsPrank(player) : MeanResourcePrank(player);
+                }
+                else if (prankRoll < 2 && PlayerHasBeenWarned(player))
+                {
+                    message = rand.Next(2) == 0 ? MischievousEffectsPrank(player) : MischievousResourcePrank(player);
+                }
+                else
+                {
+                    message = rand.Next(2) == 0 ? MildEffectsPrank(player) : MildResourcePrank(player);
+                }
+            }
+            else if (roll < 95)  // 15%
+            {
+                // Put in combat
+                message = ResetCombatTimer(player);
+                PlayerProcedures.AddCleanseMeditateCount(player);
+            }
+            else  // 5%
+            {
+                message = BanCharacter(player);
+            }
+
+            // Charge player AP for the prank
+            if (message != null)
+            {
+                ChangeActionPoints(player, (int)(-PvPStatics.CleanseCost));
+            }
+
+            return message;
+        }
+
+        public static string Drop(Player player, int itemId)
+        {
+            // Don't return without dropping (or doing something similar).
+
+            // Ensure player can cleanse
+            if (player.ActionPoints < PvPStatics.CleanseCost || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate || player.FormSourceId == player.OriginalFormSourceId)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+
+            if (rand.Next(2) !=  0)  // Prank 1 drop in 2
+            {
+                return null;
+            }
+
+            // Pick a prank
+            var roll = rand.Next(4);
+            var message = "";
+
+            if (roll < 1 && PlayerHasBeenWarnedTwice(player))
+            {
+                // Mean
+                var item = ItemProcedures.GetItemViewModel(itemId);
+                var rollAgain = rand.Next(10);
+
+                if (rollAgain < 1 && !item.dbItem.FormerPlayerId.HasValue && item.dbItem.Level < player.Level)
+                {
+                    ItemProcedures.DeleteItem(itemId);
+                    message = $"You drop your {item.Item.FriendlyName}, but it vanishes into thin air before it can hit the ground!";
+                }
+
+                if (message.IsNullOrEmpty() && rollAgain < 2 && (!item.dbItem.FormerPlayerId.HasValue || (item.dbItem.IsPermanent && !item.dbItem.SoulboundToPlayerId.HasValue) ))
+                {
+                    var merchant = PlayerProcedures.GetPlayerFromBotId(item.Item.ItemType == PvPStatics.ItemType_Pet ? AIStatics.WuffieBotId : AIStatics.LindellaBotId);
+                    if (merchant != null)
+                    {
+                        ItemProcedures.GiveItemToPlayer(itemId, merchant.Id);
+                        message = $"You drop your {item.Item.FriendlyName}, but somebody quickly scoops it up and sells it to {merchant.GetFullName()}!";
+                    }
+                }
+
+                if (message.IsNullOrEmpty())
+                {
+                    var location = LocationsStatics.GetRandomLocationNotInDungeon();
+                    message = ItemProcedures.DropItem(itemId, location);
+                    message = $"{message}  It falls through this realm and lands somewhere in town!";
+                }
+
+            }
+            else if (roll < 2 && PlayerHasBeenWarned(player))
+            {
+                // Mischievous
+                var location = LocationsStatics.GetRandomLocationNotInDungeon();
+                var loc = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == location);
+                var nearby = LocationsStatics.LocationList.GetLocation.Where(l => l.X >= loc.X -2 && l.X <= loc.X + 2 && l.Y >= loc.Y - 2 && l.Y <= loc.Y + 2 && l.Region != "dungeon").ToArray();
+                var anchor = nearby[rand.Next(nearby.Count())];
+
+                message = ItemProcedures.DropItem(itemId, location);
+                message = $"{message}  It falls through this realm and lands somewhere in the vicinity of {anchor.Name}!";
+            }
+            else if (roll < 4)
+            {
+                // Mild
+                var location = LocationsStatics.GetRandomLocationNotInDungeon();
+                var loc = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == location);
+                message = ItemProcedures.DropItem(itemId, location);
+                message = $"{message}  It falls through this realm and into {loc.Name}!";
+            }
+
+            if (message.IsNullOrEmpty())  // 50% chance of no prank
+            {
+                message = ItemProcedures.DropItem(itemId);
+            }
+
+            // Issue warnings/bans (after any actions that check player has been warned)
+            if (CharacterIsBanned(player))
+            {
+                message = $"{message}  {EjectCharacter(player)}";
+            }
+            else
+            {
+                var warning = EnsurePlayerIsWarned(player);
+
+                if (warning.IsNullOrEmpty() && rand.Next(10) == 0)
+                {
+                    warning = EnsurePlayerIsWarnedTwice(player);
+                }
+
+                if (!warning.IsNullOrEmpty())
+                {
+                    message = $"{warning}<br>{message}";
+                }
+            }
+
+            return message;
+        }
+
+        public static string Attack(Player player, Player victim, SkillViewModel skill)
+        {
+            if (CharacterIsBanned(player))
+            {
+                return EjectCharacter(player);
+            }
+
+            var rand = new Random();
+
+            if (rand.Next(5) !=  0)  // Prank 1 attack in 5
+            {
+                return null;
+            }
+
+            // Issue warnings
+            var message = EnsurePlayerIsWarned(player);
+
+            if (!message.IsNullOrEmpty())
+            {
+                return message;
+            }
+
+            if (rand.Next(10) == 0)
+            {
+                message = EnsurePlayerIsWarnedTwice(player);
+
+                if (!message.IsNullOrEmpty())
+                {
+                    return message;
+                }
+            }
+
+            // Pick a prank
+            var roll = rand.Next(100);
+
+            if (roll < 7)  // 7%
+            {
+                // Delay
+                PlayerProcedures.AddAttackCount(player);
+                return "You try to cast your spell, but it just fizzles away!";
+            }
+            else if (roll < 14)  // 7%
+            {
+                // Double
+                var attacks = player.TimesAttackingThisUpdate;
+                var attack1 = AttackProcedures.AttackSequence(player, victim, skill);
+                var attack2 = AttackProcedures.AttackSequence(player, victim, skill);
+                PlayerProcedures.SetAttackCount(player, attacks + 1);
+                return $"<b>You accidentally fire off two spells instead of one!</b><br>{attack1}<br>{attack2}";
+            }
+            else if (roll < 21)  // 7%
+            {
+                // Deflect back at self
+                var attack = AttackProcedures.AttackSequence(player, player, skill);
+                return $"<b>Your victim deftly deflects your spell back at you!</b><br>{attack}";
+            }
+            else if (roll < 28)  // 7%
+            {
+                // Coerce victim to self-cast
+                var attack = AttackProcedures.AttackSequence(victim, victim, skill);
+                PlayerLogProcedures.AddPlayerLog(victim.Id, $"<b>Using a trick of the mind, {player.GetFullName()} convinces you to attack yourself!</b><br>{attack}", true);
+                return $"Using a trick of the mind you convince your victim to attack themselves!";
+            }
+            else if (roll < 35)  // 7%
+            {
+                // Weaken
+                var skillBeingUsed = SkillProcedures.GetSkillViewModel(PvPStatics.Spell_WeakenId, player.Id);
+
+                if (skillBeingUsed != null && skillBeingUsed.StaticSkill.Id != skill.StaticSkill.Id)
+                {
+                    var attack = AttackProcedures.AttackSequence(player, victim, skillBeingUsed);
+                    return $"<b>The aura of the Joke Shop messes with your head and you only manage to cast a weakening spell!</b><br>{attack}";
+                }
+            }
+            else if (roll < 42)  // 7%
+            {
+                // Wrong spell
+                var skillsAvailable = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id).Where(s => s.MobilityType == skill.MobilityType && s.StaticSkill.Id != skill.StaticSkill.Id).ToArray();
+                
+                if (skillsAvailable != null && skillsAvailable.Count() > 0)
+                {
+                    var skillToUse = skillsAvailable[rand.Next(skillsAvailable.Count())];
+                    var attack = AttackProcedures.AttackSequence(player, victim, skillToUse);
+                    return $"<b>You find yourself casting the wrong spell at your opponent!</b><br>{attack}";
+                }
+            }
+            else if (roll < 49)  // 7%
+            {
+                // Block attacks
+                BlockAttacks(player);
+                return $"A magical shield prevents you casting any more attacks this turn!";
+            }
+            else if (roll < 56)  // 7%
+            {
+                // Free attack
+                var attacks = player.TimesAttackingThisUpdate;
+                var attack = AttackProcedures.AttackSequence(player, victim, skill);
+                PlayerProcedures.SetAttackCount(player, attacks);
+                return $"<b>You attack your enemy but don't feel drained at all!</b><br>{attack}";
+            }
+            else if (roll < 63)  // 7%
+            {
+                // Double cost attack
+                var attacks = player.TimesAttackingThisUpdate;
+                var attack = AttackProcedures.AttackSequence(player, victim, skill);
+                PlayerProcedures.SetAttackCount(player, attacks + 2);
+                return $"{attack}<br /><b>That attack cost a lot of energy, and you feel less able to cast another.</b>";
+            }
+            else if (roll < 70)  // 7%
+            {
+                // Make victim into attacker form
+                IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
+                var selfSkill = skillsRepo.DbStaticSkills.FirstOrDefault(spell => spell.FormSourceId == player.FormSourceId);
+
+                if (selfSkill != null)
+                {
+                    var skillBeingUsed = SkillProcedures.GetSkillViewModel(selfSkill.Id, player.Id);
+
+                    if (skillBeingUsed != null && skillBeingUsed.StaticSkill.Id != skill.StaticSkill.Id)
+                    {
+                        var attack = AttackProcedures.AttackSequence(player, victim, skillBeingUsed);
+                        return $"<b>Your vanity gets in the way of your spellcasting as you try to turn {victim.GetFullName()} into a clone of yourself!</b><br>{attack}";
+                    }
+                }
+            }
+            else if (roll < 84)  // 14%
+            {
+                // Resource/times/quotas prank
+                var prankRoll = rand.Next(4);
+                if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
+                {
+                    return rand.Next(2) == 0 ? MeanQuotasAndTimerPrank(player) : MeanResourcePrank(player);
+                }
+                else if (prankRoll < 2 && PlayerHasBeenWarned(player))
+                {
+                    return rand.Next(2) == 0 ? MischievousQuotasAndTimerPrank(player) : MischievousResourcePrank(player);
+                }
+                else
+                {
+                    return rand.Next(2) == 0 ? MildQuotasAndTimerPrank(player) : MildResourcePrank(player);
+                }
+            }
+            else if (roll < 98)  // 14%
+            {
+                // Effects prank
+                PlayerProcedures.AddCleanseMeditateCount(player);
+
+                var prankRoll = rand.Next(4);
+                if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
+                {
+                    return MeanEffectsPrank(player);
+                }
+                else if (prankRoll < 2 && PlayerHasBeenWarned(player))
+                {
+                    return MischievousEffectsPrank(player);
+                }
+                else
+                {
+                    return MildEffectsPrank(player);
+                }
+            }
+            else  // 2%
+            {
+                message = BanCharacter(player);
             }
 
             return null;
@@ -535,7 +1176,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string ChangeHealth(Player player, int amount)
         {
-            if(amount >= 0)
+            if (amount >= 0)
             {
                 amount++;
             }
@@ -559,7 +1200,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string ChangeMana(Player player, int amount)
         {
-            if(amount >= 0)
+            if (amount >= 0)
             {
                 amount++;
             }
@@ -583,7 +1224,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string ChangeMoney(Player player, int amount)
         {
-            if(amount >= 0)
+            if (amount >= 0)
             {
                 amount++;
             }
@@ -606,7 +1247,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static string ChangeActionPoints(Player player, int amount)
         {
-            if(amount >= 0)
+            if (amount >= 0)
             {
                 amount++;
             }
@@ -634,7 +1275,7 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
-            if(amount >= 0)
+            if (amount >= 0)
             {
                 amount++;
             }
@@ -988,7 +1629,7 @@ namespace TT.Domain.Legacy.Procedures
             // Not all getaways can be clean..
             string bar = "tavern_counter";
 
-            if(!Teleport(player, bar, true))
+            if (!Teleport(player, bar, true))
             {
                 return null;
             }
@@ -1652,16 +2293,7 @@ namespace TT.Domain.Legacy.Procedures
         private static string BodySwap(Player player, bool clone)
         {
             var rand = new Random();
-            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
-            
-            var candidates = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP)
-                .Where(p => p.OnlineActivityTimestamp >= cutoff &&
-                            p.Id != player.Id &&
-                            p.Mobility == PvPStatics.MobilityFull &&
-                            p.InDuel <= 0 &&
-                            p.InQuest <= 0 &&
-                            p.BotId == AIStatics.ActivePlayerBotId)
-                .ToList();
+            List<Player> candidates = ActivePlayersInJokeShopApartFrom(player);
 
             if (candidates.Count() == 0)
             {
@@ -1780,6 +2412,11 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
+            return ChangeBaseForm(player, availableForms);
+        }
+
+        private static string ChangeBaseForm(Player player, int[] availableForms)
+        {
             var formSourceId = availableForms[new Random().Next(availableForms.Count())];
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1790,6 +2427,22 @@ namespace TT.Domain.Legacy.Procedures
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form was changed.", false);
 
             return "Base form changed";  // TODO joke_shop flavor text
+        }
+
+        private static string SetBaseFormToRegular(Player player)
+        {
+            string message;
+            var formRepo = new EFDbStaticFormRepository();
+            var baseForms = formRepo.DbStaticForms.Where(f => (f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl") &&
+                                                               f.Id != player.OriginalFormSourceId)
+                                                  .Select(f => f.Id).ToArray();
+
+            if (baseForms.Count() > 0)
+            {
+                ChangeBaseForm(player, baseForms);
+            }
+            message = "You spot a fortune cookie and open it to see the message inside:  \"True purity can only come from the deepest of cleanses.\"  Let's hope the shopkeeper didn't see you!";
+            return message;
         }
 
         private static string SetBaseFormToCurrent(Player player)

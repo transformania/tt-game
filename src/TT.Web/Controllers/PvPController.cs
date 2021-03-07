@@ -549,11 +549,21 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (locname == LocationsStatics.JOKE_SHOP && JokeShopProcedures.CharacterIsBanned(me))
+            if (locname == LocationsStatics.JOKE_SHOP)
             {
-                TempData["Error"] = "You cannot enter the Joke Shop.";
-                TempData["SubError"] = "You are currently banned from this location.";
-                return RedirectToAction(MVC.PvP.Play());
+                if(JokeShopProcedures.CharacterIsBanned(me))
+                {
+                    TempData["Error"] = "You cannot enter the Joke Shop.";
+                    TempData["SubError"] = "You are currently banned from this location.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                if((me.Id + PvPStatics.LastGameTurn) % 12 == 0)
+                {
+                    TempData["Error"] = "You cannot enter the Joke Shop.";
+                    TempData["SubError"] = "The shop is busy right now - try again next turn.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
             }
 
             // assert that the player is not mind controlled and cannot move on their own
@@ -1073,7 +1083,18 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = AttackProcedures.AttackSequence(me, targeted, skillBeingUsed);
+                var result = "";
+                if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+                {
+                    result = JokeShopProcedures.Attack(me, targeted, skillBeingUsed);
+                }
+
+                if (result.IsNullOrEmpty())
+                {
+                    result = AttackProcedures.AttackSequence(me, targeted, skillBeingUsed);
+                }
+
+                TempData["Result"] = result;
             }
             catch (Exception e)
             {
@@ -1727,19 +1748,27 @@ namespace TT.Web.Controllers
             }
 
             var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            var result = "";
 
-            if (here.Region != "dungeon")
-            {
-                // in overworld, drop at player's feet
-                TempData["Result"] = ItemProcedures.DropItem(itemId);
-            }
-            else
+            if (here.Region == "dungeon")
             {
                 // in dungeon, have it drop in a random place in the overworld
                 var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
                 var resultmsg = ItemProcedures.DropItem(itemId, overworldLocation);
-                TempData["Result"] = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
+                result = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
             }
+            else if (here.dbName == LocationsStatics.JOKE_SHOP)
+            {
+                result = JokeShopProcedures.Drop(me, itemId);
+            }
+
+            if (result.IsNullOrEmpty())
+            {
+                // in overworld, drop at player's feet
+                result = ItemProcedures.DropItem(itemId);
+            }
+
+            TempData["Result"] = result;
 
             string playerLogMessage;
             string locationLogMessage;

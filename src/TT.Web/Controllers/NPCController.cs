@@ -88,7 +88,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -193,7 +193,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
 
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -255,7 +255,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
@@ -320,7 +320,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -423,7 +423,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
@@ -646,11 +646,11 @@ namespace TT.Web.Controllers
             else if (question == "psychos")
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
-                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
-                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
-                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
-                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
+                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
+                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
+                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
+                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
+                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
 
                 if (psychoCount + fierceCount + wrathfulCount + loathfulCount + soullessCount > 0)
                 {
@@ -883,7 +883,7 @@ namespace TT.Web.Controllers
         {
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            var fae = PlayerProcedures.GetPlayerFromBotId(-6);
+            var fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
 
             try
             {

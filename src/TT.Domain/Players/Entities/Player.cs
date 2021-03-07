@@ -765,7 +765,7 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                if (attacker.HasRoomForNewItem(newItem))
+                if (attacker.Id != this.Id && attacker.HasRoomForNewItem(newItem))
                 {
                     attacker.GiveItem(newItem);
                     newItem.ChangeOwner(attacker);

@@ -443,7 +443,6 @@ namespace TT.Domain.Statics
                 Region="streets",
                 X = -1,
                 Y = 6,
-                Name_North=JOKE_SHOP,
                 Name_South="street_14th_north",
                 Name_East="tavern_counter",
             },
@@ -1884,15 +1883,6 @@ namespace TT.Domain.Statics
                 Name_West="fairygrove_entrance",
            },
 
-           new Location {
-                dbName = JOKE_SHOP,
-                Name = "Cursed Joke Shop",
-                Region="limbo",
-                X = -1,
-                Y = 7,
-                Name_South="street_15th_south"
-            },
-
         };
 
         }
@@ -1905,9 +1895,13 @@ namespace TT.Domain.Statics
             West
         }
 
-        public static void MoveJokeShop()
+        public static void MoveJokeShop(List<Location> map = null)
         {
-            var jokeShop = LocationList.GetLocation.FirstOrDefault(l => l.dbName == JOKE_SHOP);
+            if (map == null)
+            {
+                map = LocationList.GetLocation;
+            }
+            var jokeShop = map.FirstOrDefault(l => l.dbName == JOKE_SHOP);
 
             if (jokeShop != null)
             {
@@ -1920,7 +1914,7 @@ namespace TT.Domain.Statics
                 do
                 {
                     var randomStreetTile = GetRandomLocation_InRegion("streets");
-                    var candidateTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == randomStreetTile);
+                    var candidateTile = map.FirstOrDefault(l => l.dbName == randomStreetTile);
 
                     CompassPoint[] compassSearchOrder = {CompassPoint.North, CompassPoint.South, CompassPoint.East, CompassPoint.West};
 
@@ -1943,7 +1937,7 @@ namespace TT.Domain.Statics
                             case CompassPoint.North:
                                 if (jokeShop.Name_North == null &&
                                     candidateTile.Name_South == null &&
-                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y - 1) == null)
+                                    map.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y - 1) == null)
                                 {
                                     jokeShop.Name_North = candidateTile.dbName;
                                     candidateTile.Name_South = jokeShop.dbName;
@@ -1957,7 +1951,7 @@ namespace TT.Domain.Statics
                             case CompassPoint.South:
                                 if (jokeShop.Name_South == null &&
                                     candidateTile.Name_North == null &&
-                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y + 1) == null)
+                                    map.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y + 1) == null)
                                 {
                                     jokeShop.Name_South = candidateTile.dbName;
                                     candidateTile.Name_North = jokeShop.dbName;
@@ -1971,7 +1965,7 @@ namespace TT.Domain.Statics
                             case CompassPoint.East:
                                 if (jokeShop.Name_East == null &&
                                     candidateTile.Name_West == null &&
-                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X - 1 && l.Y == candidateTile.Y) == null)
+                                    map.FirstOrDefault(l => l.X == candidateTile.X - 1 && l.Y == candidateTile.Y) == null)
                                 {
                                     jokeShop.Name_East = candidateTile.dbName;
                                     candidateTile.Name_West = jokeShop.dbName;
@@ -1985,7 +1979,7 @@ namespace TT.Domain.Statics
                             case CompassPoint.West:
                                 if (jokeShop.Name_West == null &&
                                     candidateTile.Name_East == null &&
-                                    LocationList.GetLocation.FirstOrDefault(l => l.X == candidateTile.X + 1 && l.Y == candidateTile.Y) == null)
+                                    map.FirstOrDefault(l => l.X == candidateTile.X + 1 && l.Y == candidateTile.Y) == null)
                                 {
                                     jokeShop.Name_West = candidateTile.dbName;
                                     candidateTile.Name_East = jokeShop.dbName;
@@ -2002,50 +1996,60 @@ namespace TT.Domain.Statics
             }
         }
 
-        private static void UnlinkLocation(Location locDbName)
+        public static void UnlinkLocation(Location location, List<Location> map = null)
         {
-            var northExit = locDbName.Name_North;
+            if(location == null)
+            {
+                return;
+            }
+
+            if (map == null)
+            {
+                map = LocationList.GetLocation;
+            }
+
+            var northExit = location.Name_North;
             if (northExit != null)
             {
-                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == northExit);
+                var adjoiningTile = map.FirstOrDefault(l => l.dbName == northExit);
                 if (adjoiningTile != null)
                 {
                     adjoiningTile.Name_South = null;
                 }
-                locDbName.Name_North = null;
+                location.Name_North = null;
             }
 
-            var southExit = locDbName.Name_South;
+            var southExit = location.Name_South;
             if (southExit != null)
             {
-                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == southExit);
+                var adjoiningTile = map.FirstOrDefault(l => l.dbName == southExit);
                 if (adjoiningTile != null)
                 {
                     adjoiningTile.Name_North = null;
                 }
-                locDbName.Name_South = null;
+                location.Name_South = null;
             }
 
-            var eastExit = locDbName.Name_East;
+            var eastExit = location.Name_East;
             if (eastExit != null)
             {
-                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == eastExit);
+                var adjoiningTile = map.FirstOrDefault(l => l.dbName == eastExit);
                 if (adjoiningTile != null)
                 {
                     adjoiningTile.Name_West = null;
                 }
-                locDbName.Name_East = null;
+                location.Name_East = null;
             }
 
-            var westExit = locDbName.Name_West;
+            var westExit = location.Name_West;
             if (westExit != null)
             {
-                var adjoiningTile = LocationList.GetLocation.FirstOrDefault(l => l.dbName == westExit);
+                var adjoiningTile = map.FirstOrDefault(l => l.dbName == westExit);
                 if (adjoiningTile != null)
                 {
                     adjoiningTile.Name_East = null;
                 }
-                locDbName.Name_West = null;
+                location.Name_West = null;
             }
         }
 

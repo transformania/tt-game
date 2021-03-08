@@ -135,6 +135,80 @@ namespace TT.Domain.Legacy.Procedures
             return candidates;
         }
 
+        public static void SetJokeShopActive(bool active)
+        {
+            // Work on a copy of the map to avoid concurrency issues
+            var newMap = LocationsStatics.LocationList.GetLocation.Select(l => l.Clone()).ToList();
+            var jokeShopTile = newMap.FirstOrDefault(l => l.dbName == LocationsStatics.JOKE_SHOP);
+            var initiallyActive = (jokeShopTile != null);
+
+            if (initiallyActive == active)
+            {
+                return;
+            }
+
+            if (active == true)
+            {
+                // Activate joke shop
+
+                // Add tile to map
+                jokeShopTile = new Location {
+                    dbName = LocationsStatics.JOKE_SHOP,
+                    Name = "Cursed Joke Shop",
+                    Region="limbo"
+                };
+                newMap.Add(jokeShopTile);
+
+                // Give it a location and connect it to the streets
+                LocationsStatics.MoveJokeShop(newMap);
+
+                // Commit new map (reference assignment is atomic)
+                LocationsStatics.LocationList.GetLocation = newMap;
+            }
+            else
+            {
+                // Deactivate joke shop
+
+                // Find somewhere to relocate things to
+                var streetTile = jokeShopTile.Name_North ?? jokeShopTile.Name_East ??
+                                 jokeShopTile.Name_South ?? jokeShopTile.Name_West ??
+                                 LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
+
+                // Disable wayfinding into joke shop
+                IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
+                
+                foreach (var directive in directiveRepo.AIDirectives.Where(d => d.TargetLocation == LocationsStatics.JOKE_SHOP).ToList())
+                {
+                    var botDirective = directiveRepo.AIDirectives.FirstOrDefault(d => d.Id == directive.Id);
+                    botDirective.TargetLocation = streetTile;
+                    directiveRepo.SaveAIDirective(botDirective);
+                }
+
+                // Remove from map (reference assignment is atomic)
+                LocationsStatics.UnlinkLocation(jokeShopTile, newMap);
+                LocationsStatics.LocationList.GetLocation = newMap.Where(l => l.dbName != LocationsStatics.JOKE_SHOP).ToList();
+
+                // Everybody out
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+    
+                foreach (var player in PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP).ToList())
+                {
+                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+                    user.dbLocationName = streetTile;
+                    playerRepo.SavePlayer(user);
+                }
+
+                IItemRepository itemRepo = new EFItemRepository();
+    
+                foreach (var item in itemRepo.Items.Where(i => i.dbLocationName ==LocationsStatics.JOKE_SHOP).ToList())
+                {
+                    var streetItem = itemRepo.Items.FirstOrDefault(i => i.Id == item.Id);
+                    streetItem.dbLocationName = streetTile;
+                    itemRepo.SaveItem(streetItem);
+                }
+            }
+        }
+
         #endregion
 
         #region Location action hooks

@@ -37,5 +37,10 @@ namespace TT.Domain.ViewModels
                 return "ERROR:  The description for this location was not able to be loaded.";
             }
         }
+
+        public Location Clone()
+        {
+            return (Location)MemberwiseClone();
+        }
     }
 }

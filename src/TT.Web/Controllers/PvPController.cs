@@ -317,7 +317,15 @@ namespace TT.Web.Controllers
             output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+
+            if (output.Location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                JokeShopProcedures.SetJokeShopActive(world.JokeShop);
+                location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            }
+
+            output.Location = location;
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
             output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);

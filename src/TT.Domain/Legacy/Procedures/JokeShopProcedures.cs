@@ -5,6 +5,7 @@ using System.Linq.Dynamic;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Services;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
@@ -989,25 +990,37 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 20)  // 20%
+            if (roll < 15)  // 15%
             {
                 return MeanResourcePrank(player);
             }
-            else if (roll < 40)  // 20%
+            else if (roll < 35)  // 20%
             {
                 return MeanLocationPrank(player);
             }
-            else if (roll < 60)  // 20%
+            else if (roll < 50)  // 15%
             {
                 return MeanQuotasAndTimerPrank(player);
             }
-            else if (roll < 70)  // 10%
+            else if (roll < 60)  // 10%
             {
                 return MeanTransformationPrank(player);
             }
-            else if (roll < 90)  // 20%
+            else if (roll < 75)  // 15%
             {
                 return MeanEffectsPrank(player);
+            }
+            else if (roll < 80)  // 5%
+            {
+                return SummonPsychopath(player);
+            }
+            else if (roll < 85)  // 5%
+            {
+                return SummonDoppelganger(player);
+            }
+            else if (roll < 90)  // 5%
+            {
+                return OpenPsychoNip(player);
             }
             else  // 10%
             {
@@ -2861,6 +2874,238 @@ namespace TT.Domain.Legacy.Procedures
             PlayerLogProcedures.AddPlayerLog(player.Id, playerMessage, true);
 
             return playerMessage;
+        }
+
+        private static string SummonPsychopath(Player player)
+        {
+            var rand = new Random();
+
+            var baseStrength = (int)Math.Min (Math.Max(0, player.Level / 3), 4);
+            var strength = baseStrength + rand.Next(3);
+            var prefix = "";
+            int level;
+            int perk;
+            int? extraPerk = null;
+            var gender = rand.Next(2);
+            int form;
+
+            if (strength <= 0)
+            {
+                level = 1;
+                perk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho1MId : AIProcedures.Psycho1FId;
+            }
+            else if (strength == 1)
+            {
+                level = 3;
+                prefix = "Fierce";
+                perk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho3MId : AIProcedures.Psycho3FId;
+            }
+            else if (strength == 2)
+            {
+                level = 5;
+                prefix = "Wrathful";
+                perk = AIProcedures.PsychopathicForLevelFiveEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho5MId : AIProcedures.Psycho5FId;
+            }
+            else if (strength == 3)
+            {
+                level = 6;
+                prefix = "Loathful";
+                perk = AIProcedures.PsychopathicForLevelSevenEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho7MId : AIProcedures.Psycho7FId;
+            }
+            else if (strength == 4)
+            {
+                level = 7;
+                prefix = "Soulless";
+                perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
+            }
+            else if (strength == 5)
+            {
+                level = 8;
+                prefix = "Ruthless";
+                perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
+                extraPerk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
+            }
+            else
+            {
+                level = 9;
+                prefix = "Eternal";
+                perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
+                extraPerk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
+                form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
+            }
+
+            var firstName = "Psychopath";
+            var lastName = NameService.GetRandomLastName();
+
+            if (!prefix.IsEmpty())
+            {
+                firstName = $"{prefix} {firstName}";
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var cmd = new CreatePlayer
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Location = LocationsStatics.JOKE_SHOP,
+                FormSourceId = form,
+                Level = level,
+                Health = 100000,
+                MaxHealth = 100000,
+                Mana = 100000,
+                MaxMana = 100000,
+                BotId = AIStatics.PsychopathBotId,
+                UnusedLevelUpPerks = 0,
+                XP = 0,
+                Money = (strength + 1) * 50,
+                Gender = gender == 0 ? PvPStatics.GenderMale : PvPStatics.GenderFemale,
+            };
+
+            var botId = DomainRegistry.Repository.Execute(cmd);
+
+            // Give spells
+            var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
+            SkillProcedures.GiveSkillToPlayer(botId, eligibleSkills[rand.Next(eligibleSkills.Count())].Id);
+
+            if (strength >= 5)
+            {
+                SkillProcedures.GiveSkillToPlayer(botId, PvPStatics.Spell_WeakenId);
+            }
+
+            if (strength >= 6)
+            {
+                var limitedMobilityForms = STABLE_FORMS.Where(f => f.Category == LIMITED_MOBILITY).ToArray();
+
+                if (limitedMobilityForms.Any())
+                {
+                    IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
+
+                    var formId = limitedMobilityForms[rand.Next(limitedMobilityForms.Count())].FormSourceId;
+                    var immobileSkill = skillsRepo.DbStaticSkills.FirstOrDefault(spell => spell.FormSourceId == formId);
+
+                    if (immobileSkill != null)
+                    {
+                        SkillProcedures.GiveSkillToPlayer(botId, immobileSkill.Id);
+                    }
+                }
+            }
+
+            // Give bonuses
+            EffectProcedures.GivePerkToPlayer(perk, botId);
+
+            if (extraPerk.HasValue)
+            {
+                EffectProcedures.GivePerkToPlayer(extraPerk.Value, botId);
+            }
+
+            // Give a rune
+            var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength * 2 + 1, Random = rand });
+            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+
+            // Balance stats
+            var psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
+            psychoEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(psychoEF));
+            playerRepo.SavePlayer(psychoEF);
+
+            // Tell the bot to attack the player
+            AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned <b>{firstName} {lastName}</b>!");
+
+            return "You have summoned a psychopath!";  // TODO joke_shop flavor text
+        }
+
+        private static string SummonDoppelganger(Player player)
+        {
+            var rand = new Random();
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var cmd = new CreatePlayer
+            {
+                FirstName = $"Evil {player.FirstName}",
+                LastName = player.LastName,
+                Location = player.dbLocationName,
+                FormSourceId = player.FormSourceId,
+                Level = (int)Math.Min(9, player.Level),
+                Health = 100000,
+                MaxHealth = player.MaxHealth,
+                Mana = 100000,
+                MaxMana = player.MaxMana,
+                BotId = AIStatics.PsychopathBotId,
+                UnusedLevelUpPerks = 0,
+                XP = 0,
+                Money = 100 + player.Money / 10,
+                Gender = player.Gender,
+            };
+
+            var botId = DomainRegistry.Repository.Execute(cmd);
+
+            // Give spells
+            var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
+            SkillProcedures.GiveSkillToPlayer(botId, eligibleSkills[rand.Next(eligibleSkills.Count())].Id);
+            SkillProcedures.GiveSkillToPlayer(botId, PvPStatics.Spell_WeakenId);
+
+            // Give bonuses
+            var sourcePerks = EffectProcedures.GetPlayerEffects2(player.Id);
+
+            foreach (var sourcePerk in sourcePerks)
+            {
+                 EffectProcedures.GivePerkToPlayer(sourcePerk.dbEffect.EffectSourceId, botId, sourcePerk.dbEffect.Duration, sourcePerk.dbEffect.Cooldown);
+            }
+
+            // Give a rune (round level down to odd)
+            var runeLevel = cmd.Level - 1;
+            runeLevel = runeLevel - (runeLevel % 2) + 1;
+            var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
+            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+
+            // Balance stats
+            var psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
+            psychoEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(psychoEF));
+            playerRepo.SavePlayer(psychoEF);
+
+            // Tell the bot to attack the player
+            AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned your evil twin!</b>  Beware!  They are not friendly!", true);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned their evil twin!");
+
+            return "You have summoned a doppelganger!";  // TODO joke_shop flavor text
+        }
+
+        private static string OpenPsychoNip(Player player)
+        {
+            IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
+            var idleBots = directiveRepo.AIDirectives.Where(d => d.State == "idle")
+                                                     .Select(d => d.OwnerId)
+                                                     .ToArray();
+
+            // Set three lowest level psychos without targets on the player
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var botsToAttract = playerRepo.Players.Where(p => idleBots.Contains(p.Id)
+                                                           && p.BotId == AIStatics.PsychopathBotId
+                                                           && p.Mobility == PvPStatics.MobilityFull)
+                                                  .OrderBy(p => p.Level)
+                                                  .Select(p => p.Id)
+                                                  .Take(3)
+                                                  .ToArray();
+
+            foreach (var botId in botsToAttract)
+            {
+                AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+            }
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You open a tin pf PsychoNip", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} opened a tin of PsychoNip!");
+
+            return "You spot a tin with a colorful insignia on a shelf.  You move over to take a closer look, but accidentally knock the tin to the floor and spill its contents!  You gather up the fallen leaves and place them back in the tin.  \"PsychoNip,\" it reads.  Perhaps you should stay alert for the next few turns in case the scent has caught anyone's attention...";
         }
 
         #endregion

@@ -14,6 +14,7 @@ namespace TT.Domain.Players.Commands
     {
         public int PlayerId { get; set; }
         public string destination { get; set; }
+        public string Direction {  get; set; }
 
         public override string Execute(IDataContext context)
         {
@@ -92,7 +93,7 @@ namespace TT.Domain.Players.Commands
                 }
                 else
                 {
-                    logs = player.MoveTo(destination);
+                    logs = player.MoveTo(destination, Direction);
                 }
 
 

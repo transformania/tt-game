@@ -12,6 +12,7 @@ namespace TT.Domain.ViewModels
         public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
 
         public Location Location { get; set; }
+        public bool Blind {  get; set; }
 
         public int InventoryMaxSize { get; set; }
 

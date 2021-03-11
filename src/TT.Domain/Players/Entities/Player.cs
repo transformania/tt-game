@@ -618,7 +618,7 @@ namespace TT.Domain.Players.Entities
             return logBox;
         }
 
-        public MoveLogBox MoveTo(string destination)
+        public MoveLogBox MoveTo(string destination, string direction = null)
         {
             var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
             var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
@@ -626,7 +626,7 @@ namespace TT.Domain.Players.Entities
             var leavingMessage = this.GetFullName() + " left toward " + nextLocation.Name;
             var enteringMessage = this.GetFullName() + " entered from " + currentLocation.Name;
 
-            var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
+            var playerLog = direction == null ? $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>." : $"You moved <b>{direction}</b>.";
 
             var sneakLevel = this.CalculateSneakLevel();
             if (sneakLevel > 0)

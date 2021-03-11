@@ -32,6 +32,9 @@ namespace TT.Domain.Legacy.Procedures
 
         private static readonly int? AUTO_RESTORE_EFFECT = EffectWithName("effect_Joke_Shop_Auto_Restore");
         private static readonly int? INSTINCT_EFFECT = EffectWithName("effect_Joke_Shop_MC_Instinct");
+        public static readonly int? BLINDED_EFFECT = EffectWithName("effect_Joke_Shop_Blinded");
+        public static readonly int? DIZZY_EFFECT = EffectWithName("effect_Joke_Shop_Dizzy");
+        public static readonly int? HUSHED_EFFECT = EffectWithName("effect_Joke_Shop_Hushed");
 
         private const string LIMITED_MOBILITY = "immobile";
 
@@ -1890,9 +1893,13 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return GiveRandomEffect(player, BOOST_EFFECTS);
             }
-            else if (roll < 75)  // 35%
+            else if (roll < 70)  // 30%
             {
                 return GiveRandomEffect(player, PENALTY_EFFECTS);
+            }
+            else if (roll < 75)  // 5%
+            {
+                return GiveEffect(player, BLINDED_EFFECT);
             }
             else if (roll < 95)  // 20%
             {

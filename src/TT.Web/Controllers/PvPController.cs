@@ -317,6 +317,13 @@ namespace TT.Web.Controllers
             output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
+            loadtime += "Start get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            var effects = EffectProcedures.GetPlayerEffects2(me.Id);
+            output.Blind = JokeShopProcedures.BLINDED_EFFECT.HasValue &&
+                           effects.Where(e => e.dbEffect.EffectSourceId == JokeShopProcedures.BLINDED_EFFECT.Value &&
+                                              e.dbEffect.Duration > 0).Any();
+            loadtime += "End get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+
             var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
 
             if (output.Location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
@@ -325,13 +332,29 @@ namespace TT.Web.Controllers
                 location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
             }
 
-            output.Location = location;
+            output.Location = location.Clone();
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
-            output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
-            output.Location.FriendlyName_East = LocationsStatics.GetConnectionName(output.Location.Name_East);
-            output.Location.FriendlyName_South = LocationsStatics.GetConnectionName(output.Location.Name_South);
-            output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
+            // Hide directions if player is blind
+            if (output.Blind)
+            {
+                output.Location.Name = "Here";
+                output.Location.FriendlyName_North = "North";
+                output.Location.FriendlyName_East = "East";
+                output.Location.FriendlyName_South = "South";
+                output.Location.FriendlyName_West = "West";
+                output.Location.Name_North = "north";
+                output.Location.Name_East = "east";
+                output.Location.Name_South = "south";
+                output.Location.Name_West = "west";
+            }
+            else
+            {
+                output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
+                output.Location.FriendlyName_East = LocationsStatics.GetConnectionName(output.Location.Name_East);
+                output.Location.FriendlyName_South = LocationsStatics.GetConnectionName(output.Location.Name_South);
+                output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
+            }
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
@@ -557,6 +580,46 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            string direction = null;
+
+            // Allow blinded players only to use relative directions - convert them
+            if (JokeShopProcedures.BLINDED_EFFECT.HasValue &&
+                EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.BLINDED_EFFECT.Value))
+            {
+                var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+                if (locname == "north")
+                {
+                    direction = "North";
+                    locname = currentLocation?.Name_North;
+                }
+                else if (locname == "east")
+                {
+                    direction = "East";
+                    locname = currentLocation?.Name_East;
+                }
+                else if (locname == "south")
+                {
+                    direction = "South";
+                    locname = currentLocation?.Name_South;
+                }
+                else if (locname == "west")
+                {
+                    direction = "West";
+                    locname = currentLocation?.Name_West;
+                }
+                else
+                {
+                    locname = null;
+                }
+
+                if (locname == null)
+                {
+                    TempData["Error"] = "You have trouble seeing where you are going and walk into a wall.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             if (locname == LocationsStatics.JOKE_SHOP)
             {
                 if(JokeShopProcedures.CharacterIsBanned(me))
@@ -596,7 +659,7 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname });
+                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname, Direction = direction });
             }
             catch (DomainException e)
             {
@@ -2938,6 +3001,15 @@ namespace TT.Web.Controllers
 
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
+
+            // Don't reveal location to blind players
+            if (JokeShopProcedures.BLINDED_EFFECT.HasValue &&
+                EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.BLINDED_EFFECT.Value))
+            {
+                ViewBag.MapX = 999;
+                ViewBag.MapY = 999;
+            }
+
             return View(MVC.PvP.Views.WorldMap, output);
         }
 

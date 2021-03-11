@@ -183,17 +183,20 @@
 
                 var safegroundCoven = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
 
-                if (safegroundCoven.Value != null)
+                if (safegroundCoven.Value != null && !Model.Blind)
                 {
                     <span class="covSafeground">Safeground for the <b>@safegroundCoven.Value.Name</b> Covenant</span>
                 }
             }
         </div>
         <div class="col-md-8 covenDescription">
-            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
-
-            @Model.Location.GetDescription()<br />
             @{
+                if (!Model.Blind)
+                {
+                    <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
+                    @Model.Location.GetDescription()<br />
+                }
+
                 var enchanted = false;
                 if (Model.Location.CovenantController != null)
                 {
@@ -201,7 +204,7 @@
                     {
                         var temp2 = CovenantDictionary.IdNameFlagLookup[(int)Model.Location.CovenantController];
 
-                        if (temp2 != null)
+                        if (temp2 != null && !Model.Blind)
                         {
                             <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
                             enchanted = true;
@@ -244,88 +247,90 @@
 
 </div>
 
-<div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="showHidePlayers()">Show/Hide online players</a></div>
-<div class="onlinePlayersWrapperBG">
-    <div class="row boxContainer">
-        @*all players who are online*@
-        @{
-            foreach (var p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
-            {
+@{if (!Model.Blind)
+{
+    <div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="showHidePlayers()">Show/Hide online players</a></div>
+    <div class="onlinePlayersWrapperBG">
+        <div class="row boxContainer">
+            @*all players who are online*@
+            @{
+                foreach (var p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
+                {
 
-                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-                    <div class="charaBoxInner">
-                        <div>
-                            <p>
-                                <div>@Html.Partial(MVC.PvP.Views.Player_Partial, p)</div>
-                                <div style="text-align:center; margin-top:2px;">
-                                    @{
-                                        if (!AIStatics.IsAFriendly(p.Player.BotId))
-                                        {
-                                            @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
-                                        }
+                    <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                        <div class="charaBoxInner">
+                            <div>
+                                <p>
+                                    <div>@Html.Partial(MVC.PvP.Views.Player_Partial, p)</div>
+                                    <div style="text-align:center; margin-top:2px;">
+                                        @{
+                                            if (!AIStatics.IsAFriendly(p.Player.BotId))
+                                            {
+                                                @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
+                                            }
 
-                                        if (p.Player.MindControlIsActive && MindControlProcedures.PlayerWithIdIsMindControlledWithSomeType(p.Player.Id, ViewBag.PlayersUnderMyMindControl))
-                                        {
-                                            <a href="@Url.Action(MVC.MindControl.MindControlList())" class="attackLink">Mind Control</a>
-                                        }
+                                            if (p.Player.MindControlIsActive && MindControlProcedures.PlayerWithIdIsMindControlledWithSomeType(p.Player.Id, ViewBag.PlayersUnderMyMindControl))
+                                            {
+                                                <a href="@Url.Action(MVC.MindControl.MindControlList())" class="attackLink">Mind Control</a>
+                                            }
 
-                                        if (p.Player.BotId == AIStatics.LindellaBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))" class="attackLink">Trade</a>
+                                            if (p.Player.BotId == AIStatics.LindellaBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))" class="attackLink">Trade</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.JewdewfaeBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkWithJewdewfae())" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.WuffieBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TradeWithPetMerchant())" class="attackLink">Trade</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.ValentineBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToValentine("none"))" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.BartenderBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToBartender("none"))" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.MouseBimboBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToCandice())" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.MouseNerdBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToAdrianna())" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.LoremasterBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToLorekeeper())" class="attackLink">Talk</a>
+                                            }
+                                            if (p.Player.BotId == AIStatics.SoulbinderBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToSoulbinder())" class="attackLink">Talk</a>
+                                            }
                                         }
-                                        if (p.Player.BotId == AIStatics.JewdewfaeBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkWithJewdewfae())" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.WuffieBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TradeWithPetMerchant())" class="attackLink">Trade</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.ValentineBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToValentine("none"))" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.BartenderBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToBartender("none"))" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.MouseBimboBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToCandice())" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.MouseNerdBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToAdrianna())" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.LoremasterBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToLorekeeper())" class="attackLink">Talk</a>
-                                        }
-                                        if (p.Player.BotId == AIStatics.SoulbinderBotId)
-                                        {
-                                            <a href="@Url.Action(MVC.NPC.TalkToSoulbinder())" class="attackLink">Talk</a>
-                                        }
-                                    }
-                                </div>
-                            </p>
+                                    </div>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+
             }
-
-        }
+        </div>
     </div>
-</div>
 
-<div style="clear:both;"></div>
+    <div style="clear:both;"></div>
 
-@{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
+    if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
     {
         <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
     }
-}
+    
 
-@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
+    if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
     {
         <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.Play())">Hide the @Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) offline players</a></div>
         <div class="offlinePlayersWrapperBG">
@@ -349,59 +354,60 @@
             </div>
         </div>
     }
-}
 
-<div class="floorItemsWrapperBG">
-    <div class="row boxContainer">
-        @{
+    <div class="floorItemsWrapperBG">
+        <div class="row boxContainer">
+            @{
 
-            foreach (var item in Model.LocationItems)
-            {
-                <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
-                    <div class="charaBoxInner">
-                        <div>
-                            <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
-                                @{
-                                    if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
-                                    {
-                                        <span class="floorItemLevel"><b>@item.Level</b></span>
-                                    }
-                                }
-                                @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
-                            </div>
-
+                foreach (var item in Model.LocationItems)
+                {
+                    <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
+                        <div class="charaBoxInner">
                             <div>
-                                @{
-                                    if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
-                                    {
-                                        <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
+                                <div class="portrait_item_mainpage" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));">
+                                    @{
+                                        if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable && item.Level > 0)
+                                        {
+                                            <span class="floorItemLevel"><b>@item.Level</b></span>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
-                                    }
+                                    @HtmlHelpers.PrintItemTypeIcon(item.ItemSource.ItemType)
+                                </div>
 
-                                    if (item.SoulboundToPlayer != null)
-                                    {
-                                        <span class="playerMediatingNotification"><b>[SB]</b></span>
-                                    }
+                                <div>
+                                    @{
+                                        if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                                        {
+                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Tame</a><br>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action(MVC.PvP.Take(item.Id))">Take</a><br>
+                                        }
 
-                                    <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
+                                        if (item.SoulboundToPlayer != null)
+                                        {
+                                            <span class="playerMediatingNotification"><b>[SB]</b></span>
+                                        }
 
-                                    if (item.FormerPlayer != null)
-                                    {
-                                        <span class="formerPlayer">(@(item.FormerPlayer.IsUsingOriginalName() ? "Formerly" : "Known as") @item.FormerPlayer.FullName)</span>
+                                        <span class="floorItemName">@HtmlHelpers.TruncateToLength(item.ItemSource.FriendlyName, 75) @Html.Partial(MVC.Item.Views.partial.PlayPageRuneDetails, item)<br></span>
+
+                                        if (item.FormerPlayer != null)
+                                        {
+                                            <span class="formerPlayer">(@(item.FormerPlayer.IsUsingOriginalName() ? "Formerly" : "Known as") @item.FormerPlayer.FullName)</span>
+                                        }
                                     }
-                                }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
 
-        }
+            }
+        </div>
     </div>
-</div>
+}
+}
 
 @Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
 

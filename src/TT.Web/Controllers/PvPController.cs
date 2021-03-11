@@ -579,15 +579,58 @@ namespace TT.Web.Controllers
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var effects = EffectProcedures.GetPlayerEffects2(me.Id);
+
+            var dizzy = JokeShopProcedures.DIZZY_EFFECT.HasValue &&
+                effects.Any(e => e.Effect.Duration > 0 &&
+                                 e.dbEffect.EffectSourceId == JokeShopProcedures.DIZZY_EFFECT.Value);
+            var blind = JokeShopProcedures.BLINDED_EFFECT.HasValue &&
+                effects.Any(e => e.Effect.Duration > 0 &&
+                                 e.dbEffect.EffectSourceId == JokeShopProcedures.BLINDED_EFFECT.Value);
 
             string direction = null;
+            var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+            // Dizzy players can stumble in the wrong direction
+            if (dizzy)
+            {
+                var exits = new List<String> {currentLocation?.Name_North, currentLocation?.Name_East, currentLocation?.Name_South, currentLocation?.Name_West};
+
+                if (blind)
+                {
+                    exits = new List<String> {"north", "east", "south", "west"};
+                }
+
+                var index = exits.IndexOf(locname);
+
+                if (index != -1)
+                {
+                    // Roll an amount to stumble
+                    var roll = new Random().NextDouble();
+
+                    if (roll < 0.2)
+                    {
+                        index++;  // 20% chance of stumbling right
+                    }
+                    else if (roll < 0.3)
+                    {
+                        index += 2;  // 10% chance of stumbling backward
+                    }
+                    else if (roll < 0.5)
+                    {
+                        index += 3;  // 20% chance of stumbling left
+                    }
+
+                    // Adjust the index to point to the nearest exit to the stumble
+                    var len = exits.Count();
+                    index = index % len;
+                    locname = exits[index % len] ?? exits[(index + 1) % len] ?? exits[(index + 3) % len] ?? exits[(index + 2) % len];
+                }
+            }
 
             // Allow blinded players only to use relative directions - convert them
-            if (JokeShopProcedures.BLINDED_EFFECT.HasValue &&
-                EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.BLINDED_EFFECT.Value))
+            if (blind)
             {
-                var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
-
                 if (locname == "north")
                 {
                     direction = "North";
@@ -620,6 +663,7 @@ namespace TT.Web.Controllers
                 }
             }
 
+            // Access controls on joke shop
             if (locname == LocationsStatics.JOKE_SHOP)
             {
                 if(JokeShopProcedures.CharacterIsBanned(me))

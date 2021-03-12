@@ -1002,33 +1002,41 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return MeanResourcePrank(player);
             }
-            else if (roll < 35)  // 20%
+            else if (roll < 30)  // 15%
             {
                 return MeanLocationPrank(player);
             }
-            else if (roll < 50)  // 15%
+            else if (roll < 40)  // 10%
             {
                 return MeanQuotasAndTimerPrank(player);
             }
-            else if (roll < 60)  // 10%
+            else if (roll < 50)  // 10%
             {
                 return MeanTransformationPrank(player);
             }
-            else if (roll < 75)  // 15%
+            else if (roll < 65)  // 15%
             {
                 return MeanEffectsPrank(player);
             }
-            else if (roll < 80)  // 5%
+            else if (roll < 70)  // 5%
             {
                 return SummonPsychopath(player);
             }
-            else if (roll < 85)  // 5%
+            else if (roll < 75)  // 5%
             {
                 return SummonDoppelganger(player);
             }
-            else if (roll < 90)  // 5%
+            else if (roll < 80)  // 5%
             {
                 return OpenPsychoNip(player);
+            }
+            else if (roll < 85)  // 5%
+            {
+                return ForceAttack(player);
+            }
+            else if (roll < 90)  // 5%
+            {
+                return Incite(player);
             }
             else  // 10%
             {
@@ -1685,6 +1693,8 @@ namespace TT.Domain.Legacy.Procedures
                 return null;
             }
 
+            var message = "Teleport to hostile NPC";  // TODO joke_shop Add flavor text;
+
             if (attack)
             {
                 var spells = SkillProcedures.AvailableSkills(player, npcPlayer, true);
@@ -1694,11 +1704,12 @@ namespace TT.Domain.Legacy.Procedures
                     var spell = spellList[rand.Next(spellList.Count())];
 
                     // Note we do not apply the full gamut of preconditions of a manual attack present in the controller
-                    AttackProcedures.AttackSequence(player, npcPlayer, spell);
+                    var attackMessage = AttackProcedures.AttackSequence(player, npcPlayer, spell);
+                    message = $"{message}<br />{attackMessage}";
                 }
             }
             
-            return "Teleport to hostile NPC";  // TODO joke_shop Add flavor text
+            return message;
         }
 
         private static Player TeleportToNPC(Player player, int npc)
@@ -3126,6 +3137,75 @@ namespace TT.Domain.Legacy.Procedures
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} opened a tin of PsychoNip!");
 
             return "You spot a tin with a colorful insignia on a shelf.  You move over to take a closer look, but accidentally knock the tin to the floor and spill its contents!  You gather up the fallen leaves and place them back in the tin.  \"PsychoNip,\" it reads.  Perhaps you should stay alert for the next few turns in case the scent has caught anyone's attention...";
+        }
+
+        private static string ForceAttack(Player attacker, bool strongAttackerAlerts = false)
+        {
+            if (attacker.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
+            {
+                return null;
+            }
+
+            if (attacker.GameMode != (int)GameModeStatics.GameModes.PvP)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+            var candidates = ActivePlayersInJokeShopApartFrom(attacker).Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
+                                                                                   PlayerHasBeenWarned(p)).ToList();
+
+            if (candidates != null && candidates.IsEmpty())
+            {
+                return null;
+            }
+
+            var victim = candidates[rand.Next(candidates.Count())];
+
+            var spells = SkillProcedures.AvailableSkills(attacker, victim, true);
+            if (spells == null || spells.IsEmpty())
+            {
+                return null;
+            }
+
+            var spellList = spells.ToArray();
+            var spell = spellList[rand.Next(spellList.Count())];
+
+            var message = $"You are compelled to attack {victim.GetFullName()}!";
+            PlayerLogProcedures.AddPlayerLog(attacker.Id, message, strongAttackerAlerts);
+            PlayerLogProcedures.AddPlayerLog(victim.Id, $"{attacker.GetFullName()} is compelled to attack you!", true);
+            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, $"{attacker.GetFullName()} is compelled to attack {victim.GetFullName()}!");
+
+            // Note we do not apply the full gamut of preconditions of a manual attack present in the controller
+            var attack = AttackProcedures.AttackSequence(attacker, victim, spell);
+
+            if (strongAttackerAlerts)
+            {
+                PlayerLogProcedures.AddPlayerLog(attacker.Id, attack, true);
+            }
+
+            return $"{message}<br />{attack}";
+        }
+
+        private static string Incite(Player player)
+        {
+            var rand = new Random();
+            var candidates = ActivePlayersInJokeShopApartFrom(player).Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
+                                                                                 PlayerHasBeenWarned(p)).ToList();
+
+            if (candidates != null && candidates.IsEmpty())
+            {
+                return null;
+            }
+
+            var attacker = candidates[rand.Next(candidates.Count())];
+
+            if (ForceAttack(attacker, true) == null)
+            {
+                return null;
+            }
+
+            return $"You incite {attacker.GetFullName()} to attack another player!";
         }
 
         #endregion

@@ -263,6 +263,9 @@ namespace TT.Domain.Models
             if (MembershipId == "-1")
                 return new Tuple<string, string>(string.Empty, string.Empty);
 
+            if (MembershipId.IsNullOrEmpty())
+                return new Tuple<string, string>(GetFullName(), string.Empty);
+
             if (staffDictionary.TryGetValue(MembershipId, out desc))
             {
                 var name = desc.Name;

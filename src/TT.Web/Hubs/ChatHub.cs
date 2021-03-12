@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using TT.Domain;
+using TT.Domain.Abstract;
 using TT.Domain.Chat.Commands;
+using TT.Domain.Concrete;
 using TT.Domain.Legacy.Procedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
 using TT.Web.Extensions;
 using TT.Web.Services;
@@ -53,12 +56,16 @@ namespace TT.Web.Hubs
 
         public void Send(string message)
         {
+            SendAs(message, PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId()));
+        }
+
+        public void SendAs(string message, PlayerFormViewModel me)
+        {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
             
             me.Player.UpdateOnlineActivityTimestamp();
 
-            if (DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.Player.MembershipId}))
+            if (me.Player.BotId == AIStatics.ActivePlayerBotId && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = me.Player.MembershipId}))
             {
                 return;
             }
@@ -91,25 +98,28 @@ namespace TT.Web.Hubs
             var name = descriptor.Item1;
             pic = string.IsNullOrWhiteSpace(descriptor.Item2) ? pic : descriptor.Item2;
 
-            if (Context.User.IsInRole(PvPStatics.Permissions_Developer))
+            if (me.Player.BotId == AIStatics.ActivePlayerBotId)
             {
-                name = name + " (Dev)";
-            }
-            else if (Context.User.IsInRole(PvPStatics.Permissions_Admin))
-            {
-                name = name + " (Admin)";
-            }
-            else if (Context.User.IsInRole(PvPStatics.Permissions_Moderator))
-            {  
-                switch (me.Player.MembershipId)
+                if (Context.User.IsInRole(PvPStatics.Permissions_Developer))
                 {
-                    case "d465db1c-ba4f-4347-b666-4dfd1c9a5e33": //Because Martha wants to be a filthy casual.
-                        break;
-                    case "08b476c3-d262-45b6-9e6a-7d94b472fefe":
-                        break; //So is this one.
-                    default:
-                        name = name + " (Mod)";
-                        break;
+                    name = name + " (Dev)";
+                }
+                else if (Context.User.IsInRole(PvPStatics.Permissions_Admin))
+                {
+                    name = name + " (Admin)";
+                }
+                else if (Context.User.IsInRole(PvPStatics.Permissions_Moderator))
+                {  
+                    switch (me.Player.MembershipId)
+                    {
+                        case "d465db1c-ba4f-4347-b666-4dfd1c9a5e33": //Because Martha wants to be a filthy casual.
+                            break;
+                        case "08b476c3-d262-45b6-9e6a-7d94b472fefe":
+                            break; //So is this one.
+                        default:
+                            name = name + " (Mod)";
+                            break;
+                    }
                 }
             }
 
@@ -120,12 +130,15 @@ namespace TT.Web.Hubs
             {
                 var colorOut = output.SendPlayerChatColor ? me.Player.ChatColor : "";
 
-                _chatPersistenceService.TrackMessageSend(me.Player.MembershipId, Context.ConnectionId);
+                if (me.Player.BotId == AIStatics.ActivePlayerBotId)
+                {
+                    _chatPersistenceService.TrackMessageSend(me.Player.MembershipId, Context.ConnectionId);
+                }
 
                 var model = new
                 {
                     User = name,
-                    IsStaff = ChatStatics.Staff.ContainsKey(me.Player.MembershipId),
+                    IsStaff = me.Player.BotId == AIStatics.ActivePlayerBotId ? ChatStatics.Staff.ContainsKey(me.Player.MembershipId) : false,
                     Color = colorOut,
                     Pic = pic,
                     Message = WebUtility.HtmlEncode(output.Text),
@@ -133,7 +146,7 @@ namespace TT.Web.Hubs
                     Timestamp = DateTime.UtcNow.ToUnixTime(),
                 };
 
-                if (_chatPersistenceService.HasNameChanged(me.Player.MembershipId, name))
+                if (me.Player.BotId == AIStatics.ActivePlayerBotId && _chatPersistenceService.HasNameChanged(me.Player.MembershipId, name))
                 {
                     _chatPersistenceService.TrackPlayerNameChange(me.Player.MembershipId, name);
                     Clients.Caller.nameChanged(name);
@@ -153,6 +166,29 @@ namespace TT.Web.Hubs
             }
 
             UpdateUserList(room);
+
+            // NPC dice prank
+            if (room == "global" && me.Player.BotId == AIStatics.ActivePlayerBotId &&
+                message.StartsWith("/roll") && message.Contains("4d20") &&
+                JokeShopProcedures.IsJokeShopActive())
+            {
+                var rand = new Random();
+
+                if (rand.Next(10) == 0)
+                {
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var npcIds = playerRepo.Players.Where(p => p.BotId <= AIStatics.PsychopathBotId &&
+                                                               p.Mobility == PvPStatics.MobilityFull)
+                                                   .Select(p => p.Id).ToArray();
+
+                    if (npcIds.Any())
+                    {
+                        var npcId = npcIds[rand.Next(npcIds.Count())];
+                        SendAs(message, PlayerProcedures.GetPlayerFormViewModel(npcId));
+                    }
+                }
+            }
+
         }
 
         public Task JoinRoom(string roomName)

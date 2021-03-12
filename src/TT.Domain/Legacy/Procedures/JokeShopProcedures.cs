@@ -139,6 +139,11 @@ namespace TT.Domain.Legacy.Procedures
             return candidates;
         }
 
+        public static bool IsJokeShopActive()
+        {
+            return LocationsStatics.LocationList.GetLocation.Any(l => l.dbName == LocationsStatics.JOKE_SHOP);
+        }
+
         public static void SetJokeShopActive(bool active)
         {
             // Work on a copy of the map to avoid concurrency issues

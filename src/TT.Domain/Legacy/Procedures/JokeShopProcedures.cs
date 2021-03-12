@@ -1889,21 +1889,25 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return GiveEffect(player, ROOT_EFFECT, 2);
             }
-            else if (roll < 40)  // 30%
+            else if (roll < 35)  // 25%
             {
                 return GiveRandomEffect(player, BOOST_EFFECTS);
             }
-            else if (roll < 65)  // 25%
+            else if (roll < 60)  // 25%
             {
                 return GiveRandomEffect(player, PENALTY_EFFECTS);
             }
-            else if (roll < 70)  // 5%
+            else if (roll < 65)  // 5%
             {
                 return GiveEffect(player, BLINDED_EFFECT);
             }
-            else if (roll < 75)  // 5%
+            else if (roll < 70)  // 5%
             {
                 return GiveEffect(player, DIZZY_EFFECT);
+            }
+            else if (roll < 75)  // 5%
+            {
+                return GiveEffect(player, HUSHED_EFFECT);
             }
             else if (roll < 95)  // 20%
             {

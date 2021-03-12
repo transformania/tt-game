@@ -296,6 +296,11 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static bool PlayerHasActiveEffect(int playerId, int effectSourceId)
+        {
+            return PlayerHasActiveEffect(PlayerProcedures.GetPlayer(playerId), effectSourceId);
+        }
+
         public static bool PlayerHasActiveEffect(Player player, int effectSourceId)
         {
             IEffectRepository effectRepo = new EFEffectRepository();

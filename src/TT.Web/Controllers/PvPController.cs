@@ -3501,6 +3501,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player has not been hushed
+            if (JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.HUSHED_EFFECT.Value))
+            {
+                TempData["Error"] = "You have been hushed by a powerful mage and cannot currently shout!";
+                TempData["SubError"] = "You will be able to shout again when the effect has worn off.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             return View(MVC.PvP.Views.Shout);
         }
 

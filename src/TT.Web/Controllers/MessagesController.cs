@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Exceptions;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Queries;
@@ -271,6 +272,13 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
                 return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.HUSHED_EFFECT.Value))
+            {
+                TempData["ErrorMessage"] = "You have been hushed and cannot currently send a message.  Try again once the effect has worn off.";
+                TempData["MessageText"] = input.MessageText;
+                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
             }
 
             if (input.MessageText.IsNullOrEmpty())

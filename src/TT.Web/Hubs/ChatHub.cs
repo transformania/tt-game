@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using TT.Domain;
 using TT.Domain.Chat.Commands;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
@@ -65,6 +66,23 @@ namespace TT.Web.Hubs
             // Assert player is not banned
             if (me.Player.IsBannedFromGlobalChat && room == "global")
                 return;
+
+            if (!message.StartsWith("/me") && JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me.Player.ToDbPlayer(), JokeShopProcedures.HUSHED_EFFECT.Value))
+            {
+                String[] denied = {"/me tries to speak but cannot!",
+                                   "/me puffs profusely but doesn't make a sound!",
+                                   "/me is unable to utter a single word!",
+                                   "/me gesticulates wildly in the hope of communicating!",
+                                   "/me is afflicted by a magical field leaving them completely mute!",
+                                   "/me has been hushed!",
+                                   "/me tries to mouth some words in the hope you can understand!",
+                                   "/me has lost their voice!",
+                                   "/me has their lips sealed!",
+                                   "/me will be unable to speak until the enchantment cast on them has lapsed!",
+                                   "/me is counting down the minutes until they are able to speak again!",
+                                   "/me tries to communicate through telepathy!"};
+                message = denied[new Random().Next(denied.Count())];
+            }
 
             // Get player picture and name
             var pic = HtmlHelpers.GetImageURL(me, true).ToString();

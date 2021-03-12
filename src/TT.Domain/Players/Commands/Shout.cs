@@ -3,7 +3,9 @@ using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Players.Entities;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Players.Commands
@@ -32,6 +34,9 @@ namespace TT.Domain.Players.Commands
 
                 if (player.ShoutsRemaining <= 0)
                     throw new DomainException("You can only shout once per turn.");
+
+                if (JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player.Id, JokeShopProcedures.HUSHED_EFFECT.Value))
+                    throw new DomainException("You have been hushed and cannot currently shout.");
 
                 Message = Message.Replace("<", "&lt;").Replace(">", "&gt;"); // remove suspicious characters
 

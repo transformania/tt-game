@@ -934,17 +934,21 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return MildLocationPrank(player);
             }
-            else if (roll < 50)  // 20%
+            else if (roll < 45)  // 15%
             {
                 return MildQuotasAndTimerPrank(player);
             }
-            else if (roll < 65)  // 15%
+            else if (roll < 60)  // 15%
             {
                 return MildTransformationPrank(player);
             }
-            else if (roll < 80)  // 15%
+            else if (roll < 75)  // 15%
             {
                 return MildEffectsPrank(player);
+            }
+            else if (roll < 80)  // 5%
+            {
+                return RareFind(player);
             }
             else  // 20%
             {
@@ -1397,6 +1401,72 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             return $"Dungeon points changed by {delta}";  // TODO joke_shop flavor text
+        }
+
+        private static string RareFind(Player player)
+        {
+            var rand = new Random();
+            var roll = rand.Next(3);
+
+            if (roll < 1)
+            {
+                // Quality consumable
+                int[] itemTypes = { ItemStatics.CurseLifterItemSourceId,
+                                    ItemStatics.AutoTransmogItemSourceId,
+                                    ItemStatics.WillpowerBombVolatileItemSourceId,
+                                    ItemStatics.SelfRestoreItemSourceId,
+                                    ItemStatics.LullabyWhistleItemSourceId,
+                                    ItemStatics.SpellbookLargeItemSourceId,
+                                    ItemStatics.TeleportationScrollItemSourceId };
+
+                var itemType = itemTypes[rand.Next(itemTypes.Count())];
+
+                return ItemProcedures.GiveNewItemToPlayer(player, itemType);
+            }
+            else if (roll < 2)
+            {
+                // Regular item
+                var level = (int)(rand.NextDouble() * rand.NextDouble() * 6 + 1);
+                var itemType = ItemProcedures.GetRandomPlayableItem();
+                var message = ItemProcedures.GiveNewItemToPlayer(player, itemType, level);
+
+                // Don't permit player to carry untamed pet
+                if (itemType.ItemType == PvPStatics.ItemType_Pet)
+                {
+                    var unequippedPet = ItemProcedures.GetAllPlayerItems(player.Id).FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped);
+
+                    if (unequippedPet != null)
+                    {
+                        ItemProcedures.DropItem(unequippedPet.dbItem.Id);
+                    }
+                }
+
+                return message;
+            }
+            else
+            {
+                // Rune
+                var levelRoll = rand.Next(10);
+                int level;
+
+                if (levelRoll < 2)  // 20%
+                {
+                    level = 3;  // Standard
+                }
+                else if (levelRoll < 9)  // 70%
+                {
+                    level = 5;  // Great
+                }
+                else  // 10%
+                {
+                    level = 7;  // Major
+                }
+
+                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = level, Random = rand });
+                DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = player.Id });
+
+                return "You have found a rune!";
+            }
         }
 
         #endregion

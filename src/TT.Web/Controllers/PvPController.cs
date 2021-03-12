@@ -1801,11 +1801,16 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.Id, true);
-                playerLogMessage = "You tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
+                var name = (pickup.FormerPlayer == null) ? "a "+ pickup.ItemSource.FriendlyName
+                                                         : pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName;
+                playerLogMessage = "You tamed <b>" + name + "</b> at " + here.Name + " and put it into your inventory.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + name + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
 
-                var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
-                PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
+                if (pickup.FormerPlayer != null)
+                {
+                    var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
+                    PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
+                }
 
             }
 
@@ -1894,8 +1899,11 @@ namespace TT.Web.Controllers
                 playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
                 locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
 
-                var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
-                PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
+                if (dropme.FormerPlayer != null)
+                {
+                    var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
+                    PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
+                }
 
 
             }

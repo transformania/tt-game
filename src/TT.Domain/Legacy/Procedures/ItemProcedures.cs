@@ -271,7 +271,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string GiveNewItemToPlayer(Player player, DbStaticItem item)
+        public static string GiveNewItemToPlayer(Player player, DbStaticItem item, int level = 1)
         {
 
             var cmd = new CreateItem
@@ -279,7 +279,8 @@ namespace TT.Domain.Procedures
                 OwnerId = player.Id,
                 IsEquipped = false,
                 dbLocationName = "",
-                ItemSourceId = item.Id
+                ItemSourceId = item.Id,
+                Level = level
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)
@@ -302,10 +303,10 @@ namespace TT.Domain.Procedures
             return "You found a " + item.FriendlyName + "!";
         }
 
-        public static string GiveNewItemToPlayer(Player player, int itemSourceId)
+        public static string GiveNewItemToPlayer(Player player, int itemSourceId, int level = 1)
         {
             var i = ItemStatics.GetStaticItem(itemSourceId);
-            return GiveNewItemToPlayer(player, i);
+            return GiveNewItemToPlayer(player, i, level);
         }
 
         public static string DropItem(int itemId, string locationOverride = null)

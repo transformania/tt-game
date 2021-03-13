@@ -264,7 +264,7 @@
                                     <div>@Html.Partial(MVC.PvP.Views.Player_Partial, p)</div>
                                     <div style="text-align:center; margin-top:2px;">
                                         @{
-                                            if (!AIStatics.IsAFriendly(p.Player.BotId))
+                                            if (!AIStatics.IsAFriendly(p.Player.BotId) && Model.You.Player.GameMode != (int)GameModeStatics.GameModes.Invisible)
                                             {
                                                 @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                             }

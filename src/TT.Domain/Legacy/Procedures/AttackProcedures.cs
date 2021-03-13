@@ -68,7 +68,10 @@ namespace TT.Domain.Procedures
             var attacker = PlayerProcedures.GetPlayer(attackingPlayer.Id);
             var victim = PlayerProcedures.GetPlayer(attackedPlayer.Id);
 
-            if (victim.Mobility != PvPStatics.MobilityFull || attacker.Mobility != PvPStatics.MobilityFull)
+            if (victim.Mobility != PvPStatics.MobilityFull ||
+                attacker.Mobility != PvPStatics.MobilityFull ||
+                victim.GameMode == (int)GameModeStatics.GameModes.Invisible ||
+                attacker.GameMode == (int)GameModeStatics.GameModes.Invisible)
             {
                 return "";
             }

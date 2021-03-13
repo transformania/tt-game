@@ -32,7 +32,7 @@ namespace TT.Tests.Players.Commands
             Assert.That(
                 () => DomainRegistry.Repository.Execute(new ChangeGameMode
                 {
-                    MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection, InChaos = true
+                    MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection, Force = true
                 }), Throws.Nothing);
 
             var foundPlayer = DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde");
@@ -50,7 +50,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow)
                 .BuildAndSave();
 
-            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, InChaos = false };
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Protection, Force = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes."));
@@ -66,7 +66,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-28))
                 .BuildAndSave();
 
-            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = false };
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, Force = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot leave PvP mode until you have been out of combat for thirty (30) minutes."));
@@ -83,7 +83,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-31))
                 .BuildAndSave();
 
-            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, InChaos = false };
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.Superprotection, Force = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.Nothing);
 
@@ -103,7 +103,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.GameMode, mode)
                 .BuildAndSave();
 
-            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.PvP, InChaos = false };
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = (int)GameModeStatics.GameModes.PvP, Force = false };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot switch into that mode during regular gameplay."));
@@ -120,7 +120,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.Location, "dungeon_location")
                 .BuildAndSave();
 
-            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = mode, InChaos = true };
+            var cmd = new ChangeGameMode { MembershipId = player.User.Id, GameMode = mode, Force = true };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot switch out of PvP mode while you are in the dungeon."));
@@ -141,7 +141,7 @@ namespace TT.Tests.Players.Commands
                 () => DomainRegistry.Repository.Execute(new ChangeGameMode
                 {
                     MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Superprotection,
-                    InChaos = inChaos
+                    Force = inChaos
                 }), Throws.Nothing);
 
             Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
@@ -163,7 +163,7 @@ namespace TT.Tests.Players.Commands
                 () => DomainRegistry.Repository.Execute(new ChangeGameMode
                 {
                     MembershipId = player.User.Id, GameMode = (int) GameModeStatics.GameModes.Protection,
-                    InChaos = inChaos
+                    Force = inChaos
                 }), Throws.Nothing);
 
             Assert.That(DataContext.AsQueryable<Player>().First(p => p.User.Id == "abcde").GameMode,
@@ -182,7 +182,7 @@ namespace TT.Tests.Players.Commands
                 {
                     MembershipId = player.User.Id,
                     GameMode = (int)playerEndMode,
-                    InChaos = true
+                    Force = true
                 });
             }
             catch (Exception ex)

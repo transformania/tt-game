@@ -450,6 +450,12 @@ namespace TT.Domain.Procedures
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
+            // either player invisible; no spells work
+            else if (target.GameMode == (int)GameModeStatics.GameModes.Invisible || attacker.GameMode == (int)GameModeStatics.GameModes.Invisible)
+            {
+                output = output.Where(s => s.MobilityType == "NONEXISTENT");
+            }
+
             // filter out MC spells for bots
             if (target.BotId < AIStatics.ActivePlayerBotId)
             {

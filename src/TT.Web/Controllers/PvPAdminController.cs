@@ -1925,7 +1925,7 @@ namespace TT.Web.Controllers
                         {
                             MembershipId = player.MembershipId,
                             GameMode = (int)GameModeStatics.GameModes.Superprotection,
-                            InChaos = true
+                            Force = true
                         });
 
                         if(player.Mobility == PvPStatics.MobilityFull)

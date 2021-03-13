@@ -30,12 +30,13 @@ namespace TT.Domain.Legacy.Procedures
         private static readonly int? SNEAK_REVEAL_2 = EffectWithName("effect_Joke_Shop_Track_2");
         private static readonly int? SNEAK_REVEAL_3 = EffectWithName("effect_Joke_Shop_Track_3");
 
-        private static readonly int? AUTO_RESTORE_EFFECT = EffectWithName("effect_Joke_Shop_Auto_Restore");
+        public static readonly int? AUTO_RESTORE_EFFECT = EffectWithName("effect_Joke_Shop_Auto_Restore");
         private static readonly int? INSTINCT_EFFECT = EffectWithName("effect_Joke_Shop_MC_Instinct");
         public static readonly int? BLINDED_EFFECT = EffectWithName("effect_Joke_Shop_Blinded");
         public static readonly int? DIZZY_EFFECT = EffectWithName("effect_Joke_Shop_Dizzy");
         public static readonly int? HUSHED_EFFECT = EffectWithName("effect_Joke_Shop_Hushed");
         public static readonly int? PSYCHOTIC_EFFECT = EffectWithName("effect_Joke_Shop_Psychotic");
+        public static readonly int? INVISIBILITY_EFFECT = EffectWithName("effect_Joke_Shop_Invisible_PvP");
 
         private const string LIMITED_MOBILITY = "immobile";
 
@@ -121,6 +122,7 @@ namespace TT.Domain.Legacy.Procedures
             {
                 var playerRepo = new EFPlayerRepository();
                 var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+
                 foreach (var player in playersToRestore)
                 {
                     var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
@@ -128,6 +130,62 @@ namespace TT.Domain.Legacy.Procedures
                     playerRepo.SavePlayer(user);
 
                     AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(player);
+
+                    PlayerLogProcedures.AddPlayerLog(player, "The psychotic voices leave your head.. for now..", true);
+                }
+            }
+
+            // Undo temporary invisibility
+            if (INVISIBILITY_EFFECT.HasValue)
+            {
+                var playerRepo = new EFPlayerRepository();
+                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+
+                // Defensively revert any invisible players without the effect too
+                if (PvPStatics.LastGameTurn % 5 == 2)
+                {
+                    var invisiblePlayers = playerRepo.Players.Where(p => !playersToRestore.Contains(p.Id) &&
+                                                                         p.GameMode == (int)GameModeStatics.GameModes.Invisible)
+                                                             .Select(p => p.Id);
+
+                    foreach (var invisiblePlayer in invisiblePlayers)
+                    {
+                        if (!EffectProcedures.PlayerHasActiveEffect(invisiblePlayer, PSYCHOTIC_EFFECT.Value))
+                        {
+                            // Player is somehow in invisible limbo
+                            playersToRestore = playersToRestore.Append(invisiblePlayer);
+                        }
+                    }
+
+                }
+
+                // Restore visibility
+                foreach (var player in playersToRestore)
+                {
+                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
+
+                    DomainRegistry.Repository.Execute(new ChangeGameMode
+                    {
+                        MembershipId = user.MembershipId,
+                        GameMode = (int)GameModeStatics.GameModes.PvP,
+                        Force = true
+                    });
+
+                    PlayerLogProcedures.AddPlayerLog(player, "Your cloak of invisibility starts to fade, leaving you visible to the world once more.", true);
+                    LocationLogProcedures.AddLocationLog(user.dbLocationName, $"{user.GetFullName()} seems to appear from nowhere!");
+                }
+
+                // Ensure no items have been lost with a weird game mode
+                if (playersToRestore.Any())
+                {
+                    var itemRepo = new EFItemRepository();
+                    var itemsInLimbo = itemRepo.Items.Where(i => i.PvPEnabled == (int)GameModeStatics.GameModes.Invisible);
+
+                    foreach (var item in itemsInLimbo)
+                    {
+                        item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
+                        itemRepo.SaveItem(item);
+                    }
                 }
             }
 
@@ -1666,7 +1724,8 @@ namespace TT.Domain.Legacy.Procedures
 
             if (root)
             {
-                root = GiveEffect(player, ROOT_EFFECT) != null;
+                GiveEffect(player, ROOT_EFFECT);
+                root = ROOT_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player.Id, ROOT_EFFECT.Value);
             }
 
             if (curse && !root)
@@ -2068,7 +2127,11 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return GiveEffect(player, HUSHED_EFFECT);
             }
-            else if (roll < 85)  // 20%
+            else if (roll < 70)  // 5%
+            {
+                return MakeInvisible(player);
+            }
+            else if (roll < 85)  // 15%
             {
                 return GiveEffect(player, INSTINCT_EFFECT);
             }
@@ -2149,7 +2212,6 @@ namespace TT.Domain.Legacy.Procedures
             return null;
         }
 
-
         private static string LiftRandomCurse(Player player)
         {
             var rand = new Random();
@@ -2188,6 +2250,30 @@ namespace TT.Domain.Legacy.Procedures
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             user.BotId = AIStatics.PsychopathBotId;
             playerRepo.SavePlayer(user);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, "You have temporarily become a psychopath!", false);
+
+            return message;
+        }
+
+        private static string MakeInvisible(Player player)
+        {
+            if (player.GameMode != (int)GameModeStatics.GameModes.PvP && !INVISIBILITY_EFFECT.HasValue)
+            {
+                return null;
+            }
+
+            var message = GiveEffect(player, INVISIBILITY_EFFECT, 2);
+
+            // Give player 'invisibility' until the effect expires, then revert to PvP
+            // We intentionally don't ripple the change in game mode down to the player's items.
+            var playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.GameMode = (int)GameModeStatics.GameModes.Invisible;
+            playerRepo.SavePlayer(user);
+
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} vanishes into thin air!");
+            PlayerLogProcedures.AddPlayerLog(player.Id, "You become invisible!", false);
 
             return message;
         }
@@ -2511,13 +2597,19 @@ namespace TT.Domain.Legacy.Procedures
             if (temporary)
             {
                 duration = PlayerHasBeenWarnedTwice(player) ? 10 : 5;
-                temporary = GiveEffect(player, AUTO_RESTORE_EFFECT, duration) != null;
+                GiveEffect(player, AUTO_RESTORE_EFFECT, duration);
+                
+                // If no autorestore we can't do temporary
+                if(!AUTO_RESTORE_EFFECT.HasValue || !EffectProcedures.PlayerHasActiveEffect(player, AUTO_RESTORE_EFFECT.Value))
+                {
+                    return null;
+                }
             }
 
             var index = new Random().Next(forms.Count());
             FormDetail form = forms.ElementAt(index);
 
-            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: dropInventory, createItem: !temporary, severe: true))
+            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: dropInventory, createItem: !temporary, severe: !temporary))
             {
                 return null;
             }
@@ -2660,7 +2752,7 @@ namespace TT.Domain.Legacy.Procedures
             }
         }
 
-        private static void UndoTemporaryForm(int playerId)
+        public static void UndoTemporaryForm(int playerId)
         {
             var player = PlayerProcedures.GetPlayer(playerId);
 
@@ -2679,6 +2771,7 @@ namespace TT.Domain.Legacy.Procedures
                 if (!canRemove)
                 {
                     // Can also revert if player is an inanimate posing as animate
+                    // (don't think this can happen any more as mobile forms shouldn't have associated items)
                     var inanimatePlayer = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerId });
                     canRemove = inanimatePlayer != null;
                 }

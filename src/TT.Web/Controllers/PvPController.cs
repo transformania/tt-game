@@ -1,36 +1,35 @@
+using FeatureSwitch;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using TT.Domain.Abstract;
-using TT.Domain.Concrete;
-using TT.Domain.Models;
-using TT.Domain.Procedures;
-using TT.Domain.Procedures.BossProcedures;
-using TT.Domain.Statics;
-using TT.Domain.ViewModels;
-using TT.Web.CustomHtmlHelpers;
 using TT.Domain;
-using FeatureSwitch;
+using TT.Domain.Abstract;
 using TT.Domain.Assets.Queries;
+using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures;
 using TT.Domain.Messages.Queries;
+using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
+using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Queries;
+using TT.Domain.Statics;
 using TT.Domain.TFEnergy.Commands;
+using TT.Domain.ViewModels;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
-using TT.Web.Extensions;
+using TT.Web.CustomHtmlHelpers;
 using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
@@ -68,6 +67,21 @@ namespace TT.Web.Controllers
             if (me == null)
             {
                 return RedirectToAction(MVC.PvP.Restart());
+            }
+
+            ItemDetail itemMe = null;
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+
+                if (itemMe == null && me.BotId == AIStatics.ActivePlayerBotId &&
+                    JokeShopProcedures.AUTO_RESTORE_EFFECT.HasValue &&
+                    !EffectProcedures.PlayerHasActiveEffect(me.Id, JokeShopProcedures.AUTO_RESTORE_EFFECT.Value))
+                {
+                    // If an inanimate player is stuck without a corresponding item, restore them
+                    JokeShopProcedures.UndoTemporaryForm(me.Id);
+                    me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                }
             }
 
             if (Session["ContributionId"] == null)
@@ -152,11 +166,6 @@ namespace TT.Web.Controllers
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
-                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
-                {
-                    PlayerId = me.Id
-                });
-
                 var inanimateOutput = new InanimatePlayPageViewModel
                 {
                     RenderCaptcha = renderCaptcha,
@@ -208,7 +217,8 @@ namespace TT.Web.Controllers
                 var playersHere = new List<PlayerFormViewModel>();
                 foreach (var p in inanimateOutput.PlayersHere)
                 {
-                    if (p.Player.Mobility == PvPStatics.MobilityFull)
+                    if (p.Player.Mobility == PvPStatics.MobilityFull &&
+                        p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible)
                     {
                         playersHere.Add(p);
                     }
@@ -229,7 +239,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.FormSourceId);
 
-                animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+                animalOutput.YouItem = itemMe;
                 if (animalOutput.YouItem?.Owner != null)
                 {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.Owner.Id);
@@ -267,7 +277,9 @@ namespace TT.Web.Controllers
                 var animalLocationItemsCmd = new GetItemsAtLocationVisibleToGameMode { dbLocationName = animalOutput.Location.dbName, gameMode = me.GameMode };
                 animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
 
-                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
+                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId)
+                                                .Where(p => p.Player.Mobility == PvPStatics.MobilityFull &&
+                                                            p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible);
 
                 animalOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
@@ -314,7 +326,9 @@ namespace TT.Web.Controllers
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
             loadtime += "Start get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Player.Mobility == PvPStatics.MobilityFull);
+            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId)
+                                        .Where(p => p.Player.Mobility == PvPStatics.MobilityFull &&
+                                                    p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
@@ -377,7 +391,14 @@ namespace TT.Web.Controllers
             loadtime += "End get mind controlled players:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
+            if (me.GameMode == (int)GameModeStatics.GameModes.Invisible)
+            {
+                output.LocationItems = new List<PlayPageItemDetail>();
+            }
+            else
+            {
+                output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
+            }
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();
@@ -594,11 +615,11 @@ namespace TT.Web.Controllers
             // Dizzy players can stumble in the wrong direction
             if (dizzy)
             {
-                var exits = new List<String> {currentLocation?.Name_North, currentLocation?.Name_East, currentLocation?.Name_South, currentLocation?.Name_West};
+                var exits = new List<String> { currentLocation?.Name_North, currentLocation?.Name_East, currentLocation?.Name_South, currentLocation?.Name_West };
 
                 if (blind)
                 {
-                    exits = new List<String> {"north", "east", "south", "west"};
+                    exits = new List<String> { "north", "east", "south", "west" };
                 }
 
                 var index = exits.IndexOf(locname);
@@ -666,14 +687,14 @@ namespace TT.Web.Controllers
             // Access controls on joke shop
             if (locname == LocationsStatics.JOKE_SHOP)
             {
-                if(JokeShopProcedures.CharacterIsBanned(me))
+                if (JokeShopProcedures.CharacterIsBanned(me))
                 {
                     TempData["Error"] = "You cannot enter the Joke Shop.";
                     TempData["SubError"] = "You are currently banned from this location.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
-                if((me.Id + PvPStatics.LastGameTurn) % 12 == 0)
+                if ((me.Id + PvPStatics.LastGameTurn) % 12 == 0)
                 {
                     TempData["Error"] = "You cannot enter the Joke Shop.";
                     TempData["SubError"] = "The shop is busy right now - try again next turn.";
@@ -1801,7 +1822,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.Id, true);
-                var name = (pickup.FormerPlayer == null) ? "a "+ pickup.ItemSource.FriendlyName
+                var name = (pickup.FormerPlayer == null) ? "a " + pickup.ItemSource.FriendlyName
                                                          : pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName;
                 playerLogMessage = "You tamed <b>" + name + "</b> at " + here.Name + " and put it into your inventory.";
                 locationLogMessage = me.GetFullName() + " tamed <b>" + name + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";

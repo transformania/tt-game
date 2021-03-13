@@ -35,6 +35,7 @@ namespace TT.Domain.Legacy.Procedures
         public static readonly int? BLINDED_EFFECT = EffectWithName("effect_Joke_Shop_Blinded");
         public static readonly int? DIZZY_EFFECT = EffectWithName("effect_Joke_Shop_Dizzy");
         public static readonly int? HUSHED_EFFECT = EffectWithName("effect_Joke_Shop_Hushed");
+        public static readonly int? PSYCHOTIC_EFFECT = EffectWithName("effect_Joke_Shop_Psychotic");
 
         private const string LIMITED_MOBILITY = "immobile";
 
@@ -112,6 +113,21 @@ namespace TT.Domain.Legacy.Procedures
                 foreach (var player in playersToRestore)
                 {
                     UndoTemporaryForm(player);
+                }
+            }
+
+            // Undo temporary psychopath TF
+            if (PSYCHOTIC_EFFECT.HasValue)
+            {
+                var playerRepo = new EFPlayerRepository();
+                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+                foreach (var player in playersToRestore)
+                {
+                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
+                    user.BotId = AIStatics.ActivePlayerBotId;
+                    playerRepo.SavePlayer(user);
+
+                    AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(player);
                 }
             }
 
@@ -2075,9 +2091,13 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return GiveEffect(player, ROOT_EFFECT, 4);
             }
-            else if (roll < 90)  // 80%
+            else if (roll < 80)  // 70%
             {
                 return GiveRandomEffect(player, PENALTY_EFFECTS);
+            }
+            else if (roll < 90)  // 10%
+            {
+                return MakePsychotic(player);
             }
             else  // 10%
             {
@@ -2152,6 +2172,24 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             return $"Your <strong>{effect.Effect.FriendlyName}</strong> effect has been lifted!";  // TODO joke_shop flavor text
+        }
+
+        private static string MakePsychotic(Player player)
+        {
+            if (!PSYCHOTIC_EFFECT.HasValue)
+            {
+                return null;
+            }
+
+            var message = GiveEffect(player, PSYCHOTIC_EFFECT, 3);
+
+            // Give player the psychopath AI until the effect expires
+            var playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.BotId = AIStatics.PsychopathBotId;
+            playerRepo.SavePlayer(user);
+
+            return message;
         }
 
         #endregion

@@ -582,10 +582,10 @@ namespace TT.Web.Controllers
             var effects = EffectProcedures.GetPlayerEffects2(me.Id);
 
             var dizzy = JokeShopProcedures.DIZZY_EFFECT.HasValue &&
-                effects.Any(e => e.Effect.Duration > 0 &&
+                effects.Any(e => e.dbEffect.Duration > 0 &&
                                  e.dbEffect.EffectSourceId == JokeShopProcedures.DIZZY_EFFECT.Value);
             var blind = JokeShopProcedures.BLINDED_EFFECT.HasValue &&
-                effects.Any(e => e.Effect.Duration > 0 &&
+                effects.Any(e => e.dbEffect.Duration > 0 &&
                                  e.dbEffect.EffectSourceId == JokeShopProcedures.BLINDED_EFFECT.Value);
 
             string direction = null;

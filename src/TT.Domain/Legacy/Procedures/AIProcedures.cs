@@ -249,17 +249,22 @@ namespace TT.Domain.Procedures
                             {
                                 ItemProcedures.DropItem(i.Id);
 
+                                var name = "a";
+
+                                if (i.FormerPlayer != null)
+                                {
+                                    name = "<b>" + i.FormerPlayer.FullName + "</b> the";
+                                }
+
                                 if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.FormerPlayer.FullName +
-                                        "</b> the pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> released " + name + " pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                                 else
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.FormerPlayer.FullName +
-                                        "</b> the <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                             }
                         }

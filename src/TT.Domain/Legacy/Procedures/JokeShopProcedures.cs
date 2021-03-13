@@ -1975,33 +1975,37 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return GiveEffect(player, ROOT_EFFECT, 2);
             }
-            else if (roll < 35)  // 25%
+            else if (roll < 30)  // 20%
             {
                 return GiveRandomEffect(player, BOOST_EFFECTS);
             }
-            else if (roll < 60)  // 25%
+            else if (roll < 50)  // 20%
             {
                 return GiveRandomEffect(player, PENALTY_EFFECTS);
             }
-            else if (roll < 65)  // 5%
+            else if (roll < 55)  // 5%
             {
                 return GiveEffect(player, BLINDED_EFFECT);
             }
-            else if (roll < 70)  // 5%
+            else if (roll < 60)  // 5%
             {
                 return GiveEffect(player, DIZZY_EFFECT);
             }
-            else if (roll < 75)  // 5%
+            else if (roll < 65)  // 5%
             {
                 return GiveEffect(player, HUSHED_EFFECT);
             }
-            else if (roll < 95)  // 20%
+            else if (roll < 85)  // 20%
             {
                 return GiveEffect(player, INSTINCT_EFFECT);
             }
-            else  // 5%
+            else if (roll < 90)  // 5%
             {
                 return GiveEffect(player, SNEAK_REVEAL_2);
+            }
+            else  // 10%
+            {
+                return LiftRandomCurse(player);
             }
         }
 
@@ -2066,6 +2070,31 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             return null;
+        }
+
+
+        private static string LiftRandomCurse(Player player)
+        {
+            var rand = new Random();
+            var effects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToArray();
+
+            if (effects.IsEmpty())
+            {
+                return null;
+            }
+
+            var effect = effects[rand.Next(effects.Count())];
+
+            if (effect.dbEffect.EffectSourceId == PvPStatics.Effect_BackOnYourFeetSourceId)
+            {
+                EffectProcedures.RemovePerkFromPlayer(effect.dbEffect.EffectSourceId, player);
+            }
+            else
+            {
+                EffectProcedures.SetPerkDurationToZero(effect.dbEffect.EffectSourceId, player);
+            }
+
+            return $"Your <strong>{effect.Effect.FriendlyName}</strong> effect has been lifted!";  // TODO joke_shop flavor text
         }
 
         #endregion

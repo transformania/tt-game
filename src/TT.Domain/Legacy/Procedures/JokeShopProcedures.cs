@@ -926,29 +926,37 @@ namespace TT.Domain.Legacy.Procedures
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 20)  // 20%
+            if (roll < 15)  // 15%
             {
                 return MildResourcePrank(player);
             }
-            else if (roll < 30)  // 10%
+            else if (roll < 25)  // 10%
             {
                 return MildLocationPrank(player);
             }
-            else if (roll < 45)  // 15%
+            else if (roll < 35)  // 10%
             {
                 return MildQuotasAndTimerPrank(player);
             }
-            else if (roll < 60)  // 15%
+            else if (roll < 50)  // 15%
             {
                 return MildTransformationPrank(player);
             }
-            else if (roll < 75)  // 15%
+            else if (roll < 65)  // 15%
             {
                 return MildEffectsPrank(player);
             }
-            else if (roll < 80)  // 5%
+            else if (roll < 70)  // 5%
             {
                 return RareFind(player);
+            }
+            else if (roll < 75)  // 5%
+            {
+                return RandomShout(player);
+            }
+            else if (roll < 80)  // 5%
+            {
+                return LocatePlayerInCombat(player);
             }
             else  // 20%
             {
@@ -1221,9 +1229,13 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return ChangeActionPoints(player, rand.Next(-3, 3));
             }
-            else  // 40%
+            else if (roll < 90) // 30%
             {
                 return ChangeMoney(player, rand.Next(-2, 3));
+            }
+            else  // 10%
+            {
+                return LearnSpell(player);
             }
         }
 
@@ -1236,17 +1248,21 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return ChangeHealth(player, rand.Next(-125, 125));
             }
-            else if (roll < 60)  // 30%
+            else if (roll < 55)  // 25%
             {
                 return ChangeMana(player, rand.Next(-20, 20));
             }
-            else if (roll < 65)  // 5%
+            else if (roll < 60)  // 5%
             {
                 return ChangeActionPoints(player, rand.Next(-10, 20));
             }
-            else if (roll < 95)  // 30%
+            else if (roll < 85)  // 25%
             {
                 return ChangeMoney(player, rand.Next(-5, 5));
+            }
+            else if (roll < 95)  // 10%
+            {
+                return UnlearnSpell(player);
             }
             else  // 5%
             {
@@ -1467,6 +1483,47 @@ namespace TT.Domain.Legacy.Procedures
 
                 return "You have found a rune!";
             }
+        }
+
+        private static string LearnSpell(Player player)
+        {
+            var rand = new Random();
+            var num = rand.Next(3) + 1;
+            var learnt = SkillProcedures.GiveRandomFindableSkillsToPlayer(player, num);
+
+            if (learnt.IsEmpty())
+            {
+                return null;
+            }
+
+            return $"You discover the secrets of {ListifyHelper.Listify(learnt)}!";  // TODO joke_shop flavor text
+        }
+
+        private static string UnlearnSpell(Player player)
+        {
+            var rand = new Random();
+
+            var skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id)
+                .Where(s => s.StaticSkill.IsPlayerLearnable &&
+                            !s.StaticSkill.ExclusiveToFormSourceId.HasValue &&
+                            !s.StaticSkill.ExclusiveToItemSourceId.HasValue &&
+                            s.StaticSkill.Id != PvPStatics.Spell_WeakenId &&
+                            s.StaticSkill.Id != PvPStatics.Dungeon_VanquishSpellSourceId &&
+                            s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId &&
+                            (s.StaticSkill.LearnedAtLocation ?? s.StaticSkill.LearnedAtRegion) != null);
+
+            if (skills.IsEmpty())
+            {
+                return null;
+            }
+
+            var skill = skills.ElementAt(rand.Next(skills.Count()));
+            var message = $"The strange aura of the Joke Shop causes you to forget how to cast {skill.StaticSkill.FriendlyName}!";
+
+            ISkillRepository skillRepo = new EFSkillRepository();
+            skillRepo.DeleteSkill(skill.dbSkill.Id);
+
+            return message;
         }
 
         #endregion
@@ -3305,6 +3362,74 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             return $"You incite {attacker.GetFullName()} to attack another player!";
+        }
+
+        private static string RandomShout(Player player)
+        {
+            var rand = new Random();
+
+            String[] memes = {
+                // TODO joke_shop add memes
+                };
+            String meme = null;
+
+            var specialCases = 1;
+
+            var selection = rand.Next(memes.Count() + specialCases);
+
+            if (selection == 0)
+            {
+                var covens = CovenantProcedures.GetCovenantsList();
+
+                if (player.Covenant.HasValue)
+                {
+                    covens = covens.Where(c => c.dbCovenant.Id == player.Covenant.Value);
+                }
+
+                if(covens.Any())
+                {
+                    var coven = covens.ElementAt(rand.Next(covens.Count()));
+                    meme = $"All hail {coven.Leader.GetFullName()}, leader of {coven.dbCovenant.Name}!";
+                }
+            }
+            else
+            {
+                meme = memes[selection - specialCases];
+            }
+
+            if (meme == null)
+            {
+                return null;
+            }
+
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} shouted <b>\"{meme}\"</b> here.");
+
+            return $"You shouted \"{meme}\"";
+        }
+
+        private static string LocatePlayerInCombat(Player player)
+        {
+            var rand = new Random();
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling());
+
+            var playerRepo = new EFPlayerRepository();
+            IEnumerable<Player> playersInCombat = playerRepo.Players
+                .Where(p => p.LastCombatTimestamp >= cutoff &&
+                            p.Id != player.Id &&
+                            p.Mobility == PvPStatics.MobilityFull &&
+                            p.InDuel <= 0 &&
+                            p.InQuest <= 0 &&
+                            p.BotId == AIStatics.ActivePlayerBotId);
+
+            if (playersInCombat.IsEmpty())
+            {
+                return null;
+            }
+
+            var detected = playersInCombat.ElementAt(rand.Next(playersInCombat.Count()));
+            var location = LocationsStatics.GetConnectionName(detected.dbLocationName);
+
+            return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> is currently in <b>{location}</b>!";
         }
 
         #endregion

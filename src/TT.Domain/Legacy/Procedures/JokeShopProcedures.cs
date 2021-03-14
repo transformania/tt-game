@@ -22,8 +22,8 @@ namespace TT.Domain.Legacy.Procedures
         private static int? SecondWarningEffect = null;
         private static int? BannedFromJokeShopEffect = null;
 
-        private static int[] BoostEffects = null;
-        private static int[] PenaltyEffects = null;
+        private static List<int> BoostEffects = null;
+        private static List<int> PenaltyEffects = null;
 
         private static int? RootEffect = null;
         private static int? SneakReveal1 = null;
@@ -109,13 +109,13 @@ namespace TT.Domain.Legacy.Procedures
         }
 
         // Stat boosting effects
-        public static int[] BOOST_EFFECTS
+        public static List<int> BOOST_EFFECTS
         {
             get
             {
                 if (BoostEffects == null)
                 {
-                    BoostEffects = EffectsWithNamesStarting("effect_Joke_Shop_Boost_") ?? new int[] {};
+                    BoostEffects = EffectsWithNamesStarting("effect_Joke_Shop_Boost_") ?? new List<int>();
                 }
 
                 return BoostEffects;
@@ -125,13 +125,13 @@ namespace TT.Domain.Legacy.Procedures
                 BoostEffects = value;
             }
         }
-        public static int[] PENALTY_EFFECTS
+        public static List<int> PENALTY_EFFECTS
         {
             get
             {
                 if (PenaltyEffects == null)
                 {
-                    PenaltyEffects = EffectsWithNamesStarting("effect_Joke_Shop_Penalty_") ?? new int[] {};
+                    PenaltyEffects = EffectsWithNamesStarting("effect_Joke_Shop_Penalty_") ?? new List<int>();
                 }
 
                 return PenaltyEffects;
@@ -395,10 +395,10 @@ namespace TT.Domain.Legacy.Procedures
             return effectRepo.DbStaticEffects.Where(e => e.dbName == dbName).FirstOrDefault()?.Id;
         }
 
-        private static int[] EffectsWithNamesStarting(string prefix)
+        private static List<int> EffectsWithNamesStarting(string prefix)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
-            return effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).Select(e => e.Id).ToArray();
+            return effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).Select(e => e.Id).ToList();
         }
 
         internal static void RunEffectActions(List<Effect> temporaryEffects)
@@ -2474,14 +2474,14 @@ namespace TT.Domain.Legacy.Procedures
             return EffectProcedures.GivePerkToPlayer(effect.Value, player, Duration: duration, Cooldown: duration);
         }
 
-        private static string GiveRandomEffect(Player player, int[] effects)
+        private static string GiveRandomEffect(Player player, IEnumerable<int> effects)
         {
             if (effects.IsEmpty())
             {
                 return null;
             }
 
-            var effect = effects[new Random().Next(effects.Count())];
+            var effect = effects.ElementAt(new Random().Next(effects.Count()));
 
             if (EffectProcedures.PlayerHasEffect(player, effect))
             {

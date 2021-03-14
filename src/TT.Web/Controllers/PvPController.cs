@@ -16,7 +16,7 @@ using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;

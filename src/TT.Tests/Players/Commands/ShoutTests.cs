@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;

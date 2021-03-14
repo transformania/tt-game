@@ -7,7 +7,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
-namespace TT.Domain.Legacy.Procedures
+namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     static class InstinctProcedures
     {
@@ -21,7 +21,7 @@ namespace TT.Domain.Legacy.Procedures
 
             var rand = new Random();
             var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
-            
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var activePlayers = playerRepo.Players
                                           .Where(p => p.OnlineActivityTimestamp >= cutoff &&
@@ -30,7 +30,7 @@ namespace TT.Domain.Legacy.Procedures
                                                       p.InQuest <= 0 &&
                                                       p.BotId == AIStatics.ActivePlayerBotId &&
                                                       !p.dbLocationName.StartsWith("dungeon_"))
-                                          .Select(p => new {p.Id, p.FormSourceId, p.dbLocationName});
+                                          .Select(p => new { p.Id, p.FormSourceId, p.dbLocationName });
 
             var mcPlayers = activePlayers.Where(p => playersToControl.Any(victim => p.Id == victim));
             var freePlayers = activePlayers.Where(p => !playersToControl.Any(victim => p.Id == victim));
@@ -57,12 +57,13 @@ namespace TT.Domain.Legacy.Procedures
                 foreach (var sheep in mcSheep)
                 {
                     var sheepPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == sheep.Id);
-                    var stoppedAt = JokeShopProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, (p, loc) => {
-                            if (rand.Next(3) == 0)
-                            {
-                                LocationLogProcedures.AddLocationLog(loc, $"{p.GetFullName()} bleated here:  <b>Baaaaa!</b>");
-                            }
-                        });
+                    var stoppedAt = JokeShopProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, (p, loc) =>
+                    {
+                        if (rand.Next(3) == 0)
+                        {
+                            LocationLogProcedures.AddLocationLog(loc, $"{p.GetFullName()} bleated here:  <b>Baaaaa!</b>");
+                        }
+                    });
 
                     if (stoppedAt == flockToLocation)
                     {
@@ -97,7 +98,7 @@ namespace TT.Domain.Legacy.Procedures
                 var mcCats = mcPlayers.Where(p => JokeShopProcedures.CATS_AND_NEKOS.Any(catForm => p.FormSourceId == catForm)).ToList();
                 var freeCats = freePlayers.Where(p => JokeShopProcedures.CATS_AND_NEKOS.Any(catForm => p.FormSourceId == catForm)).ToList();
 
-                while (!mcDogs.IsEmpty() && (mcCats.Count() + freeCats.Count()) > 0)
+                while (!mcDogs.IsEmpty() && mcCats.Count() + freeCats.Count() > 0)
                 {
                     // Find a dog
                     var dogIndex = rand.Next(mcDogs.Count());
@@ -137,17 +138,18 @@ namespace TT.Domain.Legacy.Procedures
                     var catPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == catId);
 
                     // Move dog
-                    var stoppedAt = JokeShopProcedures.MovePlayer(dogPlayer, catLoc, 15, (p, loc) => {
-                            var roll = rand.Next(4);
-                            if (roll == 0)
-                            {
-                                LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} barked here as they catch the scent of a cat, {catPlayer.GetFullName()}:  <b>Woof woof!</b>");
-                            }
-                            else if (roll == 1)
-                            {
-                                LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} growled here as they get closer to {catPlayer.GetFullName()}, the cat:  <b>Grrrrrrrrr!</b>");
-                            }
-                        });
+                    var stoppedAt = JokeShopProcedures.MovePlayer(dogPlayer, catLoc, 15, (p, loc) =>
+                    {
+                        var roll = rand.Next(4);
+                        if (roll == 0)
+                        {
+                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} barked here as they catch the scent of a cat, {catPlayer.GetFullName()}:  <b>Woof woof!</b>");
+                        }
+                        else if (roll == 1)
+                        {
+                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} growled here as they get closer to {catPlayer.GetFullName()}, the cat:  <b>Grrrrrrrrr!</b>");
+                        }
+                    });
 
                     // Dog has arrived at the cat's location
                     if (stoppedAt == catLoc)
@@ -170,13 +172,14 @@ namespace TT.Domain.Legacy.Procedures
                                 treeLoc = "forest_ancestor_tree";
                             }
 
-                            var catStoppedAt = JokeShopProcedures.MovePlayer(catPlayer, treeLoc, 15, (p, loc) => {
-                                    var roll = rand.Next(3);
-                                    if (roll == 0)
-                                    {
-                                        LocationLogProcedures.AddLocationLog(loc, $"<b>Meoooww!</b> screeches {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.");
-                                    }
-                                });
+                            var catStoppedAt = JokeShopProcedures.MovePlayer(catPlayer, treeLoc, 15, (p, loc) =>
+                            {
+                                var roll = rand.Next(3);
+                                if (roll == 0)
+                                {
+                                    LocationLogProcedures.AddLocationLog(loc, $"<b>Meoooww!</b> screeches {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.");
+                                }
+                            });
 
                             if (catStoppedAt == treeLoc)
                             {
@@ -210,8 +213,8 @@ namespace TT.Domain.Legacy.Procedures
                     }
                     else if (dog.dbLocationName == catLoc)
                     {
-                            PlayerLogProcedures.AddPlayerLog(catId, $"{dogPlayer.GetFullName()} barked at you:  <b>Woof woof!</b>", true);
-                            PlayerLogProcedures.AddPlayerLog(dogPlayer.Id, $"You barked at {catPlayer.GetFullName()}:  <b>Woof woof!</b>", true);
+                        PlayerLogProcedures.AddPlayerLog(catId, $"{dogPlayer.GetFullName()} barked at you:  <b>Woof woof!</b>", true);
+                        PlayerLogProcedures.AddPlayerLog(dogPlayer.Id, $"You barked at {catPlayer.GetFullName()}:  <b>Woof woof!</b>", true);
                     }
 
                 }
@@ -224,7 +227,7 @@ namespace TT.Domain.Legacy.Procedures
                 var mcRodents = mcPlayers.Where(p => JokeShopProcedures.RODENTS.Any(rodentForm => p.FormSourceId == rodentForm)).ToList();
                 var freeRodents = freePlayers.Where(p => JokeShopProcedures.RODENTS.Any(rodentForm => p.FormSourceId == rodentForm)).ToList();
 
-                while (!mcCats2.IsEmpty() && (mcRodents.Count() + freeRodents.Count()) > 0)
+                while (!mcCats2.IsEmpty() && mcRodents.Count() + freeRodents.Count() > 0)
                 {
                     // Find a cat
                     var catIndex = rand.Next(mcCats2.Count());
@@ -261,13 +264,14 @@ namespace TT.Domain.Legacy.Procedures
                     var rodentPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == rodentId);
 
                     // Move cat
-                    var stoppedAt = JokeShopProcedures.MovePlayer(catPlayer, rodentLoc, 15, (p, loc) => {
-                            var roll = rand.Next(4);
-                            if (roll == 0)
-                            {
-                                LocationLogProcedures.AddLocationLog(loc, $"{catPlayer.GetFullName()} stealthily prowls the area, on the hunt for {rodentPlayer.GetFullName()}");
-                            }
-                        });
+                    var stoppedAt = JokeShopProcedures.MovePlayer(catPlayer, rodentLoc, 15, (p, loc) =>
+                    {
+                        var roll = rand.Next(4);
+                        if (roll == 0)
+                        {
+                            LocationLogProcedures.AddLocationLog(loc, $"{catPlayer.GetFullName()} stealthily prowls the area, on the hunt for {rodentPlayer.GetFullName()}");
+                        }
+                    });
 
                     if (stoppedAt == rodentLoc)
                     {

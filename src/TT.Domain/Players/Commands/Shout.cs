@@ -4,7 +4,7 @@ using Highway.Data;
 using TT.Domain.Effects.Entities;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;

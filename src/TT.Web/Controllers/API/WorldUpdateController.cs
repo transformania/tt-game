@@ -7,7 +7,7 @@ using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.World.Commands;

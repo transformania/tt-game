@@ -9,7 +9,7 @@ using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.World.Queries;
 
-namespace TT.Domain.Legacy.Procedures
+namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class BountyProcedures
     {
@@ -30,15 +30,6 @@ namespace TT.Domain.Legacy.Procedures
                 Id = id;
                 Category = category;
             }
-        }
-
-        public class BountyInfo
-        {
-            public string PlayerName;
-            public DbStaticForm Form;
-            public string Category;
-            public int ExpiresTurn;
-            public int CurrentReward;
         }
 
         private static List<EffectMapping> BountyEffects()
@@ -110,7 +101,7 @@ namespace TT.Domain.Legacy.Procedures
             var playerEffect = EffectProcedures.GetPlayerEffects2(player.Id).FirstOrDefault(e => e.dbEffect.EffectSourceId == effect.Id);
 
             if (playerEffect == null || playerEffect.dbEffect.Duration == 0)
-            { 
+            {
                 return null;
             }
 
@@ -144,7 +135,7 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             // Calculate the reward that could be claimed right now
-            var reward = Math.Min(MAXIMUM_REWARD, BASE_REWARD + ((MAXIMUM_REWARD - BASE_REWARD) * duration) / TURNS_OF_BOUNTY);
+            var reward = Math.Min(MAXIMUM_REWARD, BASE_REWARD + (MAXIMUM_REWARD - BASE_REWARD) * duration / TURNS_OF_BOUNTY);
 
             if (form.MobilityType == PvPStatics.MobilityFull)
             {
@@ -170,7 +161,7 @@ namespace TT.Domain.Legacy.Procedures
 
                 if (entry != null)
                 {
-                results.Add(entry);
+                    results.Add(entry);
                 }
             }
 
@@ -197,7 +188,7 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             var bountyStaticEffectIds = MAPPINGS.Select(se => se.Id);
-            var victimEffects = EffectProcedures.GetPlayerEffects2(victim.Id).Where(e =>  bountyStaticEffectIds.Contains(e.dbEffect.EffectSourceId));
+            var victimEffects = EffectProcedures.GetPlayerEffects2(victim.Id).Where(e => bountyStaticEffectIds.Contains(e.dbEffect.EffectSourceId));
             var award = 0;
 
             foreach (var victimEffect in victimEffects)

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -13,7 +13,7 @@ using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
-namespace TT.Domain.Legacy.Procedures
+namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class JokeShopProcedures
     {
@@ -44,16 +44,16 @@ namespace TT.Domain.Legacy.Procedures
         private const string LIMITED_MOBILITY = "immobile";
 
         // IDs of some form sources grouped by theme
-        public static readonly int[] MISCHIEVOUS_FORMS = {215, 221, 438};
-        public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
-        public static readonly int[] DOGS = {34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187};
-        public static readonly int[] RODENTS = {70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077};
-        public static readonly int[] TREES = {50, 741};
-        public static readonly int[] STRIPPERS = {153, 719, 880};
-        public static readonly int[] DRONES = {715, 930, 951, 1039, 1050};
-        public static readonly int[] SHEEP = {204, 950, 1022, 1035, 1198};
-        public static readonly int[] MAIDS = {65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 951, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207};
-        public static readonly int[] MANA_FORMS = {834, 1149};
+        public static readonly int[] MISCHIEVOUS_FORMS = { 215, 221, 438 };
+        public static readonly int[] CATS_AND_NEKOS = { 39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202 };
+        public static readonly int[] DOGS = { 34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187 };
+        public static readonly int[] RODENTS = { 70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077 };
+        public static readonly int[] TREES = { 50, 741 };
+        public static readonly int[] STRIPPERS = { 153, 719, 880 };
+        public static readonly int[] DRONES = { 715, 930, 951, 1039, 1050 };
+        public static readonly int[] SHEEP = { 204, 950, 1022, 1035, 1198 };
+        public static readonly int[] MAIDS = { 65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 951, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207 };
+        public static readonly int[] MANA_FORMS = { 834, 1149 };
 
         // Effects supporting the Joke Shop mechanics
         // Try to contact DB once in a threadsafe way and cache results/failure
@@ -66,7 +66,7 @@ namespace TT.Domain.Legacy.Procedures
                     FirstWarningEffect = EffectWithName("effect_Joke_Shop_Warned") ?? -1;
                 }
 
-                return (FirstWarningEffect.Value == -1) ? null : FirstWarningEffect;
+                return FirstWarningEffect.Value == -1 ? null : FirstWarningEffect;
             }
             set
             {
@@ -83,7 +83,7 @@ namespace TT.Domain.Legacy.Procedures
                     SecondWarningEffect = EffectWithName("effect_Joke_Shop_Warned_Twice") ?? -1;
                 }
 
-                return (SecondWarningEffect.Value == -1) ? null : SecondWarningEffect;
+                return SecondWarningEffect.Value == -1 ? null : SecondWarningEffect;
             }
             set
             {
@@ -100,7 +100,7 @@ namespace TT.Domain.Legacy.Procedures
                     BannedFromJokeShopEffect = EffectWithName("effect_Joke_Shop_Banned") ?? -1;
                 }
 
-                return (BannedFromJokeShopEffect.Value == -1) ? null : BannedFromJokeShopEffect;
+                return BannedFromJokeShopEffect.Value == -1 ? null : BannedFromJokeShopEffect;
             }
             set
             {
@@ -152,7 +152,7 @@ namespace TT.Domain.Legacy.Procedures
                     RootEffect = EffectWithName("effect_Joke_Shop_Penalty_Mobility") ?? -1;
                 }
 
-                return (RootEffect.Value == -1) ? null : RootEffect;
+                return RootEffect.Value == -1 ? null : RootEffect;
             }
             set
             {
@@ -169,7 +169,7 @@ namespace TT.Domain.Legacy.Procedures
                     SneakReveal1 = EffectWithName("effect_Joke_Shop_Track_1") ?? -1;
                 }
 
-                return (SneakReveal1.Value == -1) ? null : SneakReveal1;
+                return SneakReveal1.Value == -1 ? null : SneakReveal1;
             }
             set
             {
@@ -186,7 +186,7 @@ namespace TT.Domain.Legacy.Procedures
                     SneakReveal2 = EffectWithName("effect_Joke_Shop_Track_2") ?? -1;
                 }
 
-                return (SneakReveal2.Value == -1) ? null : SneakReveal2;
+                return SneakReveal2.Value == -1 ? null : SneakReveal2;
             }
             set
             {
@@ -203,7 +203,7 @@ namespace TT.Domain.Legacy.Procedures
                     SneakReveal3 = EffectWithName("effect_Joke_Shop_Track_3") ?? -1;
                 }
 
-                return (SneakReveal3.Value == -1) ? null : SneakReveal3;
+                return SneakReveal3.Value == -1 ? null : SneakReveal3;
             }
             set
             {
@@ -220,7 +220,7 @@ namespace TT.Domain.Legacy.Procedures
                     AutoRestoreEffect = EffectWithName("effect_Joke_Shop_Auto_Restore") ?? -1;
                 }
 
-                return (AutoRestoreEffect.Value == -1) ? null : AutoRestoreEffect;
+                return AutoRestoreEffect.Value == -1 ? null : AutoRestoreEffect;
             }
             set
             {
@@ -237,7 +237,7 @@ namespace TT.Domain.Legacy.Procedures
                     InstinctEffect = EffectWithName("effect_Joke_Shop_MC_Instinct") ?? -1;
                 }
 
-                return (InstinctEffect.Value == -1) ? null : InstinctEffect;
+                return InstinctEffect.Value == -1 ? null : InstinctEffect;
             }
             set
             {
@@ -254,7 +254,7 @@ namespace TT.Domain.Legacy.Procedures
                     BlindedEffect = EffectWithName("effect_Joke_Shop_Blinded") ?? -1;
                 }
 
-                return (BlindedEffect == -1) ? null : BlindedEffect;;
+                return BlindedEffect == -1 ? null : BlindedEffect; ;
             }
             set
             {
@@ -271,7 +271,7 @@ namespace TT.Domain.Legacy.Procedures
                     DizzyEffect = EffectWithName("effect_Joke_Shop_Dizzy") ?? -1;
                 }
 
-                return (DizzyEffect == -1) ? null : DizzyEffect;
+                return DizzyEffect == -1 ? null : DizzyEffect;
             }
             set
             {
@@ -288,7 +288,7 @@ namespace TT.Domain.Legacy.Procedures
                     HushedEffect = EffectWithName("effect_Joke_Shop_Hushed") ?? -1;
                 }
 
-                return (HushedEffect == -1) ? null : HushedEffect;
+                return HushedEffect == -1 ? null : HushedEffect;
             }
             set
             {
@@ -305,7 +305,7 @@ namespace TT.Domain.Legacy.Procedures
                     PsychoticEffect = EffectWithName("effect_Joke_Shop_Psychotic") ?? -1;
                 }
 
-                return (PsychoticEffect == -1) ? null : PsychoticEffect;
+                return PsychoticEffect == -1 ? null : PsychoticEffect;
             }
             set
             {
@@ -322,7 +322,7 @@ namespace TT.Domain.Legacy.Procedures
                     InvisibilityEffect = EffectWithName("effect_Joke_Shop_Invisible_PvP") ?? -1;
                 }
 
-                return (InvisibilityEffect == -1) ? null : InvisibilityEffect;
+                return InvisibilityEffect == -1 ? null : InvisibilityEffect;
             }
             set
             {
@@ -368,15 +368,15 @@ namespace TT.Domain.Legacy.Procedures
         private static List<FormDetail> CandidateForms()
         {
             IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
-            var learnableSpells = skillsRepo.DbStaticSkills.Where(spell => spell.IsLive == "live" && spell.IsPlayerLearnable).Select(spell => new {spell.FormSourceId}).ToList();
+            var learnableSpells = skillsRepo.DbStaticSkills.Where(spell => spell.IsLive == "live" && spell.IsPlayerLearnable).Select(spell => new { spell.FormSourceId }).ToList();
 
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-            var forms = formsRepo.DbStaticForms.Select(form => new {form.FriendlyName, Immobile = form.MoveActionPointDiscount < -5, form.Id, form.MobilityType, form.ItemSourceId});
+            var forms = formsRepo.DbStaticForms.Select(form => new { form.FriendlyName, Immobile = form.MoveActionPointDiscount < -5, form.Id, form.MobilityType, form.ItemSourceId });
 
-            var learnableForms = learnableSpells.Join(forms, spell => spell.FormSourceId, form => form.Id, (spell, form) => new {form.Id, form.FriendlyName, form.Immobile, form.MobilityType, form.ItemSourceId});
+            var learnableForms = learnableSpells.Join(forms, spell => spell.FormSourceId, form => form.Id, (spell, form) => new { form.Id, form.FriendlyName, form.Immobile, form.MobilityType, form.ItemSourceId });
 
             IDbStaticItemRepository itemsRepo = new EFDbStaticItemRepository();
-            var itemTypes = itemsRepo.DbStaticItems.Select(i => new {i.Id, i.ItemType}).ToList();
+            var itemTypes = itemsRepo.DbStaticItems.Select(i => new { i.Id, i.ItemType }).ToList();
 
             var formDetails = learnableForms.Join(itemTypes, form => form.ItemSourceId, itemType => itemType.Id, (form, item) => new FormDetail(form.Id, form.FriendlyName, item.ItemType)).ToList();
             formDetails.AddRange(learnableForms.Where(form => form.ItemSourceId == null && form.MobilityType == PvPStatics.MobilityFull).Select(form => new FormDetail(form.Id, form.FriendlyName, form.Immobile ? LIMITED_MOBILITY : form.MobilityType)));
@@ -519,7 +519,7 @@ namespace TT.Domain.Legacy.Procedures
             // Work on a copy of the map to avoid concurrency issues
             var newMap = LocationsStatics.LocationList.GetLocation.Select(l => l.Clone()).ToList();
             var jokeShopTile = newMap.FirstOrDefault(l => l.dbName == LocationsStatics.JOKE_SHOP);
-            var initiallyActive = (jokeShopTile != null);
+            var initiallyActive = jokeShopTile != null;
 
             if (initiallyActive == active)
             {
@@ -531,10 +531,11 @@ namespace TT.Domain.Legacy.Procedures
                 // Activate joke shop
 
                 // Add tile to map
-                jokeShopTile = new Location {
+                jokeShopTile = new Location
+                {
                     dbName = LocationsStatics.JOKE_SHOP,
                     Name = "Cursed Joke Shop",
-                    Region="limbo"
+                    Region = "limbo"
                 };
                 newMap.Add(jokeShopTile);
 
@@ -555,7 +556,7 @@ namespace TT.Domain.Legacy.Procedures
 
                 // Disable wayfinding into joke shop
                 IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
-                
+
                 foreach (var directive in directiveRepo.AIDirectives.Where(d => d.TargetLocation == LocationsStatics.JOKE_SHOP).ToList())
                 {
                     var botDirective = directiveRepo.AIDirectives.FirstOrDefault(d => d.Id == directive.Id);
@@ -569,7 +570,7 @@ namespace TT.Domain.Legacy.Procedures
 
                 // Everybody out
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-    
+
                 foreach (var player in PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP).ToList())
                 {
                     var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
@@ -578,8 +579,8 @@ namespace TT.Domain.Legacy.Procedures
                 }
 
                 IItemRepository itemRepo = new EFItemRepository();
-    
-                foreach (var item in itemRepo.Items.Where(i => i.dbLocationName ==LocationsStatics.JOKE_SHOP).ToList())
+
+                foreach (var item in itemRepo.Items.Where(i => i.dbLocationName == LocationsStatics.JOKE_SHOP).ToList())
                 {
                     var streetItem = itemRepo.Items.FirstOrDefault(i => i.Id == item.Id);
                     streetItem.dbLocationName = streetTile;
@@ -617,7 +618,7 @@ namespace TT.Domain.Legacy.Procedures
             }
             else if (roll < 90)  // 25%
             {
-                 return MischievousPrank(player);
+                return MischievousPrank(player);
             }
             else if (roll < 95)  // 5%
             {
@@ -708,8 +709,8 @@ namespace TT.Domain.Legacy.Procedures
                     var other = others[rand.Next(others.Count())];
                     var proportion = rand.NextDouble() * 0.6 + 0.2;
                     var amount = Math.Floor(other.Mana * (decimal)proportion);
-                    ChangeMana(player, (int)(amount));
-                    ChangeMana(other, (int)(-amount));
+                    ChangeMana(player, (int)amount);
+                    ChangeMana(other, (int)-amount);
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     PlayerLogProcedures.AddPlayerLog(other.Id, $"{player.GetFullName()} steals {amount} mana from you!", true);
                     message = $"You steal {amount} mana from {other.GetFullName()}!";
@@ -753,7 +754,7 @@ namespace TT.Domain.Legacy.Procedures
             // Charge player AP for the prank
             if (message != null)
             {
-                ChangeActionPoints(player, (int)(-PvPStatics.MeditateCost));
+                ChangeActionPoints(player, (int)-PvPStatics.MeditateCost);
             }
 
             return message;
@@ -860,8 +861,8 @@ namespace TT.Domain.Legacy.Procedures
                     var other = others[rand.Next(others.Count())];
                     var proportion = rand.NextDouble() * 0.3 + 0.1;
                     var amount = Math.Floor(other.Health * (decimal)proportion);
-                    ChangeHealth(player, (int)(amount));
-                    ChangeHealth(other, (int)(-amount));
+                    ChangeHealth(player, (int)amount);
+                    ChangeHealth(other, (int)-amount);
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     PlayerLogProcedures.AddPlayerLog(other.Id, $"{player.GetFullName()} steals {amount} of your willpower!", true);
                     message = $"You steal {amount} willpower from {other.GetFullName()}!";
@@ -905,7 +906,7 @@ namespace TT.Domain.Legacy.Procedures
             // Charge player AP for the prank
             if (message != null)
             {
-                ChangeActionPoints(player, (int)(-PvPStatics.CleanseCost));
+                ChangeActionPoints(player, (int)-PvPStatics.CleanseCost);
             }
 
             return message;
@@ -1013,7 +1014,7 @@ namespace TT.Domain.Legacy.Procedures
             // Charge player AP for the prank
             if (message != null)
             {
-                ChangeActionPoints(player, (int)(-PvPStatics.CleanseCost));
+                ChangeActionPoints(player, (int)-PvPStatics.CleanseCost);
             }
 
             return message;
@@ -1031,7 +1032,7 @@ namespace TT.Domain.Legacy.Procedures
 
             var rand = new Random();
 
-            if (rand.Next(2) !=  0)  // Prank 1 drop in 2
+            if (rand.Next(2) != 0)  // Prank 1 drop in 2
             {
                 return null;
             }
@@ -1052,7 +1053,7 @@ namespace TT.Domain.Legacy.Procedures
                     message = $"You drop your {item.Item.FriendlyName}, but it vanishes into thin air before it can hit the ground!";
                 }
 
-                if (message.IsNullOrEmpty() && rollAgain < 2 && (!item.dbItem.FormerPlayerId.HasValue || (item.dbItem.IsPermanent && !item.dbItem.SoulboundToPlayerId.HasValue) ))
+                if (message.IsNullOrEmpty() && rollAgain < 2 && (!item.dbItem.FormerPlayerId.HasValue || item.dbItem.IsPermanent && !item.dbItem.SoulboundToPlayerId.HasValue))
                 {
                     var merchant = PlayerProcedures.GetPlayerFromBotId(item.Item.ItemType == PvPStatics.ItemType_Pet ? AIStatics.WuffieBotId : AIStatics.LindellaBotId);
                     if (merchant != null)
@@ -1075,7 +1076,7 @@ namespace TT.Domain.Legacy.Procedures
                 // Mischievous
                 var location = LocationsStatics.GetRandomLocationNotInDungeon();
                 var loc = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == location);
-                var nearby = LocationsStatics.LocationList.GetLocation.Where(l => l.X >= loc.X -2 && l.X <= loc.X + 2 && l.Y >= loc.Y - 2 && l.Y <= loc.Y + 2 && l.Region != "dungeon").ToArray();
+                var nearby = LocationsStatics.LocationList.GetLocation.Where(l => l.X >= loc.X - 2 && l.X <= loc.X + 2 && l.Y >= loc.Y - 2 && l.Y <= loc.Y + 2 && l.Region != "dungeon").ToArray();
                 var anchor = nearby[rand.Next(nearby.Count())];
 
                 message = ItemProcedures.DropItem(itemId, location);
@@ -1127,7 +1128,7 @@ namespace TT.Domain.Legacy.Procedures
 
             var rand = new Random();
 
-            if (rand.Next(5) !=  0)  // Prank 1 attack in 5
+            if (rand.Next(5) != 0)  // Prank 1 attack in 5
             {
                 return null;
             }
@@ -1196,7 +1197,7 @@ namespace TT.Domain.Legacy.Procedures
             {
                 // Wrong spell
                 var skillsAvailable = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id).Where(s => s.MobilityType == skill.MobilityType && s.StaticSkill.Id != skill.StaticSkill.Id).ToArray();
-                
+
                 if (skillsAvailable != null && skillsAvailable.Count() > 0)
                 {
                     var skillToUse = skillsAvailable[rand.Next(skillsAvailable.Count())];
@@ -1976,12 +1977,12 @@ namespace TT.Domain.Legacy.Procedures
             {
                 return false;
             }
-            
+
             if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
             {
                 return false;
             }
-            
+
             if (ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped) > PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory)
             {
                 // Carryiing too much
@@ -2073,7 +2074,7 @@ namespace TT.Domain.Legacy.Procedures
             int npc = 0;
             // View view = null;
 
-            switch(roll)
+            switch (roll)
             {
                 case 0:
                     npc = AIStatics.BartenderBotId;
@@ -2206,7 +2207,7 @@ namespace TT.Domain.Legacy.Procedures
                     message = $"{message}<br />{attackMessage}";
                 }
             }
-            
+
             return message;
         }
 
@@ -2307,7 +2308,7 @@ namespace TT.Domain.Legacy.Procedures
 
             // Cap distance, plus don't exceed number of tiles or available AP
             var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
-            var spacesToMove = (int)(Math.Min(maxDistance, pathTiles.Count()));
+            var spacesToMove = (int)Math.Min(maxDistance, pathTiles.Count());
             spacesToMove = Math.Min(maxSpacesToMove, spacesToMove);
 
             if (spacesToMove == 0)
@@ -2497,7 +2498,7 @@ namespace TT.Domain.Legacy.Procedures
 
             if (effects.Any())
             {
-                var effect = effects[new Random{}.Next(effects.Count())];
+                var effect = effects[new Random { }.Next(effects.Count())];
 
                 if (!EffectProcedures.PlayerHasEffect(player, effect.Id))
                 {
@@ -2817,7 +2818,7 @@ namespace TT.Domain.Legacy.Procedures
                     return warning;
                 }
             }
-            
+
             var forms = Forms(f => f.Category == PvPStatics.MobilityFull);
 
             if (forms.IsEmpty())
@@ -2847,7 +2848,7 @@ namespace TT.Domain.Legacy.Procedures
                     return warning;
                 }
             }
-            
+
             var forms = Forms(f => f.Category == LIMITED_MOBILITY);
 
             if (forms.IsEmpty())
@@ -2894,9 +2895,9 @@ namespace TT.Domain.Legacy.Procedures
             {
                 duration = PlayerHasBeenWarnedTwice(player) ? 10 : 5;
                 GiveEffect(player, AUTO_RESTORE_EFFECT, duration);
-                
+
                 // If no autorestore we can't do temporary
-                if(!AUTO_RESTORE_EFFECT.HasValue || !EffectProcedures.PlayerHasActiveEffect(player, AUTO_RESTORE_EFFECT.Value))
+                if (!AUTO_RESTORE_EFFECT.HasValue || !EffectProcedures.PlayerHasActiveEffect(player, AUTO_RESTORE_EFFECT.Value))
                 {
                     return null;
                 }
@@ -2932,7 +2933,7 @@ namespace TT.Domain.Legacy.Procedures
                     return warning;
                 }
             }
-            
+
             var forms = Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY);
 
             if (forms.IsEmpty())
@@ -2975,7 +2976,7 @@ namespace TT.Domain.Legacy.Procedures
             }
 
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-            var altForm = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => new {form.AltSexFormSourceId, form.Gender}).FirstOrDefault();
+            var altForm = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => new { form.AltSexFormSourceId, form.Gender }).FirstOrDefault();
 
             if (altForm == null || !altForm.AltSexFormSourceId.HasValue)
             {
@@ -3211,15 +3212,15 @@ namespace TT.Domain.Legacy.Procedures
                 mindControl = true;
                 message = "";  // TODO joke_shop flavor text
 
-                switch(rand.Next(2))
+                switch (rand.Next(2))
                 {
                     case 0:
-                        string[] prefixes = {"Dog", "Doggy", "Canine", "Barker"}; 
+                        string[] prefixes = { "Dog", "Doggy", "Canine", "Barker" };
                         lastName = rand.Next(2) == 0 ? firstName : lastName;
                         firstName = prefixes[rand.Next(prefixes.Count())];
                         break;
                     case 1:
-                        string[] suffixes = {"Dogg", "Woof", "Barker"}; 
+                        string[] suffixes = { "Dogg", "Woof", "Barker" };
                         lastName = suffixes[rand.Next(suffixes.Count())];
                         break;
                 }
@@ -3230,15 +3231,15 @@ namespace TT.Domain.Legacy.Procedures
                 mindControl = true;
                 message = "";  // TODO joke_shop flavor text
 
-                switch(rand.Next(3))
+                switch (rand.Next(3))
                 {
                     case 0:
-                        string[] prefixes = {"Kitty", "Cat", "Neko", "Feline"}; 
+                        string[] prefixes = { "Kitty", "Cat", "Neko", "Feline" };
                         lastName = rand.Next(2) == 0 ? firstName : lastName;
                         firstName = prefixes[rand.Next(prefixes.Count())];
                         break;
                     case 1:
-                        string[] suffixes = {"Cat", "Neko", "Feline"}; 
+                        string[] suffixes = { "Cat", "Neko", "Feline" };
                         lastName = suffixes[rand.Next(suffixes.Count())];
                         break;
                     case 2:
@@ -3255,10 +3256,10 @@ namespace TT.Domain.Legacy.Procedures
                 mindControl = false;
                 message = "";  // TODO joke_shop flavor text
 
-                string[] designators = {"Unit", "Drone", "Clone", "Entity", "Bot"}; 
+                string[] designators = { "Unit", "Drone", "Clone", "Entity", "Bot" };
                 var designator = designators[rand.Next(designators.Count())];
 
-                switch(rand.Next(3))
+                switch (rand.Next(3))
                 {
                     case 0:
                         var name = rand.Next(2) == 0 ? firstName : lastName;
@@ -3292,7 +3293,7 @@ namespace TT.Domain.Legacy.Procedures
                 mindControl = false;
                 message = "";  // TODO joke_shop flavor text
 
-                switch(rand.Next(1))
+                switch (rand.Next(1))
                 {
                     case 0:
                         lastName = $"Mc{firstName}face";
@@ -3339,7 +3340,7 @@ namespace TT.Domain.Legacy.Procedures
         {
             var rand = new Random();
 
-            int[][] mcForms = {CATS_AND_NEKOS, DOGS, MAIDS, SHEEP, STRIPPERS};
+            int[][] mcForms = { CATS_AND_NEKOS, DOGS, MAIDS, SHEEP, STRIPPERS };
             var genre = mcForms[rand.Next(mcForms.Count())];
             var forms = STABLE_FORMS.Select(f => f.FormSourceId).Intersect(genre).ToArray();
 
@@ -3381,7 +3382,7 @@ namespace TT.Domain.Legacy.Procedures
 
         private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true)
         {
-            if ((severe && !PlayerHasBeenWarnedTwice(player)) || (!severe && !PlayerHasBeenWarned(player)))
+            if (severe && !PlayerHasBeenWarnedTwice(player) || !severe && !PlayerHasBeenWarned(player))
             {
                 return false;
             }
@@ -3400,7 +3401,7 @@ namespace TT.Domain.Legacy.Procedures
             {
                 DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = player.Id, IgnoreRunes = false });
             }
-            
+
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
 
@@ -3431,7 +3432,7 @@ namespace TT.Domain.Legacy.Procedures
             else
             {
                 var distance = Math.Abs(total - target);
-                
+
                 if (distance <= 11)
                 {
                     score = (11 - distance) * 4;
@@ -3494,7 +3495,7 @@ namespace TT.Domain.Legacy.Procedures
         {
             var rand = new Random();
 
-            var baseStrength = (int)Math.Min (Math.Max(0, player.Level / 3), 4);
+            var baseStrength = Math.Min(Math.Max(0, player.Level / 3), 4);
             var strength = baseStrength + rand.Next(3);
             var prefix = "";
             int level;
@@ -3647,7 +3648,7 @@ namespace TT.Domain.Legacy.Procedures
                 LastName = player.LastName,
                 Location = player.dbLocationName,
                 FormSourceId = player.FormSourceId,
-                Level = (int)Math.Min(9, player.Level),
+                Level = Math.Min(9, player.Level),
                 Health = 100000,
                 MaxHealth = player.MaxHealth,
                 Mana = 100000,
@@ -3671,12 +3672,12 @@ namespace TT.Domain.Legacy.Procedures
 
             foreach (var sourcePerk in sourcePerks)
             {
-                 EffectProcedures.GivePerkToPlayer(sourcePerk.dbEffect.EffectSourceId, botId, sourcePerk.dbEffect.Duration, sourcePerk.dbEffect.Cooldown);
+                EffectProcedures.GivePerkToPlayer(sourcePerk.dbEffect.EffectSourceId, botId, sourcePerk.dbEffect.Duration, sourcePerk.dbEffect.Cooldown);
             }
 
             // Give a rune (round level down to odd)
             var runeLevel = cmd.Level - 1;
-            runeLevel = runeLevel - (runeLevel % 2) + 1;
+            runeLevel = runeLevel - runeLevel % 2 + 1;
             var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
             DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
 
@@ -3795,10 +3796,10 @@ namespace TT.Domain.Legacy.Procedures
         {
             var rand = new Random();
 
-            String[] memes = {
+            string[] memes = {
                 // TODO joke_shop add memes
                 };
-            String meme = null;
+            string meme = null;
 
             var specialCases = 1;
 
@@ -3813,7 +3814,7 @@ namespace TT.Domain.Legacy.Procedures
                     covens = covens.Where(c => c.dbCovenant.Id == player.Covenant.Value);
                 }
 
-                if(covens.Any())
+                if (covens.Any())
                 {
                     var coven = covens.ElementAt(rand.Next(covens.Count()));
                     meme = $"All hail {coven.Leader.GetFullName()}, leader of {coven.dbCovenant.Name}!";

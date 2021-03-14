@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;

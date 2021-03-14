@@ -8,7 +8,7 @@ using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Concrete;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Models;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;

@@ -23,7 +23,7 @@ using TT.Domain.Players.Queries;
 using TT.Domain.World.Commands;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 
 namespace TT.Web.Controllers
 {

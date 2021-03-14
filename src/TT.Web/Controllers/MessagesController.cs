@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Exceptions;
-using TT.Domain.Legacy.Procedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Queries;

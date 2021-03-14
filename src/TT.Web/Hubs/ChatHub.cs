@@ -74,7 +74,7 @@ namespace TT.Web.Hubs
             if (me.Player.IsBannedFromGlobalChat && room == "global")
                 return;
 
-            if (!message.StartsWith("/me") && JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me.Player.ToDbPlayer(), JokeShopProcedures.HUSHED_EFFECT.Value))
+            if (!message.StartsWith("/me") && PlayerPrankProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me.Player.ToDbPlayer(), PlayerPrankProcedures.HUSHED_EFFECT.Value))
             {
                 String[] denied = {"/me tries to speak but cannot!",
                                    "/me puffs profusely but doesn't make a sound!",

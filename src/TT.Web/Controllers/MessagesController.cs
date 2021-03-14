@@ -274,7 +274,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (JokeShopProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me, JokeShopProcedures.HUSHED_EFFECT.Value))
+            if (PlayerPrankProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me, PlayerPrankProcedures.HUSHED_EFFECT.Value))
             {
                 TempData["ErrorMessage"] = "You have been hushed and cannot currently send a message.  Try again once the effect has worn off.";
                 TempData["MessageText"] = input.MessageText;

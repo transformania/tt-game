@@ -36,11 +36,11 @@ namespace TT.Domain.Players.Commands
                 if (player.ShoutsRemaining <= 0)
                     throw new DomainException("You can only shout once per turn.");
 
-                if (JokeShopProcedures.HUSHED_EFFECT.HasValue)
+                if (PlayerPrankProcedures.HUSHED_EFFECT.HasValue)
                 {
                     // Also consider players with a temporary change in bot ID to be active so not to autolock
                     var hushed = ctx.AsQueryable<Effect>()
-                                        .Where(e => e.EffectSource.Id == JokeShopProcedures.HUSHED_EFFECT.Value &&
+                                        .Where(e => e.EffectSource.Id == PlayerPrankProcedures.HUSHED_EFFECT.Value &&
                                                     e.Owner.Id == player.Id &&
                                                     e.Duration > 0)
                                         .Any();

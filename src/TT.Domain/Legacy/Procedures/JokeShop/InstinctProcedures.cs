@@ -57,7 +57,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 foreach (var sheep in mcSheep)
                 {
                     var sheepPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == sheep.Id);
-                    var stoppedAt = JokeShopProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, (p, loc) =>
                     {
                         if (rand.Next(3) == 0)
                         {
@@ -138,7 +138,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var catPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == catId);
 
                     // Move dog
-                    var stoppedAt = JokeShopProcedures.MovePlayer(dogPlayer, catLoc, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(dogPlayer, catLoc, 15, (p, loc) =>
                     {
                         var roll = rand.Next(4);
                         if (roll == 0)
@@ -172,7 +172,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 treeLoc = "forest_ancestor_tree";
                             }
 
-                            var catStoppedAt = JokeShopProcedures.MovePlayer(catPlayer, treeLoc, 15, (p, loc) =>
+                            var catStoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, treeLoc, 15, (p, loc) =>
                             {
                                 var roll = rand.Next(3);
                                 if (roll == 0)
@@ -264,7 +264,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var rodentPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == rodentId);
 
                     // Move cat
-                    var stoppedAt = JokeShopProcedures.MovePlayer(catPlayer, rodentLoc, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, rodentLoc, 15, (p, loc) =>
                     {
                         var roll = rand.Next(4);
                         if (roll == 0)
@@ -317,7 +317,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         nextLoc = LocationsStatics.GetRandomLocation_InRegion(cleaningContracts[rand.Next(cleaningContracts.Count())]);
                     }
 
-                    var stoppedAt = JokeShopProcedures.MovePlayer(maidPlayer, nextLoc, 20);
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(maidPlayer, nextLoc, 20);
 
                     if (stoppedAt == nextLoc || maidPlayer.dbLocationName == nextLoc)
                     {

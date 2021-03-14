@@ -745,13 +745,13 @@ namespace TT.Domain.Players.Entities
 
         }
 
-        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, bool dropItems = true)
+        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, bool dropItems, bool activePlayer)
         {
             var logbox = new LogBox();
             this.FormSource = formSource;
             this.Mobility = formSource.MobilityType;
 
-            var newItem = Item.CreateFromPlayer(this, itemSource, attacker);
+            var newItem = Item.CreateFromPlayer(this, itemSource, attacker, activePlayer);
             this.Item = newItem;
 
             if (dropItems)

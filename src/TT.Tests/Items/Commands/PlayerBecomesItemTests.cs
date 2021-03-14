@@ -6,6 +6,7 @@ using TT.Domain;
 using TT.Domain.Exceptions;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Items.Entities;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
@@ -30,6 +31,8 @@ namespace TT.Tests.Items.Commands
         public override void SetUp()
         {
             base.SetUp();
+
+            JokeShopProcedures.PSYCHOTIC_EFFECT = 123;
 
             victimItems = new List<Item>();
             emptyItemList = new List<Item>();
@@ -74,6 +77,12 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.MobilityType, PvPStatics.MobilityInanimate)
                 .With(i => i.ItemSource, itemSource)
                 .BuildAndSave();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            JokeShopProcedures.PSYCHOTIC_EFFECT = null;
         }
 
         [Test]

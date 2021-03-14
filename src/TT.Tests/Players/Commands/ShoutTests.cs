@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
@@ -14,6 +15,20 @@ namespace TT.Tests.Players.Commands
     [TestFixture]
     public class ShoutTests : TestBase
     {
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            JokeShopProcedures.HUSHED_EFFECT = 123;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            JokeShopProcedures.HUSHED_EFFECT = null;
+        }
+
         [Test]
         public void should_shout()
         {

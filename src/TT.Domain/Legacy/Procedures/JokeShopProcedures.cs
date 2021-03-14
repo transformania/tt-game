@@ -17,31 +17,33 @@ namespace TT.Domain.Legacy.Procedures
 {
     public static class JokeShopProcedures
     {
-        // Get the IDs for the desired effects in a cross-database safe way
-        private static readonly int? FIRST_WARNING_EFFECT = EffectWithName("effect_Joke_Shop_Warned");
-        private static readonly int? SECOND_WARNING_EFFECT = EffectWithName("effect_Joke_Shop_Warned_Twice");
-        private static readonly int? BANNED_FROM_JOKE_SHOP_EFFECT = EffectWithName("effect_Joke_Shop_Banned");
+        // These fields back properies populated by the database
+        private static int? FirstWarningEffect = null;
+        private static int? SecondWarningEffect = null;
+        private static int? BannedFromJokeShopEffect = null;
 
-        private static readonly int[] BOOST_EFFECTS = EffectsWithNamesStarting("effect_Joke_Shop_Boost_");
-        private static readonly int[] PENALTY_EFFECTS = EffectsWithNamesStarting("effect_Joke_Shop_Penalty_");
+        private static int[] BoostEffects = null;
+        private static int[] PenaltyEffects = null;
 
-        private static readonly int? ROOT_EFFECT = EffectWithName("effect_Joke_Shop_Penalty_Mobility");
-        private static readonly int? SNEAK_REVEAL_1 = EffectWithName("effect_Joke_Shop_Track_1");
-        private static readonly int? SNEAK_REVEAL_2 = EffectWithName("effect_Joke_Shop_Track_2");
-        private static readonly int? SNEAK_REVEAL_3 = EffectWithName("effect_Joke_Shop_Track_3");
+        private static int? RootEffect = null;
+        private static int? SneakReveal1 = null;
+        private static int? SneakReveal2 = null;
+        private static int? SneakReveal3 = null;
 
-        public static readonly int? AUTO_RESTORE_EFFECT = EffectWithName("effect_Joke_Shop_Auto_Restore");
-        private static readonly int? INSTINCT_EFFECT = EffectWithName("effect_Joke_Shop_MC_Instinct");
-        public static readonly int? BLINDED_EFFECT = EffectWithName("effect_Joke_Shop_Blinded");
-        public static readonly int? DIZZY_EFFECT = EffectWithName("effect_Joke_Shop_Dizzy");
-        public static readonly int? HUSHED_EFFECT = EffectWithName("effect_Joke_Shop_Hushed");
-        public static readonly int? PSYCHOTIC_EFFECT = EffectWithName("effect_Joke_Shop_Psychotic");
-        public static readonly int? INVISIBILITY_EFFECT = EffectWithName("effect_Joke_Shop_Invisible_PvP");
+        private static int? AutoRestoreEffect = null;
+        private static int? InstinctEffect = null;
+        private static int? BlindedEffect = null;
+        private static int? DizzyEffect = null;
+        private static int? HushedEffect = null;
+        private static int? PsychoticEffect = null;
+        private static int? InvisibilityEffect = null;
 
+        private static List<FormDetail> StableForms = null;
+
+        // Category to separate full from limited mobility animate forms
         private const string LIMITED_MOBILITY = "immobile";
 
-        internal static readonly List<FormDetail> STABLE_FORMS = CandidateForms();
-
+        // IDs of some form sources grouped by theme
         public static readonly int[] MISCHIEVOUS_FORMS = {215, 221, 438};
         public static readonly int[] CATS_AND_NEKOS = {39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202};
         public static readonly int[] DOGS = {34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187};
@@ -52,6 +54,300 @@ namespace TT.Domain.Legacy.Procedures
         public static readonly int[] SHEEP = {204, 950, 1022, 1035, 1198};
         public static readonly int[] MAIDS = {65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 951, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207};
         public static readonly int[] MANA_FORMS = {834, 1149};
+
+        // Effects supporting the Joke Shop mechanics
+        // Try to contact DB once in a threadsafe way and cache results/failure
+        public static int? FIRST_WARNING_EFFECT
+        {
+            get
+            {
+                if (!FirstWarningEffect.HasValue)
+                {
+                    FirstWarningEffect = EffectWithName("effect_Joke_Shop_Warned") ?? -1;
+                }
+
+                return (FirstWarningEffect.Value == -1) ? null : FirstWarningEffect;
+            }
+            set
+            {
+                FirstWarningEffect = value;
+            }
+        }
+
+        public static int? SECOND_WARNING_EFFECT
+        {
+            get
+            {
+                if (!SecondWarningEffect.HasValue)
+                {
+                    SecondWarningEffect = EffectWithName("effect_Joke_Shop_Warned_Twice") ?? -1;
+                }
+
+                return (SecondWarningEffect.Value == -1) ? null : SecondWarningEffect;
+            }
+            set
+            {
+                SecondWarningEffect = value;
+            }
+        }
+
+        public static int? BANNED_FROM_JOKE_SHOP_EFFECT
+        {
+            get
+            {
+                if (!BannedFromJokeShopEffect.HasValue)
+                {
+                    BannedFromJokeShopEffect = EffectWithName("effect_Joke_Shop_Banned") ?? -1;
+                }
+
+                return (BannedFromJokeShopEffect.Value == -1) ? null : BannedFromJokeShopEffect;
+            }
+            set
+            {
+                BannedFromJokeShopEffect = value;
+            }
+        }
+
+        // Stat boosting effects
+        public static int[] BOOST_EFFECTS
+        {
+            get
+            {
+                if (BoostEffects == null)
+                {
+                    BoostEffects = EffectsWithNamesStarting("effect_Joke_Shop_Boost_") ?? new int[] {};
+                }
+
+                return BoostEffects;
+            }
+            set
+            {
+                BoostEffects = value;
+            }
+        }
+        public static int[] PENALTY_EFFECTS
+        {
+            get
+            {
+                if (PenaltyEffects == null)
+                {
+                    PenaltyEffects = EffectsWithNamesStarting("effect_Joke_Shop_Penalty_") ?? new int[] {};
+                }
+
+                return PenaltyEffects;
+            }
+            set
+            {
+                PenaltyEffects = value;
+            }
+        }
+
+        // Specific and behavior-altering effects
+        public static int? ROOT_EFFECT
+        {
+            get
+            {
+                if (!RootEffect.HasValue)
+                {
+                    RootEffect = EffectWithName("effect_Joke_Shop_Penalty_Mobility") ?? -1;
+                }
+
+                return (RootEffect.Value == -1) ? null : RootEffect;
+            }
+            set
+            {
+                RootEffect = value;
+            }
+        }
+
+        public static int? SNEAK_REVEAL_1
+        {
+            get
+            {
+                if (!SneakReveal1.HasValue)
+                {
+                    SneakReveal1 = EffectWithName("effect_Joke_Shop_Track_1") ?? -1;
+                }
+
+                return (SneakReveal1.Value == -1) ? null : SneakReveal1;
+            }
+            set
+            {
+                SneakReveal1 = value;
+            }
+        }
+
+        public static int? SNEAK_REVEAL_2
+        {
+            get
+            {
+                if (!SneakReveal2.HasValue)
+                {
+                    SneakReveal2 = EffectWithName("effect_Joke_Shop_Track_2") ?? -1;
+                }
+
+                return (SneakReveal2.Value == -1) ? null : SneakReveal2;
+            }
+            set
+            {
+                SneakReveal2 = value;
+            }
+        }
+
+        public static int? SNEAK_REVEAL_3
+        {
+            get
+            {
+                if (!SneakReveal3.HasValue)
+                {
+                    SneakReveal3 = EffectWithName("effect_Joke_Shop_Track_3") ?? -1;
+                }
+
+                return (SneakReveal3.Value == -1) ? null : SneakReveal3;
+            }
+            set
+            {
+                SneakReveal3 = value;
+            }
+        }
+
+        public static int? AUTO_RESTORE_EFFECT
+        {
+            get
+            {
+                if (!AutoRestoreEffect.HasValue)
+                {
+                    AutoRestoreEffect = EffectWithName("effect_Joke_Shop_Auto_Restore") ?? -1;
+                }
+
+                return (AutoRestoreEffect.Value == -1) ? null : AutoRestoreEffect;
+            }
+            set
+            {
+                AutoRestoreEffect = value;
+            }
+        }
+
+        public static int? INSTINCT_EFFECT
+        {
+            get
+            {
+                if (!InstinctEffect.HasValue)
+                {
+                    InstinctEffect = EffectWithName("effect_Joke_Shop_MC_Instinct") ?? -1;
+                }
+
+                return (InstinctEffect.Value == -1) ? null : InstinctEffect;
+            }
+            set
+            {
+                InstinctEffect = value;
+            }
+        }
+
+        public static int? BLINDED_EFFECT
+        {
+            get
+            {
+                if (!BlindedEffect.HasValue)
+                {
+                    BlindedEffect = EffectWithName("effect_Joke_Shop_Blinded") ?? -1;
+                }
+
+                return (BlindedEffect == -1) ? null : BlindedEffect;;
+            }
+            set
+            {
+                BlindedEffect = value;
+            }
+        }
+
+        public static int? DIZZY_EFFECT
+        {
+            get
+            {
+                if (!DizzyEffect.HasValue)
+                {
+                    DizzyEffect = EffectWithName("effect_Joke_Shop_Dizzy") ?? -1;
+                }
+
+                return (DizzyEffect == -1) ? null : DizzyEffect;
+            }
+            set
+            {
+                DizzyEffect = value;
+            }
+        }
+
+        public static int? HUSHED_EFFECT
+        {
+            get
+            {
+                if (!HushedEffect.HasValue)
+                {
+                    HushedEffect = EffectWithName("effect_Joke_Shop_Hushed") ?? -1;
+                }
+
+                return (HushedEffect == -1) ? null : HushedEffect;
+            }
+            set
+            {
+                HushedEffect = value;
+            }
+        }
+
+        public static int? PSYCHOTIC_EFFECT
+        {
+            get
+            {
+                if (!PsychoticEffect.HasValue)
+                {
+                    PsychoticEffect = EffectWithName("effect_Joke_Shop_Psychotic") ?? -1;
+                }
+
+                return (PsychoticEffect == -1) ? null : PsychoticEffect;
+            }
+            set
+            {
+                PsychoticEffect = value;
+            }
+        }
+
+        public static int? INVISIBILITY_EFFECT
+        {
+            get
+            {
+                if (!InvisibilityEffect.HasValue)
+                {
+                    InvisibilityEffect = EffectWithName("effect_Joke_Shop_Invisible_PvP") ?? -1;
+                }
+
+                return (InvisibilityEffect == -1) ? null : InvisibilityEffect;
+            }
+            set
+            {
+                InvisibilityEffect = value;
+            }
+        }
+
+        // This list of forms is intended to be 'stable' within a run so that a calulation will always determine the same form.
+        internal static List<FormDetail> STABLE_FORMS
+        {
+            get
+            {
+                if (StableForms == null)
+                {
+                    StableForms = CandidateForms() ?? new List<FormDetail>();
+                }
+
+                return StableForms;
+            }
+            set
+            {
+                StableForms = value;
+            }
+        }
+
 
         internal class FormDetail
         {

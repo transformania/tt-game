@@ -1,9 +1,12 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
+using TT.Domain.Effects.Entities;
 using TT.Domain.Exceptions;
 using TT.Domain.Forms.Entities;
+using TT.Domain.Legacy.Procedures;
 using TT.Domain.Players.Entities;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Players.Commands
@@ -60,7 +63,19 @@ namespace TT.Domain.Players.Commands
                     throw new DomainException("Form is not inanimate or pet");
                 }
 
-                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource, DropItems);
+                var activePlayer = (victim.BotId == AIStatics.ActivePlayerBotId);
+
+                if (!activePlayer && JokeShopProcedures.PSYCHOTIC_EFFECT.HasValue)
+                {
+                    // Also consider players with a temporary change in bot ID to be active so not to autolock
+                    activePlayer = ctx.AsQueryable<Effect>()
+                                    .Where(e => e.EffectSource.Id == JokeShopProcedures.PSYCHOTIC_EFFECT.Value &&
+                                                e.Owner.Id == victim.Id &&
+                                                e.Duration > 0)
+                                    .Any();
+                }
+
+                output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource, DropItems, activePlayer);
 
                 ctx.Commit();
                 

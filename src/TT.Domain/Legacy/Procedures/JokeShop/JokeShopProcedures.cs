@@ -238,12 +238,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).Select(e => e.Id).ToList();
         }
 
-        internal static void RunEffectActions(List<Effect> temporaryEffects)
+        internal static void RunEffectExpiryActions(List<Effect> expiringEffects)
         {
             // Undo temporary TFs
             if (AUTO_RESTORE_EFFECT.HasValue)
             {
-                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
                 foreach (var player in playersToRestore)
                 {
                     PlayerPrankProcedures.UndoTemporaryForm(player);
@@ -254,7 +254,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (PSYCHOTIC_EFFECT.HasValue)
             {
                 var playerRepo = new EFPlayerRepository();
-                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
 
                 foreach (var player in playersToRestore)
                 {
@@ -272,7 +272,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (INVISIBILITY_EFFECT.HasValue)
             {
                 var playerRepo = new EFPlayerRepository();
-                var playersToRestore = temporaryEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
 
                 // Defensively revert any invisible players without the effect too
                 if (PvPStatics.LastGameTurn % 5 == 2)
@@ -322,10 +322,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
-            // TODO joke_shop call this later on in world update (after AP update, psycho actions)?
+            // Update player challenges
+            ChallengeProcedures.CheckExpiringChallenges(expiringEffects);
+        }
+
+        internal static void RunEffectActions(List<Effect> effects)
+        {
             if (INSTINCT_EFFECT.HasValue)
             {
-                var playersToControl = temporaryEffects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
+                var playersToControl = effects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
                 InstinctProcedures.ActOnInstinct(playersToControl);
             }
         }
@@ -334,8 +339,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
 
-            var candidates = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP)
-                .Where(p => p.OnlineActivityTimestamp >= cutoff &&
+            var playerRepo = new EFPlayerRepository();
+            var candidates = playerRepo.Players
+                .Where(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
+                            p.OnlineActivityTimestamp >= cutoff &&
                             p.Id != player.Id &&
                             p.Mobility == PvPStatics.MobilityFull &&
                             p.InDuel <= 0 &&
@@ -1166,7 +1173,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 return NovelPrankProcedures.LocatePlayerInCombat(player);
             }
-            else  // 20%
+            else if (roll < 90)  // 10%
+            {
+                return NovelPrankProcedures.AwardChallenge(player, 0, 10);
+            }
+            else  // 10%
             {
                 return NovelPrankProcedures.DiceGame(player);
             }
@@ -1184,25 +1195,29 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var rand = new Random();
             var roll = rand.Next(100);
 
-            if (roll < 20)  // 20%
+            if (roll < 15)  // 15%
             {
                 return EnvironmentPrankProcedures.MischievousResourcePrank(player);
             }
-            else if (roll < 40)  // 20%
+            else if (roll < 30)  // 15%
             {
                 return EnvironmentPrankProcedures.MischievousLocationPrank(player);
             }
-            else if (roll < 60)  // 20%
+            else if (roll < 45)  // 15%
             {
                 return EnvironmentPrankProcedures.MischievousQuotasAndTimerPrank(player);
             }
-            else if (roll < 80)  // 20%
+            else if (roll < 65)  // 20%
             {
                 return PlayerPrankProcedures.MischievousTransformationPrank(player);
             }
-            else  // 20%
+            else if (roll < 85)  // 20%
             {
                 return PlayerPrankProcedures.MischievousEffectsPrank(player);
+            }
+            else  // 15%
+            {
+                return NovelPrankProcedures.AwardChallenge(player, 10, 20);
             }
         }
 
@@ -1238,27 +1253,31 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 return PlayerPrankProcedures.MeanEffectsPrank(player);
             }
-            else if (roll < 70)  // 5%
+            else if (roll < 69)  // 4%
             {
                 return NovelPrankProcedures.SummonPsychopath(player);
             }
-            else if (roll < 75)  // 5%
+            else if (roll < 73)  // 4%
             {
                 return NovelPrankProcedures.SummonDoppelganger(player);
             }
-            else if (roll < 80)  // 5%
+            else if (roll < 77)  // 4%
             {
                 return NovelPrankProcedures.OpenPsychoNip(player);
             }
-            else if (roll < 85)  // 5%
+            else if (roll < 81)  // 4%
             {
                 return NovelPrankProcedures.ForceAttack(player);
             }
-            else if (roll < 90)  // 5%
+            else if (roll < 85)  // 4%
             {
                 return NovelPrankProcedures.Incite(player);
             }
-            else  // 10%
+            else if (roll < 92)  // 7%
+            {
+                return NovelPrankProcedures.AwardChallenge(player, 20, 480);
+            }
+            else  // 8%
             {
                 return NovelPrankProcedures.PlaceBountyOnPlayersHead(player);
             }

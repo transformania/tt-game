@@ -468,6 +468,31 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> is currently in <b>{location}</b>!";
         }
 
+        public static string AwardChallenge(Player player, int minDuration, int maxDuration)
+        {
+            var challenge = ChallengeProcedures.AwardChallenge(player, minDuration, maxDuration);
+
+            if (challenge == null)
+            {
+                return null;
+            }
+
+            var message = "The interdimensional spirits that inhabit this strange magical plane question whether you are worthy enough to be here.  <b>They decide to set you a challenge!</b>  ";
+            message += $"You must {ListifyHelper.Listify(challenge.Criteria, true)}.  ";
+            message += $"If you succeed, you will be rewarded with <b>{challenge.Reward}</b>";
+
+            if (!challenge.Penalty.IsNullOrEmpty())
+            {
+                message += $" but if you fail you will suffer <b>a penalty of {challenge.Penalty}</b>";
+            }
+
+            message += $".<br />To pass the challenge you must be in the Joke Shop and meet all the success criteria by the end of <b>turn {challenge.ByEndOfTurn}</b>.";
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
+
+            return "You have been set a challenge!";
+        }
+
         #endregion
 
     }

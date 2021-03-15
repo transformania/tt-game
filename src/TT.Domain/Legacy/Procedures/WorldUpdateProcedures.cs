@@ -123,6 +123,8 @@ namespace TT.Domain.Procedures
                 var effectsToDelete = new List<Effect>();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating effects");
+                var effectsExpiringThisTurn = temporaryEffects.Where(e => e.Duration == 1).ToList();
+
                 foreach (var e in temporaryEffects)
                 {
                     e.Duration--;
@@ -145,17 +147,17 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating effects");
                 serverLogRepo.SaveServerLog(log);
 
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-related actions");
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-expiry actions");
                 try
                 {
-                    JokeShopProcedures.RunEffectActions(temporaryEffects);
+                    JokeShopProcedures.RunEffectExpiryActions(effectsExpiringThisTurn);
                 }
                 catch (Exception e)
                 {
                     log.Errors++;
-                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ERROR running effect-related actions", e));
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ERROR running effect-expiry actions", e));
                 }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished running effect-related actions");
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished running effect-expiry actions");
                 serverLogRepo.SaveServerLog(log);
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired effects");
@@ -632,6 +634,19 @@ namespace TT.Domain.Procedures
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
 
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-related actions");
+                try
+                {
+                    JokeShopProcedures.RunEffectActions(temporaryEffects);
+                }
+                catch (Exception e)
+                {
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, " ERROR running effect-related actions", e));
+                }
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished running effect-related actions");
+                serverLogRepo.SaveServerLog(log);
+
                 #region furniture
                 if (turnNo % 6 == 0)
                 {
@@ -876,23 +891,25 @@ namespace TT.Domain.Procedures
 
 
                 #region update joke shop
-                JokeShopProcedures.EjectOfflineCharacters();
-
-                if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop started.");
+                try
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop started.");
-                    try
+                    JokeShopProcedures.EjectOfflineCharacters();
+
+                    if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)
                     {
                         LocationsStatics.MoveJokeShop();
                     }
-                    catch (Exception e)
-                    {
-                        log.Errors++;
-                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Updating joke shop FAILED", e));
-                    }
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop completed.");
-                    serverLogRepo.SaveServerLog(log);
+
+                    ChallengeProcedures.CheckChallenges();
                 }
+                catch (Exception e)
+                {
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Updating joke shop FAILED", e));
+                }
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating joke shop completed.");
+                serverLogRepo.SaveServerLog(log);
                 #endregion update joke shop
 
 

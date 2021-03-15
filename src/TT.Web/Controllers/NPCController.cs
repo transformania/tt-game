@@ -816,7 +816,7 @@ namespace TT.Web.Controllers
                 var bounties = BountyProcedures.OutstandingBounties();
                 if (bounties == null || bounties.IsEmpty())
                 {
-                    ViewBag.Speech = "\"I've not heard of anyone in town currently being sought by the authorities,\"";
+                    ViewBag.Speech = "\"I've not heard of anyone in town currently being sought by the authorities.\"";
                 }
                 else
                 {
@@ -827,6 +827,51 @@ namespace TT.Web.Controllers
                         summary += $"<li>There is a reward of up to <b>{bounty.CurrentReward} arpeyjis</b> to anybody who turns <b>{bounty.PlayerName}</b> into a <b>{bounty.Form?.FriendlyName}</b> by the end of turn {bounty.ExpiresTurn - 1}.</li>";
                     }
                     ViewBag.Speech = $"There are a number of wanted posters all over town.  The ones I remember are:<ul class=\"listdots\">{summary}</ul>";
+                }
+            }
+            else if (question == "challenge")
+            {
+                var challenge = ChallengeProcedures.CurrentChallenge(me);
+                if (challenge == null)
+                {
+                    var message = "You haven't yet been set any challenges.";
+                    var whyNotTry = "";
+
+                    if (JokeShopProcedures.IsJokeShopActive())
+                    {
+                        whyNotTry = "  If you're after a challenge then try seeking out the Cursed Joke Shop.  Many people believe it isn't real, others swear blind they've been there.  One thing's for sure, if it does exist it's a place unlike any other in Sunnyglade and you should be very careful what you do there!";
+                    }
+
+                    ViewBag.Speech = $"\"{message}{whyNotTry}\"";
+                }
+                else
+                {
+                    string summary = "I hear you have been set a challenge by some tormented interdimensional spirits.<br /><br />What you need to do is:<ul class=\"listdots\">";
+
+                    foreach (var criterion in challenge.Criteria)
+                    {
+                        summary += $"<li>{criterion}</li>";
+                    }
+
+                    summary += $"</ul>If you succeed you will be handsomely rewarded with <b>{challenge.Reward}</b>.<br /><br/>";
+
+                    if (!challenge.Penalty.IsNullOrEmpty())
+                    {
+                        summary += $"But if you fail, those mean spirits will inflict a <b>penalty of {challenge.Penalty}</b> upon you!<br /><br />";
+                    }
+
+                    summary += $"To claim victory in this challenge you must present yourself for judgement at the Joke Shop <b>by the end of turn {challenge.ByEndOfTurn}</b>.  ";
+
+                    if (challenge.Satisfied(me))
+                    {
+                        summary += "It looks to me like you're most of the way there, if you can get to the Joke Shop in time.";
+                    }
+                    else
+                    {
+                        summary += "In my opinion you still have a lot of work to do before you have any hope of claiming that reward.";
+                    }
+
+                    ViewBag.Speech = $"{summary}<br /><br />Good luck - I think you might need it!";
                 }
             }
 

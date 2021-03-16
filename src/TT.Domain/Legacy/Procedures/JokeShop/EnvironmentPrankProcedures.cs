@@ -455,13 +455,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (root)
             {
-                PlayerPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
+                CharacterPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
                 root = JokeShopProcedures.ROOT_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player.Id, JokeShopProcedures.ROOT_EFFECT.Value);
             }
 
             if (curse && !root)
             {
-                PlayerPrankProcedures.ApplyLocalCurse(player, location);
+                CharacterPrankProcedures.ApplyLocalCurse(player, location);
             }
 
             return "Teleport to overworld"; // TODO joke_shop flavor text
@@ -494,7 +494,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (meanness >= 2)
             {
-                PlayerPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
+                CharacterPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
             }
 
             return "Teleport to dungeon"; // TODO joke_shop flavor text
@@ -545,7 +545,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (npcPlayer.BotId == AIStatics.JewdewfaeBotId)
             {
                 var encounter = BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(npcPlayer.dbLocationName);  // interface currently restricts to one encounter per location
-                PlayerPrankProcedures.TryAnimateTransform(player, encounter.RequiredFormSourceId);
+                CharacterPrankProcedures.TryAnimateTransform(player, encounter.RequiredFormSourceId);
             }
 
             // TODO joke_shop Redirect to the NPC's talk/trade page
@@ -617,7 +617,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (targetForm != -1)
             {
-                PlayerPrankProcedures.TryAnimateTransform(player, targetForm);
+                CharacterPrankProcedures.TryAnimateTransform(player, targetForm);
             }
 
             // Move to same tile as NPC
@@ -675,11 +675,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (root)
             {
-                PlayerPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
+                CharacterPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
             }
             else
             {
-                PlayerPrankProcedures.ApplyLocalCurse(player, bar);
+                CharacterPrankProcedures.ApplyLocalCurse(player, bar);
             }
 
             return "Teleport to bar";  // TODO joke_shop Flavor text

@@ -246,7 +246,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
                 foreach (var player in playersToRestore)
                 {
-                    PlayerPrankProcedures.UndoTemporaryForm(player);
+                    CharacterPrankProcedures.UndoTemporaryForm(player);
                 }
             }
 
@@ -519,7 +519,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (roll < 3)  // 3%
             {
                 // Change to mana form
-                if (PlayerPrankProcedures.TryAnimateTransform(player, MANA_FORMS[rand.Next(MANA_FORMS.Count())]))
+                if (CharacterPrankProcedures.TryAnimateTransform(player, MANA_FORMS[rand.Next(MANA_FORMS.Count())]))
                 {
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     message = "Oh dear, it looks like you've been meditating too hard!";
@@ -573,15 +573,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
                 }
             }
             else if (roll < 98)  // 5%
@@ -614,7 +614,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Mechanism through which a player can elect to restore their original name
             if (player.Health >= player.MaxHealth)
             {
-                return PlayerPrankProcedures.RestoreName(player);
+                return CharacterPrankProcedures.RestoreName(player);
             }
 
             // Ensure player can cleanse
@@ -655,7 +655,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (roll < 5)  // 5%
             {
                 // Change to cleanse form
-                if (PlayerPrankProcedures.TryAnimateTransform(player, MAIDS[rand.Next(MAIDS.Count())]))
+                if (CharacterPrankProcedures.TryAnimateTransform(player, MAIDS[rand.Next(MAIDS.Count())]))
                 {
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     message = "You've been cleansing a lot.  Maybe you would like to clean the shop while you're at it?";
@@ -664,21 +664,21 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (roll < 10)  // 5%
             {
                 // Change to base form
-                if (player.FormSourceId != player.OriginalFormSourceId && PlayerPrankProcedures.TryAnimateTransform(player, player.OriginalFormSourceId))
+                if (player.FormSourceId != player.OriginalFormSourceId && CharacterPrankProcedures.TryAnimateTransform(player, player.OriginalFormSourceId))
                 {
-                    PlayerPrankProcedures.RestoreBaseForm(player);
+                    CharacterPrankProcedures.RestoreBaseForm(player);
                     EnvironmentPrankProcedures.BlockCleanseMeditates(player);
                     message = "Oops.. You might have just cleansed a little too much!";
                 }
             }
             else if (roll < 15)  // 5%
             {
-                message = PlayerPrankProcedures.SetBaseFormToRegular(player);
+                message = CharacterPrankProcedures.SetBaseFormToRegular(player);
                 PlayerProcedures.AddCleanseMeditateCount(player);
             }
             else if (roll < 20)  // 5%
             {
-                message = PlayerPrankProcedures.RestoreName(player);
+                message = CharacterPrankProcedures.RestoreName(player);
                 PlayerProcedures.AddCleanseMeditateCount(player);
             }
             else if (roll < 36)  // 16%
@@ -693,7 +693,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 EnvironmentPrankProcedures.ChangeHealth(player, (int)(player.MaxHealth - player.Health + 1));
                 PlayerProcedures.AddCleanseMeditateCount(player);
                 EnvironmentPrankProcedures.BlockAttacks(player);
-                PlayerPrankProcedures.GiveEffect(player, ROOT_EFFECT, 1);
+                CharacterPrankProcedures.GiveEffect(player, ROOT_EFFECT, 1);
                 message = "You feel completely rejuvenated, but the cleansing has drained you and you need a moment to recover.";
             }
             else if (roll < 56)  // 10%
@@ -725,15 +725,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
                 }
             }
             else if (roll < 98)  // 5%
@@ -801,23 +801,23 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (roll < 15)  // 15%
             {
                 // Instantly change to base form
-                if (PlayerPrankProcedures.TryAnimateTransform(player, player.OriginalFormSourceId))
+                if (CharacterPrankProcedures.TryAnimateTransform(player, player.OriginalFormSourceId))
                 {
                     EnvironmentPrankProcedures.BlockCleanseMeditates(player);
                     EnvironmentPrankProcedures.BlockAttacks(player);
-                    PlayerPrankProcedures.GiveEffect(player, ROOT_EFFECT, 1);
+                    CharacterPrankProcedures.GiveEffect(player, ROOT_EFFECT, 1);
                     message = "You find yourself instantly in your base form!  The shock leaves you momentarily stunned!";
                 }
             }
             else if (roll < 25)  // 10%
             {
                 // Regular base form
-                message = PlayerPrankProcedures.SetBaseFormToRegular(player);
+                message = CharacterPrankProcedures.SetBaseFormToRegular(player);
                 PlayerProcedures.AddCleanseMeditateCount(player);
             }
             else if (roll < 35)  // 10%
             {
-                message = PlayerPrankProcedures.RestoreName(player);
+                message = CharacterPrankProcedures.RestoreName(player);
                 PlayerProcedures.AddCleanseMeditateCount(player);
             }
             else if (roll < 50)  // 15%
@@ -833,15 +833,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? PlayerPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
                 }
             }
             else if (roll < 95)  // 15%
@@ -1113,15 +1113,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    return PlayerPrankProcedures.MeanEffectsPrank(player);
+                    return CharacterPrankProcedures.MeanEffectsPrank(player);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    return PlayerPrankProcedures.MischievousEffectsPrank(player);
+                    return CharacterPrankProcedures.MischievousEffectsPrank(player);
                 }
                 else
                 {
-                    return PlayerPrankProcedures.MildEffectsPrank(player);
+                    return CharacterPrankProcedures.MildEffectsPrank(player);
                 }
             }
             else  // 2%
@@ -1155,11 +1155,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 50)  // 15%
             {
-                return PlayerPrankProcedures.MildTransformationPrank(player);
+                return CharacterPrankProcedures.MildTransformationPrank(player);
             }
             else if (roll < 65)  // 15%
             {
-                return PlayerPrankProcedures.MildEffectsPrank(player);
+                return CharacterPrankProcedures.MildEffectsPrank(player);
             }
             else if (roll < 70)  // 5%
             {
@@ -1209,11 +1209,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 65)  // 20%
             {
-                return PlayerPrankProcedures.MischievousTransformationPrank(player);
+                return CharacterPrankProcedures.MischievousTransformationPrank(player);
             }
             else if (roll < 85)  // 20%
             {
-                return PlayerPrankProcedures.MischievousEffectsPrank(player);
+                return CharacterPrankProcedures.MischievousEffectsPrank(player);
             }
             else  // 15%
             {
@@ -1247,11 +1247,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 50)  // 10%
             {
-                return PlayerPrankProcedures.MeanTransformationPrank(player);
+                return CharacterPrankProcedures.MeanTransformationPrank(player);
             }
             else if (roll < 65)  // 15%
             {
-                return PlayerPrankProcedures.MeanEffectsPrank(player);
+                return CharacterPrankProcedures.MeanEffectsPrank(player);
             }
             else if (roll < 69)  // 4%
             {

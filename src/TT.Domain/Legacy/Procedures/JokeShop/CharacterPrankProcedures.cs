@@ -12,7 +12,7 @@ using TT.Domain.Statics;
 
 namespace TT.Domain.Legacy.Procedures.JokeShop
 {
-    public static class PlayerPrankProcedures
+    public static class CharacterPrankProcedures
     {
         // These fields back properies populated by the database
         private static List<int> BoostEffects = null;
@@ -493,10 +493,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             FormDetail form;
+            String message;
 
             if (temporary)
             {
                 GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, JokeShopProcedures.PlayerHasBeenWarnedTwice(player) ? 3 : 2);
+                message = $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);
+            }
+            else
+            {
+                message = $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
             }
 
             var index = new Random().Next(forms.Count());
@@ -507,7 +513,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
+            return message;
         }
 
         private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false)
@@ -549,8 +555,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (temporary)
             {
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You fall into the ether and are stuck as a {form.FriendlyName} for the next {duration} turns!", true);  // TODO joke_shop flavor text - ensure this message and effect message are consistent
-            }
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);            }
 
             return $"You are an inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
         }

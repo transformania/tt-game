@@ -20,13 +20,13 @@ namespace TT.Tests.Players.Commands
         {
             base.SetUp();
 
-            PlayerPrankProcedures.HUSHED_EFFECT = 123;
+            CharacterPrankProcedures.HUSHED_EFFECT = 123;
         }
 
         [TearDown]
         public void TearDown()
         {
-            PlayerPrankProcedures.HUSHED_EFFECT = null;
+            CharacterPrankProcedures.HUSHED_EFFECT = null;
         }
 
         [Test]

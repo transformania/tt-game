@@ -91,7 +91,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 locations.Remove(loc);
             }
 
-            var playerMessage = $"A bounty has been placed on your head!  Players will be trying to turn you into a <b>{details.Form?.FriendlyName}</b>!";  // TODO joke_shop flavor text
+            var playerMessage = $"The spirits in the store are enraged by your actions!  They are too out of phase to attack you directly and instead choose to place a bounty on your head!  Beware of the townspeople trying to turn you into a <b>{details.Form?.FriendlyName}</b>!";
             PlayerLogProcedures.AddPlayerLog(player.Id, playerMessage, true);
 
             return playerMessage;

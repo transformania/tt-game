@@ -904,8 +904,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         lastName = order == 0 ? name : designator;
                         break;
                     case 1:
-                        firstName = designator;
                         lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = designator;
                         lastName = lastName.ToUpper().Replace('I', '1')
                                                      .Replace('L', '1')
                                                      .Replace('Z', '2')

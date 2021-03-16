@@ -12,6 +12,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public class Challenge
     {
+        // Eligibility implicitly includes that the player has not already satisfied the whole challenge.
+        // Include, for example, game mode or irreversible achievements e.g. min soulbound items.
+        // Do not include things a player might have but could lose, e.g. form or time out of combat.
         public Func<Player, bool> Eligible = p => true;
 
         public List<String> Criteria = new List<String>();
@@ -113,6 +116,19 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 output.Add(new ChallengeType{
                     EffectSourceId = effectSource.Value,
+                    Duration = 60,
+                    MaxParts = 3,
+                    MaxDifficulty = 12,
+                    Penalty = false,
+                });
+            }
+
+            effectSource = JokeShopProcedures.EffectWithName("effect_challenged_5");
+
+            if (effectSource.HasValue)
+            {
+                output.Add(new ChallengeType{
+                    EffectSourceId = effectSource.Value,
                     Duration = 120,
                     MaxParts = 1,
                     MaxDifficulty = 20,
@@ -120,15 +136,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 });
             }
 
-            // Try more difficult ones first, fall back on easier challenges
-            output.Reverse();
-
             return output;
         }
 
 
         // Tries to give a player a challenge
-        public static Challenge AwardChallenge(Player player, int minDuration, int maxDuration)
+        public static Challenge AwardChallenge(Player player, int minDuration, int maxDuration, bool? withPenalties)
         {
             // Only allow one challenge to be ative at a time
             if (CurrentChallenge(player) != null)
@@ -136,21 +149,49 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            foreach (var challengeType in CHALLENGE_TYPES.Where(c => c.Duration <= maxDuration && c.Duration >= minDuration))
+            var challengeTypes = CHALLENGE_TYPES.Where(c => c.Duration <= maxDuration && c.Duration >= minDuration);
+
+            if (withPenalties.HasValue)
+            {
+                challengeTypes = challengeTypes.Where(c => c.Penalty == withPenalties.Value);
+            }
+
+            Challenge bestChallenge = null;
+            ChallengeType bestChallengeType = null;
+
+            // Find an appropriate challenge
+            foreach (var challengeType in challengeTypes)
             {
                 var expiresTurnEnd = NewChallengeExpires(challengeType);
                 var die = LoadedDie(player.Id, challengeType, expiresTurnEnd);
                 var challenge = FormulateChallenge(challengeType, expiresTurnEnd, die);
 
-                if (challenge.Eligible(player))
+                if (challenge != null)
                 {
-                    EffectProcedures.GivePerkToPlayer(challengeType.EffectSourceId, player.Id, challengeType.Duration);
-
-                    if (EffectProcedures.PlayerHasActiveEffect(player.Id, challengeType.EffectSourceId))
+                    // Try to pick challenge closest to challenge type's requirements
+                    if (bestChallenge == null || challenge.Difficulty > bestChallenge.Difficulty ||
+                        (challenge.Difficulty == bestChallenge.Difficulty && 
+                         challengeType.MaxDifficulty - challenge.Difficulty < bestChallengeType.MaxDifficulty - bestChallenge.Difficulty))
                     {
-                        return challenge;
+                        // Confirm player is eligible for challenge and hasn't already satisfied its requirements
+                        if (challenge.Eligible(player) && !challenge.Satisfied(player))
+                        {
+                            bestChallenge = challenge;
+                            bestChallengeType = challengeType;
+                        }
                     }
                 }
+            }
+
+            // Assign the challenge to the player
+            if (bestChallenge != null)
+            {
+                    EffectProcedures.GivePerkToPlayer(bestChallengeType.EffectSourceId, player.Id, bestChallengeType.Duration);
+
+                    if (EffectProcedures.PlayerHasActiveEffect(player.Id, bestChallengeType.EffectSourceId))
+                    {
+                        return bestChallenge;
+                    }
             }
 
             return null;
@@ -404,8 +445,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var mobileForms = JokeShopProcedures.Forms(f => f.Category == PvPStatics.MobilityFull);
                 var form = mobileForms.ElementAt(die.Next(mobileForms.Count()));
 
-                AddEligibilityCriterion(challenge,
-                                        p => p.FormSourceId != form.FormSourceId);
                 AddRequirement(challenge,
                                $"Take on the form of a {form.FriendlyName}",
                                p => p.FormSourceId == form.FormSourceId);

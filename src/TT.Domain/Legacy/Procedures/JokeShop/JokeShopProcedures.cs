@@ -40,7 +40,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static readonly int[] STRIPPERS = { 153, 719, 880 };
         public static readonly int[] DRONES = { 715, 930, 951, 1039, 1050 };
         public static readonly int[] SHEEP = { 204, 950, 1022, 1035, 1198 };
-        public static readonly int[] MAIDS = { 65, 205, 305, 348, 457, 499, 514, 652, 662, 673, 848, 869, 875, 901, 921, 951, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207 };
+        public static readonly int[] MAIDS = { 65, 205, 305, 348, 457, 499, 514, 591, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207 };
         public static readonly int[] MANA_FORMS = { 834, 1149 };
 
         // Effects supporting the Joke Shop mechanics
@@ -1175,7 +1175,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 90)  // 10%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 0, 10);
+                return NovelPrankProcedures.AwardChallenge(player, 0, 20, false);
             }
             else  // 10%
             {
@@ -1217,7 +1217,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 15%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 10, 20);
+                return NovelPrankProcedures.AwardChallenge(player, 10, 60);
             }
         }
 
@@ -1275,7 +1275,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 92)  // 7%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 20, 480);
+                return NovelPrankProcedures.AwardChallenge(player, 20, 480, true);
             }
             else  // 8%
             {

@@ -53,7 +53,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
 
-            return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  You score is <b>{score}</b>.";
+            return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
         }
 
         public static string PlaceBountyOnPlayersHead(Player player)
@@ -468,9 +468,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> is currently in <b>{location}</b>!";
         }
 
-        public static string AwardChallenge(Player player, int minDuration, int maxDuration)
+        public static string AwardChallenge(Player player, int minDuration, int maxDuration, bool? withPenalties = null)
         {
-            var challenge = ChallengeProcedures.AwardChallenge(player, minDuration, maxDuration);
+            var challenge = ChallengeProcedures.AwardChallenge(player, minDuration, maxDuration, withPenalties);
 
             if (challenge == null)
             {
@@ -479,7 +479,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             var message = "The interdimensional spirits that inhabit this strange magical plane question whether you are worthy enough to be here.  <b>They decide to set you a challenge!</b>  ";
             message += $"You must {ListifyHelper.Listify(challenge.Criteria, true)}.  ";
-            message += $"If you succeed, you will be rewarded with <b>{challenge.Reward}</b>";
+            message += $"If you succeed you will be rewarded with <b>{challenge.Reward}</b>";
 
             if (!challenge.Penalty.IsNullOrEmpty())
             {

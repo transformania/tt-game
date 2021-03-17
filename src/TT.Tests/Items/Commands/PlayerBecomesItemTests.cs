@@ -10,6 +10,7 @@ using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
+using TT.Tests.Builders.Effects;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
@@ -27,12 +28,14 @@ namespace TT.Tests.Items.Commands
         private List<Item> victimItems;
         private List<Item> emptyItemList;
 
+        private int psychoticEffectSourceId = 123;
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            JokeShopProcedures.PSYCHOTIC_EFFECT = 123;
+            JokeShopProcedures.PSYCHOTIC_EFFECT = psychoticEffectSourceId;
 
             victimItems = new List<Item>();
             emptyItemList = new List<Item>();
@@ -50,7 +53,6 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Id, 1)
                 .With(p => p.FirstName, "Victim")
                 .With(p => p.LastName, "MgGee")
-                .With(p => p.Level, 13)
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
                 .With(p => p.BotId, AIStatics.ActivePlayerBotId)
                 .With(p => p.Level, 13)
@@ -86,7 +88,7 @@ namespace TT.Tests.Items.Commands
         }
 
         [Test]
-        public void player_should_become_item_and_go_to_attacker()
+        public void player_should_become_item_and_go_to_attacker_and_drop_inventory_by_default()
         {
 
             var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id };
@@ -126,13 +128,50 @@ namespace TT.Tests.Items.Commands
         }
 
         [Test]
+        public void player_should_become_item_and_go_to_attacker_and_not_drop_inventory_if_opted_out()
+        {
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = victim.Id, NewFormId = formSource.Id, DropItems = false };
+
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog").EqualTo("<br><b>You fully transformed Victim MgGee into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim MgGee was completely transformed into a A new Item!</b> here."));
+
+            var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
+            Assert.That(victimPostTF, Is.Not.Null);
+            Assert.That(victimPostTF.Mobility, Is.EqualTo(PvPStatics.MobilityInanimate));
+            Assert.That(victimPostTF.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(victimPostTF.Item.ItemSource.Id, Is.EqualTo(itemSource.Id));
+
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner.Id, Is.EqualTo(attacker.Id));
+            Assert.That(newItem.IsPermanent, Is.False);
+            Assert.That(newItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection)); // Superprotection players always get protection items
+            Assert.That(newItem.Level, Is.EqualTo(victim.Level));
+            Assert.That(newItem.dbLocationName, Is.Empty);
+            Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(newItem.ConsentsToSoulbinding, Is.False);
+
+            var attackerPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == attacker.Id);
+            Assert.That(attackerPostTF, Is.Not.Null);
+            Assert.That(attackerPostTF.Items, Has.Exactly(1).Items);
+            Assert.That(attackerPostTF.Items.ElementAt(0).FormerPlayer.Id, Is.EqualTo(victimPostTF.Id));
+
+            var undroppedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == 82624);
+            Assert.That(undroppedItem, Is.Not.Null);
+            Assert.That(victimPostTF.Items, Has.Member(undroppedItem));
+        }
+
+        [Test]
         public void bots_should_lock_permanently_immediately_and_be_any_game_mode()
         {
             var botVictim = new PlayerBuilder()
                 .With(p => p.Id, 5)
                 .With(p => p.FirstName, "Psychopath")
                 .With(p => p.LastName, "Panties")
-                .With(p => p.Level, 13)
                 .With(p => p.GameMode, (int)GameModeStatics.GameModes.Protection)
                 .With(p => p.BotId, AIStatics.PsychopathBotId)
                 .With(p => p.Level, 7)
@@ -163,6 +202,57 @@ namespace TT.Tests.Items.Commands
             Assert.That(newItem.dbLocationName, Is.Empty);
             Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
             Assert.That(newItem.ConsentsToSoulbinding, Is.True);
+        }
+
+        [Test]
+        public void psychotic_players_should_not_lock_permanently()
+        {
+            var botVictim = new PlayerBuilder()
+                .With(p => p.Id, 55)
+                .With(p => p.FirstName, "Victim")
+                .With(p => p.LastName, "McGee")
+                .With(p => p.GameMode, (int)GameModeStatics.GameModes.PvP)
+                .With(p => p.BotId, AIStatics.PsychopathBotId)
+                .With(p => p.Level, 7)
+                .BuildAndSave();
+
+            var effectSourcePsychotic = new EffectSourceBuilder()
+                .With(e => e.Id, psychoticEffectSourceId)
+                .BuildAndSave();
+
+            var effectPsychotic = new EffectBuilder()
+                .With(e => e.EffectSource, effectSourcePsychotic)
+                .With(e => e.Duration, 1)
+                .With(e => e.Owner, botVictim)
+                .BuildAndSave();
+
+            botVictim.Effects.Add(effectPsychotic);
+
+            var cmd = new PlayerBecomesItem { AttackerId = attacker.Id, VictimId = botVictim.Id, NewFormId = formSource.Id };
+
+            Assert.That(DomainRegistry.Repository.Execute(cmd),
+                Has.Property("AttackerLog")
+                    .EqualTo("<br><b>You fully transformed Victim McGee into a A new Item!</b>!")
+                    .And.Property("VictimLog")
+                    .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
+                    .And.Property("LocationLog")
+                    .EqualTo("<br><b>Victim McGee was completely transformed into a A new Item!</b> here."));
+
+            var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == botVictim.Id);
+            Assert.That(victimPostTF, Is.Not.Null);
+            Assert.That(victimPostTF.Mobility, Is.EqualTo(PvPStatics.MobilityInanimate));
+            Assert.That(victimPostTF.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(victimPostTF.Item.ItemSource.Id, Is.EqualTo(itemSource.Id));
+
+            var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == botVictim.Id);
+            Assert.That(newItem, Is.Not.Null);
+            Assert.That(newItem.Owner.Id, Is.EqualTo(attacker.Id));
+            Assert.That(newItem.PvPEnabled, Is.EqualTo((int)GameModeStatics.GameModes.Protection));
+            Assert.That(newItem.IsPermanent, Is.False);
+            Assert.That(newItem.Level, Is.EqualTo(botVictim.Level));
+            Assert.That(newItem.dbLocationName, Is.Empty);
+            Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
+            Assert.That(newItem.ConsentsToSoulbinding, Is.False);
         }
 
         [Test]

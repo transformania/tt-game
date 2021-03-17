@@ -7,6 +7,7 @@ using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
+using TT.Tests.Builders.Effects;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Players;
 
@@ -15,12 +16,14 @@ namespace TT.Tests.Players.Commands
     [TestFixture]
     public class ShoutTests : TestBase
     {
+        private int hushedEffectSourceId = 123;
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            CharacterPrankProcedures.HUSHED_EFFECT = 123;
+            CharacterPrankProcedures.HUSHED_EFFECT = hushedEffectSourceId;
         }
 
         [TearDown]
@@ -51,6 +54,31 @@ namespace TT.Tests.Players.Commands
             Assert.That(DataContext.AsQueryable<LocationLog>().First().Message,
                 Is.EqualTo(
                     "<span class='playerShoutNotification'>John Doe shouted <b>\"Hello world!\"</b> here.</span>"));
+        }
+
+        public void should_not_shout_if_hushed()
+        {
+            var player = new PlayerBuilder()
+               .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "abcde")
+                    .BuildAndSave())
+               .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
+               .With(p => p.ShoutsRemaining, 1)
+               .BuildAndSave();
+
+            var effectSourceHushed = new EffectSourceBuilder()
+                .With(e => e.Id, hushedEffectSourceId)
+                .BuildAndSave();
+
+            var effectHushed = new EffectBuilder()
+                .With(e => e.EffectSource, effectSourceHushed)
+                .BuildAndSave();
+
+            player.Effects.Add(effectHushed);
+
+            var cmd = new Shout {Message = "Hello world!", UserId = player.User.Id};
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You have been hushed and cannot currently shout."));
         }
 
         [Test]

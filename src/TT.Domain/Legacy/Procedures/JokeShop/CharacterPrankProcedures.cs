@@ -492,21 +492,20 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            FormDetail form;
+            var index = new Random().Next(forms.Count());
+            var form = forms.ElementAt(index);
             String message;
 
             if (temporary)
             {
-                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, JokeShopProcedures.PlayerHasBeenWarnedTwice(player) ? 3 : 2);
-                message = $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);
+                var duration = JokeShopProcedures.PlayerHasBeenWarnedTwice(player) ? 3 : 2;
+                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration);
+                message = $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!";
             }
             else
             {
                 message = $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
             }
-
-            var index = new Random().Next(forms.Count());
-            form = forms.ElementAt(index);
 
             if (!TryAnimateTransform(player, form.FormSourceId))
             {

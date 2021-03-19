@@ -1089,7 +1089,7 @@ namespace TT.Domain.Procedures
 
             if (dbLocationName == LocationsStatics.JOKE_SHOP)
             {
-                var result = JokeShopProcedures.Search(player);
+                var result = JokeShopProcedures.Search(player, rand);
 
                 if (!result.IsNullOrEmpty())
                 {

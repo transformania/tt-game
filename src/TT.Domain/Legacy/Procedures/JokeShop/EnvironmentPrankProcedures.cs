@@ -17,9 +17,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Resource pranks
 
-        public static string MildResourcePrank(Player player)
+        public static string MildResourcePrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 27)  // 27%
@@ -40,13 +40,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 10%
             {
-                return LearnSpell(player);
+                return LearnSpell(player, rand);
             }
         }
 
-        public static string MischievousResourcePrank(Player player)
+        public static string MischievousResourcePrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 30)  // 30%
@@ -67,7 +67,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 95)  // 10%
             {
-                return UnlearnSpell(player);
+                return UnlearnSpell(player, rand);
             }
             else  // 5%
             {
@@ -75,9 +75,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string MeanResourcePrank(Player player)
+        public static string MeanResourcePrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 40)  // 40%
@@ -241,9 +241,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"The transdimensional store momentarily touches down deep below the streets.  You feel your dungeon points {increaseOrDecrease} by {delta}";
         }
 
-        public static string RareFind(Player player)
+        public static string RareFind(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(3);
 
             if (roll < 1)
@@ -307,9 +307,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string LearnSpell(Player player)
+        private static string LearnSpell(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var num = rand.Next(3) + 1;
             var learnt = SkillProcedures.GiveRandomFindableSkillsToPlayer(player, num);
 
@@ -321,9 +321,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"A spellbook flies off the shelf and lands open on the wooden desk in front of you.  As you look at it you discover the secret incantations for the spells {ListifyHelper.Listify(learnt)}!";
         }
 
-        private static string UnlearnSpell(Player player)
+        private static string UnlearnSpell(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             var skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id)
                 .Where(s => s.StaticSkill.IsPlayerLearnable &&
@@ -352,30 +352,30 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Location pranks
 
-        public static string MildLocationPrank(Player player)
+        public static string MildLocationPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 10)  // 10%
             {
-                return TeleportToOverworld(player, false, rand.Next(2) == 0);
+                return TeleportToOverworld(player, false, rand.Next(2) == 0, rand);
             }
             else if (roll < 30)  // 20%
             {
-                return TeleportToDungeon(player, 0);
+                return TeleportToDungeon(player, 0, rand);
             }
             else if (roll < 40)  // 10%
             {
-                return TeleportToBar(player, false);
+                return TeleportToBar(player, false, rand);
             }
             else if (roll < 46)  // 6%
             {
-                return TeleportToFriendlyNPC(player);
+                return TeleportToFriendlyNPC(player, rand);
             }
             else if (roll < 50)  // 4%
             {
-                return TeleportToQuest(player);
+                return TeleportToQuest(player, rand);
             }
             else if (roll < 75)  // 25%
             {
@@ -383,36 +383,37 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 25%
             {
-                return WanderAimlessly(player);
+                return WanderAimlessly(player, rand);
             }
         }
 
-        public static string MischievousLocationPrank(Player player)
+        public static string MischievousLocationPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 25)  // 25%
             {
-                return TeleportToOverworld(player, true, true);
+                return TeleportToOverworld(player, true, true, rand);
             }
             else if (roll < 50)  // 25%
             {
-                return TeleportToDungeon(player, rand.Next(1, 4));
+                return TeleportToDungeon(player, rand.Next(1, 4), rand);
             }
             else if (roll < 75)  // 25%
             {
-                return TeleportToBar(player, true);
+                return TeleportToBar(player, true, rand);
             }
             else  // 25%
             {
-                return TeleportToHostileNPC(player, false);
+                return TeleportToHostileNPC(player, false, rand);
             }
         }
 
-        public static string MeanLocationPrank(Player player)
+        public static string MeanLocationPrank(Player player, Random rand = null)
         {
-            return TeleportToHostileNPC(player, true);
+            rand = rand ?? new Random();
+            return TeleportToHostileNPC(player, true, rand);
         }
 
         private static bool Teleport(Player player, string location, bool logLocations)
@@ -461,11 +462,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return true;
         }
 
-        private static string TeleportToOverworld(Player player, bool root, bool curse)
+        private static string TeleportToOverworld(Player player, bool root, bool curse, Random rand = null)
         {
+            rand = rand ?? new Random();
             var location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
 
-            if (!Teleport(player, location, new Random().Next(2) == 0))
+            if (!Teleport(player, location, rand.Next(2) == 0))
             {
                 return null;
             }
@@ -478,13 +480,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (curse && !root)
             {
-                CharacterPrankProcedures.ApplyLocalCurse(player, location);
+                CharacterPrankProcedures.ApplyLocalCurse(player, location, rand);
             }
 
             return $"All of a sudden the Joke Shop spits you out and you find yourself in {LocationsStatics.GetConnectionName(location)}!";
         }
 
-        private static string TeleportToDungeon(Player player, int meanness)
+        private static string TeleportToDungeon(Player player, int meanness, Random rand = null)
         {
             if (!PlayerProcedures.CheckAllowedInDungeon(player, out _))
             {
@@ -498,8 +500,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             var location = LocationsStatics.GetRandomLocation_InDungeon();
+            rand = rand ?? new Random();
 
-            if (!Teleport(player, location, new Random().Next(2) == 0))
+            if (!Teleport(player, location, rand.Next(2) == 0))
             {
                 return null;
             }
@@ -517,9 +520,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You feel the room start to shake and shimmer, parts of the shop fading away as it is pulled between realms.  The shelves rattle ever more violently and you try and take shelter under the counter.  But the shop has other ideas and the floor gives way, leaving you tumbling through the air just as the store flickers out of this plane.  That's the last thing you remember.  Nursing a headache, with a bleary blink of your eyes your surroundings slowly come into focus.  You've landed in the deepest depths of the dungeon!";
         }
 
-        private static string TeleportToFriendlyNPC(Player player)
+        private static string TeleportToFriendlyNPC(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(6);
 
             int npc = 0;
@@ -553,7 +556,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     break;
             }
 
-            var npcPlayer = TeleportToNPC(player, npc);
+            var npcPlayer = TeleportToNPC(player, npc, rand);
             if (npcPlayer == null)
             {
                 return null;
@@ -569,7 +572,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  The room then fades away.";
         }
 
-        private static string TeleportToHostileNPC(Player player, bool attack)
+        private static string TeleportToHostileNPC(Player player, bool attack, Random rand = null)
         {
             var targetForm = -1;
 
@@ -601,7 +604,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                          p.BotId == AIStatics.MinibossSororityMotherId)).ToList();
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             Player npcPlayer = null;
             if (hostiles != null && hostiles.Any())
             {
@@ -662,7 +665,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static Player TeleportToNPC(Player player, int npc)
+        private static Player TeleportToNPC(Player player, int npc, Random rand = null)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var npcPlayer = playerRepo.Players.FirstOrDefault(p => p.BotId == npc);
@@ -672,7 +675,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            if (!Teleport(player, npcPlayer.dbLocationName, new Random().Next(2) == 0))
+            rand = rand ?? new Random();
+
+            if (!Teleport(player, npcPlayer.dbLocationName, rand.Next(2) == 0))
             {
                 return null;
             }
@@ -680,10 +685,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return npcPlayer;
         }
 
-        private static string TeleportToBar(Player player, bool root)
+        private static string TeleportToBar(Player player, bool root, Random rand = null)
         {
             // Not all getaways can be clean..
             string bar = "tavern_counter";
+            rand = rand ?? new Random();
 
             if (!Teleport(player, bar, true))
             {
@@ -696,13 +702,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else
             {
-                CharacterPrankProcedures.ApplyLocalCurse(player, bar);
+                CharacterPrankProcedures.ApplyLocalCurse(player, bar, rand);
             }
 
             return "You've been looking around the shop for a while now and are starting to get thirsty.  Something within the shop knows it too, and very quickly you find yourself in the bar!";
         }
 
-        private static string TeleportToQuest(Player player)
+        private static string TeleportToQuest(Player player, Random rand = null)
         {
             var lastAttackTimeAgo = Math.Abs(DateTime.UtcNow.Subtract(player.GetLastCombatTimestamp()).TotalMinutes);
             if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
@@ -717,7 +723,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             var index = rand.Next(quests.Count());
             var quest = quests.ToArray()[index];
 
@@ -773,9 +779,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return stoppingTile;
         }
 
-        private static string WanderAimlessly(Player player)
+        private static string WanderAimlessly(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
@@ -823,9 +829,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Quotas and timers pranks
 
-        public static string MildQuotasAndTimerPrank(Player player)
+        public static string MildQuotasAndTimerPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 50)  // 50%
@@ -841,9 +847,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string MischievousQuotasAndTimerPrank(Player player)
+        public static string MischievousQuotasAndTimerPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 20)  // 20%
@@ -864,9 +870,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string MeanQuotasAndTimerPrank(Player player)
+        public static string MeanQuotasAndTimerPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 40)  // 40%

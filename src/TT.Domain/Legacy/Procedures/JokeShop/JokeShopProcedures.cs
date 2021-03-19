@@ -331,7 +331,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (INSTINCT_EFFECT.HasValue)
             {
                 var playersToControl = effects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
-                InstinctProcedures.ActOnInstinct(playersToControl);
+                InstinctProcedures.ActOnInstinct(playersToControl, new Random());
             }
         }
 
@@ -439,14 +439,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         // Returning null from hooks opts to not override the default action
 
-        public static string Search(Player player)
+        public static string Search(Player player, Random rand = null)
         {
             if (CharacterIsBanned(player))
             {
                 return EjectCharacter(player);
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank search
             if (rand.Next(5) < 3)  // Normal search 60% of the time, else attempt a prank
@@ -458,15 +458,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (roll < 65)  // 65%
             {
-                return MildPrank(player);
+                return MildPrank(player, rand);
             }
             else if (roll < 90)  // 25%
             {
-                return MischievousPrank(player);
+                return MischievousPrank(player, rand);
             }
             else if (roll < 95)  // 5%
             {
-                return MeanPrank(player);
+                return MeanPrank(player, rand);
             }
             else  // 5%
             {
@@ -474,7 +474,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string Meditate(Player player)
+        public static string Meditate(Player player, Random rand = null)
         {
             if (CharacterIsBanned(player))
             {
@@ -487,7 +487,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank meditation
             if (rand.Next(10) < 9)  // Prank 10% of the time
@@ -573,15 +573,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player, rand) : EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player, rand) : EnvironmentPrankProcedures.MischievousResourcePrank(player, rand);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player, rand) : EnvironmentPrankProcedures.MildResourcePrank(player, rand);
                 }
             }
             else if (roll < 98)  // 5%
@@ -604,7 +604,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        public static string Cleanse(Player player)
+        public static string Cleanse(Player player, Random rand = null)
         {
             if (CharacterIsBanned(player))
             {
@@ -623,7 +623,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank cleanse
             if (rand.Next(10) < 9)  // Prank 10% of the time
@@ -725,15 +725,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player, rand) : EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player, rand) : EnvironmentPrankProcedures.MischievousResourcePrank(player, rand);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player, rand) : EnvironmentPrankProcedures.MildResourcePrank(player, rand);
                 }
             }
             else if (roll < 98)  // 5%
@@ -756,7 +756,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        public static string SelfRestore(Player player)
+        public static string SelfRestore(Player player, Random rand = null)
         {
             if (CharacterIsBanned(player))
             {
@@ -769,7 +769,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank self-restore
             if (rand.Next(25) < 24)  // Prank 4% of the time
@@ -833,15 +833,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MeanEffectsPrank(player, rand) : EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MischievousEffectsPrank(player, rand) : EnvironmentPrankProcedures.MischievousResourcePrank(player, rand);
                 }
                 else
                 {
-                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    message = rand.Next(2) == 0 ? CharacterPrankProcedures.MildEffectsPrank(player, rand) : EnvironmentPrankProcedures.MildResourcePrank(player, rand);
                 }
             }
             else if (roll < 95)  // 15%
@@ -864,7 +864,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        public static string Drop(Player player, int itemId)
+        public static string Drop(Player player, int itemId, Random rand = null)
         {
             // Don't return without dropping (or doing something similar).
 
@@ -874,7 +874,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             if (rand.Next(2) != 0)  // Prank 1 drop in 2
             {
@@ -963,14 +963,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        public static string Attack(Player player, Player victim, SkillViewModel skill)
+        public static string Attack(Player player, Player victim, SkillViewModel skill, Random rand = null)
         {
             if (CharacterIsBanned(player))
             {
                 return EjectCharacter(player);
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             if (rand.Next(5) != 0)  // Prank 1 attack in 5
             {
@@ -1094,15 +1094,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player) : EnvironmentPrankProcedures.MeanResourcePrank(player);
+                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player, rand) : EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MischievousQuotasAndTimerPrank(player) : EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MischievousQuotasAndTimerPrank(player, rand) : EnvironmentPrankProcedures.MischievousResourcePrank(player, rand);
                 }
                 else
                 {
-                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MildQuotasAndTimerPrank(player) : EnvironmentPrankProcedures.MildResourcePrank(player);
+                    return rand.Next(2) == 0 ? EnvironmentPrankProcedures.MildQuotasAndTimerPrank(player, rand) : EnvironmentPrankProcedures.MildResourcePrank(player, rand);
                 }
             }
             else if (roll < 98)  // 14%
@@ -1113,15 +1113,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var prankRoll = rand.Next(4);
                 if (prankRoll < 1 && PlayerHasBeenWarnedTwice(player))
                 {
-                    return CharacterPrankProcedures.MeanEffectsPrank(player);
+                    return CharacterPrankProcedures.MeanEffectsPrank(player, rand);
                 }
                 else if (prankRoll < 2 && PlayerHasBeenWarned(player))
                 {
-                    return CharacterPrankProcedures.MischievousEffectsPrank(player);
+                    return CharacterPrankProcedures.MischievousEffectsPrank(player, rand);
                 }
                 else
                 {
-                    return CharacterPrankProcedures.MildEffectsPrank(player);
+                    return CharacterPrankProcedures.MildEffectsPrank(player, rand);
                 }
             }
             else  // 2%
@@ -1136,42 +1136,42 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Prank selection
 
-        private static string MildPrank(Player player)
+        private static string MildPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 15)  // 15%
             {
-                return EnvironmentPrankProcedures.MildResourcePrank(player);
+                return EnvironmentPrankProcedures.MildResourcePrank(player, rand);
             }
             else if (roll < 25)  // 10%
             {
-                return EnvironmentPrankProcedures.MildLocationPrank(player);
+                return EnvironmentPrankProcedures.MildLocationPrank(player, rand);
             }
             else if (roll < 35)  // 10%
             {
-                return EnvironmentPrankProcedures.MildQuotasAndTimerPrank(player);
+                return EnvironmentPrankProcedures.MildQuotasAndTimerPrank(player, rand);
             }
             else if (roll < 50)  // 15%
             {
-                return CharacterPrankProcedures.MildTransformationPrank(player);
+                return CharacterPrankProcedures.MildTransformationPrank(player, rand);
             }
             else if (roll < 65)  // 15%
             {
-                return CharacterPrankProcedures.MildEffectsPrank(player);
+                return CharacterPrankProcedures.MildEffectsPrank(player, rand);
             }
             else if (roll < 70)  // 5%
             {
-                return EnvironmentPrankProcedures.RareFind(player);
+                return EnvironmentPrankProcedures.RareFind(player, rand);
             }
             else if (roll < 75)  // 5%
             {
-                return NovelPrankProcedures.RandomShout(player);
+                return NovelPrankProcedures.RandomShout(player, rand);
             }
             else if (roll < 80)  // 5%
             {
-                return NovelPrankProcedures.LocatePlayerInCombat(player);
+                return NovelPrankProcedures.LocatePlayerInCombat(player, rand);
             }
             else if (roll < 90)  // 10%
             {
@@ -1183,7 +1183,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string MischievousPrank(Player player)
+        private static string MischievousPrank(Player player, Random rand = null)
         {
             var warning = EnsurePlayerIsWarned(player);
 
@@ -1192,28 +1192,28 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return warning;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 15)  // 15%
             {
-                return EnvironmentPrankProcedures.MischievousResourcePrank(player);
+                return EnvironmentPrankProcedures.MischievousResourcePrank(player, rand);
             }
             else if (roll < 30)  // 15%
             {
-                return EnvironmentPrankProcedures.MischievousLocationPrank(player);
+                return EnvironmentPrankProcedures.MischievousLocationPrank(player, rand);
             }
             else if (roll < 45)  // 15%
             {
-                return EnvironmentPrankProcedures.MischievousQuotasAndTimerPrank(player);
+                return EnvironmentPrankProcedures.MischievousQuotasAndTimerPrank(player, rand);
             }
             else if (roll < 65)  // 20%
             {
-                return CharacterPrankProcedures.MischievousTransformationPrank(player);
+                return CharacterPrankProcedures.MischievousTransformationPrank(player, rand);
             }
             else if (roll < 85)  // 20%
             {
-                return CharacterPrankProcedures.MischievousEffectsPrank(player);
+                return CharacterPrankProcedures.MischievousEffectsPrank(player, rand);
             }
             else  // 15%
             {
@@ -1221,7 +1221,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string MeanPrank(Player player)
+        private static string MeanPrank(Player player, Random rand = null)
         {
             var warning = EnsurePlayerIsWarnedTwice(player);
 
@@ -1230,36 +1230,36 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return warning;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 15)  // 15%
             {
-                return EnvironmentPrankProcedures.MeanResourcePrank(player);
+                return EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
             }
             else if (roll < 30)  // 15%
             {
-                return EnvironmentPrankProcedures.MeanLocationPrank(player);
+                return EnvironmentPrankProcedures.MeanLocationPrank(player, rand);
             }
             else if (roll < 40)  // 10%
             {
-                return EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player);
+                return EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player, rand);
             }
             else if (roll < 50)  // 10%
             {
-                return CharacterPrankProcedures.MeanTransformationPrank(player);
+                return CharacterPrankProcedures.MeanTransformationPrank(player, rand);
             }
             else if (roll < 65)  // 15%
             {
-                return CharacterPrankProcedures.MeanEffectsPrank(player);
+                return CharacterPrankProcedures.MeanEffectsPrank(player, rand);
             }
             else if (roll < 69)  // 4%
             {
-                return NovelPrankProcedures.SummonPsychopath(player);
+                return NovelPrankProcedures.SummonPsychopath(player, rand);
             }
             else if (roll < 73)  // 4%
             {
-                return NovelPrankProcedures.SummonDoppelganger(player);
+                return NovelPrankProcedures.SummonDoppelganger(player, rand);
             }
             else if (roll < 77)  // 4%
             {
@@ -1267,11 +1267,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 81)  // 4%
             {
-                return NovelPrankProcedures.ForceAttack(player);
+                return NovelPrankProcedures.ForceAttack(player, false, rand);
             }
             else if (roll < 85)  // 4%
             {
-                return NovelPrankProcedures.Incite(player);
+                return NovelPrankProcedures.Incite(player, rand);
             }
             else if (roll < 92)  // 7%
             {
@@ -1279,7 +1279,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 8%
             {
-                return NovelPrankProcedures.PlaceBountyOnPlayersHead(player);
+                return NovelPrankProcedures.PlaceBountyOnPlayersHead(player, rand);
             }
         }
 

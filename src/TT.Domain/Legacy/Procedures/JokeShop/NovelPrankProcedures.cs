@@ -56,7 +56,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
         }
 
-        public static string PlaceBountyOnPlayersHead(Player player)
+        public static string PlaceBountyOnPlayersHead(Player player, Random rand = null)
         {
             // Only place bounties on PvP players
             if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
@@ -64,7 +64,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var bountyEffect = BountyProcedures.PlaceBounty(player);
+            rand = rand ?? new Random();
+            var bountyEffect = BountyProcedures.PlaceBounty(player, rand);
 
             if (!bountyEffect.HasValue)
             {
@@ -80,7 +81,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__BountyCount, 1);
 
-            var rand = new Random();
             var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
             var locationMessage = $"<b>Wanted:</b>  A reward is on offer to whoever turns <b>{player.GetFullName()}</b> into a <b>{details.Form?.FriendlyName}</b>!";
 
@@ -97,9 +97,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return playerMessage;
         }
 
-        public static string SummonPsychopath(Player player)
+        public static string SummonPsychopath(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             var baseStrength = Math.Min(Math.Max(0, player.Level / 3), 4);
             var strength = baseStrength + rand.Next(3);
@@ -243,9 +243,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "Near the counter is an altar with a leather-bound book resting open upon it.  You take a look and try to read one of the jokes aloud.  It seems to be some consonant-heavy tongue twister that soon leaves you faltering.  You're not quite sure what the set up means, but hope the punchline will be worth it.  As you spurt out the last syllable a puff of red smoke explodes out from the book with an audible bang.  You're not laughing, and that remains the case when you close the book to see a large pentagram seared into the cover.  As the smoke subsides there seems to be a strange neon flicker to the light and a crackling to the air.  You turn sharply to see the psychopath you just summoned readying their attack against you!";
         }
 
-        public static string SummonDoppelganger(Player player)
+        public static string SummonDoppelganger(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var cmd = new CreatePlayer
@@ -329,7 +329,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You spot a tin with a colorful insignia on a shelf.  You move over to take a closer look, but accidentally knock the tin to the floor and spill its contents!  You gather up the fallen leaves and place them back in the tin.  \"PsychoNip,\" it reads.  Perhaps you should stay alert for the next few turns in case the scent has caught anyone's attention...";
         }
 
-        public static string ForceAttack(Player attacker, bool strongAttackerAlerts = false)
+        public static string ForceAttack(Player attacker, bool strongAttackerAlerts = false, Random rand =null)
         {
             if (attacker.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
             {
@@ -341,7 +341,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             var candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(attacker)
                                     .Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
                                                 JokeShopProcedures.PlayerHasBeenWarned(p)).ToList();
@@ -378,9 +378,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"{message}<br />{attack}";
         }
 
-        public static string Incite(Player player)
+        public static string Incite(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(player)
                                 .Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
                                             JokeShopProcedures.PlayerHasBeenWarned(p)).ToList();
@@ -392,7 +392,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             var attacker = candidates[rand.Next(candidates.Count())];
 
-            if (ForceAttack(attacker, true) == null)
+            if (ForceAttack(attacker, true, rand) == null)
             {
                 return null;
             }
@@ -400,9 +400,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You incite {attacker.GetFullName()} to attack another player!";
         }
 
-        public static string RandomShout(Player player)
+        public static string RandomShout(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             string[] memes = {
                 // TODO joke_shop add memes
@@ -443,9 +443,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You shouted \"{meme}\"";
         }
 
-        public static string LocatePlayerInCombat(Player player)
+        public static string LocatePlayerInCombat(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling());
 
             var playerRepo = new EFPlayerRepository();

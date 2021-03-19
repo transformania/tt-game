@@ -12,14 +12,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
     static class InstinctProcedures
     {
 
-        internal static void ActOnInstinct(List<int> playersToControl)
+        internal static void ActOnInstinct(List<int> playersToControl, Random rand = null)
         {
             if (playersToControl == null || playersToControl.IsEmpty())
             {
                 return;
             }
 
-            var rand = new Random();
+            rand = rand ?? new Random();
             var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
 
             IPlayerRepository playerRepo = new EFPlayerRepository();

@@ -47,7 +47,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return list;
         }
 
-        internal static int? PlaceBounty(Player player)
+        internal static int? PlaceBounty(Player player, Random rand = null)
         {
             // Only place bounties on PvP players
             if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
@@ -61,7 +61,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var effect = MAPPINGS[new Random().Next(numMappings)];
+            rand = rand ?? new Random();
+            var effect = MAPPINGS[rand.Next(numMappings)];
 
             if (EffectProcedures.PlayerHasEffect(player, effect.Id))
             {

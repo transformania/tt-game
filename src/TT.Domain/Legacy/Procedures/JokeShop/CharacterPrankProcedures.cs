@@ -165,9 +165,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Effects pranks
 
-        public static string MildEffectsPrank(Player player)
+        public static string MildEffectsPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 10)  // 10%
@@ -176,11 +176,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 60)  // 50%
             {
-                return GiveRandomEffect(player, BOOST_EFFECTS);
+                return GiveRandomEffect(player, BOOST_EFFECTS, rand);
             }
             else if (roll < 90)  // 30%
             {
-                return GiveRandomEffect(player, PENALTY_EFFECTS);
+                return GiveRandomEffect(player, PENALTY_EFFECTS, rand);
             }
             else  // 10%
             {
@@ -188,9 +188,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string MischievousEffectsPrank(Player player)
+        public static string MischievousEffectsPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 10)  // 10%
@@ -199,11 +199,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 30)  // 20%
             {
-                return GiveRandomEffect(player, BOOST_EFFECTS);
+                return GiveRandomEffect(player, BOOST_EFFECTS, rand);
             }
             else if (roll < 50)  // 20%
             {
-                return GiveRandomEffect(player, PENALTY_EFFECTS);
+                return GiveRandomEffect(player, PENALTY_EFFECTS, rand);
             }
             else if (roll < 55)  // 5%
             {
@@ -231,13 +231,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 10%
             {
-                return LiftRandomCurse(player);
+                return LiftRandomCurse(player, rand);
             }
         }
 
-        public static string MeanEffectsPrank(Player player)
+        public static string MeanEffectsPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 10)  // 10%
@@ -246,7 +246,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 80)  // 70%
             {
-                return GiveRandomEffect(player, PENALTY_EFFECTS);
+                return GiveRandomEffect(player, PENALTY_EFFECTS, rand);
             }
             else if (roll < 90)  // 10%
             {
@@ -268,14 +268,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.GivePerkToPlayer(effect.Value, player, Duration: duration, Cooldown: duration);
         }
 
-        private static string GiveRandomEffect(Player player, IEnumerable<int> effects)
+        private static string GiveRandomEffect(Player player, IEnumerable<int> effects, Random rand = null)
         {
             if (effects.IsEmpty())
             {
                 return null;
             }
 
-            var effect = effects.ElementAt(new Random().Next(effects.Count()));
+            rand = rand ?? new Random();
+            var effect = effects.ElementAt(rand.Next(effects.Count()));
 
             if (EffectProcedures.PlayerHasEffect(player, effect))
             {
@@ -285,13 +286,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.GivePerkToPlayer(effect, player);
         }
 
-        public static string ApplyLocalCurse(Player player, string dbLocationName)
+        public static string ApplyLocalCurse(Player player, string dbLocationName, Random rand = null)
         {
             var effects = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToArray();
 
             if (effects.Any())
             {
-                var effect = effects[new Random { }.Next(effects.Count())];
+                rand = rand ?? new Random();
+                var effect = effects[rand.Next(effects.Count())];
 
                 if (!EffectProcedures.PlayerHasEffect(player, effect.Id))
                 {
@@ -302,9 +304,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return null;
         }
 
-        private static string LiftRandomCurse(Player player)
+        private static string LiftRandomCurse(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var effects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToArray();
 
             if (effects.IsEmpty())
@@ -372,14 +374,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         
         #region Form, name and MC pranks
 
-        public static string MildTransformationPrank(Player player)
+        public static string MildTransformationPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 55)  // 55%
             {
-                return AnimateTransform(player);
+                return AnimateTransform(player, null);
             }
             else if (roll < 65)  // 10%
             {
@@ -387,7 +389,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 75)  // 10%
             {
-                return BodySwap(player, true);  // clone
+                return BodySwap(player, true, rand);  // clone
             }
             else if (roll < 85)  // 10%
             {
@@ -399,26 +401,26 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string MischievousTransformationPrank(Player player)
+        public static string MischievousTransformationPrank(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var roll = rand.Next(100);
 
             if (roll < 15)  // 10%
             {
-                return ImmobileTransform(player, rand.Next(2) == 0);
+                return ImmobileTransform(player, rand.Next(2) == 0, rand);
             }
             else if (roll < 20)  // 10%
             {
-                return MobileInanimateTransform(player);
+                return MobileInanimateTransform(player, rand);
             }
             else if (roll < 30)  // 10%
             {
-                return BodySwap(player, false);
+                return BodySwap(player, false, rand);
             }
             else if (roll < 40) //  10%
             {
-                return ChangeBaseForm(player);
+                return ChangeBaseForm(player, rand);
             }
             else if (roll < 45)  // 5%
             {
@@ -426,24 +428,24 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 65)  // 20%
             {
-                return IdentityChange(player);
+                return IdentityChange(player, rand);
             }
             else if (roll < 90)  // 25%
             {
-                return TransformToMindControlledForm(player);
+                return TransformToMindControlledForm(player, rand);
             }
             else  // 10%
             {
-                return InanimateTransform(player, true);
+                return InanimateTransform(player, true, false, rand);
             }
         }
 
-        public static string MeanTransformationPrank(Player player)
+        public static string MeanTransformationPrank(Player player, Random rand = null)
         {
-            return InanimateTransform(player, false);
+            return InanimateTransform(player, false, false, rand);
         }
 
-        private static string AnimateTransform(Player player)
+        private static string AnimateTransform(Player player, Random rand = null)
         {
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -462,7 +464,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var index = new Random().Next(forms.Count());
+            rand = rand ?? new Random();
+            var index = rand.Next(forms.Count());
             var form = forms.ElementAt(index);
 
             if (!TryAnimateTransform(player, form.FormSourceId))
@@ -473,7 +476,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You feel the familar tingle of your body reshaping.  When you look down you realize you are now a <b>{form.FriendlyName}</b>!";
         }
 
-        private static string ImmobileTransform(Player player, bool temporary)
+        private static string ImmobileTransform(Player player, bool temporary, Random rand = null)
         {
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -492,7 +495,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var index = new Random().Next(forms.Count());
+            rand = rand ?? new Random();
+            var index = rand.Next(forms.Count());
             var form = forms.ElementAt(index);
             String message;
 
@@ -515,7 +519,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false)
+        private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false, Random rand = null)
         {
             var warning = JokeShopProcedures.EnsurePlayerIsWarned(player);
 
@@ -544,7 +548,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
-            var index = new Random().Next(forms.Count());
+            rand = rand ?? new Random();
+            var index = rand.Next(forms.Count());
             FormDetail form = forms.ElementAt(index);
 
             if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: dropInventory, createItem: !temporary, severe: !temporary))
@@ -560,7 +565,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"All these joke items on the shelves have absorbed so much magic they're almost alive, almost calling to you, willing you to join them, to provide them with company while they remain frozen in time for all eternity.  You try to back out but the enchantment has already permeated your being, turning you into a <b>{form.FriendlyName}</b>!";
         }
 
-        private static string MobileInanimateTransform(Player player)
+        private static string MobileInanimateTransform(Player player, Random rand = null)
         {
             // Turning a player into a rune or consumable is a bit too involved as there are no static forms for those items in the DB,
             // however we can make a player inanimate without a player item and pretend they are fully mobile...
@@ -582,7 +587,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var index = new Random().Next(forms.Count());
+            rand = rand ?? new Random();
+            var index = rand.Next(forms.Count());
             FormDetail form = forms.ElementAt(index);
 
             // Give player an inanimate form without creating a player item
@@ -632,9 +638,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"Your body spasms in the way you have become accustomed to after being hit by an orb.  As you shake the dysphoria of your reproportioned form you cast your eyes down over your body.  Yup, {altForm.Gender} again, you think with a sigh.";
         }
 
-        private static string BodySwap(Player player, bool clone)
+        private static string BodySwap(Player player, bool clone, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
             var candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(player)
                 .Where(p => p.FormSourceId != player.FormSourceId).ToList();
 
@@ -747,7 +753,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You accidentally spill some Classic Me rstorative lotion and revert to your base form, just as you remember it!  Right?";
         }
 
-        private static string ChangeBaseForm(Player player)
+        private static string ChangeBaseForm(Player player, Random rand = null)
         {
             var availableForms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
 
@@ -756,12 +762,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return ChangeBaseForm(player, availableForms);
+            return ChangeBaseForm(player, availableForms, rand);
         }
 
-        private static string ChangeBaseForm(Player player, int[] availableForms)
+        private static string ChangeBaseForm(Player player, int[] availableForms, Random rand = null)
         {
-            var formSourceId = availableForms[new Random().Next(availableForms.Count())];
+            rand = rand ?? new Random();
+            var formSourceId = availableForms[rand.Next(availableForms.Count())];
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
@@ -835,9 +842,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "In a sudden moment of clarity you remember who you truly are!";
         }
 
-        private static string IdentityChange(Player player)
+        private static string IdentityChange(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             int[] forms = Array.Empty<int>();
             var firstName = player.OriginalFirstName;
@@ -978,9 +985,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string TransformToMindControlledForm(Player player)
+        private static string TransformToMindControlledForm(Player player, Random rand = null)
         {
-            var rand = new Random();
+            rand = rand ?? new Random();
 
             int[][] mcForms = {
                 JokeShopProcedures.CATS_AND_NEKOS,

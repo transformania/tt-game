@@ -240,7 +240,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned <b>{firstName} {lastName}</b>!");
 
-            return "You have summoned a psychopath!";  // TODO joke_shop flavor text
+            return "Near the counter is an altar with a leather-bound book resting open upon it.  You take a look and try to read one of the jokes aloud.  It seems to be some consonant-heavy tongue twister that soon leaves you faltering.  You're not quite sure what the set up means, but hope the punchline will be worth it.  As you spurt out the last syllable a puff of red smoke explodes out from the book with an audible bang.  You're not laughing, and that remains the case when you close the book to see a large pentagram seared into the cover.  As the smoke subsides there seems to be a strange neon flicker to the light and a crackling to the air.  You turn sharply to see the psychopath you just summoned readying their attack against you!";
         }
 
         public static string SummonDoppelganger(Player player)
@@ -298,7 +298,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned your evil twin!</b>  Beware!  They are not friendly!", true);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned their evil twin!");
 
-            return "You have summoned a doppelganger!";  // TODO joke_shop flavor text
+            return "In the corner of the room is a freestanding mirror with a silver gilt frame.  You smear some of the dust off the glass to see your reflection staring back at you through the clearing in the dusty haze.  As you look into it you catch sight of yourself twitching slightly, but you don't actually feel anything.  Then your reflection narrows their gaze into a scowl and steps through the rippling glazed portal, bringing you face-to-face with your mirror self.  You should be careful.  Meeting your doppelganger never ends well..";
         }
 
         public static string OpenPsychoNip(Player player)

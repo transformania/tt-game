@@ -177,7 +177,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 var roll = rand.Next(3);
                                 if (roll == 0)
                                 {
-                                    LocationLogProcedures.AddLocationLog(loc, $"<b>Meoooww!</b> screeches {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.");
+                                    LocationLogProcedures.AddLocationLog(loc, $"<b>Meoooww!</b> yowls {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.");
                                 }
                             });
 

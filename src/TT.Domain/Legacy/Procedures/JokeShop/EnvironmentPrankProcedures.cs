@@ -123,7 +123,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"Health changed by {delta}";  // TODO joke_shop flavor text
+            var reducesOrIncreases = (delta < 0) ? "reduces" : "increases";
+            return $"The foreboding atmostphere in the shop {reducesOrIncreases} your willpower by {delta}!";
         }
 
         public static string ChangeMana(Player player, int amount)
@@ -147,7 +148,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"Mana changed by {delta}";  // TODO joke_shop flavor text
+            var reducingOrIncreasing = (delta < 0) ? "reducing" : "increasing";
+            return $"The room is charged with magic - you can feel it arcing between all the enchanted items.  You find yourself caught in one of these discharges, {reducingOrIncreasing} your mana by {delta}!";
         }
 
         private static string ChangeMoney(Player player, int amount)
@@ -170,7 +172,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"Arpeyjis changed by {delta}";  // TODO joke_shop flavor text
+            if (delta < 0)
+            {
+                return "The antique cash register on the counter rattles and jangles.  The next thing you know it's pinched {delta} of your Arpeyjis!";
+            }
+            else
+            {
+                return "The antique cash register on the counter rattles and jangles.  The next thing you know it's refunded you {delta} Arpeyjis!  Lindella's never done that!";
+            }
         }
 
         public static string ChangeActionPoints(Player player, int amount)
@@ -193,7 +202,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"Action points changed by {delta}";  // TODO joke_shop flavor text
+            if (delta > 0)
+            {
+                return $"The shop energizes you to the tune of {delta} action points!";
+            }
+            else
+            {
+                return $"A mana quagmire slows you down, taking {delta} of your action points!";
+            }
         }
 
         private static string ChangeDungeonPoints(Player player, int amount)
@@ -221,7 +237,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"Dungeon points changed by {delta}";  // TODO joke_shop flavor text
+            var increaseOrDecrease = (delta < 0) ? "decrease" : "increase";
+            return $"The transdimensional store momentarily touches down deep below the streets.  You feel your dungeon points {increaseOrDecrease} by {delta}";
         }
 
         public static string RareFind(Player player)
@@ -301,7 +318,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"You discover the secrets of {ListifyHelper.Listify(learnt)}!";  // TODO joke_shop flavor text
+            return $"A spellbook flies off the shelf and lands open on the wooden desk in front of you.  As you look at it you discover the secret incantations for the spells {ListifyHelper.Listify(learnt)}!";
         }
 
         private static string UnlearnSpell(Player player)
@@ -464,7 +481,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 CharacterPrankProcedures.ApplyLocalCurse(player, location);
             }
 
-            return "Teleport to overworld"; // TODO joke_shop flavor text
+            return $"All of a sudden the Joke Shop spits you out and you find yourself in {LocationsStatics.GetConnectionName(location)}!";
         }
 
         private static string TeleportToDungeon(Player player, int meanness)
@@ -497,7 +514,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 CharacterPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
             }
 
-            return "Teleport to dungeon"; // TODO joke_shop flavor text
+            return "You feel the room start to shake and shimmer, parts of the shop fading away as it is pulled between realms.  The shelves rattle ever more violently and you try and take shelter under the counter.  But the shop has other ideas and the floor gives way, leaving you tumbling through the air just as the store flickers out of this plane.  That's the last thing you remember.  Nursing a headache, with a bleary blink of your eyes your surroundings slowly come into focus.  You've landed in the deepest depths of the dungeon!";
         }
 
         private static string TeleportToFriendlyNPC(Player player)
@@ -548,7 +565,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 CharacterPrankProcedures.TryAnimateTransform(player, encounter.RequiredFormSourceId);
             }
 
-            // TODO joke_shop Redirect to the NPC's talk/trade page
+            // It would be a nice touch if we could redirect to the NPC's talk/trade page
             return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  The room then fades away.";
         }
 
@@ -626,7 +643,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var message = "Teleport to hostile NPC";  // TODO joke_shop Add flavor text;
+            var message = "The shop suddenly seems to connect with some evil force.  A vortex opens and you are pulled in towards the source of magic!";
 
             if (attack)
             {
@@ -682,7 +699,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 CharacterPrankProcedures.ApplyLocalCurse(player, bar);
             }
 
-            return "Teleport to bar";  // TODO joke_shop Flavor text
+            return "You've been looking around the shop for a while now and are starting to get thirsty.  Something within the shop knows it too, and very quickly you find yourself in the bar!";
         }
 
         private static string TeleportToQuest(Player player)
@@ -721,7 +738,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return "Run away";  // TODO joke_shop flavor text
+            return "You stroll around the shop, but stub your toe on an ornate box that is just lying in one of the aisles.  As you bend down to inspect it the lid springs open and a Jack-in-the-Box launches out, straight towards you.  Coming nose-to-nose with that mindless painted face is utterly terrifying and without a moment's hesitation you turn and run out of the shop screaming!";
         }
 
         internal static string MovePlayer(Player player, string destination, int maxSpacesToMove, Action<Player, string> callback = null)
@@ -799,7 +816,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerProcedures.MovePlayerMultipleLocations(player, nextTileId, spacesToMove * costPerTile);
 
-            return "Wander aimlessly";  // TODO joke_shop flavor text
+            return "The room starts to shake.  A waving cat on a nearby display rattles, edging forward before falling off the shelf and smashing to the ground.  The structure of the room creaks as the ceiling contorts.  All the clown faces seem to be staring at you.  Suddenly this feels a very unsettling place.  You get a bad feeling that something is about to happen to this sinister and claustrophobic shop.  There's only one thing for it:  You race out the door and run.  It doesn't matter which direction you go in, just so long as you get out of here!";
         }
 
         #endregion
@@ -878,7 +895,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.TimesAttackingThisUpdate += delta;
             playerRepo.SavePlayer(player);
 
-            return "Attack counter changed";  // TODO joke_shop flavor text
+            if (delta > 0)
+            {
+                return $"Your skill and dexterity is amplified by the forces of the store, making you able to conduct {delta} more attacks this turn!";
+            }
+            else 
+            {
+                return $"The powers within this strange location deny you {delta} of your attacks this turn!";
+            }
         }
 
         public static string BlockAttacks(Player player)
@@ -888,7 +912,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
             playerRepo.SavePlayer(player);
 
-            return "Attack counter blocked";  // TODO joke_shop flavor text
+            return "A calm descends and you begin to wonder if the world would be a better place without conflict.";
         }
 
         private static string ChangeCleanseMeditates(Player player, int delta)
@@ -903,7 +927,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.CleansesMeditatesThisRound += delta;
             playerRepo.SavePlayer(player);
 
-            return "Meditate counter changed";  // TODO joke_shop flavor text
+            var moreOrLess = (delta > 0) ? "more" : "less";
+            return "The aura of the Joke Shop has made you {moreOrLess} efficient at cleansing and meditating this turn!";
         }
 
         public static string BlockCleanseMeditates(Player player)
@@ -913,7 +938,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
             playerRepo.SavePlayer(player);
 
-            return "Meditate counter blocked";  // TODO joke_shop flavor text
+            return "An artifact inside the shop is jamming your ability to cleanse and meditate!";
         }
 
         private static string ChangeItemUses(Player player, int delta)
@@ -928,7 +953,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.ItemsUsedThisTurn += delta;
             playerRepo.SavePlayer(player);
 
-            return "Item use counter changed";  // TODO joke_shop flavor text
+            var moreOrFewer = (delta > 0) ? "more" : "fewer";
+            return $"A flurry of coconut pieces flutter down inside a snowglobe on one of the shelves.  In the background is a starry sky.  You decide to make a wish, and now you are able to use {delta} {moreOrFewer} items this turn!";
         }
 
         private static string BlockItemUses(Player player)
@@ -938,7 +964,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.ItemsUsedThisTurn = PvPStatics.MaxActionsPerUpdate;
             playerRepo.SavePlayer(player);
 
-            return "Item use counter blocked";  // TODO joke_shop flavor text
+            return "The zipper on your satchel has broken!  You may not be able to use your consumables for a while!";
         }
 
         public static string ResetCombatTimer(Player player, double proportionOutOfCombat = 0.0)

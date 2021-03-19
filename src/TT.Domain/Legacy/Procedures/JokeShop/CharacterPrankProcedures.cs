@@ -323,7 +323,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 EffectProcedures.SetPerkDurationToZero(effect.dbEffect.EffectSourceId, player);
             }
 
-            return $"Your <strong>{effect.Effect.FriendlyName}</strong> effect has been lifted!";  // TODO joke_shop flavor text
+            return $"The powers of the Joke Shop liberate you from the <strong>{effect.Effect.FriendlyName}</strong> effect!";
         }
 
         private static string MakePsychotic(Player player)
@@ -470,7 +470,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"You are an animate {form.FriendlyName}.";  // TODO joke_shop flavor text
+            return $"You feel the familar tingle of your body reshaping.  When you look down you realize you are now a <b>{form.FriendlyName}</b>!";
         }
 
         private static string ImmobileTransform(Player player, bool temporary)
@@ -504,7 +504,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else
             {
-                message = $"You are an immobile {form.FriendlyName}.";  // TODO joke_shop flavor text
+                message = $"Your limbs start to stiffen, your bones begin to fuse.  By the time you realize what's happening it's too late and you've already become a <b>{form.FriendlyName}</b>!";
             }
 
             if (!TryAnimateTransform(player, form.FormSourceId))
@@ -554,9 +554,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (temporary)
             {
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);            }
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);
+            }
 
-            return $"You are an inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text - must inform player when they will auto revert, if they will
+            return $"All these joke items on the shelves have absorbed so much magic they're almost alive, almost calling to you, willing you to join them, to provide them with company while they remain frozen in time for all eternity.  You try to back out but the enchantment has already permeated your being, turning you into a <b>{form.FriendlyName}</b>!";
         }
 
         private static string MobileInanimateTransform(Player player)
@@ -600,7 +601,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into an animate <b>{form.FriendlyName}</b>.");
 
-            return $"You are a mobile inanimate {form.FriendlyName}.";  // TODO joke_shop flavor text
+            return $"You sense a build-up of transformative energy.  Somebody trying to make you inanimate.  Somebody?  Or this cursed place itself?  No, it can try to turn you into a {form.FriendlyName}, but you will not allow it to take your mobility!";
         }
 
         private static string TGTransform(Player player)
@@ -628,13 +629,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You suddenly became {altForm.Gender}.", false);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} suddenly became {altForm.Gender}.");
 
-            return "TG";  // TODO joke_shop flavor text
+            return $"Your body spasms in the way you have become accustomed to after being hit by an orb.  As you shake the dysphoria of your reproportioned form you cast your eyes down over your body.  Yup, {altForm.Gender} again, you think with a sigh.";
         }
 
         private static string BodySwap(Player player, bool clone)
         {
             var rand = new Random();
-            List<Player> candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(player);
+            var candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(player)
+                .Where(p => p.FormSourceId != player.FormSourceId).ToList();
 
             if (candidates.Count() == 0)
             {
@@ -650,7 +652,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have become a clone of {victim.GetFullName()}", false);
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> became a clone of <b>{victim.GetFullName()}</b>.");
 
-                return "Clone";  // TODO joke_shop flavor text
+                return $"You spot {victim.GetFullName()}.  Don't they look stunning?  Wouldn't you like to be like them?  \"As you wish,\" echoes an ephereal voice, seemingly hearing your innermost thoughts...";
             }
             else
             {
@@ -681,11 +683,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 TryAnimateTransform(player, victim.FormSourceId);
                 TryAnimateTransform(victim, player.FormSourceId);
 
-                PlayerLogProcedures.AddPlayerLog(victim.Id, $"You have swapped bodies with {player.GetFullName()}", true);  // TODO joke_shop flavor text
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have swapped bodies with {victim.GetFullName()}", false);  // TODO joke_shop flavor text
+                PlayerLogProcedures.AddPlayerLog(victim.Id, $"You have swapped bodies with {player.GetFullName()}!", true);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have swapped bodies with {victim.GetFullName()}!", false);
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> swapped bodies with <b>{victim.GetFullName()}</b>.");
 
-                return "Body swap";  // TODO joke_shop flavor text
+                return $"A contraption whirs up and the next thing you know your head is being sucked into some sort of funnel while your body finds itself bound in iron shackles and leather straps.  In no time you are being held firm against a wall, and the same seems to be happening to {victim.GetFullName()}!  You both start to shake violently as your bodies bulge, flatten and contort, the tubes connecting you pumping full of magical energies.  The whirring dies down and you are able to wriggle free.  You check to see whether {victim.GetFullName()} is OK, but both of you are shocked as you each come face-to-face with yourself!";
             }
         }
 
@@ -742,7 +744,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);
 
-            return "Restore to base";  // TODO joke_shop flavor text
+            return "You accidentally spill some Classic Me rstorative lotion and revert to your base form, just as you remember it!  Right?";
         }
 
         private static string ChangeBaseForm(Player player)
@@ -768,7 +770,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form was changed.", false);
 
-            return "Base form changed";  // TODO joke_shop flavor text
+            return "You feel something changing deep within you, but you're not sure what.  You suspect somebody's playing a trick on you, and you're not going to find out what it is just yet!";
         }
 
         public static string SetBaseFormToRegular(Player player)
@@ -812,7 +814,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form has changed to your current form.", false);
 
-            return "Base form set to current";  // TODO joke_shop flavor text
+            return "\"Are you feeling comfortable?\" asks the shopkeeper.  \"Er, yes,\" you reply.  \"Good.  That form really suits you!\"  You eye the shopkeeper with suspicion.";
         }
 
         public static string RestoreName(Player player)
@@ -830,7 +832,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your name was changed back to {user.GetFullName()}.", false);
 
-            return "Name restored";  // TODO joke_shop flavor text
+            return "In a sudden moment of clarity you remember who you truly are!";
         }
 
         private static string IdentityChange(Player player)
@@ -850,7 +852,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DOGS).ToArray();
                 mindControl = true;
-                message = "";  // TODO joke_shop flavor text
+                message = "You hear some barking outside and are suddenly compelled to join in!";
 
                 switch (rand.Next(2))
                 {
@@ -869,7 +871,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CATS_AND_NEKOS).ToArray();
                 mindControl = true;
-                message = "";  // TODO joke_shop flavor text
+                message = "A mouse scurries across the ground in front of you.  Suddenly you feel the urge to pounce!";
 
                 switch (rand.Next(3))
                 {
@@ -894,7 +896,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DRONES).ToArray();
                 mindControl = false;
-                message = "";  // TODO joke_shop flavor text
+                message = "This store actually has quite a good selection of comic books.  You pick one up one entitled \"Colony 2079\" and read the bubbles on the cover.  \"Be like us!\"  \"Individuality is overrated!\"  \"Join the collective!\"  This could be interesting.  You turn the page, wondering why you've never seen this publication in Extended Universe..";
 
                 string[] designators = { "Unit", "Drone", "Clone", "Entity", "Bot" };
                 var designator = designators[rand.Next(designators.Count())];
@@ -931,7 +933,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (roll == 3)  // Renames
             {
                 mindControl = false;
-                message = "";  // TODO joke_shop flavor text
+                message = "A heady fragrance fills the air, numbing your mind.  You forget who you are for a moment, but then it comes back to you.  How could you forget your own name like that?!";
 
                 switch (rand.Next(1))
                 {
@@ -970,7 +972,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (message.IsNullOrEmpty())
             {
-                message = "You have taken on a whole new identity!";  // TODO joke_shop flavor text
+                message = "You are shocked to discover you have taken on a whole new identity!";
             }
 
             return message;
@@ -1000,7 +1002,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT);
-            return "You are now in a mind controlled form";  // TODO joke_shop flavor text
+            return "A shrieking laugh turns the air to ice, freezing you where you stand.  \"Now you're mine!\" comes a the bloodcurdling taunt of a witch directly above you!  You then feel your arms moving involuntarily, being hoisted up by your wrists as if on strings, forcing you to perform a little jig against your will.  \"I will control your body, and I will control your brain!\" cackles the voice from overhead.  You try to run free, but you can still hear that voice in your mind:  \"You're still mine, wherever you go, and you will behave as I have made you!\"  Then as a freak gust of wind hits, you start to feel.. different..";
         }
 
         public static bool TryAnimateTransform(Player player, int formSourceId)

@@ -852,7 +852,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var mindControl = false;
             var message = "";
 
-            var roll = rand.Next(4);
+            var roll = rand.Next(5);
 
             // Pick changes to name and form
             if (roll == 0)  // Dogs
@@ -937,7 +937,33 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         break;
                 }
             }
-            else if (roll == 3)  // Renames
+            else if (roll == 3)  // Ghosts
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.GHOSTS).ToArray();
+                mindControl = true;
+                message = "You come face-to-face with a ghost and jump right out of your skin!  Unfortunately that also leaves you looking like a ghost!";
+
+                switch (rand.Next(3))
+                {
+                    case 0:
+                        string[] prefixes = { "Ghost", "Ghostly", "Spooky", "Poltergeist", "Haunting" };
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] prefixes2 = { "Ghost of", "Spirit of" };
+                        lastName = $"{firstName} {lastName}";
+                        firstName = prefixes2[rand.Next(prefixes2.Count())];
+                        break;
+                    case 2:
+                        firstName = firstName.ToLower().Replace("o", "oo");
+                        lastName = lastName.ToLower().Replace("o", "oo");
+                        firstName = firstName.Substring(0, 1).ToUpper() + firstName.Substring(1);
+                        lastName = lastName.Substring(0, 1).ToUpper() + lastName.Substring(1);
+                        break;
+                }
+            }
+            else if (roll == 4)  // Renames
             {
                 mindControl = false;
                 message = "A heady fragrance fills the air, numbing your mind.  You forget who you are for a moment, but then it comes back to you.  How could you forget your own name like that?!";

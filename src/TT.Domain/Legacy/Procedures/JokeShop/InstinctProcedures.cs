@@ -295,7 +295,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             // Maids - find places to clean
-            var mcMaids = mcPlayers.Where(p => JokeShopProcedures.MAIDS.Any(catForm => p.FormSourceId == catForm)).ToList();
+            var mcMaids = mcPlayers.Where(p => JokeShopProcedures.MAIDS.Any(maidForm => p.FormSourceId == maidForm)).ToList();
             foreach (var maid in mcMaids)
             {
                 var maidPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == maid.Id);
@@ -334,10 +334,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         PlayerLogProcedures.AddPlayerLog(maidPlayer.Id, $"{newContract}You quickly head to your new job but only get as far as <b>{here}</b>.", true);
                     }
                 }
+
+                mcPlayers = mcPlayers.Where(p => p.Id != maid.Id);
             }
 
             // Strippers - remove random item
-            var mcStrippers = mcPlayers.Where(p => JokeShopProcedures.STRIPPERS.Any(catForm => p.FormSourceId == catForm)).ToList();
+            var mcStrippers = mcPlayers.Where(p => JokeShopProcedures.STRIPPERS.Any(stripperForm => p.FormSourceId == stripperForm)).ToList();
             foreach (var stripper in mcStrippers)
             {
                 var stripperPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == stripper.Id);
@@ -357,7 +359,86 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     LocationLogProcedures.AddLocationLog(stripper.dbLocationName, $"{stripperPlayer.GetFullName()} {adverb} removes their <b>{itemToDrop.Item.FriendlyName}</b>!");
                     ItemProcedures.DropItem(itemToDrop.dbItem.Id);
                 }
+
+                mcPlayers = mcPlayers.Where(p => p.Id != stripper.Id);
             }
+
+            // Ghosts - haunt old buildings
+            var mcGhosts = mcPlayers.Where(p => JokeShopProcedures.GHOSTS.Any(ghostForm => p.FormSourceId == ghostForm)).ToList();
+            foreach (var ghost in mcGhosts)
+            {
+                var ghostPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == ghost.Id);
+                var ghostLoc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == ghostPlayer.dbLocationName);
+
+                if (ghostLoc != null)
+                {
+                    string nextLoc;
+
+                    string[] haunts = { "mansion", "castle" };
+                    if (haunts.Contains(ghostLoc.Region))
+                    {
+                        nextLoc = LocationsStatics.GetRandomLocation_InRegion(ghostLoc.Region);
+                    }
+                    else
+                    {
+                        nextLoc = LocationsStatics.GetRandomLocation_InRegion(haunts[rand.Next(haunts.Count())]);
+                    }
+
+                    // Check whether we can haunt the current tile
+                    // An enhancement would be to allow ghosts to move through walls
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(ghostPlayer, nextLoc, 20);
+
+                    var canHaunt = stoppedAt == nextLoc || ghostPlayer.dbLocationName == nextLoc;
+
+                    if (!canHaunt && stoppedAt != null)
+                    {
+                        var stoppedAtTile = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == stoppedAt);
+                        canHaunt = haunts.Contains(stoppedAtTile.Region);
+                    }
+
+                    if (canHaunt)
+                    {
+                        var here = LocationsStatics.GetConnectionName(nextLoc);
+
+                        var candidates = playerRepo.Players
+                            .Where(p => p.dbLocationName == nextLoc &&
+                                        p.OnlineActivityTimestamp >= cutoff &&
+                                        p.Id != ghostPlayer.Id &&
+                                        p.Mobility == PvPStatics.MobilityFull &&
+                                        p.InDuel <= 0 &&
+                                        p.InQuest <= 0 &&
+                                        p.BotId == AIStatics.ActivePlayerBotId)
+                            .ToList();
+
+                        if (candidates.Any())
+                        {
+                            var victim = candidates[rand.Next(candidates.Count())];
+                            string[] calls = { "Boo!", "Whooo!" };
+                            var call = calls[rand.Next(calls.Count())];
+
+                            PlayerLogProcedures.AddPlayerLog(ghostPlayer.Id, $"After entering {here} you tap {victim.GetFullName()} on the shoulder and shout <b>\"{call}\"</b>!", true);
+                            PlayerLogProcedures.AddPlayerLog(victim.Id, $"{ghostPlayer.GetFullName()} taps you on the shoulder and shouts <b>\"{call}\"</b>!", true);
+                            LocationLogProcedures.AddLocationLog(nextLoc, $"{ghostPlayer.GetFullName()} shouts <b>\"{call}\"</b> at {victim.GetFullName()}.");
+                        }
+                        else
+                        {
+                            string[] activities = { "rattles some chains", "wails like a banshee", "floats through a wall", "lights a candle", "makes the lights flicker", "fades into the background", "knocks a book off a shelf", "melts into a pool of ectoplasm", "sends a a chill through the air" };
+                            var activity = activities[rand.Next(activities.Count())];
+
+                            PlayerLogProcedures.AddPlayerLog(ghostPlayer.Id, $"You begin haunting {here}!", true);
+                            LocationLogProcedures.AddLocationLog(nextLoc, $"<b>{ghostPlayer.GetFullName()} {activity}</b>.");
+                        }
+                    }
+                    else if (stoppedAt != null)
+                    {
+                        var here = LocationsStatics.GetConnectionName(stoppedAt);
+                        PlayerLogProcedures.AddPlayerLog(ghostPlayer.Id, $"The spirits call you to <b>{here}</b>.", true);
+                    }
+                }
+
+                mcPlayers = mcPlayers.Where(p => p.Id != ghost.Id);
+            }
+
 
         }
 

@@ -259,13 +259,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 foreach (var player in playersToRestore)
                 {
-                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
-                    user.BotId = AIStatics.ActivePlayerBotId;
-                    playerRepo.SavePlayer(user);
-
-                    AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(player);
-
-                    PlayerLogProcedures.AddPlayerLog(player, "The psychotic voices leave your head.. for now..", true);
+                    CharacterPrankProcedures.UndoPsychotic(player);
                 }
             }
 
@@ -284,7 +278,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                     foreach (var invisiblePlayer in invisiblePlayers)
                     {
-                        if (!EffectProcedures.PlayerHasActiveEffect(invisiblePlayer, PSYCHOTIC_EFFECT.Value))
+                        if (!EffectProcedures.PlayerHasActiveEffect(invisiblePlayer, INVISIBILITY_EFFECT.Value))
                         {
                             // Player is somehow in invisible limbo
                             playersToRestore = playersToRestore.Append(invisiblePlayer);
@@ -334,6 +328,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var playersToControl = effects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
                 InstinctProcedures.ActOnInstinct(playersToControl, new Random());
             }
+        }
+
+        // Safety net - allows players to revert some effects on them
+        public static string Restore(Player player)
+        {
+            CharacterPrankProcedures.RestoreName(player);
+            CharacterPrankProcedures.UndoPsychotic(player.Id);
+            return "You try as best you can to cleanse yourself of the harmful effects of the Joke Shop";
         }
 
         public static List<Player> ActivePlayersInJokeShopApartFrom(Player player)
@@ -615,7 +617,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Mechanism through which a player can elect to restore their original name
             if (player.Health >= player.MaxHealth)
             {
-                return CharacterPrankProcedures.RestoreName(player);
+                return Restore(player);
             }
 
             // Ensure player can cleanse

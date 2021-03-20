@@ -348,13 +348,28 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
+        public static string UndoPsychotic(int playerId)
+        {
+            var playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            user.BotId = AIStatics.ActivePlayerBotId;
+            playerRepo.SavePlayer(user);
+
+            AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(playerId);
+
+            var message = "The psychotic voices leave your head.. for now..";
+            PlayerLogProcedures.AddPlayerLog(playerId, message, true);
+
+            return message;
+        }
+
         private static string MakeInvisible(Player player)
         {
             if (player.GameMode != (int)GameModeStatics.GameModes.PvP && !JokeShopProcedures.INVISIBILITY_EFFECT.HasValue)
             {
                 return null;
             }
-
+            
             var message = GiveEffect(player, JokeShopProcedures.INVISIBILITY_EFFECT, 2);
 
             // Give player 'invisibility' until the effect expires, then revert to PvP

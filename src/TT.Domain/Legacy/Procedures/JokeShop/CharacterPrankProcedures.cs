@@ -852,7 +852,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var mindControl = false;
             var message = "";
 
-            var roll = rand.Next(5);
+            var roll = rand.Next(8);
 
             // Pick changes to name and form
             if (roll == 0)  // Dogs
@@ -963,7 +963,51 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         break;
                 }
             }
-            else if (roll == 4)  // Renames
+            else if (roll == 4)  // Sheep
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.SHEEP).ToArray();
+                mindControl = true;
+                message = "You suddenly sprout a fleece and feel compelled to follow your flock!";
+
+                switch (rand.Next(3))
+                {
+                    case 0:
+                        string[] prefixes = { "Shep", "Sheep", "Lamb", "Little Lamb" };
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = { "Shep", "Lamb" };
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                    case 2:
+                        firstName = firstName.ToLower().Replace("a", "aa");
+                        lastName = lastName.ToLower().Replace("a", "aa");
+                        firstName = firstName.Substring(0, 1).ToUpper() + firstName.Substring(1);
+                        lastName = lastName.Substring(0, 1).ToUpper() + lastName.Substring(1);
+                        break;
+                }
+            }
+            else if (roll == 5)  // Maids
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
+                mindControl = true;
+                message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you sweeping the dirt away maybe you could serve others is town?";
+
+                string[] prefixes = { "Maid", "Servant", "Miss", "Cleaner", "Waitress" };
+                lastName = rand.Next(2) == 0 ? firstName : lastName;
+                firstName = prefixes[rand.Next(prefixes.Count())];
+            }
+            else if (roll == 6)  // Strippers
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.STRIPPERS).ToArray();
+                mindControl = true;
+                message = "You feel a sudden and irrepressible compulsion to start removing your clothes.  Is the shop too hot, or are you just doing it for attention and to show off your body to anyone who will watch?  Only you know...";
+
+                firstName = "Stripper";
+                lastName = rand.Next(2) == 0 ? firstName : lastName;
+            }
+            else if (roll == 7)  // Renames
             {
                 mindControl = false;
                 message = "A heady fragrance fills the air, numbing your mind.  You forget who you are for a moment, but then it comes back to you.  How could you forget your own name like that?!";

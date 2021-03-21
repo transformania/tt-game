@@ -124,10 +124,11 @@
 
     function onSendMessage() {
         if (cooldownActive === false) {
-            if (document.getElementById('iq') && $('#iq').val() < 140) {
-                pub.chat.server.send(mispell.bimbofy($('#message').val(), (1 - ($('#iq').val() - 40)/100)));
+            var msg = $("#message").val();
+            if (document.getElementById('iq') && $('#iq').val() < 140 && msg.substring(0, 3) !== "/dm" && msg.substring(0, 5) !== "/roll") {
+                pub.chat.server.send(mispell.bimbofy(msg, (1 - ($('#iq').val() - 40)/100)));
             } else {
-                pub.chat.server.send($('#message').val());
+                pub.chat.server.send(msg);
             }
             $('#message').val('').focus();
         }

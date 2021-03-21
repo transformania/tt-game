@@ -46,7 +46,23 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
     public static class ChallengeProcedures
     {
         // Resources allow us to avoid setting an impossible challenge, e.g. be in two form at the same time
+        const String RESOURCE_AP = "action points";
+        const String RESOURCE_COMBAT_TIMER = "combat timer";
+        const String RESOURCE_EQUIP = "equip";
         const String RESOURCE_FORM = "form";
+        const String RESOURCE_HEALTH = "health";
+        const String RESOURCE_LEVEL = "level";
+        const String RESOURCE_MANA = "mana";
+        const String RESOURCE_STAT = "stat";
+        const String RESOURCE_STAT_DISCIPLINE = "stat discipline";
+        const String RESOURCE_STAT_PERCEPTION = "stat perception";
+        const String RESOURCE_STAT_CHARISMA = "stat charisma";
+        const String RESOURCE_STAT_FORTITUDE = "stat fortitude";
+        const String RESOURCE_STAT_AGILITY = "stat agility";
+        const String RESOURCE_STAT_ALLURE = "stat allure";
+        const String RESOURCE_STAT_MAGICKA = "stat magicka";
+        const String RESOURCE_STAT_SUCCOUR = "stat succour";
+        const String RESOURCE_STAT_LUCK = "stat luck";
 
         static List<ChallengeType> ChallengeTypes = null;
 
@@ -79,7 +95,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     EffectSourceId = effectSource.Value,
                     Duration = 5,
                     MaxParts = 1,
-                    MaxDifficulty = 1,
+                    MaxDifficulty = 2,
                     Penalty = false,
                 });
             }
@@ -92,7 +108,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     EffectSourceId = effectSource.Value,
                     Duration = 10,
                     MaxParts = 2,
-                    MaxDifficulty = 4,
+                    MaxDifficulty = 5,
                     Penalty = false,
                 });
             }
@@ -118,7 +134,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     EffectSourceId = effectSource.Value,
                     Duration = 60,
                     MaxParts = 3,
-                    MaxDifficulty = 12,
+                    MaxDifficulty = 13,
                     Penalty = false,
                 });
             }
@@ -131,7 +147,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     EffectSourceId = effectSource.Value,
                     Duration = 120,
                     MaxParts = 1,
-                    MaxDifficulty = 20,
+                    MaxDifficulty = 21,
                     Penalty = true,
                 });
             }
@@ -410,7 +426,56 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                    challenge.Difficulty < challengeType.MaxDifficulty)
             {
                 // Pick between different challenges based on roll of die
-                TryAddingAnimateFormRequirement(challengeType, die, challenge);
+                var roll = die.Next(100);
+
+                if (roll < 14)  // 14%
+                {
+                    TryAddingAnimateFormRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 18)  // 4%
+                {
+                    TryAddingImmobileFormRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 30)  // 12%
+                {
+                    TryAddingEquipmentRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 45)  // 15%
+                {
+                    TryAddingStatRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 60)  // 15%
+                {
+                    TryAddingAchievementRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 78)  // 18%
+                {
+                    TryAddingNonConsumableItemRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 81)  // 3%
+                {
+                    TryAddingCombatRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 84)  // 3%
+                {
+                    TryAddingHealthRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 87)  // 3%
+                {
+                    TryAddingManaRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 90)  // 3%
+                {
+                    TryAddingAPRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 95)  // 5%
+                {
+                    TryAddingLevelRequirement(challengeType, die, challenge);
+                }
+                else  // 5%
+                {
+                    TryAddingQuestRequirement(challengeType, die, challenge);
+                }
             }
 
             if (challenge.Parts == 0)
@@ -437,7 +502,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static void TryAddingAnimateFormRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
-            var difficulty = 1;
+            var difficulty = 2;
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
                 challenge.ResourceUsed(RESOURCE_FORM) == 0)
@@ -454,5 +519,376 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 challenge.Difficulty += difficulty;
             }
         }
+
+        private static void TryAddingImmobileFormRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 3;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_FORM) == 0)
+            {
+                var immobileForms = JokeShopProcedures.Forms(f => f.Category == JokeShopProcedures.LIMITED_MOBILITY);
+                var form = immobileForms.ElementAt(die.Next(immobileForms.Count()));
+
+                AddRequirement(challenge,
+                               $"Take on the form of a {form.FriendlyName}",
+                               p => p.FormSourceId == form.FormSourceId);
+                AddResourceContribution(challenge, r => (r == RESOURCE_FORM) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingCombatRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 1;
+
+            var minMinutesOutOfCombat = 15;
+            var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * TurnTimesStatics.GetTurnLengthInSeconds() / 60 / 2);
+            maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, maxMinutesOutOfCombat);
+
+            var minutesToStayOutOfCombat = (int)die.Next(minMinutesOutOfCombat, maxMinutesOutOfCombat + 1);
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_COMBAT_TIMER) == 0)
+            {
+                AddRequirement(challenge,
+                               $"Stay out of combat for {minutesToStayOutOfCombat} minutes",
+                               p => p.LastCombatTimestamp.AddMinutes(minutesToStayOutOfCombat) <= DateTime.UtcNow);
+                AddResourceContribution(challenge, r => (r == RESOURCE_COMBAT_TIMER) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingHealthRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 1;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_HEALTH) == 0)
+            {
+                AddRequirement(challenge,
+                               $"Cleanse to full willpower",
+                               p => p.Health == p.MaxHealth);
+                AddResourceContribution(challenge, r => (r == RESOURCE_HEALTH) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingManaRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 1;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_MANA) == 0)
+            {
+                AddRequirement(challenge,
+                               $"Meditate to full mana",
+                               p => p.Mana == p.MaxMana);
+                AddResourceContribution(challenge, r => (r == RESOURCE_MANA) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingAPRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 2;
+            var target = (int)Math.Min(challengeType.Duration * 10 * 3 / 4, TurnTimesStatics.GetActionPointLimit());
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_AP) == 0)
+            {
+                AddRequirement(challenge,
+                               $"Build up {target} Action Points (not including reserves)",
+                               p => p.ActionPoints >= target);
+                AddResourceContribution(challenge, r => (r == RESOURCE_AP) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingLevelRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 3;
+            var low = Math.Min(7, 2 + 5 * challenge.ByEndOfTurn / 2000);
+            var high = Math.Min(12, 5 + 7 * challenge.ByEndOfTurn / 2000);
+            var target = (int)die.Next(low, high + 1);
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_AP) == 0)
+            {
+                AddEligibilityCriterion(challenge, p => p.Level >= target - 2);
+                AddRequirement(challenge,
+                               $"Reach level {target}",
+                               p => p.ActionPoints >= target);
+                AddResourceContribution(challenge, r => (r == RESOURCE_LEVEL) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingEquipmentRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 2;
+            var low = Math.Min(6, 2 + 4 * challenge.ByEndOfTurn / 2000);
+            var high = Math.Min(12, 3 + 9 * challenge.ByEndOfTurn / 2000);
+            var target = (int)die.Next(low, high + 1);
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_EQUIP) == 0)
+            {
+                AddRequirement(challenge,
+                               $"Equip at least {target} items in total (not including single-use consumables)",
+                               p => ItemProcedures.GetAllPlayerItems(p.Id)
+                                                  .Where(i => i.Item.ItemType != PvPStatics.ItemType_Consumable &&
+                                                         i.dbItem.IsEquipped).Count() >= target);
+                AddResourceContribution(challenge, r => (r == RESOURCE_EQUIP) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingStatRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 3;
+
+            var maxStatTotal = 50 + 400 * challenge.ByEndOfTurn / 8000;
+
+            var low = 30;
+            var high = Math.Min(150, 30 + 30 * challenge.ByEndOfTurn / 100);
+            var target = (int)die.Next(low, high + 1);
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_STAT) + target < maxStatTotal)
+            {
+                var success = true;
+                var roll = die.Next(9);
+
+                if (roll == 0 && challenge.ResourceUsed(RESOURCE_STAT_DISCIPLINE) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Discipline stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Discipline() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_DISCIPLINE) ? target : 0);
+                }
+                else if (roll == 1 && challenge.ResourceUsed(RESOURCE_STAT_PERCEPTION) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Perception stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Perception() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_PERCEPTION) ? target : 0);
+                }
+                else if (roll == 2 && challenge.ResourceUsed(RESOURCE_STAT_CHARISMA) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Charisma stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Charisma() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_CHARISMA) ? target : 0);
+                }
+                else if (roll == 3 && challenge.ResourceUsed(RESOURCE_STAT_FORTITUDE) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Fortitude stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Fortitude() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_FORTITUDE) ? target : 0);
+                }
+                else if (roll == 4 && challenge.ResourceUsed(RESOURCE_STAT_AGILITY) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Agility stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Agility() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_AGILITY) ? target : 0);
+                }
+                else if (roll == 5 && challenge.ResourceUsed(RESOURCE_STAT_ALLURE) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Restoration stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Allure() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_ALLURE) ? target : 0);
+                }
+                else if (roll == 6 && challenge.ResourceUsed(RESOURCE_STAT_MAGICKA) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Magicka stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Magicka() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_MAGICKA) ? target : 0);
+                }
+                else if (roll == 7 && challenge.ResourceUsed(RESOURCE_STAT_SUCCOUR) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Regeneration stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Succour() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_SUCCOUR) ? target : 0);
+                }
+                else if (roll == 8 && challenge.ResourceUsed(RESOURCE_STAT_LUCK) == 0)
+                {
+                    AddRequirement(challenge, $"Make your Luck stat {target} or higher", p => ItemProcedures.GetPlayerBuffs(p).Luck() >= target);
+                    AddResourceContribution(challenge, r => (r == RESOURCE_STAT || r == RESOURCE_STAT_LUCK) ? target : 0);
+                }
+                else
+                {
+                    success = false;
+                }
+
+                if (success)
+                {
+                    challenge.Parts++;
+                    challenge.Difficulty += difficulty;
+                }
+            }
+        }
+
+        private static void TryAddingQuestRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 3;
+
+            var quests = QuestProcedures.GetAllQuestStarts()
+                                        .Where(q => q.Location != "x")  // filter out Welcome to Sunnyglade quest - only avaiable on game start
+                                        .OrderBy(q =>q.Id);
+            var numQuests = quests.Count();
+
+            if (numQuests == 0)
+            {
+                return;
+            }
+
+            var quest = quests.ElementAt(die.Next(numQuests));
+            var resource = $"quest {quest.Id}";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                AddEligibilityCriterion(challenge, p => QuestProcedures.GetAllAvailableQuestsForPlayer(p, challenge.ByEndOfTurn - challengeType.Duration)
+                                                                       .Any(q => q.Id == quest.Id));
+                AddRequirement(challenge,
+                               $"Pass the \"{quest.Name}\" quest",
+                               p => QuestProcedures.PlayerHasCompletedQuest(p, quest.Id));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingNonConsumableItemRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 3;
+
+            var items = JokeShopProcedures.STABLE_FORMS.Where(f => f.Category != PvPStatics.MobilityFull && f.Category != JokeShopProcedures.LIMITED_MOBILITY);
+            var numItems = items.Count();
+
+            if (numItems == 0)
+            {
+                return;
+            }
+
+            var item = items.ElementAt(die.Next(numItems));
+
+            var low = Math.Min(12, 1 + challenge.ByEndOfTurn/ 1600);
+            var high = Math.Min(12, 3 + 9 * challenge.ByEndOfTurn / 2000);
+            var target = die.Next(low, high + 1);
+
+            if (target >= 9)
+            {
+                difficulty = 5;
+            }
+            else if (target >= 5)
+            {
+                difficulty = 4;
+            }
+
+            var resource = $"slot {item.Category}";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                if (target >= 7)
+                {
+                    AddEligibilityCriterion(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
+                }
+                AddRequirement(challenge,
+                               $"Equip a level {target} or higher {item.FriendlyName} ({item.Category} slot)",
+                               p => ItemProcedures.GetAllPlayerItems(p.Id).Any(i => i.dbItem.IsEquipped &&
+                                                                                    i.dbItem.Level >= target &&
+                                                                                    i.dbItem.FormerPlayerId.HasValue &&
+                                                                                    PlayerProcedures.GetPlayer(i.dbItem.FormerPlayerId).FormSourceId == item.FormSourceId));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingAchievementRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 12;
+
+            var generalAchievements = new String[]{
+                    StatsProcedures.Stat__SearchCount,
+                    StatsProcedures.Stat__SpellsCast,
+                    StatsProcedures.Stat__TimesMoved,
+                    StatsProcedures.Stat__TimesCleansed,
+                    StatsProcedures.Stat__TimesMeditated,
+                    StatsProcedures.Stat__CovenantFurnitureUsed,
+                    StatsProcedures.Stat__CovenantNetDonation,
+                    StatsProcedures.Stat__TimesAnimateTFed,
+                    StatsProcedures.Stat__TimesAnimateTFing,
+                    StatsProcedures.Stat__PsychopathsDefeated,
+                    StatsProcedures.Stat__TimesTeleported_Scroll,
+                    StatsProcedures.Stat__TransmogsUsed,
+                    StatsProcedures.Stat__CovenantCallbackCrystalsUsed,
+                    StatsProcedures.Stat__DollsWPRestored,
+                    StatsProcedures.Stat__LoreBooksRead,
+                    StatsProcedures.Stat__TgOrbVictims,
+                    StatsProcedures.Stat__LindellaNetProfit,
+                    StatsProcedures.Stat__LindellaNetLoss,
+                    StatsProcedures.Stat__WuffieNetProfit,
+                    StatsProcedures.Stat__WuffieNetLoss,
+                    StatsProcedures.Stat__LorekeeperSpellsLearned,
+                    StatsProcedures.Stat__MinibossAttacks,
+                    StatsProcedures.Stat__QuestsFailed,
+                    StatsProcedures.Stat__QuestsPassed,
+                    StatsProcedures.Stat__BusRides,
+                };
+            var pvpAchievements = new String[]{
+                    StatsProcedures.Stat__TimesEnchanted,
+                    StatsProcedures.Stat__TimesInanimateTFing,
+                    StatsProcedures.Stat__TimesAnimalTFing,
+                    StatsProcedures.Stat__MindControlCommandsIssued,
+                    StatsProcedures.Stat__PvPPlayerNumberTakedowns,
+                    StatsProcedures.Stat__PvPPlayerLevelTakedowns,
+                    StatsProcedures.Stat__DungeonArtifactsFound,
+                    StatsProcedures.Stat__DungeonDemonsDefeated,
+                    StatsProcedures.Stat__DungeonPointsStolen,
+                };
+
+            var index = die.Next(generalAchievements.Count() + pvpAchievements.Count());
+            string achievement;
+            var pvp = false;
+
+            if (index < generalAchievements.Count())
+            {
+                achievement = generalAchievements[index];
+            }
+            else
+            {
+                achievement = pvpAchievements[index - generalAchievements.Count()];
+                pvp = true;
+            }
+
+            var achievementName = StatsProcedures.StatTypesMap[achievement].FriendlyName;
+            var resource = $"stat {achievement}";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                if (pvp)
+                {
+                    AddEligibilityCriterion(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
+                }
+                AddRequirement(challenge,
+                               $"Rank in the top 10 places for the \"{achievementName}\" achievement",
+                               p => StatsProcedures.GetLeaderPlayersInStat(achievement).Any(s => s.Player.Player.Id == p.Id));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Parts++;
+                challenge.Difficulty += difficulty;
+            }
+        }
+
     }
 }

@@ -268,7 +268,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.GivePerkToPlayer(effect.Value, player, Duration: duration, Cooldown: duration);
         }
 
-        private static string GiveRandomEffect(Player player, IEnumerable<int> effects, Random rand = null)
+        public static string GiveRandomEffect(Player player, IEnumerable<int> effects, Random rand = null)
         {
             if (effects.IsEmpty())
             {

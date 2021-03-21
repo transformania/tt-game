@@ -490,13 +490,41 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static void PickRewardsAndPenalties(ChallengeType challengeType, Random die, Challenge challenge)
         {
-            AddReward(challenge, "50 Arpeyjis",
-                      p => { PlayerProcedures.GiveMoneyToPlayer(p, 50); });
+            var roll = die.Next(100);
+
+            if (roll < 25)
+            {
+                var amount = (int)Math.Max(challenge.Difficulty * 10, 50);
+                AddReward(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, amount); });
+            }
+            else if (roll < 50)
+            {
+                var amount = Math.Max(1, challenge.Difficulty / 5 + 1);
+                AddReward(challenge, $"{amount} spells", p => { SkillProcedures.GiveRandomFindableSkillsToPlayer(p, amount); });
+            }
+            else if (roll < 75)
+            {
+                AddReward(challenge, $"an effect to boost your skills", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.BOOST_EFFECTS, die); });
+            }
+            else
+            {
+                AddReward(challenge, $"a random item", p => { EnvironmentPrankProcedures.RareFind(p, die); });
+            }
+            
 
             if (challengeType.Penalty)
             {
-                AddPenalty(challenge, "50 Arpeyjis",
-                           p => { PlayerProcedures.GiveMoneyToPlayer(p, -50); });
+                roll = die.Next(100);
+
+                if (roll < 75)
+                {
+                    var amount = (int)Math.Max(challenge.Difficulty * 15, 100);
+                    AddReward(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -amount); });
+                }
+                else
+                {
+                    AddReward(challenge, $"a penalty effect", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.PENALTY_EFFECTS, die); });
+                }
             }
         }
 
@@ -815,7 +843,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static void TryAddingAchievementRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
-            var difficulty = 12;
+            var difficulty = 8;
 
             var generalAchievements = new String[]{
                     StatsProcedures.Stat__SearchCount,

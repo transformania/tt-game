@@ -40,7 +40,7 @@ namespace TT.Domain.Procedures
 
             var inanimateMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
-            if(inanimateMe == null)
+            if (inanimateMe == null)
             {
                 return "";
             }

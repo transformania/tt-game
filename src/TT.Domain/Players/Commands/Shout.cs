@@ -6,7 +6,6 @@ using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
 using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Entities;
-using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Players.Commands
@@ -38,7 +37,6 @@ namespace TT.Domain.Players.Commands
 
                 if (CharacterPrankProcedures.HUSHED_EFFECT.HasValue)
                 {
-                    // Also consider players with a temporary change in bot ID to be active so not to autolock
                     var hushed = ctx.AsQueryable<Effect>()
                                         .Where(e => e.EffectSource.Id == CharacterPrankProcedures.HUSHED_EFFECT.Value &&
                                                     e.Owner.Id == player.Id &&

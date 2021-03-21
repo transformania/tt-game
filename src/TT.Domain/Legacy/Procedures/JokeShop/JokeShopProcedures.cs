@@ -317,7 +317,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
-            // Update player challenges
+            // Update player challenges (for players on their last chance to pass or fail)
             ChallengeProcedures.CheckExpiringChallenges(expiringEffects);
         }
 
@@ -551,7 +551,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 // Mana steal
                 var others = ActivePlayersInJokeShopApartFrom(player);
-                if (others.Count() > 0)
+                if (others.Any())
                 {
                     var other = others[rand.Next(others.Count())];
                     var proportion = rand.NextDouble() * 0.6 + 0.2;
@@ -703,7 +703,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 // Health steal
                 var others = ActivePlayersInJokeShopApartFrom(player);
-                if (others.Count() > 0)
+                if (others.Any())
                 {
                     var other = others[rand.Next(others.Count())];
                     var proportion = rand.NextDouble() * 0.3 + 0.1;
@@ -766,7 +766,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return EjectCharacter(player);
             }
 
-            // Ensure player can cleanse
+            // Ensure player can cleanse/self-restore
             if (player.ActionPoints < PvPStatics.CleanseCost || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate || player.FormSourceId == player.OriginalFormSourceId)
             {
                 return null;
@@ -870,12 +870,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static string Drop(Player player, int itemId, Random rand = null)
         {
             // Don't return without dropping (or doing something similar).
-
-            // Ensure player can cleanse
-            if (player.ActionPoints < PvPStatics.CleanseCost || player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate || player.FormSourceId == player.OriginalFormSourceId)
-            {
-                return null;
-            }
 
             rand = rand ?? new Random();
 
@@ -1045,7 +1039,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Wrong spell
                 var skillsAvailable = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id).Where(s => s.MobilityType == skill.MobilityType && s.StaticSkill.Id != skill.StaticSkill.Id).ToArray();
 
-                if (skillsAvailable != null && skillsAvailable.Count() > 0)
+                if (skillsAvailable != null && skillsAvailable.Any())
                 {
                     var skillToUse = skillsAvailable[rand.Next(skillsAvailable.Count())];
                     var attack = AttackProcedures.AttackSequence(player, victim, skillToUse);

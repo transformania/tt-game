@@ -65,14 +65,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             rand = rand ?? new Random();
-            var bountyEffect = BountyProcedures.PlaceBounty(player, rand);
+            var bountyEffectSourceId = BountyProcedures.PlaceBounty(player, rand);
 
-            if (!bountyEffect.HasValue)
+            if (!bountyEffectSourceId.HasValue)
             {
                 return null;
             }
 
-            var details = BountyProcedures.BountyDetails(player, bountyEffect.Value);
+            var details = BountyProcedures.BountyDetails(player, bountyEffectSourceId.Value);
 
             if (details == null)
             {
@@ -81,6 +81,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__BountyCount, 1);
 
+            // Put up some wanted posters
             var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
             var locationMessage = $"<b>Wanted:</b>  A reward is on offer to whoever turns <b>{player.GetFullName()}</b> into a <b>{details.Form?.FriendlyName}</b>!";
 
@@ -283,7 +284,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             // Give a rune (round level down to odd)
             var runeLevel = cmd.Level - 1;
-            runeLevel = runeLevel - runeLevel % 2 + 1;
+            runeLevel = runeLevel - (runeLevel % 2) + 1;
             var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
             DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
 
@@ -298,7 +299,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned your evil twin!</b>  Beware!  They are not friendly!", true);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned their evil twin!");
 
-            return "In the corner of the room is a freestanding mirror with a silver gilt frame.  You smear some of the dust off the glass to see your reflection staring back at you through the clearing in the dusty haze.  As you look into it you catch sight of yourself twitching slightly, but you don't actually feel anything.  Then your reflection narrows their gaze into a scowl and steps through the rippling glazed portal, bringing you face-to-face with your mirror self.  You should be careful.  Meeting your doppelganger never ends well..";
+            return "In the corner of the room is a freestanding mirror with a silver gilt frame.  You smear some of the dust off the glass to see your reflection staring back at you through the clearing in the misty haze.  As you look into it you catch sight of yourself twitching slightly, but you don't actually feel anything.  Then your reflection narrows their gaze into a scowl and steps through the rippling glazed portal, bringing you face-to-face with your mirror self!  You should be careful.  Meeting your doppelganger never ends well..";
         }
 
         public static string OpenPsychoNip(Player player)
@@ -329,7 +330,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You spot a tin with a colorful insignia on a shelf.  You move over to take a closer look, but accidentally knock the tin to the floor and spill its contents!  You gather up the fallen leaves and place them back in the tin.  \"PsychoNip,\" it reads.  Perhaps you should stay alert for the next few turns in case the scent has caught anyone's attention...";
         }
 
-        public static string ForceAttack(Player attacker, bool strongAttackerAlerts = false, Random rand =null)
+        public static string ForceAttack(Player attacker, bool strongAttackerAlerts = false, Random rand = null)
         {
             if (attacker.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
             {
@@ -346,7 +347,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                     .Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
                                                 JokeShopProcedures.PlayerHasBeenWarned(p)).ToList();
 
-            if (candidates != null && candidates.IsEmpty())
+            if (candidates == null || candidates.IsEmpty())
             {
                 return null;
             }
@@ -385,7 +386,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 .Where(p => p.GameMode == (int)GameModeStatics.GameModes.PvP &&
                                             JokeShopProcedures.PlayerHasBeenWarned(p)).ToList();
 
-            if (candidates != null && candidates.IsEmpty())
+            if (candidates == null || candidates.IsEmpty())
             {
                 return null;
             }
@@ -405,7 +406,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             string[] memes = {
-                // TODO joke_shop add memes
+                // More memes
                 };
             string meme = null;
 
@@ -449,7 +450,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling());
 
             var playerRepo = new EFPlayerRepository();
-            IEnumerable<Player> playersInCombat = playerRepo.Players
+            var playersInCombat = playerRepo.Players
                 .Where(p => p.LastCombatTimestamp >= cutoff &&
                             p.Id != player.Id &&
                             p.Mobility == PvPStatics.MobilityFull &&

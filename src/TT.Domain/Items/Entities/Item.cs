@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Entities;
 using TT.Domain.Items.Commands;
-using TT.Domain.Legacy.Procedures;
 using TT.Domain.Players.Entities;
-using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Entities

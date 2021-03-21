@@ -268,7 +268,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var itemType = ItemProcedures.GetRandomPlayableItem();
                 var message = ItemProcedures.GiveNewItemToPlayer(player, itemType, level);
 
-                // Don't permit player to carry untamed pet
+                // Don't permit player to carry untamed pet (pet items aren't automatically tamed)
                 if (itemType.ItemType == PvPStatics.ItemType_Pet)
                 {
                     var unequippedPet = ItemProcedures.GetAllPlayerItems(player.Id).FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped);
@@ -574,7 +574,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string TeleportToHostileNPC(Player player, bool attack, Random rand = null)
         {
-            var targetForm = -1;
+            var targetFormSourceId = -1;
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
@@ -628,16 +628,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Turn into form needed to attack
             if (npcPlayer.BotId == AIStatics.MouseBimboBotId)
             {
-                targetForm = BossProcedures_Sisters.NerdSpellFormSourceId;
+                targetFormSourceId = BossProcedures_Sisters.NerdSpellFormSourceId;
             }
             else if (npcPlayer.BotId == AIStatics.MouseNerdBotId)
             {
-                targetForm = BossProcedures_Sisters.BimboSpellFormSourceId;
+                targetFormSourceId = BossProcedures_Sisters.BimboSpellFormSourceId;
             }
 
-            if (targetForm != -1)
+            if (targetFormSourceId != -1)
             {
-                CharacterPrankProcedures.TryAnimateTransform(player, targetForm);
+                CharacterPrankProcedures.TryAnimateTransform(player, targetFormSourceId);
             }
 
             // Move to same tile as NPC
@@ -820,7 +820,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 LocationLogProcedures.AddLocationLog(nextTileId, name + " entered from " + currentTile.Name);
             }
 
-            PlayerProcedures.MovePlayerMultipleLocations(player, nextTileId, spacesToMove * costPerTile);
+            target.ActionPoints -= spacesToMove * costPerTile;
+            target.dbLocationName = nextTileId;
+            playerRepo.SavePlayer(target);
 
             return "The room starts to shake.  A waving cat on a nearby display rattles, edging forward before falling off the shelf and smashing to the ground.  The structure of the room creaks as the ceiling contorts.  All the clown faces seem to be staring at you.  Suddenly this feels a very unsettling place.  You get a bad feeling that something is about to happen to this sinister and claustrophobic shop.  There's only one thing for it:  You race out the door and run.  It doesn't matter which direction you go in, just so long as you get out of here!";
         }

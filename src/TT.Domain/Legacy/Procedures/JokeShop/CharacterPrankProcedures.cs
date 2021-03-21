@@ -43,6 +43,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 BoostEffects = value;
             }
         }
+
         public static List<int> PENALTY_EFFECTS
         {
             get
@@ -121,7 +122,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     BlindedEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Blinded") ?? -1;
                 }
 
-                return BlindedEffect == -1 ? null : BlindedEffect; ;
+                return BlindedEffect == -1 ? null : BlindedEffect;
             }
             set
             {
@@ -258,46 +259,46 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string GiveEffect(Player player, int? effect, int duration = 3)
+        public static string GiveEffect(Player player, int? effectSourceId, int duration = 3)
         {
-            if (!effect.HasValue || EffectProcedures.PlayerHasEffect(player, effect.Value))
+            if (!effectSourceId.HasValue || EffectProcedures.PlayerHasEffect(player, effectSourceId.Value))
             {
                 return null;
             }
 
-            return EffectProcedures.GivePerkToPlayer(effect.Value, player, Duration: duration, Cooldown: duration);
+            return EffectProcedures.GivePerkToPlayer(effectSourceId.Value, player, Duration: duration, Cooldown: duration);
         }
 
-        public static string GiveRandomEffect(Player player, IEnumerable<int> effects, Random rand = null)
+        public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null)
         {
-            if (effects.IsEmpty())
+            if (effectSourceIds.IsEmpty())
             {
                 return null;
             }
 
             rand = rand ?? new Random();
-            var effect = effects.ElementAt(rand.Next(effects.Count()));
+            var effectSourceId = effectSourceIds.ElementAt(rand.Next(effectSourceIds.Count()));
 
-            if (EffectProcedures.PlayerHasEffect(player, effect))
+            if (EffectProcedures.PlayerHasEffect(player, effectSourceId))
             {
                 return null;
             }
 
-            return EffectProcedures.GivePerkToPlayer(effect, player);
+            return EffectProcedures.GivePerkToPlayer(effectSourceId, player);
         }
 
         public static string ApplyLocalCurse(Player player, string dbLocationName, Random rand = null)
         {
-            var effects = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToArray();
+            var effectSources = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToArray();
 
-            if (effects.Any())
+            if (effectSources.Any())
             {
                 rand = rand ?? new Random();
-                var effect = effects[rand.Next(effects.Count())];
+                var effectSource = effectSources[rand.Next(effectSources.Count())];
 
-                if (!EffectProcedures.PlayerHasEffect(player, effect.Id))
+                if (!EffectProcedures.PlayerHasEffect(player, effectSource.Id))
                 {
-                    return GiveEffect(player, effect.Id);
+                    return GiveEffect(player, effectSource.Id);
                 }
             }
 
@@ -365,7 +366,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string MakeInvisible(Player player)
         {
-            if (player.GameMode != (int)GameModeStatics.GameModes.PvP && !JokeShopProcedures.INVISIBILITY_EFFECT.HasValue)
+            if (player.GameMode != (int)GameModeStatics.GameModes.PvP || !JokeShopProcedures.INVISIBILITY_EFFECT.HasValue)
             {
                 return null;
             }
@@ -638,7 +639,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-            var altForm = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => new { form.AltSexFormSourceId, form.Gender }).FirstOrDefault();
+            var altForm = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId)
+                                                 .Select(form => new { form.AltSexFormSourceId, form.Gender })
+                                                 .FirstOrDefault();
 
             if (altForm == null || !altForm.AltSexFormSourceId.HasValue)
             {
@@ -651,6 +654,17 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} suddenly became {altForm.Gender}.");
 
             return $"Your body spasms in the way you have become accustomed to after being hit by an orb.  As you shake the dysphoria of your reproportioned form you cast your eyes down over your body.  Yup, {altForm.Gender} again, you think with a sigh.";
+        }
+
+        private static bool PlayerCanBeCloned(Player player)
+        {
+            // Don't clone players who are in a mobile inanimate form (giving someone their form would make
+            // the other player inanimate due to the form source mobility) or whose current form is not provided
+            // by a discoverable spell.  (Cloning customs may be a future enhancement)
+            return JokeShopProcedures.Forms(f => (f.Category == PvPStatics.MobilityFull ||
+                                                  f.Category == JokeShopProcedures.LIMITED_MOBILITY) &&
+                                                 f.FormSourceId == player.FormSourceId)
+                                     .Any();
         }
 
         private static string BodySwap(Player player, bool clone, Random rand = null)
@@ -668,7 +682,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 var victim = candidates[rand.Next(candidates.Count())];
 
-                TryAnimateTransform(player, victim.FormSourceId);
+                if (!PlayerCanBeCloned(victim) || !TryAnimateTransform(player, victim.FormSourceId))
+                {
+                    return null;
+                }
 
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have become a clone of {victim.GetFullName()}", false);
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> became a clone of <b>{victim.GetFullName()}</b>.");
@@ -685,7 +702,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var index = rand.Next(candidates.Count());
                     var candidate = candidates[index];
 
-                    if (candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || JokeShopProcedures.PlayerHasBeenWarned(candidate))
+                    if ((candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || JokeShopProcedures.PlayerHasBeenWarned(candidate)) &&
+                        PlayerCanBeCloned(player))
                     {
                         victim = candidate;
                     }
@@ -797,18 +815,18 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         public static string SetBaseFormToRegular(Player player)
         {
-            string message;
             var formRepo = new EFDbStaticFormRepository();
             var baseForms = formRepo.DbStaticForms.Where(f => (f.FriendlyName == "Regular Guy" || f.FriendlyName == "Regular Girl") &&
                                                                f.Id != player.OriginalFormSourceId)
                                                   .Select(f => f.Id).ToArray();
 
-            if (baseForms.Count() > 0)
+            if (baseForms.Any())
             {
                 ChangeBaseForm(player, baseForms);
+                return "You spot a fortune cookie and open it to see the message inside:  \"True purity can only come from the deepest of cleanses.\"  Let's hope the shopkeeper didn't see you!";
             }
-            message = "You spot a fortune cookie and open it to see the message inside:  \"True purity can only come from the deepest of cleanses.\"  Let's hope the shopkeeper didn't see you!";
-            return message;
+
+            return null;
         }
 
         private static string SetBaseFormToCurrent(Player player)
@@ -821,10 +839,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var formSourceId = player.FormSourceId;
 
             // Check we're not setting an inanimate/pet as base form, in case that causes problems...
-            IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-            var mobility = formsRepo.DbStaticForms.Where(f => f.Id == formSourceId).Select(f => f.MobilityType).FirstOrDefault();
-
-            if (mobility != PvPStatics.MobilityFull)
+            if (!PlayerCanBeCloned(player))
             {
                 return null;
             }
@@ -1007,7 +1022,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
                 mindControl = true;
-                message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you sweeping the dirt away maybe you could serve others is town?";
+                message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you enjoy sweeping the dirt away maybe you could serve others is town?";
 
                 string[] prefixes = { "Maid", "Servant", "Miss", "Cleaner", "Waitress" };
                 lastName = rand.Next(2) == 0 ? firstName : lastName;
@@ -1078,8 +1093,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 JokeShopProcedures.CATS_AND_NEKOS,
                 JokeShopProcedures.DOGS, 
                 JokeShopProcedures.MAIDS,
-                JokeShopProcedures. SHEEP,
-                JokeShopProcedures.STRIPPERS };
+                JokeShopProcedures.SHEEP,
+                JokeShopProcedures.STRIPPERS,
+                JokeShopProcedures.GHOSTS
+                };
             var genre = mcForms[rand.Next(mcForms.Count())];
             var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(genre).ToArray();
 

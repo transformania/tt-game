@@ -201,7 +201,7 @@ namespace TT.Domain.Procedures
             // this effect is temporary, grab some of its stats from the effect static
             if (effectPlus.AvailableAtLevel == 0)
             {
-                var duration = Duration.HasValue ? Duration.Value : effectPlus.Duration;
+                var duration = Duration ?? effectPlus.Duration;
                 var cooldown = Cooldown.HasValue ? Math.Max(duration, Cooldown.Value) : effectPlus.Cooldown;
 
                 cmd.Duration = duration;

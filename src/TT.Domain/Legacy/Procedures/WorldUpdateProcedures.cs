@@ -896,7 +896,7 @@ namespace TT.Domain.Procedures
                 {
                     JokeShopProcedures.EjectOfflineCharacters();
 
-                    if (new Random(Guid.NewGuid().GetHashCode()).Next(20) == 0)
+                    if (new Random().Next(20) == 0)
                     {
                         LocationsStatics.MoveJokeShop();
                     }

@@ -87,12 +87,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var output = new List<ChallengeType>();
 
-            var effectSource = JokeShopProcedures.EffectWithName("effect_challenged_1");
+            var effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_1");
 
-            if (effectSource.HasValue)
+            if (effectSourceId.HasValue)
             {
                 output.Add(new ChallengeType{
-                    EffectSourceId = effectSource.Value,
+                    EffectSourceId = effectSourceId.Value,
                     Duration = 5,
                     MaxParts = 1,
                     MaxDifficulty = 2,
@@ -100,12 +100,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 });
             }
 
-            effectSource = JokeShopProcedures.EffectWithName("effect_challenged_2");
+            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_2");
 
-            if (effectSource.HasValue)
+            if (effectSourceId.HasValue)
             {
                 output.Add(new ChallengeType{
-                    EffectSourceId = effectSource.Value,
+                    EffectSourceId = effectSourceId.Value,
                     Duration = 10,
                     MaxParts = 2,
                     MaxDifficulty = 5,
@@ -113,12 +113,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 });
             }
 
-            effectSource = JokeShopProcedures.EffectWithName("effect_challenged_3");
+            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_3");
 
-            if (effectSource.HasValue)
+            if (effectSourceId.HasValue)
             {
                 output.Add(new ChallengeType{
-                    EffectSourceId = effectSource.Value,
+                    EffectSourceId = effectSourceId.Value,
                     Duration = 20,
                     MaxParts = 3,
                     MaxDifficulty = 8,
@@ -126,12 +126,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 });
             }
 
-            effectSource = JokeShopProcedures.EffectWithName("effect_challenged_4");
+            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_4");
 
-            if (effectSource.HasValue)
+            if (effectSourceId.HasValue)
             {
                 output.Add(new ChallengeType{
-                    EffectSourceId = effectSource.Value,
+                    EffectSourceId = effectSourceId.Value,
                     Duration = 60,
                     MaxParts = 3,
                     MaxDifficulty = 13,
@@ -139,14 +139,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 });
             }
 
-            effectSource = JokeShopProcedures.EffectWithName("effect_challenged_5");
+            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_5");
 
-            if (effectSource.HasValue)
+            if (effectSourceId.HasValue)
             {
                 output.Add(new ChallengeType{
-                    EffectSourceId = effectSource.Value,
+                    EffectSourceId = effectSourceId.Value,
                     Duration = 120,
-                    MaxParts = 1,
+                    MaxParts = 3,
                     MaxDifficulty = 21,
                     Penalty = true,
                 });
@@ -180,7 +180,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 var expiresTurnEnd = NewChallengeExpires(challengeType);
                 var die = LoadedDie(player.Id, challengeType, expiresTurnEnd);
-                var challenge = FormulateChallenge(challengeType, expiresTurnEnd, die);
+                var challenge = DeviseChallenge(challengeType, expiresTurnEnd, die);
 
                 if (challenge != null)
                 {
@@ -238,7 +238,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var expiresTurnEnd = ChallengeExpires(effect);
             var die = LoadedDie(player.Id, challengeType, expiresTurnEnd);
 
-            return FormulateChallenge(challengeType, expiresTurnEnd, die);
+            return DeviseChallenge(challengeType, expiresTurnEnd, die);
         }
 
         // Tests whether the challenge is complete and make reward/punishment
@@ -269,23 +269,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 challenge.GiveReward(player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Congratulations!</b>  You have passed a challenge and earn a reward of <b>{challenge.Reward}</b>!", true);
                 EffectProcedures.SetPerkDurationToZero(effect.EffectSourceId, player);
-
-                // Don't delete if something else is about to try to remove the effect
-                if (effect.Duration != 0)
-                {
-                    StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__ChallengesPassed, 1);
-                }
+                StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__ChallengesPassed, 1);
             }
-            else if(effect.Duration == 0)
+            else if (effect.Duration == 0 && !challenge.Penalty.IsNullOrEmpty())
             {
-                if (!challenge.Penalty.IsNullOrEmpty())
-                {
-                    challenge.GivePenalty(player);
-                    PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and are given a penalty of <b>{challenge.Reward}</b>!", true);
-                }
-
-                // The effect has probably cleared, but let's be certain
-                //EffectProcedures.RemovePerkFromPlayer(effect.EffectSourceId, player);
+                challenge.GivePenalty(player);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and are given a penalty of <b>{challenge.Reward}</b>!", true);
             }
         }
 
@@ -338,6 +327,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             return turn;
         }
+
         private static int ChallengeExpires(Effect_VM effect)
         {
             return TurnOfExpiry(effect.Duration);
@@ -361,7 +351,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return effects.FirstOrDefault(e => CHALLENGE_TYPES.Select(c => c.EffectSourceId).Contains(e.dbEffect.EffectSourceId))?.dbEffect;
         }
 
-        // The following methods avoid self-recursive closures, preventing stack overflows
+        // The following methods avoid self-recursive closures, preventing stack overflows through self-capture
 
         private static void AddEligibilityCriterion(Challenge challenge, Func<Player, bool> criterion)
         {
@@ -413,7 +403,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         }
 
 
-        private static Challenge FormulateChallenge(ChallengeType challengeType, int expires, Random die)
+        private static Challenge DeviseChallenge(ChallengeType challengeType, int expires, Random die)
         {
             var challenge = new Challenge();
             challenge.ByEndOfTurn = expires;
@@ -425,7 +415,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                    challenge.Parts < challengeType.MaxParts &&
                    challenge.Difficulty < challengeType.MaxDifficulty)
             {
-                // Pick between different challenges based on roll of die
+                // Pick between different challenges based on roll of die (which is repeatable due to the RNG seed being predictable)
                 var roll = die.Next(100);
 
                 if (roll < 14)  // 14%
@@ -510,7 +500,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 AddReward(challenge, $"a random item", p => { EnvironmentPrankProcedures.RareFind(p, die); });
             }
-            
 
             if (challengeType.Penalty)
             {
@@ -519,11 +508,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 if (roll < 75)
                 {
                     var amount = (int)Math.Max(challenge.Difficulty * 15, 100);
-                    AddReward(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -amount); });
+                    AddPenalty(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -amount); });
                 }
                 else
                 {
-                    AddReward(challenge, $"a penalty effect", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.PENALTY_EFFECTS, die); });
+                    AddPenalty(challenge, $"a penalty effect", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.PENALTY_EFFECTS, die); });
                 }
             }
         }
@@ -572,15 +561,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var difficulty = 1;
 
-            var minMinutesOutOfCombat = 15;
-            var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * TurnTimesStatics.GetTurnLengthInSeconds() / 60 / 2);
-            maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, maxMinutesOutOfCombat);
-
-            var minutesToStayOutOfCombat = (int)die.Next(minMinutesOutOfCombat, maxMinutesOutOfCombat + 1);
-
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
                 challenge.ResourceUsed(RESOURCE_COMBAT_TIMER) == 0)
             {
+                var minMinutesOutOfCombat = 15;
+                var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * TurnTimesStatics.GetTurnLengthInSeconds() / 60 / 2);
+                maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, maxMinutesOutOfCombat);
+
+                var minutesToStayOutOfCombat = (int)die.Next(minMinutesOutOfCombat, maxMinutesOutOfCombat + 1);
+
                 AddRequirement(challenge,
                                $"Stay out of combat for {minutesToStayOutOfCombat} minutes",
                                p => p.LastCombatTimestamp.AddMinutes(minutesToStayOutOfCombat) <= DateTime.UtcNow);
@@ -628,11 +617,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static void TryAddingAPRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 2;
-            var target = (int)Math.Min(challengeType.Duration * 10 * 3 / 4, TurnTimesStatics.GetActionPointLimit());
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
                 challenge.ResourceUsed(RESOURCE_AP) == 0)
             {
+                var target = (int)Math.Min(challengeType.Duration * 10 * 3 / 4, TurnTimesStatics.GetActionPointLimit());
+
                 AddRequirement(challenge,
                                $"Build up {target} Action Points (not including reserves)",
                                p => p.ActionPoints >= target);
@@ -646,14 +636,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static void TryAddingLevelRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 3;
-            var low = Math.Min(7, 2 + 5 * challenge.ByEndOfTurn / 2000);
-            var high = Math.Min(12, 5 + 7 * challenge.ByEndOfTurn / 2000);
-            var target = (int)die.Next(low, high + 1);
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
                 challenge.ResourceUsed(RESOURCE_AP) == 0)
             {
+                var low = Math.Min(7, 2 + 5 * challenge.ByEndOfTurn / 2000);
+                var high = Math.Min(12, 5 + 7 * challenge.ByEndOfTurn / 2000);
+                var target = (int)die.Next(low, high + 1);
+
                 AddEligibilityCriterion(challenge, p => p.Level >= target - 2);
+
                 AddRequirement(challenge,
                                $"Reach level {target}",
                                p => p.ActionPoints >= target);
@@ -667,13 +659,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static void TryAddingEquipmentRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 2;
-            var low = Math.Min(6, 2 + 4 * challenge.ByEndOfTurn / 2000);
-            var high = Math.Min(12, 3 + 9 * challenge.ByEndOfTurn / 2000);
-            var target = (int)die.Next(low, high + 1);
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
                 challenge.ResourceUsed(RESOURCE_EQUIP) == 0)
             {
+                var low = Math.Min(6, 2 + 4 * challenge.ByEndOfTurn / 2000);
+                var high = Math.Min(12, 3 + 9 * challenge.ByEndOfTurn / 2000);
+                var target = (int)die.Next(low, high + 1);
+
                 AddRequirement(challenge,
                                $"Equip at least {target} items in total (not including single-use consumables)",
                                p => ItemProcedures.GetAllPlayerItems(p.Id)
@@ -782,6 +775,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 AddEligibilityCriterion(challenge, p => QuestProcedures.GetAllAvailableQuestsForPlayer(p, challenge.ByEndOfTurn - challengeType.Duration)
                                                                        .Any(q => q.Id == quest.Id));
+
                 AddRequirement(challenge,
                                $"Pass the \"{quest.Name}\" quest",
                                p => QuestProcedures.PlayerHasCompletedQuest(p, quest.Id));
@@ -828,6 +822,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 {
                     AddEligibilityCriterion(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
                 }
+
                 AddRequirement(challenge,
                                $"Equip a level {target} or higher {item.FriendlyName} ({item.Category} slot)",
                                p => ItemProcedures.GetAllPlayerItems(p.Id).Any(i => i.dbItem.IsEquipped &&
@@ -898,7 +893,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 pvp = true;
             }
 
-            var achievementName = StatsProcedures.StatTypesMap[achievement].FriendlyName;
             var resource = $"stat {achievement}";
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
@@ -908,6 +902,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 {
                     AddEligibilityCriterion(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
                 }
+
+                var achievementName = StatsProcedures.StatTypesMap[achievement].FriendlyName;
                 AddRequirement(challenge,
                                $"Rank in the top 10 places for the \"{achievementName}\" achievement",
                                p => StatsProcedures.GetLeaderPlayersInStat(achievement).Any(s => s.Player.Player.Id == p.Id));

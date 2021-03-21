@@ -1923,18 +1923,20 @@ namespace TT.Domain.Statics
                     for(var backstop = compassSearchOrder.Length; backstop > 1; backstop--)
                     {
                         var dest = backstop - 1;
-                        var src = rand.Next(0, backstop);
+                        var src = rand.Next(backstop);
                         var temp = compassSearchOrder[dest];
                         compassSearchOrder[dest] = compassSearchOrder[src];
                         compassSearchOrder[src] = temp;
                     }
 
-                    // Examine each compass point to try and find an empty space from which to link the joke shop
+                    // Examine each compass point of candidate tile to try and find an empty space from which to link the joke shop
                     for (var index = 0; !foundLocation && index < compassSearchOrder.Length; index++)
                     {
                         switch (compassSearchOrder[index])
                         {
-                            case CompassPoint.North:
+                            // Note X runs from West to East and Y runs from South to North, i,e, Y + 1 is up
+
+                            case CompassPoint.South:
                                 if (jokeShop.Name_North == null &&
                                     candidateTile.Name_South == null &&
                                     map.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y - 1) == null)
@@ -1948,7 +1950,7 @@ namespace TT.Domain.Statics
                                 }
                                 break;
 
-                            case CompassPoint.South:
+                            case CompassPoint.North:
                                 if (jokeShop.Name_South == null &&
                                     candidateTile.Name_North == null &&
                                     map.FirstOrDefault(l => l.X == candidateTile.X && l.Y == candidateTile.Y + 1) == null)
@@ -1962,7 +1964,7 @@ namespace TT.Domain.Statics
                                 }
                                 break;
 
-                            case CompassPoint.East:
+                            case CompassPoint.West:
                                 if (jokeShop.Name_East == null &&
                                     candidateTile.Name_West == null &&
                                     map.FirstOrDefault(l => l.X == candidateTile.X - 1 && l.Y == candidateTile.Y) == null)
@@ -1976,7 +1978,7 @@ namespace TT.Domain.Statics
                                 }
                                 break;
 
-                            case CompassPoint.West:
+                            case CompassPoint.East:
                                 if (jokeShop.Name_West == null &&
                                     candidateTile.Name_East == null &&
                                     map.FirstOrDefault(l => l.X == candidateTile.X + 1 && l.Y == candidateTile.Y) == null)

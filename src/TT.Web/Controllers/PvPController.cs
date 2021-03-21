@@ -288,7 +288,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.PortraitUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
-                animalOutput.IsPermanent = animalOutput.YouItem == null ? true : animalOutput.YouItem.IsPermanent;
+                animalOutput.IsPermanent = animalOutput.YouItem == null ? false : animalOutput.YouItem.IsPermanent;
 
                 animalOutput.StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(animalOutput.YouItem)));
                 animalOutput.Message = InanimateXPProcedures.GetProspectsMessage(me);
@@ -340,7 +340,7 @@ namespace TT.Web.Controllers
 
             var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
 
-            if (output.Location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            if (location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
             {
                 JokeShopProcedures.SetJokeShopActive(world.JokeShop);
                 location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
@@ -627,11 +627,13 @@ namespace TT.Web.Controllers
                 if (index != -1)
                 {
                     // Roll an amount to stumble
-                    var roll = new Random().NextDouble();
+                    var rand = new Random();
+                    var roll = rand.NextDouble();
 
+                    // Pick preferred stumble direction
                     if (roll < 0.2)
                     {
-                        index++;  // 20% chance of stumbling right
+                        index++;  // 20% chance of stumbling right (i.e. clockwise)
                     }
                     else if (roll < 0.3)
                     {
@@ -639,13 +641,18 @@ namespace TT.Web.Controllers
                     }
                     else if (roll < 0.5)
                     {
-                        index += 3;  // 20% chance of stumbling left
+                        index += 3;  // 20% chance of stumbling left (i.e. counterclockwise - we keep index positive so % plays nicely)
                     }
 
                     // Adjust the index to point to the nearest exit to the stumble
                     var len = exits.Count();
                     index = index % len;
-                    locname = exits[index % len] ?? exits[(index + 1) % len] ?? exits[(index + 3) % len] ?? exits[(index + 2) % len];
+
+                    var bias = rand.Next(2) * 2;  // Whether to prefer stumbling right or left of preferred stumble direction in case there is no route
+                    locname = exits[index] ??                     // preferred stumble direction
+                              exits[(index + 1 + bias) % len] ??  // right if bias is 0, left if bias is 2
+                              exits[(index + 3 - bias) % len] ??  // left if bias is 0, right if bias is 2
+                              exits[(index + 2) % len];           // 180 degree stumble (i.e. fall back onn the only)
                 }
             }
 

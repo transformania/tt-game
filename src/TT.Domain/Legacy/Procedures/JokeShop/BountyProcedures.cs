@@ -13,35 +13,35 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class BountyProcedures
     {
-        private static readonly List<EffectMapping> MAPPINGS = BountyEffects();
+        private static readonly List<EffectSourceMapping> MAPPINGS = BountyEffects();
 
         private const int TURNS_OF_BOUNTY = 30;
         private const int TURNS_OF_IMMUNITY = 30;
         private const int BASE_REWARD = 60;
         private const int MAXIMUM_REWARD = 300;
 
-        internal class EffectMapping
+        internal class EffectSourceMapping
         {
-            public int Id;
+            public int EffectSourceId;
             public string Category;
 
-            public EffectMapping(int id, string category)
+            public EffectSourceMapping(int id, string category)
             {
-                Id = id;
+                EffectSourceId = id;
                 Category = category;
             }
         }
 
-        private static List<EffectMapping> BountyEffects()
+        private static List<EffectSourceMapping> BountyEffects()
         {
             var prefix = "effect_bounty_";
             IEffectRepository effectRepo = new EFEffectRepository();
             var effects = effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).ToList();
 
-            var list = new List<EffectMapping>();
+            var list = new List<EffectSourceMapping>();
             foreach (var effect in effects)
             {
-                list.Add(new EffectMapping(effect.Id, effect.dbName.Substring(prefix.Length)));
+                list.Add(new EffectSourceMapping(effect.Id, effect.dbName.Substring(prefix.Length)));
             }
 
             return list;
@@ -64,7 +64,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var effect = MAPPINGS[rand.Next(numMappings)];
 
-            if (EffectProcedures.PlayerHasEffect(player, effect.Id))
+            if (EffectProcedures.PlayerHasEffect(player, effect.EffectSourceId))
             {
                 return null;
             }
@@ -77,29 +77,29 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            EffectProcedures.GivePerkToPlayer(effect.Id, player.Id, TURNS_OF_BOUNTY, TURNS_OF_BOUNTY + TURNS_OF_IMMUNITY);
+            EffectProcedures.GivePerkToPlayer(effect.EffectSourceId, player.Id, TURNS_OF_BOUNTY, TURNS_OF_BOUNTY + TURNS_OF_IMMUNITY);
 
-            return effect.Id;
+            return effect.EffectSourceId;
         }
 
         internal static BountyInfo BountyDetails(Player player, int effectId)
         {
-            var effect = MAPPINGS.FirstOrDefault(e => e.Id == effectId);
+            var effect = MAPPINGS.FirstOrDefault(e => e.EffectSourceId == effectId);
 
-            if (effect == null || !EffectProcedures.PlayerHasEffect(player, effect.Id))
+            if (effect == null || !EffectProcedures.PlayerHasEffect(player, effect.EffectSourceId))
             {
                 return null;
             }
 
-            var possibleForms = JokeShopProcedures.STABLE_FORMS.Where(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
-            var numForms = possibleForms.Count();
+            var possibleFormSourceIds = JokeShopProcedures.STABLE_FORMS.Where(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
+            var numFormSourceIds = possibleFormSourceIds.Count();
 
-            if (numForms == 0)
+            if (numFormSourceIds == 0)
             {
                 return null;
             }
 
-            var playerEffect = EffectProcedures.GetPlayerEffects2(player.Id).FirstOrDefault(e => e.dbEffect.EffectSourceId == effect.Id);
+            var playerEffect = EffectProcedures.GetPlayerEffects2(player.Id).FirstOrDefault(e => e.dbEffect.EffectSourceId == effect.EffectSourceId);
 
             if (playerEffect == null || playerEffect.dbEffect.Duration == 0)
             {
@@ -124,7 +124,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             var expiresTurn = turn + duration;
             var formIndex = player.Id + expiresTurn;
-            var formSourceId = possibleForms[formIndex % possibleForms.Count()];
+            var formSourceId = possibleFormSourceIds[formIndex % possibleFormSourceIds.Count()];
 
             // Locate the desired form
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
@@ -143,14 +143,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 reward /= 2;
             }
 
-            var category = MAPPINGS.Where(m => m.Id == effect.Id).Select(m => m.Category).FirstOrDefault();
+            var category = MAPPINGS.Where(m => m.EffectSourceId == effect.EffectSourceId).Select(m => m.Category).FirstOrDefault();
 
             return new BountyInfo { PlayerName = player.GetFullName(), Form = form, ExpiresTurn = expiresTurn, CurrentReward = reward, Category = category };
         }
 
         public static IEnumerable<BountyInfo> OutstandingBounties()
         {
-            var bountyStaticEffectIds = MAPPINGS.Select(se => se.Id);
+            var bountyStaticEffectIds = MAPPINGS.Select(se => se.EffectSourceId);
             IEffectRepository effectRepo = new EFEffectRepository();
             var effects = effectRepo.Effects.Where(e => bountyStaticEffectIds.Contains(e.EffectSourceId));
 
@@ -176,8 +176,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return;
             }
 
-            // Ensure victim is still in PvP, or not a player
-            if (attacker.BotId == AIStatics.ActivePlayerBotId && victim.GameMode != (int)GameModeStatics.GameModes.PvP)
+            // Ensure victim is still in PvP, or not a player (in case we want to support bounties on NPCs)
+            if (victim.BotId == AIStatics.ActivePlayerBotId && victim.GameMode != (int)GameModeStatics.GameModes.PvP)
             {
                 return;
             }
@@ -188,7 +188,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return;
             }
 
-            var bountyStaticEffectIds = MAPPINGS.Select(se => se.Id);
+            var bountyStaticEffectIds = MAPPINGS.Select(se => se.EffectSourceId);
             var victimEffects = EffectProcedures.GetPlayerEffects2(victim.Id).Where(e => bountyStaticEffectIds.Contains(e.dbEffect.EffectSourceId));
             var award = 0;
 

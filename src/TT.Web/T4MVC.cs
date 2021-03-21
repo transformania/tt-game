@@ -237,6 +237,21 @@ namespace Links
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class mispell {
+            public const string UrlPath = "~/lib/mispell";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class dist {
+                public const string UrlPath = "~/lib/mispell/dist";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string mispell_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/mispell.min.js") ? Url("mispell.min.js") : Url("mispell.js");
+            }
+        
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class moment_js {
             public const string UrlPath = "~/lib/moment.js";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
@@ -466,6 +481,19 @@ namespace Links
                 {
                     public static readonly string jquery_ui_js = T4MVCHelpers.ProcessAssetPath("~/lib/jqueryui/jquery-ui.js"); 
                     public static readonly string jquery_ui_min_js = T4MVCHelpers.ProcessAssetPath("~/lib/jqueryui/jquery-ui.min.js"); 
+                }
+            }
+            public static partial class mispell 
+            {
+                public static partial class dist 
+                {
+                    public static class Assets
+                    {
+                        public static readonly string mispell_js = T4MVCHelpers.ProcessAssetPath("~/lib/mispell/dist/mispell.js"); 
+                    }
+                }
+                public static class Assets
+                {
                 }
             }
             public static partial class moment_js 

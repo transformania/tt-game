@@ -124,7 +124,11 @@
 
     function onSendMessage() {
         if (cooldownActive === false) {
-            pub.chat.server.send($('#message').val());
+            if (document.getElementById('iq')) {
+                pub.chat.server.send(mispell.bimbofy($('#message').val(), (1 - ($('#iq').val() - 40)/100)));
+            } else {
+                pub.chat.server.send($('#message').val());
+            }
             $('#message').val('').focus();
         }
 

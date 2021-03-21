@@ -71,6 +71,14 @@
         "Chart.js",
         "Chart.min.css"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "mispell@1.2.0",
+      "destination": "lib/mispell/",
+      "files": [
+        "dist/mispell.js"
+      ]
     }
   ]
 }

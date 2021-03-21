@@ -124,7 +124,7 @@
 
     function onSendMessage() {
         if (cooldownActive === false) {
-            if (document.getElementById('iq')) {
+            if (document.getElementById('iq') && $('#iq').val() < 140) {
                 pub.chat.server.send(mispell.bimbofy($('#message').val(), (1 - ($('#iq').val() - 40)/100)));
             } else {
                 pub.chat.server.send($('#message').val());

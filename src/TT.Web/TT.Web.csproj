@@ -242,6 +242,7 @@
     <Content Include="lib\jqueryui\jquery-ui.min.js" />
     <Content Include="lib\jquery\jquery.js" />
     <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="lib\mispell\dist\mispell.js" />
     <Content Include="lib\moment.js\moment.js" />
     <Content Include="lib\moment.js\moment.min.js" />
     <Content Include="lib\signalr.js\jquery.signalR.js" />

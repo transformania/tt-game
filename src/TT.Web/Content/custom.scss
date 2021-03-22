@@ -970,6 +970,9 @@ li {
 @media (min-width: 992px) {
   #discussion {
     overflow-y: auto;
+  }
+
+  .chat-container #discussion {
     resize: none;
   }
 }

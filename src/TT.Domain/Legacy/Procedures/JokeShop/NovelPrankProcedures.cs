@@ -456,14 +456,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                             p.Mobility == PvPStatics.MobilityFull &&
                             p.InDuel <= 0 &&
                             p.InQuest <= 0 &&
-                            p.BotId == AIStatics.ActivePlayerBotId);
+                            p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
             if (playersInCombat.IsEmpty())
             {
                 return null;
             }
 
-            var detected = playersInCombat.ElementAt(rand.Next(playersInCombat.Count()));
+            var detected = playersInCombat[rand.Next(playersInCombat.Count())];
             var location = LocationsStatics.GetConnectionName(detected.dbLocationName);
 
             return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> is currently in <b>{location}</b>!";

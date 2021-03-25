@@ -28,14 +28,10 @@ namespace TT.Tests.Items.Commands
         private List<Item> victimItems;
         private List<Item> emptyItemList;
 
-        private int psychoticEffectSourceId = 123;
-
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-
-            JokeShopProcedures.PSYCHOTIC_EFFECT = psychoticEffectSourceId;
 
             victimItems = new List<Item>();
             emptyItemList = new List<Item>();
@@ -79,12 +75,6 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.MobilityType, PvPStatics.MobilityInanimate)
                 .With(i => i.ItemSource, itemSource)
                 .BuildAndSave();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            JokeShopProcedures.PSYCHOTIC_EFFECT = null;
         }
 
         [Test]
@@ -217,7 +207,7 @@ namespace TT.Tests.Items.Commands
                 .BuildAndSave();
 
             var effectSourcePsychotic = new EffectSourceBuilder()
-                .With(e => e.Id, psychoticEffectSourceId)
+                .With(e => e.Id, JokeShopProcedures.PSYCHOTIC_EFFECT)
                 .BuildAndSave();
 
             var effectPsychotic = new EffectBuilder()

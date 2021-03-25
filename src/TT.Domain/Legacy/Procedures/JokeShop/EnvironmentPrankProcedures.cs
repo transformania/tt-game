@@ -174,11 +174,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (delta < 0)
             {
-                return "The antique cash register on the counter rattles and jangles.  The next thing you know it's pinched {delta} of your Arpeyjis!";
+                return $"The antique cash register on the counter rattles and jangles.  The next thing you know it's pinched {delta} of your Arpeyjis!";
             }
             else
             {
-                return "The antique cash register on the counter rattles and jangles.  The next thing you know it's refunded you {delta} Arpeyjis!  Lindella's never done that!";
+                return $"The antique cash register on the counter rattles and jangles.  The next thing you know it's refunded you {delta} Arpeyjis!  Lindella's never done that!";
             }
         }
 
@@ -318,7 +318,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"A spellbook flies off the shelf and lands open on the wooden desk in front of you.  As you look at it you discover the secret incantations for the spells {ListifyHelper.Listify(learnt)}!";
+            return $"A spellbook flies off the shelf and lands open on the wooden desk in front of you.  As you look at it you discover the secret incantations for the spells {ListifyHelper.Listify(learnt, true)}!";
         }
 
         private static string UnlearnSpell(Player player, Random rand = null)
@@ -475,7 +475,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (root)
             {
                 CharacterPrankProcedures.GiveEffect(player, JokeShopProcedures.ROOT_EFFECT);
-                root = JokeShopProcedures.ROOT_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player.Id, JokeShopProcedures.ROOT_EFFECT.Value);
+                root = EffectProcedures.PlayerHasActiveEffect(player.Id, JokeShopProcedures.ROOT_EFFECT);
             }
 
             if (curse && !root)
@@ -936,7 +936,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             playerRepo.SavePlayer(player);
 
             var moreOrLess = (delta > 0) ? "more" : "less";
-            return "The aura of the Joke Shop has made you {moreOrLess} efficient at cleansing and meditating this turn!";
+            return $"The aura of the Joke Shop has made you {moreOrLess} efficient at cleansing and meditating this turn!";
         }
 
         public static string BlockCleanseMeditates(Player player)

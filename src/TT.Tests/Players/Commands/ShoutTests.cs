@@ -16,22 +16,6 @@ namespace TT.Tests.Players.Commands
     [TestFixture]
     public class ShoutTests : TestBase
     {
-        private int hushedEffectSourceId = 123;
-
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            CharacterPrankProcedures.HUSHED_EFFECT = hushedEffectSourceId;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            CharacterPrankProcedures.HUSHED_EFFECT = null;
-        }
-
         [Test]
         public void should_shout()
         {
@@ -67,7 +51,7 @@ namespace TT.Tests.Players.Commands
                .BuildAndSave();
 
             var effectSourceHushed = new EffectSourceBuilder()
-                .With(e => e.Id, hushedEffectSourceId)
+                .With(e => e.Id, CharacterPrankProcedures.HUSHED_EFFECT)
                 .BuildAndSave();
 
             var effectHushed = new EffectBuilder()

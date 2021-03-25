@@ -87,70 +87,45 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var output = new List<ChallengeType>();
 
-            var effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_1");
+            output.Add(new ChallengeType{
+                EffectSourceId = 220,  // Challenged I
+                Duration = 5,
+                MaxParts = 1,
+                MaxDifficulty = 2,
+                Penalty = false,
+            });
 
-            if (effectSourceId.HasValue)
-            {
-                output.Add(new ChallengeType{
-                    EffectSourceId = effectSourceId.Value,
-                    Duration = 5,
-                    MaxParts = 1,
-                    MaxDifficulty = 2,
-                    Penalty = false,
-                });
-            }
+            output.Add(new ChallengeType{
+                EffectSourceId = 221,  // Challenged II
+                Duration = 10,
+                MaxParts = 2,
+                MaxDifficulty = 5,
+                Penalty = false,
+            });
 
-            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_2");
+            output.Add(new ChallengeType{
+                EffectSourceId = 223,  // Challenged III
+                Duration = 20,
+                MaxParts = 3,
+                MaxDifficulty = 8,
+                Penalty = true,
+            });
 
-            if (effectSourceId.HasValue)
-            {
-                output.Add(new ChallengeType{
-                    EffectSourceId = effectSourceId.Value,
-                    Duration = 10,
-                    MaxParts = 2,
-                    MaxDifficulty = 5,
-                    Penalty = false,
-                });
-            }
+            output.Add(new ChallengeType{
+                EffectSourceId = 224,  // Challenged IV
+                Duration = 60,
+                MaxParts = 3,
+                MaxDifficulty = 13,
+                Penalty = false,
+            });
 
-            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_3");
-
-            if (effectSourceId.HasValue)
-            {
-                output.Add(new ChallengeType{
-                    EffectSourceId = effectSourceId.Value,
-                    Duration = 20,
-                    MaxParts = 3,
-                    MaxDifficulty = 8,
-                    Penalty = true,
-                });
-            }
-
-            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_4");
-
-            if (effectSourceId.HasValue)
-            {
-                output.Add(new ChallengeType{
-                    EffectSourceId = effectSourceId.Value,
-                    Duration = 60,
-                    MaxParts = 3,
-                    MaxDifficulty = 13,
-                    Penalty = false,
-                });
-            }
-
-            effectSourceId = JokeShopProcedures.EffectWithName("effect_challenged_5");
-
-            if (effectSourceId.HasValue)
-            {
-                output.Add(new ChallengeType{
-                    EffectSourceId = effectSourceId.Value,
-                    Duration = 120,
-                    MaxParts = 3,
-                    MaxDifficulty = 21,
-                    Penalty = true,
-                });
-            }
+            output.Add(new ChallengeType{
+                EffectSourceId = 225,  // Challenged V
+                Duration = 120,
+                MaxParts = 3,
+                MaxDifficulty = 21,
+                Penalty = true,
+            });
 
             return output;
         }

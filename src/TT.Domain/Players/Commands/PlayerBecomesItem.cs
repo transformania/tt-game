@@ -65,11 +65,11 @@ namespace TT.Domain.Players.Commands
 
                 var activePlayer = (victim.BotId == AIStatics.ActivePlayerBotId);
 
-                if (!activePlayer && JokeShopProcedures.PSYCHOTIC_EFFECT.HasValue)
+                if (!activePlayer)
                 {
                     // Also consider players with a temporary change in bot ID to be active so not to autolock
                     activePlayer = ctx.AsQueryable<Effect>()
-                                    .Where(e => e.EffectSource.Id == JokeShopProcedures.PSYCHOTIC_EFFECT.Value &&
+                                    .Where(e => e.EffectSource.Id == JokeShopProcedures.PSYCHOTIC_EFFECT &&
                                                 e.Owner.Id == victim.Id &&
                                                 e.Duration > 0)
                                     .Any();

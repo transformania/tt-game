@@ -75,8 +75,7 @@ namespace TT.Web.Controllers
                 itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
 
                 if (itemMe == null && me.BotId == AIStatics.ActivePlayerBotId &&
-                    JokeShopProcedures.AUTO_RESTORE_EFFECT.HasValue &&
-                    !EffectProcedures.PlayerHasActiveEffect(me.Id, JokeShopProcedures.AUTO_RESTORE_EFFECT.Value))
+                    !EffectProcedures.PlayerHasActiveEffect(me.Id, JokeShopProcedures.AUTO_RESTORE_EFFECT))
                 {
                     // If an inanimate player is stuck without a corresponding item, restore them
                     CharacterPrankProcedures.UndoTemporaryForm(me.Id);
@@ -333,8 +332,7 @@ namespace TT.Web.Controllers
 
             loadtime += "Start get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             var effects = EffectProcedures.GetPlayerEffects2(me.Id);
-            output.Blind = CharacterPrankProcedures.BLINDED_EFFECT.HasValue &&
-                           effects.Where(e => e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT.Value &&
+            output.Blind = effects.Where(e => e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT &&
                                               e.dbEffect.Duration > 0).Any();
             loadtime += "End get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
@@ -602,12 +600,10 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var effects = EffectProcedures.GetPlayerEffects2(me.Id);
 
-            var dizzy = CharacterPrankProcedures.DIZZY_EFFECT.HasValue &&
-                effects.Any(e => e.dbEffect.Duration > 0 &&
-                                 e.dbEffect.EffectSourceId == CharacterPrankProcedures.DIZZY_EFFECT.Value);
-            var blind = CharacterPrankProcedures.BLINDED_EFFECT.HasValue &&
-                effects.Any(e => e.dbEffect.Duration > 0 &&
-                                 e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT.Value);
+            var dizzy = effects.Any(e => e.dbEffect.Duration > 0 &&
+                                         e.dbEffect.EffectSourceId == CharacterPrankProcedures.DIZZY_EFFECT);
+            var blind = effects.Any(e => e.dbEffect.Duration > 0 &&
+                                         e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT);
 
             string direction = null;
             var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
@@ -3083,8 +3079,7 @@ namespace TT.Web.Controllers
             ViewBag.MapY = here.Y;
 
             // Don't reveal location to blind players
-            if (CharacterPrankProcedures.BLINDED_EFFECT.HasValue &&
-                EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.BLINDED_EFFECT.Value))
+            if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.BLINDED_EFFECT))
             {
                 ViewBag.MapX = 999;
                 ViewBag.MapY = 999;
@@ -3538,7 +3533,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not been hushed
-            if (CharacterPrankProcedures.HUSHED_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.HUSHED_EFFECT.Value))
+            if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.HUSHED_EFFECT))
             {
                 TempData["Error"] = "You have been hushed by a powerful mage and cannot currently shout!";
                 TempData["SubError"] = "You will be able to shout again when the effect has worn off.";

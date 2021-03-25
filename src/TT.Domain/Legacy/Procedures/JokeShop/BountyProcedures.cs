@@ -13,7 +13,19 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class BountyProcedures
     {
-        private static readonly List<EffectSourceMapping> MAPPINGS = BountyEffects();
+        private static readonly EffectSourceMapping[] MAPPINGS = {
+            new EffectSourceMapping (209, PvPStatics.ItemType_Accessory),
+            new EffectSourceMapping (210, PvPStatics.ItemType_Consumable_Reuseable),
+            new EffectSourceMapping (211, PvPStatics.ItemType_Shirt),
+            new EffectSourceMapping (212, PvPStatics.ItemType_Undershirt),
+            new EffectSourceMapping (213, PvPStatics.ItemType_Pants),
+            new EffectSourceMapping (214, PvPStatics.ItemType_Underpants),
+            new EffectSourceMapping (215, PvPStatics.ItemType_Hat),
+            new EffectSourceMapping (216, PvPStatics.ItemType_Shoes),
+            new EffectSourceMapping (217, PvPStatics.ItemType_Pet),
+            new EffectSourceMapping (218, PvPStatics.MobilityFull),
+            new EffectSourceMapping (219, JokeShopProcedures.LIMITED_MOBILITY),
+        };
 
         private const int TURNS_OF_BOUNTY = 30;
         private const int TURNS_OF_IMMUNITY = 30;
@@ -30,21 +42,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 EffectSourceId = id;
                 Category = category;
             }
-        }
-
-        private static List<EffectSourceMapping> BountyEffects()
-        {
-            var prefix = "effect_bounty_";
-            IEffectRepository effectRepo = new EFEffectRepository();
-            var effects = effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).ToList();
-
-            var list = new List<EffectSourceMapping>();
-            foreach (var effect in effects)
-            {
-                list.Add(new EffectSourceMapping(effect.Id, effect.dbName.Substring(prefix.Length)));
-            }
-
-            return list;
         }
 
         internal static int? PlaceBounty(Player player, Random rand = null)

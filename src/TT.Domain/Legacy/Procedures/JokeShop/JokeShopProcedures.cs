@@ -14,20 +14,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class JokeShopProcedures
     {
-        // These fields back properies populated by the database
-        private static int? FirstWarningEffect = null;
-        private static int? SecondWarningEffect = null;
-        private static int? BannedFromJokeShopEffect = null;
-
-        private static int? RootEffect = null;
-
-        private static int? AutoRestoreEffect = null;
-        private static int? InstinctEffect = null;
-        private static int? PsychoticEffect = null;
-        private static int? InvisibilityEffect = null;
-
-        private static List<FormDetail> StableForms = null;
-
         // Category to separate full from limited mobility animate forms
         public const string LIMITED_MOBILITY = "immobile";
 
@@ -44,144 +30,17 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static readonly int[] GHOSTS = { 300, 456, 633, 1153, 1210 };
         public static readonly int[] MANA_FORMS = { 834, 1149 };
 
-        // Effects supporting the Joke Shop mechanics
-        // Try to contact DB once in a threadsafe way and cache results/failure
-        public static int? FIRST_WARNING_EFFECT
-        {
-            get
-            {
-                if (!FirstWarningEffect.HasValue)
-                {
-                    FirstWarningEffect = EffectWithName("effect_Joke_Shop_Warned") ?? -1;
-                }
+        // Effect sources supporting the Joke Shop mechanics
+        public const int FIRST_WARNING_EFFECT = 199;
+        public const int SECOND_WARNING_EFFECT = 200;
+        public const int BANNED_FROM_JOKE_SHOP_EFFECT = 201;
 
-                return FirstWarningEffect.Value == -1 ? null : FirstWarningEffect;
-            }
-            set
-            {
-                FirstWarningEffect = value;
-            }
-        }
-
-        public static int? SECOND_WARNING_EFFECT
-        {
-            get
-            {
-                if (!SecondWarningEffect.HasValue)
-                {
-                    SecondWarningEffect = EffectWithName("effect_Joke_Shop_Warned_Twice") ?? -1;
-                }
-
-                return SecondWarningEffect.Value == -1 ? null : SecondWarningEffect;
-            }
-            set
-            {
-                SecondWarningEffect = value;
-            }
-        }
-
-        public static int? BANNED_FROM_JOKE_SHOP_EFFECT
-        {
-            get
-            {
-                if (!BannedFromJokeShopEffect.HasValue)
-                {
-                    BannedFromJokeShopEffect = EffectWithName("effect_Joke_Shop_Banned") ?? -1;
-                }
-
-                return BannedFromJokeShopEffect.Value == -1 ? null : BannedFromJokeShopEffect;
-            }
-            set
-            {
-                BannedFromJokeShopEffect = value;
-            }
-        }
-
-        // Specific and behavior-altering effects
-        public static int? ROOT_EFFECT
-        {
-            get
-            {
-                if (!RootEffect.HasValue)
-                {
-                    RootEffect = EffectWithName("effect_Joke_Shop_Penalty_Mobility") ?? -1;
-                }
-
-                return RootEffect.Value == -1 ? null : RootEffect;
-            }
-            set
-            {
-                RootEffect = value;
-            }
-        }
-
-        public static int? AUTO_RESTORE_EFFECT
-        {
-            get
-            {
-                if (!AutoRestoreEffect.HasValue)
-                {
-                    AutoRestoreEffect = EffectWithName("effect_Joke_Shop_Auto_Restore") ?? -1;
-                }
-
-                return AutoRestoreEffect.Value == -1 ? null : AutoRestoreEffect;
-            }
-            set
-            {
-                AutoRestoreEffect = value;
-            }
-        }
-
-        public static int? INSTINCT_EFFECT
-        {
-            get
-            {
-                if (!InstinctEffect.HasValue)
-                {
-                    InstinctEffect = EffectWithName("effect_Joke_Shop_MC_Instinct") ?? -1;
-                }
-
-                return InstinctEffect.Value == -1 ? null : InstinctEffect;
-            }
-            set
-            {
-                InstinctEffect = value;
-            }
-        }
-
-        public static int? PSYCHOTIC_EFFECT
-        {
-            get
-            {
-                if (!PsychoticEffect.HasValue)
-                {
-                    PsychoticEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Psychotic") ?? -1;
-                }
-
-                return PsychoticEffect == -1 ? null : PsychoticEffect;
-            }
-            set
-            {
-                PsychoticEffect = value;
-            }
-        }
-
-        public static int? INVISIBILITY_EFFECT
-        {
-            get
-            {
-                if (!InvisibilityEffect.HasValue)
-                {
-                    InvisibilityEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Invisible_PvP") ?? -1;
-                }
-
-                return InvisibilityEffect == -1 ? null : InvisibilityEffect;
-            }
-            set
-            {
-                InvisibilityEffect = value;
-            }
-        }
+        // Specific and behavior-altering effect sources
+        public const int ROOT_EFFECT = 250;
+        public const int AUTO_RESTORE_EFFECT = 202;
+        public const int INSTINCT_EFFECT = 203;
+        public const int PSYCHOTIC_EFFECT = 207;
+        public const int INVISIBILITY_EFFECT = 208;
 
         // This list of forms is intended to be 'stable' within a run so that a calulation will always determine the same form.
         internal static List<FormDetail> STABLE_FORMS
@@ -200,6 +59,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 StableForms = value;
             }
         }
+
+        private static List<FormDetail> StableForms = null;
 
         #region Core mechanics and utilities
 
@@ -227,107 +88,94 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return STABLE_FORMS.Where(predicate).ToList();
         }
 
-        public static int? EffectWithName(string dbName)
-        {
-            IEffectRepository effectRepo = new EFEffectRepository();
-            return effectRepo.DbStaticEffects.Where(e => e.dbName == dbName).FirstOrDefault()?.Id;
-        }
-
-        public static List<int> EffectsWithNamesStarting(string prefix)
-        {
-            IEffectRepository effectRepo = new EFEffectRepository();
-            return effectRepo.DbStaticEffects.Where(e => e.dbName.StartsWith(prefix)).Select(e => e.Id).ToList();
-        }
-
         internal static void RunEffectExpiryActions(List<Effect> expiringEffects)
         {
-            // Undo temporary TFs
-            if (AUTO_RESTORE_EFFECT.HasValue)
-            {
-                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
-                foreach (var player in playersToRestore)
-                {
-                    CharacterPrankProcedures.UndoTemporaryForm(player);
-                }
-            }
+            UndoTemporaryTFs(expiringEffects);
 
-            // Undo temporary psychopath TF
-            if (PSYCHOTIC_EFFECT.HasValue)
-            {
-                var playerRepo = new EFPlayerRepository();
-                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
+            UndoTemporaryPsychopathTFs(expiringEffects);
 
-                foreach (var player in playersToRestore)
-                {
-                    CharacterPrankProcedures.UndoPsychotic(player);
-                }
-            }
-
-            // Undo temporary invisibility
-            if (INVISIBILITY_EFFECT.HasValue)
-            {
-                var playerRepo = new EFPlayerRepository();
-                var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT.Value && e.Duration == 0).Select(e => e.OwnerId);
-
-                // Defensively revert any invisible players without the effect too
-                if (PvPStatics.LastGameTurn % 5 == 2)
-                {
-                    var invisiblePlayers = playerRepo.Players.Where(p => !playersToRestore.Contains(p.Id) &&
-                                                                         p.GameMode == (int)GameModeStatics.GameModes.Invisible)
-                                                             .Select(p => p.Id);
-
-                    foreach (var invisiblePlayer in invisiblePlayers)
-                    {
-                        if (!EffectProcedures.PlayerHasActiveEffect(invisiblePlayer, INVISIBILITY_EFFECT.Value))
-                        {
-                            // Player is somehow in invisible limbo
-                            playersToRestore = playersToRestore.Append(invisiblePlayer);
-                        }
-                    }
-
-                }
-
-                // Restore visibility
-                foreach (var player in playersToRestore)
-                {
-                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
-
-                    DomainRegistry.Repository.Execute(new ChangeGameMode
-                    {
-                        MembershipId = user.MembershipId,
-                        GameMode = (int)GameModeStatics.GameModes.PvP,
-                        Force = true
-                    });
-
-                    PlayerLogProcedures.AddPlayerLog(player, "Your cloak of invisibility starts to fade, leaving you visible to the world once more.", true);
-                    LocationLogProcedures.AddLocationLog(user.dbLocationName, $"{user.GetFullName()} seems to appear from nowhere!");
-                }
-
-                // Ensure no items have been lost with a weird game mode
-                if (playersToRestore.Any())
-                {
-                    var itemRepo = new EFItemRepository();
-                    var itemsInLimbo = itemRepo.Items.Where(i => i.PvPEnabled == (int)GameModeStatics.GameModes.Invisible);
-
-                    foreach (var item in itemsInLimbo)
-                    {
-                        item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
-                        itemRepo.SaveItem(item);
-                    }
-                }
-            }
+            UndoTemporaryInvisibility(expiringEffects);
 
             // Update player challenges (for players on their last chance to pass or fail)
             ChallengeProcedures.CheckExpiringChallenges(expiringEffects);
         }
 
+        private static void UndoTemporaryTFs(List<Effect> expiringEffects)
+        {
+            var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == AUTO_RESTORE_EFFECT && e.Duration == 0).Select(e => e.OwnerId);
+            foreach (var player in playersToRestore)
+            {
+                CharacterPrankProcedures.UndoTemporaryForm(player);
+            }
+        }
+
+        private static void UndoTemporaryPsychopathTFs(List<Effect> expiringEffects)
+        {
+            var playerRepo = new EFPlayerRepository();
+            var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == PSYCHOTIC_EFFECT && e.Duration == 0).Select(e => e.OwnerId);
+
+            foreach (var player in playersToRestore)
+            {
+                CharacterPrankProcedures.UndoPsychotic(player);
+            }
+        }
+
+        private static void UndoTemporaryInvisibility(List<Effect> expiringEffects)
+        {
+            var playerRepo = new EFPlayerRepository();
+            var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT && e.Duration == 0).Select(e => e.OwnerId);
+
+            // Defensively revert any invisible players without the effect too
+            if (PvPStatics.LastGameTurn % 5 == 2)
+            {
+                var invisiblePlayers = playerRepo.Players.Where(p => !playersToRestore.Contains(p.Id) &&
+                                                                     p.GameMode == (int)GameModeStatics.GameModes.Invisible)
+                                                         .Select(p => p.Id);
+
+                foreach (var invisiblePlayer in invisiblePlayers)
+                {
+                    if (!EffectProcedures.PlayerHasActiveEffect(invisiblePlayer, INVISIBILITY_EFFECT))
+                    {
+                        // Player is somehow in invisible limbo
+                        playersToRestore = playersToRestore.Append(invisiblePlayer);
+                    }
+                }
+            }
+
+            // Restore visibility
+            foreach (var player in playersToRestore)
+            {
+                var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
+
+                DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = user.MembershipId,
+                    GameMode = (int)GameModeStatics.GameModes.PvP,
+                    Force = true
+                });
+
+                PlayerLogProcedures.AddPlayerLog(player, "Your cloak of invisibility starts to fade, leaving you visible to the world once more.", true);
+                LocationLogProcedures.AddLocationLog(user.dbLocationName, $"{user.GetFullName()} seems to appear from nowhere!");
+            }
+
+            // Ensure no items have been lost with a weird game mode
+            if (playersToRestore.Any())
+            {
+                var itemRepo = new EFItemRepository();
+                var itemsInLimbo = itemRepo.Items.Where(i => i.PvPEnabled == (int)GameModeStatics.GameModes.Invisible);
+
+                foreach (var item in itemsInLimbo)
+                {
+                    item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
+                    itemRepo.SaveItem(item);
+                }
+            }
+        }
+
         internal static void RunEffectActions(List<Effect> effects)
         {
-            if (INSTINCT_EFFECT.HasValue)
-            {
-                var playersToControl = effects.Where(e => e.EffectSourceId == INSTINCT_EFFECT.Value).Select(e => e.OwnerId).ToList();
-                InstinctProcedures.ActOnInstinct(playersToControl, new Random());
-            }
+            var playersToControl = effects.Where(e => e.EffectSourceId == INSTINCT_EFFECT).Select(e => e.OwnerId).ToList();
+            InstinctProcedures.ActOnInstinct(playersToControl, new Random());
         }
 
         // Safety net - allows players to revert some effects on them
@@ -1286,24 +1134,19 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         public static bool PlayerHasBeenWarned(Player player)
         {
-            return FIRST_WARNING_EFFECT.HasValue && EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT.Value);
+            return EffectProcedures.PlayerHasEffect(player, FIRST_WARNING_EFFECT);
         }
 
         public static bool PlayerHasBeenWarnedTwice(Player player)
         {
-            return SECOND_WARNING_EFFECT.HasValue && EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT.Value);
+            return EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT);
         }
 
         public static string EnsurePlayerIsWarned(Player player)
         {
             if (!PlayerHasBeenWarned(player))
             {
-                if (!FIRST_WARNING_EFFECT.HasValue)
-                {
-                    return "Bug: Unable to give player first warning";
-                }
-
-                var logMessage = EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT.Value, player);
+                var logMessage = EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
                 return logMessage;
             }
@@ -1323,12 +1166,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (!PlayerHasBeenWarnedTwice(player))
             {
-                if (!SECOND_WARNING_EFFECT.HasValue)
-                {
-                    return "Bug: Unable to give player first warning";
-                }
-
-                var logMessage = EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT.Value, player);
+                var logMessage = EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, true);
                 return logMessage;
             }
@@ -1339,22 +1177,17 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         public static bool CharacterIsBanned(Player player)
         {
-            return BANNED_FROM_JOKE_SHOP_EFFECT.HasValue && EffectProcedures.PlayerHasActiveEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT.Value);
+            return EffectProcedures.PlayerHasActiveEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT);
         }
 
         private static string BanCharacter(Player player)
         {
-            if (!BANNED_FROM_JOKE_SHOP_EFFECT.HasValue)
-            {
-                return "Bug: Unable to ban player";
-            }
-
-            if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT.Value))
+            if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT))
             {
                 return null;
             }
 
-            var message = EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT.Value, player);
+            var message = EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
             var kickedOutMessage = EjectCharacter(player);
 
             return $"{message}  {kickedOutMessage}";

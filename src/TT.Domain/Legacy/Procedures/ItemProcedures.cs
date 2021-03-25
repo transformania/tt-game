@@ -1076,7 +1076,7 @@ namespace TT.Domain.Procedures
         {
             var rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != PvPStatics.ItemType_Consumable && !i.IsUnique);
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != PvPStatics.ItemType_Consumable && i.ItemType != PvPStatics.ItemType_Rune && !i.IsUnique);
             return item.ElementAt(rand.Next(0, item.Count()));
         }
 

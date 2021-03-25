@@ -5,7 +5,6 @@ namespace TT.Domain.Models
     public class DbStaticEffect
     {
         public int Id { get; set; }
-        public string dbName { get; set; }
 
         public string FriendlyName { get; set; }
         public string Description { get; set; }

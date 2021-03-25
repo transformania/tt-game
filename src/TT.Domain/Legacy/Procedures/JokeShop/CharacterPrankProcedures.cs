@@ -14,155 +14,18 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class CharacterPrankProcedures
     {
-        // These fields back properies populated by the database
-        private static List<int> BoostEffects = null;
-        private static List<int> PenaltyEffects = null;
+        // Stat boosting effect sourec IDs
+        public static readonly int[] BOOST_EFFECTS = { 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239 };
+        public static readonly int[] PENALTY_EFFECTS = { 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250 };
 
-        private static int? SneakReveal1 = null;
-        private static int? SneakReveal2 = null;
-        private static int? SneakReveal3 = null;
+        // Ids of specific and behavior-altering effect sources
+        public const int SNEAK_REVEAL_1 = 226;
+        public const int SNEAK_REVEAL_2 = 227;
+        public const int SNEAK_REVEAL_3 = 228;
 
-        private static int? BlindedEffect = null;
-        private static int? DizzyEffect = null;
-        private static int? HushedEffect = null;
-
-        // Stat boosting effects
-        public static List<int> BOOST_EFFECTS
-        {
-            get
-            {
-                if (BoostEffects == null)
-                {
-                    BoostEffects = JokeShopProcedures.EffectsWithNamesStarting("effect_Joke_Shop_Boost_") ?? new List<int>();
-                }
-
-                return BoostEffects;
-            }
-            set
-            {
-                BoostEffects = value;
-            }
-        }
-
-        public static List<int> PENALTY_EFFECTS
-        {
-            get
-            {
-                if (PenaltyEffects == null)
-                {
-                    PenaltyEffects = JokeShopProcedures.EffectsWithNamesStarting("effect_Joke_Shop_Penalty_") ?? new List<int>();
-                }
-
-                return PenaltyEffects;
-            }
-            set
-            {
-                PenaltyEffects = value;
-            }
-        }
-
-        // Specific and behavior-altering effects
-        public static int? SNEAK_REVEAL_1
-        {
-            get
-            {
-                if (!SneakReveal1.HasValue)
-                {
-                    SneakReveal1 = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Track_1") ?? -1;
-                }
-
-                return SneakReveal1.Value == -1 ? null : SneakReveal1;
-            }
-            set
-            {
-                SneakReveal1 = value;
-            }
-        }
-
-        public static int? SNEAK_REVEAL_2
-        {
-            get
-            {
-                if (!SneakReveal2.HasValue)
-                {
-                    SneakReveal2 = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Track_2") ?? -1;
-                }
-
-                return SneakReveal2.Value == -1 ? null : SneakReveal2;
-            }
-            set
-            {
-                SneakReveal2 = value;
-            }
-        }
-
-        public static int? SNEAK_REVEAL_3
-        {
-            get
-            {
-                if (!SneakReveal3.HasValue)
-                {
-                    SneakReveal3 = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Track_3") ?? -1;
-                }
-
-                return SneakReveal3.Value == -1 ? null : SneakReveal3;
-            }
-            set
-            {
-                SneakReveal3 = value;
-            }
-        }
-
-        public static int? BLINDED_EFFECT
-        {
-            get
-            {
-                if (!BlindedEffect.HasValue)
-                {
-                    BlindedEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Blinded") ?? -1;
-                }
-
-                return BlindedEffect == -1 ? null : BlindedEffect;
-            }
-            set
-            {
-                BlindedEffect = value;
-            }
-        }
-
-        public static int? DIZZY_EFFECT
-        {
-            get
-            {
-                if (!DizzyEffect.HasValue)
-                {
-                    DizzyEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Dizzy") ?? -1;
-                }
-
-                return DizzyEffect == -1 ? null : DizzyEffect;
-            }
-            set
-            {
-                DizzyEffect = value;
-            }
-        }
-
-        public static int? HUSHED_EFFECT
-        {
-            get
-            {
-                if (!HushedEffect.HasValue)
-                {
-                    HushedEffect = JokeShopProcedures.EffectWithName("effect_Joke_Shop_Hushed") ?? -1;
-                }
-
-                return HushedEffect == -1 ? null : HushedEffect;
-            }
-            set
-            {
-                HushedEffect = value;
-            }
-        }
+        public const int BLINDED_EFFECT = 204;
+        public const int DIZZY_EFFECT = 205;
+        public const int HUSHED_EFFECT = 206;
 
         #region Effects pranks
 
@@ -259,14 +122,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string GiveEffect(Player player, int? effectSourceId, int duration = 3)
+        public static string GiveEffect(Player player, int effectSourceId, int duration = 3)
         {
-            if (!effectSourceId.HasValue || EffectProcedures.PlayerHasEffect(player, effectSourceId.Value))
+            if (EffectProcedures.PlayerHasEffect(player, effectSourceId))
             {
                 return null;
             }
 
-            return EffectProcedures.GivePerkToPlayer(effectSourceId.Value, player, Duration: duration, Cooldown: duration);
+            return EffectProcedures.GivePerkToPlayer(effectSourceId, player, Duration: duration, Cooldown: duration);
         }
 
         public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null)
@@ -331,11 +194,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string MakePsychotic(Player player)
         {
-            if (!JokeShopProcedures.PSYCHOTIC_EFFECT.HasValue)
-            {
-                return null;
-            }
-
             var message = GiveEffect(player, JokeShopProcedures.PSYCHOTIC_EFFECT, 3);
 
             // Give player the psychopath AI until the effect expires
@@ -366,7 +224,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string MakeInvisible(Player player)
         {
-            if (player.GameMode != (int)GameModeStatics.GameModes.PvP || !JokeShopProcedures.INVISIBILITY_EFFECT.HasValue)
+            if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
             {
                 return null;
             }
@@ -558,7 +416,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration);
 
                 // If no autorestore we can't do temporary
-                if (!JokeShopProcedures.AUTO_RESTORE_EFFECT.HasValue || !EffectProcedures.PlayerHasActiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT.Value))
+                if (!EffectProcedures.PlayerHasActiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT))
                 {
                     return null;
                 }

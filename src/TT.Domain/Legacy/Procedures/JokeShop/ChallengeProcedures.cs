@@ -239,7 +239,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return;
             }
 
-            if (challenge.Satisfied(player))
+            if (player.dbLocationName == LocationsStatics.JOKE_SHOP && challenge.Satisfied(player))
             {
                 challenge.GiveReward(player);
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Congratulations!</b>  You have passed a challenge and earn a reward of <b>{challenge.Reward}</b>!", true);

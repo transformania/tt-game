@@ -315,11 +315,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 return MischievousPrank(player, rand);
             }
-            else if (roll < 95)  // 5%
+            else if (roll < 96)  // 6%
             {
                 return MeanPrank(player, rand);
             }
-            else  // 5%
+            else  // 4%
             {
                 return BanCharacter(player);
             }
@@ -1182,12 +1182,20 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string BanCharacter(Player player)
         {
+            var warning = EnsurePlayerIsWarned(player);
+
+            if (!warning.IsNullOrEmpty())
+            {
+                return warning;
+            }
+
             if (EffectProcedures.PlayerHasEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT))
             {
                 return null;
             }
 
-            var message = EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
+            var message = PvPStatics.ChaosMode ? EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player, 5, 10)  // Faster in chaos
+                                               : EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
             var kickedOutMessage = EjectCharacter(player);
 
             return $"{message}  {kickedOutMessage}";

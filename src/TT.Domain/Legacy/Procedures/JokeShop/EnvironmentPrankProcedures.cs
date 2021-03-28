@@ -757,11 +757,22 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
+            if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
+            {
+                return null;
+            }
+
+            if (ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped) > PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory)
+            {
+                // Carryiing too much
+                return null;
+            }
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
             var pathTiles = PathfindingProcedures.GetMovementPath(start, end);
-            var costPerTile = 1 - target.MoveActionPointDiscount;
+            var costPerTile = Math.Max(0, 1 - target.MoveActionPointDiscount);
 
             // Cap distance, plus don't exceed number of tiles or available AP
             var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
@@ -781,13 +792,24 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string WanderAimlessly(Player player, Random rand = null)
         {
+            if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
+            {
+                return null;
+            }
+
+            if (ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped) > PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory)
+            {
+                // Carryiing too much
+                return null;
+            }
+
             rand = rand ?? new Random();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             var name = target.GetFullName();
 
-            var costPerTile = 1 - target.MoveActionPointDiscount;
+            var costPerTile = Math.Max(0, 1 - target.MoveActionPointDiscount);
             var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
             var spacesToMove = (int)Math.Min(maxDistance, rand.Next(10, 16));
 

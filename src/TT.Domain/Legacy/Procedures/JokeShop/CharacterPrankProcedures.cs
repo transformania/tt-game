@@ -892,8 +892,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 mindControl = true;
                 message = "You feel a sudden and irrepressible compulsion to start removing your clothes.  Is the shop too hot, or are you just doing it for attention and to show off your body to anyone who will watch?  Only you know...";
 
-                firstName = "Stripper";
                 lastName = rand.Next(2) == 0 ? firstName : lastName;
+                firstName = "Stripper";
             }
             else if (roll == 7)  // Renames
             {

@@ -300,7 +300,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank search
-            if (rand.Next(5) < 3)  // Normal search 60% of the time, else attempt a prank
+            if (rand.Next(100) < 85)  // Normal search 85% of the time, else attempt a prank
             {
                 return null;
             }

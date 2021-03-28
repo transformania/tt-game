@@ -779,7 +779,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var spacesToMove = (int)Math.Min(maxDistance, pathTiles.Count());
             spacesToMove = Math.Min(maxSpacesToMove, spacesToMove);
 
-            if (spacesToMove == 0)
+            if (spacesToMove <= 0)
             {
                 return null;
             }

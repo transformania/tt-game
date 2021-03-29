@@ -775,7 +775,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var costPerTile = Math.Max(0, 1 - target.MoveActionPointDiscount);
 
             // Cap distance, plus don't exceed number of tiles or available AP
-            var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
+            var maxDistance = (costPerTile == 0) ? 200 : Math.Floor(target.ActionPoints / costPerTile);
             var spacesToMove = (int)Math.Min(maxDistance, pathTiles.Count());
             spacesToMove = Math.Min(maxSpacesToMove, spacesToMove);
 
@@ -810,7 +810,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var name = target.GetFullName();
 
             var costPerTile = Math.Max(0, 1 - target.MoveActionPointDiscount);
-            var maxDistance = Math.Floor(target.ActionPoints / costPerTile);
+            var maxDistance = (costPerTile == 0) ? 200 : Math.Floor(target.ActionPoints / costPerTile);
             var spacesToMove = (int)Math.Min(maxDistance, rand.Next(10, 16));
 
             string nextTileId = player.dbLocationName;

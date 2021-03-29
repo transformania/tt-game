@@ -279,7 +279,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         LocationLogProcedures.AddLocationLog(stoppedAt, $"{catPlayer.GetFullName()} lunges at a rodent, but {rodentPlayer.GetFullName()} is too quick and evades the cat's attack!</b>");
 
                         PlayerLogProcedures.AddPlayerLog(rodentId, $"{catPlayer.GetFullName()} jumps out at you, but you leap from their paws and deprive them of an easy snack!", true);
-                        PlayerLogProcedures.AddPlayerLog(catPlayer.Id, $"You prowl to <b><{here}</b>, creep up on {rodentPlayer.GetFullName()} and pounce!  But they're too quick and evade your clutches!", true);
+                        PlayerLogProcedures.AddPlayerLog(catPlayer.Id, $"You prowl to <b>{here}</b>, creep up on {rodentPlayer.GetFullName()} and pounce!  But they're too quick and evade your clutches!", true);
                     }
                     else if (stoppedAt != null)  // Cat moved, but didn't get to the rodent's location
                     {

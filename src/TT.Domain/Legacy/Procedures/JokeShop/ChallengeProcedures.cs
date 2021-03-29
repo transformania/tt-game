@@ -541,7 +541,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 var minMinutesOutOfCombat = 15;
                 var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * TurnTimesStatics.GetTurnLengthInSeconds() / 60 / 2);
-                maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, maxMinutesOutOfCombat);
+                maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, Math.Min(30, maxMinutesOutOfCombat));
 
                 var minutesToStayOutOfCombat = (int)die.Next(minMinutesOutOfCombat, maxMinutesOutOfCombat + 1);
 

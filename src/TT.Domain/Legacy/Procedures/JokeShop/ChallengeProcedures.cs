@@ -249,7 +249,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (effect.Duration == 0 && !challenge.Penalty.IsNullOrEmpty())
             {
                 challenge.GivePenalty(player);
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and are given a penalty of <b>{challenge.Reward}</b>!", true);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and are given a penalty of <b>{challenge.Penalty}</b>!", true);
             }
         }
 

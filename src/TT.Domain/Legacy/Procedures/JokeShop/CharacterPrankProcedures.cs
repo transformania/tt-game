@@ -211,6 +211,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+
+            if (user.BotId == AIStatics.ActivePlayerBotId)
+            {
+                return null;
+            }
+
             user.BotId = AIStatics.ActivePlayerBotId;
             playerRepo.SavePlayer(user);
 

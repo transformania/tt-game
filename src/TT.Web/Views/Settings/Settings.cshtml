@@ -66,7 +66,7 @@
 
         <p>You were last in combat <b>@Math.Abs(Math.Floor(Model.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes))</b> minutes ago.</p>
 
-        if (Model.Player.Mobility != PvPStatics.MobilityFull)
+        if (Model.Player.Mobility != PvPStatics.MobilityFull && Model.PlayerItem != null)
         {
             if (Model.TimeUntilReroll > 0)
             {

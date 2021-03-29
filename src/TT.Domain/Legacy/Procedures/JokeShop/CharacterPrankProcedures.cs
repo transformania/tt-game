@@ -280,7 +280,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var roll = rand.Next(100);
 
-            if (roll < 15)  // 10%
+            if (roll < 10)  // 10%
             {
                 return ImmobileTransform(player, rand.Next(2) == 0, rand);
             }

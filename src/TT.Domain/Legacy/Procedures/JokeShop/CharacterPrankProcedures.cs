@@ -506,12 +506,18 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            TryAnimateTransform(player, altForm.AltSexFormSourceId.Value);
+            if (!TryAnimateTransform(player, altForm.AltSexFormSourceId.Value))
+            {
+                return null;
+            }
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You suddenly became {altForm.Gender}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} suddenly became {altForm.Gender}.");
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            return $"Your body spasms in the way you have become accustomed to after being hit by an orb.  As you shake the dysphoria of your reproportioned form you cast your eyes down over your body.  Yup, {altForm.Gender} again, you think with a sigh.";
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"You suddenly became {newPlayer.Gender}.", false);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} suddenly became {newPlayer.Gender}.");
+
+            return $"Your body spasms in the way you have become accustomed to after being hit by an orb.  As you shake the dysphoria of your reproportioned form you cast your eyes down over your body.  Yup, {newPlayer.Gender} again, you think with a sigh.";
         }
 
         private static bool PlayerCanBeCloned(Player player)

@@ -512,7 +512,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            if (!TryAnimateTransform(player, altForm.AltSexFormSourceId.Value))
+            if (!TryAnimateTransform(player, altForm.AltSexFormSourceId.Value, false))
             {
                 return null;
             }
@@ -552,7 +552,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 var victim = candidates[rand.Next(candidates.Count())];
 
-                if (!PlayerCanBeCloned(victim) || !TryAnimateTransform(player, victim.FormSourceId))
+                if (!PlayerCanBeCloned(victim) || !TryAnimateTransform(player, victim.FormSourceId, false))
                 {
                     return null;
                 }
@@ -589,8 +589,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
 
                 // Swap forms
-                TryAnimateTransform(player, victim.FormSourceId);
-                TryAnimateTransform(victim, player.FormSourceId);
+                TryAnimateTransform(player, victim.FormSourceId, false);
+                TryAnimateTransform(victim, player.FormSourceId, false);
 
                 PlayerLogProcedures.AddPlayerLog(victim.Id, $"You have swapped bodies with {player.GetFullName()}!", true);
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have swapped bodies with {victim.GetFullName()}!", false);
@@ -984,7 +984,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "A shrieking laugh turns the air to ice, freezing you where you stand.  \"Now you're mine!\" comes a the bloodcurdling taunt of a witch directly above you!  You then feel your arms moving involuntarily, being hoisted up by your wrists as if on strings, forcing you to perform a little jig against your will.  \"I will control your body, and I will control your brain!\" cackles the voice from overhead.  You try to run free, but you can still hear that voice in your mind:  \"You're still mine, wherever you go, and you will behave as I have made you!\"  Then as a freak gust of wind hits, you start to feel.. different..";
         }
 
-        public static bool TryAnimateTransform(Player player, int formSourceId)
+        public static bool TryAnimateTransform(Player player, int formSourceId, bool logChanges = true)
         {
             // Require extra warning for SP players, who might want to keep their form
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
@@ -999,9 +999,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 buffs = ItemProcedures.GetPlayerBuffs(player)
             });
 
-            var form = FormStatics.GetForm(formSourceId);
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+            if (logChanges)
+            {
+                var form = FormStatics.GetForm(formSourceId);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+            }
 
             return true;
         }

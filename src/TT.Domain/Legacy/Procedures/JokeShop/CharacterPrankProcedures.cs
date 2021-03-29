@@ -604,9 +604,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var player = PlayerProcedures.GetPlayer(playerId);
 
-            // Avoid reverting form if player is in a mobile animate form
+            // Avoid reverting form if player is in a mobile animate form or has somehow rerolled
             var canRemove = false;
-            if (player.Mobility != PvPStatics.MobilityFull)
+            if (player.Mobility != PvPStatics.MobilityFull || player.BotId == AIStatics.RerolledPlayerBotId)
             {
                 canRemove = true;
             }

@@ -641,7 +641,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);
 
-            return "You accidentally spill some Classic Me rstorative lotion and revert to your base form, just as you remember it!  Right?";
+            return "You accidentally spill some Classic Me restorative lotion and revert to your base form, just as you remember it!  Right?";
         }
 
         private static string ChangeBaseForm(Player player, Random rand = null)

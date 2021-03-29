@@ -925,7 +925,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.TimesAttackingThisUpdate += delta;
             playerRepo.SavePlayer(player);
 
-            if (delta > 0)
+            if (delta < 0)
             {
                 return $"Your skill and dexterity is amplified by the forces of the store, making you able to conduct {delta} more attacks this turn!";
             }
@@ -957,7 +957,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.CleansesMeditatesThisRound += delta;
             playerRepo.SavePlayer(player);
 
-            var moreOrLess = (delta > 0) ? "more" : "less";
+            var moreOrLess = (delta < 0) ? "more" : "less";
             return $"The aura of the Joke Shop has made you {moreOrLess} efficient at cleansing and meditating this turn!";
         }
 
@@ -983,7 +983,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             dbPlayer.ItemsUsedThisTurn += delta;
             playerRepo.SavePlayer(player);
 
-            var moreOrFewer = (delta > 0) ? "more" : "fewer";
+            var moreOrFewer = (delta < 0) ? "more" : "fewer";
             return $"A flurry of coconut pieces flutter down inside a snowglobe on one of the shelves.  In the background is a starry sky.  You decide to make a wish, and now you are able to use {delta} {moreOrFewer} items this turn!";
         }
 

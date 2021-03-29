@@ -250,6 +250,48 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
+        public static void UndoInvisible(Player player)
+        {
+            if (player.GameMode == (int)GameModeStatics.GameModes.Invisible && !EffectProcedures.PlayerHasActiveEffect(player.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
+            {
+                MakePlayerVisible(player.Id);
+                EnsureItemsAreVisible();
+            }
+        }
+
+        public static void MakePlayerVisible(int player)
+        {
+            var playerRepo = new EFPlayerRepository();
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
+
+            if (user.GameMode != (int)GameModeStatics.GameModes.Invisible)
+            {
+                return;
+            }
+
+            DomainRegistry.Repository.Execute(new ChangeGameMode
+            {
+                MembershipId = user.MembershipId,
+                GameMode = (int)GameModeStatics.GameModes.PvP,
+                Force = true
+            });
+
+            PlayerLogProcedures.AddPlayerLog(player, "Your cloak of invisibility starts to fade, leaving you visible to the world once more.", true);
+            LocationLogProcedures.AddLocationLog(user.dbLocationName, $"{user.GetFullName()} seems to appear from nowhere!");
+        }
+
+        public static void EnsureItemsAreVisible()
+        {
+            var itemRepo = new EFItemRepository();
+            var itemsInLimbo = itemRepo.Items.Where(i => i.PvPEnabled == (int)GameModeStatics.GameModes.Invisible);
+
+            foreach (var item in itemsInLimbo)
+            {
+                item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
+                itemRepo.SaveItem(item);
+            }
+        }
+
         #endregion
         
         #region Form, name and MC pranks

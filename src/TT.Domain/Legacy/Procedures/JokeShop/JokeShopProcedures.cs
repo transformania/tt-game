@@ -125,8 +125,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var playerRepo = new EFPlayerRepository();
             var playersToRestore = expiringEffects.Where(e => e.EffectSourceId == INVISIBILITY_EFFECT && e.Duration == 0).Select(e => e.OwnerId);
 
-            // Defensively revert any invisible players without the effect too
-            if (PvPStatics.LastGameTurn % 5 == 2)
+            // Defensively revert any invisible players without the effect too (shouldn't happen, and self-service safety net provides more immediate rescue mechanism)
+            if (PvPStatics.LastGameTurn % 20 == 17)
             {
                 var invisiblePlayers = playerRepo.Players.Where(p => !playersToRestore.Contains(p.Id) &&
                                                                      p.GameMode == (int)GameModeStatics.GameModes.Invisible)
@@ -145,30 +145,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Restore visibility
             foreach (var player in playersToRestore)
             {
-                var user = playerRepo.Players.FirstOrDefault(p => p.Id == player);
-
-                DomainRegistry.Repository.Execute(new ChangeGameMode
-                {
-                    MembershipId = user.MembershipId,
-                    GameMode = (int)GameModeStatics.GameModes.PvP,
-                    Force = true
-                });
-
-                PlayerLogProcedures.AddPlayerLog(player, "Your cloak of invisibility starts to fade, leaving you visible to the world once more.", true);
-                LocationLogProcedures.AddLocationLog(user.dbLocationName, $"{user.GetFullName()} seems to appear from nowhere!");
+                CharacterPrankProcedures.MakePlayerVisible(player);
             }
 
             // Ensure no items have been lost with a weird game mode
             if (playersToRestore.Any())
             {
-                var itemRepo = new EFItemRepository();
-                var itemsInLimbo = itemRepo.Items.Where(i => i.PvPEnabled == (int)GameModeStatics.GameModes.Invisible);
-
-                foreach (var item in itemsInLimbo)
-                {
-                    item.PvPEnabled = (int)GameModeStatics.GameModes.PvP;
-                    itemRepo.SaveItem(item);
-                }
+                CharacterPrankProcedures.EnsureItemsAreVisible();
             }
         }
 
@@ -178,11 +161,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             InstinctProcedures.ActOnInstinct(playersToControl, new Random());
         }
 
-        // Safety net - allows players to revert some effects on them
+        // Safety net - allows players to revert some effects on them and recover if anything has gone wrong
         public static string Restore(Player player)
         {
             CharacterPrankProcedures.RestoreName(player);
             CharacterPrankProcedures.UndoPsychotic(player.Id);
+            CharacterPrankProcedures.UndoInvisible(player);
+
             return "You try as best you can to cleanse yourself of the harmful effects of the Joke Shop";
         }
 

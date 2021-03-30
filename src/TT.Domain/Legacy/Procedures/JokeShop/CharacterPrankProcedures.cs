@@ -794,7 +794,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var mindControl = false;
             var message = "";
 
-            var roll = rand.Next(8);
+            var roll = rand.Next(9);
 
             // Pick changes to name and form
             if (roll == 0)  // Dogs
@@ -949,7 +949,25 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 lastName = rand.Next(2) == 0 ? firstName : lastName;
                 firstName = "Stripper";
             }
-            else if (roll == 7)  // Renames
+            else if (roll == 7)  // Rodents
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.RODENTS).ToArray();
+                message = "You've never minded cats before, but now you feel terrified!";
+
+                switch (rand.Next(2))
+                {
+                    case 0:
+                        string[] prefixes = { "Critter", "Mousey", "Ratty", "Rodent", "Vermin" };
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = { "Creature", "Critter", "Mouse", "Rat", "Rodent", "Vermin" };
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                }
+            }
+            else if (roll == 8)  // Renames
             {
                 mindControl = false;
                 message = "A heady fragrance fills the air, numbing your mind.  You forget who you are for a moment, but then it comes back to you.  How could you forget your own name like that?!";

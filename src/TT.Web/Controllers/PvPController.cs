@@ -557,13 +557,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var meItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-
-            if (meItem == null)
+            if (me != null)
             {
-                TempData["Error"] = "You are too confused to remember how to reroll.";
-                TempData["SubError"] = "Wait a bit.  You will soon remember who you truly are.";
-                return RedirectToAction(MVC.PvP.Play());
+                var meItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+
+                if (meItem == null)
+                {
+                    TempData["Error"] = "You are too confused to remember how to reroll.";
+                    TempData["SubError"] = "Wait a bit.  You will soon remember who you truly are.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
             }
 
             ViewBag.IsRerolling = false;

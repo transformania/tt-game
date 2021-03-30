@@ -22,21 +22,25 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var roll = rand.Next(100);
 
-            if (roll < 27)  // 27%
+            if (roll < 24)  // 24%
             {
                 return ChangeHealth(player, rand.Next(-50, 75));
             }
-            else if (roll < 54)  // 27%
+            else if (roll < 48)  // 24%
             {
                 return ChangeMana(player, rand.Next(-10, 15));
             }
-            else if (roll < 60)  // 6%
+            else if (roll < 54)  // 6%
             {
                 return ChangeActionPoints(player, rand.Next(-3, 3));
             }
-            else if (roll < 90) // 30%
+            else if (roll < 81) // 27%
             {
                 return ChangeMoney(player, rand.Next(-2, 3));
+            }
+            else if (roll < 90)  // 9%
+            {
+                return FillInventory(player, false, rand);
             }
             else  // 10%
             {
@@ -49,21 +53,25 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var roll = rand.Next(100);
 
-            if (roll < 30)  // 30%
+            if (roll < 28)  // 28%
             {
                 return ChangeHealth(player, rand.Next(-125, 125));
             }
-            else if (roll < 55)  // 25%
+            else if (roll < 49)  // 21%
             {
                 return ChangeMana(player, rand.Next(-20, 20));
             }
-            else if (roll < 60)  // 5%
+            else if (roll < 54)  // 5%
             {
                 return ChangeActionPoints(player, rand.Next(-10, 20));
             }
-            else if (roll < 85)  // 25%
+            else if (roll < 76)  // 22%
             {
                 return ChangeMoney(player, rand.Next(-5, 5));
+            }
+            else if (roll < 85)  // 9%
+            {
+                return FillInventory(player, true, rand);
             }
             else if (roll < 95)  // 10%
             {
@@ -305,6 +313,37 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 return "You have found a rune!";
             }
+        }
+
+        private static string FillInventory(Player player, bool overflow, Random rand = null)
+        {
+            var itemsEquipped = ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped);
+            var inventorySlots = PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory;
+
+            if (overflow)
+            {
+                inventorySlots++;
+            }
+
+            if (itemsEquipped <= inventorySlots)
+            {
+                return null;
+            }
+
+            rand = rand ?? new Random();
+
+            for (; itemsEquipped < inventorySlots; itemsEquipped++)
+            {
+                // Low value consumable
+                int[] itemTypes = { ItemStatics.SpellWeaverDryItemSourceId,
+                                    ItemStatics.WillflowerDryItemSourceId };
+
+                var itemType = itemTypes[rand.Next(itemTypes.Count())];
+
+                ItemProcedures.GiveNewItemToPlayer(player, itemType);
+            }
+
+            return "While browsing through a clothes rail you find a fab pair of psychedelic flares and for a moment you are transported to the groovy era of peace and love, full of hippies, daisy chains and flower power.  You could almost reach out and grab those blooms!";
         }
 
         private static string LearnSpell(Player player, Random rand = null)

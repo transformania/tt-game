@@ -22,6 +22,9 @@ namespace TT.Domain.Statics
         public const int LullabyWhistleItemSourceId = 160;
         public const int CovenantCrystalItemSourceId = 164;
 
+        public const int SpellWeaverDryItemSourceId = 3;
+        public const int WillflowerDryItemSourceId = 10;
+
         public const int SpellbookSmallItemSourceId = 180;
         public const int SpellbookMediumItemSourceId = 181;
         public const int SpellbookLargeItemSourceId = 182;

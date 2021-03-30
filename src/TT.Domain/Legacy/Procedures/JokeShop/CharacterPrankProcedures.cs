@@ -514,7 +514,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             FormDetail form = forms.ElementAt(index);
 
             // Give player an inanimate form without creating a player item
-            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: false, createItem: false, severe: false))
+            if (!TryInanimateTransform(player, form.FormSourceId, dropInventory: false, createItem: false, severe: false, logChanges: false))
             {
                 return null;
             }
@@ -1051,7 +1051,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return true;
         }
 
-        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true)
+        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true, bool logChanges = true)
         {
             if (severe && !JokeShopProcedures.PlayerHasBeenWarnedTwice(player) || !severe && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -1073,8 +1073,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = player.Id, IgnoreRunes = false });
             }
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+            if (logChanges)
+            {
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+            }
 
             return true;
         }

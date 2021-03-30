@@ -1067,6 +1067,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 ItemProcedures.PlayerBecomesItem(player, form, null, dropInventory);
                 // If inventory isn't dropped at point of TF then it will be dropped if/when player locks.
+
+                SetInitialItemXP(player);
             }
             else if (dropInventory)
             {
@@ -1080,6 +1082,29 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             return true;
+        }
+
+        private static void SetInitialItemXP(Player player)
+        {
+            var inanimXpRepo = new EFInanimateXPRepository();
+
+            if (inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id) != null)
+            {
+                // Previous XP - player probably chaos restored.  Let them keep it.
+                return;
+            }
+
+            var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            var xp = new InanimateXP
+            {
+                OwnerId = player.Id,
+                Amount = 0,
+                TimesStruggled = 0,  // Give player a head start on struggling
+                LastActionTimestamp = DateTime.UtcNow,
+                LastActionTurnstamp = currentGameTurn - 1,
+            };
+
+            inanimXpRepo.SaveInanimateXP(xp);
         }
 
         #endregion

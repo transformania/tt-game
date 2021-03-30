@@ -168,7 +168,19 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             CharacterPrankProcedures.UndoPsychotic(player.Id);
             CharacterPrankProcedures.UndoInvisible(player);
 
-            return "You try as best you can to cleanse yourself of the harmful effects of the Joke Shop";
+            var message = "You try as best you can to cleanse yourself of the harmful effects of the Joke Shop.";
+
+            if (Forms(f => f.FormSourceId == player.OriginalFormSourceId && f.Category == LIMITED_MOBILITY).Any())
+            {
+                message += "<br />Your current base form has limited mobility.  You can change it from the Settings page.";
+            }
+
+            if (Forms(f => f.FormSourceId == player.FormSourceId && f.Category == LIMITED_MOBILITY).Any())
+            {
+                message += "<br />Your current form has limited mobility.  You can return to base form using Self Restore from the My Player menu.";
+            }
+
+            return message;
         }
 
         public static List<Player> ActivePlayersInJokeShopApartFrom(Player player)

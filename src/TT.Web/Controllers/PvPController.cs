@@ -254,15 +254,25 @@ namespace TT.Web.Controllers
 
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
+                string dbLocationName;
                 if (animalOutput.OwnedBy != null)
                 {
-                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalOutput.OwnedBy.Player.dbLocationName);
+                    dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
                 }
                 else
                 {
-                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                    dbLocationName = me.dbLocationName;
                 }
 
+                var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+
+                if (loc == null && dbLocationName == LocationsStatics.JOKE_SHOP)
+                {
+                    JokeShopProcedures.SetJokeShopActive(world.JokeShop);
+                    loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+                }
+
+                animalOutput.Location = loc;
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);

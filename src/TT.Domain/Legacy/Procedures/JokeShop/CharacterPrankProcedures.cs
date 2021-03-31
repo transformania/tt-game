@@ -11,6 +11,7 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
+using TT.Domain.Utilities;
 using TT.Domain.World.Queries;
 
 namespace TT.Domain.Legacy.Procedures.JokeShop
@@ -797,7 +798,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var mindControl = false;
             var message = "";
 
-            var roll = rand.Next(10);
+            var roll = rand.Next(12);
 
             // Pick changes to name and form
             if (roll == 0)  // Dogs
@@ -975,25 +976,70 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
                 message = "Oh my gawd, sumthin bout u feels liek totally different n stuff but u're like not shur wat. I mean u still hav ur amazin body, rite???";
 
-                switch (rand.Next(2))
+                switch (rand.Next(3))
                 {
                     case 0:
-                        string[] prefixes = { "Airhead", "Bimbo", "Ditzy" };
+                        string[] prefixes = { "Airhead", "Bimbo", "Ditzy", "Like", "Totally", "Hawt" };
                         lastName = rand.Next(2) == 0 ? firstName : lastName;
                         firstName = prefixes[rand.Next(prefixes.Count())];
                         break;
                     case 1:
-                        string[] suffixes = { "Bimbo", "Ditz" };
+                        string[] suffixes = { "Bimbo", "Ditz", "Like" };
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                    case 2:
+                        firstName = firstName.ToLower().Replace("u", "oo").Replace("you", "u").Replace("too", "2").Replace("to", "2").Replace("s", "z").Replace("ng", "n").Replace("th", "d").Replace("an", "n").Replace("er", "a");
+                        lastName = lastName.ToLower().Replace("u", "oo").Replace("you", "u").Replace("too", "2").Replace("to", "2").Replace("s", "z").Replace("ng", "n").Replace("th", "d").Replace("an", "n").Replace("er", "a");
+                        firstName = firstName.Substring(0, 1).ToUpper() + firstName.Substring(1);
+                        lastName = lastName.Substring(0, 1).ToUpper() + lastName.Substring(1);
+                        break;
+                }
+            }
+            else if (roll == 9)  // Thieves
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
+                message = "So many valuable items on these shelves.. surely it wouldn't hurt if you took just one?";
+
+                switch (rand.Next(2))
+                {
+                    case 0:
+                        string[] prefixes = { "Thieving", "Pilfering", "Shoplifter", "Looting", "Bandit", "Highwayman", "Sly", "Light-Fingered", "Stealthy", "Pickpocket", "Sneaky" };
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = { "The Thief", "The Light-Fingered", "The Sly", "Moneygrabber" };
                         lastName = suffixes[rand.Next(suffixes.Count())];
                         break;
                 }
             }
-            else if (roll == 9)  // Renames
+            else if (roll == 10)  // Fairies
+            {
+                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
+                message = "Some dust glimmers as it passes through a shaft of light.  It reminds you of the fairies from the grove.  Wait.. what kind of dust was that?";
+
+                switch (rand.Next(2))
+                {
+                    case 0:
+                        string[] prefixes = { "Fairy", "Fae", "Floral" };
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = prefixes[rand.Next(prefixes.Count())];
+                        break;
+                    case 1:
+                        string[] suffixes = { "Fairy", "Fae" };
+                        lastName = suffixes[rand.Next(suffixes.Count())];
+                        break;
+                }
+            }
+            else if (roll == 11)  // Renames
             {
                 mindControl = false;
                 message = "A heady fragrance fills the air, numbing your mind.  You forget who you are for a moment, but then it comes back to you.  How could you forget your own name like that?!";
 
-                switch (rand.Next(1))
+                var nouns = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonNouns.xml");
+                var adjectives = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonAdjectives.xml");
+
+                switch (rand.Next(7))
                 {
                     case 0:
                         lastName = $"Mc{firstName}face";
@@ -1001,6 +1047,52 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         {
                             firstName = $"{firstName}y";
                         }
+                        break;
+
+                    case 1:
+                        char[] characters = firstName.ToLower().ToCharArray();
+                        Array.Reverse(characters);
+                        firstName = new String(characters);
+                        firstName = firstName.Substring(0, 1).ToUpper() + firstName.Substring(1);
+
+                        characters = lastName.ToLower().ToCharArray();
+                        Array.Reverse(characters);
+                        lastName = new String(characters);
+                        lastName = lastName.Substring(0, 1).ToUpper() + lastName.Substring(1);
+                        break;
+
+                    case 2:
+                        firstName = firstName.Replace("d", "_").Replace("b", "d").Replace("p", "b").Replace("q", "p").Replace("_", "q")
+                                             .Replace("m", "_").Replace("w", "m").Replace("_", "w")
+                                             .Replace("u", "_").Replace("n", "u").Replace("_", "n")
+                                             .Replace("s", "_").Replace("z", "s").Replace("_", "z");
+                        lastName = lastName.Replace("d", "_").Replace("b", "d").Replace("p", "b").Replace("q", "p").Replace("_", "q")
+                                           .Replace("m", "_").Replace("w", "m").Replace("_", "w")
+                                           .Replace("u", "_").Replace("n", "u").Replace("_", "n")
+                                           .Replace("s", "_").Replace("z", "s").Replace("_", "z");
+                        break;
+
+                    case 3:
+                        lastName = $"The {adjectives[rand.Next(adjectives.Count())]}";
+                        break;
+
+                    case 4:
+                        lastName = $"The {nouns[rand.Next(nouns.Count())]}";
+                        if (rand.Next(2) == 0)
+                        {
+                            lastName = "Of " + lastName;
+                        }
+                        break;
+
+                    case 5:
+                        lastName = rand.Next(2) == 0 ? firstName : lastName;
+                        firstName = adjectives[rand.Next(adjectives.Count())];
+                        break;
+
+                    case 6:
+                        var firstNameStart = firstName.Substring(0, 1);
+                        firstName = lastName.Substring(0, 1) + firstName.Substring(1);
+                        lastName = firstNameStart + lastName.Substring(1);
                         break;
                 }
             }

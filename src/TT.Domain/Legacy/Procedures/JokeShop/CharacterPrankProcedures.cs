@@ -1286,7 +1286,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return "You hear the engines revving up outside.. they're waiting for you!  You have to go now - or they might leave without you!";
             }
 
-            else if (world.Boss_Sisters == AIStatics.ACTIVE && TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
+            else if (world.Boss_Sisters == AIStatics.ACTIVE)
             {
                 if (rand.Next(2) == 0 && TryAnimateTransform(player, BossProcedures_Sisters.BimboSpellFormSourceId))
                 {

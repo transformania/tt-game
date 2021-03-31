@@ -103,7 +103,7 @@ namespace TT.Domain.Models
             }
             else if (this.Mana > this.MaxMana)
             {
-                this.Mana = this.Mana;
+                this.Mana = this.MaxMana;
             }
         }
 
@@ -262,6 +262,9 @@ namespace TT.Domain.Models
 
             if (MembershipId == "-1")
                 return new Tuple<string, string>(string.Empty, string.Empty);
+
+            if (MembershipId.IsNullOrEmpty())
+                return new Tuple<string, string>(GetFullName(), string.Empty);
 
             if (staffDictionary.TryGetValue(MembershipId, out desc))
             {

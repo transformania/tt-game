@@ -61,7 +61,7 @@ namespace TT.Domain.Items.Entities
             return newItem;
         }
 
-        public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource, Player attacker)
+        public static Item CreateFromPlayer(Player formerPlayer, ItemSource itemSource, Player attacker, bool activePlayer)
         {
             var newItem = new Item
             {
@@ -77,7 +77,7 @@ namespace TT.Domain.Items.Entities
                 LastSold = DateTime.UtcNow
             };
 
-            if (formerPlayer.BotId == AIStatics.ActivePlayerBotId)
+            if (formerPlayer.BotId == AIStatics.ActivePlayerBotId || activePlayer)
             {
                 newItem.IsPermanent = false;
                 newItem.LastSouledTimestamp = DateTime.UtcNow;

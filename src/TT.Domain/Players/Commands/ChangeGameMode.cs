@@ -17,7 +17,7 @@ namespace TT.Domain.Players.Commands
         public string MembershipId { get; set; }
         public int GameMode { get; set; }
 
-        public bool InChaos { get; set; }
+        public bool Force { get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -37,7 +37,7 @@ namespace TT.Domain.Players.Commands
                 if (player.GameMode == (int)GameModeStatics.GameModes.PvP && player.IsInDungeon())
                     throw new DomainException("You cannot switch out of PvP mode while you are in the dungeon.");
 
-                if (!InChaos)
+                if (!Force)
                 {
                     var WhenLastCombat = player.LastCombatTimestamp;
 

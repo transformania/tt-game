@@ -57,7 +57,7 @@ namespace TT.Web.Controllers
                 {
                     MembershipId = myMembershipId,
                     GameMode = mode,
-                    InChaos = PvPStatics.ChaosMode
+                    Force = PvPStatics.ChaosMode
                 });
 
                 var modeName = "";

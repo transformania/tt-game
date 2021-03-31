@@ -138,14 +138,14 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string GivePerkToPlayer(int effectSourceId, int playerId)
+        public static string GivePerkToPlayer(int effectSourceId, int playerId, int? Duration = null, int? Cooldown = null)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             return GivePerkToPlayer(effectSourceId, dbPlayer);
         }
 
-        public static string GivePerkToPlayer(int effectSourceId, Player player)
+        public static string GivePerkToPlayer(int effectSourceId, Player player, int? Duration = null, int? Cooldown = null)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
@@ -201,8 +201,11 @@ namespace TT.Domain.Procedures
             // this effect is temporary, grab some of its stats from the effect static
             if (effectPlus.AvailableAtLevel == 0)
             {
-                cmd.Duration = effectPlus.Duration;
-                cmd.Cooldown = effectPlus.Cooldown;
+                var duration = Duration ?? effectPlus.Duration;
+                var cooldown = Cooldown.HasValue ? Math.Max(duration, Cooldown.Value) : effectPlus.Cooldown;
+
+                cmd.Duration = duration;
+                cmd.Cooldown = cooldown;
                 cmd.IsPermanent = false;
             }
 
@@ -292,5 +295,21 @@ namespace TT.Domain.Procedures
 
 
         }
+
+        public static bool PlayerHasActiveEffect(int playerId, int effectSourceId)
+        {
+            return PlayerHasActiveEffect(PlayerProcedures.GetPlayer(playerId), effectSourceId);
+        }
+
+        public static bool PlayerHasActiveEffect(Player player, int effectSourceId)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+
+            return effectRepo.Effects.FirstOrDefault(
+                e => e.OwnerId == player.Id &&
+                     e.EffectSourceId == effectSourceId && 
+                     e.Duration > 0) != null;
+        }
+
     }
 }

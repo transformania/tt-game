@@ -17,6 +17,7 @@ namespace TT.Domain.World.Entities
         public string Boss_Sisters { get; protected set; }
         public string Boss_Faeboss { get; protected set; }
         public string Boss_MotorcycleGang { get; protected set; }
+        public bool JokeShop { get; set; }
         public string GameNewsDate { get; protected set; }
         public bool TestServer { get; protected set; }
         public bool ChaosMode { get; protected set; }

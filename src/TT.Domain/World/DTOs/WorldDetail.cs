@@ -20,6 +20,7 @@ namespace TT.Domain.World.DTOs
         public string Boss_Sisters { get;  set; }
         public string Boss_Faeboss { get;  set; }
         public string Boss_MotorcycleGang { get; set; }
+        public bool JokeShop { get; set; }
         public string GameNewsDate { get;  set; }
         public bool TestServer { get;  set; }
         public bool ChaosMode { get;  set; }

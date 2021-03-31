@@ -1,36 +1,35 @@
+using FeatureSwitch;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using TT.Domain.Abstract;
-using TT.Domain.Concrete;
-using TT.Domain.Models;
-using TT.Domain.Procedures;
-using TT.Domain.Procedures.BossProcedures;
-using TT.Domain.Statics;
-using TT.Domain.ViewModels;
-using TT.Web.CustomHtmlHelpers;
 using TT.Domain;
-using FeatureSwitch;
+using TT.Domain.Abstract;
 using TT.Domain.Assets.Queries;
+using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
-using TT.Domain.Legacy.Procedures.BossProcedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Messages.Queries;
+using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
+using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Queries;
+using TT.Domain.Statics;
 using TT.Domain.TFEnergy.Commands;
+using TT.Domain.ViewModels;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
-using TT.Web.Extensions;
+using TT.Web.CustomHtmlHelpers;
 using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
@@ -70,6 +69,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Restart());
             }
 
+            ItemDetail itemMe = null;
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+
+                if (itemMe == null && me.BotId == AIStatics.ActivePlayerBotId &&
+                    !EffectProcedures.PlayerHasActiveEffect(me.Id, JokeShopProcedures.AUTO_RESTORE_EFFECT))
+                {
+                    // If an inanimate player is stuck without a corresponding item, restore them
+                    CharacterPrankProcedures.UndoTemporaryForm(me.Id);
+                    me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                }
+            }
+
             if (Session["ContributionId"] == null)
             {
                 Session["ContributionId"] = -1;
@@ -78,6 +91,7 @@ namespace TT.Web.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
+            ViewBag.BodyClasses = $"location-{me.dbLocationName}";  // NB. This could leak location to owned items
 
             // redirect to Quest page if player is currently in a quest
             if (me.InQuest > 0)
@@ -151,11 +165,6 @@ namespace TT.Web.Controllers
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
-                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer
-                {
-                    PlayerId = me.Id
-                });
-
                 var inanimateOutput = new InanimatePlayPageViewModel
                 {
                     RenderCaptcha = renderCaptcha,
@@ -172,13 +181,16 @@ namespace TT.Web.Controllers
                     Message = InanimateXPProcedures.GetProspectsMessage(me)
                 };
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
+                inanimateOutput.PortraitUrl = ItemStatics.GetStaticItem(inanimateOutput.Form.ItemSourceId.Value).PortraitUrl;
 
-                if (inanimateOutput.Item.Owner == null)
+                if (inanimateOutput.Item?.Owner == null)
                 {
                     // Not owned
-                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == inanimateOutput.Item.dbLocationName)?.Name ?? "Unknown";
-                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = inanimateOutput.Item.dbLocationName, ConcealmentLevel = 0 });
-                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.Item.dbLocationName, myMembershipId);
+                    var loc = inanimateOutput.Item?.dbLocationName == null ? me.dbLocationName : inanimateOutput.Item.dbLocationName;
+                    inanimateOutput.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc)?.Name ?? "Unknown";
+                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = loc, ConcealmentLevel = 0 });
+                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(loc, myMembershipId);
+
                 }
                 else
                 {
@@ -204,7 +216,8 @@ namespace TT.Web.Controllers
                 var playersHere = new List<PlayerFormViewModel>();
                 foreach (var p in inanimateOutput.PlayersHere)
                 {
-                    if (p.Player.Mobility == PvPStatics.MobilityFull)
+                    if (p.Player.Mobility == PvPStatics.MobilityFull &&
+                        p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible)
                     {
                         playersHere.Add(p);
                     }
@@ -225,8 +238,8 @@ namespace TT.Web.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.FormSourceId);
 
-                animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-                if (animalOutput.YouItem.Owner != null)
+                animalOutput.YouItem = itemMe;
+                if (animalOutput.YouItem?.Owner != null)
                 {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.Owner.Id);
 
@@ -241,15 +254,25 @@ namespace TT.Web.Controllers
 
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
+                string dbLocationName;
                 if (animalOutput.OwnedBy != null)
                 {
-                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalOutput.OwnedBy.Player.dbLocationName);
+                    dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
                 }
                 else
                 {
-                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                    dbLocationName = me.dbLocationName;
                 }
 
+                var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+
+                if (loc == null && dbLocationName == LocationsStatics.JOKE_SHOP)
+                {
+                    JokeShopProcedures.SetJokeShopActive(world.JokeShop);
+                    loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+                }
+
+                animalOutput.Location = loc;
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);
@@ -263,16 +286,18 @@ namespace TT.Web.Controllers
                 var animalLocationItemsCmd = new GetItemsAtLocationVisibleToGameMode { dbLocationName = animalOutput.Location.dbName, gameMode = me.GameMode };
                 animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
 
-                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
+                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId)
+                                                .Where(p => p.Player.Mobility == PvPStatics.MobilityFull &&
+                                                            p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible);
 
                 animalOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
                 animalOutput.HasNewMessages = hasNewMessages;
                 animalOutput.UnreadMessageCount = unreadMessageCount;
 
-                ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
+                animalOutput.PortraitUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
-                animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
+                animalOutput.IsPermanent = animalOutput.YouItem == null ? false : animalOutput.YouItem.IsPermanent;
 
                 animalOutput.StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(animalOutput.YouItem)));
                 animalOutput.Message = InanimateXPProcedures.GetProspectsMessage(me);
@@ -310,16 +335,48 @@ namespace TT.Web.Controllers
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
             loadtime += "Start get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
+            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId)
+                                        .Where(p => p.Player.Mobility == PvPStatics.MobilityFull &&
+                                                    p.Player.GameMode != (int)GameModeStatics.GameModes.Invisible);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            loadtime += "Start get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            var effects = EffectProcedures.GetPlayerEffects2(me.Id);
+            output.Blind = effects.Where(e => e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT &&
+                                              e.dbEffect.Duration > 0).Any();
+            loadtime += "End get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+
+            var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+
+            if (location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                JokeShopProcedures.SetJokeShopActive(world.JokeShop);
+                location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            }
+
+            output.Location = location.Clone();
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
-            output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
-            output.Location.FriendlyName_East = LocationsStatics.GetConnectionName(output.Location.Name_East);
-            output.Location.FriendlyName_South = LocationsStatics.GetConnectionName(output.Location.Name_South);
-            output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
+            // Hide directions if player is blind
+            if (output.Blind)
+            {
+                output.Location.Name = "Here";
+                output.Location.FriendlyName_North = "North";
+                output.Location.FriendlyName_East = "East";
+                output.Location.FriendlyName_South = "South";
+                output.Location.FriendlyName_West = "West";
+                output.Location.Name_North = "north";
+                output.Location.Name_East = "east";
+                output.Location.Name_South = "south";
+                output.Location.Name_West = "west";
+            }
+            else
+            {
+                output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
+                output.Location.FriendlyName_East = LocationsStatics.GetConnectionName(output.Location.Name_East);
+                output.Location.FriendlyName_South = LocationsStatics.GetConnectionName(output.Location.Name_South);
+                output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
+            }
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
@@ -342,7 +399,14 @@ namespace TT.Web.Controllers
             loadtime += "End get mind controlled players:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
+            if (me.GameMode == (int)GameModeStatics.GameModes.Invisible)
+            {
+                output.LocationItems = new List<PlayPageItemDetail>();
+            }
+            else
+            {
+                output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
+            }
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();
@@ -503,6 +567,18 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            if (me != null)
+            {
+                var meItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+
+                if (meItem == null)
+                {
+                    TempData["Error"] = "You are too confused to remember how to reroll.";
+                    TempData["SubError"] = "Wait a bit.  You will soon remember who you truly are.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             ViewBag.IsRerolling = false;
             ViewBag.OldFirstName = "";
             ViewBag.OldLastName = "";
@@ -544,6 +620,112 @@ namespace TT.Web.Controllers
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var effects = EffectProcedures.GetPlayerEffects2(me.Id);
+
+            var dizzy = effects.Any(e => e.dbEffect.Duration > 0 &&
+                                         e.dbEffect.EffectSourceId == CharacterPrankProcedures.DIZZY_EFFECT);
+            var blind = effects.Any(e => e.dbEffect.Duration > 0 &&
+                                         e.dbEffect.EffectSourceId == CharacterPrankProcedures.BLINDED_EFFECT);
+
+            string direction = null;
+            var currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+            // Dizzy players can stumble in the wrong direction
+            if (dizzy)
+            {
+                var exits = new List<String> { currentLocation?.Name_North, currentLocation?.Name_East, currentLocation?.Name_South, currentLocation?.Name_West };
+
+                if (blind)
+                {
+                    exits = new List<String> { "north", "east", "south", "west" };
+                }
+
+                var index = exits.IndexOf(locname);
+
+                if (index != -1)
+                {
+                    // Roll an amount to stumble
+                    var rand = new Random();
+                    var roll = rand.NextDouble();
+
+                    // Pick preferred stumble direction
+                    if (roll < 0.2)
+                    {
+                        index++;  // 20% chance of stumbling right (i.e. clockwise)
+                    }
+                    else if (roll < 0.3)
+                    {
+                        index += 2;  // 10% chance of stumbling backward
+                    }
+                    else if (roll < 0.5)
+                    {
+                        index += 3;  // 20% chance of stumbling left (i.e. counterclockwise - we keep index positive so % plays nicely)
+                    }
+
+                    // Adjust the index to point to the nearest exit to the stumble
+                    var len = exits.Count();
+                    index = index % len;
+
+                    var bias = rand.Next(2) * 2;  // Whether to prefer stumbling right or left of preferred stumble direction in case there is no route
+                    locname = exits[index] ??                     // preferred stumble direction
+                              exits[(index + 1 + bias) % len] ??  // right if bias is 0, left if bias is 2
+                              exits[(index + 3 - bias) % len] ??  // left if bias is 0, right if bias is 2
+                              exits[(index + 2) % len];           // 180 degree stumble (i.e. fall back onn the only)
+                }
+            }
+
+            // Allow blinded players only to use relative directions - convert them
+            if (blind)
+            {
+                if (locname == "north")
+                {
+                    direction = "North";
+                    locname = currentLocation?.Name_North;
+                }
+                else if (locname == "east")
+                {
+                    direction = "East";
+                    locname = currentLocation?.Name_East;
+                }
+                else if (locname == "south")
+                {
+                    direction = "South";
+                    locname = currentLocation?.Name_South;
+                }
+                else if (locname == "west")
+                {
+                    direction = "West";
+                    locname = currentLocation?.Name_West;
+                }
+                else
+                {
+                    locname = null;
+                }
+
+                if (locname == null)
+                {
+                    TempData["Error"] = "You have trouble seeing where you are going and walk into a wall.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
+            // Access controls on joke shop
+            if (locname == LocationsStatics.JOKE_SHOP)
+            {
+                if (JokeShopProcedures.CharacterIsBanned(me))
+                {
+                    TempData["Error"] = "You cannot enter the Joke Shop.";
+                    TempData["SubError"] = "You are currently banned from this location.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                if ((me.Id + PvPStatics.LastGameTurn) % 12 == 0)
+                {
+                    TempData["Error"] = "You cannot enter the Joke Shop.";
+                    TempData["SubError"] = "The shop is busy right now - try again next turn.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
 
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive)
@@ -567,7 +749,7 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname });
+                TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname, Direction = direction });
             }
             catch (DomainException e)
             {
@@ -698,87 +880,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => !s.dbSkill.IsArchived);
-            }
-
-            // filter out spells that you can't use on your target
-            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < AIStatics.ActivePlayerBotId)
-            {
-                // do nothing, all spells are okay
-            }
-
-            // both players are in protection; only allow animate spells
-            else if (me.GameMode == (int)GameModeStatics.GameModes.Protection && target.GameMode == (int)GameModeStatics.GameModes.Protection)
-            {
-                output = output.Where(s => s.MobilityType == PvPStatics.MobilityFull);
-            }
-
-            // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == (int)GameModeStatics.GameModes.Superprotection || (me.GameMode == (int)GameModeStatics.GameModes.Superprotection && target.BotId == AIStatics.ActivePlayerBotId))
-            {
-                output = output.Where(s => s.MobilityType == "NONEXISTANT");
-            }
-
-            // filter out MC spells for bots
-            if (target.BotId < AIStatics.ActivePlayerBotId)
-            {
-                output = output.Where(s => s.MobilityType != PvPStatics.MobilityMindControl);
-            }
-
-            // only show inanimates for rat thieves
-            if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
-            {
-                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate);
-            }
-
-            // only show Weaken for valentine
-            if (target.BotId == AIStatics.ValentineBotId)
-            {
-                output = output.Where(s => s.dbSkill.SkillSourceId == PvPStatics.Spell_WeakenId);
-            }
-
-            // only bimbo spell works on nerd mouse boss
-            if (target.BotId == AIStatics.MouseNerdBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.BimboSpellSourceId);
-            }
-
-            // only nerd spell works on nerd bimbo boss
-            if (target.BotId == AIStatics.MouseBimboBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id == BossProcedures_Sisters.NerdSpellSourceId);
-            }
-
-            // Vanquish and weaken only works against dungeon demons
-            if (target.BotId == AIStatics.DemonBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id == PvPStatics.Dungeon_VanquishSpellSourceId || s.StaticSkill.Id == PvPStatics.Spell_WeakenId);
-            }
-
-            // Filter out Vanquish when attacking non-Dungeon Demon player
-            if (target.BotId != AIStatics.DemonBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id != PvPStatics.Dungeon_VanquishSpellSourceId);
-            }
-
-            // Fae-In-A-Bottle only works against Narcissa
-            if (target.BotId == AIStatics.FaebossBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id == BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
-            }
-
-            // Filter out Fae-In-A-Bottle when attacking non-Narcissa player
-            if (target.BotId != AIStatics.FaebossBotId)
-            {
-                output = output.Where(s => s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId);
-            }
-
-            // only inanimate and animal spells work on minibosses, donna, and lovebringer
-            if (AIStatics.IsAMiniboss(target.BotId) ||
-                target.BotId == AIStatics.MotorcycleGangLeaderBotId ||
-                target.BotId == AIStatics.BimboBossBotId)
-            {
-                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet);
+                output = SkillProcedures.AvailableSkills(me, target, false);
             }
 
             ViewBag.TargetId = targetId;
@@ -1142,52 +1244,23 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = AttackProcedures.Attack(me, targeted, skillBeingUsed);
-
-                // record into statistics
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
-
-                if (AIStatics.IsABoss(targeted.BotId))
+                var result = "";
+                if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
                 {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossAllAttacks, 1);
+                    result = JokeShopProcedures.Attack(me, targeted, skillBeingUsed);
                 }
 
-                if (targeted.BotId == AIStatics.FemaleRatBotId || targeted.BotId == AIStatics.MaleRatBotId)
+                if (result.IsNullOrEmpty())
                 {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossRatThiefAttacks, 1);
-                }
-                else if (targeted.BotId == AIStatics.BimboBossBotId)
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossLovebringerAttacks, 1);
-                }
-                else if (targeted.BotId == AIStatics.DonnaBotId)
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BossDonnaAttacks, 1);
-                }
-                else if (targeted.BotId == AIStatics.FaebossBotId)
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__FaebossAttacks, 1);
-                }
-                else if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MouseSisterAttacks, 1);
-                }
-                else if (targeted.BotId == AIStatics.MotorcycleGangLeaderBotId)
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
-                }
-                else if (AIStatics.IsAMiniboss(targeted.BotId))
-                {
-                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MinibossAttacks, 1);
+                    result = AttackProcedures.AttackSequence(me, targeted, skillBeingUsed);
                 }
 
+                TempData["Result"] = result;
             }
             catch (Exception e)
             {
                 TempData["Error"] = "There was a server error while carrying out your attack.  Reason:  <br><br>" + e;
             }
-
-            AIProcedures.CheckAICounterattackRoutine(me, targeted);
 
             return RedirectToAction(MVC.PvP.Play());
         }
@@ -1307,7 +1380,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that it is not too late in the round for this attack to happen
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                TempData["Error"] = "An otherworldly field prevents your enchantment having any effect on the Joke Shop.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is not too late in the turn for this attack to happen
             var lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             var secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
@@ -1403,6 +1482,17 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.SelfRestore(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             var buffs = ItemProcedures.GetPlayerBuffs(me);
 
             try
@@ -1435,6 +1525,17 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.Meditate(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new Meditate { PlayerId = me.Id, Buffs = mybuffs });
@@ -1459,6 +1560,17 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var mybuffs = ItemProcedures.GetPlayerBuffs(me);
+
+            if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
+            {
+                var result = JokeShopProcedures.Cleanse(me);
+
+                if (!result.IsNullOrEmpty())
+                {
+                    TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
 
             try
             {
@@ -1735,11 +1847,16 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.Id, true);
-                playerLogMessage = "You tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
+                var name = (pickup.FormerPlayer == null) ? "a " + pickup.ItemSource.FriendlyName
+                                                         : pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName;
+                playerLogMessage = "You tamed <b>" + name + "</b> at " + here.Name + " and put it into your inventory.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + name + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
 
-                var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
-                PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
+                if (pickup.FormerPlayer != null)
+                {
+                    var notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
+                    PlayerLogProcedures.AddPlayerLog(pickup.FormerPlayer.Id, notificationMsg, true);
+                }
 
             }
 
@@ -1797,19 +1914,27 @@ namespace TT.Web.Controllers
             }
 
             var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            var result = "";
 
-            if (here.Region != "dungeon")
-            {
-                // in overworld, drop at player's feet
-                TempData["Result"] = ItemProcedures.DropItem(itemId);
-            }
-            else
+            if (here.Region == "dungeon")
             {
                 // in dungeon, have it drop in a random place in the overworld
                 var overworldLocation = LocationsStatics.GetRandomLocationNotInDungeon();
                 var resultmsg = ItemProcedures.DropItem(itemId, overworldLocation);
-                TempData["Result"] = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
+                result = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
             }
+            else if (here.dbName == LocationsStatics.JOKE_SHOP)
+            {
+                result = JokeShopProcedures.Drop(me, itemId);
+            }
+
+            if (result.IsNullOrEmpty())
+            {
+                // in overworld, drop at player's feet
+                result = ItemProcedures.DropItem(itemId);
+            }
+
+            TempData["Result"] = result;
 
             string playerLogMessage;
             string locationLogMessage;
@@ -1820,8 +1945,11 @@ namespace TT.Web.Controllers
                 playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
                 locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
 
-                var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
-                PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
+                if (dropme.FormerPlayer != null)
+                {
+                    var notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
+                    PlayerLogProcedures.AddPlayerLog(dropme.FormerPlayer.Id, notificationMsg, true);
+                }
 
 
             }
@@ -2064,7 +2192,7 @@ namespace TT.Web.Controllers
                     var model = new TT.Domain.ViewModels.TeleportMapViewModel
                     {
                         ItemId = itemId,
-                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon")
+                        Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.dbName != LocationsStatics.JOKE_SHOP && l.Region != "dungeon")
                     };
 
                     return View(MVC.PvP.Views.TeleportMap, model);
@@ -2196,15 +2324,15 @@ namespace TT.Web.Controllers
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if ((playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
+            if ((playerLookedAt.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerLookedAt.Player.Id });
 
-                if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
+                if (playerLookedAt.Mobility == PvPStatics.MobilityInanimate)
                 {
                     ViewBag.ImgUrl = "itemsPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
-                else if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
+                else if (playerLookedAt.Mobility == PvPStatics.MobilityPet)
                 {
                     ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
@@ -2776,7 +2904,7 @@ namespace TT.Web.Controllers
 
             var myform = FormStatics.GetForm(me.FormSourceId);
 
-            if (myform.MobilityType == PvPStatics.MobilityFull)
+            if (me.Mobility == PvPStatics.MobilityFull)
             {
                 return true;
             }
@@ -2971,6 +3099,14 @@ namespace TT.Web.Controllers
 
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
+
+            // Don't reveal location to blind players
+            if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.BLINDED_EFFECT))
+            {
+                ViewBag.MapX = 999;
+                ViewBag.MapY = 999;
+            }
+
             return View(MVC.PvP.Views.WorldMap, output);
         }
 
@@ -3095,6 +3231,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            if (to == LocationsStatics.JOKE_SHOP)
+            {
+                TempData["Error"] = "You cannot teleport to the Joke Shop.";
+                TempData["SubError"] = "There is a powerful magical shield around this place.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert the location is a valid location
             if (!LocationsStatics.LocationList.GetLocation.Select(s => s.dbName).Contains(to))
             {
@@ -3137,7 +3280,7 @@ namespace TT.Web.Controllers
 
             // assert player is not already locked into their current form
             var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-            if (itemMe.IsPermanent)
+            if (itemMe != null && itemMe.IsPermanent)
             {
                 TempData["Error"] = "You cannot return to an animate form again.";
                 TempData["SubError"] = "You have spent too long and performed too many actions as an item or animal and have lost your desire and ability to be human gain.";
@@ -3408,6 +3551,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You do not have any shouts remaining for this turn.";
                 TempData["SubError"] = "You will be able to shout more in future updates.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not been hushed
+            if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.HUSHED_EFFECT))
+            {
+                TempData["Error"] = "You have been hushed by a powerful mage and cannot currently shout!";
+                TempData["SubError"] = "You will be able to shout again when the effect has worn off.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

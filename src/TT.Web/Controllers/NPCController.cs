@@ -11,6 +11,7 @@ using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Items.Services;
 using TT.Domain.Legacy.Procedures.BossProcedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
@@ -87,7 +88,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -192,7 +193,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-3);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
 
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -254,7 +255,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
@@ -319,7 +320,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
             var purchased = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
@@ -422,7 +423,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var merchant = PlayerProcedures.GetPlayerFromBotId(-10);
+            var merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
             var itemBeingSold = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = id });
 
             // assert that player does own this
@@ -645,11 +646,11 @@ namespace TT.Web.Controllers
             else if (question == "psychos")
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
-                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
-                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
-                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
-                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full" && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
+                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
+                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
+                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
+                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
+                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
 
                 if (psychoCount + fierceCount + wrathfulCount + loathfulCount + soullessCount > 0)
                 {
@@ -810,6 +811,69 @@ namespace TT.Web.Controllers
                 ViewBag.Speech = output;
 
             }
+            else if (question == "bounties")
+            {
+                var bounties = BountyProcedures.OutstandingBounties();
+                if (bounties == null || bounties.IsEmpty())
+                {
+                    ViewBag.Speech = "\"I've not heard of anyone in town currently being sought by the authorities.\"";
+                }
+                else
+                {
+                    string summary = "";
+
+                    foreach (var bounty in bounties.OrderByDescending(b => b.CurrentReward))
+                    {
+                        summary += $"<li>There is a reward of up to <b>{bounty.CurrentReward} arpeyjis</b> to anybody who turns <b>{bounty.PlayerName}</b> into a <b>{bounty.Form?.FriendlyName}</b> by the end of turn {bounty.ExpiresTurn - 1}.</li>";
+                    }
+                    ViewBag.Speech = $"There are a number of wanted posters all over town.  The ones I remember are:<ul class=\"listdots\">{summary}</ul>";
+                }
+            }
+            else if (question == "challenge")
+            {
+                var challenge = ChallengeProcedures.CurrentChallenge(me);
+                if (challenge == null)
+                {
+                    var message = "You haven't yet been set any challenges.";
+                    var whyNotTry = "";
+
+                    if (JokeShopProcedures.IsJokeShopActive())
+                    {
+                        whyNotTry = "  If you're after a challenge then try seeking out the Cursed Joke Shop.  Many people believe it isn't real, others swear blind they've been there.  One thing's for sure, if it does exist it's a place unlike any other in Sunnyglade and you should be very careful what you do there!";
+                    }
+
+                    ViewBag.Speech = $"\"{message}{whyNotTry}\"";
+                }
+                else
+                {
+                    string summary = "I hear you have been set a challenge by some tormented interdimensional spirits.<br /><br />What you need to do is:<ul class=\"listdots\">";
+
+                    foreach (var criterion in challenge.Criteria)
+                    {
+                        summary += $"<li>{criterion}</li>";
+                    }
+
+                    summary += $"</ul>If you succeed you will be handsomely rewarded with <b>{challenge.Reward}</b>.<br /><br/>";
+
+                    if (!challenge.Penalty.IsNullOrEmpty())
+                    {
+                        summary += $"But if you fail, those mean spirits will inflict a <b>penalty of {challenge.Penalty}</b> upon you!<br /><br />";
+                    }
+
+                    summary += $"To claim victory in this challenge you must present yourself for judgement at the Joke Shop <b>by the end of turn {challenge.ByEndOfTurn}</b>.  ";
+
+                    if (challenge.Satisfied(me))
+                    {
+                        summary += "It looks to me like you're most of the way there, if you can get to the Joke Shop in time.";
+                    }
+                    else
+                    {
+                        summary += "In my opinion you still have a lot of work to do before you have any hope of claiming that reward.";
+                    }
+
+                    ViewBag.Speech = $"{summary}<br /><br />Good luck - I think you might need it!";
+                }
+            }
 
             return View(MVC.NPC.Views.TalkToBartender);
         }
@@ -864,7 +928,7 @@ namespace TT.Web.Controllers
         {
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            var fae = PlayerProcedures.GetPlayerFromBotId(-6);
+            var fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
 
             try
             {

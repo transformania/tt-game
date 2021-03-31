@@ -91,6 +91,30 @@ namespace TT.Tests.Players.Commands
         }
 
         [Test]
+        public void can_move_as_animate_with_direction_override()
+        {
+            Assert.That(() => DomainRegistry.Repository.Execute(new Move {PlayerId = 50, destination = destination, Direction = "East"}),
+                Throws.Nothing);
+
+            Assert.That(
+                DataContext.AsQueryable<LocationLog>()
+                    .First(l => l.dbLocationName == LocationsStatics.STREET_200_MAIN_STREET).Message,
+                Is.EqualTo("John Doe left toward Carolyne's Coffee Shop (Patio)")); // Moved from
+
+            Assert.That(DataContext.AsQueryable<LocationLog>().First(l => l.dbLocationName == destination).Message,
+                Is.EqualTo("John Doe entered from Street: 200 Main Street")); // Moved to
+
+            Assert.That(DataContext.AsQueryable<PlayerLog>().First(p => p.Owner.Id == 50).Message,
+                Is.EqualTo("You moved <b>East</b>."));
+
+            Assert.That(player.Location, Is.EqualTo(destination));
+            
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+                Is.EqualTo(89));
+        }
+
+
+        [Test]
         public void can_move_as_animal()
         {
             player = new PlayerBuilder()

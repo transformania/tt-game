@@ -13,6 +13,7 @@ namespace TT.Domain.ViewModels
         public ItemDetail Item { get; set; }
         public PlayerFormViewModel WornBy { get; set; }
         public string AtLocation { get; set; }
+        public string PortraitUrl {  get; set; }
         public bool HasNewMessages { get; set; }
         public int UnreadMessageCount { get; set; }
         public IEnumerable<LocationLogDetail> LocationLog { get; set; }

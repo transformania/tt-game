@@ -10,6 +10,7 @@
         public string Gender { get; set; }
         public string MobilityType { get; set; }
         public int? ItemSourceId { get; set; }
+        public int? AltSexFormSourceId { get; set; }
         public string PortraitUrl { get; set; }
         public string SecondaryPortraitUrl { get; set; }
         public string TertiaryPortraitUrl { get; set; }

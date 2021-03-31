@@ -29,22 +29,22 @@ namespace TT.Domain.Procedures
         private const string Psycho9MName = "botform_psychopathic_spellslinger_male_9";
         private const string Psycho9FName = "botform_psychopathic_spellslinger_male_9";
 
-        private const int Psycho1MId = 13;
-        private const int Psycho1FId = 14;
-        private const int Psycho3MId = 837;
-        private const int Psycho3FId = 838;
-        private const int Psycho5MId = 839;
-        private const int Psycho5FId = 840;
-        private const int Psycho7MId = 841;
-        private const int Psycho7FId = 842;
-        private const int Psycho9MId = 843;
-        private const int Psycho9FId = 844;
+        public const int Psycho1MId = 13;
+        public const int Psycho1FId = 14;
+        public const int Psycho3MId = 837;
+        public const int Psycho3FId = 838;
+        public const int Psycho5MId = 839;
+        public const int Psycho5FId = 840;
+        public const int Psycho7MId = 841;
+        public const int Psycho7FId = 842;
+        public const int Psycho9MId = 843;
+        public const int Psycho9FId = 844;
 
-        private const int PsychopathicForLevelOneEffectSourceId = 19;
-        private const int PsychopathicForLevelThreeEffectSourceId = 20;
-        private const int PsychopathicForLevelFiveEffectSourceId = 21;
-        private const int PsychopathicForLevelSevenEffectSourceId = 22;
-        private const int PsychopathicForLevelNineEffectSourceId = 23;
+        public const int PsychopathicForLevelOneEffectSourceId = 19;
+        public const int PsychopathicForLevelThreeEffectSourceId = 20;
+        public const int PsychopathicForLevelFiveEffectSourceId = 21;
+        public const int PsychopathicForLevelSevenEffectSourceId = 22;
+        public const int PsychopathicForLevelNineEffectSourceId = 23;
 
         private static Tuple<int, string> GetPsychoFormFromLevelAndSex(int level, string sex)
         {
@@ -249,17 +249,22 @@ namespace TT.Domain.Procedures
                             {
                                 ItemProcedures.DropItem(i.Id);
 
+                                var name = "a";
+
+                                if (i.FormerPlayer != null)
+                                {
+                                    name = "<b>" + i.FormerPlayer.FullName + "</b> the";
+                                }
+
                                 if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> released <b>" + i.FormerPlayer.FullName +
-                                        "</b> the pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> released " + name + " pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                                 else
                                 {
                                     LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.FormerPlayer.FullName +
-                                        "</b> the <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                        "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                 }
                             }
                         }
@@ -410,7 +415,7 @@ namespace TT.Domain.Procedures
             {
                 var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
 
-                var rand = new Random(personAttackin.LastName.GetHashCode());
+                var rand = new Random(personAttackin.LastName.GetHashCode() + PvPStatics.LastGameTurn);
                 var roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
 
                 var selectedSkill = myskills.ElementAt((int)roll);
@@ -434,10 +439,23 @@ namespace TT.Domain.Procedures
                 {
                     AIProcedures.CounterAttack(personAttacking, bot);
                 }
-                else if (bot.FirstName.Contains("Soulless "))
+                else if (bot.FirstName.Contains("Soulless ") || bot.FirstName.Contains("Evil "))
                 {
                     AIProcedures.CounterAttack(personAttacking, bot);
                     AIProcedures.CounterAttack(personAttacking, bot);
+                }
+                else if (bot.FirstName.Contains("Ruthless "))
+                {
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                }
+                else if (bot.FirstName.Contains("Eternal "))
+                {
+                    for (int i = 0; i < new Random().Next(3, 6); i++)
+                    {
+                        AIProcedures.CounterAttack(personAttacking, bot);
+                    }
                 }
 
                 var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
@@ -521,7 +539,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string MoveTo(Player bot, string locationDbName, int distance)
+        public static string MoveTo(Player bot, string locationDbName, int distance, Action<Player, string> playerEnteredTile = null)
         {
             var botLocation = bot.dbLocationName;
 
@@ -540,6 +558,8 @@ namespace TT.Domain.Procedures
                 return botLocation;
             }
 
+            var botName = bot.FirstName + " " + bot.LastName;
+
             var nextTileIndex = 0;
             var nextTile = botLocation;
             var nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
@@ -554,10 +574,13 @@ namespace TT.Domain.Procedures
                 nextTile = pathTiles[nextTileIndex++];
                 nextTileName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == nextTile).Name;
 
-                var botName = bot.FirstName + " " + bot.LastName;
-
                 LocationLogProcedures.AddLocationLog(currentTile, botName + " left toward " + nextTileName);
                 LocationLogProcedures.AddLocationLog(nextTile, botName + " entered from " + currentTileName);
+
+                if (playerEnteredTile != null)
+                {
+                    playerEnteredTile(bot, nextTile);
+                }
             }
 
             return nextTile;

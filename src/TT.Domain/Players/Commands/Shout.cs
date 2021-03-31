@@ -1,8 +1,10 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
+using TT.Domain.Effects.Entities;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Exceptions;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
 
@@ -32,6 +34,16 @@ namespace TT.Domain.Players.Commands
 
                 if (player.ShoutsRemaining <= 0)
                     throw new DomainException("You can only shout once per turn.");
+
+                var hushed = ctx.AsQueryable<Effect>()
+                                    .Where(e => e.EffectSource.Id == CharacterPrankProcedures.HUSHED_EFFECT &&
+                                                e.Owner.Id == player.Id &&
+                                                e.Duration > 0)
+                                    .Any();
+
+                if (hushed)
+                    throw new DomainException("You have been hushed and cannot currently shout.");
+
 
                 Message = Message.Replace("<", "&lt;").Replace(">", "&gt;"); // remove suspicious characters
 

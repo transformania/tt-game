@@ -108,6 +108,10 @@ namespace TT.Domain.Procedures
 
         // Temporary
         public const string Stat__ItemPetInteractions = "item_pet_interaction";
+        public const string Stat__DiceGameScore = "dice_game";
+        public const string Stat__BountyCount = "bounty_count";
+        public const string Stat__BountiesClaimed = "bounties_claimed";
+        public const string Stat__ChallengesPassed = "challenges_passed";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -681,8 +685,51 @@ namespace TT.Domain.Procedures
                     Active = true,
                     ResetsOnReroll = false
                 }
-            }
+            },
 
+            {
+                Stat__DiceGameScore,
+                new StatsDetailsMap{
+                    FriendlyName="High Roller",
+                    Description="Score from the Joke Shop dice game",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+
+            {
+                Stat__BountyCount,
+                new StatsDetailsMap{
+                    FriendlyName="Most Wanted",
+                    Description="Times a bounty has been placed on their head",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__BountiesClaimed,
+                new StatsDetailsMap{
+                    FriendlyName="Bounty Hunter",
+                    Description="Amount earned by claiming bounties",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = true
+                }
+            },
+
+            {
+                Stat__ChallengesPassed,
+                new StatsDetailsMap{
+                    FriendlyName="Challenging Opponent",
+                    Description="Number of challenges completed",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
 
             };
 

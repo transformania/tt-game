@@ -297,6 +297,17 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static bool PlayerHasCompletedQuest(Player player, int questId)
+        {
+            IQuestRepository questRepo = new EFQuestRepository();
+            var matchingQuests = questRepo.QuestPlayerStatuses.Where(q => q.PlayerId == player.Id &&
+                                                                          q.QuestId == questId &&
+                                                                          q.Outcome == (int)QuestStatics.QuestOutcomes.Completed);
+
+            return matchingQuests.Any();
+        }
+
+
         /// <summary>
         /// Returns true if a connection is available to the player to take.  
         /// </summary>

@@ -39,6 +39,12 @@ namespace TT.Domain.Procedures
             IItemRepository itemRep = new EFItemRepository();
 
             var inanimateMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+
+            if (inanimateMe == null)
+            {
+                return "";
+            }
+
             var meItem = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMe.Id);
             var myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
@@ -253,6 +259,7 @@ namespace TT.Domain.Procedures
                 inanimateMe.IsPermanent = true;
                 itemRep.SaveItem(inanimateMe);
                 DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = me.Id});
+                DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = me.Id, IgnoreRunes = false});
                 resultMessage += "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
             }
 
@@ -316,6 +323,11 @@ namespace TT.Domain.Procedures
 
             var dbPlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
 
+            if (dbPlayerItem == null)
+            {
+                return "Cannot struggle - no player item";
+            }
+
             if (dbPlayerItem.Owner != null)
             {
                 var owner = PlayerProcedures.GetPlayer(dbPlayerItem.Owner.Id);
@@ -368,7 +380,6 @@ namespace TT.Domain.Procedures
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;
                 dbPlayer.Mana = dbPlayer.MaxHealth / 3;
                 playerRepo.SavePlayer(dbPlayer);
-
 
                 // drop any runes embedded on the player-item, or return them to the former owner's inventory
                 DomainRegistry.Repository.Execute(new UnbembedRunesOnItem {ItemId = dbPlayerItem.Id});

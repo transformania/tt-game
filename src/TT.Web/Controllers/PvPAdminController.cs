@@ -23,6 +23,7 @@ using TT.Domain.Players.Queries;
 using TT.Domain.World.Commands;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
+using TT.Domain.Legacy.Procedures.JokeShop;
 
 namespace TT.Web.Controllers
 {
@@ -206,6 +207,7 @@ namespace TT.Web.Controllers
             data.TurnNumber = input.TurnNumber;
             data.RoundDuration = input.RoundDuration;
             data.ChaosMode = input.ChaosMode;
+            data.JokeShop = input.JokeShop;
             data.TestServer = input.TestServer;
             data.RoundStartsAt = input.RoundStartsAt;
             data.TurnTimeConfiguration = input.TurnTimeConfiguration;
@@ -214,6 +216,8 @@ namespace TT.Web.Controllers
 
             PvPStatics.ChaosMode = data.ChaosMode;
             PvPStatics.RoundDuration = data.RoundDuration;
+
+            JokeShopProcedures.SetJokeShopActive(data.JokeShop);
 
             if (TurnTimesStatics.IsValidConfiguration(data.TurnTimeConfiguration))
             {
@@ -1921,7 +1925,7 @@ namespace TT.Web.Controllers
                         {
                             MembershipId = player.MembershipId,
                             GameMode = (int)GameModeStatics.GameModes.Superprotection,
-                            InChaos = true
+                            Force = true
                         });
 
                         if(player.Mobility == PvPStatics.MobilityFull)

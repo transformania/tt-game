@@ -22,6 +22,7 @@ namespace TT.Domain.Models
         public string GameNewsDate { get; set; }
         public bool TestServer { get; set; }
         public bool ChaosMode { get; set; }
+        public bool JokeShop { get; set; }
         public int RoundDuration { get; set; }
         public bool InbetweenRoundsNonChaos { get; set; }
         public DateTime? RoundStartsAt { get; set; }

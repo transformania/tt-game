@@ -205,15 +205,19 @@ namespace TT.Domain.Players.Entities
 
             if (this.Item != null)
             {
-                if (this.Item.Owner != null)
+                if (this.Item.Owner != null && !this.Item.Owner.Location.IsNullOrEmpty())
                 {
                     this.Location = this.Item.Owner.Location;
                 }
-                else
+                else if (!this.Item.dbLocationName.IsNullOrEmpty())
                 {
                     this.Location = this.Item.dbLocationName;
                 }
+            }
 
+            if (this.Location.IsNullOrEmpty())
+            {
+                this.Location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
             }
 
             FormSource = form;
@@ -614,7 +618,7 @@ namespace TT.Domain.Players.Entities
             return logBox;
         }
 
-        public MoveLogBox MoveTo(string destination)
+        public MoveLogBox MoveTo(string destination, string direction = null)
         {
             var currentLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == this.Location);
             var nextLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
@@ -622,7 +626,7 @@ namespace TT.Domain.Players.Entities
             var leavingMessage = this.GetFullName() + " left toward " + nextLocation.Name;
             var enteringMessage = this.GetFullName() + " entered from " + currentLocation.Name;
 
-            var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
+            var playerLog = direction == null ? $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>." : $"You moved <b>{direction}</b>.";
 
             var sneakLevel = this.CalculateSneakLevel();
             if (sneakLevel > 0)
@@ -741,16 +745,19 @@ namespace TT.Domain.Players.Entities
 
         }
 
-        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource)
+        public LogBox TurnIntoItem(Player attacker, FormSource formSource, ItemSource itemSource, bool dropItems, bool activePlayer)
         {
             var logbox = new LogBox();
             this.FormSource = formSource;
             this.Mobility = formSource.MobilityType;
 
-            var newItem = Item.CreateFromPlayer(this, itemSource, attacker);
+            var newItem = Item.CreateFromPlayer(this, itemSource, attacker, activePlayer);
             this.Item = newItem;
 
-            this.DropAllItems();
+            if (dropItems)
+            {
+                this.DropAllItems();
+            }
 
             if (attacker == null)
             {
@@ -758,7 +765,7 @@ namespace TT.Domain.Players.Entities
             }
             else
             {
-                if (attacker.HasRoomForNewItem(newItem))
+                if (attacker.Id != this.Id && attacker.HasRoomForNewItem(newItem))
                 {
                     attacker.GiveItem(newItem);
                     newItem.ChangeOwner(attacker);

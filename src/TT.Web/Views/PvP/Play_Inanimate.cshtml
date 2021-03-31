@@ -43,7 +43,7 @@
                     <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.Player.Covenant}"))" target="_blank">Chat with my covenant</a></li>
                 }
 
-                if (Model.Item.Owner != null)
+                if (Model.Item?.Owner != null)
                 {
                     <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.Item.Owner.Id}"))" target="_blank">Chat with my owner</a></li>
                 }
@@ -85,7 +85,10 @@
         </ul>
     </li>
 
-    <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
+    @if (Model.Item != null)
+    {
+        <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
+    }
 }
 
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)
@@ -112,76 +115,83 @@
 <div class="containerInner">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.ItemSource.PortraitUrl);">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.PortraitUrl);">
                 @HtmlHelpers.PrintOwnerSubPortrait(Model.WornBy)
                 <span style="float: right; margin: 10px;" class="icon">
-                    @HtmlHelpers.PrintItemTypeIcon(Model.Item.ItemSource.ItemType)
+                    @HtmlHelpers.PrintItemTypeIcon(Model.Item?.ItemSource.ItemType)
                 </span>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>
                 @{
-                    if (Model.Item.SoulboundToPlayer == null)
+                    if (Model.Item == null)
                     {
+                        <span>You are a lost item, forgotten by the world and everyone in it.</span>
+                    }
+                    else
+                    {
+                        if (Model.Item.SoulboundToPlayer == null)
+                        {
+                            if (!Model.Item.IsPermanent)
+                            {
+                                <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, or at least it used to be.</span>
+                            }
+                            else if (Model.Item.Owner == null)
+                            {
+                                <span>You have hazy memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
+
+                                if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                                {
+                                    <span>But that's just silly - items don't have names.</span>
+                                }
+                                else
+                                {
+                                    <span>Oh how you miss the person who once called you that.</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>Your owner sometimes refers to you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
+
+                                if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                                {
+                                    <span>What a strange thing to be called!</span>
+                                }
+                                else
+                                {
+                                    <span>It's the closest thing you have to a name now.</span>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                            {
+                                <span>You once were called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but what use would you have for a name now that the last of your humanity has gone?</span>
+                            }
+                            else
+                            {
+                                <span>Your forever owner secretly thinks of you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but you don't really have a name.  You don't need one.  All you need is to be there for your owner.</span>
+                            }
+                        }
+
                         if (!Model.Item.IsPermanent)
                         {
-                            <span>Your name is <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, or at least it used to be.</span>
+                            <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
                         }
-                        else if (Model.Item.Owner == null)
+                        else
                         {
-                            <span>You have hazy memories of once being called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
+                            <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their belonging as a level <b>@Model.Item.Level @Model.Form.FriendlyName</b>.</span>
 
-                            if (Model.Item.FormerPlayer.IsUsingOriginalName())
+                            if (Model.Item.SoulboundToPlayer != null)
                             {
-                                <span>But that's just silly - items don't have names.</span>
+                                @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.Item)
                             }
                             else
                             {
-                                <span>Oh how you miss the person who once called you that.</span>
+                                <span>You have <a href="@Url.Action(MVC.Settings.Settings())">@(Model.Item.ConsentsToSoulbinding ? "consented" : "not consented")</a> to let your current or future owner soulbind you.</span>
                             }
-                        }
-                        else
-                        {
-                            <span>Your owner sometimes refers to you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>.</span>
-
-                            if (Model.Item.FormerPlayer.IsUsingOriginalName())
-                            {
-                                <span>What a strange thing to be called!</span>
-                            }
-                            else
-                            {
-                                <span>It's the closest thing you have to a name now.</span>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (Model.Item.FormerPlayer.IsUsingOriginalName())
-                        {
-                            <span>You once were called <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but what use would you have for a name now that the last of your humanity has gone?</span>
-                        }
-                        else
-                        {
-                            <span>Your forever owner secretly thinks of you as <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Player.Id))">@Model.Player.GetFullName()</a>, but you don't really have a name.  You don't need one.  All you need is to be there for your owner.</span>
-                        }
-                    }
-
-                    if (!Model.Item.IsPermanent)
-                    {
-                        <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
-                    }
-                    else
-                    {
-                        <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their belonging as a level <b>@Model.Item.Level @Model.Form.FriendlyName</b>.</span>
-
-                        if (Model.Item.SoulboundToPlayer != null)
-                        {
-                            @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.Item)
-                        }
-                        else
-                        {
-                            <span>You have <a href="@Url.Action(MVC.Settings.Settings())">@(Model.Item.ConsentsToSoulbinding ? "consented" : "not consented")</a> to let your current or future owner soulbind you.</span>
                         }
                     }
                 }
@@ -199,7 +209,7 @@
             <p>@Model.Form.Description</p>
             <br>
             @{
-                if (Model.Item.Owner == null)
+                if (Model.Item?.Owner == null)
                 {
                     <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
                 }
@@ -250,7 +260,7 @@
                     </p>
                 }
 
-                if (!Model.Item.IsPermanent)
+                if (Model.Item != null && !Model.Item.IsPermanent)
                 {
                     <p class="center-block">
                         <span class="place">Struggle free from this form</span>

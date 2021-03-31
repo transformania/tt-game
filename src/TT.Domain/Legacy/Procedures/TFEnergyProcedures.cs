@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
@@ -409,6 +410,7 @@ namespace TT.Domain.Procedures
             if (targetForm.MobilityType == PvPStatics.MobilityFull && healthProportion <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
             {
                 target = PerformAnimateTransformation(output, playerRepo, targetForm, target, attacker);
+                BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
             // target is turning into an inanimate or animal form, both are endgame
@@ -416,6 +418,7 @@ namespace TT.Domain.Procedures
                      (targetForm.MobilityType == PvPStatics.MobilityPet && healthProportion <= PvPStatics.PercentHealthToAllowAnimalFormTF))
             {
                 PerformInanimateTransformation(victim, output, playerRepo, targetForm, target, attacker);
+                BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
             // mind control

@@ -21,7 +21,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int KissSkillSourceId = 528;
         public const int CureEffectSourceId = 33;
         public const int RegularTFSpellSourceId = 532;
-        private const int RegularBimboFormSourceId = 232;
+        public const int RegularBimboFormSourceId = 232;
         public const int CureItemSourceId = 143;
         public const int BimboBossFormSourceId = 233;
 

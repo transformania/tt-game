@@ -21,6 +21,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static readonly int[] CATS_AND_NEKOS = { 39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202 };
         public static readonly int[] DOGS = { 34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187 };
         public static readonly int[] DRONES = { 715, 930, 951, 1039, 1050 };
+        public static readonly int[] FAIRIES = { 210, 257, 389, 531, 541, 575, 582, 590, 639, 701, 710, 771, 773, 791, 833, 846, 895, 1034, 1093, 1100, 1110, 1205 };
         public static readonly int[] GHOSTS = { 300, 456, 633, 1153, 1210 };
         public static readonly int[] MAIDS = { 65, 205, 305, 348, 457, 499, 514, 591, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207 };
         public static readonly int[] MANA_FORMS = { 834, 1149 };
@@ -28,6 +29,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static readonly int[] RODENTS = { 70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077 };
         public static readonly int[] SHEEP = { 204, 950, 1022, 1035, 1198 };
         public static readonly int[] STRIPPERS = { 153, 719, 880 };
+        public static readonly int[] THIEVES = { 143, 149, 271, 278, 279 };
         public static readonly int[] TREES = { 50, 741 };
 
         // Effect sources supporting the Joke Shop mechanics
@@ -302,6 +304,18 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
+            // Extra pranks if a boss is up
+            if (rand.Next(100) == 0)
+            {
+                var message = CharacterPrankProcedures.BossPrank(player, rand);
+
+                if (message != null)
+                {
+                    return message;
+                }
+            }
+
+            // Main pranks
             var roll = rand.Next(100);
 
             if (roll < 65)  // 65%

@@ -5,10 +5,13 @@ using System.Linq.Dynamic;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
+using TT.Domain.World.Queries;
 
 namespace TT.Domain.Legacy.Procedures.JokeShop
 {
@@ -1070,6 +1073,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return false;
             }
 
+            if (player.FormSourceId == formSourceId)
+            {
+                return false;
+            }
+
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
             DomainRegistry.Repository.Execute(new ReadjustMaxes
             {
@@ -1141,6 +1149,90 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             };
 
             inanimXpRepo.SaveInanimateXP(xp);
+        }
+
+        public static string BossPrank(Player player, Random rand)
+        {
+            rand = rand ?? new Random();
+
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+
+            if (world.Boss_Bimbo == AIStatics.ACTIVE && TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
+            {
+                return "U hear there's a liek supes smart syentist in town who u hav totes got 2 c!!!";
+            }
+
+            else if (world.Boss_Donna == AIStatics.ACTIVE)
+            {
+                if (rand.Next(4) == 0 && TryAnimateTransform(player, 684))  // Farmer's daughter
+                {
+                    return "You hear a voice calling you from the streets, demanding you go to the ranch.  There's so much work to be done and you must do as you're told.  Somebody needs to take care of the farm and prepare the enclosures for all the new animals!";
+                }
+                else
+                {
+                    int[] farmAnimalishSubs = { 34, 40, 123, 204, 294, 431, 455, 637, 924, 932, 950, 961, 1007, 1035, 1043, 1074, 1123 };
+
+                    if (CharacterPrankProcedures.TryAnimateTransform(player, farmAnimalishSubs[rand.Next(farmAnimalishSubs.Count())]))
+                    {
+                        return "There is a great power out on the streets, calling to your animal instincts.  There is a place for you on the ranch, and a simpler life.  All you need to do is listen to that voice, join your kind on the farm, and obey your Mistress...";
+                    }
+                }
+            }
+
+            else if (world.Boss_Faeboss == AIStatics.ACTIVE)
+            {
+                var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
+
+                if (CharacterPrankProcedures.TryAnimateTransform(player, forms[rand.Next(forms.Count())]))
+                {
+                    return "You run into the shop and slam the door behind you, your back pressed to it as you pant heavily, narrowly escaping the abject terror of the purge out on the streets.  The distant sound of piercing crackles grows ever closer, each fizzling scream a soul lost to the mad conquest of a fallen fairy.  You can't keep running.  It's time to pick a side:  Are you on the side of light, or the side or dark?";
+                }
+            }
+
+            else if (world.Boss_MotorcycleGang == AIStatics.ACTIVE && TryAnimateTransform(player, BossProcedures_MotorcycleGang.BikerFollowerFormSourceId))
+            {
+                return "You hear the engines revving up outside.. they're waiting for you!  You have to go now - or they might leave without you!";
+            }
+
+            else if (world.Boss_Sisters == AIStatics.ACTIVE && TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
+            {
+                if (rand.Next(2) == 0 && TryAnimateTransform(player, BossProcedures_Sisters.BimboSpellFormSourceId))
+                {
+                    return "Like OMG!!  Those stoopid nerds fink there silly brains r eva sooo important!! Why do they spend all dat time studyin when it's sooo much more fun lookin hawt?!?  U just hav 2 flutter ur cute eyelashes n dat body will get u nythin u want!!";
+                }
+                else if (TryAnimateTransform(player, BossProcedures_Sisters.NerdSpellFormSourceId))
+                {
+                    return "Those dumb bimbos don't know a thing!  It's time to show them brains win out over beauty every time!";
+                }
+            }
+
+            else if (world.Boss_Thief == AIStatics.ACTIVE)
+            {
+
+                if (rand.Next(2) == 0)
+                {
+                    var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
+
+                    if (CharacterPrankProcedures.TryAnimateTransform(player, forms[rand.Next(forms.Count())]))
+                    {
+                        return "Ah, the experts are in town!  And every good thief needs an accomplice!  But you want to become the master!";
+                    }
+                }
+                else
+                {
+                    int[] richForms = { 141, 234, 497, 1151 };
+
+                    if (CharacterPrankProcedures.TryAnimateTransform(player, richForms[rand.Next(richForms.Count())]))
+                    {
+                        PlayerProcedures.GiveMoneyToPlayer(player, 300 + rand.Next(401));
+                        return "Hold onto your gold!  There are sneaky thieves about who might want it for themselves!!";
+                    }
+                }
+            }
+
+            // Skip Vaentine/Krampus for now
+
+            return null;
         }
 
         #endregion

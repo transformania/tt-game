@@ -325,7 +325,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 inventorySlots++;
             }
 
-            if (itemsEquipped <= inventorySlots)
+            if (itemsEquipped >= inventorySlots)
             {
                 return null;
             }

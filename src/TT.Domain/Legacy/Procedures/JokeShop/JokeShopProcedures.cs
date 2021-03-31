@@ -299,7 +299,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             // Decide whether this is a regular or a prank search
-            if (rand.Next(100) < 85)  // Normal search 85% of the time, else attempt a prank
+            if (rand.Next(100) < 80)  // Normal search 80% of the time, else attempt a prank
             {
                 return null;
             }
@@ -326,11 +326,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 return MischievousPrank(player, rand);
             }
-            else if (roll < 96)  // 6%
+            else if (roll < 97)  // 7%
             {
                 return MeanPrank(player, rand);
             }
-            else  // 4%
+            else  // 3%
             {
                 return BanCharacter(player);
             }

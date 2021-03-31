@@ -132,7 +132,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             var reducesOrIncreases = (delta < 0) ? "reduces" : "increases";
-            return $"The foreboding atmostphere in the shop {reducesOrIncreases} your willpower by {delta}!";
+            return $"The foreboding atmostphere in the shop {reducesOrIncreases} your willpower by {Math.Abs(delta)}!";
         }
 
         public static string ChangeMana(Player player, int amount)
@@ -157,7 +157,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             var reducingOrIncreasing = (delta < 0) ? "reducing" : "increasing";
-            return $"The room is charged with magic - you can feel it arcing between all the enchanted items.  You find yourself caught in one of these discharges, {reducingOrIncreasing} your mana by {delta}!";
+            return $"The room is charged with magic - you can feel it arcing between all the enchanted items.  You find yourself caught in one of these discharges, {reducingOrIncreasing} your mana by {Math.Abs(delta)}!";
         }
 
         private static string ChangeMoney(Player player, int amount)
@@ -182,7 +182,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (delta < 0)
             {
-                return $"The antique cash register on the counter rattles and jangles.  The next thing you know it's pinched {delta} of your Arpeyjis!";
+                return $"The antique cash register on the counter rattles and jangles.  The next thing you know it's pinched {-delta} of your Arpeyjis!";
             }
             else
             {
@@ -216,7 +216,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else
             {
-                return $"A mana quagmire slows you down, taking {delta} of your action points!";
+                return $"A mana quagmire slows you down, taking {-delta} of your action points!";
             }
         }
 
@@ -246,7 +246,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             var increaseOrDecrease = (delta < 0) ? "decrease" : "increase";
-            return $"The transdimensional store momentarily touches down deep below the streets.  You feel your dungeon points {increaseOrDecrease} by {delta}";
+            return $"The transdimensional store momentarily touches down deep below the streets.  You feel your dungeon points {increaseOrDecrease} by {Math.Abs(delta)}";
         }
 
         public static string RareFind(Player player, Random rand = null)
@@ -966,7 +966,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (delta < 0)
             {
-                return $"Your skill and dexterity is amplified by the forces of the store, making you able to conduct {delta} more attacks this turn!";
+                return $"Your skill and dexterity is amplified by the forces of the store, making you able to conduct {-delta} more attacks this turn!";
             }
             else 
             {
@@ -1023,7 +1023,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             playerRepo.SavePlayer(player);
 
             var moreOrFewer = (delta < 0) ? "more" : "fewer";
-            return $"A flurry of coconut pieces flutter down inside a snowglobe on one of the shelves.  In the background is a starry sky.  You decide to make a wish, and now you are able to use {delta} {moreOrFewer} items this turn!";
+            return $"A flurry of coconut pieces flutter down inside a snowglobe on one of the shelves.  In the background is a starry sky.  You decide to make a wish, and now you are able to use {Math.Abs(delta)} {moreOrFewer} items this turn!";
         }
 
         private static string BlockItemUses(Player player)

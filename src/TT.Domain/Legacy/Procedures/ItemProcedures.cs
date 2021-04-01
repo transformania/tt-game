@@ -639,7 +639,7 @@ namespace TT.Domain.Procedures
         {
             var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerId });
 
-            return item.Owner == null ? null : PlayerProcedures.GetPlayerFormViewModel(item.Owner.Id);
+            return item?.Owner == null ? null : PlayerProcedures.GetPlayerFormViewModel(item.Owner.Id);
         }
 
         public static (bool, string) UseItem(int itemId, string membershipId)

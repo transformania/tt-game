@@ -2324,15 +2324,15 @@ namespace TT.Web.Controllers
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if ((playerLookedAt.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
+            if ((playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Player.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerLookedAt.Player.Id });
 
-                if (playerLookedAt.Mobility == PvPStatics.MobilityInanimate)
+                if (playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate)
                 {
                     ViewBag.ImgUrl = "itemsPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }
-                else if (playerLookedAt.Mobility == PvPStatics.MobilityPet)
+                else if (playerLookedAt.Player.Mobility == PvPStatics.MobilityPet)
                 {
                     ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
                 }

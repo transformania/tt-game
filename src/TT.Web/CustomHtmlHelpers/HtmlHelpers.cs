@@ -283,12 +283,12 @@ namespace TT.Web.CustomHtmlHelpers
             var portraits = "portraits";
             var portraitUrl = owner.Form.PortraitUrl;
 
-            if (owner.Mobility == PvPStatics.MobilityInanimate)
+            if (owner.Player.Mobility == PvPStatics.MobilityInanimate)
             {
                 portraits = "itemsPortraits";
                 portraitUrl = ItemStatics.GetStaticItem(owner.Form.ItemSourceId.Value)?.PortraitUrl;
             }
-            else if (owner.Mobility == PvPStatics.MobilityPet)
+            else if (owner.Player.Mobility == PvPStatics.MobilityPet)
             {
                 portraits = "animalPortraits";
                 portraitUrl = ItemStatics.GetStaticItem(owner.Form.ItemSourceId.Value)?.PortraitUrl;

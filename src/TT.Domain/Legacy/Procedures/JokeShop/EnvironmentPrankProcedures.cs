@@ -614,6 +614,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static string TeleportToHostileNPC(Player player, bool attack, Random rand = null)
         {
             var targetFormSourceId = -1;
+            var minLevel = 4;
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
@@ -657,6 +658,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                           p.BotId == AIStatics.PsychopathBotId &&
                                                           p.Level <= player.Level)
                                               .OrderByDescending(p => p.Level).FirstOrDefault();
+                minLevel = 1;
             }
 
             if (npcPlayer == null)
@@ -685,9 +687,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var message = "The shop suddenly seems to connect with some evil force.  A vortex opens and you are pulled in towards the source of magic!";
+            var message = "The shop suddenly seems to connect with some evil force.  A vortex opens and you are pulled in towards the source of the magic!";
 
-            if (attack)
+            if (attack && player.Level >= minLevel)
             {
                 var spells = SkillProcedures.AvailableSkills(player, npcPlayer, true);
                 if (spells != null && spells.Any())

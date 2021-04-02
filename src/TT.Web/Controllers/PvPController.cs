@@ -2330,29 +2330,29 @@ namespace TT.Web.Controllers
 
                 if (playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate)
                 {
-                    ViewBag.ImgUrl = "itemsPortraits/" + playerItem.ItemSource.PortraitUrl;
+                    ViewBag.ImgUrl = "itemsPortraits/" + playerLookedAt.Form.PortraitUrl;
                 }
                 else if (playerLookedAt.Player.Mobility == PvPStatics.MobilityPet)
                 {
-                    ViewBag.ImgUrl = "animalPortraits/" + playerItem.ItemSource.PortraitUrl;
+                    ViewBag.ImgUrl = "animalPortraits/" + playerLookedAt.Form.PortraitUrl;
                 }
 
-                ViewBag.ItemId = playerItem.Id;
-                ViewBag.ItemLevel = playerItem.Level;
-                ViewBag.IsEquipped = playerItem.IsEquipped;
-                ViewBag.FormDescriptionItem = playerItem.ItemSource.Description;
-                ViewBag.ItemSkills = SkillStatics.GetItemSpecificSkills(playerItem.ItemSource.Id).ToList();
-                ViewBag.IsConsumable = (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) ||
-                                       (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Consumable);
+                ViewBag.ItemId = playerItem == null ? -1 : playerItem.Id;
+                ViewBag.ItemLevel = playerItem == null ? playerLookedAt.Player.Level : playerItem.Level;
+                ViewBag.IsEquipped = playerItem != null && playerItem.IsEquipped;
+                ViewBag.FormDescriptionItem = playerItem == null ? "This player is lost, forgotten by the world and everyone in it." : playerItem.ItemSource.Description;
+                ViewBag.ItemSkills = playerItem == null ? null : SkillStatics.GetItemSpecificSkills(playerItem.ItemSource.Id).ToList();
+                ViewBag.IsConsumable = (playerItem?.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) ||
+                                       (playerItem?.ItemSource.ItemType == PvPStatics.ItemType_Consumable);
 
                 MvcHtmlString consumableEffect = new MvcHtmlString("");
-                if (playerItem.ItemSource.GivesEffectSourceId != null)
+                if (playerItem?.ItemSource.GivesEffectSourceId != null)
                 {
                     consumableEffect = HtmlHelpers.GetEffectFriendlyName(playerItem.ItemSource.GivesEffectSourceId.Value);
                 }
                 ViewBag.ConsumableEffect = consumableEffect;
 
-                var owner = (playerItem.FormerPlayer == null) ? null : ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
+                var owner = (playerItem?.FormerPlayer == null) ? null : ItemProcedures.BeingWornBy(playerItem.FormerPlayer.Id);
                 var ownedByMe = owner != null && owner.Player.MembershipId == myMembershipId;
 
                 ViewBag.Owner = owner;
@@ -2364,18 +2364,18 @@ namespace TT.Web.Controllers
                     var secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
                     ViewBag.SecondsUntilUpdate = TurnTimesStatics.GetTurnLengthInSeconds() - (int)secondsSinceUpdate;
                     ViewBag.PlayerInteractionsRemain = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
-                    ViewBag.ItemInteractionsRemain = playerItem.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
+                    ViewBag.ItemInteractionsRemain = playerItem?.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
                 }
 
-                if (playerItem.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                if (playerItem?.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
-                    ViewBag.WornMessage = playerItem.Owner == null
+                    ViewBag.WornMessage = playerItem?.Owner == null
                         ? "This creature has not been tamed as is running around feral."
                         : "This creature has been tamed and is following their master.";
                 }
                 else
                 {
-                    ViewBag.WornMessage = playerItem.Owner == null
+                    ViewBag.WornMessage = playerItem?.Owner == null
                         ? "This item is not currently owned and is lying around available to be claimed by whoever comes across them."
                         : "This item is currently being carried and possibly worn by another player.";
                 }

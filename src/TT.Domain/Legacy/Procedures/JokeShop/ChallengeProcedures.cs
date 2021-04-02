@@ -483,7 +483,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 if (roll < 75)
                 {
                     var amount = (int)Math.Max(challenge.Difficulty * 15, 100);
-                    AddPenalty(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -amount); });
+                    AddPenalty(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -Math.Min(amount, p.Money)); });
                 }
                 else
                 {

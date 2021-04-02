@@ -996,16 +996,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert the player does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId) && targeted.BotId == AIStatics.ActivePlayerBotId)
+            // assert the player does not have the Back On Your Feet perk if the target is another player
+            if (targeted.BotId == AIStatics.ActivePlayerBotId && EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
                 TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer or a Butt Plug if you want to resume attacks on player-controlled targets.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert the target does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_BackOnYourFeetSourceId))
+            // assert the target does not have the Back On Your Feet perk if they are a player
+            if (targeted.BotId == AIStatics.ActivePlayerBotId && EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 TempData["Error"] = "The protective aura from your target's Back On Your Feet effect prevents you from casting this spell.";
                 return RedirectToAction(MVC.PvP.Play());

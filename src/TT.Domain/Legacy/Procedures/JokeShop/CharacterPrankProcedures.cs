@@ -694,7 +694,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
                 var inanimXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
-                inanimXpRepo.DeleteInanimateXP(inanimXP.Id);
+
+                if (inanimXP != null)
+                {
+                    inanimXpRepo.DeleteInanimateXP(inanimXP.Id);
+                }
             }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);

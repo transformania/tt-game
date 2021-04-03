@@ -594,7 +594,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            if (clone)
+            if (clone)  // Clone
             {
                 var victim = candidates[rand.Next(candidates.Count())];
 
@@ -608,7 +608,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 return $"You spot {victim.GetFullName()}.  Don't they look stunning?  Wouldn't you like to be like them?  \"As you wish,\" echoes an ephereal voice, seemingly hearing your innermost thoughts...";
             }
-            else
+            else if (PlayerCanBeCloned(player))  // Body swap
             {
                 // Find nearboy player with sufficient consent
                 Player victim = null;
@@ -619,7 +619,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var candidate = candidates[index];
 
                     if ((candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || JokeShopProcedures.PlayerHasBeenWarned(candidate)) &&
-                        PlayerCanBeCloned(player))
+                        PlayerCanBeCloned(candidate))
                     {
                         victim = candidate;
                     }
@@ -644,6 +644,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 return $"A contraption whirs up and the next thing you know your head is being sucked into some sort of funnel while your body finds itself bound in iron shackles and leather straps.  In no time you are being held firm against a wall, and the same seems to be happening to {victim.GetFullName()}!  You both start to shake violently as your bodies bulge, flatten and contort, the tubes connecting you pumping full of magical energies.  The whirring dies down and you are able to wriggle free.  You check to see whether {victim.GetFullName()} is OK, but both of you are shocked as you each come face-to-face with yourself!";
             }
+
+            return null;
         }
 
         public static void UndoTemporaryForm(int playerId)

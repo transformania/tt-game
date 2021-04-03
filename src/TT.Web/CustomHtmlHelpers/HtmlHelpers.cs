@@ -164,9 +164,9 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
+        public static string GetImagePath(PlayerFormViewModel player, bool thumb)
         {
-            var output = "/Images/PvP/portraits/";
+            var output = "portraits/";
             var strThumb = "";
             string strPortraitUrl = player.Form.PortraitUrl;
 
@@ -176,14 +176,14 @@ namespace TT.Web.CustomHtmlHelpers
                 if (staticItem != null)
                 {
                     strPortraitUrl = staticItem.PortraitUrl;
-    
+
                     if (staticItem.ItemType == PvPStatics.ItemType_Pet)
                     {
-                        output = "/Images/PvP/animalPortraits/";
+                        output = "animalPortraits/";
                     }
                     else
                     {
-                        output = "/Images/PvP/itemsPortraits/";
+                        output = "itemsPortraits/";
                     }
                 }
 
@@ -196,7 +196,13 @@ namespace TT.Web.CustomHtmlHelpers
             }
 
             output += strThumb + strPortraitUrl;
-            return new MvcHtmlString(output);
+            return output;
+        }
+
+        public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
+        {
+            string output = GetImagePath(player, thumb);
+            return new MvcHtmlString("/Images/PvP/" + output);
         }
 
         public static MvcHtmlString GetFormImageURL(string imageName, bool thumb = false)

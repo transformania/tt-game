@@ -2327,16 +2327,7 @@ namespace TT.Web.Controllers
             if ((playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Player.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {
                 var playerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerLookedAt.Player.Id });
-
-                if (playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate)
-                {
-                    ViewBag.ImgUrl = "itemsPortraits/" + playerLookedAt.Form.PortraitUrl;
-                }
-                else if (playerLookedAt.Player.Mobility == PvPStatics.MobilityPet)
-                {
-                    ViewBag.ImgUrl = "animalPortraits/" + playerLookedAt.Form.PortraitUrl;
-                }
-
+                ViewBag.ImgUrl = HtmlHelpers.GetImagePath(playerLookedAt, false);
                 ViewBag.ItemId = playerItem == null ? -1 : playerItem.Id;
                 ViewBag.ItemLevel = playerItem == null ? playerLookedAt.Player.Level : playerItem.Level;
                 ViewBag.IsEquipped = playerItem != null && playerItem.IsEquipped;

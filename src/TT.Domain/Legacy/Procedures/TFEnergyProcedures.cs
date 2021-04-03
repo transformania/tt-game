@@ -32,7 +32,7 @@ namespace TT.Domain.Procedures
             output.VictimLog += energyAmount;
 
             // Return early if victim is already in the target form
-            if (victim.FormSourceId == eventualForm.Id)
+            if (victim.FormSourceId == eventualForm.Id && victim.Mobility == eventualForm.MobilityType)
             {
                 var noTransformMessage = $"Since {victim.GetFullName()} is already in this form, the spell has no transforming effect.";
                 output.AttackerLog += noTransformMessage;

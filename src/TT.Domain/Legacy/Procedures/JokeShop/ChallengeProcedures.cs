@@ -613,7 +613,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var difficulty = 3;
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
-                challenge.ResourceUsed(RESOURCE_AP) == 0)
+                challenge.ResourceUsed(RESOURCE_LEVEL) == 0)
             {
                 var low = Math.Min(7, 2 + 5 * challenge.ByEndOfTurn / 2000);
                 var high = Math.Min(12, 5 + 7 * challenge.ByEndOfTurn / 2000);

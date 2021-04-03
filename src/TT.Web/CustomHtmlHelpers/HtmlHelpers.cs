@@ -192,7 +192,10 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + output + strThumb + strPortraitUrl)) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Images/PvP/" + output + strThumb + strPortraitUrl))
+                {
+                    strThumb = "";
+                }
             }
 
             output += strThumb + strPortraitUrl;

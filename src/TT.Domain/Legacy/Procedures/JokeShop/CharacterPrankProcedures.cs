@@ -688,6 +688,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
+            if (player.OriginalFormSourceId == player.FormSourceId)
+            {
+                return null;
+            }
+
             // Use chaos restore.  Should delete item & reset skills.  Self-restore, struggle restore and classic me do similar
             PlayerProcedures.InstantRestoreToBase(player);
 

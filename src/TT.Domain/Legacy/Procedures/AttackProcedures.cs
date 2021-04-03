@@ -199,6 +199,8 @@ namespace TT.Domain.Procedures
                         logs.VictimLog += "<b>Critical hit!</b>  ";
                     }
 
+                    var initialVictimHealth = victim.Health;
+
                     // check if there is a health damage aspect to this spell
                     if (skillBeingUsed.StaticSkill.HealthDamageAmount > 0)
                     {
@@ -262,12 +264,9 @@ namespace TT.Domain.Procedures
 
                         var totalTFEnergyModifier = criticalModifier * tfEnergyDamageModifierFromBonuses;
 
-                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(victim, attacker, skillBeingUsed, totalTFEnergyModifier);
-
-
+                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(victim, attacker, skillBeingUsed, totalTFEnergyModifier, initialVictimHealth);
                         logs.Add(tfEnergyResult);
-                        var formChangeLog = TFEnergyProcedures.RunFormChangeLogic(victim, skillBeingUsed.StaticSkill.Id, attacker.Id);
-                        logs.Add(formChangeLog);
+
                         result = logs.AttackerLog;
 
                     }

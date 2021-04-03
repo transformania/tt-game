@@ -14,18 +14,20 @@ namespace TT.Domain.Procedures
 {
     public static class TFEnergyProcedures
     {
-        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier)
+        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier, decimal victimHealthBefore)
         {
             var output = new LogBox();
             output.AttackerLog = "  ";
             output.VictimLog = "  ";
 
+            var victimMaxHealth = victim.MaxHealth;  // Remember this beofre any form change can affect it
+
             // Move old energy to pool, add pool energy to the current attack
-            decimal totalEnergy = AccumulateTFEnergy(victim, attacker, skill, modifier);
+            (var energyBefore, var energyAfter) = AccumulateTFEnergy(victim, attacker, skill, modifier);
 
             var eventualForm = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
 
-            var energyAmount = $"  [{totalEnergy:0.00} / {eventualForm.TFEnergyRequired:0.00} TF energy]<br />";
+            var energyAmount = $"  [{energyAfter:0.00} / {eventualForm.TFEnergyRequired:0.00} TF energy]<br />";
             output.AttackerLog += energyAmount;
             output.VictimLog += energyAmount;
 
@@ -38,9 +40,16 @@ namespace TT.Domain.Procedures
                 return output;
             }
 
-            // Add the spell text to the player logs
-            var percentTransformed = CalculateTransformationProgress(victim, totalEnergy, eventualForm);
-            LogTransformationMessages(victim, attacker, output, eventualForm, percentTransformed);
+            // Perform any form change logic (inc extra health damage)
+            (var formChangeLog, var victimHealthAfter) = TFEnergyProcedures.RunFormChangeLogic(victim, skill.StaticSkill.Id, attacker.Id, energyAfter);
+
+            // Add the spell text to the player logs (now that we know the full damage of this hit)
+            var percentTransformedBefore = CalculateTransformationProgress(victimHealthBefore, victimMaxHealth, energyBefore, eventualForm);
+            var percentTransformedAfter = CalculateTransformationProgress(victimHealthAfter, victimMaxHealth, energyAfter, eventualForm);
+            LogTransformationMessages(victim, attacker, output, eventualForm, percentTransformedBefore, percentTransformedAfter);
+
+            // Append energy overflow damage and form change output from earlier
+            output.Add(formChangeLog);
 
             // Only give XP if attacker and victim are not part of the same covenant
             if (attacker.Covenant == null || attacker.Covenant != victim.Covenant)
@@ -51,7 +60,7 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        private static decimal AccumulateTFEnergy(Player victim, Player attacker, SkillViewModel skill, decimal modifier)
+        private static (decimal, decimal) AccumulateTFEnergy(Player victim, Player attacker, SkillViewModel skill, decimal modifier)
         {
             ITFEnergyRepository repo = new EFTFEnergyRepository();
 
@@ -116,6 +125,7 @@ namespace TT.Domain.Procedures
 
             // get the amount of TF Energy the attacker has on the player
             var energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.StaticSkill.FormSourceId && e.CasterId == attacker.Id);
+            var tfeGain = skill.StaticSkill.TFPointsAmount * modifier;
 
             if (energyFromMe == null)
             {
@@ -123,7 +133,7 @@ namespace TT.Domain.Procedures
                 var cmd = new CreateTFEnergy
                 {
                     PlayerId = victim.Id,
-                    Amount = skill.StaticSkill.TFPointsAmount * modifier,
+                    Amount = tfeGain,
                     CasterId = attacker.Id,
                     FormSourceId = skill.StaticSkill.FormSourceId
                 };
@@ -136,23 +146,26 @@ namespace TT.Domain.Procedures
                     PlayerId = victim.Id,
                     FormSourceId = skill.StaticSkill.FormSourceId.Value,
                     CasterId = attacker.Id,
-                    Amount = skill.StaticSkill.TFPointsAmount * modifier
+                    Amount = tfeGain
                 };
 
             }
             else
             {
-                energyFromMe.Amount += skill.StaticSkill.TFPointsAmount * modifier;
+                energyFromMe.Amount += tfeGain;
                 energyFromMe.Timestamp = DateTime.UtcNow;
                 repo.SaveTFEnergy(energyFromMe);
             }
 
-            return  energyFromMe.Amount + sharedEnergyAmt + mergeUpEnergyAmt;
+            var totalAfter = energyFromMe.Amount + sharedEnergyAmt + mergeUpEnergyAmt;
+            var totalBefore = totalAfter - tfeGain;
+
+            return (totalBefore, totalAfter);
         }
 
-        private static decimal CalculateTransformationProgress(Player victim, decimal totalEnergy, DbStaticForm eventualForm)
+        private static decimal CalculateTransformationProgress(decimal victimHealth, decimal victimMaxHealth, decimal totalEnergy, DbStaticForm eventualForm)
         {
-            var percentTransformedByHealth = 1 - (victim.Health / victim.MaxHealth);
+            var percentTransformedByHealth = 1 - (victimHealth / victimMaxHealth);
 
             // animate forms only need half of health requirement, so double the amount completed
             decimal PercentHealthToAllowTF = 0;
@@ -182,38 +195,21 @@ namespace TT.Domain.Procedures
             return Math.Min(percentTransformedByEnergy, percentTransformedByHealth);
         }
 
-        private static void LogTransformationMessages(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm, decimal percentTransformed)
+        private static void LogTransformationMessages(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm, decimal percentTransformedBefore, decimal percentTransformedAfter)
         {
-            string stage;
+            // Stage 0 = 0 - 20%, 1 = 20 - 40%, 2 = 40 - 60%, 3 = 60 - 80%, 4 = 80 - 100%, 5 = 100% complete, -1 = 0% (no TFE)
+            var previousStage = (int)(percentTransformedBefore < 1.0M ? percentTransformedBefore / 0.2M : 5);
+            var currentStage = (int)(percentTransformedAfter < 1.0M ? percentTransformedAfter / 0.2M : 5);
 
-            if (percentTransformed < 0.20m)
+            if (percentTransformedBefore == 0)
             {
-                stage = "20";
-            }
-            else if (percentTransformed < 0.40m)
-            {
-                stage = "40";
-            }
-            else if (percentTransformed < 0.60m)
-            {
-                stage = "60";
-            }
-            else if (percentTransformed < 0.80m)
-            {
-                stage = "80";
-            }
-            else if (percentTransformed < 1)
-            {
-                stage = "100";
-            }
-            else
-            {
-                stage = "complete";
+                // Ensure currentStage != previousStage for first hit
+                previousStage = -1;
             }
 
-            var percentPrintedOutput = $" ({percentTransformed.ToString("0.00%")})";
-            output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, stage, "third") + percentPrintedOutput;
-            output.VictimLog += GetTFMessage(eventualForm, victim, attacker, stage, "first") + percentPrintedOutput;
+            var percentPrintedOutput = $" ({percentTransformedAfter.ToString("0.00%")})";
+            output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, previousStage, currentStage, "third") + percentPrintedOutput;
+            output.VictimLog += GetTFMessage(eventualForm, victim, attacker, previousStage, currentStage, "first") + percentPrintedOutput;
         }
 
         private static void AwardXP(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm)
@@ -251,7 +247,7 @@ namespace TT.Domain.Procedures
             output.ResultMessage += lvlMessage;
         }
 
-        public static LogBox RunFormChangeLogic(Player victim, int skillSourceId, int attackerId)
+        public static (LogBox, decimal) RunFormChangeLogic(Player victim, int skillSourceId, int attackerId, decimal energyAccumulated)
         {
 
             var output = new LogBox();
@@ -259,19 +255,17 @@ namespace TT.Domain.Procedures
             // redundant check to make sure the victim is still in a transformable state
             if (victim.Mobility != PvPStatics.MobilityFull)
             {
-                return output;
+                return (output, victim.Health);
             }
 
             var skill = SkillStatics.GetStaticSkill(skillSourceId);
-            var energyAccumulated = CalculateAccumulatedTFEnergy(victim, attackerId, skill);
-
             var targetForm = FormStatics.GetForm(skill.FormSourceId.Value);
 
             // check and see if the target has enough points accumulated to try the form's energy requirement
             if (energyAccumulated < targetForm.TFEnergyRequired)
             {
                 // Less than 100% TFE - don't complete form change
-                return output;
+                return (output, victim.Health);
             }
 
 
@@ -294,27 +288,7 @@ namespace TT.Domain.Procedures
                 EndDuel(victim);
             }
 
-            return output;
-        }
-
-        private static decimal CalculateAccumulatedTFEnergy(Player victim, int attackerId, DbStaticSkill skill)
-        {
-            ITFEnergyRepository repo = new EFTFEnergyRepository();
-
-            var pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.FormSourceId && e.CasterId == null);
-            var myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormSourceId == skill.FormSourceId && e.CasterId == attackerId);
-
-            decimal energyAccumulated = 0;
-            if (pooledEnergy != null)
-            {
-                energyAccumulated = pooledEnergy.Amount + myEnergy.Amount;
-            }
-            else
-            {
-                energyAccumulated = myEnergy.Amount;
-            }
-
-            return energyAccumulated;
+            return (output, target.Health);
         }
 
         private static decimal CalculateTFEBonusBuff(Player victim, Player attacker)
@@ -765,6 +739,18 @@ namespace TT.Domain.Procedures
             }
         }
 
+        private static string FormatVictimString(string input, Player victim, Player attacker, bool isNew)
+        {
+            if (isNew)
+            {
+                return CleanString(input, victim, attacker);
+            }
+            else
+            {
+                return "<span style=\"color: #555555\">" + CleanString(input, victim, attacker) + "</span>";
+            }
+        }
+
         private static string CleanString(string input, Player victim, Player attacker)
         {
             if (input == null)
@@ -777,8 +763,9 @@ namespace TT.Domain.Procedures
             }
         }
 
-        private static string GetTFMessage(DbStaticForm form, Player player, Player attacker, string percent, string PoV)
+        private static string GetTFMessage(DbStaticForm form, Player player, Player attacker, int previousStage, int stage, string PoV)
         {
+            var output = "";
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
             var tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == form.Id);
@@ -789,19 +776,21 @@ namespace TT.Domain.Procedures
             }
 
             #region 20 percent TF
-            if (percent == "20")
+            if (stage == 0 || (stage > 0 && previousStage < 0))
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 0;
+
                         if (!tfMessage.TFMessage_20_Percent_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -809,11 +798,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_20_Percent_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
                         }
                     }
                 } 
@@ -821,13 +810,15 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 0;
+
                         if (!tfMessage.TFMessage_20_Percent_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st_F, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -835,31 +826,38 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_20_Percent_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
                         }
                     }
+                }
+
+                if(stage != 0)
+                {
+                    output += "<br /><br />";
                 }
             }
             #endregion
 
             #region 40 percent TF
-            if (percent == "40")
+            if (stage == 1 || (stage > 1 && previousStage < 1))
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 1;
+
                         if (!tfMessage.TFMessage_40_Percent_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st_M, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -867,11 +865,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_40_Percent_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -879,13 +877,15 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 1;
+
                         if (!tfMessage.TFMessage_40_Percent_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st_F, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -893,31 +893,38 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_40_Percent_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
                         }
                     }
                 }
-            }
+
+                if(stage != 1)
+                {
+                    output += "<br /><br />";
+                }
+           }
             #endregion
 
             #region 60 percent TF
-            if (percent == "60")
+            if (stage == 2 || (stage > 2 && previousStage < 2))
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 2;
+
                         if (!tfMessage.TFMessage_60_Percent_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st_M, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -925,11 +932,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_60_Percent_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -937,13 +944,15 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 2;
+
                         if (!tfMessage.TFMessage_60_Percent_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st_F, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -951,31 +960,38 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_60_Percent_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
                         }
                     }
+                }
+
+                if(stage != 2)
+                {
+                    output += "<br /><br />";
                 }
             }
             #endregion
 
             #region 80 percent TF
-            if (percent == "80")
+            if (stage == 3 || (stage > 3 && previousStage < 3))
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 3;
+
                         if (!tfMessage.TFMessage_80_Percent_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st_M, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -983,11 +999,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_80_Percent_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -995,13 +1011,15 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 3;
+
                         if (!tfMessage.TFMessage_80_Percent_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st_F, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -1009,31 +1027,38 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_80_Percent_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
                         }
                     }
+                }
+
+                if(stage != 3)
+                {
+                    output += "<br /><br />";
                 }
             }
             #endregion
 
             #region 100 percent TF
-            if (percent == "100")
+            if (stage == 4 || (stage > 4 && previousStage < 4))
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 4;
+
                         if (!tfMessage.TFMessage_100_Percent_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st_M, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -1041,11 +1066,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_100_Percent_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -1053,13 +1078,15 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
+                        var isNew = previousStage < 4;
+
                         if (!tfMessage.TFMessage_100_Percent_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st_F, player, attacker, isNew);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st, player, attacker, isNew);
                         }
 
                     }
@@ -1067,19 +1094,24 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_100_Percent_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
                         }
                     }
+                }
+
+                if(stage != 4)
+                {
+                    output += "<br /><br />";
                 }
             }
             #endregion
 
-            #region 100 percent TF
-            if (percent == "complete")
+            #region complete TF
+            if (stage >= 5)
             {
                 if (player.Gender == PvPStatics.GenderMale)
                 {
@@ -1087,11 +1119,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_Completed_1st_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_1st_M, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st_M, player, attacker, true);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st, player, attacker, true);
                         }
 
                     }
@@ -1099,11 +1131,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_Completed_3rd_M.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_3rd_M, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_Completed_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
                         }
                     }
                 }
@@ -1113,11 +1145,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_Completed_1st_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_1st_F, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st_F, player, attacker, true);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_1st, player, attacker);
+                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st, player, attacker, true);
                         }
 
                     }
@@ -1125,11 +1157,11 @@ namespace TT.Domain.Procedures
                     {
                         if (!tfMessage.TFMessage_Completed_3rd_F.IsNullOrEmpty())
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_3rd_F, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_Completed_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
+                            output += CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
                         }
                     }
                 }
@@ -1137,7 +1169,7 @@ namespace TT.Domain.Procedures
             #endregion
 
 
-            return "";
+            return output;
         }
 
         public static decimal GetHigherLevelXPModifier(int lvl, int maxLvlBeforeLoss)

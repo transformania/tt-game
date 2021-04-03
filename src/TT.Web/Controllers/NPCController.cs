@@ -824,7 +824,7 @@ namespace TT.Web.Controllers
 
                     foreach (var bounty in bounties.OrderByDescending(b => b.CurrentReward))
                     {
-                        summary += $"<li>There is a reward of up to <b>{bounty.CurrentReward} arpeyjis</b> to anybody who turns <b>{bounty.PlayerName}</b> into a <b>{bounty.Form?.FriendlyName}</b> by the end of turn {bounty.ExpiresTurn - 1}.</li>";
+                        summary += $"<li>There is a reward of up to <b>{bounty.CurrentReward} arpeyjis</b> to any PvP player who turns <b>{bounty.PlayerName}</b> into a <b>{bounty.Form?.FriendlyName}</b> by the end of turn {bounty.ExpiresTurn - 1}.</li>";
                     }
                     ViewBag.Speech = $"There are a number of wanted posters all over town.  The ones I remember are:<ul class=\"listdots\">{summary}</ul>";
                 }

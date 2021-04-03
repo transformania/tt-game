@@ -185,6 +185,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return;
             }
 
+            // Only reward PvP players to avoid friend list/alt abuse
+            if (attacker.GameMode != (int)GameModeStatics.GameModes.PvP)
+            {
+                return;
+            }
+
             var bountyStaticEffectIds = MAPPINGS.Select(se => se.EffectSourceId);
             var victimEffects = EffectProcedures.GetPlayerEffects2(victim.Id).Where(e => bountyStaticEffectIds.Contains(e.dbEffect.EffectSourceId));
             var award = 0;

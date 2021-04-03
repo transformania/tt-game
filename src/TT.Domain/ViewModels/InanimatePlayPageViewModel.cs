@@ -30,6 +30,6 @@ namespace TT.Domain.ViewModels
 
         public DateTime LastUpdateTimestamp { get; set; }
         public bool RenderCaptcha { get; set; }
-
+        public bool HasOwnerChat { get; set; }
     }
 }

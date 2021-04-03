@@ -36,5 +36,6 @@ namespace TT.Domain.ViewModels
         public string Message { get; set; }
 
         public bool RenderCaptcha { get; set; }
+        public bool HasOwnerChat { get; set; }
     }
 }

@@ -39,14 +39,19 @@
         <ul class="dropdown-menu">
             <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Global chat</a></li>
             @{
-                if (Model.You.Covenant != null && Model.You.Covenant > 0)
+                if (Model.HasOwnerChat)
                 {
-                    <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.You.Covenant}"))" target="_blank">Chat with my covenant</a></li>
+                    <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.You.Id}"))" target="_blank">Chat with my pet and items</a></li>
                 }
 
                 if (Model.YouItem?.Owner != null)
                 {
                     <li><a href="@Url.Action(MVC.Chat.Index($"owner_{Model.YouItem.Owner.Id}"))" target="_blank">Chat with my owner</a></li>
+                }
+
+                if (Model.You.Covenant != null && Model.You.Covenant > 0)
+                {
+                    <li><a href="@Url.Action(MVC.Chat.Index($"coven_{Model.You.Covenant}"))" target="_blank">Chat with my covenant</a></li>
                 }
             }
             <li><a href="@Url.Action(MVC.Chat.ChatLog("global", "lasth"))" target="_blank">Chat logs</a></li>

@@ -225,6 +225,10 @@ namespace TT.Web.Controllers
 
                 inanimateOutput.PlayersHere = playersHere.OrderByDescending(p => p.Player.Level);
 
+                inanimateOutput.HasOwnerChat = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
+                    .Any(i => i.FormerPlayer != null &&
+                              i.LastSouledTimestamp > DateTime.UtcNow.AddMinutes(-PvPStatics.Item_SoulActivityLevels_Minutes[PvPStatics.Item_SoulActivityLevels_Minutes.Count() - 1]));
+
                 return View(MVC.PvP.Views.Play_Inanimate, inanimateOutput);
             }
 
@@ -294,6 +298,10 @@ namespace TT.Web.Controllers
 
                 animalOutput.HasNewMessages = hasNewMessages;
                 animalOutput.UnreadMessageCount = unreadMessageCount;
+
+                animalOutput.HasOwnerChat = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
+                    .Any(i => i.FormerPlayer != null &&
+                              i.LastSouledTimestamp > DateTime.UtcNow.AddMinutes(-PvPStatics.Item_SoulActivityLevels_Minutes[PvPStatics.Item_SoulActivityLevels_Minutes.Count() - 1]));
 
                 animalOutput.PortraitUrl = ItemStatics.GetStaticItem(animalOutput.Form.ItemSourceId.Value).PortraitUrl;
 
@@ -2636,13 +2644,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that player is animate
-            if (me.Mobility != PvPStatics.MobilityFull)
-            {
-                TempData["Error"] = "You are not animate";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // assert that item is inanimate
             if (itemPlayer.Mobility != PvPStatics.MobilityInanimate && itemPlayer.Mobility != PvPStatics.MobilityPet)
             {
@@ -2656,6 +2657,13 @@ namespace TT.Web.Controllers
             if (item.Owner.Id != me.Id)
             {
                 TempData["Error"] = $"You do not currently own this {posession}.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that player is animate
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = $"Wriggle as you might, you find you cannot interact with your {posession} until you are fully animate again!";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

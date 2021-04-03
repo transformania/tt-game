@@ -280,7 +280,8 @@ namespace TT.Domain.Procedures
                 IsEquipped = false,
                 dbLocationName = "",
                 ItemSourceId = item.Id,
-                Level = level
+                Level = level,
+                IsPermanent = true
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)

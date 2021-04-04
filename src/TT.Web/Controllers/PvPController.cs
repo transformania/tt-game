@@ -876,12 +876,12 @@ namespace TT.Web.Controllers
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId) && target.BotId == AIStatics.ActivePlayerBotId)
+            if (target.BotId == AIStatics.ActivePlayerBotId && EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack as you have the <b>Back On Your Feet</b> effect, preventing you from attacking another human-controlled player.";
             }
-            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_BackOnYourFeetSourceId))
+            else if (target.BotId == AIStatics.ActivePlayerBotId && EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_BackOnYourFeetSourceId))
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack <b>" + target.GetFullName() + "</b> since they have the <b>Back On Your Feet</b> effect, preventing human-controlled players from attacking them until the effect expires.";

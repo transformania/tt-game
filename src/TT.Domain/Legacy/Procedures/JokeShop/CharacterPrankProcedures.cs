@@ -620,7 +620,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var candidate = candidates[index];
 
                     if ((candidate.GameMode != (int)GameModeStatics.GameModes.Superprotection || JokeShopProcedures.PlayerHasBeenWarned(candidate)) &&
-                        PlayerCanBeCloned(candidate))
+                        PlayerCanBeCloned(candidate) && candidate.InQuest <= 0 && candidate.InDuel <= 0)
                     {
                         victim = candidate;
                     }

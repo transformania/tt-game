@@ -29,7 +29,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public static readonly int[] RODENTS = { 70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077 };
         public static readonly int[] SHEEP = { 204, 950, 1022, 1035, 1198 };
         public static readonly int[] STRIPPERS = { 153, 719, 880 };
-        public static readonly int[] THIEVES = { 143, 149, 271, 278, 279 };
+        public static readonly int[] THIEVES = { 143, 149, 271, 278, 279, 849 };
         public static readonly int[] TREES = { 50, 741 };
 
         // Effect sources supporting the Joke Shop mechanics
@@ -1242,6 +1242,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string EjectCharacter(Player player)
         {
+            if ((player.InDuel > 0 || player.InQuest > 0) &&
+                player.LastActionTimestamp > DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes()))
+            {
+                return null;
+            }
+
             var jokeShop = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == LocationsStatics.JOKE_SHOP);
 
             if (jokeShop == null)
@@ -1267,6 +1273,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var enteringMessage = $"{player.GetFullName()} lands here with a thud after being kicked out of the {jokeShop.Name}";
 
             var playerLog = $"You are kicked out of the <b>{jokeShop.Name}</b> and land in <b>{streetTile.Name}</b>.";
+
+            if (player.InQuest > 0)
+            {
+                QuestProcedures.PlayerEndQuest(player, (int)QuestStatics.QuestOutcomes.Failed);
+                playerLog += "  You are forced to abandon your quest.";
+            }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);

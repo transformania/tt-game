@@ -196,6 +196,7 @@ namespace TT.Domain.Procedures
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.InQuest = questStart.Id;
             dbPlayer.InQuestState = questStart.StartState;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
             playerRepo.SavePlayer(dbPlayer);
 
         }

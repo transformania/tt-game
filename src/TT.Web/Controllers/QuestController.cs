@@ -229,7 +229,8 @@ namespace TT.Web.Controllers
             QuestProcedures.PlayerSetQuestState(me, nextState);
             QuestProcedures.ProcessQuestStatePreactions(me, nextState);
 
-            PlayerProcedures.ChangePlayerActionMana(-1, 0, 0, me.Id, false);
+            var keepPlayerOnline = me.LastActionTimestamp > DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
+            PlayerProcedures.ChangePlayerActionMana(-1, 0, 0, me.Id, keepPlayerOnline);
 
             TempData["ConnectionText"] = desiredConnection.Text;
 

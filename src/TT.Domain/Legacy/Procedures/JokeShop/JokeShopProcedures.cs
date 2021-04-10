@@ -887,20 +887,26 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (roll < 21)  // 7%
             {
                 // Deflect back at self
-                var attack = AttackProcedures.AttackSequence(player, player, skill);
-                return $"<b>Your victim deftly deflects your spell back at you!</b><br>{attack}";
+                if (SkillProcedures.AvailableSkills(player, player, true).Any(s => s.StaticSkill.Id == skill.StaticSkill.Id))
+                {
+                    var attack = AttackProcedures.AttackSequence(player, player, skill);
+                    return $"<b>Your victim deftly deflects your spell back at you!</b><br>{attack}";
+                }
             }
             else if (roll < 28)  // 7%
             {
                 // Coerce victim to self-cast
-                var attack = AttackProcedures.AttackSequence(victim, victim, skill);
-                PlayerLogProcedures.AddPlayerLog(victim.Id, $"<b>Using a trick of the mind, {player.GetFullName()} convinces you to attack yourself!</b><br>{attack}", true);
-                return $"Using a trick of the mind you convince your victim to attack themselves!";
+                if (SkillProcedures.AvailableSkills(victim, victim, true).Any(s => s.StaticSkill.Id == skill.StaticSkill.Id))
+                {
+                    var attack = AttackProcedures.AttackSequence(victim, victim, skill);
+                    PlayerLogProcedures.AddPlayerLog(victim.Id, $"<b>Using a trick of the mind, {player.GetFullName()} convinces you to attack yourself!</b><br>{attack}", true);
+                    return $"Using a trick of the mind you convince your victim to attack themselves!";
+                }
             }
             else if (roll < 35)  // 7%
             {
                 // Weaken
-                var skillBeingUsed = SkillProcedures.GetSkillViewModel(PvPStatics.Spell_WeakenId, player.Id);
+                var skillBeingUsed = SkillProcedures.AvailableSkills(player, victim, true).FirstOrDefault(s => s.StaticSkill.Id == PvPStatics.Spell_WeakenId);
 
                 if (skillBeingUsed != null && skillBeingUsed.StaticSkill.Id != skill.StaticSkill.Id)
                 {
@@ -911,7 +917,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (roll < 42)  // 7%
             {
                 // Wrong spell
-                var skillsAvailable = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id).Where(s => s.MobilityType == skill.MobilityType && s.StaticSkill.Id != skill.StaticSkill.Id).ToArray();
+                var skillsAvailable = SkillProcedures.AvailableSkills(player, victim, true).Where(s => s.MobilityType == skill.MobilityType && s.StaticSkill.Id != skill.StaticSkill.Id).ToArray();
 
                 if (skillsAvailable != null && skillsAvailable.Any())
                 {
@@ -945,18 +951,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (roll < 70)  // 7%
             {
                 // Make victim into attacker form
-                IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
-                var selfSkill = skillsRepo.DbStaticSkills.FirstOrDefault(spell => spell.FormSourceId == player.FormSourceId);
+                var skillBeingUsed = SkillProcedures.AvailableSkills(player, victim, true).FirstOrDefault(spell => spell.StaticSkill.FormSourceId == player.FormSourceId);
 
-                if (selfSkill != null)
+                if (skillBeingUsed != null && skillBeingUsed.StaticSkill.Id != skill.StaticSkill.Id)
                 {
-                    var skillBeingUsed = SkillProcedures.GetSkillViewModel(selfSkill.Id, player.Id);
-
-                    if (skillBeingUsed != null && skillBeingUsed.StaticSkill.Id != skill.StaticSkill.Id)
-                    {
-                        var attack = AttackProcedures.AttackSequence(player, victim, skillBeingUsed);
-                        return $"<b>Your vanity gets in the way of your spellcasting as you try to turn {victim.GetFullName()} into a clone of yourself!</b><br>{attack}";
-                    }
+                    var attack = AttackProcedures.AttackSequence(player, victim, skillBeingUsed);
+                    return $"<b>Your vanity gets in the way of your spellcasting as you try to turn {victim.GetFullName()} into a clone of yourself!</b><br>{attack}";
                 }
             }
             else if (roll < 84)  // 14%

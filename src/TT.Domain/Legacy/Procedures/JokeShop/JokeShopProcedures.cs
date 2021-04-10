@@ -69,18 +69,33 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static List<FormDetail> CandidateForms()
         {
             IDbStaticSkillRepository skillsRepo = new EFDbStaticSkillRepository();
-            var learnableSpells = skillsRepo.DbStaticSkills.Where(spell => spell.IsLive == "live" && spell.IsPlayerLearnable).Select(spell => new { spell.FormSourceId }).ToList();
+            var learnableSpells = skillsRepo.DbStaticSkills
+                .Where(spell => spell.IsLive == "live" &&
+                                spell.IsPlayerLearnable)
+                .Select(spell => new { spell.FormSourceId }).ToList();
 
             IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-            var forms = formsRepo.DbStaticForms.Select(form => new { form.FriendlyName, Immobile = form.MoveActionPointDiscount < -5, form.Id, form.MobilityType, form.ItemSourceId });
+            var forms = formsRepo.DbStaticForms
+                .Where(form => !form.IsUnique)
+                .Select(form => new { form.FriendlyName, Immobile = form.MoveActionPointDiscount < -5, form.Id, form.MobilityType, form.ItemSourceId });
 
-            var learnableForms = learnableSpells.Join(forms, spell => spell.FormSourceId, form => form.Id, (spell, form) => new { form.Id, form.FriendlyName, form.Immobile, form.MobilityType, form.ItemSourceId });
+            var learnableForms = learnableSpells.Join(forms, spell => spell.FormSourceId, form => form.Id,
+                (spell, form) => new { form.Id, form.FriendlyName, form.Immobile, form.MobilityType, form.ItemSourceId });
 
             IDbStaticItemRepository itemsRepo = new EFDbStaticItemRepository();
-            var itemTypes = itemsRepo.DbStaticItems.Select(i => new { i.Id, i.ItemType }).ToList();
+            var itemTypes = itemsRepo.DbStaticItems
+                .Where(i => !i.IsUnique)
+                .Select(i => new { i.Id, i.ItemType }).ToList();
 
-            var formDetails = learnableForms.Join(itemTypes, form => form.ItemSourceId, itemType => itemType.Id, (form, item) => new FormDetail(form.Id, form.FriendlyName, item.ItemType)).ToList();
-            formDetails.AddRange(learnableForms.Where(form => form.ItemSourceId == null && form.MobilityType == PvPStatics.MobilityFull).Select(form => new FormDetail(form.Id, form.FriendlyName, form.Immobile ? LIMITED_MOBILITY : form.MobilityType)));
+            // Item forms players can become
+            var formDetails = learnableForms.Join(itemTypes, form => form.ItemSourceId, itemType => itemType.Id,
+                (form, item) => new FormDetail(form.Id, form.FriendlyName, item.ItemType)).ToList();
+
+            // Add full mobility forms players can become
+            formDetails.AddRange(learnableForms
+                                    .Where(form => form.ItemSourceId == null &&
+                                           form.MobilityType == PvPStatics.MobilityFull)
+                                    .Select(form => new FormDetail(form.Id, form.FriendlyName, form.Immobile ? LIMITED_MOBILITY : form.MobilityType)));
 
             return formDetails;
         }

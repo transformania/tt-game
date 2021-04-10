@@ -274,12 +274,25 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             SkillProcedures.GiveSkillToPlayer(botId, eligibleSkills[rand.Next(eligibleSkills.Count())].Id);
             SkillProcedures.GiveSkillToPlayer(botId, PvPStatics.Spell_WeakenId);
 
-            // Give bonuses
+            // Give bonuses - we exclude some with no stats, with side effects, or that serve no purpose on psychos
             var sourcePerks = EffectProcedures.GetPlayerEffects2(player.Id);
+
+            int[] effectsToExclude = { JokeShopProcedures.FIRST_WARNING_EFFECT,
+                                       JokeShopProcedures.SECOND_WARNING_EFFECT,
+                                       JokeShopProcedures.BANNED_FROM_JOKE_SHOP_EFFECT,
+                                       JokeShopProcedures.INVISIBILITY_EFFECT,  // Ensure twin is visible, even if player can't yet attack
+                                       JokeShopProcedures.PSYCHOTIC_EFFECT,     // Prevent psycho twin leaving rehab  (Sorry, Pinocchio)
+                                       JokeShopProcedures.INSTINCT_EFFECT,      // Should be safe, but just to be on the safe side
+                                       JokeShopProcedures.AUTO_RESTORE_EFFECT,  // No free second chances for twins, bad ends are forever
+                                       };
 
             foreach (var sourcePerk in sourcePerks)
             {
-                EffectProcedures.GivePerkToPlayer(sourcePerk.dbEffect.EffectSourceId, botId, sourcePerk.dbEffect.Duration, sourcePerk.dbEffect.Cooldown);
+                var effect = sourcePerk.dbEffect;
+                if (!effectsToExclude.Contains(effect.EffectSourceId))
+                {
+                    EffectProcedures.GivePerkToPlayer(effect.EffectSourceId, botId, effect.Duration, effect.Cooldown);
+                }
             }
 
             // Give a rune (round level down to odd)

@@ -909,7 +909,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Coerce victim to self-cast
                 if (SkillProcedures.AvailableSkills(victim, victim, true).Any(s => s.StaticSkill.Id == skill.StaticSkill.Id))
                 {
-                    var attack = AttackProcedures.AttackSequence(victim, victim, skill);
+                    var attack = AttackProcedures.AttackSequence(victim, victim, skill, false);
                     PlayerLogProcedures.AddPlayerLog(victim.Id, $"<b>Using a trick of the mind, {player.GetFullName()} convinces you to attack yourself!</b><br>{attack}", true);
                     return $"Using a trick of the mind you convince your victim to attack themselves!";
                 }

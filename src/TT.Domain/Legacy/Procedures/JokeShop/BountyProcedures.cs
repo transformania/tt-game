@@ -66,7 +66,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var possibleForms = JokeShopProcedures.STABLE_FORMS.Where(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
+            var possibleForms = JokeShopProcedures.Forms(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
             var numForms = possibleForms.Count();
 
             if (numForms == 0)
@@ -88,7 +88,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var possibleFormSourceIds = JokeShopProcedures.STABLE_FORMS.Where(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
+            var possibleFormSourceIds = JokeShopProcedures.Forms(e => e.Category == effect.Category).Select(e => e.FormSourceId).ToArray();
             var numFormSourceIds = possibleFormSourceIds.Count();
 
             if (numFormSourceIds == 0)

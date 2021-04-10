@@ -202,7 +202,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (strength >= 6)
             {
-                var limitedMobilityForms = JokeShopProcedures.STABLE_FORMS.Where(f => f.Category == JokeShopProcedures.LIMITED_MOBILITY).ToArray();
+                var limitedMobilityForms = JokeShopProcedures.AnimateForms().Where(f => f.Category == JokeShopProcedures.LIMITED_MOBILITY).ToArray();
 
                 if (limitedMobilityForms.Any())
                 {
@@ -256,9 +256,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 Location = player.dbLocationName,
                 FormSourceId = player.FormSourceId,
                 Level = Math.Min(9, player.Level),
-                Health = 100000,
+                Health = player.Health,
                 MaxHealth = player.MaxHealth,
-                Mana = 100000,
+                Mana = player.Mana,
                 MaxMana = player.MaxMana,
                 BotId = AIStatics.PsychopathBotId,
                 UnusedLevelUpPerks = 0,

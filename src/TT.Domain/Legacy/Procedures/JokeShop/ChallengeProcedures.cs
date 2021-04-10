@@ -765,7 +765,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var difficulty = 3;
 
-            var items = JokeShopProcedures.STABLE_FORMS.Where(f => f.Category != PvPStatics.MobilityFull && f.Category != JokeShopProcedures.LIMITED_MOBILITY);
+            var items = JokeShopProcedures.InanimateForms();
             var numItems = items.Count();
 
             if (numItems == 0)

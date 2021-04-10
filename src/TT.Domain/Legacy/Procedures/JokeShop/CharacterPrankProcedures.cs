@@ -454,7 +454,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return warning;
             }
 
-            var forms = JokeShopProcedures.Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != JokeShopProcedures.LIMITED_MOBILITY);
+            var forms = JokeShopProcedures.InanimateForms();
 
             if (forms.IsEmpty())
             {
@@ -506,7 +506,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
-            var forms = JokeShopProcedures.Forms(f => f.Category != PvPStatics.MobilityFull && f.Category != JokeShopProcedures.LIMITED_MOBILITY);
+            var forms = JokeShopProcedures.InanimateForms();
 
             if (forms.IsEmpty())
             {
@@ -577,10 +577,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Don't clone players who are in a mobile inanimate form (giving someone their form would make
             // the other player inanimate due to the form source mobility) or whose current form is not provided
             // by a discoverable spell.  (Cloning customs may be a future enhancement)
-            return JokeShopProcedures.Forms(f => (f.Category == PvPStatics.MobilityFull ||
-                                                  f.Category == JokeShopProcedures.LIMITED_MOBILITY) &&
-                                                 f.FormSourceId == player.FormSourceId)
-                                     .Any();
+            return JokeShopProcedures.AnimateForms().Where(f => f.FormSourceId == player.FormSourceId).Any();
         }
 
         private static string BodySwap(Player player, bool clone, Random rand = null)
@@ -715,7 +712,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string ChangeBaseForm(Player player, Random rand = null)
         {
-            var availableForms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
+            var availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
 
             if (availableForms.IsEmpty())
             {
@@ -814,7 +811,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Pick changes to name and form
             if (roll == 0)  // Dogs
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DOGS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DOGS).ToArray();
                 mindControl = true;
                 message = "You hear some barking outside and are suddenly compelled to join in!";
 
@@ -833,7 +830,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 1)  // Cats
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CATS_AND_NEKOS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CATS_AND_NEKOS).ToArray();
                 mindControl = true;
                 message = "A mouse scurries across the ground in front of you.  Suddenly you feel the urge to pounce!";
 
@@ -858,7 +855,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 2)  // Drones
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DRONES).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DRONES).ToArray();
                 mindControl = false;
                 message = "This store actually has quite a good selection of comic books.  You pick one up one entitled \"Colony 2079\" and read the bubbles on the cover.  \"Be like us!\"  \"Individuality is overrated!\"  \"Join the collective!\"  This could be interesting.  You turn the page, wondering why you've never seen this publication in Extended Universe..";
 
@@ -896,7 +893,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 3)  // Ghosts
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.GHOSTS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.GHOSTS).ToArray();
                 mindControl = true;
                 message = "You come face-to-face with a ghost and jump right out of your skin!  Unfortunately that also leaves you looking like a ghost!";
 
@@ -922,7 +919,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 4)  // Sheep
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.SHEEP).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.SHEEP).ToArray();
                 mindControl = true;
                 message = "You suddenly sprout a fleece and feel compelled to follow your flock!";
 
@@ -947,7 +944,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 5)  // Maids
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
                 mindControl = true;
                 message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you enjoy sweeping the dirt away maybe you could serve others is town?";
 
@@ -957,7 +954,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 6)  // Strippers
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.STRIPPERS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.STRIPPERS).ToArray();
                 mindControl = true;
                 message = "You feel a sudden and irrepressible compulsion to start removing your clothes.  Is the shop too hot, or are you just doing it for attention and to show off your body to anyone who will watch?  Only you know...";
 
@@ -966,7 +963,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 7)  // Rodents
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.RODENTS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.RODENTS).ToArray();
                 message = "You've never minded cats before, but now you feel terrified!";
 
                 switch (rand.Next(2))
@@ -984,7 +981,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 8)  // Bimbos
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
                 message = "Oh my gawd, sumthin bout u feels liek totally different n stuff but u're like not shur wat. I mean u still hav ur amazin body, rite???";
 
                 switch (rand.Next(3))
@@ -1008,7 +1005,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 9)  // Thieves
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
                 message = "So many valuable items on these shelves.. surely it wouldn't hurt if you took just one?";
 
                 switch (rand.Next(2))
@@ -1026,7 +1023,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll == 10)  // Fairies
             {
-                forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
+                forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
                 message = "Some dust glimmers as it passes through a shaft of light.  It reminds you of the fairies from the grove.  Wait.. what kind of dust was that?";
 
                 switch (rand.Next(2))
@@ -1152,7 +1149,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 JokeShopProcedures.GHOSTS
                 };
             var genre = mcForms[rand.Next(mcForms.Count())];
-            var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(genre).ToArray();
+            var forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(genre).ToArray();
 
             if (forms == null || forms.IsEmpty())
             {
@@ -1284,7 +1281,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             else if (world.Boss_Faeboss == AIStatics.ACTIVE)
             {
-                var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
+                var forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
 
                 if (CharacterPrankProcedures.TryAnimateTransform(player, forms[rand.Next(forms.Count())]))
                 {
@@ -1314,7 +1311,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 if (rand.Next(2) == 0)
                 {
-                    var forms = JokeShopProcedures.STABLE_FORMS.Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
+                    var forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
 
                     if (CharacterPrankProcedures.TryAnimateTransform(player, forms[rand.Next(forms.Count())]))
                     {

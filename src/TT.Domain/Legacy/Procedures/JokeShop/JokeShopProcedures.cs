@@ -45,7 +45,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public const int INVISIBILITY_EFFECT = 208;
 
         // This list of forms is intended to be 'stable' within a run so that a calulation will always determine the same form.
-        internal static List<FormDetail> STABLE_FORMS
+        private static List<FormDetail> STABLE_FORMS
         {
             get
             {
@@ -100,9 +100,20 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return formDetails;
         }
 
+        // Forms here are intended to be stable within a run and only forms players can get through regular spells
         public static List<FormDetail> Forms(Func<FormDetail, bool> predicate)
         {
             return STABLE_FORMS.Where(predicate).ToList();
+        }
+
+        public static List<FormDetail> AnimateForms()
+        {
+            return STABLE_FORMS.Where(f => f.Category == PvPStatics.MobilityFull || f.Category == LIMITED_MOBILITY).ToList();
+        }
+
+        public static List<FormDetail> InanimateForms()
+        {
+            return STABLE_FORMS.Where(f => f.Category != PvPStatics.MobilityFull && f.Category != LIMITED_MOBILITY).ToList();
         }
 
         internal static void RunEffectExpiryActions(List<Effect> expiringEffects)

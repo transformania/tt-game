@@ -12,10 +12,10 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
-       public static string AttackSequence(Player attacker, Player victim, SkillViewModel skillBeingUsed)
+       public static string AttackSequence(Player attacker, Player victim, SkillViewModel skillBeingUsed, bool timestamp = true)
         {
             // Actual attack
-            var message = AttackProcedures.Attack(attacker, victim, skillBeingUsed);
+            var message = AttackProcedures.Attack(attacker, victim, skillBeingUsed, timestamp);
 
             // record into statistics
             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
@@ -60,7 +60,7 @@ namespace TT.Domain.Procedures
             return message;
         }
 
-        public static string Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed)
+        public static string Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed, bool timestamp = true)
         {
 
             var result = "";
@@ -79,7 +79,7 @@ namespace TT.Domain.Procedures
             var logs = new LogBox();
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
-            PlayerProcedures.ChangePlayerActionMana(-PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, attacker.Id);
+            PlayerProcedures.ChangePlayerActionMana(-PvPStatics.AttackCost, 0, -PvPStatics.AttackManaCost, attacker.Id, timestamp);
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(victim, attacker);
 

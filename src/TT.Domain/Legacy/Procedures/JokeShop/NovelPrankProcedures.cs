@@ -369,7 +369,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             LocationLogProcedures.AddLocationLog(attacker.dbLocationName, $"{attacker.GetFullName()} is compelled to attack {victim.GetFullName()}!");
 
             // Note we do not apply the full gamut of preconditions of a manual attack present in the controller
-            var attack = AttackProcedures.AttackSequence(attacker, victim, spell);
+            var attack = AttackProcedures.AttackSequence(attacker, victim, spell, false);
 
             if (strongAttackerAlerts)
             {

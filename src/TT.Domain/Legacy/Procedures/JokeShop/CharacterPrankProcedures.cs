@@ -1243,7 +1243,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 OwnerId = player.Id,
                 Amount = 0,
-                TimesStruggled = 0,  // Give player a head start on struggling
+                // Give player a head start on struggling - low enough to be fun, high enough that using it to farm AP is not worthwhile
+                TimesStruggled = -Math.Min(50, 2 + 4 * player.Level),
                 LastActionTimestamp = DateTime.UtcNow,
                 LastActionTurnstamp = currentGameTurn - 1,
             };

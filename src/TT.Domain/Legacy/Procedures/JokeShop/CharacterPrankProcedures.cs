@@ -529,6 +529,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             target.Mobility = PvPStatics.MobilityFull;
             playerRepo.SavePlayer(target);
 
+            var mobileTarget = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
+            playerRepo.SavePlayer(mobileTarget);
+
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
 
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into an animate <b>{form.FriendlyName}</b>.");
@@ -1179,11 +1183,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
-            DomainRegistry.Repository.Execute(new ReadjustMaxes
-            {
-                playerId = player.Id,
-                buffs = ItemProcedures.GetPlayerBuffs(player)
-            });
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            target.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(target));
+            playerRepo.SavePlayer(target);
 
             if (logChanges)
             {

@@ -815,7 +815,7 @@ namespace TT.Web.Controllers
 
             if (owner != null)
             {
-                PlayerLogProcedures.AddPlayerLog(owner.Id, "<b>A contribution you have submitted has been rejected.  You should have received or will soon a message explaining why or what else needs to be done before this contribution can be accepted.  If you do not, please message Judoo on the forums.</b>", true);
+                PlayerLogProcedures.AddPlayerLog(owner.Id, "<b>A contribution you have submitted has been rejected.  You should have received or will soon a message explaining why or what else needs to be done before this contribution can be accepted.  If you do not, please message an administrator on Discord.</b>", true);
             }
 
 
@@ -1226,7 +1226,7 @@ namespace TT.Web.Controllers
                     {
                         player.DonatorLevel = d.Tier;
                         output += "  Knocking down to tier " + d.Tier + ".  </br>";
-                        var message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to Judoo on the forums or through Patreon.  Thank you for your past support!</span>";
+                        var message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to an administrator on Discord or through Patreon.  Thank you for your past support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
                     else

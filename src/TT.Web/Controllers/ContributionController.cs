@@ -54,11 +54,38 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            // Pick a few unassigned forms to tease
+            var freshnessThreshold = DateTime.UtcNow.AddYears(-1);
+
+            var contributionRepo = new EFContributionRepository();
+            var formsInNeedOfArtist = contributionRepo.Contributions
+                .Where(c => c.IsReadyForReview &&
+                            c.AdminApproved &&
+                            !c.IsLive &&
+                            c.ProofreadingCopy &&
+                            (c.AssignedToArtist == null || c.AssignedToArtist == "") &&
+                            c.CreationTimestamp > freshnessThreshold)
+                .Select(c => c.Form_FriendlyName).ToArray();
+
+            var selectedForms = new List<String>();
+            var numCandidates = formsInNeedOfArtist.Count();
+            var rnd = new Random();
+
+            while (numCandidates > 0 && selectedForms.Count() < 3)
+            {
+                var index = rnd.Next(numCandidates);
+                var pick = formsInNeedOfArtist[index];
+                formsInNeedOfArtist[index] = formsInNeedOfArtist[numCandidates - 1];
+                selectedForms.Add(pick);
+                numCandidates--;
+            }
+
             var model = new ContributePageViewModel
             {
                 Me = me,
                 HasPublicArtistBio = SettingsProcedures.PlayerHasArtistAuthorBio(myMembershipId),
-                ArtistBios = DomainRegistry.Repository.Find(new GetArtistBios())
+                ArtistBios = DomainRegistry.Repository.Find(new GetArtistBios()),
+                SelectedForms = selectedForms
             };
 
             return View(MVC.Contribution.Views.Contribute, model);
@@ -385,12 +412,11 @@ namespace TT.Web.Controllers
         [Authorize]
         public virtual ActionResult ContributeSetGraphicStatus(int id)
         {
-
             var iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
 
             if (!iAmArtist)
             {
-                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
+                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact an administrator on Discord.";
                 return RedirectToAction(MVC.Contribution.ContributeGraphicsNeeded());
             }
 
@@ -415,7 +441,7 @@ namespace TT.Web.Controllers
 
             if (!iAmArtist)
             {
-                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
+                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact an administrator on Discord.";
                 return RedirectToAction(MVC.Contribution.ContributeGraphicsNeeded());
             }
 

@@ -141,7 +141,18 @@
             }
 
             <p>
-                There are a number of <a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">spells waiting for art</a> before they can go live.  If you would like to help out, contact the spell author or post a message on <a href="https://discord.gg/z66CYzX">Discord</a>.
+                There are a number of <a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">spells waiting for art</a> before they can go live.  Forms in need of art include:
+            </p>
+            <ul class="listdots">
+                @{
+                    foreach (var form in Model.SelectedForms)
+                    {
+                        <li>@form</li>
+                    }
+                }
+            </ul>
+            <p>
+                If you would like to <a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">help out</a>, contact the spell author or post a message on <a href="https://discord.gg/z66CYzX">Discord</a>.
             </p>
         </div>
 
@@ -168,7 +179,7 @@
                 Dependent upon how much you are able to contribute, you will receive benefits such as:
             </p>
             <ul class="listdots">
-                <li>A donor icon beside your name</li>
+                <li>A donator icon beside your name</li>
                 <li>The ability to choose an in-game nickname</li>
                 <li>Keeping more messages in your inbox for longer</li>
             </ul>
@@ -180,7 +191,7 @@
                 if (Model.Me.DonatorLevel > 0)
                 {
                     <p class="good">
-                        You are a level @Model.Me.DonatorLevel donor.
+                        You are a level @Model.Me.DonatorLevel donator.
                     </p>
                 }
                 if (User.IsInRole(PvPStatics.Permissions_Admin))

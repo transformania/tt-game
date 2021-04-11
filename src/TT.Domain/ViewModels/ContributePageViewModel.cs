@@ -9,5 +9,6 @@ namespace TT.Domain.ViewModels
         public Player Me { get; set; }
         public bool HasPublicArtistBio { get; set; }
         public IEnumerable<ArtistBioDetail> ArtistBios { get; set; }
+        public IEnumerable<string> SelectedForms { get; set; }
     }
 }

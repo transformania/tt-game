@@ -13,13 +13,13 @@
     <p>Artist name(s) you go by on other sites (eg Luxianne, Meddle, Nymic-TF, Babblingfaces, etc).  <i>Note: If this is not set, your account name will be listed instead.</i></p>
     @Html.TextBoxFor(m => m.OtherNames)<br><br>
     
-        <p>Are you accepting comissions?</p>
+        <p>Are you accepting commissions?</p>
     @Html.DropDownListFor(i => i.AcceptingComissions, new SelectList(
                   new List<Object>{
-                      new { value = "1"  , text = "Yes, I am always open for comissions."  },
-                      new { value = "0"  , text = "I never take comissions."  },
-                      new { value = "2"  , text = "Normally yes but comissions are currently closed."  },
-                      new { value = "3"  , text = "I have not taken any comissions yet but will do so in the future."  },
+                      new { value = "1"  , text = "Yes, I am always open for commissions."  },
+                      new { value = "0"  , text = "I never take commissions."  },
+                      new { value = "2"  , text = "Normally yes but commissions are currently closed."  },
+                      new { value = "3"  , text = "I have not taken any commissions yet but will do so in the future."  },
                     },
                   "value",
                   "text",
@@ -35,7 +35,7 @@
     <p>Website URL (third...ary)</p>
     @Html.TextBoxFor(m => m.Url3)<br><br>
     
-    <p>Anything about you--your history, your favorite types of drawings, comission pricing, whatever you feel relevant.  If you want to include some basic styling here, you can use the follow html-like tags that will be converted to the html equivalent:  [br] (breakline), [p] and [/p] (paragraph), [h1] and [/h1] (header 1),  [h2] and [/h2] (header 2),  [h3] and [/h3] (header 3).</p>
+    <p>Anything about you--your history, your favorite types of drawings, commission pricing, whatever you feel relevant.  If you want to include some basic styling here, you can use the follow html-like tags that will be converted to the html equivalent:  [br] (breakline), [p] and [/p] (paragraph), [h1] and [/h1] (header 1),  [h2] and [/h2] (header 2),  [h3] and [/h3] (header 3).</p>
     @Html.TextAreaFor(m => m.Text)<br><br>
     
     <p>Would you like your ingame character name to be visible?  Choose your setting below.</p>

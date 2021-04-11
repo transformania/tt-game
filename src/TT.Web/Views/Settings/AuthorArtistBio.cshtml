@@ -29,24 +29,24 @@
         }
 }
 
-    <p class="bioTitle">Comission Information</p>
+    <p class="bioTitle">Commission Information</p>
     <p class="bioDesc">
     @{
         if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 0)
         {
-            <span class="bad">This artist does not take comissions.</span>
+            <span class="bad">This artist does not take commissions.</span>
         }
         else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 1)
         {
-            <span class="good">This artist is always open for comissions!</span>
+            <span class="good">This artist is always open for commissions!</span>
         }
         else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 2)
         {
-            <span class="bad">This artist normally takes comissions but they are currently closed.</span>
+            <span class="bad">This artist normally takes commissions but they are currently closed.</span>
         }
         else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 3)
         {
-            <span class="bad">This artist does not take comissions but plans to in the future.</span>
+            <span class="bad">This artist does not take commissions but plans to in the future.</span>
         }
 
     }

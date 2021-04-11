@@ -1009,6 +1009,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else  // 2%
             {
                 message = BanCharacter(player);
+                BanCharacter(victim);
+                return message;
             }
 
             return null;

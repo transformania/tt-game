@@ -950,7 +950,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 forms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
                 mindControl = true;
-                message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you enjoy sweeping the dirt away maybe you could serve others is town?";
+                message = "The shop is full of dust and cobwebs.  You feel it could do with a good clean.  If you enjoy sweeping the dirt away maybe you could serve others in town?";
 
                 string[] prefixes = { "Maid", "Servant", "Miss", "Cleaner", "Waitress" };
                 lastName = rand.Next(2) == 0 ? firstName : lastName;

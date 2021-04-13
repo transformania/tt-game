@@ -5,6 +5,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Legacy.Services;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -220,57 +221,60 @@ namespace TT.Domain.Procedures
                 try
                 {
 
-                    bot.LastActionTimestamp = DateTime.UtcNow;
-
                     // if bot is no longer fully animate or is null, skip them
                     if (bot == null || bot.Mobility != PvPStatics.MobilityFull)
                     {
                         continue;
                     }
 
-                    #region drop excess items
+                    bot.LastActionTimestamp = DateTime.UtcNow;
 
-                    var botItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPsychopath { OwnerId = bot.Id }).ToList();
-
-                    string[] itemTypes =
+                    if (!EffectProcedures.PlayerHasActiveEffect(bot.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
                     {
-                        PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants,
-                        PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes,
-                        PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt
-                    };
+                        #region drop excess items
 
-                    foreach (var typeToDrop in itemTypes)
-                    {
-                        if (botItems.Count(i => i.ItemSource.ItemType == typeToDrop) > 1)
+                        var botItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPsychopath { OwnerId = bot.Id }).ToList();
+
+                        string[] itemTypes =
                         {
-                            var dropList = botItems.Where(i => i.ItemSource.ItemType == typeToDrop).Skip(1);
+                            PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants,
+                            PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes,
+                            PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt
+                        };
 
-                            foreach (var i in dropList)
+                        foreach (var typeToDrop in itemTypes)
+                        {
+                            if (botItems.Count(i => i.ItemSource.ItemType == typeToDrop) > 1)
                             {
-                                ItemProcedures.DropItem(i.Id);
+                                var dropList = botItems.Where(i => i.ItemSource.ItemType == typeToDrop).Skip(1);
 
-                                var name = "a";
+                                foreach (var i in dropList)
+                                {
+                                    ItemProcedures.DropItem(i.Id);
 
-                                if (i.FormerPlayer != null)
-                                {
-                                    name = "<b>" + i.FormerPlayer.FullName + "</b> the";
-                                }
+                                    var name = "a";
 
-                                if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
-                                {
-                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> released " + name + " pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
-                                }
-                                else
-                                {
-                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                        "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                    if (i.FormerPlayer != null)
+                                    {
+                                        name = "<b>" + i.FormerPlayer.FullName + "</b> the";
+                                    }
+
+                                    if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+                                    {
+                                        LocationLogProcedures.AddLocationLog(bot.dbLocationName,
+                                            "<b>" + bot.GetFullName() + "</b> released " + name + " pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                    }
+                                    else
+                                    {
+                                        LocationLogProcedures.AddLocationLog(bot.dbLocationName,
+                                            "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    #endregion
+                        #endregion
+                    }
 
                     var botbuffs = ItemProcedures.GetPlayerBuffs(bot);
 

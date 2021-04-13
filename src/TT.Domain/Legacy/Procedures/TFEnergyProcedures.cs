@@ -280,7 +280,7 @@ namespace TT.Domain.Procedures
 
             AddExtraHealthDamage(victim, output, playerRepo, targetForm, energyAccumulated, target, attacker, modifiedTFEnergyPercent);
 
-            target = CompleteTransformation(victim, output, playerRepo, targetForm, target, attacker);
+            target = CompleteTransformation(victim, output, playerRepo, targetForm, target, attacker, skillSourceId);
 
             // if there is a duel going on, end it if all but 1 player is defeated (not in the form they started in)
             if (victim.InDuel > 0)
@@ -376,7 +376,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        private static Player CompleteTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker)
+        private static Player CompleteTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker, int skillSourceId)
         {
             var healthProportion = target.Health / target.MaxHealth;
 
@@ -391,7 +391,7 @@ namespace TT.Domain.Procedures
             else if ((targetForm.MobilityType == PvPStatics.MobilityInanimate && healthProportion <= PvPStatics.PercentHealthToAllowInanimateFormTF) ||
                      (targetForm.MobilityType == PvPStatics.MobilityPet && healthProportion <= PvPStatics.PercentHealthToAllowAnimalFormTF))
             {
-                PerformInanimateTransformation(victim, output, playerRepo, targetForm, target, attacker);
+                PerformInanimateTransformation(victim, output, playerRepo, targetForm, target, attacker, skillSourceId);
                 BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
@@ -444,7 +444,7 @@ namespace TT.Domain.Procedures
             return target;
         }
 
-        private static void PerformInanimateTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker)
+        private static void PerformInanimateTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker, int skillSourceId)
         {
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, targetForm.Id);
             DomainRegistry.Repository.Execute(new ChangeForm
@@ -611,9 +611,9 @@ namespace TT.Domain.Procedures
             TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
             // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
-            if (attacker.BotId == AIStatics.PsychopathBotId)
+            if (attacker.BotId == AIStatics.PsychopathBotId && !EffectProcedures.PlayerHasActiveEffect(attacker.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
             {
-                SkillProcedures.DeleteAllPlayerSkills(attacker.Id);
+                SkillProcedures.DeletePlayerSkill(attacker, skillSourceId);
 
                 // give this bot a random skill
                 var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();

@@ -716,6 +716,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string ChangeBaseForm(Player player, Random rand = null)
         {
+            // Currently only set base to a fool form in April
+            if (DateTime.UtcNow.Month != 4)
+            {
+                return null;
+            }
+
             var availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
 
             if (availableForms.IsEmpty())
@@ -1262,9 +1268,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
 
-            if (world.Boss_Bimbo == AIStatics.ACTIVE && TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
+            if (world.Boss_Bimbo == AIStatics.ACTIVE)
             {
-                return "U hear there's a liek supes smart syentist in town who u hav totes got 2 c!!!";
+                if (rand.Next(5) == 0)
+                {
+                    return ItemProcedures.GiveNewItemToPlayer(player, BossProcedures_BimboBoss.CureItemSourceId);
+                }
+                else if (TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
+                {
+                    return "U hear there's a liek supes smart syentist in town who u hav totes got 2 c!!!";
+                }
             }
 
             else if (world.Boss_Donna == AIStatics.ACTIVE)

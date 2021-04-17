@@ -216,6 +216,12 @@ namespace TT.Web.Controllers
 
             var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == playerMembershipId.MembershipId);
 
+            if (player.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Result"] = "Only animate players can be force reverted to base form.";
+                return RedirectToAction(MVC.PvP.LookAtPlayer(Id));
+            }
+
             // Check for empty field
             if (player.OriginalFirstName == null || player.OriginalLastName == null)
             {

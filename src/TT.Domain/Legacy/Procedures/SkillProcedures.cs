@@ -281,6 +281,17 @@ namespace TT.Domain.Procedures
             }
         }
 
+        public static void DeletePlayerSkill(Player player, int skillSourceId)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            var skill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.SkillSourceId == skillSourceId);
+
+            if (skill != null)
+            {
+                skillRepo.DeleteSkill(skill.Id);
+            }
+        }
+
         public static void TransferAllPlayerSkills(int oldPlayerId, int newPlayerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

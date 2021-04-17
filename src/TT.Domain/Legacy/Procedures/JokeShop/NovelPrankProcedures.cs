@@ -102,8 +102,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             rand = rand ?? new Random();
 
-            var baseStrength = Math.Min(Math.Max(0, player.Level / 3), 4);
-            var strength = baseStrength + rand.Next(3);
+            var baseStrength = Math.Min(Math.Max(0, (player.Level - 1) / 3), 3);
+            var strength = baseStrength + Math.Max(0, rand.Next(5) - 1);
             var prefix = "";
             int level;
             int perk;
@@ -111,43 +111,51 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var gender = rand.Next(2);
             int form;
 
-            if (strength <= 0)
+            var turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            if (strength <= 0 || turnNumber < 300)
             {
+                strength = 0;
                 level = 1;
                 perk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho1MId : AIProcedures.Psycho1FId;
             }
-            else if (strength == 1)
+            else if (strength == 1 || turnNumber < 600)
             {
+                strength = 1;
                 level = 3;
                 prefix = "Fierce";
                 perk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho3MId : AIProcedures.Psycho3FId;
             }
-            else if (strength == 2)
+            else if (strength == 2 || turnNumber < 900)
             {
+                strength = 2;
                 level = 5;
                 prefix = "Wrathful";
                 perk = AIProcedures.PsychopathicForLevelFiveEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho5MId : AIProcedures.Psycho5FId;
             }
-            else if (strength == 3)
+            else if (strength == 3 || turnNumber < 1500)
             {
-                level = 6;
+                strength = 3;
+                level = 7;
                 prefix = "Loathful";
                 perk = AIProcedures.PsychopathicForLevelSevenEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho7MId : AIProcedures.Psycho7FId;
             }
-            else if (strength == 4)
+            else if (strength == 4 || turnNumber < 2400)
             {
-                level = 7;
+                strength = 4;
+                level = 9;
                 prefix = "Soulless";
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
-            else if (strength == 5)
+            else if (strength == 5 || turnNumber < 3600)
             {
-                level = 8;
+                strength = 5;
+                level = 11;
                 prefix = "Ruthless";
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
                 extraPerk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
@@ -155,7 +163,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else
             {
-                level = 9;
+                strength = 6;
+                level = 13;
                 prefix = "Eternal";
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
                 extraPerk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;

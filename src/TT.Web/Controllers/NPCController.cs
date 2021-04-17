@@ -646,11 +646,11 @@ namespace TT.Web.Controllers
             else if (question == "psychos")
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 13 || b.OriginalFormSourceId == 14));
-                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 837 || b.OriginalFormSourceId == 838));
-                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 839 || b.OriginalFormSourceId == 840));
-                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 841 || b.OriginalFormSourceId == 842));
-                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == 843 || b.OriginalFormSourceId == 844));
+                var psychoCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == AIProcedures.Psycho1FId || b.OriginalFormSourceId == AIProcedures.Psycho1MId));
+                var fierceCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == AIProcedures.Psycho3FId || b.OriginalFormSourceId == AIProcedures.Psycho3MId));
+                var wrathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == AIProcedures.Psycho5FId || b.OriginalFormSourceId == AIProcedures.Psycho5MId));
+                var loathfulCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == AIProcedures.Psycho7FId || b.OriginalFormSourceId == AIProcedures.Psycho7MId));
+                var soullessCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull && (b.OriginalFormSourceId == AIProcedures.Psycho9FId || b.OriginalFormSourceId == AIProcedures.Psycho9MId));
 
                 if (psychoCount + fierceCount + wrathfulCount + loathfulCount + soullessCount > 0)
                 {

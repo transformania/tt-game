@@ -342,7 +342,22 @@ namespace TT.Domain.Procedures
                             {
                                 if (botbuffs.MoveActionPointDiscount() > -100 && CanMove(worldDetail, myTarget))
                                 {
-                                    var newplace = MoveTo(bot, myTarget.dbLocationName, 5);
+                                    var maxSpaces = 5;
+
+                                    if (bot.FirstName.Contains("Evil "))
+                                    {
+                                        maxSpaces = 8;
+                                    }
+                                    else if (bot.FirstName.Contains("Ruthless "))
+                                    {
+                                        maxSpaces = 6;
+                                    }
+                                    else if (bot.FirstName.Contains("Eternal "))
+                                    {
+                                        maxSpaces = 7;
+                                    }
+
+                                    var newplace = MoveTo(bot, myTarget.dbLocationName, maxSpaces);
                                     bot.dbLocationName = newplace;
                                 }
                             }
@@ -413,20 +428,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void CounterAttack(Player personAttackin, Player bot)
-        {
-            if (personAttackin.BotId == AIStatics.ActivePlayerBotId)
-            {
-                var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
-
-                var rand = new Random(personAttackin.LastName.GetHashCode() + PvPStatics.LastGameTurn);
-                var roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
-
-                var selectedSkill = myskills.ElementAt((int)roll);
-                AttackProcedures.Attack(bot, personAttackin, selectedSkill);
-            }
-        }
-
         public static void CheckAICounterattackRoutine(Player personAttacking, Player bot)
         {
             // person attacking is a boss and not a psychopath, so do nothing
@@ -438,27 +439,49 @@ namespace TT.Domain.Procedures
             // attacking the psychopath.  Random chance the psychopath will set the attacker as their target.
             if (bot.BotId == AIStatics.PsychopathBotId)
             {
+                if (personAttacking.BotId == AIStatics.ActivePlayerBotId)
+                {
+                    var rand = new Random();
+                    var numAttacks = 0;
 
-                if (bot.FirstName.Contains("Loathful "))
-                {
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                }
-                else if (bot.FirstName.Contains("Soulless ") || bot.FirstName.Contains("Evil "))
-                {
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                }
-                else if (bot.FirstName.Contains("Ruthless "))
-                {
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                    AIProcedures.CounterAttack(personAttacking, bot);
-                }
-                else if (bot.FirstName.Contains("Eternal "))
-                {
-                    for (int i = 0; i < new Random().Next(3, 6); i++)
+                    if (bot.FirstName.Contains("Loathful "))
                     {
-                        AIProcedures.CounterAttack(personAttacking, bot);
+                        numAttacks = 1;
+                    }
+                    else if (bot.FirstName.Contains("Soulless ") || bot.FirstName.Contains("Evil "))
+                    {
+                        numAttacks = 2;
+                    }
+                    else if (bot.FirstName.Contains("Ruthless "))
+                    {
+                        numAttacks = 3;
+                    }
+                    else if (bot.FirstName.Contains("Eternal "))
+                    {
+                        numAttacks = rand.Next(3, 6);
+                    }
+
+
+                    var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
+
+                    for (int i = 0; i < numAttacks; i++)
+                    {
+                        var selectedSkill = myskills.ElementAt(rand.Next(myskills.Count()));
+
+                        // If attacker is already in target form, weaken them
+                        if (selectedSkill.StaticSkill.FormSourceId == personAttacking.FormSourceId && selectedSkill.MobilityType == personAttacking.Mobility)
+                        {
+                            selectedSkill = myskills.FirstOrDefault(s => s.StaticSkill.Id == PvPStatics.Spell_WeakenId) ?? selectedSkill;
+                        }
+
+                        // If we're trying to weaken a player with no WP when they attacked, switch to spell not matching the player's current form
+                        if (personAttacking.Health == 0 && selectedSkill.StaticSkill.Id == PvPStatics.Spell_WeakenId)
+                        {
+                            selectedSkill = myskills.FirstOrDefault(s => s.StaticSkill.Id != PvPStatics.Spell_WeakenId &&
+                                                                         s.StaticSkill.FormSourceId == personAttacking.FormSourceId) ?? selectedSkill;
+                        }
+
+                        AttackProcedures.Attack(bot, personAttacking, selectedSkill);
                     }
                 }
 

@@ -283,12 +283,12 @@ namespace TT.Domain.Procedures
 
         public static void DeletePlayerSkill(Player player, int skillSourceId)
         {
-            var skill = GetSkillViewModelsOwnedByPlayer(player.Id).FirstOrDefault(s => s.StaticSkill.Id == skillSourceId);
+            ISkillRepository skillRepo = new EFSkillRepository();
+            var skill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.SkillSourceId == skillSourceId);
 
             if (skill != null)
             {
-                ISkillRepository skillRepo = new EFSkillRepository();
-                skillRepo.DeleteSkill(skill.dbSkill.Id);
+                skillRepo.DeleteSkill(skill.Id);
             }
         }
 

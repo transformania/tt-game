@@ -419,11 +419,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             string[] memes = {
-                // More memes
+                // More memes here
                 };
             string meme = null;
 
-            var specialCases = 1;
+            var specialCases = 2;
 
             var selection = rand.Next(memes.Count() + specialCases);
 
@@ -441,6 +441,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var coven = covens.ElementAt(rand.Next(covens.Count()));
                     meme = $"All hail {coven.Leader.GetFullName()}, leader of {coven.dbCovenant.Name}!";
                 }
+            }
+            else if (selection == 1)
+            {
+                meme = $"I'm {(rand.Next(0) == 0 ? "" : "not ")}{(rand.Next(0) == 0 ? "cute" : "cyoot")}!!!";
             }
             else
             {
@@ -479,7 +483,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var detected = playersInCombat[rand.Next(playersInCombat.Count())];
             var location = LocationsStatics.GetConnectionName(detected.dbLocationName);
 
-            return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> is currently in <b>{location}</b>!";
+            return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> has recently been in combat and is currently in <b>{location}</b>!";
         }
 
         public static string AwardChallenge(Player player, int minDuration, int maxDuration, bool? withPenalties = null)

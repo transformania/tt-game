@@ -655,6 +655,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 83,
+      "name": "Alpha 83 (Era of the Joke Shop)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

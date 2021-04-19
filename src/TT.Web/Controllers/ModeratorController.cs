@@ -241,7 +241,8 @@ namespace TT.Web.Controllers
                 FormSourceId = player.OriginalFormSourceId
             });
 
-            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have reverted " + player.OriginalFirstName + " " + player.OriginalLastName + " back to their starting identity.", true);
+            PlayerLogProcedures.AddPlayerLog(me.Id,
+                $"<b>You have reverted {player.OriginalFirstName} {player.OriginalLastName} back to their starting identity.</b>", true);
             return RedirectToAction(MVC.PvP.Play());
 
         }

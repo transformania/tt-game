@@ -495,7 +495,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You hear a beep from a machine.  It has a radar-like display and shows that <b>{detected.GetFullName()}</b> has recently been in combat and is currently in <b>{location}</b>!";
         }
 
-        public static string AwardChallenge(Player player, int minDuration, int maxDuration, bool? withPenalties = null)
+        public static string AwardChallenge(Player player, int minDuration, int maxDuration, bool? withPenalties = null, Random rand = null)
         {
             var challenge = ChallengeProcedures.AwardChallenge(player, minDuration, maxDuration, withPenalties);
 
@@ -504,8 +504,26 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var message = "The interdimensional spirits that inhabit this strange magical plane question whether you are worthy enough to be here.  <b>They decide to set you a challenge!</b>  ";
-            message += $"You must {ListifyHelper.Listify(challenge.Criteria, true)}.  ";
+            rand = rand ?? new Random();  // RNG selects challenge text but NOT the challenge itself
+
+            string[] adjectives = {"interdimensional", "dark", "tormented", "eternal", "cruel", "malevolent", "mischievous"};
+            string[] subjects = {"spirits", "souls", "entities", "apparitions", "beings"};
+            string[] ambience = {"strange", "magical", "haunted", "eerie", "unsettling", "lost"};
+            string[] venues = {"plane", "shop", "store", "realm"};
+            string[] issues = {"question whether you are worthy enough to be here",
+                               "laugh at your feeble powers",
+                               "are alarmed by your presence",
+                               "think you are too weak to stay here",
+                               "are angered by your intrusion into their domain"};
+
+            var interdimensional = adjectives[rand.Next(adjectives.Count())];
+            var spirits = subjects[rand.Next(subjects.Count())];
+            var strange = ambience[rand.Next(ambience.Count())];
+            var plane = venues[rand.Next(venues.Count())];
+            var questionYourWorthiness = issues[rand.Next(issues.Count())];
+
+            var message = $"The {interdimensional} {spirits} that inhabit this {strange} {plane} {questionYourWorthiness}.  <b>They decide to set you a challenge!</b>  ";
+            message += $"You must {ListifyHelper.Listify(challenge.Parts.Select(p => p.Description).ToList(), true)}.  ";
             message += $"If you succeed you will be rewarded with <b>{challenge.Reward}</b>";
 
             if (!challenge.Penalty.IsNullOrEmpty())
@@ -513,7 +531,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 message += $" but if you fail you will suffer <b>a penalty of {challenge.Penalty}</b>";
             }
 
-            message += $".<br />To pass the challenge you must be in the Joke Shop and meet all the success criteria by the end of <b>turn {challenge.ByEndOfTurn}</b>.";
+            message += $".<br />To pass the challenge you must be in the Joke Shop and meet all the success criteria by the end of <b>turn {challenge.ByEndOfTurn}</b>, about {challenge.GetTimeLeft()} from now.  You can check your progress with Rusty in the Tavern.";
 
             PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
 

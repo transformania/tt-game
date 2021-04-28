@@ -34,8 +34,8 @@ body {
 }
 
 body.location-joke_shop {
-  background: radial-gradient(circle, transparent 0%, 80%, #ffffff 100%),
-              linear-gradient(to right, #9090b4 0%, #000000 30% 70%, #9090b4);
+  background: radial-gradient(circle, transparent 0%, transparent 75%, rgba(255, 255, 255, 0.4) 100%),
+              linear-gradient(to right, rgb(144, 144, 180) 0%, rgb(0, 0, 0) 25%, rgb(0, 0, 0) 75%, rgb(144, 144, 180));
 }
 
 // fix for margins of headers

@@ -846,11 +846,27 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    string summary = "I hear you have been set a challenge by some tormented interdimensional spirits.<br /><br />What you need to do is:<ul class=\"listdots\">";
+                    string summary = "I hear you have been set a challenge by some angry spirits.<br /><br />What you need to do is:<ul class=\"listdots\">";
+                    var progress = 0.0m;
 
-                    foreach (var criterion in challenge.Criteria)
+                    foreach (var part in challenge.Parts)
                     {
-                        summary += $"<li>{criterion}</li>";
+                        var (done, parts) = part.Progress(me);
+
+                        var progressString = "";
+                        if (done != parts && parts > 1)
+                        {
+                            progressString = (parts == 100) ? $" ({done}%)" : $" ({done}/{parts})";
+                        }
+
+                        var color = part.Satisfied(me) ? "good" : "bad";
+                        summary += $"<li>{part.Description}<br /><b class=\"{color}\" >{part.Status(me)}</b>{progressString}</li>";
+                        progress += Math.Min(1m, done / ((decimal)parts));
+                    }
+
+                    if (challenge.Parts.Count() > 0)
+                    {
+                        progress /= challenge.Parts.Count();
                     }
 
                     summary += $"</ul>If you succeed you will be handsomely rewarded with <b>{challenge.Reward}</b>.<br /><br/>";
@@ -860,11 +876,19 @@ namespace TT.Web.Controllers
                         summary += $"But if you fail, those mean spirits will inflict a <b>penalty of {challenge.Penalty}</b> upon you!<br /><br />";
                     }
 
-                    summary += $"To claim victory in this challenge you must present yourself for judgement at the Joke Shop <b>by the end of turn {challenge.ByEndOfTurn}</b>.  ";
+                    summary += $"To claim victory in this challenge you must present yourself for judgement at the Joke Shop <b>by the end of turn {challenge.ByEndOfTurn}</b>, about {challenge.GetTimeLeft()} from now.<br /><br />";
 
                     if (challenge.Satisfied(me))
                     {
-                        summary += "It looks to me like you're most of the way there, if you can get to the Joke Shop in time.";
+                        summary += "It looks to me like you're most of the way there - just make sure you can get to the Joke Shop in time and be careful not to let your score slip.";
+                    }
+                    else if (progress > 0.75m)
+                    {
+                        summary += "You're making good progress, but you still have work to do before those spirits will be satisifed.";
+                    }
+                    else if (progress > 0.4m)
+                    {
+                        summary += "I reckon you're about half way done, but you've still got a lot to do before that deadline.";
                     }
                     else
                     {

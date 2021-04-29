@@ -1059,7 +1059,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 90)  // 10%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 0, 20, false);
+                return NovelPrankProcedures.AwardChallenge(player, 0, 20, false, rand);
             }
             else  // 10%
             {
@@ -1101,7 +1101,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else  // 15%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 10, 60);
+                return NovelPrankProcedures.AwardChallenge(player, 10, 60, rand: rand);
             }
         }
 
@@ -1159,7 +1159,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 91)  // 7%
             {
-                return NovelPrankProcedures.AwardChallenge(player, 20, 480, true);
+                return NovelPrankProcedures.AwardChallenge(player, 20, 480, true, rand);
             }
             else  // 9%
             {

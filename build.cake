@@ -1,10 +1,9 @@
 #addin "nuget:?package=Cake.SqlServer&version=2.2.0"
-#addin Cake.FluentMigrator&version=0.4.0
 #addin Cake.FileHelpers&version=3.2.1
 #addin nuget:?package=SharpZipLib&version=1.2.0
 #addin nuget:?package=Cake.Compression&version=0.2.4
 #addin nuget:?package=System.ValueTuple&version=4.5.0
-#tool "nuget:?package=FluentMigrator.Tools&version=1.6.2"
+#tool nuget:?package=FluentMigrator.Console&version=3.2.15
 #tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
 #tool "nuget:?package=OpenCover&version=4.7.922"
 #tool "nuget:?package=ReportGenerator&version=4.6.1"
@@ -197,12 +196,8 @@ Task("Migrate")
         {
             file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
         }
-        FluentMigrator(new FluentMigratorSettings
-        {
-            Connection = "StatsWebConnection",
-            ConnectionStringConfigPath ="./tools/ConnectionStrings.config",
-            Provider = "sqlserver",
-            Assembly = "./src/TT.Migrations/bin/" + configuration + "/net472/TT.Migrations.dll"
+        StartProcess("./tools/FluentMigrator.Console.3.2.15/tools/net461/any/Migrate.exe", new ProcessSettings {
+            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
         });
         System.IO.File.Delete(@"./tools/ConnectionStrings.config");
         Information("Applying stored procedures against {0}", dbServer);

@@ -248,6 +248,37 @@ namespace TT.Domain.Procedures
             return logMessage;
         }
 
+        public static string MergePlayerPerk(int effectSourceId, Player player, int? duration = null, int? cooldown = null)
+        {
+            var effectRepo = new EFEffectRepository();
+            var perk = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
+
+            if (perk == null)
+            {
+                return GivePerkToPlayer(effectSourceId, player, duration, cooldown);
+            }
+
+            if (perk.IsPermanent)
+            {
+                return null;
+            }
+
+            if (duration.HasValue)
+            {
+                perk.Duration = Math.Max(perk.Duration, duration.Value);
+            }
+
+            if (cooldown.HasValue)
+            {
+                perk.Cooldown = Math.Max(Math.Max(perk.Cooldown, cooldown.Value), perk.Duration);
+            }
+
+            effectRepo.SaveEffect(perk);
+            var staticPerk = effectRepo.DbStaticEffects.FirstOrDefault(e => e.Id == effectSourceId);
+
+            return staticPerk == null ? "One of your effects has been renewed!" : $"Your {staticPerk.FriendlyName} effect has been renewed!";
+        }
+
         public static void RemovePerkFromPlayer(int effectSourceId, Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();

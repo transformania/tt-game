@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using TT.Domain.Abstract;
@@ -360,7 +361,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"A spellbook flies off the shelf and lands open on the wooden desk in front of you.  As you look at it you discover the secret incantations for the spells {ListifyHelper.Listify(learnt, true)}!";
         }
 
-        private static string UnlearnSpell(Player player, Random rand = null)
+        public static string UnlearnSpell(Player player, Random rand = null, int number = 1)
         {
             rand = rand ?? new Random();
 
@@ -378,11 +379,24 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var skill = skills.ElementAt(rand.Next(skills.Count()));
-            var message = $"The strange aura of the Joke Shop causes you to forget how to cast {skill.StaticSkill.FriendlyName}!";
+            var toRemove = new List<int>();
+            var numSkills = skills.Count();
+
+            while (toRemove.Count() < number && toRemove.Count() < numSkills)
+            {
+                var index = rand.Next(numSkills);
+
+                if (!toRemove.Contains(index))
+                {
+                    toRemove.Add(index);
+                }
+            }
+
+            var skillsToRemove = ListifyHelper.Listify(toRemove.Select(s => skills.ElementAt(s).StaticSkill.FriendlyName).ToList(), true);
+            var message = $"The strange aura of the Joke Shop causes you to forget how to cast {skillsToRemove}!";
 
             ISkillRepository skillRepo = new EFSkillRepository();
-            skillRepo.DeleteSkill(skill.dbSkill.Id);
+            toRemove.ForEach(s => skillRepo.DeleteSkill(skills.ElementAt(s).dbSkill.Id));
 
             return message;
         }

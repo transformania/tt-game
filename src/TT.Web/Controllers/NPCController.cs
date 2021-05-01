@@ -832,7 +832,7 @@ namespace TT.Web.Controllers
             else if (question == "challenge")
             {
                 var challenge = ChallengeProcedures.CurrentChallenge(me);
-                if (challenge == null)
+                if (challenge == null || challenge.ByEndOfTurn < PvPWorldStatProcedures.GetWorldTurnNumber())
                 {
                     var message = "You haven't yet been set any challenges.";
                     var whyNotTry = "";

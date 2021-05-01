@@ -23,7 +23,19 @@ namespace TT.Domain.Statics
         public const int CovenantCrystalItemSourceId = 164;
 
         public const int SpellWeaverDryItemSourceId = 3;
+        public const int SpellWeaverRootItemSourceId = 5;
+
         public const int WillflowerDryItemSourceId = 10;
+        public const int WillflowerRootItemSourceId = 2;
+
+        public const int ConcealmentCookieSourceId = 123;
+        public const int FireFritterSourceId = 130;
+        public const int BarricadeBrownieSourceId = 133;
+        public const int TrueshotTrufflesSourceId = 157;
+        public const int NirvanaNuggetSourceId = 158;
+        public const int PerceptionPuffSourceId = 257;
+        public const int LuckyLemoncakeSourceId = 258;
+        public const int DanishOfDiscoverySourceId = 585;
 
         public const int SpellbookSmallItemSourceId = 180;
         public const int SpellbookMediumItemSourceId = 181;

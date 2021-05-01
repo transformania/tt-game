@@ -18,9 +18,30 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 {
     public static class CharacterPrankProcedures
     {
-        // Stat boosting effect sourec IDs
-        public static readonly int[] BOOST_EFFECTS = { 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239 };
-        public static readonly int[] PENALTY_EFFECTS = { 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250 };
+        // Ids of stats effect sources
+        public const int DISCIPLINE_BOOST = 229;
+        public const int PERCEPTION_BOOST = 230;
+        public const int CHARISMA_BOOST = 231;
+        public const int FORTITUDE_BOOST = 232;
+        public const int AGILITY_BOOST = 233;
+        public const int RESTORATION_BOOST = 234;
+        public const int MAGICKA_BOOST = 235;
+        public const int REGENERATION_BOOST = 236;
+        public const int LUCK_BOOST = 237;
+        public const int INVENTORY_BOOST = 238;
+        public const int MOBILITY_BOOST = 239;
+
+        public const int DISCIPLINE_PENALTY = 240;
+        public const int PERCEPTION_PENALTY = 241;
+        public const int CHARISMA_PENALTY = 242;
+        public const int FORTITUDE_PENALTY = 243;
+        public const int AGILITY_PENALTY = 244;
+        public const int RESTORATION_PENALTY = 245;
+        public const int MAGICKA_PENALTY = 246;
+        public const int REGENERATION_PENALTY = 247;
+        public const int LUCK_PENALTY = 248;
+        public const int INVENTORY_PENALTY = 249;
+        public const int MOBILITY_PENALTY = 250;
 
         // Ids of specific and behavior-altering effect sources
         public const int SNEAK_REVEAL_1 = 226;
@@ -30,6 +51,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public const int BLINDED_EFFECT = 204;
         public const int DIZZY_EFFECT = 205;
         public const int HUSHED_EFFECT = 206;
+
+        // Stat boosting effect source IDs
+        public static readonly int[] BOOST_EFFECTS = { DISCIPLINE_BOOST, PERCEPTION_BOOST, CHARISMA_BOOST, FORTITUDE_BOOST, AGILITY_BOOST, RESTORATION_BOOST, MAGICKA_BOOST, REGENERATION_BOOST, LUCK_BOOST, INVENTORY_BOOST, MOBILITY_BOOST };
+        public static readonly int[] PENALTY_EFFECTS = { DISCIPLINE_PENALTY, PERCEPTION_PENALTY, CHARISMA_PENALTY, FORTITUDE_PENALTY, AGILITY_PENALTY, RESTORATION_PENALTY, MAGICKA_PENALTY, REGENERATION_PENALTY, LUCK_PENALTY, INVENTORY_PENALTY, MOBILITY_PENALTY };
 
         #region Effects pranks
 
@@ -91,7 +116,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 85)  // 15%
             {
-                return GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT);
+                return GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT, merge: true);
             }
             else if (roll < 90)  // 5%
             {
@@ -126,8 +151,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string GiveEffect(Player player, int effectSourceId, int duration = 3)
+        public static string GiveEffect(Player player, int effectSourceId, int duration = 3, bool merge = false)
         {
+            if (merge)
+            {
+                return EffectProcedures.MergePlayerPerk(effectSourceId, player, duration: duration, cooldown: duration);
+            }
+
             if (EffectProcedures.PlayerHasEffect(player, effectSourceId))
             {
                 return null;
@@ -136,7 +166,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.GivePerkToPlayer(effectSourceId, player, Duration: duration, Cooldown: duration);
         }
 
-        public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null)
+        public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null, bool merge = false)
         {
             if (effectSourceIds.IsEmpty())
             {
@@ -146,12 +176,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var effectSourceId = effectSourceIds.ElementAt(rand.Next(effectSourceIds.Count()));
 
-            if (EffectProcedures.PlayerHasEffect(player, effectSourceId))
-            {
-                return null;
-            }
-
-            return EffectProcedures.GivePerkToPlayer(effectSourceId, player);
+            return GiveEffect(player, effectSourceId, merge: merge);
         }
 
         public static string ApplyLocalCurse(Player player, string dbLocationName, Random rand = null)
@@ -429,7 +454,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (temporary)
             {
                 var duration = JokeShopProcedures.PlayerHasBeenWarnedTwice(player) ? 3 : 2;
-                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration);
+                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration, merge: true);
                 message = $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!";
             }
             else
@@ -465,7 +490,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (temporary)
             {
                 duration = JokeShopProcedures.PlayerHasBeenWarnedTwice(player) ? 10 : 5;
-                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration);
+                GiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT, duration, merge: true);
 
                 // If no autorestore we can't do temporary
                 if (!EffectProcedures.PlayerHasActiveEffect(player, JokeShopProcedures.AUTO_RESTORE_EFFECT))
@@ -1135,7 +1160,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Impose behavior
             if (mindControl)
             {
-                GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT);
+                GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT, merge: true);
             }
 
             if (message.IsNullOrEmpty())
@@ -1171,7 +1196,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT);
+            GiveEffect(player, JokeShopProcedures.INSTINCT_EFFECT, merge: true);
             return "A shrieking laugh turns the air to ice, freezing you where you stand.  \"Now you're mine!\" comes a the bloodcurdling taunt of a witch directly above you!  You then feel your arms moving involuntarily, being hoisted up by your wrists as if on strings, forcing you to perform a little jig against your will.  \"I will control your body, and I will control your brain!\" cackles the voice from overhead.  You try to run free, but you can still hear that voice in your mind:  \"You're still mine, wherever you go, and you will behave as I have made you!\"  Then as a freak gust of wind hits, you start to feel.. different..";
         }
 

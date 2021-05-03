@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
+using TT.Domain.Players.Commands;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
-using TT.Domain.World.Queries;
 
 namespace TT.Domain.Legacy.Procedures.JokeShop
 {
@@ -201,12 +202,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Assign the challenge to the player
             if (bestChallenge != null)
             {
-                    EffectProcedures.GivePerkToPlayer(bestChallengeType.EffectSourceId, player.Id, bestChallengeType.Duration);
+                EffectProcedures.GivePerkToPlayer(bestChallengeType.EffectSourceId, player.Id, bestChallengeType.Duration, bestChallengeType.Duration + 5);
 
-                    if (EffectProcedures.PlayerHasActiveEffect(player.Id, bestChallengeType.EffectSourceId))
-                    {
-                        return bestChallenge;
-                    }
+                if (EffectProcedures.PlayerHasActiveEffect(player.Id, bestChallengeType.EffectSourceId))
+                {
+                    return bestChallenge;
+                }
             }
 
             return null;
@@ -273,7 +274,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             else if (effect.Duration == 0 && !challenge.Penalty.IsNullOrEmpty())
             {
                 challenge.GivePenalty(player);
-                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and are given a penalty of <b>{challenge.Penalty}</b>!", true);
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"You have <b>failed</b> your recent challenge and incur a penalty of <b>{challenge.Penalty}</b>!", true);
             }
         }
 
@@ -473,41 +474,318 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static void PickRewardsAndPenalties(ChallengeType challengeType, Random die, Challenge challenge)
         {
-            var roll = die.Next(100);
-
-            if (roll < 25)
-            {
-                var amount = (int)Math.Max(challenge.Difficulty * 10, 50);
-                AddReward(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, amount); });
-            }
-            else if (roll < 50)
-            {
-                var amount = Math.Max(1, challenge.Difficulty / 5 + 1);
-                AddReward(challenge, $"{amount} spells", p => { SkillProcedures.GiveRandomFindableSkillsToPlayer(p, amount); });
-            }
-            else if (roll < 75)
-            {
-                AddReward(challenge, $"an effect to boost your skills", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.BOOST_EFFECTS, die); });
-            }
-            else
-            {
-                AddReward(challenge, $"a random item", p => { EnvironmentPrankProcedures.RareFind(p, die); });
-            }
+            PickRewards(challenge, die);
 
             if (challengeType.Penalty)
             {
-                roll = die.Next(100);
-
-                if (roll < 75)
-                {
-                    var amount = (int)Math.Max(challenge.Difficulty * 15, 100);
-                    AddPenalty(challenge, $"{amount} Arpeyjis", p => { PlayerProcedures.GiveMoneyToPlayer(p, -Math.Min(amount, p.Money)); });
-                }
-                else
-                {
-                    AddPenalty(challenge, $"a penalty effect", p => { CharacterPrankProcedures.GiveRandomEffect(p, CharacterPrankProcedures.PENALTY_EFFECTS, die); });
-                }
+                PickPenalties(challenge, die);
             }
+        }
+
+        private static void PickRewards(Challenge challenge, Random die)
+        {
+            var value = challenge.Difficulty * 10;
+
+            var roll = die.Next(100);
+
+            if (roll < 20)  // 20%
+            {
+                var amount = (int)Math.Max(challenge.Difficulty * 10, 50);
+                value -= amount;
+                AddReward(challenge, $"a {amount} Arpeyjis bonus", p => PlayerProcedures.GiveMoneyToPlayer(p, amount));
+            }
+            else if (roll < 40)  // 20%
+            {
+                var amount = Math.Max(1, challenge.Difficulty / 5 + 1);
+                value -= amount * 50;
+                AddReward(challenge, $"{amount} spells", p => PlayerLogProcedures.AddPlayerLog(
+                    p.Id, $"You have been rewarded with the knowledge of {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(p, amount), true)}!", true));
+            }
+            else if (roll < 65)  // 25%
+            {
+                value -= AddEffectReward(challenge, die);
+            }
+            else  // 35%
+            {
+                value -= AddItemReward(challenge, die);
+            }
+
+            // Boost value of low value rewards
+            if (value > 0)
+            {
+                AddReward(challenge, $"a {value} Arpeyjis bonus", p => PlayerProcedures.GiveMoneyToPlayer(p, value));
+            }
+        }
+
+        private static int AddEffectReward(Challenge challenge, Random die)
+        {
+            int sourceId;
+            string description;
+            int relativePotency = 1;
+
+            var effectRoll = die.Next(11);
+            if (effectRoll == 0)
+            {
+                description = "boosted Agility";
+                sourceId = CharacterPrankProcedures.AGILITY_BOOST;
+            }
+            else if (effectRoll == 1)
+            {
+                description = "boosted Charisma";
+                sourceId = CharacterPrankProcedures.CHARISMA_BOOST;
+            }
+            else if (effectRoll == 2)
+            {
+                description = "boosted Discipline";
+                sourceId = CharacterPrankProcedures.DISCIPLINE_BOOST;
+            }
+            else if (effectRoll == 3)
+            {
+                description = "boosted Fortitude";
+                sourceId = CharacterPrankProcedures.FORTITUDE_BOOST;
+            }
+            else if (effectRoll == 4)
+            {
+                description = "increased inventory capacity";
+                sourceId = CharacterPrankProcedures.INVENTORY_BOOST;
+            }
+            else if (effectRoll == 5)
+            {
+                description = "boosted Luck";
+                sourceId = CharacterPrankProcedures.LUCK_BOOST;
+            }
+            else if (effectRoll == 6)
+            {
+                description = "boosted Magicka";
+                sourceId = CharacterPrankProcedures.MAGICKA_BOOST;
+            }
+            else if (effectRoll == 7)
+            {
+                description = "improved mobility";
+                sourceId = CharacterPrankProcedures.MOBILITY_BOOST;
+                relativePotency = 2;
+            }
+            else if (effectRoll == 8)
+            {
+                description = "boosted Perception";
+                sourceId = CharacterPrankProcedures.PERCEPTION_BOOST;
+            }
+            else if (effectRoll == 9)
+            {
+                description = "boosted Regeneration";
+                sourceId = CharacterPrankProcedures.REGENERATION_BOOST;
+            }
+            else
+            {
+                description = "boosted Restoration";
+                sourceId = CharacterPrankProcedures.RESTORATION_BOOST;
+            }
+
+            var duration = Math.Max(challenge.Difficulty / (2 * relativePotency), 1);
+
+            AddReward(challenge, $"{duration} turns of {description}",
+                      p => EffectProcedures.MergePlayerPerk(sourceId, p, duration));
+
+            return duration * 20 * relativePotency;
+        }
+
+        public static int AddItemReward(Challenge challenge, Random die)
+        {
+            int itemSourceId;
+            Action<Player> action;
+            var roll = die.Next(3);
+
+            if (roll < 2)
+            {
+                // Consumable
+                int[] itemTypes = { ItemStatics.CurseLifterItemSourceId,
+                                    ItemStatics.AutoTransmogItemSourceId,
+                                    ItemStatics.WillpowerBombVolatileItemSourceId,
+                                    ItemStatics.WillpowerBombStrongItemSourceId,
+                                    ItemStatics.WillpowerBombWeakItemSourceId,
+                                    ItemStatics.SelfRestoreItemSourceId,
+                                    ItemStatics.LullabyWhistleItemSourceId,
+                                    ItemStatics.SpellbookSmallItemSourceId,
+                                    ItemStatics.SpellbookMediumItemSourceId,
+                                    ItemStatics.SpellbookLargeItemSourceId,
+                                    ItemStatics.SpellbookGiantItemSourceId,
+                                    ItemStatics.TeleportationScrollItemSourceId,
+                                    ItemStatics.TgSplashOrbItemSourceId,
+                                    ItemStatics.WillflowerDryItemSourceId,
+                                    ItemStatics.WillflowerRootItemSourceId,
+                                    ItemStatics.SpellWeaverDryItemSourceId,
+                                    ItemStatics.SpellWeaverRootItemSourceId,
+                                    ItemStatics.CovenantCrystalItemSourceId,
+                                    ItemStatics.ConcealmentCookieSourceId,
+                                    ItemStatics.FireFritterSourceId,
+                                    ItemStatics.BarricadeBrownieSourceId,
+                                    ItemStatics.TrueshotTrufflesSourceId,
+                                    ItemStatics.NirvanaNuggetSourceId,
+                                    ItemStatics.PerceptionPuffSourceId,
+                                    ItemStatics.LuckyLemoncakeSourceId,
+                                    ItemStatics.DanishOfDiscoverySourceId };
+
+                itemSourceId = itemTypes[die.Next(itemTypes.Count())];
+                action =  p => ItemProcedures.GiveNewItemToPlayer(p, itemSourceId);
+            }
+            else
+            {
+                // Rune
+                var levelRoll = die.Next(100);
+                int level;
+
+                if (levelRoll < 20)  // 20%
+                {
+                    level = 3;  // Standard
+                }
+                else if (levelRoll < 85)  // 65%
+                {
+                    level = 5;  // Great
+                }
+                else if (levelRoll < 97)  // 12%
+                {
+                    level = 7;  // Major
+                }
+                else  // 3%
+                {
+                    level = 9;  // Superior
+                }
+
+                itemSourceId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = level, Random = die });
+                action = p => DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = itemSourceId, PlayerId = p.Id });
+            }
+
+            var itemRepo = new EFItemRepository();
+            var staticItem = itemRepo.DbStaticItems.FirstOrDefault(i => i.Id == itemSourceId);
+
+            if (staticItem == null || staticItem.MoneyValueSell > challenge.Difficulty * 10)
+            {
+                return 0;
+            }
+
+            AddReward(challenge, $"a {staticItem.FriendlyName}", action);
+            return (int)(staticItem.MoneyValueSell > 0 ? staticItem.MoneyValueSell : 50);
+        }
+
+        private static void PickPenalties(Challenge challenge, Random die)
+        {
+            var roll = die.Next(100);
+
+            if (roll < 40)
+            {
+                var amount = (int)Math.Max(challenge.Difficulty * 7.5, 50);
+                AddPenalty(challenge, $"a {amount} Arpeyjis fine",
+                           p => PlayerProcedures.GiveMoneyToPlayer(p, -Math.Min(amount, p.Money)));
+            }
+            else if (roll < 80)
+            {
+                AddEffectPenalty(challenge, die);
+            }
+            else if (roll < 90)
+            {
+                var duration = challenge.Difficulty * 4;
+                AddPenalty(challenge, $"a {duration} turn ban from the Joke Shop",
+                           p => EffectProcedures.MergePlayerPerk(JokeShopProcedures.BANNED_FROM_JOKE_SHOP_EFFECT, p, duration));
+            }
+            else
+            {
+                var amount = Math.Max(1, challenge.Difficulty / 5);
+                AddPenalty(challenge, $"forgetting {amount} spells",
+                           p => PlayerLogProcedures.AddPlayerLog(p.Id, EnvironmentPrankProcedures.UnlearnSpell(p, number: amount), true));
+            }
+        }
+
+        private static void AddEffectPenalty(Challenge challenge, Random die)
+        {
+            int sourceId;
+            string description;
+            int relativePotency = 1;
+
+            var effectRoll = die.Next(15);
+            if (effectRoll == 0)
+            {
+                description = "reduced Agility";
+                sourceId = CharacterPrankProcedures.AGILITY_PENALTY;
+            }
+            else if (effectRoll == 1)
+            {
+                description = "reduced Charisma";
+                sourceId = CharacterPrankProcedures.CHARISMA_PENALTY;
+            }
+            else if (effectRoll == 2)
+            {
+                description = "reduced Discipline";
+                sourceId = CharacterPrankProcedures.DISCIPLINE_PENALTY;
+            }
+            else if (effectRoll == 3)
+            {
+                description = "reduced Fortitude";
+                sourceId = CharacterPrankProcedures.FORTITUDE_PENALTY;
+            }
+            else if (effectRoll == 4)
+            {
+                description = "reduced inventory capacity";
+                sourceId = CharacterPrankProcedures.INVENTORY_PENALTY;
+            }
+            else if (effectRoll == 5)
+            {
+                description = "reduced Luck";
+                sourceId = CharacterPrankProcedures.LUCK_PENALTY;
+            }
+            else if (effectRoll == 6)
+            {
+                description = "reduced Magicka";
+                sourceId = CharacterPrankProcedures.MAGICKA_PENALTY;
+            }
+            else if (effectRoll == 7)
+            {
+                description = "immobility";
+                sourceId = CharacterPrankProcedures.MOBILITY_PENALTY;
+                relativePotency = 3;
+            }
+            else if (effectRoll == 8)
+            {
+                description = "reduced Perception";
+                sourceId = CharacterPrankProcedures.PERCEPTION_PENALTY;
+            }
+            else if (effectRoll == 9)
+            {
+                description = "reduced Regeneration";
+                sourceId = CharacterPrankProcedures.REGENERATION_PENALTY;
+            }
+            else if (effectRoll == 10)
+            {
+                description = "reduced Restoration";
+                sourceId = CharacterPrankProcedures.RESTORATION_PENALTY;
+            }
+            else if (effectRoll == 11)
+            {
+                description = "dizziness";
+                sourceId = CharacterPrankProcedures.DIZZY_EFFECT;
+                relativePotency = 2;
+            }
+            else if (effectRoll == 12)
+            {
+                description = "blindness";
+                sourceId = CharacterPrankProcedures.BLINDED_EFFECT;
+                relativePotency = 2;
+            }
+            else if (effectRoll == 13)
+            {
+                description = "being unable to talk";
+                sourceId = CharacterPrankProcedures.HUSHED_EFFECT;
+                relativePotency = 2;
+            }
+            else
+            {
+                description = "players being able to see your location on your profile";
+                sourceId = CharacterPrankProcedures.SNEAK_REVEAL_1;
+            }
+
+            var duration = (int)Math.Max(challenge.Difficulty / (2 * relativePotency) * 0.8, 1);
+
+            AddPenalty(challenge, $"{duration} turns of {description}",
+                       p => EffectProcedures.MergePlayerPerk(sourceId, p, duration));
         }
 
         private static void TryAddingAnimateFormRequirement(ChallengeType challengeType, Random die, Challenge challenge)
@@ -830,7 +1108,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
 
                 AddPart(challenge,
-                        $"Equip a level {target} or higher {item.FriendlyName} ({item.Category} slot)",
+                        $"Equip a level {target} or higher {item.FriendlyName} ({item.Category.Replace("_", " ")} slot)",
                         p => ItemProcedures.GetAllPlayerItems(p.Id).Any(i => i.dbItem.IsEquipped &&
                                                                              i.dbItem.Level >= target &&
                                                                              i.dbItem.FormerPlayerId.HasValue &&
@@ -841,6 +1119,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 {
                     // Equipping consumable is harder due to combat timer
                     difficulty++;
+                }
+                else if (item.Category == PvPStatics.ItemType_Pet)
+                {
+                    // Equipping a pet is harder as only one may be carried at a time
+                    difficulty += 2;
                 }
 
                 challenge.Difficulty += difficulty;

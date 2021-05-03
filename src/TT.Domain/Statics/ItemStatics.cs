@@ -23,9 +23,11 @@ namespace TT.Domain.Statics
         public const int CovenantCrystalItemSourceId = 164;
 
         public const int SpellWeaverDryItemSourceId = 3;
+        public const int SpellWeaverFreshItemSourceId = 4;
         public const int SpellWeaverRootItemSourceId = 5;
 
         public const int WillflowerDryItemSourceId = 10;
+        public const int WillflowerFreshItemSourceId = 1;
         public const int WillflowerRootItemSourceId = 2;
 
         public const int ConcealmentCookieSourceId = 123;

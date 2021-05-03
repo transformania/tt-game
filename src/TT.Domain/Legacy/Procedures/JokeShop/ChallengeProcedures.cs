@@ -66,12 +66,21 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
     {
         // Resources allow us to avoid setting an impossible challenge, e.g. be in two form at the same time
         const String RESOURCE_AP = "action points";
+        const String RESOURCE_BRING_PLAYERS = "bring players";
         const String RESOURCE_COMBAT_TIMER = "combat timer";
+        const String RESOURCE_CONSUMABLE_USE = "consumable use";
+        const String RESOURCE_COVENANT = "covenant";
         const String RESOURCE_EQUIP = "equip";
         const String RESOURCE_FORM = "form";
         const String RESOURCE_HEALTH = "health";
         const String RESOURCE_LEVEL = "level";
         const String RESOURCE_MANA = "mana";
+        const String RESOURCE_MIND_CONTROL = "mind control";
+        const String RESOURCE_MONEY = "money";
+        const String RESOURCE_RUNES_EMBEDDED = "runes embedded";
+        const String RESOURCE_SOUL_ITEMS = "soul items";
+        const String RESOURCE_SOULBINDINGS = "soulbindings";
+        const String RESOURCE_SOULBOUND_RENAMES = "soulbound renames";
         const String RESOURCE_STAT = "stat";
         const String RESOURCE_STAT_DISCIPLINE = "stat discipline";
         const String RESOURCE_STAT_PERCEPTION = "stat perception";
@@ -174,29 +183,43 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             Challenge bestChallenge = null;
             ChallengeType bestChallengeType = null;
+            var bestPartsUnsatisfied = 0;
 
             // Find an appropriate challenge
             foreach (var challengeType in challengeTypes)
             {
                 var expiresTurnEnd = NewChallengeExpires(challengeType);
-                var die = LoadedDie(player.Id, challengeType, expiresTurnEnd);
-                var challenge = DeviseChallenge(challengeType, expiresTurnEnd, die);
 
-                if (challenge != null)
+                // Challenges must complete before the round is over
+                if (expiresTurnEnd < PvPStatics.RoundDuration)
                 {
-                    // Try to pick challenge closest to challenge type's requirements
-                    if (bestChallenge == null || challenge.Difficulty > bestChallenge.Difficulty ||
-                        (challenge.Difficulty == bestChallenge.Difficulty && 
-                         challengeType.MaxDifficulty - challenge.Difficulty < bestChallengeType.MaxDifficulty - bestChallenge.Difficulty))
+                    var die = LoadedDie(player.Id, challengeType, expiresTurnEnd);
+                    var challenge = DeviseChallenge(challengeType, expiresTurnEnd, die);
+
+                    if (challenge != null)
                     {
-                        // Confirm player is eligible for challenge and hasn't already satisfied its requirements
-                        if (challenge.Eligible(player) && !challenge.Satisfied(player))
+                        // Try to pick challenge closest to challenge type's requirements
+                        if (bestChallenge == null || challenge.Difficulty > bestChallenge.Difficulty ||
+                            (challenge.Difficulty == bestChallenge.Difficulty && 
+                             challengeType.MaxDifficulty - challenge.Difficulty <= bestChallengeType.MaxDifficulty - bestChallenge.Difficulty))
                         {
-                            bestChallenge = challenge;
-                            bestChallengeType = challengeType;
+                            // Confirm player is eligible for challenge and hasn't already satisfied its requirements
+                            if (challenge.Eligible(player))
+                            {
+                                var partsUnsatisfied = challenge.Parts.Count(part => !part.Satisfied(player));
+
+                                if (partsUnsatisfied > bestPartsUnsatisfied)
+                                {
+                                    bestChallenge = challenge;
+                                    bestChallengeType = challengeType;
+                                    bestPartsUnsatisfied = partsUnsatisfied;
+                                }
+                            }
                         }
                     }
+
                 }
+
             }
 
             // Assign the challenge to the player
@@ -412,53 +435,109 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Pick between different challenges based on roll of die (which is repeatable due to the RNG seed being predictable)
                 var roll = die.Next(100);
 
-                if (roll < 14)  // 14%
+                if (roll <  9)  // 9%
                 {
                     TryAddingAnimateFormRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 18)  // 4%
+                else if (roll < 12)  // 3%
                 {
                     TryAddingImmobileFormRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 30)  // 12%
+                else if (roll < 14)  // 2%
+                {
+                    TryAddingLearnSpellRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 20)  // 6%
                 {
                     TryAddingEquipmentRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 45)  // 15%
+                else if (roll < 26)  // 6%
                 {
-                    TryAddingStatRequirement(challengeType, die, challenge);
+                    TryAddingRuneEmbedRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 60)  // 15%
+                else if (roll < 32)  // 6%
                 {
-                    TryAddingAchievementRequirement(challengeType, die, challenge);
+                    TryAddingSoulItemRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 78)  // 18%
+                else if (roll < 35)  // 3%
+                {
+                    TryAddingConsumableItemRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 44)  // 9%
                 {
                     TryAddingNonConsumableItemRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 81)  // 3%
+                else if (roll < 46)  // 2%
+                {
+                    TryAddingRecentPurchaseRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 48)  // 2% 
+                {
+                    TryAddingConsumableUseRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 51)  // 3%
+                {
+                    TryAddingSoulbindingRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 53)  // 2%
+                {
+                    TryAddingSoulboundRenameRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 61)  // 8%
+                {
+                    TryAddingStatRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 69)  // 8%
+                {
+                    TryAddingAchievementRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 71)  // 2%
+                {
+                    TryAddingDungeonPointsRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 73)  // 2%
                 {
                     TryAddingCombatRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 84)  // 3%
+                else if (roll < 75)  // 2%
                 {
                     TryAddingHealthRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 87)  // 3%
+                else if (roll < 77)  // 2%
                 {
                     TryAddingManaRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 90)  // 3%
+                else if (roll < 79)  // 2%
                 {
                     TryAddingAPRequirement(challengeType, die, challenge);
                 }
-                else if (roll < 95)  // 5%
+                else if (roll < 81)  // 2%
+                {
+                    TryAddingMoneyRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 83)  // 2%
+                {
+                    TryAddingCovenantRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 86)  // 3%
                 {
                     TryAddingLevelRequirement(challengeType, die, challenge);
                 }
-                else  // 5%
+                else if (roll < 89)  // 3%
                 {
                     TryAddingQuestRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 92)  // 3%
+                {
+                    TryAddingMindControlRequirement(challengeType, die, challenge);
+                }
+                else if (roll < 96)  // 4%
+                {
+                    TryAddingBringCovenantRequirement(challengeType, die, challenge);
+                }
+                else  // 4%
+                {
+                    TryAddingBringFormRequirement(challengeType, die, challenge);
                 }
             }
 
@@ -611,9 +690,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                     ItemStatics.SpellbookGiantItemSourceId,
                                     ItemStatics.TeleportationScrollItemSourceId,
                                     ItemStatics.TgSplashOrbItemSourceId,
-                                    ItemStatics.WillflowerDryItemSourceId,
+                                    ItemStatics.WillflowerFreshItemSourceId,
                                     ItemStatics.WillflowerRootItemSourceId,
-                                    ItemStatics.SpellWeaverDryItemSourceId,
+                                    ItemStatics.SpellWeaverFreshItemSourceId,
                                     ItemStatics.SpellWeaverRootItemSourceId,
                                     ItemStatics.CovenantCrystalItemSourceId,
                                     ItemStatics.ConcealmentCookieSourceId,
@@ -826,6 +905,28 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
+        private static void TryAddingLearnSpellRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 2;
+
+            var forms = JokeShopProcedures.Forms(_ => true);
+            var form = forms.ElementAt(die.Next(forms.Count()));
+            var resource = $"spell for {form.FormSourceId}";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                var skillSource = new EFDbStaticSkillRepository().DbStaticSkills.FirstOrDefault(spell => spell.FormSourceId == form.FormSourceId);
+
+                AddPart(challenge,
+                        $"Learn the spell \"{skillSource.FriendlyName}\", which turns its victim into a {form.FriendlyName}",
+                        p => SkillProcedures.GetSkillsOwnedByPlayer(p.Id).Any(s => s.SkillSourceId == skillSource.Id));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
         private static void TryAddingCombatRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 1;
@@ -902,6 +1003,52 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
+        private static void TryAddingCovenantRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 2;
+
+            if (challengeType.Duration < 60 &&
+                challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_COVENANT) == 0)
+            {
+                AddPart(challenge,
+                        $"Join a covenant or start your own",
+                        p => p.Covenant > 0,
+                        p => ((p.Covenant <= 0 ? 0 : 1), 1),
+                        p => p.Covenant <= 0 ? "Not yet accepted into a covenant" : "Done");
+                AddResourceContribution(challenge, r => (r == RESOURCE_COVENANT) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingMoneyRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var low = Math.Min(50, 10 * challengeType.Duration);
+            var high = Math.Min(1000, 50 * challengeType.Duration);
+            var target = (int)die.Next(low, high + 1);
+
+            var difficulty = target / challengeType.Duration / 20 + 1;
+
+            if (challenge.ByEndOfTurn < 2000)
+            {
+                // Items to sell less readily available early in round
+                difficulty++;
+            }
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_MONEY) == 0)
+            {
+                AddPart(challenge,
+                        $"Save up {target} Arpeyjis",
+                        p => p.Money >= target,
+                        p => ((int)p.Money, target));
+                AddResourceContribution(challenge, r => (r == RESOURCE_MONEY) ? target : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
         private static void TryAddingLevelRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 4;
@@ -937,8 +1084,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 var target = die.Next(low, high + 1);
 
                 int itemsEquipped(Player p) => ItemProcedures.GetAllPlayerItems(p.Id)
-                                                             .Where(i => i.Item.ItemType != PvPStatics.ItemType_Consumable &&
-                                                                         i.dbItem.IsEquipped).Count();
+                                                             .Count(i => i.Item.ItemType != PvPStatics.ItemType_Consumable &&
+                                                                         i.dbItem.IsEquipped);
 
                 AddPart(challenge,
                         $"Equip at least {target} items in total (not including single-use consumables)",
@@ -946,6 +1093,174 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         p => (itemsEquipped(p), target));
                 AddResourceContribution(challenge, r => (r == RESOURCE_EQUIP) ? 1 : 0);
 
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingRuneEmbedRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var low = 1 + challenge.ByEndOfTurn / 2000;
+            var high = Math.Min(12, 1 + challenge.ByEndOfTurn / 1000);
+            var target = die.Next(low, high + 1);
+
+            var difficulty = 2 + target / 3;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_RUNES_EMBEDDED) == 0)
+            {
+                int runesEmbedded(Player p)
+                {
+                    // Player may not appear as the owner for runes they have, so look up by item
+                    var itemRepo = new EFItemRepository();
+                    var playerItemIds = ItemProcedures.GetAllPlayerItems(p.Id).Select(i => i.dbItem.Id);
+                    var runeItemTypeIds = itemRepo.DbStaticItems.Where(i => i.ItemType == PvPStatics.ItemType_Rune).Select(i => i.Id);
+                    return itemRepo.Items.Count(i => i.EmbeddedOnItemId.HasValue &&
+                                                     playerItemIds.Contains(i.EmbeddedOnItemId.Value) &&
+                                                     runeItemTypeIds.Contains(i.ItemSourceId));
+                }
+
+                AddPart(challenge,
+                        $"Embed at least {target} runes in the items you are wearing or carrying",
+                        p => runesEmbedded(p) >= target,
+                        p => (runesEmbedded(p), target));
+                AddResourceContribution(challenge, r => (r == RESOURCE_RUNES_EMBEDDED) ? target : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingConsumableUseRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 1;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_CONSUMABLE_USE) == 0)
+            {
+                int itemsOnCooldown(Player p) => DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = p.Id }).Count(i => i.TurnsUntilUse > 0);
+
+                AddPart(challenge,
+                        $"Use a reusable consumable and keep carrying it (you can remove it from your consumable slot after using it)",
+                        p => itemsOnCooldown(p) >= 1,
+                        p => (itemsOnCooldown(p), 1));
+                AddResourceContribution(challenge, r => (r == RESOURCE_CONSUMABLE_USE) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingSoulItemRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var high = 1 + challenge.ByEndOfTurn / 2000;
+            var target = die.Next(1, high + 1);
+
+            var difficulty = 1;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_SOUL_ITEMS) == 0)
+            {
+                if (target > 1 + challenge.ByEndOfTurn / 4000)
+                {
+                    AddPrerequisite(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
+                }
+
+                int playerItems(Player me)
+                {
+                    var itemPlayerIds = ItemProcedures.GetAllPlayerItems(me.Id)
+                                          .Where(i => i.dbItem.FormerPlayerId != null)
+                                          .Select(i => i.dbItem.FormerPlayerId);
+                    return new EFPlayerRepository().Players.Count(p => (p.BotId == AIStatics.ActivePlayerBotId ||
+                                                                        p.BotId == AIStatics.RerolledPlayerBotId) &&
+                                                                       itemPlayerIds.Contains(p.Id));
+                }
+
+                AddPart(challenge,
+                        $"Carry {target} items that used to be other players (not including NPCs)",
+                        p => playerItems(p) >= target,
+                        p => (playerItems(p), target));
+                AddResourceContribution(challenge, r => (r == RESOURCE_SOUL_ITEMS) ? target : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingRecentPurchaseRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            string[] itemTypes =
+            {
+                PvPStatics.ItemType_Accessory,
+                PvPStatics.ItemType_Consumable,
+                PvPStatics.ItemType_Consumable_Reuseable,
+                PvPStatics.ItemType_Hat,
+                PvPStatics.ItemType_Pants,
+                PvPStatics.ItemType_Pet,
+                PvPStatics.ItemType_Rune,
+                PvPStatics.ItemType_Shirt,
+                PvPStatics.ItemType_Shoes,
+                PvPStatics.ItemType_Underpants,
+                PvPStatics.ItemType_Undershirt,
+            };
+            var itemType = itemTypes[die.Next(itemTypes.Count())];
+            var resource = $"slot {itemType}";
+
+            var difficulty = 1;
+
+            if (itemType == PvPStatics.ItemType_Consumable_Reuseable || itemType == PvPStatics.ItemType_Consumable)
+            {
+                // Equipping consumable is harder due to combat timer
+                difficulty++;
+            }
+            else if (itemType == PvPStatics.ItemType_Pet)
+            {
+                // Equipping a pet is harder as only one may be carried at a time
+                difficulty += 2;
+            }
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                int embeddedRecentRunePurchases(Player p)
+                {
+                    var cutoff = DateTime.UtcNow.AddHours(-1);
+
+                    return ItemProcedures.GetAllPlayerItems(p.Id)
+                                    .Count(i => i.Item.ItemType == PvPStatics.ItemType_Rune &&
+                                                i.dbItem.LastSold > cutoff &&
+                                                i.dbItem.EmbeddedOnItemId.HasValue);
+                }
+
+                int equippedRecentPurchases(Player p, string type)
+                {
+                    var cutoff = DateTime.UtcNow.AddHours(-1);
+
+                    return ItemProcedures.GetAllPlayerItems(p.Id)
+                                    .Count(i => i.Item.ItemType == type &&
+                                                i.dbItem.LastSold > cutoff &&
+                                                i.dbItem.IsEquipped);
+                }
+
+                if (itemType == PvPStatics.ItemType_Rune)
+                {
+                    AddPart(challenge,
+                            $"Embed a rune within an hour of purchasing it from Lindella",
+                            p => embeddedRecentRunePurchases(p) >= 1,
+                            p => (embeddedRecentRunePurchases(p), 1));
+                }
+                else if (itemType == PvPStatics.ItemType_Pet)
+                {
+                    AddPart(challenge,
+                            $"Tame a pet by purchasing it from Wüffie (complete the challenge within an hour of purchase)",
+                            p => equippedRecentPurchases(p, itemType) >= 1,
+                            p => (equippedRecentPurchases(p, itemType), 1));
+                }
+                else
+                {
+                    AddPart(challenge,
+                            $"Equip an item that belongs in the {itemType.Replace("_", " ")} slot within an hour of purchasing it from Lindella",
+                            p => equippedRecentPurchases(p, itemType) >= 1,
+                            p => (equippedRecentPurchases(p, itemType), 1));
+                }
+
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
                 challenge.Difficulty += difficulty;
             }
         }
@@ -1070,6 +1385,58 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
+        private static void TryAddingConsumableItemRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            // difficulty: 1 = easy find, 2 = occasional find, 3 = rare find, easily bought, 4 = rarely sold
+            (int, int)[] items =
+            {
+                (3, ItemStatics.AutoTransmogItemSourceId),
+                (3, ItemStatics.CurseLifterItemSourceId),
+                (4, ItemStatics.WillpowerBombVolatileItemSourceId),
+                (3, ItemStatics.WillpowerBombStrongItemSourceId),
+                (2, ItemStatics.WillpowerBombWeakItemSourceId),
+                (3, ItemStatics.SelfRestoreItemSourceId),
+                (3, ItemStatics.LullabyWhistleItemSourceId),
+                (2, ItemStatics.SpellbookSmallItemSourceId),
+                (3, ItemStatics.SpellbookMediumItemSourceId),
+                (3, ItemStatics.SpellbookLargeItemSourceId),
+                (4, ItemStatics.SpellbookGiantItemSourceId),
+                (3, ItemStatics.TeleportationScrollItemSourceId),
+                (2, ItemStatics.TgSplashOrbItemSourceId),
+                (1, ItemStatics.WillflowerDryItemSourceId),
+                (2, ItemStatics.WillflowerFreshItemSourceId),
+                (3, ItemStatics.WillflowerRootItemSourceId),
+                (1, ItemStatics.SpellWeaverDryItemSourceId),
+                (2, ItemStatics.SpellWeaverFreshItemSourceId),
+                (3, ItemStatics.SpellWeaverRootItemSourceId),
+                (2, ItemStatics.CovenantCrystalItemSourceId),
+                (2, ItemStatics.ConcealmentCookieSourceId),
+                (2, ItemStatics.FireFritterSourceId),
+                (2, ItemStatics.BarricadeBrownieSourceId),
+                (2, ItemStatics.TrueshotTrufflesSourceId),
+                (2, ItemStatics.NirvanaNuggetSourceId),
+                (2, ItemStatics.PerceptionPuffSourceId),
+                (2, ItemStatics.LuckyLemoncakeSourceId),
+                (2, ItemStatics.DanishOfDiscoverySourceId)
+            };
+
+            (var difficulty, var itemSourceId) = items[die.Next(items.Count())];
+            var staticItem = new EFItemRepository().DbStaticItems.FirstOrDefault(i => i.Id == itemSourceId);
+            var resource = $"slot {PvPStatics.ItemType_Consumable}";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(resource) < 2 &&
+                staticItem != null)
+            {
+                AddPart(challenge,
+                        $"Equip a {staticItem.FriendlyName} (consumable slot)",
+                        p => ItemProcedures.GetAllPlayerItems(p.Id).Any(i => i.dbItem.IsEquipped && i.Item.Id == itemSourceId));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+        
         private static void TryAddingNonConsumableItemRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 3;
@@ -1108,7 +1475,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
 
                 AddPart(challenge,
-                        $"Equip a level {target} or higher {item.FriendlyName} ({item.Category.Replace("_", " ")} slot)",
+                        $"Equip a level {target} or higher souled {item.FriendlyName} ({item.Category.Replace("_", " ")} slot, can be an NPC item)",
                         p => ItemProcedures.GetAllPlayerItems(p.Id).Any(i => i.dbItem.IsEquipped &&
                                                                              i.dbItem.Level >= target &&
                                                                              i.dbItem.FormerPlayerId.HasValue &&
@@ -1125,6 +1492,66 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     // Equipping a pet is harder as only one may be carried at a time
                     difficulty += 2;
                 }
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingBringCovenantRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var numPlayers = Math.Max(1, die.Next(4));
+            var difficulty = numPlayers * (numPlayers - 1) + 2;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_BRING_PLAYERS) + numPlayers < 4)
+            {
+                // Either player must be in a coven or they must have that already as part of this challenge
+                if (challenge.ResourceUsed(RESOURCE_COVENANT) == 0)
+                {
+                    AddPrerequisite(challenge, p => p.Covenant > 0);
+                }
+
+                int playersFromCovenBrought(Player me) => me.Covenant <= 0 ? 0 : new EFPlayerRepository().Players
+                        .Count(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
+                                    p.Id != me.Id &&
+                                    p.Mobility == PvPStatics.MobilityFull &&
+                                    p.Covenant == me.Covenant &&
+                                    p.IpAddress != me.IpAddress &&
+                                    p.BotId == AIStatics.ActivePlayerBotId);
+
+                AddPart(challenge,
+                        $"Bring {numPlayers} other animate players from your covenant (not including alts) to the Joke Shop",
+                        p => playersFromCovenBrought(p) >= numPlayers,
+                        p => (playersFromCovenBrought(p), numPlayers));
+                AddResourceContribution(challenge, r => (r == RESOURCE_BRING_PLAYERS) ? numPlayers : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingBringFormRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var numPlayers = Math.Max(1, die.Next(3));
+            var difficulty = numPlayers * (numPlayers - 1) + 2;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_BRING_PLAYERS) + numPlayers < 4)
+            {
+                var animateForms = JokeShopProcedures.Forms(f => f.Category == PvPStatics.MobilityFull || f.Category == JokeShopProcedures.LIMITED_MOBILITY);
+                var form = animateForms.ElementAt(die.Next(animateForms.Count()));
+
+                int playersInFormBrought(Player me, int formSourceId) => new EFPlayerRepository().Players
+                        .Count(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
+                                    p.Id != me.Id &&
+                                    p.FormSourceId == formSourceId &&
+                                    p.IpAddress != me.IpAddress &&
+                                    p.BotId == AIStatics.ActivePlayerBotId);
+
+                AddPart(challenge,
+                        $"Bring {numPlayers} other players to the Joke Shop (not including alts), each in the form of a {form.FriendlyName}",
+                        p => playersInFormBrought(p, form.FormSourceId) >= numPlayers,
+                        p => (playersInFormBrought(p, form.FormSourceId), numPlayers));
+                AddResourceContribution(challenge, r => (r == RESOURCE_BRING_PLAYERS) ? numPlayers : 0);
 
                 challenge.Difficulty += difficulty;
             }
@@ -1187,9 +1614,24 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 pvp = true;
             }
 
-            var resource = $"stat {achievement}";
+            // Mitigate conflicting achievements
+            var achievementResource = achievement;
+            if (achievementResource == StatsProcedures.Stat__LindellaNetLoss)
+            {
+                achievementResource = StatsProcedures.Stat__LindellaNetProfit;
+            }
+            else if (achievementResource == StatsProcedures.Stat__WuffieNetLoss)
+            {
+                achievementResource = StatsProcedures.Stat__WuffieNetProfit;
+            }
+            else if (achievementResource == StatsProcedures.Stat__QuestsFailed)
+            {
+                achievementResource = StatsProcedures.Stat__QuestsPassed;
+            }
+            var resource = $"stat {achievementResource}";
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challengeType.Duration >= 60 &&
                 challenge.ResourceUsed(resource) == 0)
             {
                 if (pvp)
@@ -1269,9 +1711,139 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         p => currentPlace(p, achievement));
                 AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
 
+                // Don't give seller achievement task if player is in the running for buyer achievement
+                AddPrerequisite(challenge, p => progressTowardsPlace(p, achievement, places).Item1 >= 0);
+
                 challenge.Difficulty += difficulty;
             }
         }
 
+        private static void TryAddingDungeonPointsRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 6;
+            var resource = $"stat dungeon points";
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challengeType.Duration >= 60 &&
+                challenge.ResourceUsed(resource) == 0)
+            {
+                AddPrerequisite(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
+
+                bool playerIsInTopN(Player me, int place)
+                {
+                    return PlayerProcedures.GetLeadingPlayers__PvP(place).Any(p => p.Id == me.Id);
+                }
+
+                (int, int) progressTowardsPlace(Player p, int place)
+                {
+                    var stats = PlayerProcedures.GetLeadingPlayers__PvP(place);
+
+                    // Target amount is 1 if space at end of board; score + 1 of current person at end of board, or just their score if player is that person
+                    var amountToReach = 1;
+                    if (stats.Count() >= place)
+                    {
+                        var currentOccupant = stats.ToArray().ElementAt(place - 1);
+                        amountToReach = currentOccupant.Id == p.Id ? (int)currentOccupant.PvPScore : (int)currentOccupant.PvPScore + 1;
+                    }
+
+                    return ((int)p.PvPScore, (int)amountToReach);
+                }
+
+                string currentPlace(Player me)
+                {
+                    var numPlaces = 100;
+                    var entry = PlayerProcedures.GetLeadingPlayers__PvP(numPlaces)
+                                    .ToArray()
+                                    .Select((p, i) => new { Rank = i + 1, PlayerId = p.Id })
+                                    .FirstOrDefault(e => e.PlayerId == me.Id);
+
+                    return entry == null ? $"Not currently ranked in the top {numPlaces} places" : $"Current rank: {entry.Rank}";
+                }
+
+                var places = 10 * (1 + (challenge.ByEndOfTurn - 1) / 2000);
+
+                AddPart(challenge,
+                        $"Rank in the top {places} places on the Dungeon Points leaderboard by finding dungeon artifacts, defeating dungeon demons, and stealing points from other players",
+                        p => playerIsInTopN(p, places),
+                        p => progressTowardsPlace(p, places),
+                        p => currentPlace(p));
+                AddResourceContribution(challenge, r => (r == resource) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingMindControlRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 4;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_MIND_CONTROL) == 0)
+            {
+                AddPrerequisite(challenge, p => p.GameMode == (int)GameModeStatics.GameModes.PvP);
+
+                AddPart(challenge,
+                        $"Mind control another player (not including alts)",
+                        p => MindControlProcedures.GetAllMindControlVMsWithPlayer(p).Any(mc => mc.Master.Player.Id == p.Id && mc.Victim.Player.IpAddress != p.IpAddress),
+                        p => (MindControlProcedures.GetAllMindControlVMsWithPlayer(p).Count(mc => mc.Master.Player.Id == p.Id && mc.Victim.Player.IpAddress != p.IpAddress), 1));
+                AddResourceContribution(challenge, r => (r == RESOURCE_MIND_CONTROL) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingSoulbindingRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var min = challenge.ByEndOfTurn / 3000 + 1;
+            var max = challenge.ByEndOfTurn / 1000 + 1;
+            var target = die.Next(min, max + 1);
+
+            var difficulty = Math.Max(0, target - 3) + 3;
+
+            if (challenge.ByEndOfTurn < 2000)
+            {
+                difficulty++;
+            }
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_SOULBINDINGS) == 0)
+            {
+                AddPart(challenge,
+                        $"Soulbind {target} items",
+                        p => DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = p.Id }).Count() >= target,
+                        p => (DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = p.Id }).Count(), target));
+                AddResourceContribution(challenge, r => (r == RESOURCE_SOULBINDINGS) ? target : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+        }
+
+        private static void TryAddingSoulboundRenameRequirement(ChallengeType challengeType, Random die, Challenge challenge)
+        {
+            var difficulty = 1;
+
+            if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
+                challenge.ResourceUsed(RESOURCE_SOULBOUND_RENAMES) == 0)
+            {
+                AddPrerequisite(challenge, p => DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = p.Id }).Any());
+
+                int SouboundRenames(Player p) => DomainRegistry.Repository
+                    .Find(new GetItemsSoulboundToPlayer { OwnerId = p.Id })
+                    .Count(i => i.FormerPlayer != null &&
+                               (i.FormerPlayer.FirstName != i.FormerPlayer.OriginalFirstName ||
+                                i.FormerPlayer.LastName != i.FormerPlayer.OriginalLastName));
+
+                AddPart(challenge,
+                        $"Rename 1 soulbound item",
+                        p => SouboundRenames(p) >= 1,
+                        p => (SouboundRenames(p), 1));
+                AddResourceContribution(challenge, r => (r == RESOURCE_SOULBOUND_RENAMES) ? 1 : 0);
+
+                challenge.Difficulty += difficulty;
+            }
+
+        }
+
     }
+
 }

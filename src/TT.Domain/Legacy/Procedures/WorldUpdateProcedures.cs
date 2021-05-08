@@ -931,6 +931,38 @@ namespace TT.Domain.Procedures
                 }
                 #endregion
 
+                #region move tomb quest
+                // Just to keep some things consistent, following the update pattern of the dungeon regen.
+                if (turnNo > 6665 && turnNo % 30 == 7)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating tomb location started.");
+                    try
+                    {
+                        // Get the quest stuff to start with.
+                        int questId = 39; //Nephthyma's Calling quest ID.
+                        IQuestRepository repo = new EFQuestRepository();
+                        var questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == questId);
+
+                        // Pick a random location.
+                        string[] locationList = { "mansion_mausoleum", "gym_laundry", "street_50e9th", "park_shrine" };
+                        Random locationRandom = new Random();
+                        int locationIndex = locationRandom.Next(locationList.Length);
+                        string location = locationList[locationIndex];
+
+                        // Set it to the new location.
+                        questStart.Location = location;
+                        QuestWriterProcedures.SaveQuestStart(questStart);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "Updating tomb location FAILED", e));
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Updating tomb location completed.");
+                    serverLogRepo.SaveServerLog(log);
+                }
+                #endregion
+
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
                 try
                 {

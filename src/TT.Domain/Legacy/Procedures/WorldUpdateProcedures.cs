@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -950,8 +950,11 @@ namespace TT.Domain.Procedures
                         string location = locationList[locationIndex];
 
                         // Set it to the new location.
+                        if (questStart != null)
+                        {
                         questStart.Location = location;
                         QuestWriterProcedures.SaveQuestStart(questStart);
+                        }
                     }
                     catch (Exception e)
                     {

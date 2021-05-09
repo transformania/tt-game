@@ -47,8 +47,10 @@ namespace TT.Web.Hubs
             
             if (string.IsNullOrWhiteSpace(room) || _chatPersistenceService.GetRoomsPlayerIsIn(me.MembershipId).Contains(room))
                 return base.OnDisconnected();
-
+            /* Disabling this notice until a better fix can be implemented. 
             SendNoticeToRoom(room, me, " has left the room.");
+            */
+
             UpdateUserList(room, false);
 
             return base.OnDisconnected();
@@ -196,7 +198,9 @@ namespace TT.Web.Hubs
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
 
             if (!_chatPersistenceService.GetRoomsPlayerIsIn(me.Player.MembershipId).Contains(roomName))
+                /* Disabling this notice until a better fix can be implemented. 
                 SendNoticeToRoom(roomName, me.Player, " has joined the room.");
+                */
 
             _chatPersistenceService.TrackRoomJoin(me.Player.MembershipId, Context.ConnectionId, roomName);
             UpdateUserList(roomName);

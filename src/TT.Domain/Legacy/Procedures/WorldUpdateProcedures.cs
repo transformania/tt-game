@@ -942,18 +942,19 @@ namespace TT.Domain.Procedures
                         int questId = 39; //Nephthyma's Calling quest ID.
                         IQuestRepository repo = new EFQuestRepository();
                         var questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == questId);
-
-                        // Pick a random location.
-                        string[] locationList = { "mansion_mausoleum", "gym_laundry", "street_50e9th", "park_shrine" };
-                        Random locationRandom = new Random();
-                        int locationIndex = locationRandom.Next(locationList.Length);
-                        string location = locationList[locationIndex];
-
-                        // Set it to the new location.
+                        
                         if (questStart != null)
                         {
-                        questStart.Location = location;
-                        QuestWriterProcedures.SaveQuestStart(questStart);
+                            // Pick a random location.
+                            string[] locationList = { "mansion_mausoleum", "gym_laundry", "street_50e9th", "park_shrine" };
+                            Random locationRandom = new Random();
+                            int locationIndex = locationRandom.Next(locationList.Length);
+                            string location = locationList[locationIndex];
+
+                            // Set it to the new location.
+                            
+                            questStart.Location = location;
+                            QuestWriterProcedures.SaveQuestStart(questStart);
                         }
                     }
                     catch (Exception e)

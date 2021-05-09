@@ -86,6 +86,11 @@ namespace TT.Domain.Players.Queries
                     return "Your target seems immune from this kind of spell.  Maybe a different one would do...";
                 }
 
+                if (target.BotId == AIStatics.MinibossPlushAngelId && (attacker.FormSourceId == 97 || attacker.FormSourceId == 427 || attacker.FormSourceId == 620))
+                {
+                    return "You two are already the best of friends! Why not try again later?";
+                }
+
                 // Dungeon Demons can only be vanquished
                 if (target.BotId == AIStatics.DemonBotId && spellSourceId != PvPStatics.Dungeon_VanquishSpellSourceId && spellSourceId != PvPStatics.Spell_WeakenId)
                 {

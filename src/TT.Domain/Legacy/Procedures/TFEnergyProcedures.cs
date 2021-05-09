@@ -436,6 +436,12 @@ namespace TT.Domain.Procedures
             output.AttackerLog += "<br><b>You fully transformed " + target.GetFullName() + " into a " + targetForm.FriendlyName + "</b>!";
             output.VictimLog += "<br><b>You have been fully transformed into a " + targetForm.FriendlyName + "!</b>";
 
+            // Let the target know they are best friends with the angel plush.
+            if (attacker.BotId == AIStatics.MinibossPlushAngelId)
+            {
+                output.VictimLog += "<br><br><b>" + attacker.GetFullName() + "</b> was happy to make you into a new friend!<br>";
+            }
+
             TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
 
             StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1);
@@ -453,7 +459,7 @@ namespace TT.Domain.Procedures
                 FormSourceId = targetForm.Id
             });
 
-            if (targetForm.MobilityType == PvPStatics.MobilityInanimate)
+            if (targetForm.MobilityType == PvPStatics.MobilityInanimate && target.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
             {
                 StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1);
 
@@ -461,7 +467,7 @@ namespace TT.Domain.Procedures
 
 
             }
-            else if (targetForm.MobilityType == PvPStatics.MobilityPet)
+            else if (targetForm.MobilityType == PvPStatics.MobilityPet && target.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
             {
                 StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1);
 
@@ -537,6 +543,16 @@ namespace TT.Domain.Procedures
                 {
                     output.AttackerLog += "  " + victim.GetFullName() + " unfortunately did not have any dungeon points for you to steal for yourself.";
                 }
+            }
+
+            // Call out a player for being the monster they are when they defeat the plush angel.
+            if (victim.BotId == AIStatics.MinibossPlushAngelId)
+            {
+                output.AttackerLog += "<br><br>Why did you do that to the poor plush? They just wanted to be a friend!<br>";
+                output.LocationLog += "<br><b>" + attacker.GetFullName() + "</b> went and bullied <b>" + victim.GetFullName() + "</b>, like some <b>monster</b>. The angelic plush left some flowers to the 'victor', in hope they would forgive it despite doing no wrong.";
+
+                // Give the dummy a bit of madness for being a bully.
+                EffectProcedures.GivePerkToPlayer(198, attacker);
             }
 
             // Heals the victorious player provided that the target was eligible

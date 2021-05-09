@@ -696,6 +696,7 @@ namespace TT.Web.Controllers
                 var exchangeProfessor = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossExchangeProfessorId);
                 var fiendishFarmhand = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossFiendishFarmhandId);
                 var lazyLifeguard = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossLazyLifeguardId);
+                var plushAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushAngelId);
 
                 if (sororityMother != null)
                 {
@@ -728,6 +729,10 @@ namespace TT.Web.Controllers
                 if (lazyLifeguard != null)
                 {
                     output += "The lifeguard is on post at the <b>pool</b>, though that doesn't really amount to much with that slacker. She'd rather just turn the patrons into pool toys than do her job. Unacceptable conduct for any establishment, if you ask me.</br>";
+                }
+                if (plushAngel != null)
+                {
+                    output += "If you see a plush angel on the street, it is better to leave it alone. It is just looking to make some friends.";
                 }
 
                 if (output.Length < 3)

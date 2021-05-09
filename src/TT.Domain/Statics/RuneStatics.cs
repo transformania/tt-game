@@ -19,5 +19,6 @@
         public static int MINIBOSS_PROFESSOR_RUNE = 574;
         public static int MINIBOSS_FARMHAND_RUNE = 575;
         public static int MINIBOSS_LIFEGUARD_RUNE = 576;
+        public static int MINIBOSS_PLUSHANGEL_RUNE = 1;
     }
 }

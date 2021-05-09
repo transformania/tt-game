@@ -105,6 +105,18 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE
                 }
             },
+            {
+                "plushAngel",
+                new MinibossData {
+                    FormSourceId = 1234,
+                    FormName = "form_Smol_Angel_Plushie_Breenarox",
+                    Title = "Angelic",
+                    Region = "streets",
+                    Spells = new List<int> { 943, 765, 391},
+                    BotId = AIStatics.MinibossPlushAngelId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHANGEL_RUNE
+                }
+            },
             //{
             //    "fiendishFarmhand",
             //    new MinibossData {

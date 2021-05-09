@@ -32,6 +32,7 @@ namespace TT.Domain.Statics
         public const int MinibossExchangeProfessorId = -23;
         public const int MinibossFiendishFarmhandId = -24;
         public const int MinibossLazyLifeguardId = -25;
+        public const int MinibossPlushAngelId = -27;
 
         public const int DungeonDemonFormId = 371;
 
@@ -60,6 +61,7 @@ namespace TT.Domain.Statics
                    id == MinibossGroundskeeperId ||
                    id == MinibossFiendishFarmhandId ||
                    id == MinibossLazyLifeguardId ||
+                   id == MinibossPlushAngelId ||
                    id == MinibossExchangeProfessorId;
         }
 

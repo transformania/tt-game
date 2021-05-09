@@ -648,6 +648,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (hostiles == null || hostiles.IsEmpty())
             {
                 hostiles = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && (
+                                                        p.BotId == AIStatics.MinibossPlushAngelId ||
                                                          p.BotId == AIStatics.MinibossExchangeProfessorId ||
                                                          p.BotId == AIStatics.MinibossFiendishFarmhandId ||
                                                          p.BotId == AIStatics.MinibossGroundskeeperId ||

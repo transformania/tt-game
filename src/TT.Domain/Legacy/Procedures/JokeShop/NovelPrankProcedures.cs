@@ -453,7 +453,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (selection == 1)
             {
-                meme = $"I'm {(rand.Next(0) == 0 ? "" : "not ")}{(rand.Next(0) == 0 ? "cute" : "cyoot")}!!!";
+                meme = $"I'm {(rand.Next(2) == 0 ? "" : "not ")}{(rand.Next(2) == 0 ? "cute" : "cyoot")}!!!";
             }
             else
             {

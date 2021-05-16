@@ -6,6 +6,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Items.Entities;
 using TT.Domain.Items.Services;
 using TT.Domain.Players.Entities;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Commands
 {
@@ -49,6 +50,18 @@ namespace TT.Domain.Items.Commands
 
                 if (item.FormerPlayer == null)
                     throw new DomainException("Only souled items may be soulbound.");
+
+                if (item.FormerPlayer.BotId == AIStatics.FemaleRatBotId || item.FormerPlayer.BotId == AIStatics.MaleRatBotId)
+                {
+                    var stat = ctx.AsQueryable<World.Entities.World>()
+                        .Include(w => w.Boss_Thief)
+                        .FirstOrDefault();
+
+                    if (stat.Boss_Thief == AIStatics.ACTIVE)
+                    {
+                        throw new DomainException($"You cannot soulbind {item.FormerPlayer.GetFullName()} until both rats have been defeated.");
+                    }
+                }
 
                 if (!item.ConsentsToSoulbinding)
                     throw new DomainException("This item is not currently consenting to soulbinding.");

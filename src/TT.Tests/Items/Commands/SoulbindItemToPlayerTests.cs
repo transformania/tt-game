@@ -6,6 +6,7 @@ using TT.Domain.Items.Commands;
 using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
+using TT.Tests.Builders.Game;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
 
@@ -242,5 +243,87 @@ namespace TT.Tests.Items.Commands
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("You cannot afford this.  You need <b>100</b> Arpeyjis and only have <b>0</b>."));
         }
+
+        [Test]
+        [TestCase(AIStatics.MaleRatBotId)]
+        [TestCase(AIStatics.FemaleRatBotId)]
+        public void can_soulbind_rat_boss_when_event_over(int botId)
+        {
+            formerItemPlayer = new PlayerBuilder()
+                .With(p => p.Id, 7471)
+                .With(p => p.FirstName, "This")
+                .With(p => p.LastName, "Rat")
+                .With(p => p.BotId, botId)
+                .With(p => p.Mobility, PvPStatics.MobilityInanimate)
+                .With(p => p.Level, 5)
+                .BuildAndSave();
+
+            item = new ItemBuilder()
+                .With(i => i.Owner, ownerPlayer)
+                .With(i => i.FormerPlayer, formerItemPlayer)
+                .With(i => i.Id, 87)
+                .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .BuildAndSave();
+
+            new WorldBuilder()
+                .With(i => i.Id, 77)
+                .With(w => w.Boss_Thief, "completed")
+                .BuildAndSave();
+
+            var cmd = new SoulbindItemToPlayer
+            {
+                ItemId = item.Id,
+                OwnerId = ownerPlayer.Id,
+            };
+
+            Assert.That(Repository.Execute(cmd),
+                Is.EqualTo("You soulbound <b>This Rat</b> the <b>Test Item Source</b> for <b>0</b> Arpeyjis."));
+
+            var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.Id == item.Id);
+
+            Assert.That(editedItem, Is.Not.Null);
+            Assert.That(editedItem.SoulboundToPlayer.Id, Is.EqualTo(ownerPlayer.Id));
+            Assert.That(editedItem.SoulboundToPlayer.FirstName, Is.EqualTo("Sam"));
+            Assert.That(editedItem.SoulboundToPlayer.BotId, Is.EqualTo(AIStatics.ActivePlayerBotId));
+        }
+
+        [Test]
+        [TestCase(AIStatics.MaleRatBotId)]
+        [TestCase(AIStatics.FemaleRatBotId)]
+        public void should_throw_exception_if_soulbinding_rat_boss_during_event(int botId)
+        {
+            formerItemPlayer = new PlayerBuilder()
+                .With(p => p.Id, 7472)
+                .With(p => p.FirstName, "This")
+                .With(p => p.LastName, "Rat")
+                .With(p => p.BotId, botId)
+                .With(p => p.Mobility, PvPStatics.MobilityInanimate)
+                .With(p => p.Level, 5)
+                .BuildAndSave();
+
+            item = new ItemBuilder()
+                .With(i => i.Owner, ownerPlayer)
+                .With(i => i.FormerPlayer, formerItemPlayer)
+                .With(i => i.Id, 87)
+                .With(i => i.IsPermanent, true)
+                .With(i => i.ConsentsToSoulbinding, true)
+                .BuildAndSave();
+
+            new WorldBuilder()
+                .With(i => i.Id, 77)
+                .With(w => w.Boss_Thief, AIStatics.ACTIVE)
+                .BuildAndSave();
+
+            var cmd = new SoulbindItemToPlayer
+            {
+                ItemId = item.Id,
+                OwnerId = ownerPlayer.Id,
+            };
+
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("You cannot soulbind This Rat until both rats have been defeated."));
+        }
+
     }
 }

@@ -303,7 +303,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
 
                     // target is a human and they are not offline
-                    else if (target != null && !PlayerProcedures.PlayerIsOffline(target))
+                    else if (target != null && target.Mobility == PvPStatics.MobilityFull && !PlayerProcedures.PlayerIsOffline(target) && victimThiefItem.SoulboundToPlayer == null)
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);

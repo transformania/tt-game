@@ -18,7 +18,7 @@ namespace TT.Domain.Procedures
 {
     public static class AIProcedures
     {
-
+        /* Angel vs Demon event has others for this.
         private const string Psycho1MName = "botform_psychopathic_spellslinger_male";
         private const string Psycho1FName = "botform_psychopathic_spellslinger_female";
         private const string Psycho3MName = "botform_psychopathic_spellslinger_male_3";
@@ -40,6 +40,29 @@ namespace TT.Domain.Procedures
         public const int Psycho7FId = 842;
         public const int Psycho9MId = 843;
         public const int Psycho9FId = 844;
+        end */
+
+        private const string Psycho1MName = "form_Feminine_Slut_Boy_LexamTheGemFox_&_Hachik0048";
+        private const string Psycho1FName = "form_Shy_College_Girl_Aleks";
+        private const string Psycho3MName = "form_Suave_burglar_Cat_Nyx";
+        private const string Psycho3FName = "form_Busty_Blonde_Bimbo_Judoo";
+        private const string Psycho5MName = "form_The_Luckiest_Man_Aleks";
+        private const string Psycho5FName = "form_Pleasure_Knight_FarArty";
+        private const string Psycho7MName = "form_Vampire_Lord_Blood_Knight";
+        private const string Psycho7FName = "form_Night_Huntress_Martiandawn";
+        private const string Psycho9MName = "form_Incandescent_Hero_Vivien_Gemai";
+        private const string Psycho9FName = "form_Dream_Slayer";
+
+        public const int Psycho1MId = 73;
+        public const int Psycho1FId = 824;
+        public const int Psycho3MId = 849;
+        public const int Psycho3FId = 19;
+        public const int Psycho5MId = 818;
+        public const int Psycho5FId = 946;
+        public const int Psycho7MId = 94;
+        public const int Psycho7FId = 269;
+        public const int Psycho9MId = 262;
+        public const int Psycho9FId = 1152;
 
         public const int PsychopathicForLevelOneEffectSourceId = 19;
         public const int PsychopathicForLevelThreeEffectSourceId = 20;

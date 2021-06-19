@@ -33,6 +33,8 @@ namespace TT.Domain.Statics
         public const int MinibossFiendishFarmhandId = -24;
         public const int MinibossLazyLifeguardId = -25;
         public const int MinibossPlushAngelId = -27;
+        public const int MinibossArchangelId = -28;
+        public const int MinibossArchdemonId = -29;
 
         public const int DungeonDemonFormId = 371;
 

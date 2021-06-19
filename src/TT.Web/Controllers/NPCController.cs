@@ -697,6 +697,8 @@ namespace TT.Web.Controllers
                 var fiendishFarmhand = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossFiendishFarmhandId);
                 var lazyLifeguard = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossLazyLifeguardId);
                 var plushAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushAngelId);
+                var archAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchangelId);
+                var archDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchdemonId);
 
                 if (sororityMother != null)
                 {
@@ -733,6 +735,14 @@ namespace TT.Web.Controllers
                 if (plushAngel != null)
                 {
                     output += "If you see a plush angel on the street, it is better to leave it alone. It is just looking to make some friends.";
+                }
+                if (archAngel != null)
+                {
+                    output += "Yeah, apparently there's a war going on out there. Angels versus demons, I guess? It seems kind of silly to me, just another little spat. You'll probably find one of the archangels somewhere in the Scarlet Forest.";
+                }
+                if (archDemon != null)
+                {
+                    output += "What is it about Sunnyglade that seems to bring out the worst in people? Demons fighting angels this time! Just another day, I guess. If you wanna engage with some of the troublemakers, you can find an archdemon in the Valentine Castle.";
                 }
 
                 if (output.Length < 3)

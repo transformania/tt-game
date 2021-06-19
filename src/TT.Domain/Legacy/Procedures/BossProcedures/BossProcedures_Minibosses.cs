@@ -117,6 +117,30 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_PLUSHANGEL_RUNE
                 }
             },
+            {
+                "eventAngel",
+                new MinibossData {
+                    FormSourceId = 1259,
+                    FormName = "form_Archangel",
+                    Title = "Archangel",
+                    Region = "forest",
+                    Spells = new List<int> { 1340, 1343, 1345},
+                    BotId = AIStatics.MinibossArchangelId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHANGEL_RUNE
+                }
+            },
+            {
+                "eventDemon",
+                new MinibossData {
+                    FormSourceId = 1258,
+                    FormName = "form_Archdemon",
+                    Title = "Archdemon",
+                    Region = "castle",
+                    Spells = new List<int> { 941, 954, 1351},
+                    BotId = AIStatics.MinibossArchdemonId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHDEMON_RUNE
+                }
+            },
             //{
             //    "fiendishFarmhand",
             //    new MinibossData {

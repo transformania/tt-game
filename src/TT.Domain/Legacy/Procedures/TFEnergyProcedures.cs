@@ -16,11 +16,13 @@ namespace TT.Domain.Procedures
     {
         public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier, decimal victimHealthBefore)
         {
-            var output = new LogBox();
-            output.AttackerLog = "  ";
-            output.VictimLog = "  ";
+            var output = new LogBox
+            {
+                AttackerLog = "  ",
+                VictimLog = "  "
+            };
 
-            var victimMaxHealth = victim.MaxHealth;  // Remember this beofre any form change can affect it
+            var victimMaxHealth = victim.MaxHealth;  // Remember this before any form change can affect it
 
             // Move old energy to pool, add pool energy to the current attack
             (var energyBefore, var energyAfter) = AccumulateTFEnergy(victim, attacker, skill, modifier);
@@ -41,12 +43,13 @@ namespace TT.Domain.Procedures
             }
 
             // Perform any form change logic (inc extra health damage)
-            (var formChangeLog, var victimHealthAfter) = TFEnergyProcedures.RunFormChangeLogic(victim, skill.StaticSkill.Id, attacker.Id, energyAfter);
+            var formChangeLog = new LogBox();
+            var victimHealthAfter = TFEnergyProcedures.RunFormChangeLogic(victim, attacker.Id, skill, energyAfter, formChangeLog);
 
             // Add the spell text to the player logs (now that we know the full damage of this hit)
             var percentTransformedBefore = CalculateTransformationProgress(victimHealthBefore, victimMaxHealth, energyBefore, eventualForm);
             var percentTransformedAfter = CalculateTransformationProgress(victimHealthAfter, victimMaxHealth, energyAfter, eventualForm);
-            LogTransformationMessages(victim, attacker, output, eventualForm, percentTransformedBefore, percentTransformedAfter);
+            LogTransformationMessages(victim, attacker, eventualForm, percentTransformedBefore, percentTransformedAfter, output);
 
             // Append energy overflow damage and form change output from earlier
             output.Add(formChangeLog);
@@ -54,7 +57,7 @@ namespace TT.Domain.Procedures
             // Only give XP if attacker and victim are not part of the same covenant
             if (attacker.Covenant == null || attacker.Covenant != victim.Covenant)
             {
-                AwardXP(victim, attacker, output, eventualForm);
+                AwardXP(victim, attacker, eventualForm.MobilityType, output);
             }
 
             return output;
@@ -195,7 +198,7 @@ namespace TT.Domain.Procedures
             return Math.Min(percentTransformedByEnergy, percentTransformedByHealth);
         }
 
-        private static void LogTransformationMessages(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm, decimal percentTransformedBefore, decimal percentTransformedAfter)
+        private static void LogTransformationMessages(Player victim, Player attacker, DbStaticForm eventualForm, decimal percentTransformedBefore, decimal percentTransformedAfter, LogBox output)
         {
             // Stage 0 = 0 - 20%, 1 = 20 - 40%, 2 = 40 - 60%, 3 = 60 - 80%, 4 = 80 - 100%, 5 = 100% complete, -1 = 0% (no TFE)
             var previousStage = (int)(percentTransformedBefore < 1.0M ? percentTransformedBefore / 0.2M : 5);
@@ -207,12 +210,12 @@ namespace TT.Domain.Procedures
                 previousStage = -1;
             }
 
-            var percentPrintedOutput = $" ({percentTransformedAfter.ToString("0.00%")})";
-            output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, previousStage, currentStage, "third") + percentPrintedOutput;
-            output.VictimLog += GetTFMessage(eventualForm, victim, attacker, previousStage, currentStage, "first") + percentPrintedOutput;
+            var percentPrintedOutput = $" ({percentTransformedAfter:0.00%})";
+            output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "third", previousStage, currentStage) + percentPrintedOutput;
+            output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "first", previousStage, currentStage) + percentPrintedOutput;
         }
 
-        private static void AwardXP(Player victim, Player attacker, LogBox output, DbStaticForm eventualForm)
+        private static void AwardXP(Player victim, Player attacker, string mobilityType, LogBox output)
         {
             // calculate the xp earned for this transformation
             var xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
@@ -227,60 +230,52 @@ namespace TT.Domain.Procedures
             }
 
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == PvPStatics.MobilityFull && xpEarned > 0)
+            if (mobilityType == PvPStatics.MobilityFull && xpEarned > 0)
             {
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 4);
             }
 
             // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == PvPStatics.MobilityInanimate || eventualForm.MobilityType == PvPStatics.MobilityPet || eventualForm.MobilityType == PvPStatics.MobilityMindControl)
+            if (mobilityType == PvPStatics.MobilityInanimate || mobilityType == PvPStatics.MobilityPet || mobilityType == PvPStatics.MobilityMindControl)
             {
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 6);
             }
 
             // give XP to the attacker
-            output.AttackerLog += " (+" + xpEarned + " XP)";
-            output.ResultMessage += " (+" + xpEarned + " XP)";
+            output.AttackerLog += $" (+{xpEarned} XP)";
+            output.ResultMessage += $" (+{xpEarned} XP)";
 
             var lvlMessage = PlayerProcedures.GiveXP(attacker, xpEarned);
             output.AttackerLog += lvlMessage;
             output.ResultMessage += lvlMessage;
         }
 
-        public static (LogBox, decimal) RunFormChangeLogic(Player victim, int skillSourceId, int attackerId, decimal energyAccumulated)
+        public static decimal RunFormChangeLogic(Player victim, int attackerId, SkillViewModel skill, decimal energyAccumulated, LogBox output)
         {
-
-            var output = new LogBox();
-
             // redundant check to make sure the victim is still in a transformable state
             if (victim.Mobility != PvPStatics.MobilityFull)
             {
-                return (output, victim.Health);
+                return victim.Health;
             }
 
-            var skill = SkillStatics.GetStaticSkill(skillSourceId);
-            var targetForm = FormStatics.GetForm(skill.FormSourceId.Value);
+            var targetForm = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
 
             // check and see if the target has enough points accumulated to try the form's energy requirement
             if (energyAccumulated < targetForm.TFEnergyRequired)
             {
                 // Less than 100% TFE - don't complete form change
-                return (output, victim.Health);
+                return victim.Health;
             }
 
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            // check and see if the target's health is low enough to be eligible for the TF
-            var target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
-            var attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+            var dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
 
             // Collect the attacker & victim TFE related buffs
-            decimal modifiedTFEnergyPercent = CalculateTFEBonusBuff(victim, attacker);
+            decimal modifiedTFEnergyPercent = CalculateTFEBonusBuff(victim, dbAttacker);
 
-            AddExtraHealthDamage(victim, output, playerRepo, targetForm, energyAccumulated, target, attacker, modifiedTFEnergyPercent);
-
-            target = CompleteTransformation(victim, output, playerRepo, targetForm, target, attacker, skillSourceId);
+            // check and see if the target's health is low enough to be eligible for the TF
+            var updatedHealth = AddExtraHealthDamage(victim, dbAttacker, targetForm.TFEnergyRequired, energyAccumulated, modifiedTFEnergyPercent, output);
+            PotentiallyCompleteTransformation(victim, dbAttacker, targetForm, skill.StaticSkill.Id, updatedHealth, output);
 
             // if there is a duel going on, end it if all but 1 player is defeated (not in the form they started in)
             if (victim.InDuel > 0)
@@ -288,7 +283,7 @@ namespace TT.Domain.Procedures
                 EndDuel(victim);
             }
 
-            return (output, target.Health);
+            return updatedHealth;
         }
 
         private static decimal CalculateTFEBonusBuff(Player victim, Player attacker)
@@ -311,79 +306,77 @@ namespace TT.Domain.Procedures
             return modifiedTFEnergyPercent;
         }
 
-        private static void AddExtraHealthDamage(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, decimal energyAccumulated, Player target, Player attacker, decimal modifiedTFEnergyPercent)
+        private static decimal AddExtraHealthDamage(Player victim, Player attacker, decimal energyRequired, decimal energyAccumulated, decimal modifiedTFEnergyPercent, LogBox output)
         {
+            var playerRepo = new EFPlayerRepository();
+            var dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+
             // add in some extra WP damage if TF energy high enough for TF but WP is still high
             // Explode the victim if they somehow reach 1,000 TFEnergy in a PvP encounter
-            if (target.Health > 0)
+            if (dbVictim.Health > 0)
             {
-                if (energyAccumulated > targetForm.TFEnergyRequired * 10M && attacker.BotId == AIStatics.ActivePlayerBotId && victim.BotId == AIStatics.ActivePlayerBotId)
-                {
-                    var HealthDamage = 9999 * modifiedTFEnergyPercent;
 
-                    output.VictimLog += $" <br />Despite your iron will there is only so much transformation energy that a single person can contain within their body, unfortunately for you that limit has been reached. In a spectacular shower of vibrant energy you are consumed. You take an extra {HealthDamage:#} willpower damage.";
-                    output.AttackerLog += $"<br />Your victim stands resolute for their final moments before a brilliant cascade of chaos errupts from inside of their form. They suffer an extra {HealthDamage:#} willpower damage.";
-                    target.Health -= HealthDamage;
-                    target.NormalizeHealthMana();
-                    playerRepo.SavePlayer(target);
+                if (energyAccumulated > energyRequired * 10M && attacker.BotId == AIStatics.ActivePlayerBotId && victim.BotId == AIStatics.ActivePlayerBotId)
+                {
+                    var healthDamage = 9999 * modifiedTFEnergyPercent;
+
+                    output.VictimLog += $" <br />Despite your iron will there is only so much transformation energy that a single person can contain within their body, unfortunately for you that limit has been reached. In a spectacular shower of vibrant energy you are consumed. You take an extra {healthDamage:#} willpower damage.";
+                    output.AttackerLog += $"<br />Your victim stands resolute for their final moments before a brilliant cascade of chaos errupts from inside of their form. They suffer an extra {healthDamage:#} willpower damage.";
+                    dbVictim.Health -= healthDamage;
+                    dbVictim.NormalizeHealthMana();
+                    playerRepo.SavePlayer(dbVictim);
 
                     // Causes the victim to 'explode' and deal damage in their area
                     AttackProcedures.SuddenDeathExplosion(attacker, victim, 240);
                 }
-                else if (energyAccumulated > targetForm.TFEnergyRequired * 3M)
+                else
                 {
-                    var HealthDamage = 60 * modifiedTFEnergyPercent;
-                    // Make players deal full damage with TFEnergy buildup
-                    if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                    var healthDamage = 0m;
+                    if (energyAccumulated > energyRequired * 3M)
                     {
-                        HealthDamage *= 2;
+                        healthDamage = 60 * modifiedTFEnergyPercent;
+                        output.VictimLog += $"<br />You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
+                        output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
+                    }
+                    else if (energyAccumulated > energyRequired * 2M)
+                    {
+                        healthDamage = 30 * modifiedTFEnergyPercent;
+                        output.VictimLog += $"<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
+                        output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
+                    }
+                    else if (energyAccumulated > energyRequired * 1M)
+                    {
+                        healthDamage = 15 * modifiedTFEnergyPercent;
+                        output.VictimLog += $"<br />You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra {healthDamage:#} willpower damage.";
+                        output.AttackerLog += $"<br />Your victim has a high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
                     }
 
-                    output.VictimLog += $"<br />You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {HealthDamage:#} willpower damage.";
-                    output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
-                    target.Health -= HealthDamage;
-                    target.NormalizeHealthMana();
-                    playerRepo.SavePlayer(target);
-                }
-                else if (energyAccumulated > targetForm.TFEnergyRequired * 2M)
-                {
-                    var HealthDamage = 30 * modifiedTFEnergyPercent;
-                    // Make players deal full damage with TFEnergy buildup
-                    if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                    if (healthDamage > 0)
                     {
-                        HealthDamage *= 2;
+                        // Make players deal full damage with TFEnergy buildup
+                        if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                        {
+                            healthDamage *= 2;
+                        }
+
+                        dbVictim.Health -= healthDamage;
+                        dbVictim.NormalizeHealthMana();
+                        playerRepo.SavePlayer(dbVictim);
                     }
-                    output.VictimLog += $"<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {HealthDamage:#} willpower damage.";
-                    output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
-                    target.Health -= HealthDamage;
-                    target.NormalizeHealthMana();
-                    playerRepo.SavePlayer(target);
-                }
-                else if (energyAccumulated > targetForm.TFEnergyRequired * 1M)
-                {
-                    var HealthDamage = 15 * modifiedTFEnergyPercent;
-                    // Make players deal full damage with TFEnergy buildup
-                    if (attacker.BotId == AIStatics.ActivePlayerBotId)
-                    {
-                        HealthDamage *= 2;
-                    }
-                    output.VictimLog += $"<br />You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra {HealthDamage:#} willpower damage.";
-                    output.AttackerLog += $"<br />Your victim has a high amount of transformation energy built up and takes an extra {HealthDamage:#} willpower damage.";
-                    target.Health -= HealthDamage;
-                    target.NormalizeHealthMana();
-                    playerRepo.SavePlayer(target);
                 }
             }
+
+            return dbVictim.Health;
         }
 
-        private static Player CompleteTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker, int skillSourceId)
+        private static void PotentiallyCompleteTransformation(Player victim, Player attacker, DbStaticForm targetForm, int skillSourceId, decimal victimHealth, LogBox output)
         {
-            var healthProportion = target.Health / target.MaxHealth;
+            var healthProportion = victimHealth / victim.MaxHealth;
 
             // target is turning into an animate form
             if (targetForm.MobilityType == PvPStatics.MobilityFull && healthProportion <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
             {
-                target = PerformAnimateTransformation(output, playerRepo, targetForm, target, attacker);
+                PerformAnimateTransformation(victim, attacker, targetForm, output);
                 BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
@@ -391,109 +384,100 @@ namespace TT.Domain.Procedures
             else if ((targetForm.MobilityType == PvPStatics.MobilityInanimate && healthProportion <= PvPStatics.PercentHealthToAllowInanimateFormTF) ||
                      (targetForm.MobilityType == PvPStatics.MobilityPet && healthProportion <= PvPStatics.PercentHealthToAllowAnimalFormTF))
             {
-                PerformInanimateTransformation(victim, output, playerRepo, targetForm, target, attacker, skillSourceId);
+                PerformInanimateTransformation(victim, attacker, skillSourceId, targetForm, output);
                 BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
             // mind control
             else if (targetForm.MobilityType == PvPStatics.MobilityMindControl && healthProportion <= PvPStatics.PercentHealthToAllowMindControlTF)
             {
-                EngageMindControl(victim, output, targetForm, target, attacker);
+                EngageMindControl(victim, attacker, targetForm, output);
             }
-
-            return target;
         }
 
-        private static Player PerformAnimateTransformation(LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker)
+        private static void PerformAnimateTransformation(Player victim, Player attacker, DbStaticForm targetForm, LogBox output)
         {
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, targetForm.Id);
+            var playerRepo = new EFPlayerRepository();
+            var dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbVictim, targetForm.Id);
             DomainRegistry.Repository.Execute(new ChangeForm
             {
-                PlayerId = target.Id,
+                PlayerId = dbVictim.Id,
                 FormSourceId = targetForm.Id
             });
 
             // wipe out half of the target's mana
-            target.Mana -= target.MaxMana / 2;
-            if (target.Mana < 0)
+            dbVictim.Mana -= dbVictim.MaxMana / 2;
+            if (dbVictim.Mana < 0)
             {
-                target.Mana = 0;
+                dbVictim.Mana = 0;
             }
 
             // Remove any Self Restore entires.
-            RemoveSelfRestore(target);
+            RemoveSelfRestore(dbVictim);
 
-            var targetbuffs = ItemProcedures.GetPlayerBuffs(target);
-            target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
+            var targetbuffs = ItemProcedures.GetPlayerBuffs(dbVictim);
+            dbVictim = PlayerProcedures.ReadjustMaxes(dbVictim, targetbuffs);
 
 
             // take away some of the victim's XP based on the their level
             // target.XP += -2.5M * target.Level;
 
-            playerRepo.SavePlayer(target);
+            playerRepo.SavePlayer(dbVictim);
 
-            output.LocationLog += "<br><b>" + target.GetFullName() + " was completely transformed into a " + targetForm.FriendlyName + " here.</b>";
-            output.AttackerLog += "<br><b>You fully transformed " + target.GetFullName() + " into a " + targetForm.FriendlyName + "</b>!";
-            output.VictimLog += "<br><b>You have been fully transformed into a " + targetForm.FriendlyName + "!</b>";
+            output.LocationLog += $"<br><b>{dbVictim.GetFullName()} was completely transformed into a {targetForm.FriendlyName} here.</b>";
+            output.AttackerLog += $"<br><b>You fully transformed {dbVictim.GetFullName()} into a {targetForm.FriendlyName}</b>!";
+            output.VictimLog += $"<br><b>You have been fully transformed into a {targetForm.FriendlyName}!</b>";
 
             // Let the target know they are best friends with the angel plush.
             if (attacker.BotId == AIStatics.MinibossPlushAngelId)
             {
-                output.VictimLog += "<br><br><b>" + attacker.GetFullName() + "</b> was happy to make you into a new friend!<br>";
+                output.VictimLog += $"<br><br><b>{attacker.GetFullName()}</b> was happy to make you into a new friend!<br>";
             }
 
-            TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
+            TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(dbVictim.Id, targetForm.Id);
 
-            StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1);
-
+            StatsProcedures.AddStat(dbVictim.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1);
             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimateTFing, 1);
-            return target;
         }
 
-        private static void PerformInanimateTransformation(Player victim, LogBox output, IPlayerRepository playerRepo, DbStaticForm targetForm, Player target, Player attacker, int skillSourceId)
+        private static void PerformInanimateTransformation(Player victim, Player attacker, int skillSourceId, DbStaticForm targetForm, LogBox output)
         {
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, targetForm.Id);
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(victim, targetForm.Id);
             DomainRegistry.Repository.Execute(new ChangeForm
             {
-                PlayerId = target.Id,
+                PlayerId = victim.Id,
                 FormSourceId = targetForm.Id
             });
 
-            if (targetForm.MobilityType == PvPStatics.MobilityInanimate && target.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
+            if (targetForm.MobilityType == PvPStatics.MobilityInanimate && victim.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
             {
-                StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1);
-
+                StatsProcedures.AddStat(victim.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1);
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1);
-
-
             }
-            else if (targetForm.MobilityType == PvPStatics.MobilityPet && target.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
+            else if (targetForm.MobilityType == PvPStatics.MobilityPet && victim.BotId != AIStatics.MinibossPlushAngelId) //No reward for monsters that hurt an innocent little plush friend. :(
             {
-                StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1);
-
+                StatsProcedures.AddStat(victim.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1);
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1);
-
             }
 
             if (targetForm.MobilityType == PvPStatics.MobilityPet || targetForm.MobilityType == PvPStatics.MobilityInanimate)
             {
-
-                if (target.BotId == AIStatics.PsychopathBotId)
+                if (victim.BotId == AIStatics.PsychopathBotId)
                 {
-                    StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated,
-                        1);
+                    StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated, 1);
                 }
 
-                if (target.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)GameModeStatics.GameModes.PvP && victim.GameMode == (int)GameModeStatics.GameModes.PvP)
+                if (victim.BotId == AIStatics.ActivePlayerBotId && attacker.GameMode == (int)GameModeStatics.GameModes.PvP && victim.GameMode == (int)GameModeStatics.GameModes.PvP)
                 {
                     StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerNumberTakedowns, 1);
                     StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PvPPlayerLevelTakedowns, victim.Level);
                 }
-
             }
 
             // extra log stuff for turning into item
-            var extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
+            var extra = ItemProcedures.PlayerBecomesItem(victim, targetForm, attacker);
             output.AttackerLog += extra.AttackerLog;
             output.VictimLog += extra.VictimLog;
             output.LocationLog += extra.LocationLog;
@@ -503,12 +487,11 @@ namespace TT.Domain.Procedures
             PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
             PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain / 2);
 
-            var levelDifference = attacker.Level - target.Level;
+            var levelDifference = attacker.Level - victim.Level;
 
             // only give the lump sum XP if the victim is not in the same covenant
-            if (attacker.Covenant == null || attacker.Covenant != target.Covenant)
+            if (attacker.Covenant == null || attacker.Covenant != victim.Covenant)
             {
-
                 var xpGain = 100 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
 
                 if (xpGain < 50)
@@ -521,7 +504,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // give the attacker a nice lump sum for having completed the transformation
-                output.AttackerLog += "  <br>For having sealed your opponent into their new form, you gain an extra <b>" + xpGain + "</b> XP.";
+                output.AttackerLog += $"  <br>For having sealed your opponent into their new form, you gain an extra <b>{xpGain}</b> XP.";
                 output.AttackerLog += PlayerProcedures.GiveXP(attacker, xpGain);
             }
 
@@ -532,16 +515,14 @@ namespace TT.Domain.Procedures
 
                 if (score > 0)
                 {
-
                     output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
                     output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
 
                     StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float)score);
-
                 }
                 else
                 {
-                    output.AttackerLog += "  " + victim.GetFullName() + " unfortunately did not have any dungeon points for you to steal for yourself.";
+                    output.AttackerLog += $"  {victim.GetFullName()} unfortunately did not have any dungeon points for you to steal for yourself.";
                 }
             }
 
@@ -549,7 +530,7 @@ namespace TT.Domain.Procedures
             if (victim.BotId == AIStatics.MinibossPlushAngelId)
             {
                 output.AttackerLog += "<br><br>Why did you do that to the poor plush? They just wanted to be a friend!<br>";
-                output.LocationLog += "<br><b>" + attacker.GetFullName() + "</b> went and bullied <b>" + victim.GetFullName() + "</b>, like some <b>monster</b>. The angelic plush left some flowers to the 'victor', in hope they would forgive it despite doing no wrong.";
+                output.LocationLog += $"<br><b>{attacker.GetFullName()}</b> went and bullied <b>{victim.GetFullName()}</b>, like some <b>monster</b>. The angelic plush left some flowers to the 'victor', in hope they would forgive it despite doing no wrong.";
 
                 // Give the dummy a bit of madness for being a bully.
                 EffectProcedures.GivePerkToPlayer(198, attacker);
@@ -581,38 +562,22 @@ namespace TT.Domain.Procedures
                     if (victim.BotId != AIStatics.ActivePlayerBotId)
                     {
                         // The victim is not a player, provide half of the healing.
-                        healingPercent = healingPercent / 2;
-                    }
-                    // Calculate the final amount of health to provide
-                    var healingTotal = attacker.MaxHealth * healingPercent;
-                    // Cap the healing to prevent over healing
-                    if (attacker.Health + healingTotal > attacker.MaxHealth)
-                    {
-                        healingTotal = (attacker.MaxHealth - attacker.Health);
-                    }
-                    // Calculate the final amount of mana to provide
-                    var manaRestoredTotal = attacker.MaxMana * healingPercent;
-                    // Cap the mana restoration to prevent over healing
-                    if (attacker.Mana + manaRestoredTotal > attacker.MaxMana)
-                    {
-                        manaRestoredTotal = (attacker.MaxMana - attacker.Mana);
+                        healingPercent /= 2;
                     }
 
-                    // Heal the attacker
-                    attacker.Health += healingTotal;
-                    // Restore the attackers Mana
-                    attacker.Mana += manaRestoredTotal;
+                    // Heal the attacker and restore their Mana
+                    var healingTotal = attacker.MaxHealth * healingPercent;
+                    var manaRestoredTotal = attacker.MaxMana * healingPercent;
+                    PlayerProcedures.ChangePlayerActionMana(0, healingTotal, manaRestoredTotal, attacker.Id, false);
 
                     // Remove any Self Restore entires.
-                    RemoveSelfRestore(target);
-
-                    playerRepo.SavePlayer(target);
+                    RemoveSelfRestore(victim);
 
                     output.AttackerLog += $"<br />Invigorated by your victory and fuelled by the scattered essence that was once your foe, you are healed for {healingTotal:#} willpower and {manaRestoredTotal:#} mana.";
                 }
             }
 
-            output.AttackerLog += "  You collect " + Math.Round(moneygain, 0) + " Arpeyjis your victim dropped during the transformation.";
+            output.AttackerLog += $"  You collect {Math.Round(moneygain, 0)} Arpeyjis your victim dropped during the transformation.";
 
             // create inanimate XP for the victim
             InanimateXPProcedures.GetStruggleChance(victim, false);
@@ -624,7 +589,7 @@ namespace TT.Domain.Procedures
                 PlayerLogProcedures.ClearPlayerLog(victim.Id);
             }
 
-            TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
+            TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(victim.Id, targetForm.Id);
 
             // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
             if (attacker.BotId == AIStatics.PsychopathBotId && !EffectProcedures.PlayerHasActiveEffect(attacker.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
@@ -652,14 +617,14 @@ namespace TT.Domain.Procedures
             }
         }
 
-        private static void EngageMindControl(Player victim, LogBox output, DbStaticForm targetForm, Player target, Player attacker)
+        private static void EngageMindControl(Player target, Player attacker, DbStaticForm targetForm, LogBox output)
         {
             //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
-            MindControlProcedures.AddMindControl(attacker, victim, targetForm.Id);
+            MindControlProcedures.AddMindControl(attacker, target, targetForm.Id);
 
-            output.LocationLog += "<br><b>" + target.GetFullName() + " was partially mind controlled by " + attacker.GetFullName() + " here.</b>";
-            output.AttackerLog += "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into performing certain actions.</b>";
-            output.VictimLog += "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
+            output.LocationLog += $"<br><b>{target.GetFullName()} was partially mind controlled by {attacker.GetFullName()} here.</b>";
+            output.AttackerLog += $"<br><b>You have seized the mind of {target.GetFullName()}!  You can now force them into performing certain actions.</b>";
+            output.VictimLog += $"<br><b>You are now being partially mind controlled by {targetForm.FriendlyName}!</b>";
 
             TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(target.Id, targetForm.Id);
             // Remove any Self Restore entires.
@@ -755,31 +720,18 @@ namespace TT.Domain.Procedures
             }
         }
 
-        private static string FormatVictimString(string input, Player victim, Player attacker, bool isNew)
+        private static string FormatVictimString(string input, string victimName, string attackerName, bool isNew)
         {
-            if (isNew)
-            {
-                return CleanString(input, victim, attacker);
-            }
-            else
-            {
-                return "<span style=\"color: #555555\">" + CleanString(input, victim, attacker) + "</span>";
-            }
+            var content = CleanString(input, victimName, attackerName);
+            return isNew ? content : $"<span style=\"color: #555555\">{content}</span>";
         }
 
-        private static string CleanString(string input, Player victim, Player attacker)
+        private static string CleanString(string input, string victimName, string attackerName)
         {
-            if (input == null)
-            {
-                return null;
-            }
-            else
-            {
-                return input.Trim().Replace(Environment.NewLine, "</br>").Replace("$VICTIM_NAME$", victim.GetFullName()).Replace("$ATTACKER_NAME$", attacker.GetFullName());
-            }
+            return input?.Trim().Replace(Environment.NewLine, "</br>").Replace("$VICTIM_NAME$", victimName).Replace("$ATTACKER_NAME$", attackerName);
         }
 
-        private static string GetTFMessage(DbStaticForm form, Player player, Player attacker, int previousStage, int stage, string PoV)
+        private static string GetTFMessage(DbStaticForm form, Player victim, Player attacker, string PoV, int previousStage, int finalStage)
         {
             var output = "";
 
@@ -791,408 +743,114 @@ namespace TT.Domain.Procedures
                 return "ERROR RETRIEVING TRANSFORMATION TEXT.  This is a bug.";
             }
 
-            #region 20 percent TF
-            if (stage == 0 || (stage > 0 && previousStage < 0))
+            var attackerName = attacker.GetFullName();
+            var victimName = victim.GetFullName();
+
+            // 0-20 percent TF
+            var currentStage = 0;
+            if (finalStage == currentStage || (finalStage > currentStage && previousStage < currentStage))
             {
-                if (player.Gender == PvPStatics.GenderMale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 0;
-
-                        if (!tfMessage.TFMessage_20_Percent_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_20_Percent_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
-                        }
-                    }
-                } 
-                else if (player.Gender == PvPStatics.GenderFemale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 0;
-
-                        if (!tfMessage.TFMessage_20_Percent_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st_F, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_20_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_20_Percent_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-
-                if(stage != 0)
-                {
-                    output += "<br /><br />";
-                }
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, currentStage,
+                    tfMessage.TFMessage_20_Percent_1st, tfMessage.TFMessage_20_Percent_1st_M, tfMessage.TFMessage_20_Percent_1st_F,
+                    tfMessage.TFMessage_20_Percent_3rd, tfMessage.TFMessage_20_Percent_3rd_M, tfMessage.TFMessage_20_Percent_3rd_F);
             }
-            #endregion
 
-            #region 40 percent TF
-            if (stage == 1 || (stage > 1 && previousStage < 1))
+            // 20-40 percent TF
+            currentStage = 1;
+            if (finalStage == currentStage || (finalStage > currentStage && previousStage < currentStage))
             {
-                if (player.Gender == PvPStatics.GenderMale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 1;
-
-                        if (!tfMessage.TFMessage_40_Percent_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st_M, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_40_Percent_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-                else if (player.Gender == PvPStatics.GenderFemale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 1;
-
-                        if (!tfMessage.TFMessage_40_Percent_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st_F, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_40_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_40_Percent_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-
-                if(stage != 1)
-                {
-                    output += "<br /><br />";
-                }
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, currentStage,
+                    tfMessage.TFMessage_40_Percent_1st, tfMessage.TFMessage_40_Percent_1st_M, tfMessage.TFMessage_40_Percent_1st_F,
+                    tfMessage.TFMessage_40_Percent_3rd, tfMessage.TFMessage_40_Percent_3rd_M, tfMessage.TFMessage_40_Percent_3rd_F);
            }
-            #endregion
 
-            #region 60 percent TF
-            if (stage == 2 || (stage > 2 && previousStage < 2))
+            // 40-60 percent TF
+            currentStage = 2;
+            if (finalStage == currentStage || (finalStage > currentStage && previousStage < currentStage))
             {
-                if (player.Gender == PvPStatics.GenderMale)
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, 2,
+                    tfMessage.TFMessage_60_Percent_1st, tfMessage.TFMessage_60_Percent_1st_M, tfMessage.TFMessage_60_Percent_1st_F,
+                    tfMessage.TFMessage_60_Percent_3rd, tfMessage.TFMessage_60_Percent_3rd_M, tfMessage.TFMessage_60_Percent_3rd_F);
+            }
+
+            // 60-80 percent TF
+            currentStage = 3;
+            if (finalStage == currentStage || (finalStage > currentStage && previousStage < currentStage))
+            {
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, 3,
+                    tfMessage.TFMessage_80_Percent_1st, tfMessage.TFMessage_80_Percent_1st_M, tfMessage.TFMessage_80_Percent_1st_F,
+                    tfMessage.TFMessage_80_Percent_3rd, tfMessage.TFMessage_80_Percent_3rd_M, tfMessage.TFMessage_80_Percent_3rd_F);
+            }
+
+            // 80-100 percent TF
+            currentStage = 4;
+            if (finalStage == currentStage || (finalStage > currentStage && previousStage < currentStage))
+            {
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, currentStage,
+                    tfMessage.TFMessage_100_Percent_1st, tfMessage.TFMessage_100_Percent_1st_M, tfMessage.TFMessage_100_Percent_1st_F,
+                    tfMessage.TFMessage_100_Percent_3rd, tfMessage.TFMessage_100_Percent_3rd_M, tfMessage.TFMessage_100_Percent_3rd_F);
+            }
+
+            // complete TF
+            currentStage = 5;
+            if (finalStage >= currentStage)
+            {
+                output += AddStageMessage(victim, attacker, PoV, previousStage, finalStage, currentStage,
+                    tfMessage.TFMessage_Completed_1st, tfMessage.TFMessage_Completed_1st_M, tfMessage.TFMessage_Completed_1st_F,
+                    tfMessage.TFMessage_Completed_3rd, tfMessage.TFMessage_Completed_3rd_M, tfMessage.TFMessage_Completed_3rd_F);
+            }
+
+            return output;
+        }
+
+        private static string AddStageMessage(Player victim, Player attacker, string PoV, int previousStage, int eventualStage, int textStage,
+            string firstPerson, string firstPersonMale, string firstPersonFemale, string thirdPerson, string thirdPersonMale, string thirdPersonFemale)
+        {
+            var attackerName = attacker.GetFullName();
+            var victimName = victim.GetFullName();
+
+            var output = "";
+
+            if (PoV == "first")
+            {
+                var isNew = previousStage < textStage;
+
+                if (victim.Gender == PvPStatics.GenderMale)
                 {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 2;
-
-                        if (!tfMessage.TFMessage_60_Percent_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st_M, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_60_Percent_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
-                        }
-                    }
+                    var message = firstPersonMale.IsNullOrEmpty() ? firstPerson : firstPersonMale;
+                    output = FormatVictimString(message, victimName, attackerName, isNew);
                 }
-                else if (player.Gender == PvPStatics.GenderFemale)
+                else if (victim.Gender == PvPStatics.GenderFemale)
                 {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 2;
-
-                        if (!tfMessage.TFMessage_60_Percent_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st_F, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_60_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_60_Percent_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-
-                if(stage != 2)
-                {
-                    output += "<br /><br />";
+                    var message = firstPersonFemale.IsNullOrEmpty() ? firstPerson : firstPersonFemale;
+                    output = FormatVictimString(message, victimName, attackerName, isNew);
                 }
             }
-            #endregion
-
-            #region 80 percent TF
-            if (stage == 3 || (stage > 3 && previousStage < 3))
+            else if (PoV == "third")
             {
-                if (player.Gender == PvPStatics.GenderMale)
+                if (victim.Gender == PvPStatics.GenderMale)
                 {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 3;
-
-                        if (!tfMessage.TFMessage_80_Percent_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st_M, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_80_Percent_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
-                        }
-                    }
+                    var message = thirdPersonMale.IsNullOrEmpty() ? thirdPerson : thirdPersonMale;
+                    output = CleanString(message, victimName, attackerName);
                 }
-                else if (player.Gender == PvPStatics.GenderFemale)
+                else if (victim.Gender == PvPStatics.GenderFemale)
                 {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 3;
-
-                        if (!tfMessage.TFMessage_80_Percent_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st_F, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_80_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_80_Percent_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-
-                if(stage != 3)
-                {
-                    output += "<br /><br />";
+                    var message = thirdPersonFemale.IsNullOrEmpty() ? thirdPerson : thirdPersonFemale;
+                    output = CleanString(message, victimName, attackerName);
                 }
             }
-            #endregion
 
-            #region 100 percent TF
-            if (stage == 4 || (stage > 4 && previousStage < 4))
+            if(eventualStage != textStage)
             {
-                if (player.Gender == PvPStatics.GenderMale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 4;
-
-                        if (!tfMessage.TFMessage_100_Percent_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st_M, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_100_Percent_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-                else if (player.Gender == PvPStatics.GenderFemale)
-                {
-                    if (PoV == "first")
-                    {
-                        var isNew = previousStage < 4;
-
-                        if (!tfMessage.TFMessage_100_Percent_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st_F, player, attacker, isNew);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_100_Percent_1st, player, attacker, isNew);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_100_Percent_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
-                        }
-                    }
-                }
-
-                if(stage != 4)
-                {
-                    output += "<br /><br />";
-                }
+                output += "<br /><br />";
             }
-            #endregion
-
-            #region complete TF
-            if (stage >= 5)
-            {
-                if (player.Gender == PvPStatics.GenderMale)
-                {
-                    if (PoV == "first")
-                    {
-                        if (!tfMessage.TFMessage_Completed_1st_M.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st_M, player, attacker, true);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st, player, attacker, true);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_Completed_3rd_M.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_Completed_3rd_M, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
-                        }
-                    }
-                }
-                else if (player.Gender == PvPStatics.GenderFemale)
-                {
-                    if (PoV == "first")
-                    {
-                        if (!tfMessage.TFMessage_Completed_1st_F.IsNullOrEmpty())
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st_F, player, attacker, true);
-                        }
-                        else
-                        {
-                            output += FormatVictimString(tfMessage.TFMessage_Completed_1st, player, attacker, true);
-                        }
-
-                    }
-                    else if (PoV == "third")
-                    {
-                        if (!tfMessage.TFMessage_Completed_3rd_F.IsNullOrEmpty())
-                        {
-                            output += CleanString(tfMessage.TFMessage_Completed_3rd_F, player, attacker);
-                        }
-                        else
-                        {
-                            output += CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
-                        }
-                    }
-                }
-            }
-            #endregion
-
 
             return output;
         }
 
         public static decimal GetHigherLevelXPModifier(int lvl, int maxLvlBeforeLoss)
         {
-            var modifier = 1.0M;
-
-            modifier = 1 - ((lvl - maxLvlBeforeLoss) * .1M);
+            var modifier = 1 - (lvl - maxLvlBeforeLoss) * .1M;
 
             if (modifier > 1)
             {

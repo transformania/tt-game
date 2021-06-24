@@ -407,7 +407,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (roll < 3)  // 3%
             {
                 // Change to mana form
-                if (CharacterPrankProcedures.TryAnimateTransform(player, MANA_FORMS[rand.Next(MANA_FORMS.Count())]))
+                var filteredManaForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MANA_FORMS).ToArray();
+                
+                if (CharacterPrankProcedures.TryAnimateTransform(player, filteredManaForms[rand.Next(filteredManaForms.Length)]))
                 {
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     message = "Oh dear, it looks like you've been meditating too hard!";
@@ -543,7 +545,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (roll < 5)  // 5%
             {
                 // Change to cleanse form
-                if (CharacterPrankProcedures.TryAnimateTransform(player, MAIDS[rand.Next(MAIDS.Count())]))
+                var filteredMaidForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
+
+                if (CharacterPrankProcedures.TryAnimateTransform(player, filteredMaidForms[rand.Next(filteredMaidForms.Length)]))
                 {
                     PlayerProcedures.AddCleanseMeditateCount(player);
                     message = "You've been cleansing a lot.  Maybe you would like to clean the shop while you're at it?";

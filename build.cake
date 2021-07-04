@@ -17,7 +17,6 @@ var configuration = Argument("configuration", EnvironmentVariable("TT_CONFIGURAT
 var dbType = Argument("dbType", EnvironmentVariable("TT_DBTYPE") ?? "localdb_v2").ToLower();
 var dbName = Argument("dbName", EnvironmentVariable("TT_DBNAME") ?? "Stats");
 var updateUrl = Argument("updateUrl", "http://localhost:52223/API/WorldUpdate");
-var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/cake/images.zip");
 
 var isInCI = Convert<bool>(EnvironmentVariable("CI") ?? "false");
 
@@ -262,23 +261,6 @@ Task("Turn-Update")
     }
 );
 
-Task("Seed-Images")
-    .WithCriteria(() => !FileExists("images.flg"))
-    .Does(() => {
-        var seedImages = DownloadFile(imageUrl);
-        Unzip(seedImages, "./src/TT.Web/Images/PvP");
-        DeleteFile(seedImages);
-        System.IO.File.Create("images.flg");
-     }
-);
-
-Task("Drop-Images")
-    .Does(() => {
-        if (FileExists("images.flg"))
-            System.IO.File.Delete("images.flg");
-        CleanDirectory("./src/TT.Web/Images/PvP");
-    }
-);
 
 private static T Convert<T>(string value)
 {
@@ -286,14 +268,13 @@ private static T Convert<T>(string value)
     return (T)converter.ConvertFromInvariantString(value);
 }
 
-// Default build, if required Migrates DB, Seeds DB and Seeds images. Skips steps if nothing to do
+// Default build, if required Migrates DB and Seeds DB. Skips steps if nothing to do
 Task("Default")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
-    .IsDependentOn("Seed-Images")
     .IsDependentOn("Run-Unit-Tests");
 
-// Resets to a blank DB, runs full DB migration and DB seed but doesn't seed images
+// Resets to a blank DB, runs full DB migration and DB seed
 Task("CI-Build")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Migrate")
@@ -307,10 +288,6 @@ Task("Recreate-DB")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Default");
 
-// Drops images and re-seeds them
-Task("Recreate-Images")
-    .IsDependentOn("Drop-Images")
-    .IsDependentOn("Default");
 
 Information("Build settings: Target={0}, Configuration={1}, dbType={2}", target, configuration, dbType);
 RunTarget(target);

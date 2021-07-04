@@ -215,7 +215,7 @@ function sendAlertBox(noticemessage) {
         });
     }
     if (window.Notification && Notification.permission === "granted") {
-        var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+        var n = new Notification("Alert!", { body: noticemessage, icon: "https://images.transformaniatime.com/Icons/tt_logo.ico" });
         n.onclick = function () {
             window.focus();
             this.close();
@@ -227,7 +227,7 @@ function sendAlertBox(noticemessage) {
                 Notification.permission = status;
             }
             if (status === "granted") {
-                var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+                var n = new Notification("Alert!", { body: noticemessage, icon: "https://images.transformaniatime.com/Icons/tt_logo.ico" });
                 n.onclick = function () {
                     window.focus();
                     this.close();

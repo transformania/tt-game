@@ -298,7 +298,7 @@ namespace TT.Web.Controllers
 
             var flagURLs = new List<string>();
 
-            var path = Server.MapPath("~/Images/PvP/CovenantFlags/");
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}CovenantFlags/";
             var d = new DirectoryInfo(path);//Assuming Test is your Folder
             var Files = d.GetFiles("*.png"); //Getting Text files
             foreach (var file in Files)
@@ -353,7 +353,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            var path = Server.MapPath("~/Images/PvP/CovenantFlags/" + input.FlagUrl);
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}CovenantFlags/{input.FlagUrl}";
             if (!System.IO.File.Exists(path))
             {
                 TempData["Error"] = "Flag not found.";

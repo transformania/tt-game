@@ -1,4 +1,5 @@
-﻿@model TT.Domain.Models.AuthorArtistBio
+﻿@using TT.Domain.Statics
+@model TT.Domain.Models.AuthorArtistBio
 @{
     ViewBag.Title = "Author / Artist Biography";
 }
@@ -93,12 +94,12 @@
                         foreach (var s in animateGraphics.Where(s => s.Length > 0))
                         {
                             var strThumb = "";
-                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/Thumbnails/100/"+s))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + "portraits/Thumbnails/100/"+s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }
-                            <a href="/Images/PvP/portraits/@s" onclick="return popitup('/Images/PvP/portraits/@s')">
-                                <img src="/Images/PvP/portraits/@strThumb@s" class="bioDescImg">
+                            <a href="https://images.transformaniatime.com/portraits/@s" onclick="return popitup('https://images.transformaniatime.com/portraits/@s')">
+                                <img src="https://images.transformaniatime.com/portraits/@strThumb@s" class="bioDescImg">
                             </a>
                         }
                     }
@@ -114,12 +115,12 @@
                         foreach (var s in inanimateGraphics.Where(s => s.Length > 0))
                         {
                             var strThumb = "";
-                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/itemsPortraits/Thumbnails/100/" + s))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + "itemsPortraits/Thumbnails/100/" + s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }
-                            <a href="/Images/PvP/itemsPortraits/@s" onclick="return popitup('/Images/PvP/itemsPortraits/@s')">
-                                <img src="/Images/PvP/itemsPortraits/@strThumb@s" class="bioDescImg">
+                            <a href="https://images.transformaniatime.com/itemsPortraits/@s" onclick="return popitup('https://images.transformaniatime.com/itemsPortraits/@s')">
+                                <img src="https://images.transformaniatime.com/itemsPortraits/@strThumb@s" class="bioDescImg">
                             </a>
                         }
                     }
@@ -134,12 +135,12 @@
                         foreach (var s in animalGraphics.Where(s => s.Length > 0))
                         {
                             var strThumb = "";
-                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/animalPortraits/Thumbnails/100/" + s))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + "animalPortraits/Thumbnails/100/" + s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }
-                            <a href="/Images/PvP/animalPortraits/@s" onclick="return popitup('/Images/PvP/animalPortraits/@s')">
-                                <img src="/Images/PvP/animalPortraits/@strThumb@s" class="bioDescImg">
+                            <a href="https://images.transformaniatime.com/animalPortraits/@s" onclick="return popitup('https://images.transformaniatime.com/animalPortraits/@s')">
+                                <img src="https://images.transformaniatime.com/animalPortraits/@strThumb@s" class="bioDescImg">
                             </a>
                         }
                     }

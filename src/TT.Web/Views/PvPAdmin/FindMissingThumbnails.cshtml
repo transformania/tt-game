@@ -1,6 +1,7 @@
-﻿<h1>Missing thumbnails report</h1>
+﻿@using TT.Domain.Statics
+<h1>Missing thumbnails report</h1>
 @{
-    var strImagesPath = AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/";
+    var strImagesPath = AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder;
     var strCurPath = "";
     int iNumMissing;
 }

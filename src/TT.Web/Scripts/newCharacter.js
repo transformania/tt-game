@@ -14,7 +14,7 @@ $(document).ready(function () {
         // load form dropdown
         for (var i = 0; i < startingForms.length; i++) {
             var form = startingForms[i];
-            selectionsBox.append("<img src='../Images/PvP/portraits/Thumbnails/100/" + form.PortraitUrl + "' class='selectable' onclick='setForm(\"" + form.Id + "\")'></img>");
+            selectionsBox.append("<img src='https://images.transformaniatime.com/portraits/Thumbnails/100/" + form.PortraitUrl + "' class='selectable' onclick='setForm(\"" + form.Id + "\")'></img>");
         }
 
 
@@ -67,7 +67,7 @@ function renderPortrait() {
         return element.Id == x;
     });
 
-    $("#portrait").attr("src", "../Images/PvP/portraits/" + form.PortraitUrl);
+    $("#portrait").attr("src", "https://images.transformaniatime.com/portraits/" + form.PortraitUrl);
 
 }
 

@@ -15,6 +15,9 @@ namespace TT.Domain.Statics
         public const string LastTosUpdate = "May 25, 2018";
         public const string LastPrivacyPolicyUpdate = "May 25, 2018";
 
+        public const string ImageFolder = "../images.transformaniatime.com/";
+        public const string ImageURL = "https://images.transformaniatime.com/";
+
         public static bool ChaosMode = false;
 
         public const string GenderMale = "male";
@@ -176,7 +179,7 @@ namespace TT.Domain.Statics
     public static class ChatStatics
     {
         public const int OnlineActivityCutoffMinutes = -2;
-        private const string MizuhoThumbnail = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
+        private const string MizuhoThumbnail = PvPStatics.ImageURL + "portraits/Thumbnails/100/Mizuho.jpg";
 
         private static IDictionary<string, PlayerDescriptorDTO> staff
             = new Dictionary<string, PlayerDescriptorDTO>

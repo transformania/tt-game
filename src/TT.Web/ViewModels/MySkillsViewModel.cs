@@ -51,9 +51,9 @@ namespace TT.Web.ViewModels
             }
 
             var strThumb = "Thumbnails/100/";
-            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}Images/PvP/{strItemType}{strThumb}{imageName}")) strThumb = "";
+            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}{strItemType}{strThumb}{imageName}")) strThumb = "";
 
-            return $"/Images/PvP/{strItemType}{strThumb}{imageName}";
+            return $"{PvPStatics.ImageURL}{strItemType}{strThumb}{imageName}";
         }
 
     }

@@ -91,14 +91,6 @@ To re-create your DB from scratch you can do the following
 
 This will drop your existing database, recreate from migrations and apply the seed data.  For convenience's sake, a default user with username "Developer" and password "password" is automatically seeded with full permissions.
 
-### Re-downloading Images
-
-To download up-to-date images from the server you can do the following
-
-```powershell
-./build.ps1 --target="Recreate-Images"
-```
-
 ### Running turn updates in dev environment
 
 To run turn updates in a dev environment, you can do the following

@@ -27,7 +27,7 @@
         foreach (var c in Model.OrderByDescending(c => c.MemberCount))
         {
             <div class="covListing">
-                <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
+                <div class="covFlag" style="background-image: url(https://images.transformaniatime.com/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
                 <span class="covBigName"><a href="@Url.Action(MVC.Covenant.LookAtCovenant(c.dbCovenant.Id))">@c.dbCovenant.Name</a></span>
                 <span>(lvl @c.dbCovenant.Level)</span>
                 <span class="covMemberCount">(@c.MemberCount members)</span>

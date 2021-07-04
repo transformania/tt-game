@@ -327,7 +327,7 @@ namespace TT.Domain.Models
         public int? ItemSourceId { get; set; }
 
         /// <summary>
-        /// Returns the name of the folder after Images/PvP to look inside to find the appropriate graphic
+        /// Returns the name of the folder to look inside to find the appropriate graphic
         /// </summary>
         /// <returns></returns>
         public string GetImageFolderName()
@@ -353,7 +353,7 @@ namespace TT.Domain.Models
         /// <returns></returns>
         public bool MainImageExists()
         {
-            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + this.GetImageFolderName() + "/" + this.ImageURL);
+            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + this.GetImageFolderName() + "/" + this.ImageURL);
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace TT.Domain.Models
         /// <returns></returns>
         public bool ThumbnailImageExists()
         {
-            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + this.GetImageFolderName() + "/Thumbnails/100/" + this.ImageURL);
+            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + this.GetImageFolderName() + "/Thumbnails/100/" + this.ImageURL);
         }
 
     }

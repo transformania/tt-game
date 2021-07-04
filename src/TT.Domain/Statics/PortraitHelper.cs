@@ -25,9 +25,9 @@ namespace TT.Domain.Statics
             }
 
             var strThumb = useThumb ? "Thumbnails/100/" : "";
-            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}Images/PvP/{strItemType}{strThumb}{portaitUrl}")) strThumb = "";
+            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}{strItemType}{strThumb}{portaitUrl}")) strThumb = "";
 
-            return $"/Images/PvP/{strItemType}{strThumb}{portaitUrl}";
+            return $"{PvPStatics.ImageURL}{strItemType}{strThumb}{portaitUrl}";
         }
 
         public static string GetGraphicByItemType(string itemType, string portraitUrl, bool useThumb = false)

@@ -192,7 +192,7 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Images/PvP/" + output + strThumb + strPortraitUrl))
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + output + strThumb + strPortraitUrl))
                 {
                     strThumb = "";
                 }
@@ -205,7 +205,7 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
             string output = GetImagePath(player, thumb);
-            return new MvcHtmlString("/Images/PvP/" + output);
+            return new MvcHtmlString(PvPStatics.ImageURL + output);
         }
 
         public static MvcHtmlString GetFormImageURL(string imageName, bool thumb = false)
@@ -215,10 +215,10 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/"  + strThumb + imageName)) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + "portraits/"  + strThumb + imageName)) strThumb = "";
             }
 
-            var output = "/Images/PvP/portraits/" + strThumb + imageName;
+            var output = PvPStatics.ImageURL + "portraits/" + strThumb + imageName;
             return new MvcHtmlString(output);
         }
 
@@ -237,10 +237,10 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + imageName)) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + PvPStatics.ImageFolder + strItemType + strThumb + imageName)) strThumb = "";
             }
 
-            var output = "/Images/PvP/" + strItemType + strThumb + imageName;
+            var output = PvPStatics.ImageURL + strItemType + strThumb + imageName;
             return new MvcHtmlString(output);
         }
 
@@ -304,12 +304,12 @@ namespace TT.Web.CustomHtmlHelpers
             }
 
             var strThumb = "Thumbnails/100/";
-            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}Images/PvP/{portraits}/{strThumb}{portraitUrl}"))
+            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}{portraits}/{strThumb}{portraitUrl}"))
             {
                 strThumb = "";
             }
 
-            output = $"<div class='subportrait' style='background-image: url(../Images/PvP/{portraits}/{strThumb}{portraitUrl});' title = 'You are owned by {owner.Player.GetFullName()}, a {owner.Form.FriendlyName}.'></div>";
+            output = $"<div class='subportrait' style='background-image: url({PvPStatics.ImageURL}{portraits}/{strThumb}{portraitUrl});' title = 'You are owned by {owner.Player.GetFullName()}, a {owner.Form.FriendlyName}.'></div>";
 
             return new MvcHtmlString(output);
         }
@@ -457,7 +457,7 @@ namespace TT.Web.CustomHtmlHelpers
 
             if (connection.RequiresRolls())
             {
-                output = "<img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>";
+                output = $"<img src='{PvPStatics.ImageURL}Icons/dice.png' style='width: 24px; height: 24px; '>";
             }
 
             return new MvcHtmlString(output);

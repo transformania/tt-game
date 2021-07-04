@@ -585,8 +585,8 @@ namespace TT.Domain.Procedures
             var match = Regex.Match(input, ImageRegexPattern);
             var imgName = match.Groups[1].Value;
 
-            var rgx = new Regex(ImageRegexPattern);
-            input = Regex.Replace(input, ImageRegexPattern, "<img src='/Images/PvP/quests/" + imgName + "' style='max-width: 100%;'>");
+            input = Regex.Replace(input, ImageRegexPattern,
+                $"<img src='{PvPStatics.ImageURL}quests/{imgName}' style='max-width: 100%;'>");
 
             return input;
         }

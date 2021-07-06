@@ -671,6 +671,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 85,
+      "name": "Alpha 85 (Era of Heaven and Hell)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

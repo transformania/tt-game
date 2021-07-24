@@ -232,7 +232,7 @@ namespace TT.Domain.Procedures
             var output = new List<string>();
 
             IEnumerable<int> playerSkillSourceIds = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.SkillSourceId.Value).ToList();
-            IEnumerable<int> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.Id).ToList();
+            IEnumerable<int> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable && s.IsLive == "live").Select(s => s.Id).ToList();
 
 
             var eligibleSkills = from s in learnableSkills

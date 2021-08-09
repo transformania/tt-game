@@ -679,6 +679,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 86,
+      "name": "Alpha 86 (Era of Participation Trophy)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

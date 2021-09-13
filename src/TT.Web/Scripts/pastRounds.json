@@ -687,6 +687,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 87,
+      "name": "Alpha 87 (Era of Down for Lucky Freedom)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

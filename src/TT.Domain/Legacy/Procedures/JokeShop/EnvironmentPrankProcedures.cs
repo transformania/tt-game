@@ -805,7 +805,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You stroll around the shop, but stub your toe on an ornate box that is just lying in one of the aisles.  As you bend down to inspect it the lid springs open and a Jack-in-the-Box launches out, straight towards you.  Coming nose-to-nose with that mindless painted face is utterly terrifying and without a moment's hesitation you turn and run out of the shop screaming!";
         }
 
-        internal static string MovePlayer(Player player, string destination, int maxSpacesToMove, Action<Player, string> callback = null)
+        internal static string MovePlayer(Player player, string destination, int maxSpacesToMove, Action<Player, string> callback = null, bool timestamp = true)
         {
             var start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             var end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
@@ -843,7 +843,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             var stoppingTile = pathTiles[spacesToMove - 1];
-            PlayerProcedures.MovePlayerMultipleLocations(player, stoppingTile, spacesToMove * costPerTile, callback: callback);
+            PlayerProcedures.MovePlayerMultipleLocations(player, stoppingTile, spacesToMove * costPerTile, timestamp: timestamp, callback: callback);
 
             return stoppingTile;
         }

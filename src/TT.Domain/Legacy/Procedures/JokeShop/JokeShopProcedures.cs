@@ -222,7 +222,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var playerRepo = new EFPlayerRepository();
             var candidates = playerRepo.Players
                 .Where(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
-                            p.OnlineActivityTimestamp >= cutoff &&
+                            p.LastActionTimestamp >= cutoff &&
                             p.Id != player.Id &&
                             p.Mobility == PvPStatics.MobilityFull &&
                             p.InDuel <= 0 &&

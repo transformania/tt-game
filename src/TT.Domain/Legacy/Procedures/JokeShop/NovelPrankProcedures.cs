@@ -85,7 +85,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
             var locationMessage = $"<b>Wanted:</b>  A reward is on offer to whoever turns <b>{player.GetFullName()}</b> into a <b>{details.Form?.FriendlyName}</b>!";
 
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var loc = locations[rand.Next(locations.Count())];
                 LocationLogProcedures.AddLocationLog(loc, locationMessage);

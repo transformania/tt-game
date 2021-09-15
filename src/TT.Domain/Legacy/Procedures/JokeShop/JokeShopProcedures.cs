@@ -348,15 +348,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             // Main pranks
             var roll = rand.Next(100);
 
-            if (roll < 62)  // 62%
+            if (roll < 61)  // 61%
             {
                 return MildPrank(player, rand);
             }
-            else if (roll < 89)  // 27%
+            else if (roll < 87)  // 26%
             {
                 return MischievousPrank(player, rand);
             }
-            else if (roll < 97)  // 8%
+            else if (roll < 97)  // 10%
             {
                 return MeanPrank(player, rand);
             }
@@ -1125,51 +1125,51 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var roll = rand.Next(100);
 
-            if (roll < 14)  // 14%
+            if (roll < 13)  // 13%
             {
                 return EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
             }
-            else if (roll < 29)  // 15%
+            else if (roll < 26)  // 13%
             {
                 return EnvironmentPrankProcedures.MeanLocationPrank(player, rand);
             }
-            else if (roll < 38)  // 9%
+            else if (roll < 35)  // 9%
             {
                 return EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player, rand);
             }
-            else if (roll < 50)  // 12%
+            else if (roll < 47)  // 12%
             {
                 return CharacterPrankProcedures.MeanTransformationPrank(player, rand);
             }
-            else if (roll < 63)  // 13%
+            else if (roll < 60)  // 13%
             {
                 return CharacterPrankProcedures.MeanEffectsPrank(player, rand);
             }
-            else if (roll < 67)  // 4%
+            else if (roll < 65)  // 5%
             {
                 return NovelPrankProcedures.SummonPsychopath(player, rand);
             }
-            else if (roll < 71)  // 4%
+            else if (roll < 69)  // 4%
             {
                 return NovelPrankProcedures.SummonDoppelganger(player, rand);
             }
-            else if (roll < 75)  // 4%
+            else if (roll < 73)  // 4%
             {
                 return NovelPrankProcedures.OpenPsychoNip(player);
             }
-            else if (roll < 80)  // 5%
+            else if (roll < 78)  // 5%
             {
                 return NovelPrankProcedures.ForceAttack(player, false, rand);
             }
-            else if (roll < 84)  // 4%
+            else if (roll < 82)  // 4%
             {
                 return NovelPrankProcedures.Incite(player, rand);
             }
-            else if (roll < 91)  // 7%
+            else if (roll < 89)  // 7%
             {
                 return NovelPrankProcedures.AwardChallenge(player, 20, 480, true, rand);
             }
-            else  // 9%
+            else  // 11%
             {
                 return NovelPrankProcedures.PlaceBountyOnPlayersHead(player, rand);
             }

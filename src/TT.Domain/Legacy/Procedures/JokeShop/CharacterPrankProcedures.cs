@@ -680,22 +680,21 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             // Avoid reverting form if player is in a mobile animate form or has somehow rerolled
             var canRemove = false;
-            if (player.Mobility != PvPStatics.MobilityFull || player.BotId == AIStatics.RerolledPlayerBotId)
-            {
-                canRemove = true;
-            }
-            else
-            {
-                IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
-                var moveActionPointDiscount = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => form.MoveActionPointDiscount).FirstOrDefault();
-                canRemove = moveActionPointDiscount < -5;
 
-                if (!canRemove)
+            // Allow for the possibility they may be a temporary psychopath rather than an active player
+            if (player.BotId != AIStatics.RerolledPlayerBotId)
+            {
+                if (player.Mobility != PvPStatics.MobilityFull)
                 {
-                    // Can also revert if player is an inanimate posing as animate
-                    // (don't think this can happen any more as mobile forms shouldn't have associated items)
-                    var inanimatePlayer = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = playerId });
-                    canRemove = inanimatePlayer != null;
+                    // Always undo inanimate/pet forms
+                    canRemove = true;
+                }
+                else
+                {
+                    // Only undo animate forms if they have limited mobility
+                    IDbStaticFormRepository formsRepo = new EFDbStaticFormRepository();
+                    var moveActionPointDiscount = formsRepo.DbStaticForms.Where(form => form.Id == player.FormSourceId).Select(form => form.MoveActionPointDiscount).FirstOrDefault();
+                    canRemove = moveActionPointDiscount < -5;
                 }
             }
 

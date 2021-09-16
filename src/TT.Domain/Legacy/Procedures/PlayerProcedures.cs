@@ -1373,9 +1373,6 @@ namespace TT.Domain.Procedures
 
         private static string GiveLevelingBonus(Player player, int level)
         {
-            player.MaxHealth += PvPStatics.LevelUpHealthMaxIncreaseBase + level*PvPStatics.LevelUpHealthMaxIncreasePerLevel;
-            player.MaxMana += PvPStatics.LevelUpManaMaxIncreaseBase + level*PvPStatics.LevelUpHealthMaxIncreasePerLevel;
-
             player.UnusedLevelUpPerks++;
             return "  <b><i>Congratulations, you have gained an experience level!</i></b>";
         }

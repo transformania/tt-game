@@ -64,7 +64,9 @@ namespace TT.Domain.Statics
                    id == MinibossFiendishFarmhandId ||
                    id == MinibossLazyLifeguardId ||
                    id == MinibossPlushAngelId ||
-                   id == MinibossExchangeProfessorId;
+                   id == MinibossExchangeProfessorId ||
+                   id == MinibossArchangelId ||
+                   id == MinibossArchdemonId;
         }
 
         public static bool IsAFriendly(int id)

@@ -69,20 +69,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Restart());
             }
 
-            ItemDetail itemMe = null;
-            if (me.Mobility != PvPStatics.MobilityFull)
-            {
-                itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
-
-                if (itemMe == null && me.BotId == AIStatics.ActivePlayerBotId &&
-                    !EffectProcedures.PlayerHasActiveEffect(me.Id, JokeShopProcedures.AUTO_RESTORE_EFFECT))
-                {
-                    // If an inanimate player is stuck without a corresponding item, restore them
-                    CharacterPrankProcedures.UndoTemporaryForm(me.Id);
-                    me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-                }
-            }
-
             if (Session["ContributionId"] == null)
             {
                 Session["ContributionId"] = -1;
@@ -161,6 +147,12 @@ namespace TT.Web.Controllers
             var openedUnreadMessageCount = DomainRegistry.Repository.FindSingle(new GetReadAndMarkedAsUnreadMessageCountByPlayer { OwnerId = me.Id });
             var hasNewMessages = unopenedMessageCount != 0;
             var unreadMessageCount = unopenedMessageCount + openedUnreadMessageCount;
+
+            ItemDetail itemMe = null;
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+            }
 
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)

@@ -796,32 +796,41 @@ namespace TT.Domain.Procedures
             return true;
         }
 
-        public static void InstantRestoreToBase(Player player)
+        public static void InstantRestoreToBase(Player player, bool restoreForm = true, bool restoreName = false)
         {
 
-           
-            DomainRegistry.Repository.Execute(new ChangeForm
+            if (restoreForm)
             {
-                PlayerId = player.Id,
-                FormSourceId = player.OriginalFormSourceId
-            });
-
-            if (player.Mobility != PvPStatics.MobilityFull)
-            {
-                var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
-
-                if (itemMe != null)
+                DomainRegistry.Repository.Execute(new ChangeForm
                 {
-                    // drop any runes embedded on the newCharacterViewModel-item, or return them to the former owner's inventory
-                    DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
-                    DomainRegistry.Repository.Execute(new DeleteItem { ItemId = itemMe.Id });
-                }
-            }
+                    PlayerId = player.Id,
+                    FormSourceId = player.OriginalFormSourceId
+                });
 
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
+                if (player.Mobility != PvPStatics.MobilityFull)
+                {
+                    var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
+
+                    if (itemMe != null)
+                    {
+                        // drop any runes embedded on the newCharacterViewModel-item, or return them to the former owner's inventory
+                        DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = itemMe.Id });
+                        DomainRegistry.Repository.Execute(new DeleteItem { ItemId = itemMe.Id });
+                    }
+                }
+
+                SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, player.OriginalFormSourceId);
+            }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+
+            if (restoreName)
+            {
+                newPlayer.FirstName = newPlayer.OriginalFirstName ?? newPlayer.FirstName;
+                newPlayer.LastName = newPlayer.OriginalLastName ?? newPlayer.LastName;
+            }
+
             newPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newPlayer));
             playerRepo.SavePlayer(newPlayer);
 

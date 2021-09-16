@@ -1484,7 +1484,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not already in their base form
-            if (me.FormSourceId == me.OriginalFormSourceId)
+            if (me.FormSourceId == me.OriginalFormSourceId && me.FirstName == me.OriginalFirstName && me.LastName == me.OriginalLastName)
             {
                 TempData["Error"] = "You are already in your base form!";
                 return RedirectToAction(MVC.PvP.Play());

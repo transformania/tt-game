@@ -738,6 +738,8 @@ namespace TT.Domain.Players.Entities
                 this.SelfRestoreEnergy.Reset();
                 this.FormSource = this.OriginalFormSource;
                 this.Gender = this.OriginalFormSource.Gender;
+                this.FirstName = this.OriginalFirstName ?? this.FirstName;
+                this.LastName = this.OriginalLastName ?? this.LastName;
                 var output = "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + OriginalFormSource.FriendlyName + "</b>!<span>";
                 this.AddLog(output, false);
                 return output;

@@ -3414,15 +3414,27 @@ namespace TT.Web.Controllers
 
             var owner = PlayerProcedures.GetPlayer(inanimateMe.Owner.Id);
 
-            // if player is owned by a vendor, assert that the player has been in their inventory for sufficient amount of time
             if (owner.BotId == AIStatics.LindellaBotId || owner.BotId == AIStatics.WuffieBotId)
             {
+                // if player is owned by a vendor, assert that the player has been in their inventory for sufficient amount of time
                 var hoursSinceSold = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSold).TotalHours);
 
                 if (hoursSinceSold < (PvPStatics.HoursBeforeInanimatesCanSlipFree / 2))
                 {
                     TempData["Error"] = "You cannot escape from your owner right now.";
                     TempData["SubError"] = "You must remain in the vendor's inventory for " + ((PvPStatics.HoursBeforeInanimatesCanSlipFree / 2) - hoursSinceSold) + " more hours before you can slip free.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+            else if (owner.BotId == AIStatics.SoulbinderBotId)
+            {
+                // if player is being looked after by the soulbinder, allow time for their true owner to collect them
+                var hoursSinceSold = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSold).TotalHours);
+
+                if (hoursSinceSold < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+                {
+                    TempData["Error"] = "Your soulbinding prevents you escaping right now.";
+                    TempData["SubError"] = "You must remain in the soulbinder's inventory for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceSold) + " more hours before you can slip free.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
             }

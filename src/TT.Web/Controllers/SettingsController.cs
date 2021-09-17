@@ -948,39 +948,25 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // Restore Form
-            if (option == 0 || option == 2)
+            var restoreForm = (option == 0 || option == 2);
+            var restoreName = (option == 1 || option == 2);
+
+            var inBaseForm = me.FormSourceId == me.OriginalFormSourceId;
+            var hasOriginalName = me.IsUsingOriginalName();
+
+            if (restoreForm && inBaseForm && (!restoreName || hasOriginalName))
             {
-                if (me.FormSourceId == me.OriginalFormSourceId)
-                {
-                    TempData["Error"] = "You are already in your original form.";
-                    return RedirectToAction(MVC.PvP.Play());
-                }
-
-                PlayerProcedures.InstantRestoreToBase(me);
+                TempData["Error"] = "You are already in your original form.";
+                return RedirectToAction(MVC.PvP.Play());
             }
-            
-            //Restore name
-            if (option == 1 || option == 2)
+
+            if (restoreName && hasOriginalName && !restoreForm)
             {
-                // Start the original naming process.
-                IPlayerRepository playerRepo = new EFPlayerRepository();
-
-                var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == me.MembershipId);
-
-                // Check for empty field
-                if (player.OriginalFirstName == null || player.OriginalLastName == null)
-                {
-                    TempData["Error"] = "You can't seem to recall your name.";
-                    return RedirectToAction(MVC.PvP.Play());
-                }
-
-                // Revert the player to their original self.
-                player.FirstName = player.OriginalFirstName;
-                player.LastName = player.OriginalLastName;
-
-                playerRepo.SavePlayer(player);
+                TempData["Error"] = "This is the only name you can remember having.";
+                return RedirectToAction(MVC.PvP.Play());
             }
+
+            PlayerProcedures.InstantRestoreToBase(me, restoreForm: restoreForm, restoreName: restoreName);
 
             TempData["Result"] = "You have chosen to restore parts of yourself to normal.";
             return RedirectToAction(MVC.PvP.Play());

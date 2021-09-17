@@ -760,7 +760,7 @@ namespace TT.Domain.Procedures
                 if (itemPlus.dbItem.ItemSourceId == ItemStatics.SelfRestoreItemSourceId)
                 {
 
-                    if (owner.FormSourceId == owner.OriginalFormSourceId)
+                    if (owner.FormSourceId == owner.OriginalFormSourceId && owner.FirstName == owner.OriginalFirstName && owner.LastName == owner.OriginalLastName)
                     {
                         return (false,"You could use this lotion, but as you are already in your base form it wouldn't do you any good.");
                     }
@@ -777,7 +777,7 @@ namespace TT.Domain.Procedures
                         return (false, "You must finish your quest before you can use this item.");
                     }
 
-                    PlayerProcedures.InstantRestoreToBase(owner);
+                    PlayerProcedures.InstantRestoreToBase(owner, restoreForm: true, restoreName: true);
                     TFEnergyProcedures.CleanseTFEnergies(owner, 25);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");

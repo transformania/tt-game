@@ -24,7 +24,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var activePlayers = playerRepo.Players
-                                          .Where(p => p.OnlineActivityTimestamp >= cutoff &&
+                                          .Where(p => p.LastActionTimestamp >= cutoff &&
                                                       p.Mobility == PvPStatics.MobilityFull &&
                                                       p.InDuel <= 0 &&
                                                       p.InQuest <= 0 &&
@@ -57,7 +57,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 foreach (var sheep in mcSheep)
                 {
                     var sheepPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == sheep.Id);
-                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(sheepPlayer, flockToLocation, 15, timestamp: false, callback: (p, loc) =>
                     {
                         if (rand.Next(3) == 0)
                         {
@@ -138,7 +138,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var catPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == catId);
 
                     // Move dog
-                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(dogPlayer, catLoc, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(dogPlayer, catLoc, 15, timestamp: false, callback: (p, loc) =>
                     {
                         var roll = rand.Next(4);
                         if (roll == 0)
@@ -172,7 +172,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 treeLoc = "forest_ancestor_tree";
                             }
 
-                            var catStoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, treeLoc, 15, (p, loc) =>
+                            var catStoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, treeLoc, 15, timestamp: false, callback: (p, loc) =>
                             {
                                 var roll = rand.Next(3);
                                 if (roll == 0)
@@ -264,7 +264,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var rodentPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == rodentId);
 
                     // Move cat
-                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, rodentLoc, 15, (p, loc) =>
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(catPlayer, rodentLoc, 15, timestamp: false, callback: (p, loc) =>
                     {
                         var roll = rand.Next(4);
                         if (roll == 0)
@@ -317,7 +317,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         nextLoc = LocationsStatics.GetRandomLocation_InRegion(cleaningContracts[rand.Next(cleaningContracts.Count())]);
                     }
 
-                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(maidPlayer, nextLoc, 20);
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(maidPlayer, nextLoc, 20, timestamp: false);
 
                     if (stoppedAt == nextLoc || maidPlayer.dbLocationName == nextLoc)
                     {
@@ -386,7 +386,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                     // Check whether we can haunt the current tile
                     // An enhancement would be to allow ghosts to move through walls
-                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(ghostPlayer, nextLoc, 20);
+                    var stoppedAt = EnvironmentPrankProcedures.MovePlayer(ghostPlayer, nextLoc, 20, timestamp: false);
 
                     var canHaunt = stoppedAt == nextLoc || ghostPlayer.dbLocationName == nextLoc;
 
@@ -402,7 +402,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                         var candidates = playerRepo.Players
                             .Where(p => p.dbLocationName == nextLoc &&
-                                        p.OnlineActivityTimestamp >= cutoff &&
+                                        p.LastActionTimestamp >= cutoff &&
                                         p.Id != ghostPlayer.Id &&
                                         p.Mobility == PvPStatics.MobilityFull &&
                                         p.InDuel <= 0 &&

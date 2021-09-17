@@ -335,30 +335,42 @@ namespace TT.Domain.Procedures
                     if (energyAccumulated > energyRequired * 3M)
                     {
                         healthDamage = 60 * modifiedTFEnergyPercent;
+
+                        if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                        {
+                            healthDamage *= 2;
+                        }
+
                         output.VictimLog += $"<br />You collapse to your knees and your vision wavers as transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
                         output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
                     }
                     else if (energyAccumulated > energyRequired * 2M)
                     {
                         healthDamage = 30 * modifiedTFEnergyPercent;
+
+                        if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                        {
+                            healthDamage *= 2;
+                        }
+
                         output.VictimLog += $"<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
-                        output.AttackerLog += $"<br />Your victim has an extremely high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
+                        output.AttackerLog += $"<br />Your victim has a very high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
                     }
                     else if (energyAccumulated > energyRequired * 1M)
                     {
                         healthDamage = 15 * modifiedTFEnergyPercent;
+
+                        if (attacker.BotId == AIStatics.ActivePlayerBotId)
+                        {
+                            healthDamage *= 2;
+                        }
+
                         output.VictimLog += $"<br />You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra {healthDamage:#} willpower damage.";
                         output.AttackerLog += $"<br />Your victim has a high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
                     }
 
                     if (healthDamage > 0)
                     {
-                        // Make players deal full damage with TFEnergy buildup
-                        if (attacker.BotId == AIStatics.ActivePlayerBotId)
-                        {
-                            healthDamage *= 2;
-                        }
-
                         dbVictim.Health -= healthDamage;
                         dbVictim.NormalizeHealthMana();
                         playerRepo.SavePlayer(dbVictim);

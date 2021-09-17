@@ -204,12 +204,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (Forms(f => f.FormSourceId == player.FormSourceId && f.Category == LIMITED_MOBILITY).Any())
             {
-                message += "<br />Your current form has limited mobility.  You can return to base form using Self Restore from the My Player menu or by using a Classic Me Restorative Lotion.";
+                message += "<br />Your current form has limited mobility.  You can return to base form using Self Restore from the My Player menu or by using a Classic Me! Restorative Lotion.";
             }
 
             if (player.FirstName != player.OriginalFirstName || player.LastName != player.OriginalLastName)
             {
-                message += "<br />Your name was changed.  You can restore your original name using Self Restore from the My Player menu or by using a Classic Me Restorative Lotion.";
+                message += "<br />Your name was changed.  You can restore your original name using Self Restore from the My Player menu or by using a Classic Me! Restorative Lotion.";
             }
 
             return message;

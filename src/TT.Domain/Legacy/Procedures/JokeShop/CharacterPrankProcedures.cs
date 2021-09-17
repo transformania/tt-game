@@ -718,7 +718,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            // Use chaos restore.  Should delete item & reset skills.  Self-restore, struggle restore and classic me do similar
+            // Use chaos restore.  Should delete item & reset skills.  Self-restore, struggle restore and Classic Me! Restorative Lotion do similar
             PlayerProcedures.InstantRestoreToBase(player);
 
             // No Back On Your Feet, but clear any XP ready for next inanimation - unless Chaos, where people like to lock fast
@@ -735,7 +735,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You returned to base form.", false);
 
-            return "You accidentally spill some Classic Me restorative lotion and revert to your base form, just as you remember it!  Right?";
+            return "You accidentally spill some Classic Me! Restorative Lotion and revert to your base form, just as you remember it!  Right?";
         }
 
         private static string ChangeBaseForm(Player player, Random rand = null)

@@ -103,7 +103,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             var baseStrength = Math.Min(Math.Max(0, (player.Level - 1) / 3), 3);
-            var strength = baseStrength + Math.Max(0, rand.Next(5) - 1);
+            var strength = baseStrength + Math.Max(0, rand.Next(6) - 1);
             var prefix = "";
             int level;
             int perk;
@@ -158,7 +158,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 level = 11;
                 prefix = "Ruthless";
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
-                extraPerk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
+                extraPerk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
             else
@@ -167,7 +167,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 level = 13;
                 prefix = "Eternal";
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
-                extraPerk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
+                extraPerk = AIProcedures.PsychopathicForLevelFiveEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
 
@@ -235,9 +235,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 EffectProcedures.GivePerkToPlayer(extraPerk.Value, botId);
             }
 
-            // Give a rune
-            var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength * 2 + 1, Random = rand });
-            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+            // Give runes
+            var quantity = rand.Next(1, 3);
+
+            for (var c = 0; c < quantity; c++)
+            {
+                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength * 2 + 1, Random = rand });
+                DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+            }
 
             // Balance stats
             var psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
@@ -298,17 +303,53 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             foreach (var sourcePerk in sourcePerks)
             {
                 var effect = sourcePerk.dbEffect;
-                if (!effectsToExclude.Contains(effect.EffectSourceId))
+                if (!effectsToExclude.Contains(effect.EffectSourceId) && effect.Duration > 0)
                 {
                     EffectProcedures.GivePerkToPlayer(effect.EffectSourceId, botId, effect.Duration, effect.Cooldown);
                 }
             }
 
-            // Give a rune (round level down to odd)
+            // Approximately mirror the buffs the player gets from their items.
+            // (Actually equipping equivalent items and runes could easily be abused so use perks)
+            var itemBuffs = ItemProcedures.GetPlayerBuffs(player).ItemBuffs();
+
+            itemBuffs += 30;  // level 1 psycho effect gives -30 stats
+            if (itemBuffs >= 315)
+            {
+                itemBuffs -= 315;
+                EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelNineEffectSourceId, botId);
+            }
+            if (itemBuffs >= 225)
+            {
+                itemBuffs -= 225;
+                EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelSevenEffectSourceId, botId);
+            }
+            if (itemBuffs >= 135)
+            {
+                itemBuffs -= 135;
+                EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelFiveEffectSourceId, botId);
+            }
+            if (itemBuffs >= 70)
+            {
+                itemBuffs -= 70;
+                EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelThreeEffectSourceId, botId);
+            }
+            if (itemBuffs < 30)
+            {
+                itemBuffs += 30;
+                EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelOneEffectSourceId, botId);
+            }
+
+            // Give runes (round level down to odd)
             var runeLevel = cmd.Level - 1;
             runeLevel = runeLevel - (runeLevel % 2) + 1;
-            var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
-            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+            var quantity = rand.Next(1, 3);
+
+            for (var c = 0; c < quantity; c++)
+            {
+                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
+                DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+            }
 
             // Balance stats
             var psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == botId);

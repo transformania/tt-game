@@ -142,7 +142,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            return GivePerkToPlayer(effectSourceId, dbPlayer);
+            return GivePerkToPlayer(effectSourceId, dbPlayer, Duration, Cooldown);
         }
 
         public static string GivePerkToPlayer(int effectSourceId, Player player, int? Duration = null, int? Cooldown = null)

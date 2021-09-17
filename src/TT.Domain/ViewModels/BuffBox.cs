@@ -165,6 +165,13 @@ namespace TT.Domain.ViewModels
         public float Luck() { return FromItems_Luck + FromForm_Luck + FromEffects_Luck; }
         public float Chaos_Order() { return FromItems_Chaos_Order + FromForm_Chaos_Order + FromEffects_Chaos_Order; }
 
+        public float ItemBuffs()
+        {
+            return FromItems_Discipline + FromItems_Perception + FromItems_Charisma + FromItems_Submission_Dominance +
+                FromItems_Fortitude + FromItems_Agility + FromItems_Allure + FromItems_Corruption_Purity + FromItems_Magicka +
+                FromItems_Succour + FromItems_Luck + FromItems_Chaos_Order;
+        }
+
         // new system
         public decimal HealthBonusPercent()
         {

@@ -17,19 +17,23 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         public const string LIMITED_MOBILITY = "immobile";
 
         // IDs of some form sources grouped by theme
-        public static readonly int[] BIMBOS = { 19, 118, 161, 232, 233, 318, 327, 454, 457, 470, 503, 570, 644, 698, 702, 725, 759, 785, 944, 951, 1003, 1093, 1156, 1203 };
-        public static readonly int[] CATS_AND_NEKOS = { 39, 100, 385, 434, 504, 575, 668, 673, 681, 703, 713, 733, 752, 761, 806, 849, 851, 855, 987, 991, 1034, 1060, 1098, 1105, 1188, 1202 };
-        public static readonly int[] DOGS = { 34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1108, 1123, 1187 };
+        public static readonly int[] BIMBOS = { 19, 118, 161, 318, 327, 454, 457, 470, 503, 570, 644, 698, 702, 725, 785, 951, 1003, 1093 };
+        public static readonly int[] CATS_AND_NEKOS = { 39, 100, 385, 434, 504, 668, 673, 681, 703, 713, 752, 806, 849, 851, 855, 987, 991, 1060, 1098, 1105, 1188, 1215, 1245, 1247, 1317 };
+        public static readonly int[] CHRISTMAS_FORMS = { 741, 1248, 1297 };
+        public static readonly int[] DOGS = { 34, 359, 552, 667, 911, 912, 995, 1043, 1074, 1123, 1249 };
         public static readonly int[] DRONES = { 715, 930, 951, 1039, 1050 };
-        public static readonly int[] FAIRIES = { 210, 257, 389, 531, 541, 575, 582, 590, 639, 701, 710, 771, 773, 791, 833, 846, 895, 1034, 1093, 1100, 1110, 1205 };
-        public static readonly int[] GHOSTS = { 300, 456, 633, 1153, 1210 };
-        public static readonly int[] MAIDS = { 65, 205, 305, 348, 457, 499, 514, 591, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1001, 1040, 1041, 1045, 1058, 1072, 1073, 1076, 1110, 1117, 1188, 1193, 1203, 1207 };
+        public static readonly int[] EASTER_FORMS = { 27, 247, 560, 826, 857, 903, 970, 1102 };
+        public static readonly int[] FAIRIES = { 210, 257, 389, 531, 582, 639, 701, 771, 773, 833, 846, 895, 1034, 1093, 1100 };
+        public static readonly int[] GHOSTS = { 300, 633, 1153 };
+        public static readonly int[] HALLOWEEN_FORMS = { 94, 95, 190, 246, 300, 527, 633, 650, 691, 822, 863, 882, 1153 };
+        public static readonly int[] MAIDS = { 65, 205, 348, 457, 499, 514, 591, 652, 662, 673, 848, 869, 875, 901, 921, 958, 991, 1045, 1072, 1246 };
         public static readonly int[] MANA_FORMS = { 834, 1149 };
-        public static readonly int[] MISCHIEVOUS_FORMS = { 215, 221, 438 };
-        public static readonly int[] RODENTS = { 70, 143, 205, 271, 278, 279, 317, 318, 319, 522, 772, 1077 };
-        public static readonly int[] SHEEP = { 204, 950, 1022, 1035, 1198 };
+        public static readonly int[] MISCHIEVOUS_FORMS = { 215, 221, 438, 1238 };
+        public static readonly int[] RODENTS = { 70, 143, 205, 271, 317, 318, 319, 522, 772, 1237 };
+        public static readonly int[] ROMANTIC_FORMS = { 315, 451, 933, 943 };
+        public static readonly int[] SHEEP = { 204, 950, 1035 };
         public static readonly int[] STRIPPERS = { 153, 719, 880 };
-        public static readonly int[] THIEVES = { 143, 149, 271, 278, 279, 849 };
+        public static readonly int[] THIEVES = { 143, 149, 271, 849 };
         public static readonly int[] TREES = { 50, 741 };
 
         // Effect sources supporting the Joke Shop mechanics

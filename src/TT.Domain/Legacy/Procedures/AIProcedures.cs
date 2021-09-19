@@ -12,6 +12,7 @@ using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
+using TT.Domain.ViewModels;
 using TT.Domain.World.DTOs;
 
 namespace TT.Domain.Procedures
@@ -313,20 +314,18 @@ namespace TT.Domain.Procedures
 
 
                     var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
-                    var skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s =>
-                        s.dbSkill.SkillSourceId != PvPStatics.Spell_WeakenId && s.StaticSkill.ExclusiveToFormSourceId == null &&
-                        s.StaticSkill.ExclusiveToItemSourceId == null);
 
                     // the bot has an attack target, so go chase it
                     if (directive.State == "attack")
                     {
                         var myTarget = PlayerProcedures.GetPlayer(directive.TargetPlayerId);
+                        var (mySkills, weakenSkill, inanimateSkill) = GetPsychopathSkills(bot);
 
                         // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
                         if (PlayerProcedures.PlayerIsOffline(myTarget) ||
                             myTarget.Mobility != PvPStatics.MobilityFull ||
-                            skill == null ||
-                            myTarget.FormSourceId == skill.StaticSkill.FormSourceId ||
+                            mySkills.IsEmpty() || inanimateSkill == null ||
+                            myTarget.FormSourceId == inanimateSkill.StaticSkill.FormSourceId ||
                             myTarget.IsInDungeon() ||
                             myTarget.InDuel > 0 ||
                             myTarget.InQuest > 0)
@@ -342,21 +341,7 @@ namespace TT.Domain.Procedures
                             {
                                 if (botbuffs.MoveActionPointDiscount() > -100 && CanMove(worldDetail, myTarget))
                                 {
-                                    var maxSpaces = 5;
-
-                                    if (bot.FirstName.Contains("Evil "))
-                                    {
-                                        maxSpaces = 8;
-                                    }
-                                    else if (bot.FirstName.Contains("Ruthless "))
-                                    {
-                                        maxSpaces = 6;
-                                    }
-                                    else if (bot.FirstName.Contains("Eternal "))
-                                    {
-                                        maxSpaces = 7;
-                                    }
-
+                                    var maxSpaces = NumPsychopathMoveSpaces(bot);
                                     var newplace = MoveTo(bot, myTarget.dbLocationName, maxSpaces);
                                     bot.dbLocationName = newplace;
                                 }
@@ -374,6 +359,7 @@ namespace TT.Domain.Procedures
                                 var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
                                 for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
                                 {
+                                    var skill = SelectPsychopathSkill(myTarget, mySkills, weakenSkill, rand);
                                     AttackProcedures.Attack(bot, myTarget, skill);
                                 }
 
@@ -407,10 +393,15 @@ namespace TT.Domain.Procedures
                             AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
                             playerRepo.SavePlayer(bot);
 
-                            var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
-                            for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
+                            var (mySkills, weakenSkill, inanimateSkill) = GetPsychopathSkills(bot);
+                            if (!mySkills.IsEmpty())
                             {
-                                AttackProcedures.Attack(bot, victim, skill);
+                                var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
+                                for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
+                                {
+                                    var skill = SelectPsychopathSkill(victim, mySkills, weakenSkill, rand);
+                                    AttackProcedures.Attack(bot, victim, skill);
+                                }
                             }
                         }
                     }
@@ -428,6 +419,26 @@ namespace TT.Domain.Procedures
 
         }
 
+        private static int NumPsychopathMoveSpaces(Player bot)
+        {
+            var maxSpaces = 5;
+
+            if (bot.FirstName.Contains("Evil "))
+            {
+                maxSpaces = 8;
+            }
+            else if (bot.FirstName.Contains("Ruthless "))
+            {
+                maxSpaces = 6;
+            }
+            else if (bot.FirstName.Contains("Eternal "))
+            {
+                maxSpaces = 7;
+            }
+
+            return maxSpaces;
+        }
+
         public static void CheckAICounterattackRoutine(Player personAttacking, Player bot)
         {
             // person attacking is a boss and not a psychopath, so do nothing
@@ -442,46 +453,17 @@ namespace TT.Domain.Procedures
                 if (personAttacking.BotId == AIStatics.ActivePlayerBotId)
                 {
                     var rand = new Random();
-                    var numAttacks = 0;
+                    var numAttacks = NumPsychopathCounterAttacks(bot, rand);
 
-                    if (bot.FirstName.Contains("Loathful "))
-                    {
-                        numAttacks = 1;
-                    }
-                    else if (bot.FirstName.Contains("Soulless ") || bot.FirstName.Contains("Evil "))
-                    {
-                        numAttacks = 2;
-                    }
-                    else if (bot.FirstName.Contains("Ruthless "))
-                    {
-                        numAttacks = 3;
-                    }
-                    else if (bot.FirstName.Contains("Eternal "))
-                    {
-                        numAttacks = rand.Next(3, 6);
-                    }
+                    var (mySkills, weakenSkill, _) = GetPsychopathSkills(bot);
 
-
-                    var myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
-
-                    for (int i = 0; i < numAttacks; i++)
+                    if (!mySkills.IsEmpty())
                     {
-                        var selectedSkill = myskills.ElementAt(rand.Next(myskills.Count()));
-
-                        // If attacker is already in target form, weaken them
-                        if (selectedSkill.StaticSkill.FormSourceId == personAttacking.FormSourceId && selectedSkill.MobilityType == personAttacking.Mobility)
+                        for (int i = 0; i < numAttacks; i++)
                         {
-                            selectedSkill = myskills.FirstOrDefault(s => s.StaticSkill.Id == PvPStatics.Spell_WeakenId) ?? selectedSkill;
+                            var skill = SelectPsychopathSkill(personAttacking, mySkills, weakenSkill, rand);
+                            AttackProcedures.Attack(bot, personAttacking, skill);
                         }
-
-                        // If we're trying to weaken a player with no WP when they attacked, switch to spell not matching the player's current form
-                        if (personAttacking.Health == 0 && selectedSkill.StaticSkill.Id == PvPStatics.Spell_WeakenId)
-                        {
-                            selectedSkill = myskills.FirstOrDefault(s => s.StaticSkill.Id != PvPStatics.Spell_WeakenId &&
-                                                                         s.StaticSkill.FormSourceId == personAttacking.FormSourceId) ?? selectedSkill;
-                        }
-
-                        AttackProcedures.Attack(bot, personAttacking, selectedSkill);
                     }
                 }
 
@@ -564,6 +546,87 @@ namespace TT.Domain.Procedures
             }
 
 
+        }
+
+        private static int NumPsychopathCounterAttacks(Player bot, Random rand = null)
+        {
+            rand = rand ?? new Random();
+            var numAttacks = 0;
+
+            if (bot.FirstName.Contains("Loathful "))
+            {
+                numAttacks = 1;
+            }
+            else if (bot.FirstName.Contains("Soulless ") || bot.FirstName.Contains("Evil "))
+            {
+                numAttacks = 2;
+            }
+            else if (bot.FirstName.Contains("Ruthless "))
+            {
+                numAttacks = 3;
+            }
+            else if (bot.FirstName.Contains("Eternal "))
+            {
+                numAttacks = rand.Next(3, 6);
+            }
+
+            return numAttacks;
+        }
+
+        private static SkillViewModel SelectPsychopathSkill(Player victim, IEnumerable<SkillViewModel> psychoSkills, SkillViewModel weakenSkill, Random rand = null)
+        {
+            rand = rand ?? new Random();
+
+            var selectedSkill = psychoSkills.ElementAt(rand.Next(psychoSkills.Count()));
+
+            // If victim is already in target form, weaken them
+            if (selectedSkill.StaticSkill.FormSourceId == victim.FormSourceId && selectedSkill.MobilityType == victim.Mobility)
+            {
+                selectedSkill = weakenSkill ?? selectedSkill;
+            }
+
+            // If we're trying to weaken a player with no WP, switch to spell not matching the player's current form
+            if (victim.Health == 0 && selectedSkill.StaticSkill.Id == PvPStatics.Spell_WeakenId)
+            {
+                selectedSkill = psychoSkills.FirstOrDefault(s => s.StaticSkill.Id != PvPStatics.Spell_WeakenId &&
+                                                                 s.StaticSkill.FormSourceId != victim.FormSourceId) ?? selectedSkill;
+            }
+
+            return selectedSkill;
+        }
+
+        private static (IEnumerable<SkillViewModel> selectedSkills, SkillViewModel weakenSkill, SkillViewModel inanimateSkill) GetPsychopathSkills(Player bot)
+        {
+            var allMySkills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).Where(s =>
+                s.StaticSkill.ExclusiveToFormSourceId == null && s.StaticSkill.ExclusiveToItemSourceId == null);
+            var selectedSkills = new List<SkillViewModel>();
+            SkillViewModel weakenSkill = null;
+
+            var inanimateSkill = allMySkills.FirstOrDefault(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet);
+            if (inanimateSkill != null)
+            {
+                selectedSkills.Add(inanimateSkill);
+            }
+
+            if (bot.FirstName.Contains("Evil ") || bot.FirstName.Contains("Ruthless ") || bot.FirstName.Contains("Eternal "))
+            {
+                weakenSkill = allMySkills.FirstOrDefault( s => s.StaticSkill.Id == PvPStatics.Spell_WeakenId);
+                if (weakenSkill != null)
+                {
+                    selectedSkills.Add(weakenSkill);
+                }
+            }
+
+            if (bot.FirstName.Contains("Eternal "))
+            {
+                var animateSkill = allMySkills.FirstOrDefault(s => s.MobilityType == PvPStatics.MobilityFull);
+                if (animateSkill != null)
+                {
+                    selectedSkills.Add(animateSkill);
+                }
+            }
+
+            return (selectedSkills, weakenSkill, inanimateSkill);
         }
 
         public static string MoveTo(Player bot, string locationDbName, int distance, Action<Player, string> playerEnteredTile = null)

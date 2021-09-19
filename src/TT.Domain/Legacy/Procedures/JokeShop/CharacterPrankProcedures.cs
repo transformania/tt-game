@@ -740,20 +740,45 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         private static string ChangeBaseForm(Player player, Random rand = null)
         {
-            // Currently only set base to a fool form in April
-            if (DateTime.UtcNow.Month != 4)
-            {
-                return null;
-            }
+            var availableForms = Array.Empty<int>();
+            var flavorText = "";
 
-            var availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
+            var month = DateTime.UtcNow.Month;
+            var day = DateTime.UtcNow.Day;
+
+            if (month == 2)  // February: Valentines
+            {
+                availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.ROMANTIC_FORMS).ToArray();
+                flavorText = "A deep and intense loving warmth flushes through you.  Your true inner self is trying to get out!";
+            }
+            else if (month == 4 && day < 15)  // April: Fools
+            {
+                availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
+                flavorText = "You feel something changing deep within you, but you're not sure what.  You suspect somebody's playing a trick on you, and you're not going to find out what it is just yet!";
+            }
+            else if ((month == 3 && day > 15) || month == 4)  // March-April: Easter
+            {
+                availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.EASTER_FORMS).ToArray();
+                flavorText = "You find yourself with a smile on your face and a sudden and unexpected spring in your step.  Why is that?  You're not really sure, but it's a glorious day outside, so why not go out and enjoy it?  You'll find out why you have all that youthful energy soon enough!";
+            }
+            else if ((month == 10 && day > 15) || (month == 11 && day < 15))  // October-November: Halloween
+            {
+                availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.HALLOWEEN_FORMS).ToArray();
+                flavorText = "A sudden icy chill causes you to freeze where you stand.  It's not so much the sense of somebody walking over your grave as an otherworldly spirit floating through you!";
+            }
+            else if (month == 12)  // December: Christmas
+            {
+                availableForms = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CHRISTMAS_FORMS).ToArray();
+                flavorText = "You look at an item on the shelf, pondering whether or not to buy it.  \"Don't be such a Scrooge!\" shouts the shopkeeper.  And you know what?  They're right!  Good will to all forms!  You rummage around to try and find the money you need.  Show this place some good spirit and it might return the favor.  After all, you don't want to end up out on the street again, do you?";
+            }
 
             if (availableForms.IsEmpty())
             {
                 return null;
             }
 
-            return ChangeBaseForm(player, availableForms, rand);
+            var message = ChangeBaseForm(player, availableForms, rand);
+            return flavorText.IsEmpty() ? message : flavorText;
         }
 
         private static string ChangeBaseForm(Player player, int[] availableForms, Random rand = null)
@@ -768,7 +793,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form was changed.", false);
 
-            return "You feel something changing deep within you, but you're not sure what.  You suspect somebody's playing a trick on you, and you're not going to find out what it is just yet!";
+            return "Your base form has been changed.";
         }
 
         public static string SetBaseFormToRegular(Player player)

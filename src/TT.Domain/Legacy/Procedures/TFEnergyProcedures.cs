@@ -604,26 +604,38 @@ namespace TT.Domain.Procedures
             TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfFormSourceId(victim.Id, targetForm.Id);
 
             // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
-            if (attacker.BotId == AIStatics.PsychopathBotId && !EffectProcedures.PlayerHasActiveEffect(attacker.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
+            if (attacker.BotId == AIStatics.PsychopathBotId)
             {
                 SkillProcedures.DeletePlayerSkill(attacker, skillSourceId);
 
-                // give this bot a random skill
-                var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
-                var rand = new Random();
-                double max = eligibleSkills.Count();
-                var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
-
-                var skillToLearn = eligibleSkills.ElementAt(randIndex);
-                SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn.Id);
-
-                // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
-                var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id)
-                     .Where(item => item.Item.ItemType != PvPStatics.ItemType_Rune);
-
-                foreach (var i in psychoItems)
+                if (targetForm.MobilityType == PvPStatics.MobilityInanimate || targetForm.MobilityType == PvPStatics.MobilityPet)
                 {
-                    ItemProcedures.EquipItem(i.dbItem.Id, true);
+                    if (attacker.MembershipId.IsNullOrEmpty())
+                    {
+                        // give this bot a random replacement inanimate/pet skill
+                        var eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
+                        var rand = new Random();
+                        var skillToLearn = eligibleSkills.ElementAt(rand.Next(eligibleSkills.Count));
+                        SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn.Id);
+                    }
+                    else
+                    {
+                        // Bot is being controlled by a player - re-add the original skill so only the ordering of skills changes
+                        SkillProcedures.GiveSkillToPlayer(attacker.Id, skillSourceId);
+                    }
+                }
+
+                if (!EffectProcedures.PlayerHasActiveEffect(attacker.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
+                {
+                    // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
+                    // Do not apply to temporary psychos to avoid circumventing inventory rules
+                    var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id)
+                         .Where(item => item.Item.ItemType != PvPStatics.ItemType_Rune);
+
+                    foreach (var i in psychoItems)
+                    {
+                        ItemProcedures.EquipItem(i.dbItem.Id, true);
+                    }
                 }
 
             }

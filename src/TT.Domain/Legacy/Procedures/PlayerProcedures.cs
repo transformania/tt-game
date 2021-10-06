@@ -1456,7 +1456,7 @@ namespace TT.Domain.Procedures
         public static IEnumerable<Player> GetPlayersWithPartialName(string partialname)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => (p.FirstName + " " + p.LastName).Contains(partialname)).Take(25).ToList();
+            return playerRepo.Players.Where(p => (p.FirstName + " " + p.LastName).Contains(partialname) || (p.OriginalFirstName + " " + p.OriginalLastName).Contains(partialname)).Take(25).ToList();
         }
 
         public static void FlagPlayerForSuspicousActivity(int playerId)

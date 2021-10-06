@@ -142,12 +142,18 @@
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <center>
+                @{
+                    if (!Model.PlayerForm.Player.IsUsingOriginalName())
+                    {
+                        <p>(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
+                    }
+                }
                 @HtmlHelpers.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
                     if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-                    {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-                else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-                {<p class="bad">Offline</p>}
+                        {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
+                    else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                        {<p class="bad">Offline</p>}
                 }
                 <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br>
                 <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>

@@ -67,6 +67,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         // Resources allow us to avoid setting an impossible challenge, e.g. be in two form at the same time
         const String RESOURCE_AP = "action points";
         const String RESOURCE_BRING_PLAYERS = "bring players";
+        const String RESOURCE_BRING_PLAYERS_FROM_COVEN = "bring players from coven";
         const String RESOURCE_COMBAT_TIMER = "combat timer";
         const String RESOURCE_CONSUMABLE_USE = "consumable use";
         const String RESOURCE_COVENANT = "covenant";
@@ -1503,7 +1504,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var difficulty = numPlayers * (numPlayers - 1) + 2;
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
-                challenge.ResourceUsed(RESOURCE_BRING_PLAYERS) + numPlayers < 4)
+                challenge.ResourceUsed(RESOURCE_BRING_PLAYERS) + numPlayers < 4 &&
+                challenge.ResourceUsed(RESOURCE_BRING_PLAYERS_FROM_COVEN) == 0)
             {
                 // Either player must be in a coven or they must have that already as part of this challenge
                 if (challenge.ResourceUsed(RESOURCE_COVENANT) == 0)
@@ -1524,6 +1526,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         p => playersFromCovenBrought(p) >= numPlayers,
                         p => (playersFromCovenBrought(p), numPlayers));
                 AddResourceContribution(challenge, r => (r == RESOURCE_BRING_PLAYERS) ? numPlayers : 0);
+                AddResourceContribution(challenge, r => (r == RESOURCE_BRING_PLAYERS_FROM_COVEN) ? numPlayers : 0);
 
                 challenge.Difficulty += difficulty;
             }

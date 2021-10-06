@@ -15,7 +15,7 @@ namespace TT.Domain.Procedures
        public static string AttackSequence(Player attacker, Player victim, SkillViewModel skillBeingUsed, bool timestamp = true)
         {
             // Actual attack
-            var message = AttackProcedures.Attack(attacker, victim, skillBeingUsed, timestamp);
+            (_, var message) = AttackProcedures.Attack(attacker, victim, skillBeingUsed, timestamp);
 
             // record into statistics
             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
@@ -60,7 +60,7 @@ namespace TT.Domain.Procedures
             return message;
         }
 
-        public static string Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed, bool timestamp = true)
+        public static (bool, string) Attack(Player attackingPlayer, Player attackedPlayer, SkillViewModel skillBeingUsed, bool timestamp = true)
         {
 
             var result = "";
@@ -73,9 +73,10 @@ namespace TT.Domain.Procedures
                 victim.GameMode == (int)GameModeStatics.GameModes.Invisible ||
                 attacker.GameMode == (int)GameModeStatics.GameModes.Invisible)
             {
-                return "";
+                return (false, "");
             }
 
+            var complete = false;
             var logs = new LogBox();
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
@@ -264,7 +265,8 @@ namespace TT.Domain.Procedures
 
                         var totalTFEnergyModifier = criticalModifier * tfEnergyDamageModifierFromBonuses;
 
-                        var tfEnergyResult = TFEnergyProcedures.AddTFEnergyToPlayer(victim, attacker, skillBeingUsed, totalTFEnergyModifier, initialVictimHealth);
+                        LogBox tfEnergyResult;
+                        (complete, tfEnergyResult) = TFEnergyProcedures.AddTFEnergyToPlayer(victim, attacker, skillBeingUsed, totalTFEnergyModifier, initialVictimHealth);
                         logs.Add(tfEnergyResult);
 
                         result = logs.AttackerLog;
@@ -292,13 +294,13 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            return result;
+            return (complete, result);
         }
 
-        public static void Attack(Player attacker, Player victim, int skillSourceId)
+        public static (bool, string) Attack(Player attacker, Player victim, int skillSourceId)
         {
             var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillSourceId);
-            Attack(attacker, victim, vm);
+            return Attack(attacker, victim, vm);
         }
 
         public static string ThrowGrenade(Player attacker, decimal damage, string orbStrengthName)

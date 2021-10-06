@@ -357,10 +357,16 @@ namespace TT.Domain.Procedures
                                 playerRepo.SavePlayer(bot);
 
                                 var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
-                                for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
+                                var complete = false;
+                                for (var attackIndex = 0; attackIndex < numAttacks && !complete; ++attackIndex)
                                 {
                                     var skill = SelectPsychopathSkill(myTarget, mySkills, weakenSkill, rand);
-                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                    (complete, _) = AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+
+                                if (complete)
+                                {
+                                    EquipDefeatedPlayer(bot, myTarget);
                                 }
 
                             }
@@ -397,10 +403,16 @@ namespace TT.Domain.Procedures
                             if (!mySkills.IsEmpty())
                             {
                                 var numAttacks = Math.Min(3, (int)(bot.Mana / PvPStatics.AttackManaCost));
-                                for (var attackIndex = 0; attackIndex < numAttacks; ++attackIndex)
+                                var complete = false;
+                                for (var attackIndex = 0; attackIndex < numAttacks && !complete; ++attackIndex)
                                 {
                                     var skill = SelectPsychopathSkill(victim, mySkills, weakenSkill, rand);
-                                    AttackProcedures.Attack(bot, victim, skill);
+                                    (complete, _) = AttackProcedures.Attack(bot, victim, skill);
+                                }
+
+                                if (complete)
+                                {
+                                    EquipDefeatedPlayer(bot, victim);
                                 }
                             }
                         }
@@ -459,10 +471,16 @@ namespace TT.Domain.Procedures
 
                     if (!mySkills.IsEmpty())
                     {
-                        for (int i = 0; i < numAttacks; i++)
+                        var complete = false;
+                        for (int i = 0; i < numAttacks && !complete; i++)
                         {
                             var skill = SelectPsychopathSkill(personAttacking, mySkills, weakenSkill, rand);
-                            AttackProcedures.Attack(bot, personAttacking, skill);
+                            (complete, _) = AttackProcedures.Attack(bot, personAttacking, skill);
+                        }
+
+                        if (complete)
+                        {
+                            EquipDefeatedPlayer(bot, personAttacking);
                         }
                     }
                 }
@@ -768,7 +786,28 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static void EquipDefeatedPlayer(Player owner, Player defeatedPlayer)
+        {
+            var playerIsBot = owner.BotId <= AIStatics.PsychopathBotId;
 
+            if (owner.BotId == AIStatics.PsychopathBotId && EffectProcedures.PlayerHasActiveEffect(owner.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
+            {
+                // Do not apply to temporary psychos to avoid circumventing inventory rules
+                playerIsBot = false;
+            }
+
+            if (playerIsBot)
+            {
+                // have the bot equip any new item they are carrying (psychos take off duplicates later in world update)
+                var item = ItemProcedures.GetAllPlayerItems(owner.Id)
+                        .FirstOrDefault(i => i.dbItem.FormerPlayerId == defeatedPlayer.Id);
+
+                if (item != null)
+                {
+                    ItemProcedures.EquipItem(item.dbItem.Id, true);
+                }
+            }
+        }
 
         public static void DealBossDamage(Player boss, Player attacker, bool humanAttacker, int attackCount)
         {

@@ -14,7 +14,7 @@ namespace TT.Domain.Procedures
 {
     public static class TFEnergyProcedures
     {
-        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier, decimal victimHealthBefore)
+        public static (bool, LogBox) AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier, decimal victimHealthBefore)
         {
             var output = new LogBox
             {
@@ -39,12 +39,12 @@ namespace TT.Domain.Procedures
                 var noTransformMessage = $"Since {victim.GetFullName()} is already in this form, the spell has no transforming effect.";
                 output.AttackerLog += noTransformMessage;
                 output.VictimLog += noTransformMessage;
-                return output;
+                return (false, output);
             }
 
             // Perform any form change logic (inc extra health damage)
             var formChangeLog = new LogBox();
-            var victimHealthAfter = TFEnergyProcedures.RunFormChangeLogic(victim, attacker.Id, skill, energyAfter, formChangeLog);
+            var (complete, victimHealthAfter) = TFEnergyProcedures.RunFormChangeLogic(victim, attacker.Id, skill, energyAfter, formChangeLog);
 
             // Add the spell text to the player logs (now that we know the full damage of this hit)
             var percentTransformedBefore = CalculateTransformationProgress(victimHealthBefore, victimMaxHealth, energyBefore, eventualForm);
@@ -60,7 +60,7 @@ namespace TT.Domain.Procedures
                 AwardXP(victim, attacker, eventualForm.MobilityType, output);
             }
 
-            return output;
+            return (complete, output);
         }
 
         private static (decimal, decimal) AccumulateTFEnergy(Player victim, Player attacker, SkillViewModel skill, decimal modifier)
@@ -250,12 +250,12 @@ namespace TT.Domain.Procedures
             output.ResultMessage += lvlMessage;
         }
 
-        public static decimal RunFormChangeLogic(Player victim, int attackerId, SkillViewModel skill, decimal energyAccumulated, LogBox output)
+        public static (bool, decimal) RunFormChangeLogic(Player victim, int attackerId, SkillViewModel skill, decimal energyAccumulated, LogBox output)
         {
             // redundant check to make sure the victim is still in a transformable state
             if (victim.Mobility != PvPStatics.MobilityFull)
             {
-                return victim.Health;
+                return (false, victim.Health);
             }
 
             var targetForm = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
@@ -264,7 +264,7 @@ namespace TT.Domain.Procedures
             if (energyAccumulated < targetForm.TFEnergyRequired)
             {
                 // Less than 100% TFE - don't complete form change
-                return victim.Health;
+                return (false, victim.Health);
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -275,7 +275,7 @@ namespace TT.Domain.Procedures
 
             // check and see if the target's health is low enough to be eligible for the TF
             var updatedHealth = AddExtraHealthDamage(victim, dbAttacker, targetForm.TFEnergyRequired, energyAccumulated, modifiedTFEnergyPercent, output);
-            PotentiallyCompleteTransformation(victim, dbAttacker, targetForm, skill.StaticSkill.Id, updatedHealth, output);
+            var completed = PotentiallyCompleteTransformation(victim, dbAttacker, targetForm, skill.StaticSkill.Id, updatedHealth, output);
 
             // if there is a duel going on, end it if all but 1 player is defeated (not in the form they started in)
             if (victim.InDuel > 0)
@@ -283,7 +283,7 @@ namespace TT.Domain.Procedures
                 EndDuel(victim);
             }
 
-            return updatedHealth;
+            return (completed, updatedHealth);
         }
 
         private static decimal CalculateTFEBonusBuff(Player victim, Player attacker)
@@ -381,14 +381,16 @@ namespace TT.Domain.Procedures
             return dbVictim.Health;
         }
 
-        private static void PotentiallyCompleteTransformation(Player victim, Player attacker, DbStaticForm targetForm, int skillSourceId, decimal victimHealth, LogBox output)
+        private static bool PotentiallyCompleteTransformation(Player victim, Player attacker, DbStaticForm targetForm, int skillSourceId, decimal victimHealth, LogBox output)
         {
+            var completed = false;
             var healthProportion = victimHealth / victim.MaxHealth;
 
             // target is turning into an animate form
             if (targetForm.MobilityType == PvPStatics.MobilityFull && healthProportion <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
             {
                 PerformAnimateTransformation(victim, attacker, targetForm, output);
+                completed = true;
                 BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
@@ -397,6 +399,7 @@ namespace TT.Domain.Procedures
                      (targetForm.MobilityType == PvPStatics.MobilityPet && healthProportion <= PvPStatics.PercentHealthToAllowAnimalFormTF))
             {
                 PerformInanimateTransformation(victim, attacker, skillSourceId, targetForm, output);
+                completed = true;
                 BountyProcedures.ClaimReward(attacker, victim, targetForm);
             }
 
@@ -404,7 +407,10 @@ namespace TT.Domain.Procedures
             else if (targetForm.MobilityType == PvPStatics.MobilityMindControl && healthProportion <= PvPStatics.PercentHealthToAllowMindControlTF)
             {
                 EngageMindControl(victim, attacker, targetForm, output);
+                completed = true;
             }
+
+            return completed;
         }
 
         private static void PerformAnimateTransformation(Player victim, Player attacker, DbStaticForm targetForm, LogBox output)
@@ -624,20 +630,6 @@ namespace TT.Domain.Procedures
                         SkillProcedures.GiveSkillToPlayer(attacker.Id, skillSourceId);
                     }
                 }
-
-                if (!EffectProcedures.PlayerHasActiveEffect(attacker.Id, JokeShopProcedures.PSYCHOTIC_EFFECT))
-                {
-                    // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
-                    // Do not apply to temporary psychos to avoid circumventing inventory rules
-                    var psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id)
-                         .Where(item => item.Item.ItemType != PvPStatics.ItemType_Rune);
-
-                    foreach (var i in psychoItems)
-                    {
-                        ItemProcedures.EquipItem(i.dbItem.Id, true);
-                    }
-                }
-
             }
         }
 

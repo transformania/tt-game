@@ -114,7 +114,7 @@ namespace TT.Web
 
             TurnTimesStatics.ActiveConfiguration = data != null && TurnTimesStatics.IsValidConfiguration(data.TurnTimeConfiguration) ? data.TurnTimeConfiguration : TurnTimesStatics.FiveMinuteTurns;
 
-            PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber;
+            PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber ?? PvPStatics.AlphaRound;
         }
     }
 }

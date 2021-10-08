@@ -178,7 +178,7 @@ namespace TT.Web.Controllers
             try
             {
                 DomainRegistry.Repository.Execute(new UpdateRoundNumber { RoundNumber = input.RoundNumber });
-                PvPStatics.AlphaRound = input.RoundNumber;
+                PvPStatics.AlphaRound = input.RoundNumber ?? PvPStatics.AlphaRound;
                 TempData["Result"] = "Round number updated!";
             }
             catch (DomainException e)

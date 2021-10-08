@@ -53,5 +53,11 @@ namespace TT.Domain.Statics
             return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtRegion == regionName && s.GivesEffectSourceId == null && s.IsLive == "live").ToList();
         }
 
+        public static int GetNumPlayerLearnableSkills()
+        {
+            ISkillRepository statSkillRepo = new EFSkillRepository();
+            return statSkillRepo.DbStaticSkills.Count(s => s.GivesEffectSourceId == null && s.IsLive == "live");
+        }
+
     }
 }

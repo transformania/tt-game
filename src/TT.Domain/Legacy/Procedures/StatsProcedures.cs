@@ -24,6 +24,7 @@ namespace TT.Domain.Procedures
     {
 
         public const string Stat__SearchCount = "times_searched";
+        public const string Stat__SpellSearchCount = "spell_searches";
         public const string Stat__SpellsCast = "spells_cast";
         public const string Stat__TimesMoved = "times_moved";
         public const string Stat__TimesCleansed = "times_cleansed";
@@ -115,7 +116,7 @@ namespace TT.Domain.Procedures
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
-        {
+                {
                 Stat__SearchCount,
                     new StatsDetailsMap{
                         FriendlyName = "Hawkeye",
@@ -123,8 +124,17 @@ namespace TT.Domain.Procedures
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
-                    
-                    },
+                },
+
+                {
+                Stat__SpellSearchCount,
+                    new StatsDetailsMap{
+                        FriendlyName = "Spell Seeker",
+                        Description="Most spells found by searching the town",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
 
                 {
                 Stat__SpellsCast,
@@ -156,7 +166,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                  {
+                {
                 Stat__TimesMeditated,
                     new StatsDetailsMap{
                         FriendlyName="Lost in Thought",
@@ -166,7 +176,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesEnchanted,
                     new StatsDetailsMap{
                         FriendlyName="____ the Enchanter",
@@ -178,7 +188,7 @@ namespace TT.Domain.Procedures
 
                  // -------- COVENANT STUFF -------------
 
-                  {
+                {
                 Stat__CovenantNetDonation,
                     new StatsDetailsMap{
                         FriendlyName = "Covenant Benefactor",
@@ -198,7 +208,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__CovenantDonationTotal, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName = "Fundraiser Fanatic",
@@ -207,7 +217,8 @@ namespace TT.Domain.Procedures
                         Active = false
                         }
                 },
-                  {
+
+                {
                 Stat__CovenantFurnitureUsed,
                     new StatsDetailsMap{
                         FriendlyName = "Couch Potato",
@@ -217,9 +228,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                
-
-                 {
+                {
                 Stat__TimesAnimateTFed,
                     new StatsDetailsMap{
                         FriendlyName="What's My Form Again?",
@@ -229,7 +238,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesInanimateTFed,
                     new StatsDetailsMap{
                         FriendlyName="The Inanimated",
@@ -239,7 +248,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesAnimalTFed,
                     new StatsDetailsMap{
                         FriendlyName="Nothin' But a Hound Dog",
@@ -249,7 +258,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesAnimateTFing,
                     new StatsDetailsMap{
                         FriendlyName="The Animator",
@@ -259,7 +268,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesInanimateTFing,
                     new StatsDetailsMap{
                         FriendlyName="The Inanimator",
@@ -269,7 +278,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesAnimalTFing,
                     new StatsDetailsMap{
                         FriendlyName="Petmaker",
@@ -279,7 +288,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__PsychopathsDefeated,
                     new StatsDetailsMap{
                         FriendlyName="Psycho Hunter",
@@ -289,7 +298,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__TimesTeleported_Scroll,
                     new StatsDetailsMap{
                         FriendlyName="Fast Commute",
@@ -299,7 +308,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__JewdewfaeEncountersCompleted,
                     new StatsDetailsMap{
                         FriendlyName="Friend of the Fae",
@@ -310,7 +319,7 @@ namespace TT.Domain.Procedures
                         }
                 },
 
-                 {
+                {
                 Stat__LoreBooksRead,
                     new StatsDetailsMap{
                         FriendlyName="Nerrrrrd!",
@@ -734,7 +743,7 @@ namespace TT.Domain.Procedures
             };
 
 
-        public static void AddStat(string membershipId, string type, float amount)
+        public static void AddStat(string membershipId, string type, float amount, float? cap = null)
         {
 
             // don't do anything if the achievement is marked as inactive or blank membershipId
@@ -755,14 +764,24 @@ namespace TT.Domain.Procedures
                     {
                         OwnerMembershipId = membershipId,
                         AchievementType = type,
-                        Amount = amount,
+                        Amount = cap.HasValue ? Math.Min(amount, cap.Value) : amount,
                         Timestamp = DateTime.UtcNow,
                     };
                 }
                 else
                 {
-                    x.Amount += amount;
-                    x.Timestamp = DateTime.UtcNow;
+                    var newAmount = x.Amount + amount;
+
+                    if (cap.HasValue)
+                    {
+                        newAmount = Math.Min(newAmount, cap.Value);
+                    }
+
+                    if (newAmount != x.Amount)
+                    {
+                        x.Amount = newAmount;
+                        x.Timestamp = DateTime.UtcNow;
+                    }
                 }
 
                 repo.SaveAchievement(x);

@@ -628,7 +628,18 @@ namespace TT.Web.Controllers
             }
             ViewBag.CurrentBaseForm = me.OriginalFormSourceId;
 
+            if (!customForms.Any(f => f.Id == me.OriginalFormSourceId))
+            {
+                var currentBase = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == me.OriginalFormSourceId);
+
+                if (currentBase != null)
+                {
+                    customForms.Add(currentBase);
+                }
+            }
+
             customForms.AddRange(baseForms);
+
             return View(MVC.Settings.Views.MyBaseForms, customForms);
         }
 

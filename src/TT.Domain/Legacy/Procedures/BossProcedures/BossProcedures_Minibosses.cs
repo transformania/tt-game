@@ -240,7 +240,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 var playersHere = GetEligibleTargetsAtLocation(actualNextLocation);
                 foreach (var target in playersHere)
                 {
-                    (var complete, _) = AttackProcedures.Attack(miniboss, target, ChooseSpell(miniboss, turnNumber, data.Spells));
+                    var (complete, _) = AttackProcedures.Attack(miniboss, target, ChooseSpell(miniboss, turnNumber, data.Spells));
 
                     if (complete)
                     {

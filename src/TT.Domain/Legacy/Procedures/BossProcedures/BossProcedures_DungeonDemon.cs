@@ -34,7 +34,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
             else if (dbDemon != null && dbDemon.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
             {
-                (var complete, _) = AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
+                var (complete, _) = AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpellSourceId);
 
                 if (!complete)
                 {

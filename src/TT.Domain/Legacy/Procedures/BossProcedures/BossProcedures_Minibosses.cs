@@ -27,7 +27,9 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
     public static class BossProcedures_Minibosses
     {
 
+        private static int ActiveSpells = 3;
         private static int SpellChangeTurnFrequency = 6;
+        private static int CyclesBeforeSpellSwap = 8;
         private static double ChanceToRespawn = .005;
         private static Random rand = new Random();
 
@@ -238,7 +240,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 var playersHere = GetEligibleTargetsAtLocation(actualNextLocation);
                 foreach (var target in playersHere)
                 {
-                    AttackProcedures.Attack(miniboss, target, ChooseSpell(turnNumber, data.Spells));
+                    AttackProcedures.Attack(miniboss, target, ChooseSpell(miniboss, turnNumber, data.Spells));
                 }
             }
             
@@ -252,7 +254,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             var counterAttackTimes = GetCounterAttackTimes(boss.Health, boss.MaxHealth, world.TurnNumber); 
             for (var i = 0; i < counterAttackTimes; i++)
             {
-                AttackProcedures.Attack(boss, victim, ChooseSpell(world.TurnNumber, definition.Value.Spells));
+                AttackProcedures.Attack(boss, victim, ChooseSpell(boss, world.TurnNumber, definition.Value.Spells));
             }
         }
 
@@ -275,9 +277,11 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             return DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
         }
 
-        private static int ChooseSpell(int turnNumber, List<int> spells)
+        private static int ChooseSpell(Player bot, int turnNumber, List<int> spells)
         {
-            var index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % spells.Count;
+            var activeSpell = (turnNumber / SpellChangeTurnFrequency) % ActiveSpells;
+            var offset = (turnNumber + bot.Id) / (SpellChangeTurnFrequency * ActiveSpells * CyclesBeforeSpellSwap);
+            var index = (activeSpell + offset) % spells.Count;
             return spells[index];
         }
 

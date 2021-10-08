@@ -66,24 +66,24 @@
     <p style="text-align: center;">
         <br>
         Show by type:<br>
-        <table style="width: 100%; text-align: center;">
+        <table style="width: 100%; text-align: center;" class="showByType-merchant">
             <tr>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Hat))">Hats / Headwear</a></td>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt))">Shirts and Dresses</a></td>
-                <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Undershirt))">Bras and Undershirts</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Hat))"><span class="icon icon-hat"></span> Hats / Headwear</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt))"><span class="icon icon-shirt"></span> Shirts and Dresses</a></td>
+                <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Undershirt))"><span class="icon icon-undershirt"></span> Bras and Undershirts</a></td>
             </tr>
             <tr>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Pants))">Skirts and Pants</a></td>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Underpants))">Underwear</a></td>
-                <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shoes))">Shoes</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Pants))"><span class="icon icon-pants"></span> Skirts and Pants</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Underpants))"><span class="icon icon-underpants"></span> Underwear</a></td>
+                <td> <a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shoes))"><span class="icon icon-shoes"></span> Shoes</a></td>
             </tr>
             <tr>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Accessory))">Accessories</a></td>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable_Reuseable))">Reusable Consumables</a></td>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable))">Consumables</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Accessory))"><span class="icon icon-accessory"></span> Accessories</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable_Reuseable))"><span class="icon icon-consumable_reuseable"></span> Reusable Consumables</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Consumable))"><span class="icon icon-consumable"></span> Consumables</a></td>
             </tr>
             <tr>
-                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Rune))">Runes</a></td>
+                <td><a href="@Url.Action(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Rune))"><span class="icon icon-rune"></span> Runes</a></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -96,42 +96,40 @@
 
     </div>
     <br>
-    <form id="filtersoul" action="" style="visibility:hidden;">
-        <div style="text-align: center;">
-            <span style="white-space:nowrap;margin:5px;">
+    <form id="filtersoul" action="" style="visibility: hidden">
+            <span>
                 <input type="radio" name="filter" value="all" id="filter-all" checked="">
                 <label for="filter-all">
                     All
                 </label>
             </span>
-            <span style="white-space:nowrap;margin:5px;">
+            <span>
                 <input type="radio" name="filter" value="souled0" id="filter-souled0">
                 <label for="filter-souled0">
                     <span class="icon icon-souled0"></span>
                     Recently Online
                 </label>
             </span>
-            <span style="white-space:nowrap;margin:5px;">
+            <span>
                 <input type="radio" name="filter" value="souled1" id="filter-souled1">
                 <label for="filter-souled1">
                     <span class="icon icon-souled1"></span>
                     Online Today
                 </label>
             </span>
-            <span style="white-space:nowrap;margin:5px;">
+            <span>
                 <input type="radio" name="filter" value="souled2" id="filter-souled2">
                 <label for="filter-souled2">
                     <span class="icon icon-souled2"></span>
                     Online Within Last 3 Days
                 </label>
             </span>
-            <span style="white-space:nowrap;margin:5px;">
+            <span>
                 <input type="radio" name="filter" value="unsouled" id="filter-unsouled">
                 <label for="filter-unsouled">
                     Dormant Soul
                 </label>
             </span>
-        </div>
     </form>
     <br>
     <div class="row boxContainer">

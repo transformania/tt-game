@@ -15,7 +15,7 @@ namespace TT.Domain.Procedures
        public static string AttackSequence(Player attacker, Player victim, SkillViewModel skillBeingUsed, bool timestamp = true)
         {
             // Actual attack
-            (_, var message) = AttackProcedures.Attack(attacker, victim, skillBeingUsed, timestamp);
+            var (_, message) = AttackProcedures.Attack(attacker, victim, skillBeingUsed, timestamp);
 
             // record into statistics
             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__SpellsCast, 1);

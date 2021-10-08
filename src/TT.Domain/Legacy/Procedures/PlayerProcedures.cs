@@ -1145,7 +1145,7 @@ namespace TT.Domain.Procedures
                 var randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 var skillToLearn = eligibleSkills.ElementAt(randIndex);
-                var output = SkillProcedures.GiveSkillToPlayer(player.Id, skillToLearn.Id);
+                var output = SkillProcedures.GiveSkillToPlayerWithStats(player, skillToLearn.Id);
 
                 return output;
 

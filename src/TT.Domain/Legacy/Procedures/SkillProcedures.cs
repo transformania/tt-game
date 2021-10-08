@@ -207,6 +207,12 @@ namespace TT.Domain.Procedures
 
         public static string GiveSkillToPlayer(int playerId, int skillSourceId)
         {
+            var (_, message) = GiveSkillToPlayerWithSuccess(playerId, skillSourceId);
+            return message;
+        }
+
+        private static (bool, string) GiveSkillToPlayerWithSuccess(int playerId, int skillSourceId)
+        {
             ISkillRepository skillRepo = new EFSkillRepository();
             IDbStaticSkillRepository skillSourceRepo = new EFDbStaticSkillRepository();
             DbStaticSkill skill = skillSourceRepo.DbStaticSkills.SingleOrDefault(s => s.Id == skillSourceId);
@@ -215,15 +221,32 @@ namespace TT.Domain.Procedures
             if (ghost == null) //player does not have this skill yet; add it
             {
                 DomainRegistry.Repository.Execute(new CreateSkill {ownerId = playerId, skillSourceId = skill.Id});
-
                 var output = "";
                 output += skill.DiscoveryMessage;
-                return output + "  <b>Congratulations, you have learned a new spell, " + skill.FriendlyName + ".</b>";
+                return (true, output + "  <b>Congratulations, you have learned a new spell, " + skill.FriendlyName + ".</b>");
             }
             else // player already has this skill, so add its charges/duration
             {
-                return "You discovered the spell '" + skill.FriendlyName + "' but unfortunately you already knew it.";
+                return (false, "You discovered the spell '" + skill.FriendlyName + "' but unfortunately you already knew it.");
             }
+        }
+
+        public static void AddDiscoverableSpellStat(string membershipId, string stat)
+        {
+            var numDiscoverableSpells = SkillStatics.GetNumPlayerLearnableSkills();
+            StatsProcedures.AddStat(membershipId, stat, 1, numDiscoverableSpells);
+        }
+
+        public static string GiveSkillToPlayerWithStats(Player player, int skillSourceId)
+        {
+            var (success, message) = GiveSkillToPlayerWithSuccess(player.Id, skillSourceId);
+
+            if (success)
+            {
+                AddDiscoverableSpellStat(player.MembershipId, StatsProcedures.Stat__SpellSearchCount);
+            }
+
+            return message;
         }
 
         public static List<string> GiveRandomFindableSkillsToPlayer(Player player, int amount)

@@ -1273,7 +1273,7 @@ namespace TT.Web.Controllers
             SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.StaticSkill.Id);
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
-            StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned, 1);
+            SkillProcedures.AddDiscoverableSpellStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned);
 
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.StaticSkill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());

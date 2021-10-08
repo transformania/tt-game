@@ -70,6 +70,12 @@
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
+            @{
+                if (!Model.PlayerForm.Player.IsUsingOriginalName())
+                {
+                    <p class="center-block">(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
+                }
+            }
             <h3 class="center-block">@Model.PlayerForm.Form.FriendlyName</h3>
             @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
                 {

@@ -254,6 +254,11 @@ namespace TT.Domain.Models
 
         }
 
+        public bool IsUsingOriginalName()
+        {
+            return FirstName == OriginalFirstName && LastName == OriginalLastName;
+        }
+
         protected virtual IReadOnlyDictionary<string, PlayerDescriptorDTO> staffDictionary { get { return ChatStatics.Staff; } }
 
         public Tuple<string, string> GetDescriptor()

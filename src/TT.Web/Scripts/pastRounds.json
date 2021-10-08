@@ -695,6 +695,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 88,
+      "name": "Alpha 88 (Looter Shooter, Dogs, and Cooters)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

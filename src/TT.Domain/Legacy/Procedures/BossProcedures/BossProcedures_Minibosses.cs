@@ -240,7 +240,12 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 var playersHere = GetEligibleTargetsAtLocation(actualNextLocation);
                 foreach (var target in playersHere)
                 {
-                    AttackProcedures.Attack(miniboss, target, ChooseSpell(miniboss, turnNumber, data.Spells));
+                    var (complete, _) = AttackProcedures.Attack(miniboss, target, ChooseSpell(miniboss, turnNumber, data.Spells));
+
+                    if (complete)
+                    {
+                        AIProcedures.EquipDefeatedPlayer(miniboss, target);
+                    }
                 }
             }
             
@@ -251,10 +256,16 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             var definition = bossData.SingleOrDefault(d => d.Value.BotId == boss.BotId);
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
 
-            var counterAttackTimes = GetCounterAttackTimes(boss.Health, boss.MaxHealth, world.TurnNumber); 
-            for (var i = 0; i < counterAttackTimes; i++)
+            var counterAttackTimes = GetCounterAttackTimes(boss.Health, boss.MaxHealth, world.TurnNumber);
+            var complete = false;
+            for (var i = 0; i < counterAttackTimes && !complete; i++)
             {
-                AttackProcedures.Attack(boss, victim, ChooseSpell(boss, world.TurnNumber, definition.Value.Spells));
+                (complete, _) = AttackProcedures.Attack(boss, victim, ChooseSpell(boss, world.TurnNumber, definition.Value.Spells));
+            }
+
+            if (complete)
+            {
+                AIProcedures.EquipDefeatedPlayer(boss, victim);
             }
         }
 

@@ -851,6 +851,11 @@ namespace TT.Domain.Procedures
                 FormSourceId = formSourceId
             });
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, formSourceId);
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            newPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newPlayer));
+            playerRepo.SavePlayer(newPlayer);
         }
 
         public static void MarkOnlineActivityTimestamp(Player player)

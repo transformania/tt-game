@@ -375,7 +375,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else if (roll < 45)  // 5%
             {
-                return SetBaseFormToCurrent(player);
+                return SetBaseFormToCurrent(player, rand);
             }
             else if (roll < 65)  // 20%
             {
@@ -424,7 +424,40 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return $"You feel the familar tingle of your body reshaping.  When you look down you realize you are now a <b>{form.FriendlyName}</b>!";
+            string message;
+
+            switch (rand.Next(9))
+            {
+                case 0:
+                    message = $"Snap!  You're a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 1:
+                    message = $"You feel lightheaded and your feet lift from the ground.  You become weightless as your mass shifts upward, leaving you floating in midair.  Suddenly you're pulled to the ground with some force.  When you regain your senses you realize your body is different - you have become a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 2:
+                    message = $"A jar smashes at your feet and you are engulfed in a great cloud of smoke.  When the air clears you find you have become a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 3:
+                    message = $"Your're thinking of a {form.FriendlyName}.  You can't help it.  You can't get that {form.FriendlyName} out of your mind.  You want to be a {form.FriendlyName}!  You want to be <i>that</i> {form.FriendlyName}!  Admit it!  <b>Admit it!</b>  Become the {form.FriendlyName}!";
+                    break;
+                case 4:
+                    message = $"You stumble upon another trap in this cursed shop and immediately feel your body melting, dissolving into a pool on the ground!  You desperately try to utter a counterspell, but it comes out all wrong.  Your body starts to regain form, but as it firms up you know your body is not how you remember it.  Your spell has left you as a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 5:
+                    message = $"A beam of bright light hits you from nowhere!  You feel it changing you, and when you realize it is harmless you blurt out a laugh!  But as the last tingles of energy leave your body you notice it has left you as a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 6:
+                    message = $"Argh!  Why are you in this form?  It's so wrong!  Quick, cast a spell!  Phew, back to being a <b>{form.FriendlyName}</b>!  What a relief!";
+                    break;
+                case 7:
+                    message = $"\"Hello {player.FirstName}, my little {form.FriendlyName}\" booms an almighty voice!  \"B-but I'm not a {form.FriendlyName}!\" you protest.  \"Oh, aren't you?\" replies the voice.  You can hear the taunting smugness in its tone as the sound is carried away on the wind.";
+                    break;
+                default:
+                    message = $"You feel the familiar tingle of your body reshaping.  When you look down you realize you are now a <b>{form.FriendlyName}</b>!";
+                    break;
+            }
+
+            return message;
         }
 
         private static string ImmobileTransform(Player player, bool temporary, Random rand = null)
@@ -459,7 +492,18 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
             else
             {
-                message = $"Your limbs start to stiffen, your bones begin to fuse.  By the time you realize what's happening it's too late and you've already become a <b>{form.FriendlyName}</b>!";
+                switch (rand.Next(3))
+                {
+                    case 0:
+                        message = $"\"Freeze!\" shouts someone from close behind you.  You try to face them but you can't seem to move - you're already a <b>{form.FriendlyName}</b>!";
+                        break;
+                    case 1:
+                        message = $"You find the sights of the shop distracting... so distracting you forget to keep moving and don't notice the ground swallowing your feet up!  In fact you don't have a clue anything is wrong - until you catch sight of a <b>{form.FriendlyName}</b> looking back at you through a mirror!";
+                        break;
+                    default:
+                        message = $"Your limbs start to stiffen, your bones begin to fuse.  By the time you realize what's happening it's too late:  You've already become a <b>{form.FriendlyName}</b>!";
+                        break;
+                }
             }
 
             if (!TryAnimateTransform(player, form.FormSourceId))
@@ -513,7 +557,28 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"A mysterious fog crosses your mind and you feel yourself falling into the ether!  As you familiarize yourself with your surroundings you begin to feel giddy and confused.  You've always been a {form.FriendlyName}, haven't you?  Urgh!  That cloud is messing with your head!  It might take another {duration} turns for it to clear!", true);
             }
 
-            return $"All these joke items on the shelves have absorbed so much magic they're almost alive, almost calling to you, willing you to join them, to provide them with company while they remain frozen in time for all eternity.  You try to back out but the enchantment has already permeated your being, turning you into a <b>{form.FriendlyName}</b>!";
+            string message;
+
+            switch (rand.Next(5))
+            {
+                case 0:
+                    message = $"Suddenly you feel yourself shrinking.  Your body contorts, your skin changes texture.  It all takes place faster than gravity can respond.  Then, with a loud clatter, you land on the floor, ready for your new life as a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 1:
+                    message = $"\"{player.GetFullName()}?\" Asks the shopkeeper quizically.  \"What kind of a name is that?\"  \"It's <i>my</i> name,\" you respond.  \"Don't be silly,\" mocks the shopkeeper, \"Why would a {form.FriendlyName} have a name like that?\"  The shopkeeper then reaches down to pick you up and places you back on your shelf.";
+                    break;
+                case 2:
+                    message = $"You feel a stranger tap you on the shoulder and the next thing you know you're falling through their fingers, landing on the ground as a <b>{form.FriendlyName}</b>!";
+                    break;
+                case 3:
+                    message = $"A thought crosses your mind:  What would happen if those souls you are wearing could still wield magic?  What retribution might they seek?  You tense up at the thought, but a mage's misplaced idea can have a life of its own, and soon your items are beckoning you to join them as a <b>{form.FriendlyName}</b>!";
+                    break;
+                default:
+                    message = $"All these joke items on the shelves have absorbed so much magic they're almost alive, almost calling to you, willing you to join them, to provide them with company while they remain frozen in time for all eternity.  You try to back out but the enchantment has already permeated your being, turning you into a <b>{form.FriendlyName}</b>!";
+                    break;
+            }
+
+            return message;
         }
 
         private static string MobileInanimateTransform(Player player, Random rand = null)
@@ -812,8 +877,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return null;
         }
 
-        private static string SetBaseFormToCurrent(Player player)
+        private static string SetBaseFormToCurrent(Player player, Random rand = null)
         {
+            rand = rand ?? new Random();
+
             if (player.OriginalFormSourceId == player.FormSourceId)
             {
                 return null;
@@ -834,7 +901,28 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"Your base form has changed to your current form.", false);
 
-            return "\"Are you feeling comfortable?\" asks the shopkeeper.  \"Er, yes,\" you reply.  \"Good.  That form really suits you!\"  You eye the shopkeeper with suspicion.";
+            string message;
+
+            switch(rand.Next(5))
+            {
+                case 0:
+                    message = "You feel a strong pulse from deep within you, rocking you to your very core.  You have been many things, but nothing has resonated with you as much as your current form.";
+                    break;
+                case 1:
+                    message = "It's a tranquil moment, so you pause to think.  You didn't realize how much you were enjoying your current form.  Perhaps you'll revisit it sometime?";
+                    break;
+                case 2:
+                    message = "Hmmm, is that body not to your liking?  How humiliating would it be to find you couldnn't shake it?";
+                    break;
+                case 3:
+                    message = "You get a sudden urge to take a selfie.  You whip your smartphone out from your pocket and snap some pics.  Maybe you'll look at them later.";
+                    break;
+                default:
+                    message = "\"Are you feeling comfortable?\" asks the shopkeeper.  \"Er, yes,\" you reply.  \"Good.  That form really suits you!\"  You eye the shopkeeper with suspicion.";
+                    break;
+            }
+
+            return message;
         }
 
         public static string RestoreName(Player player)

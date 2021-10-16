@@ -70,12 +70,7 @@
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
-            @{
-                if (!Model.PlayerForm.Player.IsUsingOriginalName())
-                {
-                    <p class="center-block">(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
-                }
-            }
+            <p class="avatarOriginalName center-block">(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
             <h3 class="center-block">@Model.PlayerForm.Form.FriendlyName</h3>
             @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
                 {
@@ -321,6 +316,24 @@
                 }
             });
         });
+
+        var nameNode = $('.avatarName');
+
+        if (@(Model.PlayerForm.Player.IsUsingOriginalName() ? "true" : "false"))
+        {
+            nameNode.attr('title', "This player is using their original name");
+        }
+        else
+        {
+            nameNode.attr('title', "Double tap to see this player's original name");
+        }
+
+        nameNode.on('dblclick', function () {
+            getSelection().removeAllRanges();
+            $('.avatarOriginalName').toggle();
+            return false;
+        });
+
     });
     </script>
 }

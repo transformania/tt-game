@@ -142,12 +142,7 @@
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <center>
-                @{
-                    if (!Model.PlayerForm.Player.IsUsingOriginalName())
-                    {
-                        <p>(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
-                    }
-                }
+                <p class="avatarOriginalName">(Original name: @Model.PlayerForm.Player.OriginalFirstName @Model.PlayerForm.Player.OriginalLastName)</p>
                 @HtmlHelpers.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
                     if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
@@ -344,6 +339,24 @@
                 }
             });
         });
+
+        var nameNode = $('.avatarName');
+
+        if (@(Model.PlayerForm.Player.IsUsingOriginalName() ? "true" : "false"))
+        {
+            nameNode.attr('title', "This player is using their original name");
+        }
+        else
+        {
+            nameNode.attr('title', "Double tap to see this player's original name");
+        }
+
+        nameNode.on('dblclick', function () {
+            getSelection().removeAllRanges();
+            $('.avatarOriginalName').toggle();
+            return false;
+        });
+
     });
 
     </script>

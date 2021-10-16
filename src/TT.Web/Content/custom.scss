@@ -802,6 +802,11 @@ body.location-joke_shop .avatarBars {
   font-weight: inherit;
 }
 
+.avatarOriginalName {
+    display: none;
+    font-size: $fontSmall;
+}
+
 .avatarFormName {
   font-size: $fontMedium;
 }

@@ -260,6 +260,16 @@ namespace TT.Domain.Procedures
                 itemRep.SaveItem(inanimateMe);
                 DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = me.Id});
                 DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = me.Id, IgnoreRunes = false});
+
+                var formRepo = new EFDbStaticFormRepository();
+                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == me.FormSourceId);
+
+                if (inanimateMe.OwnerId != null && form != null)
+                {
+                    PlayerLogProcedures.AddPlayerLog(inanimateMe.OwnerId.Value, $"{me.GetFullName()} has locked and is now unable to escape their form as your {form.FriendlyName}!", true);
+                }
+
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"You have locked in your current form as a {form.FriendlyName}!", false);
                 resultMessage += "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
             }
 

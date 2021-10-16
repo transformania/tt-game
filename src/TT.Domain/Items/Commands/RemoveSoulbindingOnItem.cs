@@ -3,7 +3,6 @@ using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Entities;
-using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Items.Commands
 {

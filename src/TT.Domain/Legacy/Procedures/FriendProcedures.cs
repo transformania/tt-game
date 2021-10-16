@@ -126,6 +126,19 @@ namespace TT.Domain.Procedures
             else if (friend.OwnerMembershipId == membershipId || friend.FriendMembershipId == membershipId)
             {
                 friendRepo.DeleteFriend(friend.Id);
+
+                var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
+                var otherMembership = (friend.OwnerMembershipId == membershipId) ? friend.FriendMembershipId : friend.OwnerMembershipId;
+                var nonFriend = PlayerProcedures.GetPlayerFromMembership(otherMembership);
+                if (friend.IsAccepted)
+                {
+                    PlayerLogProcedures.AddPlayerLog(me.Id, $"You are no longer friends with {nonFriend?.GetFullName()}.", false);
+                }
+                else
+                {
+                    PlayerLogProcedures.AddPlayerLog(me.Id, $"You have declined {nonFriend?.GetFullName()}'s friend request.", false);
+                }
+
                 return "";
             }
             else
@@ -153,6 +166,16 @@ namespace TT.Domain.Procedures
             {
                 friend.IsAccepted = true;
                 friendRepo.SaveFriend(friend);
+
+                var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
+                var newFriend = PlayerProcedures.GetPlayerFromMembership(friend.OwnerMembershipId);
+
+                if (me != null && newFriend != null)
+                {
+                    PlayerLogProcedures.AddPlayerLog(me.Id, $"You have accepted {newFriend.GetFullName()}'s friend request.", false);
+                    PlayerLogProcedures.AddPlayerLog(newFriend.Id, $"{me.GetFullName()} has accepted your friend request!", true);
+                }
+
                 return "Success";
             }
             else

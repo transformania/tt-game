@@ -835,7 +835,7 @@ namespace TT.Web.Controllers
 
                 var dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
                 PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
-                TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer of permanently should you find yourself defeated...";
+                TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer or permanently should you find yourself defeated...";
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You entered the dungeon.", false);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " slid down a manhole to the dungeon deep below.");
                 LocationLogProcedures.AddLocationLog(dungeonLocation, me.GetFullName() + " fell through the a portal in the ceiling from the town above.");
@@ -2854,7 +2854,10 @@ namespace TT.Web.Controllers
                 if (!PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message))
                 {
                     PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
-                    TempData["Result"] = "You have sent a friend request to " + friend.FirstName + " " + friend.LastName + "!";
+
+                    var sentMessage = "You have sent a friend request to " + friend.FirstName + " " + friend.LastName + "!";
+                    PlayerLogProcedures.AddPlayerLog(me.Id, sentMessage, false);
+                    TempData["Result"] = sentMessage;
                 }
             }
             else
@@ -3451,9 +3454,11 @@ namespace TT.Web.Controllers
 
             // all checks pass; drop item and notify owner
             DomainRegistry.Repository.Execute(new RemoveSoulbindingOnItem { ItemId = inanimateMe.Id });
+
             ItemProcedures.DropItem(inanimateMe.Id);
             var message = $"{me.GetFullName()}, your {inanimateMe.ItemSource.FriendlyName}, slipped free due to your inactivity and can be claimed by a new owner.";
             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
+            PlayerLogProcedures.AddPlayerLog(me.Id, $"You slip free of your former owner, {owner.GetFullName()}", false);
 
             TempData["Result"] = "You have slipped free from your owner.";
             return RedirectToAction(MVC.PvP.Play());

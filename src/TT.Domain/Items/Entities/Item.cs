@@ -288,6 +288,7 @@ namespace TT.Domain.Items.Entities
 
         public void SoulbindToPlayer(Player player)
         {
+            var previouslyBoundTo = SoulboundToPlayer;
             SoulboundToPlayer = player;
             if (FormerPlayer != null)
             {
@@ -301,7 +302,7 @@ namespace TT.Domain.Items.Entities
                             DateTime.UtcNow, true));
                     }
                 }
-                else
+                else if (previouslyBoundTo != null)
                 {
                     FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
                         "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",

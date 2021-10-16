@@ -1327,11 +1327,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             PlayerProcedures.InstantChangeToForm(player, formSourceId);
 
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            var target = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            target.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(target));
-            playerRepo.SavePlayer(target);
-
             if (logChanges)
             {
                 var form = FormStatics.GetForm(formSourceId);

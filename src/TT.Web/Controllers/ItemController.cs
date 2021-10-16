@@ -510,6 +510,34 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = e.Message;
             }
+
+            IItemRepository itemRep = new EFItemRepository();
+            var inanimateMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = me.Id});
+
+            if (inanimateMe.Owner != null)
+            {
+                var formRepo = new EFDbStaticFormRepository();
+                var form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == me.FormSourceId);
+
+                if (isConsenting)
+                {
+                    PlayerLogProcedures.AddPlayerLog(inanimateMe.Owner.Id, $"{me.GetFullName()}, your {form.FriendlyName}, has agreed to let you soulbind them!", true);
+                }
+                else
+                {
+                    PlayerLogProcedures.AddPlayerLog(inanimateMe.Owner.Id, $"{me.GetFullName()}, your {form.FriendlyName}, has withdrawn their soulbinding consent.", false);
+                }
+            }
+
+            if (isConsenting)
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"You have consented to soulbinding.", false);
+            }
+            else
+            {
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"You have withdrawn soulbinding consent.", false);
+            }
+
             return RedirectToAction(MVC.PvP.Play());
         }
 

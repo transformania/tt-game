@@ -1232,6 +1232,40 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static int GetLocalKnownSpells(Player player)
+        {
+            string dbLocationName = player.dbLocationName;
+            var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+            var myKnownSkills = SkillProcedures.GetStaticSkillsOwnedByPlayer(player.Id);
+
+            // get all the skills that are found in THIS EXACT LOCATION
+            var skillsAtThisLocation = SkillStatics.GetSkillsLearnedAtLocation(here.dbName);
+            IEnumerable<DbStaticSkill> locationKnownSkills = from s in skillsAtThisLocation
+                                                             let sx = myKnownSkills.Select(r => r.Id)
+                                                             where sx.Contains(s.Id)
+                                                             select s;
+
+            // get all the skills that are found in the region this location is in
+            var skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
+            IEnumerable<DbStaticSkill> regionKnownSkills = from s in skillsAtThisRegion
+                                                           let sx = myKnownSkills.Select(r => r.Id)
+                                                           where sx.Contains(s.Id)
+                                                           select s;
+
+            return locationKnownSkills.Count() + regionKnownSkills.Count();
+
+
+        }
+
+        public static int GetNumberOfLocalSpells(string dbLocationName) {
+            var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+            var skillsAtThisLocation = SkillStatics.GetSkillsLearnedAtLocation(here.dbName);
+            var skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
+            return skillsAtThisLocation.Count() + skillsAtThisRegion.Count();
+
+
+        }
+
         public static WorldStats GetWorldPlayerStats()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

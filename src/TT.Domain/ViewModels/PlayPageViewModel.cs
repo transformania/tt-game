@@ -36,5 +36,8 @@ namespace TT.Domain.ViewModels
         public WorldDetail World { get; set; }
         public bool PlayerIsAtBusStop { get; set; }
 
+        public int AllLocalSpells { get; set; }
+        public int LocalKnownSpells { get; set; }
+
     }
 }

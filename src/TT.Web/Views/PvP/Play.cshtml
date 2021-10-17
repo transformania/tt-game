@@ -171,6 +171,7 @@
         <div class="col-md-4" style="text-align: center;">
             @Html.Partial(MVC.PvP.Views.partial.movementTable, new TT.Domain.ViewModels.MovementModel(Model.Location, true))
             @{
+                <div class="knownspells">Spells:<br />@Model.LocalKnownSpells / @Model.AllLocalSpells</div>
                 if (Model.You.Player.ShoutsRemaining > 0)
                 {
                     <a href="@Url.Action(MVC.PvP.Shout())" class="shout">Shout</a>

@@ -417,6 +417,10 @@ namespace TT.Web.Controllers
             output.AttacksMade = me.TimesAttackingThisUpdate;
             ViewBag.AttacksMade = me.TimesAttackingThisUpdate;
 
+            loadtime += "Start get known spells:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
+            output.LocalKnownSpells = PlayerProcedures.GetLocalKnownSpells(me);
+            output.AllLocalSpells = PlayerProcedures.GetNumberOfLocalSpells(me.dbLocationName);
+            loadtime += "End get known spells:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.LoadTime = loadtime;
 

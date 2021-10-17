@@ -322,7 +322,7 @@ namespace TT.Domain.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND BotId = 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET TimesAttackingThisUpdate = 0, ItemsUsedThisTurn = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND BotId = 0");
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players");
                     }
                     catch (Exception e)

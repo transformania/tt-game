@@ -165,6 +165,28 @@
                             Interactions offer a chance to help speed up or slow down your item or pet's progress and cost you one item action.
                         </p>
                     }
+
+                </div>
+            }
+
+            @if (ViewBag.Unowned && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && ViewBag.SameLocation)
+            {
+                <div>
+                    <p>
+                        This pet isn't currently with an owner.  If you're in the same place as them, why not say hello?
+                        <ul class="inanimateActionList">
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.FeralAction("pat", (int)ViewBag.ItemId))" class="check inanimateAction">Gently pat the @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.FeralAction("shoo", (int)ViewBag.ItemId))" class="check inanimateAction">Agitatedly shoo the @Model.PlayerForm.Form.FriendlyName away (Dishearten chance)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.FeralAction("tranquilize",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Tranquilize the @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                            </li>
+                        </ul>
+                        Interactions offer a chance to help speed up or slow down this pet's progress and cost you one item action.
+                    </p>
                 </div>
             }
         </div>
@@ -252,11 +274,12 @@
         var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
         var togglestate = 0;
         var playUpdateSound = false;
-        var playerCanInteract = @((ViewBag.PlayerInteractionsRemain != null && ViewBag.PlayerInteractionsRemain) ? "true" : "false");
-        var itemCanInteract = @((ViewBag.ItemInteractionsRemain != null && ViewBag.ItemInteractionsRemain) ? "true" : "false");
         </script>
     }
     <script>
+    var playerCanInteract = @((ViewBag.PlayerInteractionsRemain != null && ViewBag.PlayerInteractionsRemain) ? "true" : "false");
+    var itemCanInteract = @((ViewBag.ItemInteractionsRemain != null && ViewBag.ItemInteractionsRemain) ? "true" : "false");
+
     $(document).ready(function () {
         // get current url that the page is on
         var currentUrl = new URL(window.location);

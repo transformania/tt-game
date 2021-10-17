@@ -2352,15 +2352,22 @@ namespace TT.Web.Controllers
 
                 ViewBag.Owner = owner;
                 ViewBag.OwnedByMe = ownedByMe;
+                ViewBag.Unowned = (owner == null) || owner.Player.BotId == AIStatics.WuffieBotId || owner.Player.BotId == AIStatics.SoulbinderBotId;
+                ViewBag.SameLocation = owner == null
+                    ? playerItem.dbLocationName == me.dbLocationName
+                    : owner.Player.dbLocationName == me.dbLocationName;
 
                 if (ownedByMe)
                 {
                     var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                     var secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
                     ViewBag.SecondsUntilUpdate = TurnTimesStatics.GetTurnLengthInSeconds() - (int)secondsSinceUpdate;
-                    ViewBag.PlayerInteractionsRemain = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
-                    ViewBag.ItemInteractionsRemain = playerItem?.FormerPlayer != null && playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
                 }
+
+                ViewBag.PlayerInteractionsRemain = me.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate;
+                ViewBag.ItemInteractionsRemain = playerItem?.FormerPlayer != null &&
+                    playerItem.FormerPlayer.ItemsUsedThisTurn < PvPStatics.MaxItemUsesPerUpdate &&
+                    playerItem.FormerPlayer.TimesAttackingThisUpdate < PvPStatics.MaxActionsPerUpdate;
 
                 if (playerItem?.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                 {
@@ -2671,6 +2678,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert item/pet has not been interacted with this turn
+            if (itemPlayer.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = $"This {posession} is getting a lot of attention and is nearly worn out!  They need to be left alone to recover.";
+                TempData["SubError"] = "Try again in a few moments.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert item has not acted too many times already
             if ((actionName == "hush" || actionName == "restrain") && itemPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
@@ -2799,8 +2814,9 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-            // Subtract cost (owner item use)
+            // Subtract cost (item use for both players)
             PlayerProcedures.AddItemUses(me.Id, 1);
+            PlayerProcedures.AddItemUses(itemPlayer.Id, 1);
 
             // Bring player online
             PlayerProcedures.SetTimestampToNow(me);
@@ -2812,6 +2828,210 @@ namespace TT.Web.Controllers
             if (!block)
             {
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {itemPlayer.GetFullName()}, a {item.ItemSource.FriendlyName}, here.");
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult FeralAction(string actionName, int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can interact with this pet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can interact with this pet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var pet = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
+            var petFormerPlayer = pet?.FormerPlayer;
+            var petPlayer = petFormerPlayer == null ? null : PlayerProcedures.GetPlayer(petFormerPlayer.Id);
+
+            if (petPlayer == null)
+            {
+                TempData["Error"] = "Cannot find that player";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (petPlayer.BotId != AIStatics.ActivePlayerBotId)
+            {
+                TempData["Error"] = "You can only interact with souled pets.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that item is a pet
+            if (petPlayer.Mobility != PvPStatics.MobilityPet)
+            {
+                TempData["Error"] = "You can only interact with pet players.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert pet is unowned or on a vendor
+            if (pet.Owner != null && pet.Owner.BotId != AIStatics.WuffieBotId && pet.Owner.BotId != AIStatics.SoulbinderBotId)
+            {
+                TempData["Error"] = "This pet is currently owned by another player.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that player is animate
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "Wriggle as you might, you find you cannot interact with this pet until you are fully animate again!";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert pet and player are in the same place
+            if (pet.Owner != null)
+            {
+                var vendor = PlayerProcedures.GetPlayer(pet.Owner.Id);
+                if (me.dbLocationName != vendor.dbLocationName)
+                {
+                    TempData["Error"] = "You can only interact with this pet when you are both in the same location";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+            else if (me.dbLocationName != pet.dbLocationName)
+            {
+                TempData["Error"] = "You can only interact with this pet when you are both in the same location";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You don't have enough time to play with the this pet right now.";
+                TempData["SubError"] = "Try again in a few moments.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert pet has not been interacted with this turn
+            if (petPlayer.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "This pet has been very busy this turn and needs a rest.";
+                TempData["SubError"] = "Try again in a few moments.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert pet has not acted too many times already
+            if (actionName == "tranquilize" && petPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
+            {
+                TempData["Error"] = "This pet has already acted this turn.";
+                TempData["SubError"] = "Maybe you can block their actions next turn.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var inanimXpRepo = new EFInanimateXPRepository();
+            var xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == petPlayer.Id);
+
+            // check pet has performed an action
+            if (xp == null)
+            {
+                TempData["Error"] = "This pet is not currently responding to strangers.";
+                TempData["SubError"] = "Maybe you could ask them for a nuzzle?";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Generate RP messages for player and pet
+            var secondP = "";
+            var firstP = "";
+            var Their = me.Gender == PvPStatics.GenderFemale ? "Her" : "His";
+            var didStuffTo = "";
+            var block = false;
+            var boost = false;
+
+            if (petPlayer.Mobility == PvPStatics.MobilityPet && actionName == "pat")
+            {
+                secondP = $"A friendly passer-by called {me.GetFullName()} greets you with gentle pat!";
+                firstP = $"You gently pat {pet.FormerPlayer.FullName}, a {pet.ItemSource.FriendlyName}!";
+                didStuffTo = "patted";
+                boost = true;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
+            }
+            else if (petPlayer.Mobility == PvPStatics.MobilityPet && actionName == "shoo")
+            {
+                secondP = $"You get on the nerves of {me.GetFullName()}, who agitatedly shoos you away!";
+                firstP = $"You shoo away {pet.FormerPlayer.FullName}, a {pet.ItemSource.FriendlyName}!";
+                didStuffTo = "shooed away";
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
+            }
+            else if (petPlayer.Mobility == PvPStatics.MobilityPet && actionName == "tranquilize")
+            {
+                secondP = $"{me.GetFullName()} fires a tranquilizer dart at you in an attempt to subdue you.  When it hits you find yourself unable to perform any more actions this turn.";
+                firstP = $"You fire a dart at {pet.FormerPlayer.FullName} the {pet.ItemSource.FriendlyName}, incapacitating them for the rest of this turn.";
+                didStuffTo = "tranquilized";
+                block = true;
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__ItemPetInteractions, 1);
+            }
+            else
+            {
+                TempData["Error"] = "You cannot perform that action.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (block)
+            {
+                // Drain pet of all their actions this turn
+                PlayerProcedures.SetAttackCount(petPlayer, PvPStatics.MaxActionsPerUpdate);
+            }
+            else
+            {
+                // Roll chance to gain/lose a turn's worth of XP, owner TF or struggle.
+                // Animate player cannot level up/lock the pet.
+                var rand = new Random();
+                if (rand.NextDouble() < 0.2)  // 1 XP per turn average for single account item (5 x 20%)
+                {
+                    var currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+                    if (boost && xp.LastActionTurnstamp > 0)
+                    {
+                        secondP += $"  {Their} actions gives you a helpful little boost!";
+                        firstP += "  Your action gives them a helpful little boost!";
+                        xp.LastActionTurnstamp--;
+                    }
+                    else if (!boost && xp.LastActionTurnstamp < currentGameTurn)
+                    {
+                        secondP += $"  {Their} actions hinder your progress and leave you feeling disheartened.";
+                        firstP += "  Your action hinders their progress and leaves them feeling disheartened.";
+                        xp.LastActionTurnstamp++;
+                    }
+
+                    inanimXpRepo.SaveInanimateXP(xp);
+                }
+            }
+
+            // Format pet's message
+            if (boost)
+            {
+                secondP = $"<span class='petActionGood'>{secondP}</span>";
+            }
+            else
+            {
+                secondP = $"<span class='petActionBad'>{secondP}</span>";
+            }
+
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+
+            // Subtract cost (item use for both players)
+            PlayerProcedures.AddItemUses(me.Id, 1);
+            PlayerProcedures.AddItemUses(petPlayer.Id, 1);
+
+            // Bring player online
+            PlayerProcedures.SetTimestampToNow(me);
+
+            TempData["Result"] = firstP;
+            PlayerLogProcedures.AddPlayerLog(me.Id, firstP, false);
+            PlayerLogProcedures.AddPlayerLog(petPlayer.Id, secondP, true);
+
+            if (!block)
+            {
+                LocationLogProcedures.AddLocationLog(me.dbLocationName, $"{me.GetFullName()} {didStuffTo} {petPlayer.GetFullName()}, a {pet.ItemSource.FriendlyName}, here.");
             }
 
             return RedirectToAction(MVC.PvP.Play());

@@ -157,6 +157,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult FeralAction()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FeralAction);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AddFriend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddFriend);
@@ -253,6 +259,7 @@ namespace TT.Web.Controllers
             public readonly string InanimateAction = ("InanimateAction").ToLowerInvariant();
             public readonly string AnimalAction = ("AnimalAction").ToLowerInvariant();
             public readonly string OwnerAction = ("OwnerAction").ToLowerInvariant();
+            public readonly string FeralAction = ("FeralAction").ToLowerInvariant();
             public readonly string MyFriends = ("MyFriends").ToLowerInvariant();
             public readonly string AddFriend = ("AddFriend").ToLowerInvariant();
             public readonly string RespondToFriendRequest = ("RespondToFriendRequest").ToLowerInvariant();
@@ -403,6 +410,15 @@ namespace TT.Web.Controllers
         public ActionParamsClass_OwnerAction OwnerActionParams { get { return s_params_OwnerAction; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_OwnerAction
+        {
+            public readonly string actionName = ("actionName").ToLowerInvariant();
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_FeralAction s_params_FeralAction = new ActionParamsClass_FeralAction();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_FeralAction FeralActionParams { get { return s_params_FeralAction; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_FeralAction
         {
             public readonly string actionName = ("actionName").ToLowerInvariant();
             public readonly string itemId = ("itemId").ToLowerInvariant();
@@ -910,6 +926,19 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
             OwnerActionOverride(callInfo, actionName, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void FeralActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult FeralAction(string actionName, int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FeralAction);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            FeralActionOverride(callInfo, actionName, itemId);
             return callInfo;
         }
 

@@ -43,6 +43,7 @@ namespace TT.Domain.Items.DTOs
             }
 
             public int TimesAttackingThisUpdate { get; set; }
+            public int ItemsUsedThisTurn { get; set; }
         }
 
         public class PlayPageSoulboundToPlayerDetail

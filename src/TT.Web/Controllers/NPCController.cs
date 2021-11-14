@@ -654,27 +654,27 @@ namespace TT.Web.Controllers
 
                 if (psychoCount + fierceCount + wrathfulCount + loathfulCount + soullessCount > 0)
                 {
-                    var output = "\"This city's never truly safe. But well, let's see here... </br>";
+                    var output = "\"This city's never truly safe. But well, let's see here... <br>";
 
                     if (psychoCount > 0)
                     {
-                        output += "Folks have mentioned seeing a large brawl between no less than <b>" + psychoCount + " psychopaths</b> out on the streets. </br>";
+                        output += "Folks have mentioned seeing a large brawl between no less than <b>" + psychoCount + " psychopaths</b> out on the streets. <br>";
                     }
                     if (fierceCount > 0)
                     {
-                        output += "I'd guess that about <b>" + fierceCount + " fierce psychopaths</b> are roaming about, based on the constant commotion. </br>";
+                        output += "I'd guess that about <b>" + fierceCount + " fierce psychopaths</b> are roaming about, based on the constant commotion. <br>";
                     }
                     if (wrathfulCount > 0)
                     {
-                        output += "At least <b>" + wrathfulCount + "</b> separate times today <b>wrathful psyhopaths</b> tried to break in here.</br>";
+                        output += "At least <b>" + wrathfulCount + "</b> separate times today <b>wrathful psychopaths</b> tried to break in here.<br>";
                     }
                     if (loathfulCount > 0)
                     {
-                        output += "There's also been a few mentions of <b>loathful psychopaths</b> prowling about... at least <b>" + loathfulCount + "</b> of them, I'd wager.</br>";
+                        output += "There's also been a few mentions of <b>loathful psychopaths</b> prowling about... at least <b>" + loathfulCount + "</b> of them, I'd wager.<br>";
                     }
                     if (soullessCount > 0)
                     {
-                        output += "Some alarming reports came in about <b>" + soullessCount + " soulless psychopaths</b> out there. Those truly are deranged monsters, I'd recommend to steer well clear if you see one.</br>";
+                        output += "Some alarming reports came in about <b>" + soullessCount + " soulless psychopaths</b> out there. Those truly are deranged monsters, I'd recommend to steer well clear if you see one.<br>";
                     }
                     output += "And well, that just about sums it up. Watch your step out there. Anything else I can assist you with?\"";
 
@@ -702,47 +702,47 @@ namespace TT.Web.Controllers
 
                 if (sororityMother != null)
                 {
-                    output += "There was quite a stir at the <b>Sorority House</b>, from what I know. Something about their management being a little overprotective.</br>";
+                    output += "There was quite a stir at the <b>Sorority House</b>, from what I know. Something about their management being a little overprotective.<br>";
                 }
                 if (popGoddess != null)
                 {
-                    output += "The <b>concert hall</b> is abuzz right now - the townsfolk are flocking in to see some kind of big star...</br>";
+                    output += "The <b>concert hall</b> is abuzz right now - the townsfolk are flocking in to see some kind of big star...<br>";
                 }
                 if (possessedMaid != null)
                 {
-                    output += "There's a rumor of a maid spirit claiming another victim in <b>the estate</b>. The poor sap needs to be freed from their misery if that is the case.</br>";
+                    output += "There's a rumor of a maid spirit claiming another victim in <b>the estate</b>. The poor sap needs to be freed from their misery if that is the case.<br>";
                 }
                 if (seamstress != null)
                 {
-                    output += "Word is, a dangerous seamstress is gathering a congregation at <b>one of the clothing stores</b> around town. She has a way with words, so I urge you to be careful with her gospel. </br>";
+                    output += "Word is, a dangerous seamstress is gathering a congregation at <b>one of the clothing stores</b> around town. She has a way with words, so I urge you to be careful with her gospel.<br>";
                 }
                 if (groundsKeeper != null)
                 {
-                    output += "<b>Sunnyglade Park</b> is not safe to tread right now - the groundskeeper is on patrol and not to be trifled with.</br>";
+                    output += "<b>Sunnyglade Park</b> is not safe to tread right now - the groundskeeper is on patrol and not to be trifled with.<br>";
                 }
                 if (exchangeProfessor != null)
                 {
-                    output += "An exchange professor is in town - I don't know much about her, but the rumors seem to link her to a string of recent disappearances around the <b>research lab</b>.</br>";
+                    output += "An exchange professor is in town - I don't know much about her, but the rumors seem to link her to a string of recent disappearances around the <b>research lab</b>.<br>";
                 }
                 if (fiendishFarmhand != null)
                 {
-                    output += "Something's afoot at the <b>farm</b> - I've heard troubling whispers that those who come by don't return, while farm's pens are growing ever fuller. </br>";
+                    output += "Something's afoot at the <b>farm</b> - I've heard troubling whispers that those who come by don't return, while farm's pens are growing ever fuller.<br>";
                 }
                 if (lazyLifeguard != null)
                 {
-                    output += "The lifeguard is on post at the <b>pool</b>, though that doesn't really amount to much with that slacker. She'd rather just turn the patrons into pool toys than do her job. Unacceptable conduct for any establishment, if you ask me.</br>";
+                    output += "The lifeguard is on post at the <b>pool</b>, though that doesn't really amount to much with that slacker. She'd rather just turn the patrons into pool toys than do her job. Unacceptable conduct for any establishment, if you ask me.<br>";
                 }
                 if (plushAngel != null)
                 {
-                    output += "If you see a plush angel on the street, it is better to leave it alone. It is just looking to make some friends.";
+                    output += "If you see a plush angel on the street, it is better to leave it alone. It is just looking to make some friends.<br>";
                 }
                 if (archAngel != null)
                 {
-                    output += "Yeah, apparently there's a war going on out there. Angels versus demons, I guess? It seems kind of silly to me, just another little spat. You'll probably find one of the archangels somewhere in the Scarlet Forest.";
+                    output += "Yeah, apparently there's a war going on out there. Angels versus demons, I guess? It seems kind of silly to me, just another little spat. You'll probably find one of the archangels somewhere in the Scarlet Forest.<br>";
                 }
                 if (archDemon != null)
                 {
-                    output += "What is it about Sunnyglade that seems to bring out the worst in people? Demons fighting angels this time! Just another day, I guess. If you wanna engage with some of the troublemakers, you can find an archdemon in the Valentine Castle.";
+                    output += "What is it about Sunnyglade that seems to bring out the worst in people? Demons fighting angels this time! Just another day, I guess. If you wanna engage with some of the troublemakers, you can find an archdemon in the Valentine Castle.<br>";
                 }
 
                 if (output.Length < 3)

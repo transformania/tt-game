@@ -744,7 +744,7 @@ namespace TT.Domain.Procedures
 
         private static string CleanString(string input, string victimName, string attackerName)
         {
-            return input?.Trim().Replace(Environment.NewLine, "</br>").Replace("$VICTIM_NAME$", victimName).Replace("$ATTACKER_NAME$", attackerName);
+            return input?.Trim().Replace(Environment.NewLine, "<br>").Replace("$VICTIM_NAME$", victimName).Replace("$ATTACKER_NAME$", attackerName);
         }
 
         private static string GetTFMessage(DbStaticForm form, Player victim, Player attacker, string PoV, int previousStage, int finalStage)

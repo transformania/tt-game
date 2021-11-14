@@ -1225,13 +1225,13 @@ namespace TT.Web.Controllers
                     if (player.DonatorLevel > d.Tier)
                     {
                         player.DonatorLevel = d.Tier;
-                        output += "  Knocking down to tier " + d.Tier + ".  </br>";
+                        output += "  Knocking down to tier " + d.Tier + ".  <br>";
                         var message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to an administrator on Discord or through Patreon.  Thank you for your past support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
                     else
                     {
-                        output += "  Okay at tier " + d.Tier + ".  </br>";
+                        output += "  Okay at tier " + d.Tier + ".  <br>";
                         var message = "<span class='good'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }

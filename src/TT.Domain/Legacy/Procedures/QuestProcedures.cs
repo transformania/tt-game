@@ -573,7 +573,7 @@ namespace TT.Domain.Procedures
                 input = "";
             }
 
-            input = input.Replace(Environment.NewLine, "</br>")
+            input = input.Replace(Environment.NewLine, "<br>")
                 .Replace("[b]", "<b>").Replace("[/b]", "</b>")
                 .Replace("[i]", "<i>").Replace("[/i]", "</i>")
                 .Replace("$PLAYER_NAME_FIRST$", player.FirstName)

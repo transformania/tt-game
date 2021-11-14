@@ -36,7 +36,7 @@ function initNotificationBox() {
 
                 $("#notificationBox").show();
                 $("#dismissNotficationBox").show();
-                $("#notificationBox").prepend(notice.jMessage + "</br></br>");
+                $("#notificationBox").prepend(notice.jMessage + "<br><br>");
 
                 if (notificationsEnabled == true) {
                     var message = notice.jMessage;

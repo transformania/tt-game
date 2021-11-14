@@ -56,7 +56,14 @@ namespace TT.Domain.Statics
         public static int GetNumPlayerLearnableSkills()
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Count(s => s.GivesEffectSourceId == null && s.IsLive == "live");
+            var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToHashSet();
+            var regions = LocationsStatics.LocationList.GetLocation.Select(l => l.Region).ToHashSet();
+            var counts = statSkillRepo.DbStaticSkills.Where(s => s.GivesEffectSourceId == null && s.IsLive == "live")
+                                                     .GroupBy(s => new { s.LearnedAtRegion, s.LearnedAtLocation })
+                                                     .Select(g => new { Spell = g.Key, Count = g.Count() }).ToList();
+
+            return counts.Where(g => regions.Contains(g.Spell.LearnedAtRegion) || locations.Contains(g.Spell.LearnedAtLocation))
+                         .Sum(g => g.Count);
         }
 
     }

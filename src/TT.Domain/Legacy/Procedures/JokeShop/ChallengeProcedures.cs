@@ -1223,10 +1223,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 {
                     var cutoff = DateTime.UtcNow.AddHours(-1);
 
-                    return ItemProcedures.GetAllPlayerItems(p.Id)
-                                    .Count(i => i.Item.ItemType == PvPStatics.ItemType_Rune &&
-                                                i.dbItem.LastSold > cutoff &&
-                                                i.dbItem.EmbeddedOnItemId.HasValue);
+                    var repo = new EFItemRepository();
+                    var runeItems = repo.DbStaticItems.Where(i => i.ItemType == PvPStatics.ItemType_Rune).Select(i => i.Id);
+                    var playerItems = repo.Items.Where(i => i.OwnerId == p.Id).Select(i => i.Id);
+
+                    return repo.Items.Count(i => i.EmbeddedOnItemId.HasValue &&
+                                                 i.LastSold > cutoff &&
+                                                 runeItems.Contains(i.ItemSourceId) &&
+                                                 playerItems.Contains(i.EmbeddedOnItemId.Value));
                 }
 
                 int equippedRecentPurchases(Player p, string type)

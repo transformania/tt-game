@@ -13,6 +13,7 @@ using System.Web.Http;
 using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.World.Queries;
@@ -115,6 +116,11 @@ namespace TT.Web
             TurnTimesStatics.ActiveConfiguration = data != null && TurnTimesStatics.IsValidConfiguration(data.TurnTimeConfiguration) ? data.TurnTimeConfiguration : TurnTimesStatics.FiveMinuteTurns;
 
             PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber ?? PvPStatics.AlphaRound;
+
+            if (data != null)
+            {
+                JokeShopProcedures.SetJokeShopActive(data.JokeShop);
+            }
         }
     }
 }

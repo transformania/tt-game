@@ -260,15 +260,7 @@ namespace TT.Web.Controllers
                     dbLocationName = me.dbLocationName;
                 }
 
-                var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
-
-                if (loc == null && dbLocationName == LocationsStatics.JOKE_SHOP)
-                {
-                    JokeShopProcedures.SetJokeShopActive(world.JokeShop);
-                    loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
-                }
-
-                animalOutput.Location = loc;
+                animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);
@@ -346,15 +338,7 @@ namespace TT.Web.Controllers
                                               e.dbEffect.Duration > 0).Any();
             loadtime += "End get player effects:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
-
-            if (location == null && me.dbLocationName == LocationsStatics.JOKE_SHOP)
-            {
-                JokeShopProcedures.SetJokeShopActive(world.JokeShop);
-                location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
-            }
-
-            output.Location = location.Clone();
+            output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName).Clone();
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
             // Hide directions if player is blind

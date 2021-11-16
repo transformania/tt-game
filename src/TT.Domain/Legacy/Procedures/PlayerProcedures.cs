@@ -1609,13 +1609,13 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            if (amount < Int32.MaxValue)
+            if (dbPlayer.Money + amount < PvPStatics.MaxMoney)
             {
                 dbPlayer.Money += amount; 
             }
             else
             {
-                dbPlayer.Money += 999999999;
+                dbPlayer.Money = PvPStatics.MaxMoney;
             }
             
             playerRepo.SavePlayer(dbPlayer);

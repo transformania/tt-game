@@ -277,6 +277,10 @@ namespace TT.Domain.Players.Entities
         public void ChangeMoney(int amount)
         {
             Money += amount;
+            if (Money > PvPStatics.MaxMoney)
+            {
+                Money = PvPStatics.MaxMoney;
+            }
         }
 
         public void ChangeActionPoints(decimal amount)

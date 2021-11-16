@@ -1149,9 +1149,9 @@ namespace TT.Domain.Procedures
             {
                 var price = 50 + (10 * item.Level);
 
-                if (price >= Int32.MaxValue)
+                if (price > PvPStatics.MaxMoney)
                 {
-                    price = 999999999;
+                    price = PvPStatics.MaxMoney;
                 }
 
                 // item is not permanent, charge less

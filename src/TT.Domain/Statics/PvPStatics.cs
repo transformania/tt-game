@@ -114,6 +114,8 @@ namespace TT.Domain.Statics
         public const decimal PercentHealthToAllowAnimalFormTF = 0;
         public const decimal PercentHealthToAllowInanimateFormTF = 0;
 
+        public const int MaxMoney = 999999999;
+
         public const string ItemType_Accessory = "accessory";
         public const string ItemType_Consumable = "consumable";
         public const string ItemType_Consumable_Reuseable = "consumable_reuseable";

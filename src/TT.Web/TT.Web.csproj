@@ -400,6 +400,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_86.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_87.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_88.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_89.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

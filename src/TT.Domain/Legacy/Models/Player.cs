@@ -183,6 +183,11 @@ namespace TT.Domain.Models
             return DonatorLevel >= 3;
         }
 
+        public bool WillGoOverMoneyLimitIfPaid(decimal amount)
+        {
+            return this.Money + amount > PvPStatics.MaxMoney;
+        }
+
     }
 
     public class Player_VM

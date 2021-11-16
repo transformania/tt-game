@@ -315,6 +315,12 @@ namespace TT.Domain.Procedures
             var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
+            // reducing the money transfer amount to prevent the covenant money going over the limit
+            if (dbCov.Money + amount > PvPStatics.MaxMoney)
+            {
+                amount = PvPStatics.MaxMoney - dbCov.Money;
+            }
+
             dbPlayer.Money -= amount;
            
             dbCov.Money += amount;
@@ -333,18 +339,20 @@ namespace TT.Domain.Procedures
             var dbCov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == giftee.Id);
 
-            if (amount >= Int32.MaxValue)
-            {
-                amount += 999999999;
-            }
-
             dbCov.Money -= amount;
 
             // taxes...
             amount *= .95M;
             amount = Math.Floor(amount);
 
-            dbPlayer.Money += amount;
+            if (dbPlayer.Money + amount > PvPStatics.MaxMoney)
+            {
+                dbPlayer.Money = PvPStatics.MaxMoney;
+            }
+            else 
+            {
+                dbPlayer.Money += amount;
+            }
 
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);

@@ -1,4 +1,5 @@
 @model TT.Domain.ViewModels.PlayerNameViewModel
+@using TT.Domain.Statics
 
 <div class="containerInner">
 
@@ -59,13 +60,13 @@
                 var moneyValue = parseInt($("#money").val());
 
                 // Check for values over max and set accordingly.
-                if (levelValue > 999999999)
+                if (levelValue > @PvPStatics.MaxMoney)
                 {
-                    $("#level").val("999999999");
+                    $("#level").val("@PvPStatics.MaxMoney");
                 }
 
-                if (moneyValue > 999999999) {
-                    $("#money").val("999999999");
+                if (moneyValue > @PvPStatics.MaxMoney) {
+                    $("#money").val("@PvPStatics.MaxMoney");
                 }
             })
         });

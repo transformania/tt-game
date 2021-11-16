@@ -658,7 +658,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-
+            // assert that the player will not go over the money limit
+            if (giftee.WillGoOverMoneyLimitIfPaid(amount))
+            {
+                TempData["Error"] = "This player has too much money, you cannot give them any more.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
             CovenantProcedures.SendCovenantMoneyToPlayer((int)me.Covenant, giftee, amount);
 
 

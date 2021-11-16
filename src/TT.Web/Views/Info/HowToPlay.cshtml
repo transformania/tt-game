@@ -1,4 +1,10 @@
-﻿@section menu
+﻿@using TT.Domain.Statics
+
+@{
+    ViewBag.Title = "How To Play";
+}
+
+@section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Info.FAQ())">View FAQ</a></li>
@@ -16,12 +22,12 @@
         </i>
     </b>
 
-    
+
 
     <ul>
         <li><a href="#gameBasics">The Basics</a></li>
         <li><a href="#combat">Combat</a></li>
-        <li><a href="#petsAndItems">Pets and Items</a></li>
+        <li><a href="#petsAndItems">Pets, Items and Runes</a></li>
         <li><a href="#town">The Town of Sunnyglades</a></li>
         <li><a href="#covenants">Covenants</a></li>
         <li><a href="#dueling">Dueling</a></li>
@@ -30,25 +36,25 @@
         <li><a href="#other">Other information</a></li>
         <li><a href="#newplayertips">Tips for New Players</a></li>
     </ul>
-    
+
     <hr>
 
     <h2 id="gameBasics">The Basics</h2>
 
-    <p>The goal of this game is to transform your competition, other spellcasters, ultimately into forms that can pose you no threat while collecting forbidden knowledge from artifacts and demons in the dungeon below--or steal them off of others who have done so themselves.  You do this by casting spells against other players which, once your target's willpower is low enough and enough energy has built up inside their bodies, will change their forms into animate forms, inanimate objects, or animals which can be worn or kept to enhance your own magic until--or if!--your victims are able to return to a human body.  Here are the core concepts of the game.</p>
+    <p>The goal of this game is to transform your competition, other spellcasters, ultimately into forms that can pose you no threat while collecting forbidden knowledge from artifacts and demons in the dungeon below--or steal them off of others who have done so themselves.  You do this by casting spells against other players which, once your target's willpower is low enough and enough energy has built up inside their bodies, will change their forms into animate forms, inanimate objects, or pets which can be worn or kept to enhance your own magic until--or if!--your victims are able to return to a human body.  There are also a number of other achievements waiting to be won by exploring the town.  Here are the core concepts of the game.</p>
 
     <h3>Game Modes</h3>
 
     <p>Upon creating a character, you will be asked to choose a game mode.  There are three options:</p>
 
     <ul>
-        <li><b>PvP</b> means you are always vulnerable to any spell from any other PvP mode player when online.  You cannot leave PvP mode and no players can enter it without starting a new character.  This mode is not recommended to players new to the game.  The Dungeon region is only available to PvP mode players.</li>
+        <li><b>PvP</b> (Player versus Player) means you are always vulnerable to any spell from any other PvP mode player when online.  You have the option of leaving PvP mode, but once you have left you cannot return to PvP mode without starting a new character (rerolling).  This mode is not recommended to players new to the game.  The Dungeon region is only available to PvP mode players.</li>
         <li><b>Protection</b> means you cannot be attacked by other players with spells <i>other than animate spells.</i>  You cannot attack PvP mode players, nor be attacked by them.  You can freely move between Protection and SuperProtection game modes.</li>
         <li><b>SuperProtection</b> means you cannot be attacked nor attack any other human players, even with animate spells.  This is the safest game mode for those trying to RP or enjoy a private fight without worrying about outside interference.  You can freely move between Protection and SuperProtection game modes.</li>
     </ul>
 
     <p>There are a few exception to the above:</p>
-    
+
     <ul>
         <li>Being a friend with someone bypasses all game mode restrictions.  A SuperProtection player who is a friend with a PvP mode player can use any spell on them, and vice versa.</li>
         <li>NPCs are not restricted by game modes.  If you fight a boss or a Psychopathic Spellslinger, expect any consequences.</li>
@@ -58,15 +64,15 @@
 
     <h3>Action Points</h3>
 
-    <p>You will inevitably need to move around town to find, or flee from, your competition, as well as attack them, find new spells, meditate to recover mana, or cleanse your body to recover willpower.  All of these take action points.  Action points limit how much you can do at a time and will replenish every five minutes--check back a bit later you will have a few more to spend.  Action points can be accumulated up to a maximum of 120.</p>
+    <p>You will inevitably need to move around town to find, or flee from, your competition, as well as attack them, find new spells, meditate to recover mana, cleanse your body to recover willpower, or progress through quests.  All of these take action points.  Action points limit how much you can do at a time and will replenish every five minutes--check back a bit later you will have a few more to spend.  Action points can be accumulated up to a maximum of @((int)(TT.Domain.Statics.TurnTimesStatics.GetActionPointLimit())).</p>
 
     <h3>Action Point Reserve</h3>
 
-    <p>When you have an action point reserve, you can regenerate up to 20 extra action points per update until the reserve is empty.  Your reserve will increase by 5 every update when your regular action point bar is at maximum.  The action point reserve will not fill up any higher than 360 points.</p>
+    <p>When you have an action point reserve, you can regenerate up to 20 extra action points per update until the reserve is empty.  Your reserve will increase by 5 every update when your regular action point bar is at maximum.  The action point reserve will not fill up any higher than @((int)(TT.Domain.Statics.TurnTimesStatics.GetActionPointReserveLimit())) points.</p>
 
     <h3>Moving</h3>
 
-    <p>So long as you have legs or something equivalent, you can move about town in search--or in flight of--your opponents.  Moving costs one action point but certain forms or items you can wear or equip can increase or decrease the amount.  Certain forms--like a tree rooted into the ground or certain statues--are animate and can continue to search, cast spells, cleanse, and meditate but cannot move from their location unless using a teleportation scroll or covenant callback crystals.</p>
+    <p>So long as you have legs or something equivalent, you can move about town in search--or in flight of--your opponents.  Moving costs one action point but certain forms or effects, or embedding certain runes, can increase or decrease the amount.  Some forms--like a tree rooted into the ground or certain statues--are animate and can continue to search, cast spells, cleanse, and meditate but cannot move from their location unless using a teleportation scroll or covenant callback crystals.  You can move between locations or catch a bus using the minimap.</p>
 
     <h3>Willpower</h3>
 
@@ -78,15 +84,15 @@
 
     <h3>Meditating</h3>
 
-    <p>You can meditate to restore some mana.  Meditating costs four actions points and restores mana based on your level, effects, and pets/items.  You can only meditate and cleanse three times in a turn.</p>
+    <p>You can meditate to restore some mana.  Meditating costs @((int)(PvPStatics.MeditateCost)) actions points and restores mana based on your level, effects, and embedded runes You can only meditate and cleanse @((int)(PvPStatics.MaxCleansesMeditatesPerUpdate)) times in a turn.</p>
 
     <h3>Cleansing</h3>
 
-    <p>You can cleanse your body to restore some willpower.  Cleaning costs 4 action points and 3 mana and will restore some of your willpower, leaving you in a better shape to resist others' spells casts against you.  Cleansing will also remove a small percentage of every type of transformation energy your body currently has built up from others attacking you.  You can cleanse more effectively at higher levels, and certain forms or items can help you recover even more willpower.  You can only meditate and cleanse three together in a turn.</p>
+    <p>You can cleanse your body to restore some willpower.  Cleaning costs @((int)(PvPStatics.CleanseCost)) action points and @((int)(PvPStatics.CleanseManaCost)) mana and will restore some of your willpower, leaving you in a better shape to resist others' spells casts against you.  Cleansing will also remove a small percentage of every type of transformation energy your body currently has built up from others attacking you.  Certain forms or embedded runes can help you recover even more willpower.  You can only meditate, cleanse, or self restore a combined total of @((int)(PvPStatics.MaxCleansesMeditatesPerUpdate)) times each turn.</p>
 
     <h3>Self Restoration</h3>
 
-    <p>If you don't like the current animate form you are in, you have the option to Self Restore.  This takes 3 AP and 10 mana.  Self restoration is a special spell that permits you to return to your original animate form, though it may take many casts to successfully do so.  Each cast builds up transformation energy.  When enough energy has been gathered, you will return to the form you began with when you first entered the town of Sunnyglade, known as your base form.  Having additional points in Restoration will help this process to go faster.  Warning, since cleansing removes some transformation energy on your body, doing so will slow down your process of self restoration.</p>
+    <p>If you don't like the current animate form you are in, you have the option to Self Restore.  This takes @((int)(PvPStatics.SelfRestoreAPCost)) AP and @((int)(PvPStatics.SelfRestoreManaCost)) mana.  Self restoration is a special spell that permits you to return to your original animate form, though it may take many casts to successfully do so.  Each cast builds up transformation energy.  When enough energy has been gathered, you will return your form and name to what they were when you first entered the town of Sunnyglade, known as your base form.  Having additional points in Restoration will help this process to go faster.  Warning, since cleansing removes some transformation energy on your body, doing so will slow down your process of self restoration.</p>
 
     <h3>Searching</h3>
 
@@ -98,16 +104,19 @@
 
     <p>There are currently three types of forms:</p>
 
-    <ul><li><b>Animate:</b>  Animate players are able to move about the town, cast spells, cleanse and meditate, and do just about anything at will.  Generally being transformed into a different animate form is harmless, though be careful, some animate forms are immobile and unable to move from their current location.  Additionally, the action of transforming also depletes a significant portion of the victim's mana.</li>
-    <li><b>Inanimate:</b>  Inanimate players have been defeated and have been turned into helpless posessions.  They can do little more than lie on the ground and hope someone decides to claim and wear them.  A victim will drop all of their belongings and release their pet upon being inanimated.  Should they wish to return human, they can choose to struggle against their changes and fight to restore their humanity, or else give in to their new existence and rub or pinch their owner.  Inanimate players have limited sense of their surroundings and do not know where they are within the town.</li>
-    <li><b>Pets:</b>  Pets are similar to inanimate players but provide greater bonuses and penalties to their owner.  If a pet has been released and has no owner, they become feral and are free to move about town on their own to find to run from would-be captors.  Once tamed, however, a pet will always follow their owner.  Pets have greater sense of their surroundings and can always see where in town they are, whether feral or tamed.</li>
+    <ul>
+        <li><b>Animate:</b>  Animate players are able to move about the town, cast spells, cleanse and meditate, and do just about anything at will.  Generally being transformed into a different animate form is harmless, though be careful, some animate forms are immobile and unable to move from their current location.  Additionally, the action of transforming also depletes a significant portion of the victim's mana.</li>
+        <li><b>Inanimate:</b>  Inanimate players have been defeated and have been turned into helpless posessions.  They can do little more than lie on the ground and hope someone decides to claim and wear them.  A victim will drop all of their belongings and release their pet upon being inanimated.  Should they wish to return human, they can choose to struggle against their changes and fight to restore their humanity, or else give in to their new existence and rub or pinch their owner.  Inanimate players have limited sense of their surroundings and can only tell where they are within the town when they have been dropped on the ground.</li>
+        <li><b>Pets:</b>  Pets are similar to inanimate players but provide more rune slots for their owner.  If a pet has been released and has no owner, they become feral and are free to move about town on their own to find a new owner or to run from would-be captors.  Once tamed, however, a pet will always follow their owner.  Pets have greater sense of their surroundings and can always see where in town they are, whether feral or tamed.</li>
     </ul>
+
+    <p>You enter town in your base form, and may be able to return to it if ever you lose your form.  Sometimes you may be able to earn a new base form.  When in your base form you can freely switch to a different available base form.</p>
 
     <h3>Experience and Experience Levels</h3>
 
     <p>As with any action, the more you practice at something the better you'll become at it.  You will gain experience every time you cast a spell against an opponent as long as it adds transformation energy to their body.  The amount of experience you earn varies by the tpye of the spell as well as the level difference between you and the target.  Low level players will gain extra experience when attacking a higher level player, and higher level players will earn less or no experience when attacking a lower level player.  Successfully completing a transformation can also yield a lump sum of XP.</p>
 
-    <p>Once you gain enough experience, you will gain an experience level, raising your maximum willpower and mana limits.  Each experience level requires more experience to attain than the previous.</p>
+    <p>Once you gain enough experience, you will gain an experience level, unlocking a level-up perk.  Each experience level requires more experience to attain than the previous.</p>
 
     <p>You can also gain some XP from additional ways besides combat:</p>
     <ul>
@@ -125,13 +134,21 @@
     <hr>
     <h2 id="combat">Combat</h2>
 
+    <h3>Being in Combat</h3>
+
+    <p>The aim of combat is defeat a player by using spells to lower their willpower and build enough transformation energy to completely transform them.  When you defeat a player you may be rewarded with XP, Arpeyjis, dungeon points, the items and runes they leave behind, and a health and willpower victory bonus.  However, being in recent combat will prevent you performing some actions like entering a quest or the PvP dungeon, or swapping consumables.  Cleansing and meditating is also more efficient when out of battle.</p>
+
     <h3>Spells</h3>
 
-    <p>All combat amongst spellslingers in Sunnyglade is performed with their mind and their magic.  Each attack takes the form of a spell.  Spells are small manipulations of the fibers of the universe that alter the matter that a certain entity is made up of, turning your opponents into whatever form you desire.  Spells require mana and actions points to cast, and there is always a chance that your spell will be avoided by your opponent, hit a vulnerable spot on their body and deal critical damage, or possible even backfire, lowering your own willpower instead!  You can learn new spells by searching around town--most spells can only be found in certain areas.  Some spells can only be learned from quests or taught by an NPC.  Spellbooks can also be found or purchased and will teach its reader a number of spells based on the type of book read.</p>
+    <p>All combat amongst spellslingers in Sunnyglade is performed with their mind and their magic.  Each attack takes the form of a spell.  Spells are small manipulations of the fibers of the universe that alter the matter that a certain entity is made up of, turning your opponents into whatever form you desire.  Spells require @((int)(PvPStatics.AttackManaCost)) mana and @((int)(PvPStatics.AttackCost)) actions points to cast, and there is always a chance that your spell will be avoided by your opponent, hit a vulnerable spot on their body and deal critical damage, or possible even backfire, lowering your own willpower instead!</p>
+
+    <p>You can learn new spells by searching around town--most spells can only be found in certain areas.  Some spells can only be learned from quests or taught by an NPC.  Spellbooks can also be found or purchased and will teach its reader a number of spells based on the type of book read.</p>
 
     <h3>Transformation Energy</h3>
 
-    <p>If you find yourself casting spells at an opponent, one spell cast probably won't do a whole lot--your opponent will be able to resist the magic and reverse any changes that affect their body.  You need to allow transformation energy to build up in your opponent by repeatedly casting the spell against them.  Even if your opponent has no willpower left, you may need to keep casting your spell for enough transformation energy to build up and overwhelm them for good, sealing them into their new form.  Once transformation energy builds up to critical levels, the victims of spells will suffer additional willpower damage with each cast.  Each spell adds a unique type of transformation energy against its target.  Transformation energy can be partially decreased from your body by cleansing, but only in small, unknown increments.  Some items also help with lowering transformation energy.</p>
+    <p>If you find yourself casting spells at an opponent, one spell cast probably won't do a whole lot--your opponent will be able to resist the magic and reverse any changes that affect their body.  You need to allow transformation energy to build up in your opponent by repeatedly casting the spell against them.  Even if your opponent has no willpower left, you may need to keep casting your spell for enough transformation energy to build up and overwhelm them for good, sealing them into their new form.</p>
+
+    <p>Once transformation energy builds up to critical levels, the victims of spells will suffer additional willpower damage with each cast, and players with extremely high levels of transformation energy may even find themselves spontaneously defeated in a burst of energy that lowers the willpower of everyone nearby.  Each spell adds a unique type of transformation energy against its target.  An attacker can only build up transformation energy from their own spells, but after some time the transformation energy from past attacks will accumulate in a shared pool that other attckers may take advantage of.  Transformation energy can be partially decreased from your body by cleansing, but only in small, unknown increments.  Some items also help with lowering transformation energy.</p>
 
     <h3>Mind Control</h3>
 
@@ -142,31 +159,31 @@
     <p>Curses and Blessings are temporary effects that change your abilities for a given amount of time.  Curses are primarily bad and will hinder you while the much rarer Blessings will generally help you out.  Curses and Blessings can be received from having a spell cast at you or by searching in a particular location.  Curses and Blessings have a Duration, a measure of how many turns the effect will last on your body.  It will then enter a Cooldown period in which you are immune from receiving that particular curse or blessing.  Level-up perks are unique types of blessings and can never expire or be lost.</p>
 
     <hr>
-    <h2 id="petsAndItems">Pets and Items</h2>
+    <h2 id="petsAndItems">Pets, Items and Runes</h2>
 
 
-    <p>Items are things you can carry with you, wear, carry, or use.  Items can be clothing which can be worn, and doing so may offer special bonuses to your willpower, mana, spell casting abilities, resistance to spells, sneaking, and more.  You can also drop items if you no longer want them.  Players who have been transformed into an inanimate states become an item, and any items a player is carrying when he or she is turned into an item themself will fall to the ground for anyone to claim.  Items can be in a player's inventory or on the ground at a particular location.</p>
+    <p>Items are things you can carry with you, wear, carry, or use.  Items that can be worn and pets that have been tamed allow you to embed special magical items called runes.  Runes offer special bonuses to your willpower, mana, spell casting abilities, resistance to spells, sneaking, and more, but they only have effect on items you are wearing.  You can also drop items if you no longer want them.  Players who have been transformed into an inanimate states become an item, and any items a player is carrying when he or she is turned into an item themself will fall to the ground for anyone to claim.  Items can be in a player's inventory or on the ground at a particular location.</p>
 
-    <p>Some types of items have levels.  An pet or item's level is initially equal to the level of the player who was transformed to create it, so transforming higher level players will result in higher level pets and items.  Additionally, if an item likes or dislikes its new owner enough, it can slowly grow more powerful over time by subtly interacting with its owner.  Higher level items will have more drastic bonuses and penalties for their wearers.  The only type of item that does not have levels are one-time-use consumables, which players cannot be transformed into.</p>
+    <p>Some types of items have levels.  An pet or item's level is initially equal to the level of the player who was transformed to create it, so transforming higher level players will result in higher level pets and items.  Additionally, if an item likes or dislikes its new owner enough, it can slowly grow more powerful over time by subtly interacting with its owner.  Higher level items can accommodate more powerful runes for their wearers.  The only type of item that does not have levels are one-time-use consumables, which players cannot be transformed into.</p>
 
-    <p>Some consumable type items might show the red PvP flag.  This means that this item can only be seen and picked up by a PvP-mode player.  Similarly, items that are not in PvP mode cannot be seen by PvP mode players.  Players can still purchase either type from Lindella or Wuffie and use them.</p>
+    <p>Some consumable type items might show the red PvP flag.  This means that this item can only be seen and picked up by a PvP-mode player.  Similarly, items that are not in PvP mode cannot be seen by PvP mode players.</p>
 
     <p>Only one consumable or reusable consumable type item can be used in a turn.</p>
-    
-<h2>Soulbinding</h2>
-    
-<p>There is a demon named Kerin Kezesul-Adriz the Soulbinder who can soulbind items or pets to you.  Soulbound items cannot be picked up by any other player, and should you find yourself defeated, your soulbound items will go to her for safekeeping until you return to animacy (or if!)</p>
-    
-<p>You can soulbind your first item for free, but after that, each additional soulbinding will cost more than the previous.  Once soulbound, items and pets can never have that soulbinding removed, even if you no longer wish to posess them, so choose carefully which ones you want to keep for the future!</p>
-    
-<p>You can only soulbind items that were once a player or bot, and only if they have been locked into that form permanently.  If the item is souled by a human player, they must also first consent to being soulbound at all.</p>
-    
-<p>If you become inanimate or a pet and choose to start over as a new character, you will <b>NOT</b> be able to reclaim the past character's soulbound items.</p>
 
-<h3>Inventory</h3>
+    <h2>Soulbinding</h2>
+
+    <p>There is a demon named Karin Kezesul-Adriz the Soulbinder who can soulbind items or pets to you.  Soulbound items cannot be picked up by any other player, and should you find yourself defeated, your soulbound items will go to her for safekeeping until you return to animacy (or if!)</p>
+
+    <p>You can soulbind your first item for free, but after that, each additional soulbinding will cost more than the previous.  You also have the option to pay to change the name of a soulbound item to one of your own choosing.  Once soulbound, items and pets can never have that soulbinding removed, even if you no longer wish to posess them, so choose carefully which ones you want to keep for the future!</p>
+
+    <p>You can only soulbind items that were once a player or bot, and only if they have been locked into that form permanently.  If the item is souled by a human player, they must also first consent to being soulbound at all.</p>
+
+    <p>If you become inanimate or a pet and choose to start over as a new character, you will <b>NOT</b> be able to reclaim the past character's soulbound items.</p>
+
+    <h3>Inventory</h3>
 
     <p>
-        Your inventory is all of the items you currently posses.  You can only carry a maximum number of items at a time before you will be unable to pick up any more.  You can pick up more items by using consumable items, wearing something you are carrying (items that are worn/equipped do not count against your inventory item limit as they rest comfortably on your body) or dropping items you are carrying. If you search a location and find a new item and your inventory is full, something else that you are carrying but do not have worn or equipped will fall to the ground.
+        Your inventory is all of the items you currently posses.  You can only carry a maximum number of items at a time before you will be unable to pick up any more.  You can pick up more items by using consumable items, wearing something you are carrying (items that are worn/equipped do not count against your inventory item limit as they rest comfortably on your body) or dropping items you are carrying. If you search a location and find a new item and your inventory is full, the new item will fall to the ground.
     </p>
 
     <p>
@@ -184,24 +201,25 @@
         </ul>
     </p>
 
-    <p>You can only wear one of each type at a time except for accessories.  You can carry two different types of accessories, one for your left hand and the other for your right.</p>
+    <p>You have space to equip three consumables, two accessories (one for each hand), one pet, and one of each other item type.  Any extra items you wear will overflow into an empty accessory slot.  You don't have to wear or equip every item you are carrying, but you are only able to use or get bonuses from equipped items.  You also cannot change consumables when you have recently been in combat.</p>
 
     <p>You can increase the number of items you can carry by increasing your Fortitude.</p>
 
-    <p>If you have the money and want to gear up quickly, you can visit Lindella and purchase defeated mages turned into items from others' conquests for a faster boost to your magical abilities.  You can also purchase Tomes and spell books from </p>
+    <p>If you have the money and want to gear up quickly, you can visit Lindella and purchase defeated mages turned into items from others' conquests for a faster boost to your magical abilities.  You can also purchase Tomes and spell books from Skaldyr the Forbidden.</p>
 
     <h3>Unique items</h3>
 
     <p>There are some unique items with special powers:</p>
 
     <ul>
-        <li><b>Scrolls of Teleportation</b> allow the user to move anywhere in Sunnyglade instantly, dungeon excluded.  Even immobilized animate players can use these.</li>
+        <li><b>Scrolls of Teleportation</b> allow the user to move almost anywhere in Sunnyglade instantly, except between the town and dungeon.  Even immobilized animate players can use these.</li>
         <li><b>Covenant Callback Crystals</b> work like teleportation scrolls but only bring the user back to their covenant's safeground, if they have one.</li>
         <li><b>Tomes</b> can be read to give the user some immediate experience.  Tomes can be read as often as desired, however experience will only be granted the first time a user reads it.  After absorbing knowledge from a tome, the book loses its magical effects and vanishes.</li>
         <li><b>Spellbooks</b> can be read to teach the user a set of random spells.</li>
         <li><b>Hex-B-Gone Moisturizers</b> can be used to remove a curse or blessing from the user.   Butt Plugs are reusable consumables with the same effect.</li>
-        <li><b>Classic Me! Restorative Lotions</b> immediate restore the user to their base form, as well as remove a significant amount of transformation energy accumulated on their body.</li>
+        <li><b>Classic Me! Restorative Lotions</b> immediate restore the user to their base form and name, as well as remove a significant amount of transformation energy accumulated on their body.</li>
         <li><b>Submissiveness Splash Orbs</b> can be thrown in a location, lower the willpower of all valid targets.  Using an orb counts as an attack action.</li>
+        <li><b>Autoselftransmogrification Deflector Devices</b> are curious magical contraptions that allow mges to turn themselves into any animate form they know the spell for.</li>
     </ul>
 
     <h3>Arpeyjis</h3>
@@ -217,25 +235,27 @@
 
     <p>A location is, quite simply, a place where something can happen.  You can tap into the wells of time to discover what recent events have been happening at this location.  Some spells are unique to a specific location and can only be learned when searching there.</p>
 
+    <p>Some of the townspeople claim to have seen the ghostly remnants of Sunnyglade's long lost joke shop floating about town.  If you see it, beware.  This is a mysterious and chaotic place unlike anywhere else in Sunnyglade.  Don't mess with powers you don't understand - unless you're prepared for the consequnces!</p>
+
     <h3>Regions</h3>
 
     <p>A region is a group of similar locations by theme and geographic location.  Some spells are region-specific and can be found in any location within a particular region.</p>
 
-    <p>There is a large region known as the Dungeon that is only accessible to PvP mode players.  The dungeon can be entered in two locations:  <b>Main Street and Sunnyglade Drive Intersection</b> and <b>Street: Main Street and E. 9th Avenue Intersection</b>.  There is no map in the dungeon and every now and then the very structure itself will shift into a wholly new and random maze.  You can leave the dungeon from anywhere within it as long as you have not been in combat recently.</p>
+    <p>There is a large region known as the Dungeon that is only accessible to PvP mode players.  The dungeon can be entered in two locations:  <b>Main Street and Sunnyglade Drive Intersection</b> and <b>Street: Main Street and E. 9th Avenue Intersection</b>.  You must be out of combat and have enough action points.  There is no map in the dungeon and every now and then the very structure itself will shift into a wholly new and random maze.  You can leave the dungeon from anywhere within it as long as you have not been in combat recently.</p>
 
     <h3>There is a map provided where you can see the layout of the town.  The pink-shaded area on the map is where you currently are.  No map of the dungeon is provided.</h3>
 
     <h3>Recent Activities</h3>
 
-    <p>Spellcasters posses a rare ability to tap into the strings of time to discover what has happened at a particular place in the last few hours.  Any activities that you or another spellcaster perform in a location is recorded for a while, whether that action is entering or leaving a location, searching, meditating, cleansing, dropping/picking up items, or attacking.  Be warned, this means an opponent may trace your path and attack you when you least suspect it.  If you are wearing certain items, however, there is a chance you can move from one location to another silently without leaving a trail for others to track you, giving you a chance or losing or confusing a pursuer. </p>
+    <p>Spellcasters posses a rare ability to tap into the strings of time to discover what has happened at a particular place in last the hour or so.  Any activities that you or another spellcaster perform in a location is recorded for a while, whether that action is entering or leaving a location, searching, meditating, cleansing, dropping/picking up items, or attacking.  Be warned, this means an opponent may trace your path and attack you when you least suspect it.  If you are wearing certain items, however, there is a chance you can move from one location to another silently without leaving a trail for others to track you, giving you a chance or losing or confusing a pursuer. </p>
 
     <p>You also have a list of recent activites in which you yourself have partaken and the actions of those others have taken against you.</p>
 
-    
+
     <h3>Messages</h3>
 
     <p>
-        You can send messages to other players to coordinate an attack against a mutual opponent, taunt your victim, plead for mercy, or just strike up a friendly conversation.  Messages will be automatically deleted after 72 hours.
+        You can send messages to other players to coordinate an attack against a mutual opponent, taunt your victim, plead for mercy, or just strike up a friendly conversation.  Messages will usually be automatically deleted after 72 hours, but <a href="@Url.Action(MVC.Info.Donate())">donators</a> have the option of extending this.
     </p>
 
     <h3>
@@ -243,20 +263,20 @@
     </h3>
 
     <p>
-        You character can never leave the game world and will always be vulnerable to other players casting spells upon them.  However, players that have not made any actions that consume action points (moving, attacking, cleansing, meditating, and search all take action points) for 30 minutes are considered "offline" and cannot be attacked until they log in and perform actions.
+        You character can never leave the game world and will always be vulnerable to other players casting spells upon them.  However, players that have not made any actions that consume action points (moving, attacking, cleansing, meditating, and search all take action points) for @((int)(TurnTimesStatics.GetOfflineAfterXMinutes())) minutes are considered "offline" and cannot be attacked until they log in and perform actions.  Logging out does not take your character offline.
     </p>
 
     <h3>Friends</h3>
 
     <p>
-        Enjoy the company of a particular companion?  You can request to be their friend on the Look At Player page.  If they accept, you can see when they are online or offline.  Should a particular character turn inanimate or animal and they choose to start over with another, they will remain on your friends list under their new name as a means of keeping in contact with you.  Being a friend with someone bypasses game mode restrictions, <i>so be careful who you befriend</i>.  Someone who swears their loyalty to you one night might decide to sneakily turn you into panties the next!
+        Enjoy the company of a particular companion?  You can request to be their friend on the Look At Player page.  If they accept, you can see when they are online or offline.  Should a particular character turn inanimate or pet and they choose to start over with another, they will remain on your friends list under their new name as a means of keeping in contact with you.  Being a friend with someone bypasses game mode restrictions, <i>so be careful who you befriend</i>.  Someone who swears their loyalty to you one night might decide to sneakily turn you into panties the next!
     </p>
 
     <hr>
     <h2 id="covenants">Covenants</h2>
 
 
-    <p>Covenants are a small, tight-knit association of allied spellcasters.  Members of a covenant cannot gain experience from casting spells at one another, sharing a rare common bond.  In order to join a covenant you must first apply to one and then wait for it's leader to accept your reject your membership.  Members of a covenant can transfer money to their covenant and leaders of a covenant can also choose to redistribute it amongst members as he or she sees fit.  Only 25 animate players can be in a covenant at once; when the covenant is full no new players can be accepted into the covenant and any inanimate or animal player who is trying to return human will be prevented from being able to do so until there is room in the covenant or they leave it.</p>
+    <p>Covenants are a small, tight-knit association of allied spellcasters.  Members of a covenant cannot gain experience from casting spells at one another, sharing a rare common bond.  In order to join a covenant you must first apply to one and then wait for its leader to accept or reject your membership.  Members of a covenant can transfer money to their covenant and leaders of a covenant can also choose to redistribute it amongst members as he or she sees fit.  Only @((int)PvPStatics.Covenant_MaximumAnimatePlayerCount) animate players can be in a covenant at once; when the covenant is full no new players can be accepted into the covenant and any inanimate or animal player who is trying to return human will be prevented from being able to do so until there is room in the covenant or they leave it.</p>
 
     <h3>Covenant Captains</h3>
 
@@ -272,7 +292,7 @@
 
     <h3>Enchanting</h3>
 
-    <p>Covenant can expand their influence by enchanted locations about town.  Enchanting territory will slowly and automatically fill the covenent's coffers with Arpeyjis based on how many locations they posses.  Additionaly, ending a turn in a location provides a small AP boost to any members of the covenant there.  It is not possible to enchant an enemy covenant's safeground, and estabishing a safeground on an enchanted location will automatically turn it to the new covenant's side.</p>
+    <p>Covenants can expand their influence by enchanting locations about town.  Enchanting territory will slowly and automatically fill the covenent's coffers with Arpeyjis based on how many locations they posses.  Additionaly, ending a turn in an enchanted location provides a small AP boost to any members of the covenant there.  It is not possible to enchant an enemy covenant's safeground, and estabishing a safeground on an enchanted location will automatically turn it to the new covenant's side.</p>
 
     <p>Only PvP mode players can enchant.</p>
 
@@ -285,7 +305,7 @@
     <h2 id="questing">Questing</h2>
 
     <p>Scattered about town are Quests that players can partake on for a more story based experience.  Quests are available in certain locations and can be restricted by player levels, the player's current sex or form, the time in the round, and by the successful completion of prior quests.  Successfully completing a quest can give the player XP, items, effects, unique spells, or any combination thereof.  Rusty the Barkeeper can assist players with finding quests available for them at a given time.</p>
-    
+
     <p>Players cannot be attacked while questing, allowing them to focus on the task at hand without worry about outside interference.</p>
 
     <p>Quests can be abandoned at any time, which will count as a failure.  Failed quests can be reattempted after waiting 12 turns.</p>
@@ -293,15 +313,19 @@
     <hr>
     <h2 id="npcs">NPCs</h2>
 
-    <p>Some players about town are not controlled by a human player but are NPCs/bots and can be interacted with in special qays.  The bots in the game are listed below:</p>
+    <p>Some players about town are not controlled by a human player but are NPCs/bots and can be interacted with in special ways.  Unlike players, who have a green border, bots have a blue border if they are friendly, or a red border if they are hostile.  The bots in the game are listed below:</p>
 
     <h3>Psychopathic Spellslingers</h3>
 
     <p>Psychopathic Spellslingers are mages who have let their power go to their head and will attack others on sight no matter what the odds.  Careful if you choose to pick a fight; these mages WILL hold a grudge and pursue their targets as long as they have legs to move with or someone else steals their attention and invokes their wrath.  However, once defeated, these mages will never struggle out of their new forms, able to find the peace they could not achieve in animate life, making for loyal clothing and accessories if a bit boring.  Stronger spellslingers will come to the town as the round progresses.</p>
 
+    <h3>Minibosses</h3>
+
+    <p>Tougher than most psychopaths, but weaker than any true boss, minibosses patrol their own regions of the town and will throw spells at anyone they catch in their domain.  They won't hunt you down like the psychopathic spellslingers will, but they still make for docile and loyal items when defeated.  The more you attack them the angrier they become, and as these minibosses become more upset their counterattacks grow in strength.</p>
+
     <h3>Lindella</h3>
 
-    <p>Lindella is a traveling merchant who purchases and sells a rather unique inventory--clothes and accessories that were once human but are now locked into their new bodies permanently.  She will also sell magical but nonsentient consumable items that can help you in your adventures by restoring your willpower and mana or other effects.  She will not purchase any items that are not permanent as there's little good in selling posessions that will change back and wander away.</p>
+    <p>Lindella is a traveling merchant who purchases and sells a rather unique inventory--clothes and accessories that were once human but are now locked into their new bodies permanently, or which have been abandoned on the streets.  She will also sell magical but nonsentient runes and consumable items that can help you in your adventures by restoring your willpower and mana or other effects.  She will not purchase any items that are not permanent as there's little good in selling posessions that will change back and wander away.</p>
 
     <h3>Wüffie</h3>
 
@@ -309,27 +333,32 @@
 
     <h3>Jewdewfae</h3>
 
-    <p>Jewdewfae is a young fairy (only a hundred thousand years old!) who, unlike much of the rest of her species, enjoys the companies of humans and actively seeks out their company.  If you find her, she may want to play with you if you are a particular form that she wants at that moment.  In exchange for your time, you'll be gifted with some of her fairy magic (XP points) if you satisfy her requests.  She will move to a new location every few hours so keep an eye open for her.</p>
+    <p>Jewdewfae is a young fairy (only a hundred thousand years old!) who, unlike much of the rest of her species, enjoys the companies of humans and actively seeks out their company.  If you find her, she may want to play with you if you are a particular form that she wants at that moment.  In exchange for your time, you'll be gifted with some of her fairy magic (XP points and spells) if you satisfy her requests.  She will move to a new location every few hours so keep an eye open for her.</p>
 
     <h3>Rusty Steamstein the Automaton Bartender</h3>
 
-    <p>Rusty Steamstein can always be found at the Smelly Sorceress, serving drinks and providing tips on what's going on around town.  Rusty hears many things and can help customers locate Lindella, Wüffie, and Jewdewfae as they move about town.  Additionally, he can help players find any eligible quests they can begin.</p>
+    <p>Rusty Steamstein can always be found at the Smelly Sorceress, serving drinks and providing tips on what's going on around town.  Rusty hears many things and can help customers locate Lindella, Wüffie, and Jewdewfae as they move about town.  Additionally, he can help players find any eligible quests they can begin and tell them what's happening on the streets.</p>
 
     <h3>Skaldyr the Forbidden</h3>
 
     <p>Skaldyr the Forbidden is an exiled lorekeeper.  Disgruntled and apathetic to humankind's war raging around, he will happily spell tomes and spellbooks to customers.  He will also teach you nearly any spell on request, provided you have enough Arpeyjis to make it his worthwhile.  Skaldyr is the fastest way to learn a particular spell, though at an increased cost for the convenience.</p>
 
+    <h3>Karin Kezesul-Adriz the Soulbinder</h3>
+
+    <p>Karin is a demoness who has mastered the arcane art of soulbinding, using the local strip club as a front for her true business.  Sign a contract with her and she can look after your items when you are temporarily defeated, or let you give them more fitting names.  But as with any demon, her services come at a price.</p>
+
     <h3>Bosses</h3>
 
     <p>
-        Certain powerful mages can be encountered throughout the round.  Be careful when attacking a boss or even being near them; these mages can attack multiple targets at a time and cast spells far faster and more powerful than regular human mages.  The bosses include:
+        Certain powerful mages can be encountered as the round progresses.  Be careful when attacking a boss or even being near them; these mages can attack multiple targets at a time and cast spells far faster and more powerful than regular human mages.  The bosses include:
         <ul>
             <li><b>Brother Lujako and Sister Lujienne Seekshadow</b>, two agents of the shadow Seekshadow thieves' guild.  More interested in money than conquest, this rat thief duo will steal from the wealthiest mages in town.  Be careful though; these two thieves are friends and the remaining thief will not be too happy should their companion be transformed into an item or pet!</li>
-            <li><b>'Aunt' Donna Milton</b>, a powerful sorceress with a striking resemblance to Circe of the Homer's "The Odyssey."  Although peaceful if left alone, she will attempt to dominate all who dare attack her by transforming them into perpetually horny anthro dogs.</li>
-            <li><b>Lord 'Tesereal' Valentine</b>, a powerful vampire who lords over the Valentine castle.  He won't leave his castle to chase down any new victims, but all who dare approach will quickly find themselves joining the ranks of vampires... and vampires who dare challenge him may end up as his soul-posessing swords.</li>
+            <li><b>'Aunt' Donna Milton</b>, a powerful sorceress with a striking resemblance to Circe of the Homer's "The Odyssey."  Although peaceful if left alone and not upset, she will attempt to dominate all who dare attack her by transforming them into perpetually horny anthro dogs or animals for her farm.</li>
+            <li><b>Lady Krampus</b>, a powerful being who turns up in Scarlet Forest to spoil the town's annual festivities.  She won't leave her log cabin to chase down any new victims, but all who dare approach will quickly find themselves joining the ranks of carol singers... and carollers who dare challenge her may end up as seasonal treats for her sack.</li>
             <li><b>Lady Lovebringer, PHD</b>, a scientist who seeks to end mankind by transforming every last sentient being on the planet into her army of bimbonic soldiers by spreading a virus that can spontaneously transform infected victims into bimbos who will spread the infection further against their own will.  Luckily the Center for Transformation Control and Prevention will airdrop cures for the virus around town which will aid in bringing her down.</li>
             <li><b>The Brisby Sisters</b> are a pair of feuding mice who have had an argument and are trying to enlist the spellslingers about town to transform the other into a a body that will see things in a different way.  It's the ultimate Nerd vs Bimbo showdown.  Generally these sisters are harmless enough and remain where they are, preferring spellslingers do their dirty work form them.</li>
             <li><b>Narcissa the Exiled</b> is a sister of the Winston Grove who has betrayed her kin.  She despises any forms other than her corrupted fae kin and will turn anyone she meets into forms more to her liking such as fairies or trees, depending on her mood.  If you attack her, however, she will be particularly angered and seek to turn you into a mere harmless flower!</li>
+            <li><b>Road Queen Harley Punksplitter</b> is the notorious leader of a biker gang that has been terrorizing the local area.  She likes nothing more than to grow her posse into the biggest and most powerful gang around, and she won't hesitate to recruit any potential new member she runs into.  If you see her around, beware - refuse to be put on one of her bikes and she'll put you on one of her bikers instead!</li>
         </ul>
     </p>
 
@@ -338,15 +367,19 @@
 
     <h3>Being an Item or an Animal</h3>
 
-    <p>Almost inevitably you'll find that you've been matched against someone more powerful than you, someone who managed to catch you off guard or possibly found some friends to track you down.  You may find yourself in the form of an inanimate object--clothing, perhaps, or makeup, or a sex toy--or an animal such as a cow, miniature dragon, or tentacle monster.  Although you will likely be trapped in this form for some time, you may be able to regain a human body by struggling against your transformation.  How long it takes depends on how powerful you were when you were transformed--the same magic that increases your prowess as a mage works against you when you find yourself transformed, making it more difficult change back.  Each time you struggle the chance of turning back rises.  Or you can accept your fate and rub, pinch, zap, or soothe your owner as an item or lick, headbutt, snarl at, or nuzzle someone as a pet.  But before, the more you perform these actions, the harder it will become for you to ever restore your old humanity, and you might just find yourself stuck in your final form for years, decades, or life!</p>
+    <p>Almost inevitably you'll find that you've been matched against someone more powerful than you, someone who managed to catch you off guard or possibly found some friends to track you down.  You may find yourself in the form of an inanimate object--clothing, perhaps, or makeup, or a sex toy--or an animal such as a cow, miniature dragon, or tentacle monster.  Although you will likely be trapped in this form for some time, you may be able to regain a human body by struggling against your transformation.  How long it takes depends on how powerful you were when you were transformed--the same magic that increases your prowess as a mage works against you when you find yourself transformed, making it more difficult change back.  Each time you struggle the chance of turning back rises.</p>
 
-    <p>If you are inanimate or an animal and have an inactive owner, you will have the option to slip away after your owner has been inactive for 48 hours or more.</p>
+    <p>While inanimate you may also be able to muster enough latent magical energy to transform your owner, or you can accept your fate and rub, pinch, zap, or soothe your owner as an item or lick, headbutt, snarl at, or nuzzle someone as a pet.  Similarly, your owner may be able to take actions that have a chance of speeding up or slowing down your progress, such as praising you or shunning you.  But be careful, the more you perform these actions, the harder it will become for you to ever restore your old humanity, and you might just find yourself stuck in your final form for years, decades, or life!</p>
+
+    <p>If you are inanimate or a pet and have an inactive owner, you will have the option to slip away after your owner has been inactive for @((int)(PvPStatics.HoursBeforeInanimatesCanSlipFree)) hours or more, or half that if you find yourself on a vendor.</p>
 
     <h3>Rounds</h3>
 
     <p>
-        The game is broken up into rounds, each of which lasts approximately two weeks or 2000 game turns.  When a new round begins, the world is totally reset--all players, items, spells, messages, EVERYTHING is deleted.  All new characters will once again start at on a level playing field and an equal opportunity to rise to the top of the greatest spellcasters of all.  The winner of the PvP leaderboard at the end of the 2000th turn is declared the winner of the round and will live on in fame (or infamy?) for ages to come.
+        The game is broken up into rounds, each of which lasts approximately two weeks or @((int)(PvPStatics.RoundDuration)) game turns.  When a new round begins, the world is totally reset--all players, items, spells, messages, EVERYTHING is deleted.  All new characters will once again start at on a level playing field and an equal opportunity to rise to the top of the greatest spellcasters of all.  The winner of the PvP leaderboard at the end of the @((int)(PvPStatics.RoundDuration))th turn is declared the winner of the round and will live on in fame (or infamy?) for ages to come.
     </p>
+
+    <p>Some rounds have particular themes, rewards, or victory criteria.  Kep an eye on the <a href="@Url.Action(MVC.Info.GameNews())">news pages</a> to learn about the current round.</p>
 
     <h3 id="chaosMode">Chaos Mode</h3>
 
@@ -356,7 +389,9 @@
 
     <p>You can see the top 100 most experience spellcasters in the town on the leaderboard, as well as their currently form, level, and experience.</p>
 
-    <p>There are currently three leaderboards.  The first and main leaderboard is the Dungeon leaderboard, which keeps track of the spellcasters who have claimed the most forbidden knowledge in the town.  Dungeon Points are earned from finding artifacts in the dungeon (2 points each) or defeating Dark Demonic Guardians (2*level points each).  You can also steal them off of players whom you are able to successfully inanimate or turn into a pet, though of course others will attempe to do the same against you!</p>
+    <p>There are currently four leaderboards.  The Dungeon leaderboard, which keeps track of the spellcasters who have claimed the most forbidden knowledge in the town.  Dungeon Points are earned from finding artifacts in the dungeon (2 points each) or defeating Dark Demonic Guardians (2 points for each level).  You can also steal them off of players whom you are able to successfully inanimate or turn into a pet, though of course others will attempt to do the same against you!</p>
+
+    <p>There are two more leaderboards for XP, one for experience earned as an aniate character, and the other for experience earned as an item or pet.  A final scoreboard shows the top ten players in each of several categories.  These are the contenders for the round achievements.</p>
 
     <h3>Achievements</h3>
 
@@ -368,7 +403,7 @@
 
     <h3>Settings</h3>
 
-    <p>You can customize your game experience a bit through the Settings page, which allows you to change PvP between Protection mode, reserve your name to prevent someone else from stealing it in a future round, and set a short player biography where you can give your character a short backstory as well as select from a list of roleplaying interests.  You can also change the color that your name will appear in the chat rooms and claim any benefits from being a Patreon supporter. </p>
+    <p>You can customize your game experience a bit through the Settings page, which allows you to change PvP between Protection mode, reserve your name to prevent someone else from stealing it in a future round, and set a short player biography where you can give your character a short backstory as well as select from a list of roleplaying interests.  This is the place you can set your base form and consent to soulbinding.  You can also change the color that your name will appear in the chat rooms and claim any benefits from being a <a href="@Url.Action(MVC.Info.Donate())"> Patreon supporter</a>. </p>
 
     <p>If you are in Protection mode you can also voluntarily instantly drop your willpower to half of its full amount or down to zero, allowing friends to transform you a little more easily if you so desire.</p>
 
@@ -410,7 +445,7 @@
 
     <h3>Keep some action points on hand for emergencies</h3>
 
-    <p>You may at any time find some mages targetting you when you do not wish to be.  You may not be able to handle the fight and need to retreat and perform some hasty cleansing.  Keep some action points saved up for this potential scenario.</p>
+    <p>You may at any time find some mages targeting you when you do not wish to be.  You may not be able to handle the fight and need to retreat and perform some hasty cleansing.  Keep some action points saved up for this potential scenario.</p>
 
 
 </div>

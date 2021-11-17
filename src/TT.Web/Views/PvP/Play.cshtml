@@ -395,7 +395,7 @@
 
                                         if (item.FormerPlayer != null)
                                         {
-                                            <span class="formerPlayer">(@(item.FormerPlayer.IsUsingOriginalName() ? "Formerly" : "Known as") @item.FormerPlayer.FullName)</span>
+                                            <span class="formerPlayer">(@(item.FormerPlayer.IsUsingOriginalName() ? "Formerly" : "Known as") <a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))">@item.FormerPlayer.FullName</a>)</span>
                                         }
                                     }
                                 </div>

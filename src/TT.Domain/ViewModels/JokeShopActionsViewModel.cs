@@ -102,6 +102,8 @@ namespace TT.Domain.ViewModels
         UndoInvisibleItems,
         MakePsychotic,
         UndoPsychotic,
+        Instinctive,
+        UndoInstinctive,
         AutoRestore,
         ClearAutoRestore,
 

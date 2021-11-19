@@ -217,6 +217,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 case JokeShopActions.UndoPsychotic:
                     RemoveEffect(victim, JokeShopProcedures.PSYCHOTIC_EFFECT);
                     return CharacterPrankProcedures.UndoPsychotic(victim.Id);
+                case JokeShopActions.Instinctive:
+                    return GiveEffect(victim, input, JokeShopProcedures.INSTINCT_EFFECT);
+                case JokeShopActions.UndoInstinctive:
+                    return RemoveEffect(victim, JokeShopProcedures.INSTINCT_EFFECT, "Instinctive removed");
                 case JokeShopActions.AutoRestore:
                     return GiveEffect(victim, input, JokeShopProcedures.AUTO_RESTORE_EFFECT);
                 case JokeShopActions.ClearAutoRestore:

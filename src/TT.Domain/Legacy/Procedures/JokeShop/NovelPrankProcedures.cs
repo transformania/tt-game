@@ -51,7 +51,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__DiceGameScore, score);
 
-            LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
 
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
         }
@@ -98,12 +98,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return playerMessage;
         }
 
-        public static string SummonPsychopath(Player player, Random rand = null)
+        public static string SummonPsychopath(Player player, Random rand = null, int? strengthOverride = null, bool? aggro = null)
         {
             rand = rand ?? new Random();
 
             var baseStrength = Math.Min(Math.Max(0, (player.Level - 1) / 3), 3);
-            var strength = baseStrength + Math.Max(0, rand.Next(6) - 1);
+            var strength = strengthOverride ?? baseStrength + Math.Max(0, rand.Next(6) - 1);
+
             var prefix = "";
             int level;
             int perk;
@@ -113,14 +114,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             var turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-            if (strength <= 0 || turnNumber < 300)
+            if (strength <= 0 || (turnNumber < 300 && !strengthOverride.HasValue))
             {
                 strength = 0;
                 level = 1;
                 perk = AIProcedures.PsychopathicForLevelOneEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho1MId : AIProcedures.Psycho1FId;
             }
-            else if (strength == 1 || turnNumber < 600)
+            else if (strength == 1 || (turnNumber < 600 && !strengthOverride.HasValue))
             {
                 strength = 1;
                 level = 3;
@@ -128,7 +129,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 perk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho3MId : AIProcedures.Psycho3FId;
             }
-            else if (strength == 2 || turnNumber < 900)
+            else if (strength == 2 || (turnNumber < 900 && !strengthOverride.HasValue))
             {
                 strength = 2;
                 level = 5;
@@ -136,7 +137,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 perk = AIProcedures.PsychopathicForLevelFiveEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho5MId : AIProcedures.Psycho5FId;
             }
-            else if (strength == 3 || turnNumber < 1500)
+            else if (strength == 3 || (turnNumber < 1500 && !strengthOverride.HasValue))
             {
                 strength = 3;
                 level = 7;
@@ -144,7 +145,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 perk = AIProcedures.PsychopathicForLevelSevenEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho7MId : AIProcedures.Psycho7FId;
             }
-            else if (strength == 4 || turnNumber < 2400)
+            else if (strength == 4 || (turnNumber < 2400 && !strengthOverride.HasValue))
             {
                 strength = 4;
                 level = 9;
@@ -152,7 +153,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
-            else if (strength == 5 || turnNumber < 3600)
+            else if (strength == 5 || (turnNumber < 3600 && !strengthOverride.HasValue))
             {
                 strength = 5;
                 level = 11;
@@ -184,7 +185,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 FirstName = firstName,
                 LastName = lastName,
-                Location = LocationsStatics.JOKE_SHOP,
+                Location = player.dbLocationName,
                 FormSourceId = form,
                 Level = level,
                 Health = 100000,
@@ -250,7 +251,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             playerRepo.SavePlayer(psychoEF);
 
             // Tell the bot to attack the player
-            AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+            if (!aggro.HasValue || aggro.Value)
+            {
+                AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+            }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned <b>{firstName} {lastName}</b>!");
@@ -258,7 +262,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "Near the counter is an altar with a leather-bound book resting open upon it.  You take a look and try to read one of the jokes aloud.  It seems to be some consonant-heavy tongue twister that soon leaves you faltering.  You're not quite sure what the set up means, but hope the punchline will be worth it.  As you spurt out the last syllable a puff of red smoke explodes out from the book with an audible bang.  You're not laughing, and that remains the case when you close the book to see a large pentagram seared into the cover.  As the smoke subsides there seems to be a strange neon flicker to the light and a crackling to the air.  You turn sharply to see the psychopath you just summoned readying their attack against you!";
         }
 
-        public static string SummonDoppelganger(Player player, Random rand = null)
+        public static string SummonDoppelganger(Player player, Random rand = null, bool? aggro = null)
         {
             rand = rand ?? new Random();
 
@@ -357,7 +361,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             playerRepo.SavePlayer(psychoEF);
 
             // Tell the bot to attack the player
-            AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+            if (!aggro.HasValue || aggro.Value)
+            {
+                AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
+            }
 
             PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned your evil twin!</b>  Beware!  They are not friendly!", true);
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned their evil twin!");

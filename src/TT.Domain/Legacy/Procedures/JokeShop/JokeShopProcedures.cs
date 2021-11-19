@@ -1032,7 +1032,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         #region Prank selection
 
-        private static string MildPrank(Player player, Random rand = null)
+        public static string MildPrank(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
             var roll = rand.Next(100);
@@ -1079,7 +1079,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string MischievousPrank(Player player, Random rand = null)
+        public static string MischievousPrank(Player player, Random rand = null)
         {
             var warning = EnsurePlayerIsWarned(player);
 
@@ -1117,7 +1117,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string MeanPrank(Player player, Random rand = null)
+        public static string MeanPrank(Player player, Random rand = null)
         {
             var warning = EnsurePlayerIsWarnedTwice(player);
 
@@ -1193,11 +1193,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.PlayerHasEffect(player, SECOND_WARNING_EFFECT);
         }
 
-        public static string EnsurePlayerIsWarned(Player player)
+        public static string EnsurePlayerIsWarned(Player player, int? duration = null, int? cooldown = null)
         {
             if (!PlayerHasBeenWarned(player))
             {
-                var logMessage = EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player);
+                var logMessage = EffectProcedures.GivePerkToPlayer(FIRST_WARNING_EFFECT, player, duration, cooldown);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, false);
                 return logMessage;
             }
@@ -1206,7 +1206,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return null;
         }
 
-        public static string EnsurePlayerIsWarnedTwice(Player player)
+        public static string EnsurePlayerIsWarnedTwice(Player player, int? duration = null, int? cooldown = null)
         {
             var warning = EnsurePlayerIsWarned(player);
 
@@ -1217,7 +1217,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (!PlayerHasBeenWarnedTwice(player))
             {
-                var logMessage = EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player);
+                var logMessage = EffectProcedures.GivePerkToPlayer(SECOND_WARNING_EFFECT, player, duration, cooldown);
                 PlayerLogProcedures.AddPlayerLog(player.Id, logMessage, true);
                 return logMessage;
             }
@@ -1231,7 +1231,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return EffectProcedures.PlayerHasActiveEffect(player, BANNED_FROM_JOKE_SHOP_EFFECT);
         }
 
-        private static string BanCharacter(Player player)
+        public static string BanCharacter(Player player, int? duration = null, int? cooldown = null)
         {
             var warning = EnsurePlayerIsWarned(player);
 
@@ -1245,14 +1245,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            var message = PvPStatics.ChaosMode ? EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player, 5, 10)  // Faster in chaos
-                                               : EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player);
+            var message = duration.HasValue ? EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player, duration, cooldown)
+                                            : (PvPStatics.ChaosMode ? EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player, 5, 10)  // Faster in chaos
+                                                                    : EffectProcedures.GivePerkToPlayer(BANNED_FROM_JOKE_SHOP_EFFECT, player));
             var kickedOutMessage = EjectCharacter(player);
 
             return $"{message}  {kickedOutMessage}";
         }
 
-        private static string EjectCharacter(Player player)
+        public static string EjectCharacter(Player player)
         {
             if ((player.InDuel > 0 || player.InQuest > 0) &&
                 player.LastActionTimestamp > DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes()))
@@ -1298,7 +1299,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             playerRepo.SavePlayer(user);
 
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLog, false);
-            LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, leavingMessage);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, leavingMessage);
             LocationLogProcedures.AddLocationLog(street, enteringMessage);
 
             return playerLog;

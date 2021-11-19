@@ -316,7 +316,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        private static string FillInventory(Player player, bool overflow, Random rand = null)
+        public static string FillInventory(Player player, bool overflow, Random rand = null)
         {
             var itemsEquipped = ItemProcedures.GetAllPlayerItems(player.Id).Count(i => !i.dbItem.IsEquipped);
             var inventorySlots = PvPStatics.MaxCarryableItemCountBase + player.ExtraInventory;
@@ -347,7 +347,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "While browsing through a clothes rail you find a fab pair of psychedelic flares and for a moment you are transported to the groovy era of peace and love, full of hippies, daisy chains and flower power.  You could almost reach out and grab those blooms!";
         }
 
-        private static string LearnSpell(Player player, Random rand = null)
+        public static string LearnSpell(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
             var num = rand.Next(3) + 1;
@@ -503,11 +503,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (logLocations)
             {
-                LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"Strange forces propel {player.GetFullName()} off to {destination.Name}!");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"Strange forces propel {player.GetFullName()} off to {destination.Name}!");
             }
             else
             {
-                LocationLogProcedures.AddLocationLog(LocationsStatics.JOKE_SHOP, $"{player.GetFullName()} is whisked off to a faraway place!");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} is whisked off to a faraway place!");
             }
             LocationLogProcedures.AddLocationLog(location, $"{player.GetFullName()} is surprised to find they are suddenly here!");
             PlayerLogProcedures.AddPlayerLog(player.Id, $"You are sent to {destination.Name}", false);
@@ -515,7 +515,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return true;
         }
 
-        private static string TeleportToOverworld(Player player, bool root, bool curse, Random rand = null)
+        public static string TeleportToOverworld(Player player, bool root, bool curse, Random rand = null)
         {
             rand = rand ?? new Random();
             var location = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
@@ -539,7 +539,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"All of a sudden the Joke Shop spits you out and you find yourself in {LocationsStatics.GetConnectionName(location)}!";
         }
 
-        private static string TeleportToDungeon(Player player, int meanness, Random rand = null)
+        public static string TeleportToDungeon(Player player, int meanness, Random rand = null)
         {
             if (!PlayerProcedures.CheckAllowedInDungeon(player, out _))
             {
@@ -573,7 +573,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You feel the room start to shake and shimmer, parts of the shop fading away as it is pulled between realms.  The shelves rattle ever more violently and you try and take shelter under the counter.  But the shop has other ideas and the floor gives way, leaving you tumbling through the air just as the store flickers out of this plane.  That's the last thing you remember.  Nursing a headache, with a bleary blink of your eyes your surroundings slowly come into focus.  You've landed in the deepest depths of the dungeon!";
         }
 
-        private static string TeleportToFriendlyNPC(Player player, Random rand = null)
+        public static string TeleportToFriendlyNPC(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
             var roll = rand.Next(6);
@@ -625,7 +625,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"The bejeweled eyes of a strage ornament begin to glow as a raspy sucking voice echoes throughout the room:  \"Maybe you should talk to <b>{npcPlayer.GetFullName()}</b>?\"  The room then fades away.";
         }
 
-        private static string TeleportToHostileNPC(Player player, bool attack, Random rand = null)
+        public static string TeleportToHostileNPC(Player player, bool attack, Random rand = null)
         {
             var targetFormSourceId = -1;
             var minLevel = 4;
@@ -743,7 +743,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return npcPlayer;
         }
 
-        private static string TeleportToBar(Player player, bool root, Random rand = null)
+        public static string TeleportToBar(Player player, bool root, Random rand = null)
         {
             // Not all getaways can be clean..
             string bar = "tavern_counter";
@@ -766,7 +766,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You've been looking around the shop for a while now and are starting to get thirsty.  Something within the shop knows it too, and very quickly you find yourself in the bar!";
         }
 
-        private static string TeleportToQuest(Player player, Random rand = null)
+        public static string TeleportToQuest(Player player, Random rand = null)
         {
             var lastAttackTimeAgo = Math.Abs(DateTime.UtcNow.Subtract(player.GetLastCombatTimestamp()).TotalMinutes);
             if (lastAttackTimeAgo < TurnTimesStatics.GetMinutesSinceLastCombatBeforeQuestingOrDuelling())
@@ -793,7 +793,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You notice a gold chalice on the shelf, its engraving obscured by dirt.  You decide to blow the dust off and a cloud fills the room.  A frail man with a long white beard and crooked staff emerges from the mist.  \"So, it's a quest you seek?\" comes his shrill, wheezing voice.  \"Well, I have just the thing.  Seek out your victory, young mage.\"  He hands you a scroll.  At the top it is written <b>{quest.Name}</b>.  As you take it you feel yourself transported to a far-off place...";
         }
 
-        private static string RunAway(Player player)
+        public static string RunAway(Player player)
         {
             var destination = LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP);
 
@@ -848,7 +848,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return stoppingTile;
         }
 
-        private static string WanderAimlessly(Player player, Random rand = null)
+        public static string WanderAimlessly(Player player, Random rand = null)
         {
             if (player.InDuel > 0 || player.InQuest > 0 || player.MindControlIsActive || player.MoveActionPointDiscount < -TurnTimesStatics.GetActionPointReserveLimit())
             {
@@ -1045,7 +1045,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"A flurry of coconut pieces flutter down inside a snowglobe on one of the shelves.  In the background is a starry sky.  You decide to make a wish, and now you are able to use {Math.Abs(delta)} {moreOrFewer} items this turn!";
         }
 
-        private static string BlockItemUses(Player player)
+        public static string BlockItemUses(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);

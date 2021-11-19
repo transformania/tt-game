@@ -47,6 +47,8 @@ namespace TT.Domain.ViewModels
         PlaceBounty,
         AwardChallenge,
         ClearChallenge,
+        CurrentChallenge,
+        ChallengeProgress,
         CheckChallenge,
 
         ForceAttack,

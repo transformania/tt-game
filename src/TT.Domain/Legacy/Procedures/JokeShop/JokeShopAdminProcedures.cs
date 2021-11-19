@@ -1,4 +1,6 @@
-﻿using TT.Domain.Models;
+﻿using System;
+using System.Linq;
+using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -105,6 +107,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         RemoveEffect(victim, challengeType.EffectSourceId);
                     }
                     return "Challenge cleared";
+                case JokeShopActions.CurrentChallenge:
+                    return NovelPrankProcedures.DescribeChallenge(victim, ChallengeProcedures.CurrentChallenge(victim));
+                case JokeShopActions.ChallengeProgress:
+                    return ChallengeProgress(victim);
                 case JokeShopActions.CheckChallenge:
                     ChallengeProcedures.CheckChallenge(victim, false);
                     return "Challenge checked";
@@ -277,6 +283,51 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
 
             return null;
+        }
+
+        private static string ChallengeProgress(Player me)
+        {
+            var challenge = ChallengeProcedures.CurrentChallenge(me);
+
+            if (challenge == null)
+            {
+                return null;
+            }
+
+            string summary = "Challenge progress:<br>";
+            var progress = 0.0m;
+
+            foreach (var part in challenge.Parts)
+            {
+                var (done, parts) = part.Progress(me);
+
+                var progressString = "";
+                if (done != parts && parts > 1)
+                {
+                    progressString = (parts == 100) ? $" ({done}%)" : $" ({done}/{parts})";
+                }
+
+                progressString += part.Satisfied(me) ? "✔" : "❌";
+                summary += $"- {part.Description}: {part.Status(me)} {progressString}<br>";
+                progress += Math.Min(1m, done / ((decimal)parts));
+            }
+
+            if (challenge.Parts.Count() > 0)
+            {
+                progress /= challenge.Parts.Count();
+            }
+
+            if (challenge.Satisfied(me))
+            {
+                summary += "Challenge is currently satisifed.";
+            }
+            else
+            {
+                summary += $"Challenge is {progress * 100:0}% complete.";
+            }
+            summary += "<br>The player needs to be in the Joke Shop when the turn changes to pass the challenge.";
+
+            return summary;
         }
 
         private static string RemoveEffect(Player victim, int effectSourceId, string message = null)

@@ -1606,7 +1606,7 @@ namespace TT.Web.Controllers
 
             var result = JokeShopAdminProcedures.RunAction(victim, input);
 
-            if (result == null)
+            if (result.IsNullOrWhiteSpace())
             {
                 TempData["Error"] = "Action failed";
             }

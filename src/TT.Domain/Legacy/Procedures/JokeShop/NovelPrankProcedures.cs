@@ -103,7 +103,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             var baseStrength = Math.Min(Math.Max(0, (player.Level - 1) / 3), 3);
-            var strength = strengthOverride ?? baseStrength + Math.Max(0, rand.Next(6) - 1);
+            var strength = strengthOverride ?? (baseStrength + Math.Max(0, rand.Next(6) - 1));
 
             var prefix = "";
             int level;
@@ -547,6 +547,20 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             var challenge = ChallengeProcedures.AwardChallenge(player, minDuration, maxDuration, withPenalties);
 
+            var message = DescribeChallenge(player, challenge, rand);
+
+            if (message == null)
+            {
+                return null;
+            }
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
+
+            return "You have been set a challenge!";
+        }
+
+        public static string DescribeChallenge(Player player, Challenge challenge, Random rand = null)
+        {
             if (challenge == null)
             {
                 return null;
@@ -581,9 +595,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             message += $".<br />To pass the challenge you must be in the Joke Shop and meet all the success criteria by the end of <b>turn {challenge.ByEndOfTurn}</b>, about {challenge.GetTimeLeft()} from now.  You can check your progress with Rusty in the Tavern.";
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
-
-            return "You have been set a challenge!";
+            return message;
         }
 
         #endregion

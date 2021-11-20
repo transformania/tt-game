@@ -1142,7 +1142,8 @@ namespace TT.Domain.Procedures
                 // there are no new spells to be learned that are not-region specific, so player is just out of luck.
                 if (!eligibleSkills.Any())
                 {
-                    return "You get the feeling there are no new spells for you to discover around here.";
+                    PlayerProcedures.GiveXP(player, 1);
+                    return "You get the feeling there are no new spells for you to discover around here.  (+1 XP).";
                 }
 
 

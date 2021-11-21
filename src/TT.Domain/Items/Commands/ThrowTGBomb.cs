@@ -93,7 +93,6 @@ namespace TT.Domain.Items.Commands
                 var locationLog = LocationLog.Create(player.Location, $"{player.GetFullName()} threw a TG splash orb, affecting {affectedPlayers.Count()} mages.");
                 ctx.Add(locationLog);
                 ctx.Update(player);
-                ctx.Remove(item);
 
                 ctx.Commit();
 

@@ -360,9 +360,23 @@ namespace TT.Domain.Procedures
 
                 PvPStatics.AnimateUpdateInProgress = false;
 
-                // bump down the timer on all items that are reuseable consumables
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating items on cooldown");
                 IItemRepository itemsRepo = new EFItemRepository();
+
+                // delete single use consumables that are about to come off cooldown
+                // or that are on cooldown and have been dropped
+                var singleUseConsumables = itemsRepo.DbStaticItems.Where(i =>i.ItemType == PvPStatics.ItemType_Consumable)
+                                                                  .Select(i => i.Id);
+                var itemsToDelete = itemsRepo.Items.Where(i => (i.TurnsUntilUse == 1 || (i.TurnsUntilUse > 1 && !i.OwnerId.HasValue)) &&
+                                                               singleUseConsumables.Contains(i.ItemSourceId))
+                                                   .Select(i => i.Id).ToList();
+
+                foreach (var item in itemsToDelete)
+                {
+                    itemsRepo.DeleteItem(item);
+                }
+
+                // bump down the timer on all items that are consumables
                 var itemsToUpdate = itemsRepo.Items.Where(i => i.TurnsUntilUse > 0).ToList();
 
                 foreach (var item in itemsToUpdate)

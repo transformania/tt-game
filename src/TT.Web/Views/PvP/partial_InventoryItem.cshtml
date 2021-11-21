@@ -2,13 +2,12 @@
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
-<div class="col-md-2 col-sm-3 col-xs-6 charaBox">
+<div class="col-md-2 col-sm-3 col-xs-6 charaBox @(((Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable || Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) && Model.TurnsUntilUse > 0) ? "cooldown" : "")">
     <div class="portrait center-block" style="background-image: url('@PortraitHelper.GetGraphicByItemType(Model.ItemSource.ItemType, Model.ItemSource.PortraitUrl, true)')">
         @{
-            if (Model.Level > 0 && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable)
+            if (Model.Level > 0 && Model.ItemSource.ItemType != PvPStatics.ItemType_Consumable && Model.ItemSource.ItemType != PvPStatics.ItemType_Rune)
             {
                 <span class="icon icon-level"><b>@Model.Level</b></span>
-
             }
 
             if (ViewBag.ShowDetailLinks != null && ViewBag.ShowDetailLinks)
@@ -47,6 +46,17 @@
                         {
                             <a href="@Url.Action(MVC.Item.AttachRuneList(Model.Id))" class="attackLink">Embed Rune</a>
                         }
+                        else if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable || Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                        {
+                            if (Model.TurnsUntilUse > 0)
+                            {
+                                <a href="#" class="disabled attackLink" title="This item is on cooldown and cannot be swappd in right now.">Take out</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Take out</a>
+                            }
+                        }
                         else
                         {
                             <a href="@Url.Action(MVC.PvP.Equip(Model.Id, true))" class="attackLink">Wear</a>
@@ -58,16 +68,34 @@
                     {
                         if (Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable || Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
                         {
-                            if (Model.TurnsUntilUse > 0)
+                            if (Model.TurnsUntilUse > 0 && Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
                             {
                                 <span style="color: red;">Reuse in <b>@Model.TurnsUntilUse</b> turns.</span>
+                            }
+                            else if (Model.TurnsUntilUse > 0 && Model.ItemSource.ItemType == PvPStatics.ItemType_Consumable)
+                            {
+                                <span style="color: red;">Expires in <b>@Model.TurnsUntilUse</b> turns.</span>
                             }
                             else
                             {
                                 <a href="@Url.Action(MVC.PvP.Use(Model.Id))" class="attackLink">Use</a>
                             }
+
+                            if (Model.EquippedThisTurn)
+                            {
+                                <a href="#" class="disabled attackLink" title="You have already equipped this item this turn.  You can unequip it next turn.">Put away</a>
+                            }
+                            else if (Model.TurnsUntilUse > 0)
+                            {
+                                <a href="#" class="disabled attackLink" title="This item is on cooldown and cannot be swappd out right now.">Put away</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(MVC.PvP.Equip(Model.Id, false))" class="attackLink">Put away</a>
+                            }
+
                         }
-                        if (Model.EquippedThisTurn)
+                        else if (Model.EquippedThisTurn)
                         {
                             <a href="#" class="disabled attackLink" title="You have already equipped this item this turn.  You can take it off next turn.">Take off</a>
                         }

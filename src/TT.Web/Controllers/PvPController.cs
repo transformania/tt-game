@@ -1885,6 +1885,16 @@ namespace TT.Web.Controllers
             var locationLogMessage = "";
             var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
+            // non-reusable consumables on cooldown are placeholders that are about to be deleted -
+            // if they find their way to the ground then they cannot be picked up by another player
+            if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Consumable && pickup.TurnsUntilUse > 0)
+            {
+                ItemProcedures.DeleteItem(pickup.Id);
+                TempData["Error"] = $"You reach for the {pickup.ItemSource.FriendlyName}, but your hand passes straight through it as the ghostly afterimage fades.";
+                TempData["SubError"] = "You were unable to take that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // item is a dungeon artifact; immediately give the points to the player and delete it
             if (pickup.ItemSource.Id == PvPStatics.ItemType_DungeonArtifact_Id)
             {
@@ -2092,17 +2102,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that the player is not in combat if they are trying to swap a consumable item.
-            var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            var secondsInCombat = 2 * TurnTimesStatics.GetTurnLengthInSeconds();
-            if (lastAttackTimeAgo < secondsInCombat &&
+            // assert that the item is not a consumable on cooldown
+            if (item.dbItem.TurnsUntilUse > 0 &&
                     (item.Item.ItemType == PvPStatics.ItemType_Consumable ||
                      item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable))
             {
-                var minutesRemaining = Math.Ceiling((secondsInCombat - lastAttackTimeAgo) / 60);
-                TempData["Error"] = "You cannot swap consumable items during combat";
-                TempData["SubError"] = $"You'll have to wait {minutesRemaining} more minute(s) until you are out of combat before you can do that.";
-                return RedirectToAction(MVC.PvP.Play());
+                TempData["Error"] = "You cannot swap consumable items that are on cooldown";
+                TempData["SubError"] = $"You'll have to wait {item.dbItem.TurnsUntilUse} more turns before you can do that.";
+                return RedirectToAction(MVC.Item.MyInventory());
             }
 
             if (putOn)
@@ -2203,22 +2210,15 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that if this item is of a reusable type that it's not on cooldown
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && item.dbItem.TurnsUntilUse > 0)
+            // assert that this item is not on cooldown
+            if (item.dbItem.TurnsUntilUse > 0)
             {
-                TempData["Error"] = "This item is still on cooldown and cannot be used again yet.";
+                TempData["Error"] = "This item is on cooldown and cannot be used right now.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert that if the item is a consumable, it is equipped
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable && !item.dbItem.IsEquipped)
-            {
-                TempData["Error"] = "You cannot use an item you do not have equipped.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            // assert that if the item is a reusable consumable, it is equipped
-            if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && !item.dbItem.IsEquipped)
+            // assert that the item is equipped
+            if (!item.dbItem.IsEquipped)
             {
                 TempData["Error"] = "You cannot use an item you do not have equipped.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -2299,6 +2299,7 @@ namespace TT.Web.Controllers
                 try
                 {
                     TempData["Result"] = DomainRegistry.Repository.Execute(new ThrowTGBomb { PlayerId = me.Id, ItemId = item.dbItem.Id });
+                    ItemProcedures.ResetUseCooldown(item);
                     return RedirectToAction(MVC.PvP.Play());
                 }
                 catch (DomainException e)
@@ -3540,7 +3541,7 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
-            ItemProcedures.DeleteItem(itemId);
+            ItemProcedures.ResetUseCooldown(item);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);

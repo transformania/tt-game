@@ -383,6 +383,10 @@ namespace TT.Domain.Procedures
 
                 SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner, item.ItemSourceId);
 
+                if (itemPlus.ItemType == PvPStatics.ItemType_Consumable || itemPlus.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                {
+                    return $"You take out your {itemPlus.FriendlyName}, ready for use.";
+                }
                 return "You put on your " + itemPlus.FriendlyName + ".";
          
             }
@@ -398,6 +402,10 @@ namespace TT.Domain.Procedures
 
                 SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner);
 
+                if (itemPlus.ItemType == PvPStatics.ItemType_Consumable || itemPlus.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+                {
+                    return $"You put away your {itemPlus.FriendlyName}.";
+                }
                 return "You took off your " + itemPlus.FriendlyName + ".";
               
             }
@@ -408,7 +416,13 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             var dbItem = itemRepo.Items.FirstOrDefault(i => i.Id == input.dbItem.Id);
-            dbItem.TurnsUntilUse = input.Item.UseCooldown;
+            var cooldown = input.Item.UseCooldown;
+
+            if (cooldown == 0)
+            {
+                cooldown = PvPStatics.DefaultConsumableCooldown;
+            }
+            dbItem.TurnsUntilUse = cooldown;
 
             // these special reusable consumables can have a lower cooldown at higher levels
             if (dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId || dbItem.ItemSourceId == ItemStatics.HotCoffeeMugItemSourceId)
@@ -705,7 +719,7 @@ namespace TT.Domain.Procedures
                         output = AttackProcedures.ThrowGrenade(owner, 400, "Volatile");
                     }
 
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
                     return (true,output);
 
                 }
@@ -720,7 +734,7 @@ namespace TT.Domain.Procedures
                     }
                     else
                     {
-                        itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                        ResetUseCooldown(itemPlus);
                         LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                         return (true,EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner));
                     }
@@ -738,7 +752,7 @@ namespace TT.Domain.Procedures
 
                     playerRepo.SavePlayer(owner);
 
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
                     return (true,name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantHealthRestore + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP");
@@ -753,7 +767,7 @@ namespace TT.Domain.Procedures
                         owner.Mana = owner.MaxMana;
                     }
                     playerRepo.SavePlayer(owner);
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
                     return (true, name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.InstantManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
@@ -782,7 +796,7 @@ namespace TT.Domain.Procedures
 
                     PlayerProcedures.InstantRestoreToBase(owner, restoreForm: true, restoreName: true);
                     TFEnergyProcedures.CleanseTFEnergies(owner, 25);
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                     return (true,name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.");
                 }
@@ -790,7 +804,7 @@ namespace TT.Domain.Procedures
                 if (itemPlus.dbItem.ItemSourceId == ItemStatics.LullabyWhistleItemSourceId)
                 {
                     AIDirectiveProcedures.DeaggroPsychopathsOnPlayer(owner);
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                     return (true,name + " take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intent on taking you down to forget all about you, so long as you don't provoke them again...");
                 }
@@ -805,7 +819,7 @@ namespace TT.Domain.Procedures
                     PlayerProcedures.InstantRestoreToBase(owner);
                     EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId, owner);
                     EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectSourceId, owner);
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
 
                     var newOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
                     newOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newOwner));
@@ -857,7 +871,7 @@ namespace TT.Domain.Procedures
                     StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1);
 
                     var output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
                     return (true,output);
                 }
 
@@ -881,7 +895,7 @@ namespace TT.Domain.Procedures
                         amount = 16;
                     }
                     var output = $"You learned the spells: {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount), true)} from reading your spellbook before it crumbles and vanishes into dust.";
-                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    ResetUseCooldown(itemPlus);
                     return (true,output);
                 }
             }
@@ -911,8 +925,7 @@ namespace TT.Domain.Procedures
                 else
                 {
                     // add waiting time back on to the item
-                    var thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
-                    thisdbItem.TurnsUntilUse = itemPlus.Item.UseCooldown;
+                    ResetUseCooldown(itemPlus);
 
                     // there is both a health and mana restoration / loss effect to this spell
                     if (itemPlus.Item.ReuseableHealthRestore != 0 && itemPlus.Item.ReuseableManaRestore != 0)
@@ -937,11 +950,7 @@ namespace TT.Domain.Procedures
                             return (false, "You don't have enough mana to use this item.");
                         }
 
-                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
-
-                        
-                        
 
                         return (true, name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore) + " willpower and " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana");
 
@@ -956,7 +965,6 @@ namespace TT.Domain.Procedures
                             owner.Health = owner.MaxHealth;
                         }
 
-                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
                         if (itemPlus.dbItem.ItemSourceId == ItemStatics.InflatableDollItemSourceId)
@@ -977,7 +985,6 @@ namespace TT.Domain.Procedures
                             owner.Mana = owner.MaxMana;
                         }
 
-                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
                         return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
@@ -985,7 +992,6 @@ namespace TT.Domain.Procedures
 
                     else if (itemPlus.Item.GivesEffectSourceId != null)
                     {
-                        itemRepo.SaveItem(thisdbItem);
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner);
                         var effectPlus = EffectStatics.GetDbStaticEffect(itemPlus.Item.GivesEffectSourceId.Value);
                         if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
@@ -1002,7 +1008,6 @@ namespace TT.Domain.Procedures
                         }
                         
                     }
-                    itemRepo.SaveItem(thisdbItem);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.GetFullName() + " used a " + itemPlus.Item.FriendlyName + " here.");
 
                 }

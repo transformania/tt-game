@@ -790,9 +790,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player is allowed in the dungeon (level, game mode, effects)
+            // assert player is allowed to enter the dungeon (level, game mode, effects)
             var message = "";
-            if (!PlayerProcedures.CheckAllowedInDungeon(me, out message))
+            if (!me.IsInDungeon() && (!PlayerProcedures.CheckAllowedInDungeon(me, out message)))
             {
                 TempData["Error"] = message;
                 return RedirectToAction(MVC.PvP.Play());

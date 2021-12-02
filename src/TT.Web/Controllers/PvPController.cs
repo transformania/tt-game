@@ -2338,7 +2338,7 @@ namespace TT.Web.Controllers
                 ViewBag.OwnedByMe = ownedByMe;
                 ViewBag.Unowned = (owner == null) || owner.Player.BotId == AIStatics.WuffieBotId || owner.Player.BotId == AIStatics.SoulbinderBotId;
                 ViewBag.SameLocation = owner == null
-                    ? playerItem.dbLocationName == me.dbLocationName
+                    ? playerItem?.dbLocationName == me.dbLocationName
                     : owner.Player.dbLocationName == me.dbLocationName;
 
                 if (ownedByMe)

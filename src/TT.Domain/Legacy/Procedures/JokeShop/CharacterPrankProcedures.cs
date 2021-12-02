@@ -151,11 +151,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             }
         }
 
-        public static string GiveEffect(Player player, int effectSourceId, int duration = 3, bool merge = false)
+        public static string GiveEffect(Player player, int effectSourceId, int? duration = null, int? cooldown = null, bool merge = false)
         {
+            duration = duration ?? 3;
+            cooldown = cooldown ?? duration;
+
             if (merge)
             {
-                return EffectProcedures.MergePlayerPerk(effectSourceId, player, duration: duration, cooldown: duration);
+                return EffectProcedures.MergePlayerPerk(effectSourceId, player, duration: duration, cooldown: cooldown);
             }
 
             if (EffectProcedures.PlayerHasEffect(player, effectSourceId))
@@ -163,10 +166,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            return EffectProcedures.GivePerkToPlayer(effectSourceId, player, Duration: duration, Cooldown: duration);
+            return EffectProcedures.GivePerkToPlayer(effectSourceId, player, Duration: duration, Cooldown: cooldown);
         }
 
-        public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null, bool merge = false)
+        public static string GiveRandomEffect(Player player, IEnumerable<int> effectSourceIds, Random rand = null, bool merge = false, int? duration = null, int? cooldown = null)
         {
             if (effectSourceIds.IsEmpty())
             {
@@ -176,7 +179,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var effectSourceId = effectSourceIds.ElementAt(rand.Next(effectSourceIds.Count()));
 
-            return GiveEffect(player, effectSourceId, merge: merge);
+            return GiveEffect(player, effectSourceId, merge: merge, duration: duration, cooldown: cooldown);
         }
 
         public static string ApplyLocalCurse(Player player, string dbLocationName, Random rand = null)
@@ -197,7 +200,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return null;
         }
 
-        private static string LiftRandomCurse(Player player, Random rand = null)
+        public static string LiftRandomCurse(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
             var effects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToArray();
@@ -221,9 +224,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"The powers of the Joke Shop liberate you from the <strong>{effect.Effect.FriendlyName}</strong> effect!";
         }
 
-        private static string MakePsychotic(Player player)
+        public static string MakePsychotic(Player player, int? duration = null, int? cooldown = null)
         {
-            var message = GiveEffect(player, JokeShopProcedures.PSYCHOTIC_EFFECT, 3);
+            duration = duration ?? 3;
+            var message = GiveEffect(player, JokeShopProcedures.PSYCHOTIC_EFFECT, duration: duration, cooldown: cooldown);
 
             // Give player the psychopath AI until the effect expires
             var playerRepo = new EFPlayerRepository();
@@ -257,14 +261,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string MakeInvisible(Player player)
+        public static string MakeInvisible(Player player, int? duration = null, int? cooldown = null)
         {
             if (player.GameMode != (int)GameModeStatics.GameModes.PvP)
             {
                 return null;
             }
             
-            var message = GiveEffect(player, JokeShopProcedures.INVISIBILITY_EFFECT, 2);
+            duration = duration ?? 2;
+            var message = GiveEffect(player, JokeShopProcedures.INVISIBILITY_EFFECT, duration: duration, cooldown: cooldown);
 
             // Give player 'invisibility' until the effect expires, then revert to PvP
             // We intentionally don't ripple the change in game mode down to the player's items.
@@ -396,7 +401,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return InanimateTransform(player, false, false, rand);
         }
 
-        private static string AnimateTransform(Player player, Random rand = null)
+        public static string AnimateTransform(Player player, Random rand = null)
         {
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -460,7 +465,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string ImmobileTransform(Player player, bool temporary, Random rand = null)
+        public static string ImmobileTransform(Player player, bool temporary, Random rand = null)
         {
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -514,7 +519,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string InanimateTransform(Player player, bool temporary, bool dropInventory = false, Random rand = null)
+        public static string InanimateTransform(Player player, bool temporary, bool dropInventory = false, Random rand = null)
         {
             var warning = JokeShopProcedures.EnsurePlayerIsWarned(player);
 
@@ -581,7 +586,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string MobileInanimateTransform(Player player, Random rand = null)
+        public static string MobileInanimateTransform(Player player, Random rand = null)
         {
             // Turning a player into a rune or consumable is a bit too involved as there are no static forms for those items in the DB,
             // however we can make a player inanimate without a player item and pretend they are fully mobile...
@@ -630,7 +635,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return $"You sense a build-up of transformative energy.  Somebody trying to make you inanimate.  Somebody?  Or this cursed place itself?  No, it can try to turn you into a {form.FriendlyName}, but you will not allow it to take your mobility!";
         }
 
-        private static string TGTransform(Player player)
+        public static string TGTransform(Player player)
         {
             if (player.GameMode == (int)GameModeStatics.GameModes.Superprotection && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {
@@ -674,7 +679,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return JokeShopProcedures.AnimateForms().Where(f => f.FormSourceId == player.FormSourceId).Any();
         }
 
-        private static string BodySwap(Player player, bool clone, Random rand = null)
+        public static string BodySwap(Player player, bool clone, Random rand = null)
         {
             rand = rand ?? new Random();
             var candidates = JokeShopProcedures.ActivePlayersInJokeShopApartFrom(player)
@@ -803,7 +808,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "You accidentally spill some Classic Me! Restorative Lotion and revert to your base form, just as you remember it!  Right?";
         }
 
-        private static string ChangeBaseForm(Player player, Random rand = null)
+        public static string ChangeBaseForm(Player player, Random rand = null)
         {
             var availableForms = Array.Empty<int>();
             var flavorText = "";
@@ -877,7 +882,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return null;
         }
 
-        private static string SetBaseFormToCurrent(Player player, Random rand = null)
+        public static string SetBaseFormToCurrent(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
 
@@ -943,7 +948,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return "In a sudden moment of clarity you remember who you truly are!";
         }
 
-        private static string IdentityChange(Player player, Random rand = null)
+        public static string IdentityChange(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
 
@@ -1283,7 +1288,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return message;
         }
 
-        private static string TransformToMindControlledForm(Player player, Random rand = null)
+        public static string TransformToMindControlledForm(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
 
@@ -1394,7 +1399,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             inanimXpRepo.SaveInanimateXP(xp);
         }
 
-        public static string BossPrank(Player player, Random rand)
+        public static string BossPrank(Player player, Random rand = null)
         {
             rand = rand ?? new Random();
 

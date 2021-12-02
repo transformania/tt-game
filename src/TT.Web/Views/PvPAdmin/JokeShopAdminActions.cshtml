@@ -1,0 +1,296 @@
+﻿@model TT.Domain.Models.Player
+
+@using TT.Domain.ViewModels
+
+@{
+    ViewBag.Title = "Joke Shop Actions";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Back to admin</a></li>
+}
+
+<div class="containerInner">
+
+    <h1>Joke Shop Actions</h1>
+
+    <p>
+        These actions may break at any time.  Not all pranks are listed.  Use with care.
+    </p><p>
+        <a href="@Url.Action(MVC.PvPAdmin.ChangeWorldStats())">Toggle Joke Shop</a>
+    </p>
+
+    @using (Html.BeginForm(MVC.PvPAdmin.JokeShopAdminActionsSend(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <b>Player Id:</b>
+        @Html.TextBoxFor(m => m.Id, new { Value = Model.Id })
+        <button type="submit" name="Action" value="@JokeShopActions.Update">Update</button><br />
+        <b>Player Name:</b>
+        @Model.GetFullName()<br>
+        <b>Original Name:</b>
+        @Model.OriginalFirstName @Model.OriginalLastName<br>
+        <b>Return here:</b>
+        @Html.CheckBox("ReturnToPage", true)
+        <br>
+
+        <h2>Rescue</h2>
+
+        <div>
+            Animate:
+            <button type="submit" name="Action" value="@JokeShopActions.AnimateSafetyNet">Restore (Safety Net)</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoPsychotic">Clear Temporary Psychopath</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoInvisible">Clear Invisible</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoTemporaryForm">Clear Temporary Immobile Form</button>
+        </div>
+        <div>
+            Inanimate:
+            <button type="submit" name="Action" value="@JokeShopActions.UndoTemporaryForm">Restore Lost Item</button>
+        </div>
+        <div>
+            Restore:
+            <button type="submit" name="Action" value="@JokeShopActions.RestoreBaseForm">Restore to Base Form</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RestoreName">Restore Original Name</button>
+        </div>
+        <div>
+            Assistance:
+            <button type="submit" name="Action" value="@JokeShopActions.BlowWhistle">Clear Psycho Aggro</button>
+        </div>
+
+        <h2>Joke Shop</h2>
+
+        <div>
+            Shopkeeper:
+            <button type="submit" name="Action" value="@JokeShopActions.WarnPlayer">Warn Player</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RemindPlayer">Remind Player</button>
+            <button type="submit" name="Action" value="@JokeShopActions.BanPlayer">Ban Player</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UnbanPlayer">Lift Ban on Player</button>
+            <button type="submit" name="Action" value="@JokeShopActions.EjectPlayer">Eject Player</button>
+            <button type="submit" name="Action" value="@JokeShopActions.EjectOfflinePlayers">Eject Offline Players</button>
+        </div>
+        <div>
+            Random prank:
+            <button type="submit" name="Action" value="@JokeShopActions.MildPrank">Mild</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MischievousPrank">Mischievous</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MeanPrank">Mean</button>
+        </div>
+        <div>
+            Action Hooks:
+            <button type="submit" name="Action" value="@JokeShopActions.Search">Search</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Meditate">Meditate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Cleanse">Cleanse</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SelfRestore">Self-Restore</button>
+        </div>
+        <div>
+            Joke Shop:
+            <button type="submit" name="Action" value="@JokeShopActions.Activate">Activate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Deactivate">Deactivate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Relocate">Relocate</button>
+        </div>
+
+        <hr />
+
+        <h2>Pot Pourri</h2>
+
+        <div>
+            Fun:
+            <button type="submit" name="Action" value="@JokeShopActions.DiceGame">Roll Dice</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RandomShout">Random Shout</button>
+            <button type="submit" name="Action" value="@JokeShopActions.CombatRadar">Combat Radar</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RareFind">Rare Find</button>
+        </div>
+        <div>
+            Mischief:
+            <button type="submit" name="Action" value="@JokeShopActions.ForceAttack">Force Attack</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Incite">Incite Attack</button>
+            <button type="submit" name="Action" value="@JokeShopActions.FillInventory">Fill Inventory</button>
+        </div>
+        <div>
+            Actions:
+            <button type="submit" name="Action" value="@JokeShopActions.BlockAttacks">Block Attacks</button>
+            <button type="submit" name="Action" value="@JokeShopActions.BlockCleanses">Block Cleanses/Meditates</button>
+            <button type="submit" name="Action" value="@JokeShopActions.BlockItemUses">Block Item Uses</button>
+        </div>
+        <div>
+            Timers:
+            <button type="submit" name="Action" value="@JokeShopActions.ResetCombatTimer">Reset Combat Timer</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ResetActivityTimer">Reset Activity Timer</button>
+        </div>
+        <div>
+            Magic:
+            <button type="submit" name="Action" value="@JokeShopActions.LearnSpell">Learn Spell</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UnlearnSpell">Forget Spell</button>
+            <button type="submit" name="Action" value="@JokeShopActions.LiftRandomCurse">Lift Random Curse</button>
+        </div>
+
+        <h2>Form and Identity</h2>
+
+        <div>
+            Transformations:
+            <button type="submit" name="Action" value="@JokeShopActions.AnimateTransform">Animate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ImmobileTransform">Immobile</button>
+            <button type="submit" name="Action" value="@JokeShopActions.InanimateTransform">Inanimate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.LostItemTransform">Lost Item</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MobileInanimateTransform">Mobile Inanimate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TGTransform">TG</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Clone">Clone</button>
+            <button type="submit" name="Action" value="@JokeShopActions.BodySwap">Body Swap</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoTemporaryForm">Escape Temporary Form</button>
+        </div>
+        <div>
+            Identity:
+            <button type="submit" name="Action" value="@JokeShopActions.IdentityChange">Change Identity</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TransformToMindControlledForm">Mind Controlled Form</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RestoreName">Restore Name</button>
+        </div>
+        <div>
+            Base forms:
+            <button type="submit" name="Action" value="@JokeShopActions.SetBaseFormToCurrent">Set Base to Current Form</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SetBaseFormToRegular">Set Base to Regular</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ChangeBaseForm">Event Base</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RestoreBaseForm">Restore to Base Form</button>
+        </div>
+
+        <h2>Psychopaths</h2>
+
+        <div>
+            <b>Set aggro:</b>
+            @Html.CheckBox("PsychoAggro", true)
+        </div>
+
+        <div>
+            Summon:
+            <button type="submit" name="Action" value="@JokeShopActions.SummonPsychopath">Psychopath</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonEvilTwin">Evil Twin</button>
+            <button type="submit" name="Action" value="@JokeShopActions.OpenPsychoNip">Psycho Nip</button>
+        </div>
+        <div>
+            Joke Shop Psychos:
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl1Psychopath">Level 1 Psychopath</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl3Psychopath">Level 3 Fierce</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl5Psychopath">Level 5 Wrathful</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl7Psychopath">Level 7 Loathful</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl9Psychopath">Level 9 Soulless</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl11Psychopath">Level 11 Ruthless</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SummonLvl13Psychopath">Level 13 Eternal</button>
+        </div>
+
+        <h2>Effects</h2>
+
+        <p>
+            <b>Effect duration:</b>
+            @Html.TextBox("EffectDuration") turns<br>
+            <b>Effect cooldown:</b>
+            @Html.TextBox("EffectCooldown") turns
+        </p>
+
+        <div>
+            Boost:
+            <button type="submit" name="Action" value="@JokeShopActions.Boost">Random</button>
+            <button type="submit" name="Action" value="@JokeShopActions.DisciplineBoost">Discipline</button>
+            <button type="submit" name="Action" value="@JokeShopActions.PerceptionBoost">Perception</button>
+            <button type="submit" name="Action" value="@JokeShopActions.CharismaBoost">Charisma</button>
+            <button type="submit" name="Action" value="@JokeShopActions.FortitudeBoost">Fortitude</button>
+            <button type="submit" name="Action" value="@JokeShopActions.AgilityBoost">Agility</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RestorationBoost">Restoration</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MagickaBoost">Magicka</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RegenerationBoost">Regeneration</button>
+            <button type="submit" name="Action" value="@JokeShopActions.LuckBoost">Luck</button>
+            <button type="submit" name="Action" value="@JokeShopActions.InventoryBoost">Inventory</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MobilityBoost">Mobility (Unroot)</button>
+        </div>
+        <div>
+            Penalty:
+            <button type="submit" name="Action" value="@JokeShopActions.Penalty">Root</button>
+            <button type="submit" name="Action" value="@JokeShopActions.DisciplinePenalty">Discipline</button>
+            <button type="submit" name="Action" value="@JokeShopActions.PerceptionPenalty">Perception</button>
+            <button type="submit" name="Action" value="@JokeShopActions.CharismaPenalty">Charisma</button>
+            <button type="submit" name="Action" value="@JokeShopActions.FortitudePenalty">Fortitude</button>
+            <button type="submit" name="Action" value="@JokeShopActions.AgilityPenalty">Agility</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RestorationPenalty">Restoration</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MagickaPenalty">Magicka</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RegenerationPenalty">Regeneration</button>
+            <button type="submit" name="Action" value="@JokeShopActions.LuckPenalty">Luck</button>
+            <button type="submit" name="Action" value="@JokeShopActions.InventoryPenalty">Inventory</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MobilityPenalty">Mobility (Root)</button>
+        </div>
+        <div>
+            Behavior:
+            <button type="submit" name="Action" value="@JokeShopActions.Blind">Blind</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Dizzy">Dizzy</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Hush">Hush</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SneakLow">Level 1 Tracker</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SneakMedium">Level 2 Tracker</button>
+            <button type="submit" name="Action" value="@JokeShopActions.SneakHigh">Level 3 Tracker</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MakeInvisible">Invisible</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoInvisible">Clear Invisible</button>
+            <button type="submit" name="Action" value="@JokeShopActions.MakePsychotic">Temporary Psychopath</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoPsychotic">Clear Temporary Psychopath</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Instinctive">Instinctive</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UndoInstinctive">Clear Instinctive</button>
+        </div>
+        <div>
+            Mechanics:
+            <button type="submit" name="Action" value="@JokeShopActions.WarnPlayer">Warn</button>
+            <button type="submit" name="Action" value="@JokeShopActions.RemindPlayer">Remind</button>
+            <button type="submit" name="Action" value="@JokeShopActions.BanPlayer">Ban</button>
+            <button type="submit" name="Action" value="@JokeShopActions.UnbanPlayer">Lift Ban</button>
+            <button type="submit" name="Action" value="@JokeShopActions.AutoRestore">Auto-Restore</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ClearAutoRestore">Clear Auto-Restore (Cloud of Confusion)</button>
+        </div>
+
+        <h2>Movement</h2>
+
+        <div>
+            Teleport to:
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToOverworld">Overworld</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToDungeon">Dungeon</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToBar">Bar</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToQuest">Quest</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToFriendlyNPC">Friendly NPC</button>
+            <button type="submit" name="Action" value="@JokeShopActions.TeleportToHostileNPC">Hostile NPC</button>
+        </div>
+        <div>
+            Run:
+            <button type="submit" name="Action" value="@JokeShopActions.RunAway">Away</button>
+            <button type="submit" name="Action" value="@JokeShopActions.WanderAimlessly">Randomly</button>
+        </div>
+
+        <h2>Bounties</h2>
+
+        <div>
+            <button type="submit" name="Action" value="@JokeShopActions.PlaceBounty">Place Bounty</button>
+        </div>
+
+        <h2>Challenges</h2>
+
+        <p>
+            <b>Challenge minimum duration:</b>
+            @Html.TextBox("MinChallengeDuration") turns<br>
+            <b>Challenge maximum duration:</b>
+            @Html.TextBox("MaxChallengeDuration") turns
+        </p>
+
+        <div>
+            <button type="submit" name="Action" value="@JokeShopActions.AwardChallenge">Award a Challenge</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ClearChallenge">Remove Challenge</button>
+            <button type="submit" name="Action" value="@JokeShopActions.CurrentChallenge">Challenge Reminder</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ChallengeProgress">Challenge Progress</button>
+            <button type="submit" name="Action" value="@JokeShopActions.CheckChallenge">Check Challenge</button>
+        </div>
+
+        <h2>Events</h2>
+
+        <div>
+            <button type="submit" name="Action" value="@JokeShopActions.BossPrank">Boss Prank</button>
+            <button type="submit" name="Action" value="@JokeShopActions.ChangeBaseForm">Set Base to Seasonal</button>
+        </div>
+
+    }
+
+    <div id="modal" class="helpModal"></div>
+
+</div>

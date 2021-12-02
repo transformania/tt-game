@@ -163,6 +163,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult JokeShopAdminActionsSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.JokeShopAdminActionsSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ModDeleteClassified()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ModDeleteClassified);
@@ -261,6 +267,8 @@ namespace TT.Web.Controllers
             public readonly string ViewItemTransferLog = ("ViewItemTransferLog").ToLowerInvariant();
             public readonly string RenamePlayer = ("RenamePlayer").ToLowerInvariant();
             public readonly string RenamePlayerSend = ("RenamePlayerSend").ToLowerInvariant();
+            public readonly string JokeShopAdminActions = ("JokeShopAdminActions").ToLowerInvariant();
+            public readonly string JokeShopAdminActionsSend = ("JokeShopAdminActionsSend").ToLowerInvariant();
             public readonly string ModDeleteClassified = ("ModDeleteClassified").ToLowerInvariant();
             public readonly string FastInanimateMe = ("FastInanimateMe").ToLowerInvariant();
             public readonly string FastPetMe = ("FastPetMe").ToLowerInvariant();
@@ -430,6 +438,22 @@ namespace TT.Web.Controllers
         {
             public readonly string input = ("input").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_JokeShopAdminActions s_params_JokeShopAdminActions = new ActionParamsClass_JokeShopAdminActions();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_JokeShopAdminActions JokeShopAdminActionsParams { get { return s_params_JokeShopAdminActions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_JokeShopAdminActions
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_JokeShopAdminActionsSend s_params_JokeShopAdminActionsSend = new ActionParamsClass_JokeShopAdminActionsSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_JokeShopAdminActionsSend JokeShopAdminActionsSendParams { get { return s_params_JokeShopAdminActionsSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_JokeShopAdminActionsSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_ModDeleteClassified s_params_ModDeleteClassified = new ActionParamsClass_ModDeleteClassified();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ModDeleteClassified ModDeleteClassifiedParams { get { return s_params_ModDeleteClassified; } }
@@ -507,6 +531,7 @@ namespace TT.Web.Controllers
                 public readonly string FaeList = "FaeList";
                 public readonly string FindMissingThumbnails = "FindMissingThumbnails";
                 public readonly string Index = "Index";
+                public readonly string JokeShopAdminActions = "JokeShopAdminActions";
                 public readonly string ListCustomForms = "ListCustomForms";
                 public readonly string PublicBroadcast = "PublicBroadcast";
                 public readonly string RenamePlayer = "RenamePlayer";
@@ -532,6 +557,7 @@ namespace TT.Web.Controllers
             public readonly string FaeList = "~/Views/PvPAdmin/FaeList.cshtml";
             public readonly string FindMissingThumbnails = "~/Views/PvPAdmin/FindMissingThumbnails.cshtml";
             public readonly string Index = "~/Views/PvPAdmin/Index.cshtml";
+            public readonly string JokeShopAdminActions = "~/Views/PvPAdmin/JokeShopAdminActions.cshtml";
             public readonly string ListCustomForms = "~/Views/PvPAdmin/ListCustomForms.cshtml";
             public readonly string PublicBroadcast = "~/Views/PvPAdmin/PublicBroadcast.cshtml";
             public readonly string RenamePlayer = "~/Views/PvPAdmin/RenamePlayer.cshtml";
@@ -1097,6 +1123,30 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenamePlayerSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             RenamePlayerSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void JokeShopAdminActionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult JokeShopAdminActions(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.JokeShopAdminActions);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            JokeShopAdminActionsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void JokeShopAdminActionsSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.JokeShopActionViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult JokeShopAdminActionsSend(TT.Domain.ViewModels.JokeShopActionViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.JokeShopAdminActionsSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            JokeShopAdminActionsSendOverride(callInfo, input);
             return callInfo;
         }
 

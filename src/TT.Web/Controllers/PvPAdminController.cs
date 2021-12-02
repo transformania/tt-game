@@ -1545,6 +1545,91 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        public virtual ActionResult JokeShopAdminActions(int id = -1)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                TempData["Error"] = $"Not authorized";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var player = (Player)null;
+
+            if (id == -1)
+            {
+                // Default is to trigger effect on self
+                var myMembershipId = User.Identity.GetUserId();
+                player = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            }
+            else
+            {
+                var playerRepo = new EFPlayerRepository();
+                player = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+            }
+
+            if (player == null)
+            {
+                TempData["Error"] = $"Unable to find player with ID {id}.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.PvPAdmin.Views.JokeShopAdminActions, player);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult JokeShopAdminActionsSend(JokeShopActionViewModel input)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                TempData["Error"] = $"Not authorized";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var playerRepo = new EFPlayerRepository();
+            var victim = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+            if (victim == null)
+            {
+                TempData["Error"] = $"Unable to find player with ID {input.Id}.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (input.Action == TT.Domain.ViewModels.JokeShopActions.Update)
+            {
+                return RedirectToAction(MVC.PvPAdmin.JokeShopAdminActions(input.Id));
+            }
+
+            var result = JokeShopAdminProcedures.RunAction(victim, input);
+
+            if (result.IsNullOrWhiteSpace())
+            {
+                TempData["Error"] = "Action failed";
+            }
+            else
+            {
+                var myMembershipId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+                PlayerLogProcedures.AddPlayerLog(input.Id, $"{me.GetFullName()} played a Joke Shop prank on you:<br>{result}", false);
+                PlayerLogProcedures.AddPlayerLog(me.Id, $"You played a Joke Shop prank on {victim.GetFullName()}:<br>{result}", false);
+
+                TempData["Result"] = result;
+            }
+
+            if (input.ReturnToPage.GetValueOrDefault())
+            {
+                return RedirectToAction(MVC.PvPAdmin.JokeShopAdminActions(input.Id));
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        [Authorize]
         public virtual ActionResult ModDeleteClassified(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))

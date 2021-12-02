@@ -297,24 +297,33 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 LocationsStatics.LocationList.GetLocation = newMap.Where(l => l.dbName != LocationsStatics.JOKE_SHOP).ToList();
 
                 // Everybody out
-                IPlayerRepository playerRepo = new EFPlayerRepository();
-
-                foreach (var player in PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP).ToList())
-                {
-                    var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-                    user.dbLocationName = streetTile;
-                    playerRepo.SavePlayer(user);
-                }
-
-                IItemRepository itemRepo = new EFItemRepository();
-
-                foreach (var item in itemRepo.Items.Where(i => i.dbLocationName == LocationsStatics.JOKE_SHOP).ToList())
-                {
-                    var streetItem = itemRepo.Items.FirstOrDefault(i => i.Id == item.Id);
-                    streetItem.dbLocationName = streetTile;
-                    itemRepo.SaveItem(streetItem);
-                }
+                EmptyJokeShopOnto(streetTile);
             }
+        }
+
+        public static string EmptyJokeShopOnto(string dest)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var players = PlayerProcedures.GetPlayersAtLocation(LocationsStatics.JOKE_SHOP).ToList();
+
+            foreach (var player in players)
+            {
+                var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+                user.dbLocationName = dest;
+                playerRepo.SavePlayer(user);
+            }
+
+            IItemRepository itemRepo = new EFItemRepository();
+            var items = itemRepo.Items.Where(i => i.dbLocationName == LocationsStatics.JOKE_SHOP).ToList();
+
+            foreach (var item in items)
+            {
+                var streetItem = itemRepo.Items.FirstOrDefault(i => i.Id == item.Id);
+                streetItem.dbLocationName = dest;
+                itemRepo.SaveItem(streetItem);
+            }
+
+            return $"{players.Count()} mobile players and {items.Count()} items moved out of the Joke Shop and on to {dest}.";
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -28,6 +29,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 case JokeShopActions.EjectOfflinePlayers:
                     JokeShopProcedures.EjectOfflineCharacters();
                     return "Ejected offline players";
+                case JokeShopActions.EjectAllPlayers:
+                    return JokeShopProcedures.EmptyJokeShopOnto(LocationsStatics.GetRandomLocationNotInDungeonOr(LocationsStatics.JOKE_SHOP));
 
                 case JokeShopActions.MildPrank:
                     return JokeShopProcedures.MildPrank(victim);

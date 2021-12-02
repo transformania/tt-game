@@ -10,6 +10,7 @@ namespace TT.Domain.ViewModels
         UnbanPlayer,
         EjectPlayer,
         EjectOfflinePlayers,
+        EjectAllPlayers,
 
         MildPrank,
         MischievousPrank,

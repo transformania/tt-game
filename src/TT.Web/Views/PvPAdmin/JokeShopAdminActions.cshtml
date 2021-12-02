@@ -32,7 +32,7 @@
         <b>Player Name:</b>
         @Model.GetFullName()<br>
         <b>Original Name:</b>
-        @Model.OriginalFirstName @Model.OriginalLastName<br>
+        @(Model.OriginalFirstName + " " + Model.OriginalLastName)<br>
         <b>Return here:</b>
         @Html.CheckBox("ReturnToPage", true)
         <br>
@@ -58,6 +58,7 @@
         <div>
             Assistance:
             <button type="submit" name="Action" value="@JokeShopActions.BlowWhistle">Clear Psycho Aggro</button>
+            <button type="submit" name="Action" value="@JokeShopActions.EjectAllPlayers">Teleport All Players Out of Joke Shop</button>
         </div>
 
         <h2>Joke Shop</h2>
@@ -86,8 +87,8 @@
         </div>
         <div>
             Joke Shop:
-            <button type="submit" name="Action" value="@JokeShopActions.Activate">Activate</button>
-            <button type="submit" name="Action" value="@JokeShopActions.Deactivate">Deactivate</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Activate">Activate (Non-Persistent)</button>
+            <button type="submit" name="Action" value="@JokeShopActions.Deactivate">Deactivate (Non-Persistent)</button>
             <button type="submit" name="Action" value="@JokeShopActions.Relocate">Relocate</button>
         </div>
 

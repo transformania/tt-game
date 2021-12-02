@@ -124,6 +124,7 @@ namespace TT.Domain.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating effects");
                 var effectsExpiringThisTurn = temporaryEffects.Where(e => e.Duration == 1).ToList();
+                var activeOrExpiringEffects = temporaryEffects.Where(e => e.Duration > 0).ToList();
 
                 foreach (var e in temporaryEffects)
                 {
@@ -637,7 +638,7 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-related actions");
                 try
                 {
-                    JokeShopProcedures.RunEffectActions(temporaryEffects);
+                    JokeShopProcedures.RunEffectActions(activeOrExpiringEffects);
                 }
                 catch (Exception e)
                 {

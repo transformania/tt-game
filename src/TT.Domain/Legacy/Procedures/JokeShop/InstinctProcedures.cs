@@ -30,11 +30,22 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                       p.InQuest <= 0 &&
                                                       p.BotId == AIStatics.ActivePlayerBotId &&
                                                       !p.dbLocationName.StartsWith("dungeon_"))
-                                          .Select(p => new { p.Id, p.FormSourceId, p.dbLocationName });
+                                          .Select(p => new InstinctData{Id = p.Id, FormSourceId = p.FormSourceId, dbLocationName = p.dbLocationName })
+                                          .ToList();
 
             var mcPlayers = activePlayers.Where(p => playersToControl.Any(victim => p.Id == victim));
             var freePlayers = activePlayers.Where(p => !playersToControl.Any(victim => p.Id == victim));
 
+            (mcPlayers, freePlayers) = SheepActions(playerRepo, mcPlayers, freePlayers, rand);
+            (mcPlayers, freePlayers) = DogActions(playerRepo, mcPlayers, freePlayers, rand);
+            (mcPlayers, freePlayers) = CatActions(playerRepo, mcPlayers, freePlayers, rand);
+            mcPlayers = MaidActions(playerRepo, mcPlayers, rand);
+            mcPlayers = StripperActions(playerRepo, mcPlayers, rand);
+            mcPlayers = GhostActions(playerRepo, mcPlayers, rand);
+        }
+
+        private static (IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers) SheepActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers, Random rand)
+        {
             // Sheep - find another sheep and follow it
             var mcSheep = mcPlayers.Where(p => JokeShopProcedures.SHEEP.Any(sheepForm => p.FormSourceId == sheepForm)).ToList();
             if (!mcSheep.IsEmpty())
@@ -91,6 +102,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
+            return (mcPlayers, freePlayers);
+        }
+
+        private static (IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers) DogActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers, Random rand)
+        {
             // Dogs - chase cats, possiby up a tree
             var mcDogs = mcPlayers.Where(p => JokeShopProcedures.DOGS.Any(dogForm => p.FormSourceId == dogForm)).ToList();
             if (!mcDogs.IsEmpty())
@@ -220,6 +236,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
+            return (mcPlayers, freePlayers);
+        }
+
+        private static (IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers) CatActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, IEnumerable<InstinctData> freePlayers, Random rand)
+        {
             // Cats - chase rodents
             var mcCats2 = mcPlayers.Where(p => JokeShopProcedures.CATS_AND_NEKOS.Any(catForm => p.FormSourceId == catForm)).ToList();
             if (!mcCats2.IsEmpty())
@@ -294,6 +315,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
             }
 
+            return (mcPlayers, freePlayers);
+        }
+
+        private static IEnumerable<InstinctData> MaidActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, Random rand)
+        {
             // Maids - find places to clean
             var mcMaids = mcPlayers.Where(p => JokeShopProcedures.MAIDS.Any(maidForm => p.FormSourceId == maidForm)).ToList();
             foreach (var maid in mcMaids)
@@ -338,6 +364,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 mcPlayers = mcPlayers.Where(p => p.Id != maid.Id);
             }
 
+            return mcPlayers;
+        }
+
+        private static IEnumerable<InstinctData> StripperActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, Random rand)
+        {
             // Strippers - remove random item
             var mcStrippers = mcPlayers.Where(p => JokeShopProcedures.STRIPPERS.Any(stripperForm => p.FormSourceId == stripperForm)).ToList();
             foreach (var stripper in mcStrippers)
@@ -363,6 +394,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 mcPlayers = mcPlayers.Where(p => p.Id != stripper.Id);
             }
 
+            return mcPlayers;
+        }
+
+        private static IEnumerable<InstinctData> GhostActions(IPlayerRepository playerRepo, IEnumerable<InstinctData> mcPlayers, Random rand)
+        {
             // Ghosts - haunt old buildings
             var mcGhosts = mcPlayers.Where(p => JokeShopProcedures.GHOSTS.Any(ghostForm => p.FormSourceId == ghostForm)).ToList();
             foreach (var ghost in mcGhosts)
@@ -399,6 +435,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     if (canHaunt)
                     {
                         var here = LocationsStatics.GetConnectionName(nextLoc);
+                        var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
 
                         var candidates = playerRepo.Players
                             .Where(p => p.dbLocationName == nextLoc &&
@@ -439,8 +476,14 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 mcPlayers = mcPlayers.Where(p => p.Id != ghost.Id);
             }
 
-
+            return mcPlayers;
         }
+    }
 
+    public class InstinctData
+    {
+        public int Id { get; set; }
+        public int FormSourceId { get; set; }
+        public string dbLocationName { get; set; }
     }
 }

@@ -24,10 +24,7 @@
                 <p><a href="@Url.Action(MVC.NPC.RetrieveSoulboundItems())">Retrieve my @Model.NPCOwnedSoulboundItems.Count() soulbound items</a></p>
             }
 
-            @if (Model.Items.Count() > 0)
-            {
-                <p><a href="@Url.Action(MVC.NPC.SoulbindItemList())">Soulbind an item/pet</a></p>
-            }
+            <p><a href="@Url.Action(MVC.NPC.SoulbindItemList())">Soulbind an item/pet</a></p>
 
 
             @if (Model.AllSoulboundItems.Count() == 0)

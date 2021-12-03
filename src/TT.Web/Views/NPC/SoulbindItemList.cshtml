@@ -33,6 +33,7 @@
                     <th>Level</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,11 +41,30 @@
                     foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))" target="_blank">@item.FormerPlayer.FullName</a></td>
+                            <td>
+                                @if (item.FormerPlayer != null)
+                                {
+                                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))" target="_blank">@item.FormerPlayer.FullName</a>
+                                }
+                                else
+                                {
+                                    <span>Unsouled</span>
+                                }
+                            </td>
                             <td>@item.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, item)</td>
                             <td>@item.Level</td>
                             <td><img src="@HtmlHelpers.GetImageUrl(item.ItemSource.PortraitUrl, item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
-                            <td><a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id))">Soulbind</a></td>
+                            <td>
+                                @if (Model.CanSoulbind(item))
+                                {
+                                    <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id))">Soulbind</a>
+                                }
+                                else
+                                {
+                                    <b class="bad">@Model.GetReason(item)</b>
+                                }
+                            </td>
+                            <td>@(Model.CanSoulbind(item) ? 0 : 1)</td>
                         </tr>
                     }
                 }
@@ -57,7 +77,14 @@
 {
     <script>
     $('#soulbindItemsTable').dataTable({
-        "lengthMenu": [[10, 50, 100, 200, -1], [10, 50, 100, 200, "All"]]
+        "lengthMenu": [[10, 50, 100, 200, -1], [10, 50, 100, 200, "All"]],
+        "order": [[5, "asc"], [0, "asc"]],
+        "columnDefs": [
+            {
+                "targets": [5],
+                "visible": false,
+                "searchable": false
+            }]
     });
     </script>
 }

@@ -1352,7 +1352,6 @@ namespace TT.Web.Controllers
             var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
             var output = new TalkToSoulbinderViewModel
             {
-                Items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = me.Id }).ToList(),
                 AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id })
             };
             output.NPCOwnedSoulboundItems = output.AllSoulboundItems.Where(i => i.Owner != null && i.Owner.Id == npc.Id);
@@ -1371,7 +1370,7 @@ namespace TT.Web.Controllers
             var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
             var output = new TalkToSoulbinderViewModel
             {
-                Items = DomainRegistry.Repository.Find(new GetPlayerItemsThatCanBeSoulbound { OwnerId = me.Id }).ToList(),
+                Items = DomainRegistry.Repository.Find(new GetPlayerItemsOfSoulbindableTypes { OwnerId = me.Id }).ToList(),
                 Money = (int)me.Money,
                 AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id })
             };

@@ -1368,6 +1368,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // No more claiming certain areas.
+            if (myLocation.Region == "emptylot" || myLocation.Region == "tavern")
+            {
+                TempData["Error"] = "You consider enchanting this area, but begin to have doubts.";
+                TempData["SubError"] = "The Sunnyglade Tourism Council appreciates your restraint.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
             {
                 TempData["Error"] = "An otherworldly field prevents your enchantment having any effect on the Joke Shop.";
@@ -3280,7 +3288,6 @@ namespace TT.Web.Controllers
             var output = new MapViewModel
             {
                 LocationInfo = ownerInfo,
-
             };
 
             if (me.IsInDungeon() && showEnchant == "false")

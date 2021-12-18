@@ -230,7 +230,7 @@
                     }
                     else
                     {
-                        if (safegroundCoven.Value == null)
+                        if (safegroundCoven.Value == null && (Model.Location.Region != "emptylot" && Model.Location.Region != "tavern"))
                         {
                             <a href="@Url.Action(MVC.PvP.EnchantLocation())">Enchant (3 AP, 10 Mana)</a> <span>&nbsp;</span>
                         }
@@ -240,6 +240,18 @@
                             <a href="@Url.Action(MVC.PvP.EnterDungeon("true"))">Enter the PvP Dungeon (10 AP)</a>
                         }
                     }
+                }
+            }
+            @{
+                foreach (var item in Model.LocationItems)
+                {
+
+                    if ((Model.Location.Region == "emptylot") && (item.ItemSourceId == ItemStatics.MallKeySourceId))
+                    {
+                        <br /><br />
+                              <a href="#" alt="Coming soon!" title="owo what's this?">🎁🎄🎁</a>
+                    }
+
                 }
             }
 

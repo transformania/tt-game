@@ -214,6 +214,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\LeTitsNow.css" />
     <Content Include="Images\login-left.png" />
     <Content Include="Images\login-right.png" />
     <Content Include="lib\Chart.js\Chart.css" />

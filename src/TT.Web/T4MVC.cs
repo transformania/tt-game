@@ -131,6 +131,7 @@ namespace Links
         public static readonly string custom_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/custom.min.css") ? Url("custom.min.css") : Url("custom.css");
         public static readonly string custom_min_css = Url("custom.min.css");
         public static readonly string custom_scss = Url("custom.scss");
+        public static readonly string LeTitsNow_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/LeTitsNow.min.css") ? Url("LeTitsNow.min.css") : Url("LeTitsNow.css");
         public static readonly string PvP_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/PvP.min.css") ? Url("PvP.min.css") : Url("PvP.css");
     }
 
@@ -392,6 +393,7 @@ namespace Links
             {
                 public static readonly string custom_css = T4MVCHelpers.ProcessAssetPath("~/Content/custom.css");
                 public static readonly string custom_min_css_ = T4MVCHelpers.ProcessAssetPath("~/Content/custom.min.css");
+                public static readonly string LeTitsNow_css = T4MVCHelpers.ProcessAssetPath("~/Content/LeTitsNow.css");
                 public static readonly string PvP_css = T4MVCHelpers.ProcessAssetPath("~/Content/PvP.css");
             }
         }

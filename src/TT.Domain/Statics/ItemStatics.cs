@@ -50,6 +50,8 @@ namespace TT.Domain.Statics
         public const int TgSplashOrbItemSourceId = 390;
 
         public const int ItemType_DungeonArtifactItemSourceId = 218;
+        
+        public const int MallKeySourceId = 585;
 
         public enum ConsumableSubItemTypes { Rune = 0, Tome = 1, Spellbook = 2, Restorative = 3, WillpowerBomb = 4 }
 

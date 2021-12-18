@@ -1474,8 +1474,17 @@ namespace TT.Domain.Statics
                 Region = "streets",
                 X = -4,
                 Y = 5,
+                Name_North = "empty_parking_lot",
                 Name_East="street_130_sunnyglade_drive",
                 Name_South="candystore_counter",
+
+          }, new Location {
+                dbName = "empty_parking_lot",
+                Name = "Empty Parking Lot",
+                Region = "emptylot",
+                X = -4,
+                Y = 6,
+                Name_South="street_120_sunnyglade_drive",
 
           }, new Location {
                 dbName = "candystore_shelves",

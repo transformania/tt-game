@@ -744,6 +744,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
+            // You're gonna need a permit for that.
+            if (me.dbLocationName.StartsWith("empty_") || me.dbLocationName.StartsWith("tavern_"))
+            {
+                TempData["Error"] = "You do not have the correct permits to build here.";
+                TempData["SubError"] = "Please contact the Sunnyglade Tourism Council Zoning Commission if you have any questions, or try establishing your safeground elsewhere.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             if (me.dbLocationName == LocationsStatics.JOKE_SHOP)
             {
                 TempData["Error"] = "This otherworldly realm is immune to your enchantments and you find yourself unable to establish a safeground in the Joke Shop.";

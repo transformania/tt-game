@@ -13,6 +13,7 @@ namespace TT.Domain.Items.DTOs
         public int Level { get; set; }
         public int PvPEnabled { get; set; }
         public ICollection<PlayPageItemRuneDetail> Runes { get; set; }
+        public int ItemSourceId { get; set; }
 
         public class PlayPagePlayerDetail
         {

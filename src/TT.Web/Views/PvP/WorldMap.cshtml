@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.MapViewModel
+@model TT.Domain.ViewModels.MapViewModel
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "World Map";
@@ -11,7 +11,7 @@
     <li><a href="@Url.Action(MVC.PvP.WorldMap("true"))">Show Enchantments</a></li>
 }
 
-<div class="mapWrapper">
+<div class="mapWrapper snowflakes">
             @{
         string posX;
         string posY;
@@ -21,7 +21,9 @@
 
         foreach (var loc in Model.Locations)
         {
-
+            <div class="snowflake">
+            ❅
+            </div>
             posX = ((loc.X - minX) * 100 + 10).ToString() + "px";
             posY = (-(loc.Y - maxY) * 100 + 10).ToString() + "px";
 
@@ -33,8 +35,12 @@
 
 
                  @{ 
-                     if (loc.Region == "streets" && Model == null) { 
-                         <text> background-color: lightgray; </text>  
+                     if (loc.Region == "streets") { 
+                         <text> background-color: snow; </text>  
+                 }
+                    else
+                 {
+                         <text> background-color: gainsboro; </text>
                  }
 
                      @*else if (Model != null)
@@ -113,3 +119,7 @@
         text-align: center;
     }
 </style>
+@section head
+{
+    <link rel="stylesheet" href="/Content/LeTitsNow.css">    
+}

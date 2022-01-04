@@ -711,6 +711,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 90,
+      "name": "Alpha 90 (Only 90s Kids Will Remember)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

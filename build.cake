@@ -1,8 +1,11 @@
-#addin "nuget:?package=Cake.SqlServer&version=2.2.0"
+#addin "Cake.SqlServer&version=3.0.0&loaddependencies=true"
 #addin Cake.FileHelpers&version=3.2.1
 #addin nuget:?package=SharpZipLib&version=1.2.0
 #addin nuget:?package=Cake.Compression&version=0.2.4
 #addin nuget:?package=System.ValueTuple&version=4.5.0
+#addin nuget:?package=Microsoft.Data.SqlClient&version=4.0.0
+
+#tool nuget:?package=NuGet.CommandLine&version=6.0.0
 #tool nuget:?package=FluentMigrator.Console&version=3.2.15
 #tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
 #tool "nuget:?package=OpenCover&version=4.7.922"
@@ -52,7 +55,7 @@ if(!dbSecurity && dbPassword.Length == 0)
     } while (key.Key != ConsoleKey.Enter);
     Console.WriteLine();
 }
-var connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder
+var connectionStringBuilder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder()
 {
     DataSource = dbServer,
     IntegratedSecurity=dbSecurity,

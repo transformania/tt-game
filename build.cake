@@ -105,7 +105,8 @@ Task("Run-Unit-Tests")
                    });
             },
             unitCoverage,
-            new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
+            new OpenCoverSettings() { ReturnTargetCodeOffset = 0 }
+                .WithRegisterDll("Path64")
                 .WithFilter("+[TT.Domain]*")
                 .WithFilter("-[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")
@@ -138,7 +139,8 @@ Task("Run-Integration-Tests")
                    });
             },
             integrationCoverage,
-            new OpenCoverSettings { ReturnTargetCodeOffset = 0, Register = "Path64" }
+            new OpenCoverSettings() { ReturnTargetCodeOffset = 0 }
+                .WithRegisterDll("Path64")
                 .WithFilter("+[TT.Domain]*")
                 .WithFilter("+[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")

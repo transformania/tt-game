@@ -21,9 +21,6 @@
 
         foreach (var loc in Model.Locations)
         {
-            <div class="snowflake">
-            ❅
-            </div>
             posX = ((loc.X - minX) * 100 + 10).ToString() + "px";
             posY = (-(loc.Y - maxY) * 100 + 10).ToString() + "px";
 
@@ -119,7 +116,3 @@
         text-align: center;
     }
 </style>
-@section head
-{
-    <link rel="stylesheet" href="/Content/LeTitsNow.css">    
-}

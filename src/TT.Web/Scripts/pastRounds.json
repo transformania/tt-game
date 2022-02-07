@@ -719,6 +719,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 91,
+      "name": "Alpha 91 (Going Back to Basics)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

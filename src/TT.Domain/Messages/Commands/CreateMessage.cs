@@ -29,7 +29,7 @@ namespace TT.Domain.Messages.Commands
                 if (receiver == null)
                     throw new DomainException($"Receiving player with Id {ReceiverId} could not be found");
 
-                if (receiver.BotId != AIStatics.ActivePlayerBotId)
+                if (receiver.BotId != AIStatics.ActivePlayerBotId && receiver.MembershipId == null)
                     throw new DomainException("You can't message NPCs.");
 
                 var message = Message.Create(sender, receiver, this);

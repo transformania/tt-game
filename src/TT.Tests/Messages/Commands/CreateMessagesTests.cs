@@ -92,6 +92,7 @@ namespace TT.Tests.Messages.Commands
                 .With(p => p.User, new UserBuilder().With(u => u.Id, "guid").BuildAndSave())
                 .With(p => p.Id, 19)
                 .With(p => p.BotId, AIStatics.ValentineBotId)
+                .With(p => p.MembershipId, null)
                 .BuildAndSave();
 
             var cmd = new CreateMessage

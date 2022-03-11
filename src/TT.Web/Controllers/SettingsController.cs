@@ -68,7 +68,7 @@ namespace TT.Web.Controllers
                 if (mode == (int)GameModeStatics.GameModes.PvP)
                     modeName = "PvP";
 
-                TempData["Result"] = $"You have successfully change your game to {modeName} mode.";
+                TempData["Result"] = $"You have successfully changed your game to {modeName} mode.";
                 return RedirectToAction(MVC.PvP.Play());
             }
             catch (DomainException e)

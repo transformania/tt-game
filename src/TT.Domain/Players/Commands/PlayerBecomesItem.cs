@@ -69,10 +69,9 @@ namespace TT.Domain.Players.Commands
                 {
                     // Also consider players with a temporary change in bot ID to be active so not to autolock
                     activePlayer = ctx.AsQueryable<Effect>()
-                                    .Where(e => e.EffectSource.Id == JokeShopProcedures.PSYCHOTIC_EFFECT &&
-                                                e.Owner.Id == victim.Id &&
-                                                e.Duration > 0)
-                                    .Any();
+                                    .Any(e => e.EffectSource.Id == JokeShopProcedures.PSYCHOTIC_EFFECT &&
+                                              e.Owner.Id == victim.Id &&
+                                              e.Duration > 0);
                 }
 
                 output = victim.TurnIntoItem(attacker, newForm, newForm.ItemSource, DropItems, activePlayer);

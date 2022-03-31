@@ -620,7 +620,9 @@ namespace TT.Domain.Procedures
             var selectedSkills = new List<SkillViewModel>();
             SkillViewModel weakenSkill = null;
 
-            var inanimateSkill = allMySkills.FirstOrDefault(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet);
+            var inanimateSkill = allMySkills.Where(s => s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
+                                            .OrderBy(s => s.dbSkill.Id)
+                                            .FirstOrDefault();
             if (inanimateSkill != null)
             {
                 selectedSkills.Add(inanimateSkill);

@@ -46,9 +46,15 @@ namespace TT.Domain.Procedures
             }
 
             var meItem = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMe.Id);
+
+            if (meItem == null || meItem.IsPermanent)
+            {
+                return null;
+            }
+
             var myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
-            if (meItem == null || myItemXP == null)
+            if (myItemXP == null)
             {
                 return null;
             }
@@ -58,7 +64,7 @@ namespace TT.Domain.Procedures
             // Time until lock - at 2% per turn  (negative threshold)
             var turnsUntilLocked = (myItemXP.TimesStruggled - TurnTimesStatics.GetStruggleXPBeforeItemPermanentLock()) / 2 - turnsSinceLastAction;
 
-            if (!meItem.IsPermanent && turnsUntilLocked <= TurnTimesStatics.GetItemMaxTurnsBuildup())
+            if (turnsUntilLocked <= TurnTimesStatics.GetItemMaxTurnsBuildup())
             {
                 if (turnsUntilLocked <= 1)
                 {

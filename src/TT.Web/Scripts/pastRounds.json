@@ -727,6 +727,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 92,
+      "name": "Alpha 92 (Picnic Basket)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

@@ -735,6 +735,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 93,
+      "name": "Beta 1 (Wow, that was lame.)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

@@ -649,6 +649,7 @@ namespace TT.Domain.Procedures
                 oldItemMe.IsPermanent = true;
                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                 itemRepo.SaveItem(oldItemMe);
+                DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = oldplayer.Id, IgnoreRunes = false});
                 DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = oldplayer.Id});
                 DomainRegistry.Repository.Execute(new SetSoulbindingConsent { IsConsenting = true, PlayerId = oldplayer.Id });
             }

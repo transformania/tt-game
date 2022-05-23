@@ -744,5 +744,13 @@
       "xp": true,
       "achievement": true
     }
+    {
+      "number": 94,
+      "name": "Alpha 94 (Out with the New. In with the Old.)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    }
   ]
 }

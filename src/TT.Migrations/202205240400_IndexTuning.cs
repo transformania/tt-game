@@ -4,7 +4,7 @@ using FluentMigrator.SqlServer;
 namespace TT.Migrations
 {
     [Migration(202205240400)]
-    public class IndexTuning : ForwardOnlyMigration
+    public class IndexTuning : AutoReversingMigration
     {
         public override void Up()
         {

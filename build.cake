@@ -217,6 +217,28 @@ Task("Migrate")
     }
 );
 
+Task("Rollback")
+    .IsDependentOn("Build")
+    .Does(() => {    
+    
+        Information("Running TT.Migrations rollback using {0}", dbType);
+
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"./tools/ConnectionStrings.config"))
+        {
+            file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
+        }
+        var migrationStatus = StartProcess("./tools/FluentMigrator.Console.3.3.2/net461/any/Migrate.exe", new ProcessSettings {
+            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --task rollback --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
+        });
+        if (migrationStatus != 0)
+        {
+            throw new Exception($"FluentMigrator error code {migrationStatus}");
+        }
+
+        System.IO.File.Delete(@"./tools/ConnectionStrings.config");
+    }
+);
+
 Task("Drop-DB")
     .WithCriteria(() => !(dbType == "remoteserver"))
     .ContinueOnError()

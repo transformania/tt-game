@@ -6,7 +6,7 @@
 #addin nuget:?package=Microsoft.Data.SqlClient&version=4.0.0
 
 #tool nuget:?package=NuGet.CommandLine&version=6.0.0
-#tool nuget:?package=FluentMigrator.Console&version=3.2.15
+#tool nuget:?package=FluentMigrator.Console&version=3.3.2
 #tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
 #tool "nuget:?package=OpenCover&version=4.7.922"
 #tool "nuget:?package=ReportGenerator&version=4.6.1"
@@ -200,15 +200,42 @@ Task("Migrate")
         {
             file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
         }
-        StartProcess("./tools/FluentMigrator.Console.3.2.15/tools/net461/any/Migrate.exe", new ProcessSettings {
+        var migrationStatus = StartProcess("./tools/FluentMigrator.Console.3.3.2/net461/any/Migrate.exe", new ProcessSettings {
             Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
         });
+        if (migrationStatus != 0)
+        {
+            throw new Exception($"FluentMigrator error code {migrationStatus}");
+        }
+
         System.IO.File.Delete(@"./tools/ConnectionStrings.config");
         Information("Applying stored procedures against {0}", dbServer);
         using(var connection = OpenSqlConnection(connectionString))
         {
             ExecuteSqlFile(connection, "./src/TT.Web/Schema/GetPlayerBuffs.sql");
         }
+    }
+);
+
+Task("Rollback")
+    .IsDependentOn("Build")
+    .Does(() => {    
+    
+        Information("Running TT.Migrations rollback using {0}", dbType);
+
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"./tools/ConnectionStrings.config"))
+        {
+            file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
+        }
+        var migrationStatus = StartProcess("./tools/FluentMigrator.Console.3.3.2/net461/any/Migrate.exe", new ProcessSettings {
+            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --task rollback --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
+        });
+        if (migrationStatus != 0)
+        {
+            throw new Exception($"FluentMigrator error code {migrationStatus}");
+        }
+
+        System.IO.File.Delete(@"./tools/ConnectionStrings.config");
     }
 );
 

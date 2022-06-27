@@ -743,10 +743,18 @@
       "item": true,
       "xp": true,
       "achievement": true
-    }
+    },
     {
       "number": 94,
       "name": "Alpha 94 (Out with the New. In with the Old.)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 95,
+      "name": "Alpha 95 (Public Transportation)",
       "pvp": true,
       "item": true,
       "xp": true,

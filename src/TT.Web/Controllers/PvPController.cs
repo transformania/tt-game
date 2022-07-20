@@ -2318,7 +2318,7 @@ namespace TT.Web.Controllers
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(lookedAtPlayerId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
-            ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Floor(DateTime.UtcNow.Subtract(playerLookedAt.Player.LastActionTimestamp).TotalMinutes);
 
             if ((playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Player.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)
             {

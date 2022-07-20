@@ -36,7 +36,7 @@ namespace TT.Web.Controllers
             var output = new SettingsPageViewModel
             {
                 TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
-                TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
+                TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Floor(DateTime.UtcNow.Subtract(me.LastActionTimestamp).TotalMinutes),
                 Player = me,
                 PlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id }),
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),

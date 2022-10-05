@@ -25,6 +25,7 @@
             <th style="color: green;">Receiver</th>
             <th>Message</th>
             <th>Timestamp</th>
+            <th>Conversation Link</th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +40,9 @@
                 </td>
                 <td>@m.MessageText</td>
                 <td class="timeago">@m.Timestamp.ToString("u")</td>
+                <td>
+                    <a href="@Url.Action(MVC.Moderator.ModReadConversation(m.MessageId, m.Receiver.Id))">View Conversation</a>
+                </td>
             </tr>
         }
         </tbody>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,7 @@ using TT.Domain.Exceptions;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Queries;
+using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -244,6 +246,42 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(me.Id,
                 $"<b>You have reverted {player.OriginalFirstName} {player.OriginalLastName} back to their starting identity.</b>", true);
             return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        public virtual ActionResult ModReadConversation(int messageId, int reporterId)
+        {
+
+            //Assert the message was actually reported
+            var reportedMessageList = DomainRegistry.Repository.Find(new GetMessagesReportedAbusive());
+            var reportedMessage = reportedMessageList.FirstOrDefault(rm => rm.MessageId == messageId);
+
+            if (reportedMessage == null)
+            {
+                TempData["Error"] = "This message was not reported and cannot be viewed.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var message = DomainRegistry.Repository.FindSingle(new GetMessageModerator { MessageId = messageId, OwnerId = reporterId });
+
+            IEnumerable<MessageDetail> messages;
+
+            try
+            {
+                messages =
+                    DomainRegistry.Repository.Find(new GetMessagesInConversationModerator
+                    {
+                        conversationId = message.ConversationId
+                    });
+
+                return View(MVC.Messages.Views.ModReadConversation, messages);
+            }
+            catch
+            {
+                TempData["Error"] = "No conversation found";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
 
         }
     }

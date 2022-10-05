@@ -240,12 +240,14 @@ namespace TT.Web.Controllers
                 public readonly string CovenantWideMessage = "CovenantWideMessage";
                 public readonly string MarkAsAbusivePreview = "MarkAsAbusivePreview";
                 public readonly string Messages = "Messages";
+                public readonly string ModReadConversation = "ModReadConversation";
                 public readonly string ReadMessage = "ReadMessage";
                 public readonly string Write = "Write";
             }
             public readonly string CovenantWideMessage = "~/Views/Messages/CovenantWideMessage.cshtml";
             public readonly string MarkAsAbusivePreview = "~/Views/Messages/MarkAsAbusivePreview.cshtml";
             public readonly string Messages = "~/Views/Messages/Messages.cshtml";
+            public readonly string ModReadConversation = "~/Views/Messages/ModReadConversation.cshtml";
             public readonly string ReadMessage = "~/Views/Messages/ReadMessage.cshtml";
             public readonly string Write = "~/Views/Messages/Write.cshtml";
             static readonly _partialClass s_partial = new _partialClass();

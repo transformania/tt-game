@@ -411,6 +411,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_95.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_96.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_97.cshtml" />
+    <Content Include="Views\Messages\ModReadConversation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

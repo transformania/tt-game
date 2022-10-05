@@ -113,6 +113,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RevertToBase);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ModReadConversation()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ModReadConversation);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ModeratorController Actions { get { return MVC.Moderator; } }
@@ -143,6 +149,7 @@ namespace TT.Web.Controllers
             public readonly string EditNewsPostSend = ("EditNewsPostSend").ToLowerInvariant();
             public readonly string DeleteNewsPost = ("DeleteNewsPost").ToLowerInvariant();
             public readonly string RevertToBase = ("RevertToBase").ToLowerInvariant();
+            public readonly string ModReadConversation = ("ModReadConversation").ToLowerInvariant();
         }
 
 
@@ -225,6 +232,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_RevertToBase
         {
             public readonly string Id = ("Id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ModReadConversation s_params_ModReadConversation = new ActionParamsClass_ModReadConversation();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ModReadConversation ModReadConversationParams { get { return s_params_ModReadConversation; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ModReadConversation
+        {
+            public readonly string messageId = ("messageId").ToLowerInvariant();
+            public readonly string reporterId = ("reporterId").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -422,6 +438,19 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RevertToBase);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             RevertToBaseOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ModReadConversationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int messageId, int reporterId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ModReadConversation(int messageId, int reporterId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ModReadConversation);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "messageId", messageId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reporterId", reporterId);
+            ModReadConversationOverride(callInfo, messageId, reporterId);
             return callInfo;
         }
 

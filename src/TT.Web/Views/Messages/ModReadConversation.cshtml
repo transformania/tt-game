@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TT.Domain.Messages.DTOs.MessageDetail>
+@using TT.Web.CustomHtmlHelpers
+@{
+    ViewBag.Title = "Read Message";
+}
+<!--used for ajax in AddAntiForgeryToken()-->
+<form id="__AjaxAntiForgeryForm" action="#" method="post">@Html.AntiForgeryToken()</form>
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+<div class="containerInner">
+    <p>
+        <i>REMINDER: You are viewing this conversation for moderation purposes ONLY. The contents of these messages should remain CONFIDENTIAL</i>
+    </p><br>
+    @{
+        foreach (var m in Model)
+        {
+            <div class="messageInfoContainer clearfix">
+                <span class="messageNicknameContainer">@m.Sender.GetFullName()</span>
+                <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(m.Timestamp)</span>
+            </div>
+            <div class="messageTextContainer"><p>@m.MessageText</p></div>
+        }
+    }
+    <br>
+</div>

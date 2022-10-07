@@ -1472,6 +1472,31 @@ namespace TT.Web.Controllers
                         DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = item.Id });
                         DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
                     }
+
+                    //This is for animate pets and items. Reusing from the hacky Joke Shop way
+                    if (form?.MobilityType != PvPStatics.MobilityFull)
+                    {
+                        //If the person was already a pet/item, delete item and change them
+                        if (player.Mobility != PvPStatics.MobilityFull) {
+                            var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
+                            player.Mobility = PvPStatics.MobilityFull;
+                            DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = item.Id });
+                            DomainRegistry.Repository.Execute(new DeleteItem { ItemId = item.Id });
+                        }
+
+                        PlayerProcedures.InstantChangeToForm(player, form.Id);
+
+                        //Coerce them into being animate (from Joke Shop code)
+                        IPlayerRepository playerInanChange = new EFPlayerRepository();
+                        var target = playerInanChange.Players.FirstOrDefault(p => p.Id == player.Id);
+                        target.Mobility = PvPStatics.MobilityFull;
+                        playerInanChange.SavePlayer(target);
+
+                        var mobileTarget = playerInanChange.Players.FirstOrDefault(p => p.Id == player.Id);
+                        mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
+                        playerInanChange.SavePlayer(mobileTarget);
+                        
+                    }
                 }
 
                 playerRepo.SavePlayer(player);
@@ -1527,7 +1552,10 @@ namespace TT.Web.Controllers
                 playerRepo.SavePlayer(newPlayer);
 
                 var cm = changed_name + changed_form + changed_level + changed_money;
-                cm = cm.TrimEnd(cm[cm.Length - 1]);
+                if(cm.Length > 0)
+                {
+                    cm = cm.TrimEnd(cm[cm.Length - 1]);
+                }
 
                 // if chaoslord changes themself, they won't get a notification that they changed themself.
                 if (player.Id != me.Id)

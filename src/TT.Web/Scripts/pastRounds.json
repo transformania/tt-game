@@ -775,6 +775,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 98,
+      "name": "Alpha 98 (PvP and a Quest to Fail)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

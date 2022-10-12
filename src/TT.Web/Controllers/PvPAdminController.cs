@@ -1547,6 +1547,21 @@ namespace TT.Web.Controllers
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Sisters.MicroscopeSpellSourceId);
                 }
 
+                // If it's Road Queen, give them spells
+                else if (input.NewFormSourceId == BossProcedures_MotorcycleGang.BossFormId)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_MotorcycleGang.BikerFollowerSpellSourceId);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_MotorcycleGang.LeatherJacketSpellSourceId);
+                }
+
+                // If it's Nephthyma, give them her quest-related spells
+                else if (input.NewFormSourceId == 1147)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, 1366);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, 1367);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, 1368);
+                }
+
                 var newPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
                 newPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newPlayer));
                 playerRepo.SavePlayer(newPlayer);

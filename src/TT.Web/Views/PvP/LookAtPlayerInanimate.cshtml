@@ -244,10 +244,10 @@
 
                                                 <span class="glyphicon glyphicon-user text-info stroke-white well-sm" title="Number of potential alts"></span>(@PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress).Count())
 
-                                                @if (Model.PlayerUserStrikesDetail.User.Strikes.Any(i => i.Timestamp < DateTime.Now.AddDays(30)))
+                                                @if (Model.PlayerUserStrikesDetail.User.Strikes.Any(i => i.Timestamp.AddDays(30) > DateTime.Now))
                                                 {<span class="glyphicon glyphicon-warning-sign text-danger stroke-white well-sm" title="Strike given within the last 30 days."></span>}
                                                 else
-                                                {<span class="glyphicon glyphicon-warning-sign text-success stroke-white well-sm" title="No recent strikes."></span>}(@Model.PlayerUserStrikesDetail.User.Strikes.Count(i => i.Timestamp < DateTime.Now.AddDays(30))/@Model.PlayerUserStrikesDetail.User.Strikes.Count())
+                                                {<span class="glyphicon glyphicon-warning-sign text-success stroke-white well-sm" title="No recent strikes."></span>}(@Model.PlayerUserStrikesDetail.User.Strikes.Count(i => i.Timestamp.AddDays(30) > DateTime.Now)/@Model.PlayerUserStrikesDetail.User.Strikes.Count())
 
                                             </text>
                                         </b>

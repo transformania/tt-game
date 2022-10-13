@@ -209,21 +209,21 @@
     {
         @section menubottom
         {
-            <div id="altsDiv" style="display: none;">
-                <p class="small center-block">
-                    <text>
-                        @{
-                            foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
-                            {
-                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
-                            }
-                        }
-                    </text>
-                </p>
-            </div>
             @{ if (Model.PlayerForm.Player.MembershipId != null)
-                {
-                    <div style="text-align:center;">
+               {
+                   <div id="altsDiv" style="display: none;">
+                       <p class="small center-block">
+                           <text>
+                               @{
+                                   foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
+                                   {
+                                       <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
+                                   }
+                               }
+                           </text>
+                       </p>
+                   </div>
+                   <div style="text-align:center;">
                         <p class="rowDivider">
 
                             <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress<br />

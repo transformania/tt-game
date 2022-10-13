@@ -1,6 +1,7 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
+@using TT.Domain.Procedures
 @using TT.Domain.World.Queries
 @{
     ViewBag.Title = Model.PlayerForm.Player.GetFullName();
@@ -146,9 +147,9 @@
                 @HtmlHelpers.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
                     if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-                        {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-                    else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-                        {<p class="bad">Offline</p>}
+                    {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
+                else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                {<p class="bad">Offline</p>}
                 }
                 <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br>
                 <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
@@ -208,13 +209,45 @@
     {
         @section menubottom
         {
-
+            <div id="altsDiv" style="display: none;">
+                <p class="small center-block">
+                    <text>
+                        @{
+                            foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
+                            {
+                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
+                            }
+                        }
+                    </text>
+                </p>
+            </div>
             @{ if (Model.PlayerForm.Player.MembershipId != null)
                 {
-                    <div style="text-align:center;padding-top:25px;">
+                    <div style="text-align:center;">
                         <p class="rowDivider">
 
-                            <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress
+                            <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress<br />
+                            <b class="small">
+                                <text>
+                                    @if (Model.PlayerForm.Player.FlaggedForAbuse)
+                                    {<span class="glyphicon glyphicon-remove text-danger stroke-white well-sm" title="Attacks locked."></span>}
+                                    else
+                                    {<span class="glyphicon glyphicon-ok text-success stroke-white well-sm" title="Attacks unlocked."></span>}
+
+                                    @if (Model.PlayerForm.Player.IsBannedFromGlobalChat)
+                                    {<span class="glyphicon glyphicon-volume-off text-danger stroke-white well-sm" title="Chat banned."></span>}
+                                    else
+                                    {<span class="glyphicon glyphicon-volume-up text-success stroke-white well-sm" title="No chat ban."></span>}
+
+                                    <span class="glyphicon glyphicon-user text-info stroke-white well-sm" title="Number of potential alts"></span>(@PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress).Count())
+
+                                    @if (Model.PlayerUserStrikesDetail.User.Strikes.Any(i => i.Timestamp < DateTime.Now.AddDays(30)))
+                                    {<span class="glyphicon glyphicon-warning-sign text-danger stroke-white well-sm" title="Strike given within the last 30 days."></span>}
+                                    else
+                                    {<span class="glyphicon glyphicon-warning-sign text-success stroke-white well-sm" title="No recent strikes."></span>}(@Model.PlayerUserStrikesDetail.User.Strikes.Count(i => i.Timestamp < DateTime.Now.AddDays(30))/@Model.PlayerUserStrikesDetail.User.Strikes.Count())
+
+                                </text>
+                            </b>
                         </p>
                     </div>
                 }
@@ -229,7 +262,14 @@
                 <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
             }
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
-            <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
+            @if (Model.PlayerForm.Player.IsBannedFromGlobalChat)
+            {
+                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Lift ban on global chat</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
+            }
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             <li><a href="@Url.Action(MVC.Chat.ChatLog($"owner_{Model.PlayerForm.Player.Id}", "lasth"))">Owner chat log</a></li>
@@ -243,6 +283,7 @@
             <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
             <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Account Lockout Date</a></li>
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
+            <li><a href="#showAlts" id="showAlts">Show Potential Alts</a></li>
         }
     }
     else if (PvPStatics.ChaosMode && User.IsInRole(PvPStatics.Permissions_Chaoslord))
@@ -294,6 +335,14 @@
     $(document).ready(function () {
         // get current url that the page is on
         var currentUrl = new URL(window.location);
+
+        $("#showAlts").click(function () {
+            if ($("#altsDiv").is(":visible") === false) {
+                $("#altsDiv").show();
+            } else {
+                $("#altsDiv").hide();
+            }
+        });
 
         $("#ForceUserLogout").on("click", function () {
             $.ajax({

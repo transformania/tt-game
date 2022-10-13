@@ -287,6 +287,10 @@ namespace TT.Web.Controllers
             public readonly string ChaosRestoreBase = ("ChaosRestoreBase").ToLowerInvariant();
             public readonly string AllowChaosChanges = ("AllowChaosChanges").ToLowerInvariant();
             public readonly string SetArtistBioVisibility = ("SetArtistBioVisibility").ToLowerInvariant();
+            public readonly string LearnAnimateSpells = ("LearnAnimateSpells").ToLowerInvariant();
+            public readonly string LearnInanimateSpells = ("LearnInanimateSpells").ToLowerInvariant();
+            public readonly string LearnPetSpells = ("LearnPetSpells").ToLowerInvariant();
+            public readonly string ForgetAllSpells = ("ForgetAllSpells").ToLowerInvariant();
         }
 
 
@@ -1133,6 +1137,50 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetArtistBioVisibility);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isLive", isLive);
             SetArtistBioVisibilityOverride(callInfo, isLive);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LearnAnimateSpellsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LearnAnimateSpells()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LearnAnimateSpells);
+            LearnAnimateSpellsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LearnInanimateSpellsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LearnInanimateSpells()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LearnInanimateSpells);
+            LearnInanimateSpellsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LearnPetSpellsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LearnPetSpells()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LearnPetSpells);
+            LearnPetSpellsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ForgetAllSpellsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ForgetAllSpells()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgetAllSpells);
+            ForgetAllSpellsOverride(callInfo);
             return callInfo;
         }
 

@@ -21,6 +21,8 @@ using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Players.Commands;
 using TT.Web.ViewModels;
+using TT.Domain.Skills.Queries;
+using TT.Domain.Procedures.BossProcedures;
 
 namespace TT.Web.Controllers
 {
@@ -1035,6 +1037,169 @@ namespace TT.Web.Controllers
                 TempData["Error"] = e.Message;
                 return RedirectToAction(MVC.PvP.Play());
             }
+        }
+        
+        //Learn all spells that the Lorekeeper can sell
+        public virtual ActionResult LearnAnimateSpells()
+        {
+
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            try
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+                var output = 
+                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityFull, playerId = me.Id });
+
+                foreach (var skill in output)
+                { 
+                    LearnSpell(skill.Id, me.Id);
+                }
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to learn all animate spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "You have successfully learned every animate spell";
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        //Learn all inanimate spells that the Lorekeeper can sell
+        public virtual ActionResult LearnInanimateSpells()
+        {
+
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            try
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+                var output =
+                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityInanimate, playerId = me.Id });
+
+                foreach (var skill in output)
+                {
+                    LearnSpell(skill.Id, me.Id);
+                }
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to learn all inanimate spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "You have successfully learned every inanimate spell";
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        //Learn all pet spells that the Lorekeeper can sell
+        public virtual ActionResult LearnPetSpells()
+        {
+
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            try
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+                var output =
+                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityPet, playerId = me.Id });
+
+                foreach (var skill in output)
+                {
+                    LearnSpell(skill.Id, me.Id);
+                }
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to learn all pet spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "You have successfully learned every pet spell";
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        //Forget all spells the user currently has, then give them Weaken as a base
+        public virtual ActionResult ForgetAllSpells()
+        {
+
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            try
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+                ForgetSpells(me.Id);
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to forget all spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "You have successfully forgotten all spells";
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        //Helper function for learning spells via chaos
+        public virtual void LearnSpell(int spellSourceId, int playerId)
+        {
+            //Checking if spell is learnable and if the player has it already
+            var spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spellSourceId);
+            var playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(playerId);
+
+            //Assert that the player does not have the spell and the spell is learnable
+            //Do nothing if any of these are true
+            if (!playerExistingSpells.Select(s => s.SkillSourceId).Contains(spellSourceId) &&
+              !(spellViewModel.StaticSkill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.StaticSkill.LearnedAtRegion.IsNullOrEmpty()) &&
+              spellViewModel.StaticSkill.IsPlayerLearnable)
+            {
+                //Checks pass, give player spell
+                SkillProcedures.GiveSkillToPlayer(playerId, spellViewModel.StaticSkill.Id);
+            }
+
+        }
+
+        //Helper function for forgetting spells via chaos
+        public virtual void ForgetSpells(int playerId)
+        {
+            //Get the list of spells that should be forgettable
+            var skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(playerId)
+                .Where(s => s.StaticSkill.IsPlayerLearnable &&
+                !s.StaticSkill.ExclusiveToFormSourceId.HasValue &&
+                !s.StaticSkill.ExclusiveToItemSourceId.HasValue &&
+                s.StaticSkill.Id != PvPStatics.Spell_WeakenId &&
+                s.StaticSkill.Id != PvPStatics.Dungeon_VanquishSpellSourceId &&
+                s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId &&
+                (s.StaticSkill.LearnedAtLocation ?? s.StaticSkill.LearnedAtRegion) != null);
+
+            //Remove the skills. The index is always 0 as the player's skill list decreases
+            ISkillRepository skillRepo = new EFSkillRepository();
+            while (!skills.IsEmpty())
+            {
+                skillRepo.DeleteSkill(skills.ElementAt(0).dbSkill.Id);
+            }
+
         }
     }
 }

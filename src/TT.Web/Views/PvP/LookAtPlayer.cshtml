@@ -299,7 +299,15 @@
     {
         @section menubottom
         {
-            <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Chaos Actions</a></li>
+            <li>
+                <a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">
+                    @if (!@Model.ChaosChangesEnabled)
+                    {<span class="glyphicon glyphicon-fire text-danger stroke-white well-sm" title="Chaos changes are disabled."></span>}
+                    else
+                    {<span class="glyphicon glyphicon-fire text-success stroke-white well-sm" title="Chaos changes are enabled."></span>}
+                    Chaos Actions
+                </a>
+            </li>
             
         }
     }

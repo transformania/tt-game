@@ -15,6 +15,7 @@ using TT.Domain.Skills.Commands;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.World.Queries;
+using System.Text.RegularExpressions;
 
 namespace TT.Domain.Procedures
 {
@@ -1447,6 +1448,24 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var num = playerRepo.Players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode);
             return num > 1;
+        }
+
+        public static IEnumerable<Player> GetLikeIp(string ip)
+        {
+            string ipShort = ip;
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            if (ip.Contains("."))
+            {
+                ipShort = ip.LastIndexOf(".").ToString();          
+            } 
+            else if (ip.Contains(":"))
+            {
+                var match = Regex.Match(ip, "^[^:]*:[^:]*:[^:]*:[^:]*:");
+                ipShort = match.ToString();
+            }
+
+            IEnumerable<Player> output = playerRepo.Players.Where(p => p.IpAddress.Contains(ipShort)).ToList();
+            return output;
         }
 
         public static bool PlayerIsOffline(Player player)

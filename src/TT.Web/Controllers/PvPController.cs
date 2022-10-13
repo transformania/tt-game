@@ -2307,7 +2307,9 @@ namespace TT.Web.Controllers
                 Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = playerLookedAt.Player.Id }).Where(i => i.IsEquipped == true),
                 Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer()),
                 ShowInventory = !AIStatics.IsAFriendly(playerLookedAt.Player.BotId),
-                PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = playerLookedAt.Player.MembershipId })
+                PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = playerLookedAt.Player.MembershipId }),
+                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = playerLookedAt.Player.MembershipId }),
+                IsAccountLockedOut = DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId })
             };
 
 

@@ -232,6 +232,11 @@
                                                 else
                                                 {<span class="glyphicon glyphicon-volume-up text-success stroke-white well-sm" title="No chat ban."></span>}
 
+                                                @if (!@Model.ChaosChangesEnabled)
+                                                {<span class="glyphicon glyphicon-fire text-danger stroke-white well-sm" title="Chaos changes are disabled."></span>}
+                                                else
+                                                {<span class="glyphicon glyphicon-fire text-success stroke-white well-sm" title="Chaos changes are enabled."></span>}
+
                                                 <span class="glyphicon glyphicon-user text-info stroke-white well-sm" title="Number of potential alts"></span>(@PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress).Count())
 
                                                 @if (Model.PlayerUserStrikesDetail.User.Strikes.Any(i => i.Timestamp < DateTime.Now.AddDays(30)))

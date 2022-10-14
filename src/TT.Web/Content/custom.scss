@@ -1103,6 +1103,42 @@ strong {
   overflow-y: scroll;
 }
 
+.p-mode {
+    font-weight: 900;
+}
+
+.p-mode::before {
+    content: "P";
+    color: #04E4FC;
+    letter-spacing: 0.05em;
+    padding: 0 0 0 4px;
+    text-shadow: -1px -1px #000, 1px -1px #000, -1px 1px #000, 1px 1px #000;
+}
+
+.sp-mode {
+    font-weight: 900;
+}
+
+.sp-mode::before {
+    content: "SP";
+    color: #3CBC34;
+    letter-spacing: 0.05em;
+    padding: 0 0 0 4px;
+    text-shadow: -1px -1px #000, 1px -1px #000, -1px 1px #000, 1px 1px #000;
+}
+
+.pvp-mode {
+    font-weight: 900;
+}
+
+.pvp-mode::before {
+    content: "PVP";
+    color: #9E0E0E;
+    letter-spacing: 0.05em;
+    padding: 0 0 0 4px;
+    text-shadow: -1px -1px #000, 1px -1px #000, -1px 1px #000, 1px 1px #000;
+}
+
 .bad {
   color: #9E0E0E !important;
 }

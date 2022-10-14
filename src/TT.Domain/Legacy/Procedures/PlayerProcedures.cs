@@ -1456,7 +1456,7 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             if (ip.Contains("."))
             {
-                ipShort = ip.LastIndexOf(".").ToString();          
+                ipShort = ip.Substring(0, ip.LastIndexOf(".")).ToString();          
             } 
             else if (ip.Contains(":"))
             {

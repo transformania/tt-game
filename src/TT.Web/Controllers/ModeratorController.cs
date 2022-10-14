@@ -74,12 +74,6 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult LockPvP(string userId, bool setPvPLock)
         {
-            // assert the person flagging has mod permissions
-            // assert only admins can view this
-            if (!User.IsInRole(PvPStatics.Permissions_Moderator) && !User.IsInRole(PvPStatics.Permissions_Admin))
-            {
-                return RedirectToAction(MVC.PvP.Play());
-            }
 
             try
             {

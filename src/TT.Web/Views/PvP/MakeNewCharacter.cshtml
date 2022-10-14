@@ -10,10 +10,6 @@
     <script src="@Links.Scripts.newCharacter_js"></script>
 }
 
-<div>
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
-</div>
-
 <div class="specialBox textSpaced">
     <p>
         <b>
@@ -76,10 +72,18 @@
         <p class="good">Start in Roleplaying (RP) mode?</p>
         @Html.CheckBoxFor(x => x.StartInRP)
 
+        <br><br>
+
         <p class="good">Which game mode should this character start in?</p>
-        @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class=""> SuperProtection</span><br>
-        @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br>
-        @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="bad"> PvP</span>
+        <p style="padding: 0 15% 0 15%">
+            In Protection mode, you can only cast animate spells against other human players. SuperProtection keeps any spells from being cast on you by other human players. If someone is your friend, you can cast any spell you know against them and vice-versa.
+            <br /><br />
+            If you choose to start in Player versus Player (PvP) mode, you will be vulnerable to inanimate and animal attacks from any other PvP player at any time.  You can only cast spells against other players in PvP in this mode unless they are your friend, in which case all spells are available
+        </p>
+        @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class="p-mode"> Protection</span><br>
+        @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class="sp-mode"> SuperProtection</span><br>
+        @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="pvp-mode"> PvP</span>
+
 
         <br><br>
 

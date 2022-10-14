@@ -28,6 +28,7 @@ namespace TT.Domain.Identity.Entities
         public ArtistBio ArtistBio { get; protected set; }
 
         public bool AllowChaosChanges { get; protected set; }
+        public bool PvPLock { get; protected set; }
 
         private User() { }
 
@@ -57,6 +58,11 @@ namespace TT.Domain.Identity.Entities
         public void SetAllowChaosChanges(bool allowChaosChanges)
         {
             this.AllowChaosChanges = allowChaosChanges;
+        }
+
+        public void SetPvPLockChanges(bool SetPvPLock)
+        {
+            this.PvPLock = SetPvPLock;
         }
 
         public void SetLockoutEndDateUtc(DateTime dateTime)

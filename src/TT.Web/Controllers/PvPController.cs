@@ -761,7 +761,6 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
             {
@@ -817,6 +816,12 @@ namespace TT.Web.Controllers
 
             if (entering == "true")
             {
+                // assert player is not locked from pvp
+                if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
+                {
+                    TempData["Error"] = "You have been locked from PvP functions.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
 
                 // give player the Vanquish spell if they don't already know it
                 SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
@@ -1047,6 +1052,20 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert play is not locked from pvp when attacking another player
+            if (targeted.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "You have been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that the victim is not locked from pvp
+            if (targeted.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = targeted.MembershipId }))
+            {
+                TempData["Error"] = "Your target has been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert that the victim is not the own player
             if (targeted.Id == me.Id)
             {
@@ -1257,6 +1276,13 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert player is not locked from pvp
+            if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "You have been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is in an okay form to do this
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -2309,7 +2335,8 @@ namespace TT.Web.Controllers
                 ShowInventory = !AIStatics.IsAFriendly(playerLookedAt.Player.BotId),
                 PlayerUserStrikesDetail = playerLookedAt.Player.MembershipId == null ? null : DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = playerLookedAt.Player.MembershipId }),
                 ChaosChangesEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = playerLookedAt.Player.MembershipId }),
-                IsAccountLockedOut = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId })
+                IsAccountLockedOut = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId }),
+                IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId })
             };
 
 

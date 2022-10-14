@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.Identity.Queries;
 using TT.Web.Services;
 
 namespace TT.Web.Controllers
@@ -23,6 +25,13 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert player is not locked from pvp
+            if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "You have been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -178,6 +187,13 @@ namespace TT.Web.Controllers
                 if (p.Player.BotId < AIStatics.ActivePlayerBotId)
                 {
                     errorMessages.Add(p.Player.GetFullName() + " is an NPC and thus cannot engage in a duel.");
+                }
+
+                // assert player is not locked from pvp
+                if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = p.Player.MembershipId }))
+                {
+                    TempData["Error"] = "You have been locked from PvP functions.";
+                    return RedirectToAction(MVC.PvP.Play());
                 }
 
                 // assert player is animate

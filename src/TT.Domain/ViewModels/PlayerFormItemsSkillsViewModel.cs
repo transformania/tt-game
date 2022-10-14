@@ -14,5 +14,6 @@ namespace TT.Domain.ViewModels
         public PlayerUserStrikesDetail PlayerUserStrikesDetail { get; set; }
         public bool ChaosChangesEnabled { get; set; }
         public bool IsAccountLockedOut { get; set; }
+        public bool IsPvPLocked { get; set; }
     }
 }

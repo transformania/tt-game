@@ -73,6 +73,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult LockPvP()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LockPvP);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult HandleReport()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HandleReport);
@@ -139,6 +145,7 @@ namespace TT.Web.Controllers
             public readonly string ViewAbusiveMessages = ("ViewAbusiveMessages").ToLowerInvariant();
             public readonly string ViewStrikes = ("ViewStrikes").ToLowerInvariant();
             public readonly string AddStrike = ("AddStrike").ToLowerInvariant();
+            public readonly string LockPvP = ("LockPvP").ToLowerInvariant();
             public readonly string ViewReports = ("ViewReports").ToLowerInvariant();
             public readonly string HandleReport = ("HandleReport").ToLowerInvariant();
             public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
@@ -168,6 +175,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_AddStrike
         {
             public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_LockPvP s_params_LockPvP = new ActionParamsClass_LockPvP();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LockPvP LockPvPParams { get { return s_params_LockPvP; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LockPvP
+        {
+            public readonly string userId = ("userId").ToLowerInvariant();
+            public readonly string setPvPLock = ("setPvPLock").ToLowerInvariant();
         }
         static readonly ActionParamsClass_HandleReport s_params_HandleReport = new ActionParamsClass_HandleReport();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -320,6 +336,19 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddStrike);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             AddStrikeOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LockPvPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, bool setPvPLock);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LockPvP(string userId, bool setPvPLock)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LockPvP);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setPvPLock", setPvPLock);
+            LockPvPOverride(callInfo, userId, setPvPLock);
             return callInfo;
         }
 

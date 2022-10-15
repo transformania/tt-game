@@ -72,6 +72,27 @@ namespace TT.Web.Controllers
 
         }
 
+        public virtual ActionResult LockPvP(string userId, bool setPvPLock)
+        {
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new SetPvPLock
+                {
+                    UserId = userId,
+                    PvPLock = setPvPLock
+                });
+                TempData["Result"] = $"PvP lock has been successfully set to {setPvPLock}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change PvP lock enabled/disabled.";
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
         public virtual ActionResult ViewReports()
         {
             var output = DomainRegistry.Repository.Find(new GetAllReports());

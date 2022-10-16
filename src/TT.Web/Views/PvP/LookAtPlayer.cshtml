@@ -210,20 +210,36 @@
         @section menubottom
         {
             @{ if (Model.PlayerForm.Player.MembershipId != null)
-                {
-                    <div id="altsDiv" style="display: none;">
-                        <p class="small center-block">
-                            <text>
-                                @{
+               {
+                   <div id="altsDiv" style="display: none;">
+                       <p class="small center-block">
+                           <text>
+                               @{
                                     foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
                                     {
-                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
+                                        string mode;
+
+                                        if (user.GameMode == 0)
+                                        {
+                                            mode = "sp-mode";
+                                        }
+                                        else if (user.GameMode == 1)
+                                        {
+                                            mode = "p-mode";
+                                        }
+                                        else
+                                        {
+                                            mode = "pvp-mode";
+                                        }
+
+                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                        {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
                                     }
                                 }
-                            </text>
-                        </p>
-                    </div>
-                    <div style="text-align:center;">
+                           </text>
+                       </p>
+                   </div>
+                   <div style="text-align:center;">
                         <p class="rowDivider">
 
                             <b>User: </b>@Model.PlayerUserStrikesDetail.User.UserName || <b>ID: </b>@Model.PlayerForm.Player.MembershipId || <b>IP: </b>@Model.PlayerForm.Player.IpAddress<br />

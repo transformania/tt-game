@@ -210,7 +210,23 @@
                             @{
                                 foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
                                 {
-                                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
+                                    string mode;
+
+                                if (user.GameMode == 0)
+                                {
+                                    mode = "sp-mode";
+                                }
+                                else if (user.GameMode == 1)
+                                {
+                                    mode = "p-mode";
+                                }
+                                else
+                                {
+                                    mode = "pvp-mode";
+                                }
+
+                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
                                 }
                             }
                         </text>
@@ -450,6 +466,7 @@
 }
 @section head
 {
+    <link rel="stylesheet" href="custom.scss">
     <style>
         .leftDisplay {
             background-size: 100% 100%;

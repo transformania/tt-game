@@ -22,5 +22,7 @@
         public static int MINIBOSS_PLUSHANGEL_RUNE = 1;
         public static int MINIBOSS_ARCHANGEL_RUNE = 517;
         public static int MINIBOSS_ARCHDEMON_RUNE = 518;
+        public static int[] MINIBOSS_DUNGEONSLIME_RUNE = { 129, 158, 171, 184, 218, 514 };
+        public static int MINIBOSS_PLUSHDEMON_RUNE = 420; // Nice.
     }
 }

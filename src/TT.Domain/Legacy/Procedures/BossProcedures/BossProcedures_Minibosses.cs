@@ -30,7 +30,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         private static int ActiveSpells = 3;
         private static int SpellChangeTurnFrequency = 6;
         private static int CyclesBeforeSpellSwap = 8;
-        private static double ChanceToRespawn = .005;
+        private static double ChanceToRespawn = 100000; //.005;
         private static Random rand = new Random();
 
         private static Dictionary<string, MinibossData> bossData = new Dictionary<string, MinibossData>
@@ -143,6 +143,30 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_ARCHDEMON_RUNE
                 }
             },
+            {
+                "dungeonSlime",
+                new MinibossData {
+                    FormSourceId = 1316,
+                    FormName = "",
+                    Title = "Slime Host",
+                    Region = "dungeon",
+                    Spells = new List<int> { 152, 544, 1243, 1316, 1474},
+                    BotId = AIStatics.MinibossDungeonSlimeId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)] // Give a random item from its list.
+                }
+            },
+            {
+                "plushDemon",
+                new MinibossData {
+                    FormSourceId = 1535,
+                    FormName = "form_Smol_Succubus_Plushie_Breenarox",
+                    Title = "Demonic",
+                    Region = "dungeon",
+                    Spells = new List<int> { 630, 857, 950},
+                    BotId = AIStatics.MinibossPlushDemonId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHDEMON_RUNE
+                }
+            },
             //{
             //    "fiendishFarmhand",
             //    new MinibossData {
@@ -218,11 +242,30 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 };
                 var id = DomainRegistry.Repository.Execute(cmd);
 
+                // give the parasitic slime lots of buffs for all of the things they've clearly eaten!
+                if (data.BotId == AIStatics.MinibossDungeonSlimeId)
+                {
+                    // How many effects for the slime?
+                    int effectsTotal = 2;
+                    for (int i = 0; i < effectsTotal; i++)
+                    {
+                        // Grab a random effect.
+                        EffectProcedures.GivePerkToPlayer(EffectStatics.SUPER_PSYCHO_EFFECT[rand.Next(0, EffectStatics.SUPER_PSYCHO_EFFECT.Length)], id);
+                    }
+                }
+
                 var minibossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 minibossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(minibossEF));
                 playerRepo.SavePlayer(minibossEF);
 
-                for (var i = 0; i < 2; i++)
+                int itemTotal = 2;
+
+                if (data.BotId == AIStatics.MinibossPlushDemonId)
+                {
+                    itemTotal = 1;
+                }
+
+                for (var i = 0; i < itemTotal; i++)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = data.RuneIdToGive, PlayerId = minibossEF.Id });
                 }

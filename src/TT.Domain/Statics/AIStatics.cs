@@ -35,6 +35,8 @@ namespace TT.Domain.Statics
         public const int MinibossPlushAngelId = -27;
         public const int MinibossArchangelId = -28;
         public const int MinibossArchdemonId = -29;
+        public const int MinibossDungeonSlimeId = -30;
+        public const int MinibossPlushDemonId = -31;
 
         public const int DungeonDemonFormId = 371;
 
@@ -66,7 +68,9 @@ namespace TT.Domain.Statics
                    id == MinibossPlushAngelId ||
                    id == MinibossExchangeProfessorId ||
                    id == MinibossArchangelId ||
-                   id == MinibossArchdemonId;
+                   id == MinibossArchdemonId ||
+                   id == MinibossDungeonSlimeId ||
+                   id == MinibossPlushDemonId;
         }
 
         public static bool IsAFriendly(int id)

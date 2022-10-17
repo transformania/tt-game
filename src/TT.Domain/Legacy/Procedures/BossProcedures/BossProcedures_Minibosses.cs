@@ -245,8 +245,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 // give the parasitic slime lots of buffs for all of the things they've clearly eaten!
                 if (data.BotId == AIStatics.MinibossDungeonSlimeId)
                 {
-                    // How many effects for the slime?
-                    int effectsTotal = 2;
+
+                    int effectsTotal = 3;
                     for (int i = 0; i < effectsTotal; i++)
                     {
                         // Grab a random effect.

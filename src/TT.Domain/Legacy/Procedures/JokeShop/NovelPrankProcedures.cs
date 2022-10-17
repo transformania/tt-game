@@ -103,7 +103,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
 
             var baseStrength = Math.Min(Math.Max(0, (player.Level - 1) / 3), 3);
-            var strength = strengthOverride ?? (baseStrength + Math.Max(0, rand.Next(6) - 1));
+            var strength = strengthOverride ?? (baseStrength + Math.Max(0, rand.Next(7) - 1));
 
             var prefix = "";
             int level;
@@ -162,7 +162,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 extraPerk = AIProcedures.PsychopathicForLevelThreeEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
-            else
+            else if (strength == 6 || (turnNumber < 5000 && !strengthOverride.HasValue))
             {
                 strength = 6;
                 level = 13;
@@ -171,8 +171,24 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 extraPerk = AIProcedures.PsychopathicForLevelFiveEffectSourceId;
                 form = gender == 0 ? AIProcedures.Psycho9MId : AIProcedures.Psycho9FId;
             }
+            else
+            {
+                strength = 7;
+                level = 15;
+                prefix = "";
+                perk = AIProcedures.PsychopathicForLevelNineEffectSourceId;
+                extraPerk = AIProcedures.PsychopathicForLevelSevenEffectSourceId;
+                form = gender == 0 ? AIProcedures.PsychoChadId : AIProcedures.PsychoChadId;
+            }
 
             var firstName = "Psychopath";
+
+            // Chad doesn't need a title.
+            if (strength == 7)
+            {
+                firstName = "Chad";
+            }
+
             var lastName = NameService.GetRandomLastName();
 
             if (!prefix.IsEmpty())
@@ -241,7 +257,17 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             for (var c = 0; c < quantity; c++)
             {
-                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = strength * 2 + 1, Random = rand });
+                // Determine the level of rune.
+                var runeStrength = strength * 2 + 1;
+
+                // Fucking Chad, man.
+                if (strength == 7)
+                {
+                    runeStrength = 13;
+                }
+
+                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeStrength, Random = rand });
+
                 DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
             }
 
@@ -256,7 +282,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 AIDirectiveProcedures.SetAIDirective_Attack(botId, player.Id);
             }
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
+            if (strength == 7)
+            {
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Oh, fuck! It's {firstName} {lastName}!</b>  His dad is a lawyer!!", true);
+            }
+            else
+            {
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
+            }
+
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned <b>{firstName} {lastName}</b>!");
 
             return "Near the counter is an altar with a leather-bound book resting open upon it.  You take a look and try to read one of the jokes aloud.  It seems to be some consonant-heavy tongue twister that soon leaves you faltering.  You're not quite sure what the set up means, but hope the punchline will be worth it.  As you spurt out the last syllable a puff of red smoke explodes out from the book with an audible bang.  You're not laughing, and that remains the case when you close the book to see a large pentagram seared into the cover.  As the smoke subsides there seems to be a strange neon flicker to the light and a crackling to the air.  You turn sharply to see the psychopath you just summoned readying their attack against you!";

@@ -94,6 +94,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     return NovelPrankProcedures.SummonPsychopath(victim, strengthOverride: 5, aggro: input.PsychoAggro);
                 case JokeShopActions.SummonLvl13Psychopath:
                     return NovelPrankProcedures.SummonPsychopath(victim, strengthOverride: 6, aggro: input.PsychoAggro);
+                case JokeShopActions.SummonChadPsychopath:
+                    return NovelPrankProcedures.SummonPsychopath(victim, strengthOverride: 7, aggro: input.PsychoAggro);
 
                 case JokeShopActions.PlaceBounty:
                     return NovelPrankProcedures.PlaceBountyOnPlayersHead(victim);

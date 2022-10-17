@@ -41,6 +41,7 @@ namespace TT.Domain.Procedures
         public const int Psycho7FId = 842;
         public const int Psycho9MId = 843;
         public const int Psycho9FId = 844;
+        public const int PsychoChadId = 295;
 
         public const int PsychopathicForLevelOneEffectSourceId = 19;
         public const int PsychopathicForLevelThreeEffectSourceId = 20;
@@ -83,10 +84,26 @@ namespace TT.Domain.Procedures
             for (var i = (0 + botCount); i < (count + botCount); i++)
             {
 
+                // Get the strength based on the turn number.
+                var strength = GetPsychopathLevel(turnNumber);
+
+                var spawnLocation = "";
+
+                // Determine spawn location for psychos.
+                if (strength > 11)
+                {
+                    // Ruthless and Eternal for the dungeons.
+                    spawnLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                }
+                else
+                {
+                    spawnLocation = LocationsStatics.GetRandomLocationNotInDungeon();
+                }
+
                 var cmd = new CreatePlayer
                 {
                     FirstName = "Psychopath",
-                    Location = LocationsStatics.GetRandomLocationNotInDungeon(),
+                    Location = spawnLocation,
                     Health = 100000,
                     MaxHealth = 100000,
                     Mana = 100000,
@@ -98,9 +115,6 @@ namespace TT.Domain.Procedures
                     LastName = NameService.GetRandomLastName(),
                     Gender = i % 2 == 1 ? PvPStatics.GenderMale : PvPStatics.GenderFemale,
                 };
-
-
-                var strength = GetPsychopathLevel(turnNumber);
 
                 if (strength == 1)
                 {
@@ -125,6 +139,16 @@ namespace TT.Domain.Procedures
                 {
                     cmd.FirstName = "Soulless " + cmd.FirstName;
                     cmd.Level = 9;
+                }
+                else if (strength == 11)
+                {
+                    cmd.FirstName = "Ruthless " + cmd.FirstName;
+                    cmd.Level = 11;
+                }
+                else if (strength == 13)
+                {
+                    cmd.FirstName = "Eternal " + cmd.FirstName;
+                    cmd.Level = 13;
                 }
 
                 var idAndFormName = GetPsychoFormFromLevelAndSex(cmd.Level, cmd.Gender);
@@ -169,16 +193,26 @@ namespace TT.Domain.Procedures
                 {
                     EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
                 }
+                else if (strength == 11) //Ruthless 
+                {
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelThreeEffectSourceId, id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
+                }
+                else if (strength == 13) //Eternal
+                {
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelFiveEffectSourceId, id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
+                }
 
                 // give this psycho a new rune with some random chance it is a higher level than they are, to a max of level 13
                 var random = new Random(Guid.NewGuid().GetHashCode());
                 var roll = random.NextDouble();
 
-                if (roll < .1)
+                if (strength < 11 && roll < .1)
                 {
                     strength += 4;
                 }
-                else if (roll < .3)
+                else if (strength < 11 && roll < .3)
                 {
                     strength += 2;
                 }
@@ -312,7 +346,6 @@ namespace TT.Domain.Procedures
                         }
                     }
 
-
                     var directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
 
                     // the bot has an attack target, so go chase it
@@ -322,13 +355,22 @@ namespace TT.Domain.Procedures
                         var (mySkills, weakenSkill, inanimateSkill) = GetPsychopathSkills(bot);
 
                         // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
-                        if (PlayerProcedures.PlayerIsOffline(myTarget) ||
+                       if (PlayerProcedures.PlayerIsOffline(myTarget) ||
                             myTarget.Mobility != PvPStatics.MobilityFull ||
                             mySkills.IsEmpty() || inanimateSkill == null ||
                             myTarget.FormSourceId == inanimateSkill.StaticSkill.FormSourceId ||
-                            myTarget.IsInDungeon() ||
                             myTarget.InDuel > 0 ||
                             myTarget.InQuest > 0)
+                        {
+                            AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
+                        }
+                        else if ((bot.FirstName.Contains("Ruthless ") || bot.FirstName.Contains("Eternal ")) &&
+                            !myTarget.IsInDungeon())
+                        {
+                            // Toggle idling when the target isn't in the dungeon.
+                            AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
+                        } 
+                        else if (myTarget.IsInDungeon())
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                         }
@@ -379,8 +421,17 @@ namespace TT.Domain.Procedures
                     {
                         if (botbuffs.MoveActionPointDiscount() > -100)
                         {
-                            var newplace = MoveTo(bot, LocationsStatics.GetRandomLocationNotInDungeon(), 5);
-                            bot.dbLocationName = newplace;
+                            // Psychos are coming to the dungeon.
+                            if (bot.IsInDungeon())
+                            {
+                                var newplace = MoveTo(bot, LocationsStatics.GetRandomLocation_InDungeon(), 5);
+                                bot.dbLocationName = newplace;
+                            }
+                            else
+                            {
+                                var newplace = MoveTo(bot, LocationsStatics.GetRandomLocationNotInDungeon(), 5);
+                                bot.dbLocationName = newplace;
+                            }
                         }
 
 
@@ -446,6 +497,10 @@ namespace TT.Domain.Procedures
             else if (bot.FirstName.Contains("Eternal "))
             {
                 maxSpaces = 7;
+            }
+            else if (bot.FirstName.Contains("Chad"))
+            {
+                maxSpaces = 10; // Chad wants your ass!
             }
 
             return maxSpaces;
@@ -587,6 +642,10 @@ namespace TT.Domain.Procedures
             {
                 numAttacks = rand.Next(3, 6);
             }
+            else if (bot.FirstName.Contains("Chad"))
+            {
+                numAttacks = 6; // Chad doesn't fuck around.
+            }
 
             return numAttacks;
         }
@@ -637,7 +696,7 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            if (bot.FirstName.Contains("Eternal "))
+            if (bot.FirstName.Contains("Eternal ") || bot.FirstName.Contains("Chad"))
             {
                 var animateSkill = allMySkills.FirstOrDefault(s => s.MobilityType == PvPStatics.MobilityFull);
                 if (animateSkill != null)
@@ -704,6 +763,8 @@ namespace TT.Domain.Procedures
             // 5 = wrathful
             // 7 = loathful
             // 9 = soulless
+            // 11 = ruthless
+            // 13 = eternal
 
             // regular psychopath
             if (turnNumber < 300)
@@ -760,7 +821,7 @@ namespace TT.Domain.Procedures
                     return 1;
                 }
             }
-            else if (turnNumber >= 1500)
+            else if (turnNumber >= 1500 && turnNumber < 2400)
             {
                 if (roll < .015D)
                 {
@@ -775,6 +836,64 @@ namespace TT.Domain.Procedures
                     return 5;
                 }
                 else if (roll < .35D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 2400 && turnNumber < 3600)
+            {
+                if (roll < .015D)
+                {
+                    return 11;
+                }
+                else if (roll < .025D)
+                {
+                    return 9;
+                }
+                else if (roll < .06D)
+                {
+                    return 7;
+                }
+                else if (roll < .17D)
+                {
+                    return 5;
+                }
+                else if (roll < .37D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 3600)
+            {
+                if (roll < .01D)
+                {
+                    return 13;
+                }
+                else if (roll < .02D)
+                {
+                    return 11;
+                }
+                else if (roll < .035D)
+                {
+                    return 9;
+                }
+                else if (roll < .07D)
+                {
+                    return 7;
+                }
+                else if (roll < .21D)
+                {
+                    return 5;
+                }
+                else if (roll < .45)
                 {
                     return 3;
                 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
@@ -30,7 +30,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         private static int ActiveSpells = 3;
         private static int SpellChangeTurnFrequency = 6;
         private static int CyclesBeforeSpellSwap = 8;
-        private static double ChanceToRespawn = 100000; //.005;
+        private static double ChanceToRespawn = .005;
         private static Random rand = new Random();
 
         private static Dictionary<string, MinibossData> bossData = new Dictionary<string, MinibossData>

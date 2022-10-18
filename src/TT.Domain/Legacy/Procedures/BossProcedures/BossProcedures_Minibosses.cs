@@ -150,7 +150,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "",
                     Title = "Slime Host",
                     Region = "dungeon",
-                    Spells = new List<int> { 152, 544, 1243, 1316, 1474},
+                    Spells = new List<int> { 349, 446, 841, 891, 955, 1245, 1392, 1428, 1529},
                     BotId = AIStatics.MinibossDungeonSlimeId,
                     RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)] // Give a random item from its list.
                 }

@@ -700,7 +700,7 @@ namespace TT.Web.Controllers
                 var archAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchangelId);
                 var archDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchdemonId);
                 var dungeonSlime = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossDungeonSlimeId);
-                var plushDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossDungeonSlimeId);
+                var plushDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushDemonId);
 
                 if (sororityMother != null)
                 {

@@ -699,6 +699,8 @@ namespace TT.Web.Controllers
                 var plushAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushAngelId);
                 var archAngel = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchangelId);
                 var archDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchdemonId);
+                var dungeonSlime = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossDungeonSlimeId);
+                var plushDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushDemonId);
 
                 if (sororityMother != null)
                 {
@@ -743,6 +745,14 @@ namespace TT.Web.Controllers
                 if (archDemon != null)
                 {
                     output += "What is it about Sunnyglade that seems to bring out the worst in people? Demons fighting angels this time! Just another day, I guess. If you wanna engage with some of the troublemakers, you can find an archdemon in the Valentine Castle.<br>";
+                }
+                if (dungeonSlime != null)
+                {
+                    output += "Maybe you should be on the look-out for one of those parasitic slime things people keep mentioning. I hear they eat anything and everything in their path and don't really have anything of value. If you're looking to take one down for whatever reason, check out the<b class=\'pvp-mode\'> dungeon</b> beneath the town.<br>";
+                }
+                if (plushDemon != null)
+                {
+                    output += "If you see a plush angel in the<b class=\'pvp-mode\'> dungeon</b>, it is better to leave it alone. Unlike the friendly angel on the streets, it is a bit of a dick.<br>";
                 }
 
                 if (output.Length < 3)

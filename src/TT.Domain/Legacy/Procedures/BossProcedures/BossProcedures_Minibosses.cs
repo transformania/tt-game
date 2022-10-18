@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
@@ -143,6 +143,30 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_ARCHDEMON_RUNE
                 }
             },
+            {
+                "dungeonSlime",
+                new MinibossData {
+                    FormSourceId = 1316,
+                    FormName = "",
+                    Title = "Slime Host",
+                    Region = "dungeon",
+                    Spells = new List<int> { 349, 446, 841, 891, 955, 1245, 1392, 1428, 1529},
+                    BotId = AIStatics.MinibossDungeonSlimeId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)] // Give a random item from its list.
+                }
+            },
+            {
+                "plushDemon",
+                new MinibossData {
+                    FormSourceId = 1535,
+                    FormName = "form_Smol_Succubus_Plushie_Breenarox",
+                    Title = "Demonic",
+                    Region = "dungeon",
+                    Spells = new List<int> { 630, 857, 950},
+                    BotId = AIStatics.MinibossPlushDemonId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHDEMON_RUNE
+                }
+            },
             //{
             //    "fiendishFarmhand",
             //    new MinibossData {
@@ -218,11 +242,30 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 };
                 var id = DomainRegistry.Repository.Execute(cmd);
 
+                // give the parasitic slime lots of buffs for all of the things they've clearly eaten!
+                if (data.BotId == AIStatics.MinibossDungeonSlimeId)
+                {
+
+                    int effectsTotal = 3;
+                    for (int i = 0; i < effectsTotal; i++)
+                    {
+                        // Grab a random effect.
+                        EffectProcedures.GivePerkToPlayer(EffectStatics.SUPER_PSYCHO_EFFECT[rand.Next(0, EffectStatics.SUPER_PSYCHO_EFFECT.Length)], id);
+                    }
+                }
+
                 var minibossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                 minibossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(minibossEF));
                 playerRepo.SavePlayer(minibossEF);
 
-                for (var i = 0; i < 2; i++)
+                int itemTotal = 2;
+
+                if (data.BotId == AIStatics.MinibossPlushDemonId)
+                {
+                    itemTotal = 1;
+                }
+
+                for (var i = 0; i < itemTotal; i++)
                 {
                     DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = data.RuneIdToGive, PlayerId = minibossEF.Id });
                 }

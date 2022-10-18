@@ -44,6 +44,7 @@ namespace TT.Domain.ViewModels
         SummonLvl9Psychopath,
         SummonLvl11Psychopath,
         SummonLvl13Psychopath,
+        SummonChadPsychopath,
 
         PlaceBounty,
         AwardChallenge,

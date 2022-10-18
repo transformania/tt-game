@@ -143,7 +143,7 @@ namespace TT.Domain.Statics
 
         public const int Dungeon_VanquishSpellSourceId = 686;
 
-        public const int PsychopathDefaultAmount = 40; // There are more players now. Let's try toggling this up a little.
+        public const int PsychopathDefaultAmount = 20; // There are more players now. Let's try toggling this up a little.
         public const int Covenant_MaximumAnimatePlayerCount = 25;
 
         public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 5;

@@ -90,7 +90,7 @@ namespace TT.Domain.Procedures
                 var spawnLocation = "";
 
                 // Determine spawn location for psychos.
-                if (strength > 11)
+                if (strength >= 11)
                 {
                     // Ruthless and Eternal for the dungeons.
                     spawnLocation = LocationsStatics.GetRandomLocation_InDungeon();
@@ -171,6 +171,12 @@ namespace TT.Domain.Procedures
 
                 var skillToLearn = eligibleSkills.ElementAt(randIndex);
                 SkillProcedures.GiveSkillToPlayer(id, skillToLearn.Id);
+
+                // give Ruthless and Eternal the Weaken skill.
+                if (strength >= 11)
+                {
+                    SkillProcedures.GiveSkillToPlayer(id, PvPStatics.Spell_WeakenId);
+                }
 
                 // give this bot the Psychpathic perk
                 if (strength == 1)
@@ -364,12 +370,12 @@ namespace TT.Domain.Procedures
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                         }
-                        else if ((bot.FirstName.Contains("Ruthless ") || bot.FirstName.Contains("Eternal ")) &&
-                            !myTarget.IsInDungeon())
+                       else if ((bot.FirstName.Contains("Ruthless ") || bot.FirstName.Contains("Eternal ")) &&
+                            bot.IsInDungeon() != myTarget.IsInDungeon())
                         {
                             // Toggle idling when the target isn't in the dungeon.
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
-                        } 
+                        }
                         else if (myTarget.IsInDungeon())
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);

@@ -282,34 +282,9 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintOwnerSubPortrait(PlayerFormViewModel owner)
         {
-            var output = "";
-
-            if (owner == null)
-            {
-                return new MvcHtmlString(output);
-            }
-
-            var portraits = "portraits";
-            var portraitUrl = owner.Form.PortraitUrl;
-
-            if (owner.Player.Mobility == PvPStatics.MobilityInanimate)
-            {
-                portraits = "itemsPortraits";
-                portraitUrl = ItemStatics.GetStaticItem(owner.Form.ItemSourceId.Value)?.PortraitUrl;
-            }
-            else if (owner.Player.Mobility == PvPStatics.MobilityPet)
-            {
-                portraits = "animalPortraits";
-                portraitUrl = ItemStatics.GetStaticItem(owner.Form.ItemSourceId.Value)?.PortraitUrl;
-            }
-
-            var strThumb = "Thumbnails/100/";
-            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{PvPStatics.ImageFolder}{portraits}/{strThumb}{portraitUrl}"))
-            {
-                strThumb = "";
-            }
-
-            output = $"<div class='subportrait' style='background-image: url({PvPStatics.ImageURL}{portraits}/{strThumb}{portraitUrl});' title = 'You are owned by {owner.Player.GetFullName()}, a {owner.Form.FriendlyName}.'></div>";
+            var portraitUrl = GetImageURL(owner, true);
+            
+            var output = $"<div class='subportrait' style='background-image: url({portraitUrl});' title = 'You are owned by {owner.Player.GetFullName()}, a {owner.Form.FriendlyName}.'></div>";
 
             return new MvcHtmlString(output);
         }

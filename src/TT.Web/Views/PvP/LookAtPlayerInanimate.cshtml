@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
 @{
@@ -210,7 +210,23 @@
                             @{
                                 foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
                                 {
-                                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">| @user.FirstName @user.LastName |</a>
+                                    string mode;
+
+                                if (user.GameMode == 0)
+                                {
+                                    mode = "sp-mode";
+                                }
+                                else if (user.GameMode == 1)
+                                {
+                                    mode = "p-mode";
+                                }
+                                else
+                                {
+                                    mode = "pvp-mode";
+                                }
+
+                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
                                 }
                             }
                         </text>

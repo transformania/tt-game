@@ -1,4 +1,5 @@
-@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@using TT.Domain.Models
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
 @{
@@ -58,10 +59,32 @@
                                     </div>
                                     <div class="modal-body">
                                         <p class="small">
-                                        Click on an option to remove the blacklist again.
-                                        <br /><br />
-                                        <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >Just attacks.</a></li>
-                                        <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" class="alert-link">Messages and attacks.</a></li>
+                                            @{
+                                            var BlacklistLevel = BlacklistProcedures.IsAttackBlacklisted(new Player { MembershipId = ViewBag.MyId }, new Player { MembershipId = Model.PlayerForm.Player.MembershipId });
+                                            if (BlacklistLevel == "0")
+                                            {
+                                                <span>They cannot attack you.</span><br /><br />
+                                                <li class="outline-text">
+                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOrMessage"))">No attacking or messaging.</a>
+                                                </li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                            }
+                                            else if (BlacklistLevel == "1")
+                                            {
+                                                <span>They cannot attack or message you.</span><br /><br />
+                                                <li class="outline-text">
+                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOnly"))">No attacking.</a>
+                                                </li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                            }
+                                            else
+                                            {
+                                                <span>They are not blacklisted.</span>
+                                                <br /><br />
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" >No attacking or messaging.</a></li>
+                                            }
+                                        }
                                         </p>
                                     </div>
                                 </div>

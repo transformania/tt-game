@@ -45,22 +45,22 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static bool IsAttackBlacklisted(Player player, Player target)
+        public static string IsAttackBlacklisted(Player player, Player target)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             var getEntry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == player.MembershipId && e.TargetMembershipId == target.MembershipId);
 
-            bool output;
+            string output;
 
             if (getEntry != null)
             {
-                output = true;
+                output = getEntry.BlacklistLevel.ToString();
             }
             else
             {
-                output = false;
+                output = "false";
             }
 
             return output;
@@ -124,6 +124,13 @@ namespace TT.Domain.Procedures
         public static string TogglePlayerBlacklistType(int id, string type, Player player, Player receiver)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
+
+            if ( id == 0 && (player.MembershipId != null && receiver.MembershipId != null))
+            {
+                var getBlacklistId = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == player.MembershipId && e.TargetMembershipId == receiver.MembershipId);
+                id = getBlacklistId.Id;
+            }
+
             var entry = repo.BlacklistEntries.FirstOrDefault(e => e.Id == id);
 
             if (entry == null)

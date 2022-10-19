@@ -2344,6 +2344,7 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var lookedAtPlayerId = playerLookedAt.Player.MembershipId;
             ViewBag.IsMe = myMembershipId == lookedAtPlayerId;
+            ViewBag.MyId = myMembershipId;
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(lookedAtPlayerId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);

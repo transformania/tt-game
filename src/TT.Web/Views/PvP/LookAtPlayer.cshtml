@@ -46,8 +46,28 @@
                     {
                         <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist Player</a></li>
+                        <li><a href="#showBlacklist" id="showBlacklist" data-toggle="modal" data-target="#blacklistModal">Blacklist Player</a></li>
                         <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>
+
+                        <!-- blacklist modal -->
+                        <div class="modal fade" id="blacklistModal" role="dialog">
+                            <div class="modal-dialog modal-sm bg-warning">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close outline-text" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Blacklist Player</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                        Click on an option to remove the blacklist again.
+                                        <br /><br />
+                                        <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >Just messages.</a></li>
+                                        <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" class="alert-link">Messages and attacks.</a></li>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 }
             </p>

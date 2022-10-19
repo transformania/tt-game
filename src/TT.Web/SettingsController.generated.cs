@@ -357,6 +357,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ToggleBlacklistOnPlayer
         {
             public readonly string id = ("id").ToLowerInvariant();
+            public readonly string type = ("type").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ChangeBlacklistType s_params_ChangeBlacklistType = new ActionParamsClass_ChangeBlacklistType();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -785,14 +786,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ToggleBlacklistOnPlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void ToggleBlacklistOnPlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, int type);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ToggleBlacklistOnPlayer(int id)
+        public override System.Web.Mvc.ActionResult ToggleBlacklistOnPlayer(int id, int type)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleBlacklistOnPlayer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ToggleBlacklistOnPlayerOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "type", type);
+            ToggleBlacklistOnPlayerOverride(callInfo, id, type);
             return callInfo;
         }
 

@@ -327,7 +327,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult ToggleBlacklistOnPlayer(int id)
+        public virtual ActionResult ToggleBlacklistOnPlayer(int id, int type)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -349,7 +349,7 @@ namespace TT.Web.Controllers
             }
 
 
-            TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklist(me, target);
+            TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklist(me, target, type);
 
 
             return RedirectToAction(MVC.PvP.Play());

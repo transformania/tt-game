@@ -45,6 +45,28 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static bool IsAttackBlacklisted(Player player, Player target)
+        {
+            IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            var getEntry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == player.MembershipId && e.TargetMembershipId == target.MembershipId);
+
+            bool output;
+
+            if (getEntry != null)
+            {
+                output = true;
+            }
+            else
+            {
+                output = false;
+            }
+
+            return output;
+
+        }
+
         public static string TogglePlayerBlacklist(Player creator, Player receiver, int type)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
@@ -73,7 +95,7 @@ namespace TT.Domain.Procedures
 
                 if (type == 0)
                 {
-                    result = result + "They will be unable to message you. ";
+                    result = result + "They will be unable to attack you. ";
                 }
                 else if (type == 1)
                 {
@@ -81,15 +103,15 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            // If blocking messages and attacks, do it for both people.
-            if (type == 1 && checkReceiver == null)
+            // If blocking messages or attacks, do it for both people.
+            if (checkReceiver == null)
             {
                 var mirrorentry = new BlacklistEntry
                 {
                     CreatorMembershipId = receiver.MembershipId,
                     TargetMembershipId = creator.MembershipId,
                     Timestamp = DateTime.UtcNow,
-                    BlacklistLevel = 1
+                    BlacklistLevel = type
                 };
                 repo.SaveBlacklistEntry(mirrorentry);
 
@@ -114,40 +136,39 @@ namespace TT.Domain.Procedures
                 return "This is not your blacklist entry.";
             }
 
+            var result = "No change.";
+
             if (type == "noAttackOnly")
             {
                 entry.BlacklistLevel = 0;
                 repo.SaveBlacklistEntry(entry);
-                return receiver.GetFullName() + " is now allowed to message you but not attack you.";
+                result = receiver.GetFullName() + " is now allowed to message you but not attack you. ";
             }
             else if (type == "noAttackOrMessage")
             {
                 entry.BlacklistLevel = 1;
                 repo.SaveBlacklistEntry(entry);
-                
-                string result = receiver.GetFullName() + " is not allowed to message OR attack you. ";
-
-                // Add it to the other player, as well.
-                var mirrorCheck = repo.BlacklistEntries.FirstOrDefault(f => f.CreatorMembershipId == receiver.MembershipId && f.TargetMembershipId == player.MembershipId);
-                if (mirrorCheck == null)
-                {
-                    var mirrorentry = new BlacklistEntry
-                    {
-                        CreatorMembershipId = receiver.MembershipId,
-                        TargetMembershipId = player.MembershipId,
-                        Timestamp = DateTime.UtcNow,
-                        BlacklistLevel = 1
-                    };
-
-                    repo.SaveBlacklistEntry(mirrorentry);
-
-                    result = result + "You are now blacklisted by them, as well.";
-                }
-
-                return result;
+                result = receiver.GetFullName() + " is not allowed to message OR attack you. ";
             }
 
-            return "No change.";
+            // Blacklist should be in place, but if not.
+            var mirrorCheck = repo.BlacklistEntries.FirstOrDefault(f => f.CreatorMembershipId == receiver.MembershipId && f.TargetMembershipId == player.MembershipId);
+            if (mirrorCheck == null)
+            {
+                var mirrorentry = new BlacklistEntry
+                {
+                    CreatorMembershipId = receiver.MembershipId,
+                    TargetMembershipId = player.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                    BlacklistLevel = entry.BlacklistLevel
+                };
+
+                repo.SaveBlacklistEntry(mirrorentry);
+
+                result = result + "You are now blacklisted by them, as well.";
+            }
+
+            return result;
 
         }
 

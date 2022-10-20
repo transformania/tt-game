@@ -282,6 +282,11 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintOwnerSubPortrait(PlayerFormViewModel owner)
         {
+            if (owner == null)
+            {
+                return new MvcHtmlString("");
+            }
+
             var portraitUrl = GetImageURL(owner, true);
             
             var output = $"<div class='subportrait' style='background-image: url({portraitUrl});' title = 'You are owned by {owner.Player.GetFullName()}, a {owner.Form.FriendlyName}.'></div>";

@@ -1014,10 +1014,10 @@ namespace TT.Web.Controllers
 
             // assert no blacklist exists if player is in protection mode
             var blacklistExists = BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack");
-            if ((me.GameMode < (int)GameModeStatics.GameModes.PvP && blacklistExists) || (PvPStatics.ChaosMode && blacklistExists))
+            if (blacklistExists)
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
-                TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                TempData["SubError"] = "You cannot attack players who have blacklisted you.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -2344,6 +2344,7 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var lookedAtPlayerId = playerLookedAt.Player.MembershipId;
             ViewBag.IsMe = myMembershipId == lookedAtPlayerId;
+            ViewBag.MyId = myMembershipId;
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(lookedAtPlayerId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);

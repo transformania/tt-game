@@ -1139,6 +1139,11 @@ strong {
     text-shadow: -1px -1px #000, 1px -1px #000, -1px 1px #000, 1px 1px #000;
 }
 
+/* I'm not interested in removing all of the !important elements, so I'm doing this to highlight text for now. */
+.outline-text {
+    text-shadow: -1px -1px #000, 1px -1px #000, -1px 1px #000, 1px 1px #000;
+}
+
 .bad {
   color: #9E0E0E !important;
 }

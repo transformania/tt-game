@@ -45,10 +45,35 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string TogglePlayerBlacklist(Player creator, Player receiver)
+        public static string IsAttackBlacklisted(Player player, Player target)
+        {
+            IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            var getEntry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == player.MembershipId && e.TargetMembershipId == target.MembershipId);
+
+            string output;
+
+            if (getEntry != null)
+            {
+                output = getEntry.BlacklistLevel.ToString();
+            }
+            else
+            {
+                output = "false";
+            }
+
+            return output;
+
+        }
+
+        public static string TogglePlayerBlacklist(Player creator, Player receiver, int type)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
             var entry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == creator.MembershipId && e.TargetMembershipId == receiver.MembershipId);
+            var checkReceiver = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == receiver.MembershipId && e.TargetMembershipId == creator.MembershipId);
+
+            var result = "";
 
             if (entry != null)
             {
@@ -62,17 +87,50 @@ namespace TT.Domain.Procedures
                     CreatorMembershipId = creator.MembershipId,
                     TargetMembershipId = receiver.MembershipId,
                     Timestamp = DateTime.UtcNow,
-                    BlacklistLevel = 1
+                    BlacklistLevel = type
                 };
                 repo.SaveBlacklistEntry(newentry);
-                return receiver.GetFullName() + " has been ADDED to your blacklist.";
+
+                result = "You have blacklisted " + receiver.GetFullName() + ". ";
+
+                if (type == 0)
+                {
+                    result = result + "They will be unable to attack you. ";
+                }
+                else if (type == 1)
+                {
+                    result = result + "They will not be able to message nor attack you. ";
+                }
             }
 
+            // If blocking messages or attacks, do it for both people.
+            if (checkReceiver == null)
+            {
+                var mirrorentry = new BlacklistEntry
+                {
+                    CreatorMembershipId = receiver.MembershipId,
+                    TargetMembershipId = creator.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                    BlacklistLevel = type
+                };
+                repo.SaveBlacklistEntry(mirrorentry);
+
+                result = result + "You are now blacklisted by them, as well.";
+            }
+
+            return result;
         }
 
         public static string TogglePlayerBlacklistType(int id, string type, Player player, Player receiver)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
+
+            if ( id == 0 && (player.MembershipId != null && receiver.MembershipId != null))
+            {
+                var getBlacklistId = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == player.MembershipId && e.TargetMembershipId == receiver.MembershipId);
+                id = getBlacklistId.Id;
+            }
+
             var entry = repo.BlacklistEntries.FirstOrDefault(e => e.Id == id);
 
             if (entry == null)
@@ -85,20 +143,39 @@ namespace TT.Domain.Procedures
                 return "This is not your blacklist entry.";
             }
 
+            var result = "No change.";
+
             if (type == "noAttackOnly")
             {
                 entry.BlacklistLevel = 0;
                 repo.SaveBlacklistEntry(entry);
-                return receiver.GetFullName() + " is now allowed to message you but not attack you.";
+                result = receiver.GetFullName() + " is now allowed to message you but not attack you. ";
             }
             else if (type == "noAttackOrMessage")
             {
                 entry.BlacklistLevel = 1;
                 repo.SaveBlacklistEntry(entry);
-                return receiver.GetFullName() + " is not allowed to message OR attack you.";
+                result = receiver.GetFullName() + " is not allowed to message OR attack you. ";
             }
 
-            return "No change.";
+            // Blacklist should be in place, but if not.
+            var mirrorCheck = repo.BlacklistEntries.FirstOrDefault(f => f.CreatorMembershipId == receiver.MembershipId && f.TargetMembershipId == player.MembershipId);
+            if (mirrorCheck == null)
+            {
+                var mirrorentry = new BlacklistEntry
+                {
+                    CreatorMembershipId = receiver.MembershipId,
+                    TargetMembershipId = player.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                    BlacklistLevel = entry.BlacklistLevel
+                };
+
+                repo.SaveBlacklistEntry(mirrorentry);
+
+                result = result + "You are now blacklisted by them, as well.";
+            }
+
+            return result;
 
         }
 

@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
 @using TT.Web.CustomHtmlHelpers
+@using TT.Domain.Models
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
 @using TT.Domain.World.Queries
@@ -46,8 +47,50 @@
                     {
                         <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
-                        <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist Player</a></li>
+                        <li><a href="#showBlacklist" id="showBlacklist" data-toggle="modal" data-target="#blacklistModal">Blacklist Player</a></li>
                         <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>
+
+                        <!-- blacklist modal -->
+                        <div class="modal fade" id="blacklistModal" role="dialog">
+                            <div class="modal-dialog modal-sm bg-warning">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close outline-text" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Blacklist Player</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="small">
+                                        @{
+                                            var BlacklistLevel = BlacklistProcedures.IsAttackBlacklisted(new Player { MembershipId = ViewBag.MyId }, new Player { MembershipId = Model.PlayerForm.Player.MembershipId });
+                                            if (BlacklistLevel == "0")
+                                            {
+                                                <span>They cannot attack you.</span><br /><br />
+                                                <li class="outline-text">
+                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOrMessage"))">No attacking or messaging.</a>
+                                                </li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                            }
+                                            else if (BlacklistLevel == "1")
+                                            {
+                                                <span>They cannot attack or message you.</span><br /><br />
+                                                <li class="outline-text">
+                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOnly"))">No attacking.</a>
+                                                </li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                            }
+                                            else
+                                            {
+                                                <span>They are not blacklisted.</span>
+                                                <br /><br />
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>
+                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" >No attacking or messaging.</a></li>
+                                            }
+                                        }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 }
             </p>

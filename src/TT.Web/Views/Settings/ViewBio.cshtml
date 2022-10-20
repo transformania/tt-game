@@ -1,4 +1,6 @@
 ﻿@model TT.Domain.ViewModels.BioPageViewModel
+@using Microsoft.AspNet.Identity
+@using TT.Domain.Models
 @using TT.Domain.ViewModels
 @using TT.Domain.Procedures
 @{
@@ -20,7 +22,22 @@
             {
                 <li><a href="@Url.Action(MVC.Messages.Write(Model.Player.Id, -1))">Send a Message</a></li>
                 <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.Player.Id))">Add Friend</a></li>
-                <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id))">Blacklist Player</a></li>
+                var blacklistLevel = BlacklistProcedures.IsAttackBlacklisted(new Player { MembershipId = User.Identity.GetUserId() }, new Player { MembershipId = Model.Player.MembershipId });
+                if (blacklistLevel == "0")
+                {
+                    <li><a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.Player.Id, "noAttackOrMessage"))">Blacklist (No attacking or messaging)</a></li>
+                    <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id, 0))">Remove Blacklist</a></li>
+                }
+                else if (blacklistLevel == "1")
+                {
+                    <li><a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.Player.Id, "noAttackOnly"))">Blacklist (No attacking)</a></li>
+                    <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id, 0))">Remove Blacklist</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id, 0))">Blacklist (No attacking)</a></li>
+                    <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.Player.Id, 1))">Blacklist (No attacking or messaging)</a></li>
+                }
                 <li><a href="@Url.Action(MVC.Report.Report(Model.Player.MembershipId))">Report Player</a></li>
             }
         }

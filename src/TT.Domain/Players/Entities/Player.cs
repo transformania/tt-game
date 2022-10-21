@@ -431,6 +431,12 @@ namespace TT.Domain.Players.Entities
             GameMode = gameMode;
         }
 
+        public void ChangeGender(string changeGender)
+        {
+            Gender = changeGender;
+        }
+
+
         //Clearing a user's Dungeon Points when they switch modes.
         public void ClearPvPScore()
         {

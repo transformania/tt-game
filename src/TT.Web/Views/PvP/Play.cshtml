@@ -102,6 +102,18 @@
             <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
             <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
             <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
+            <li>
+                @{
+                    if (Model.You.Player.Gender == "female")
+                    {
+                        <a href="@Url.Action(MVC.Settings.ChangeGender(0))" class="mark" alt="Buoy" title="👯‍♂️">Change to Male ♂</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(MVC.Settings.ChangeGender(1))" class="mark" alt="Grill" title="👯‍♀️">Change to Female ♀</a>
+                    }
+                }
+            </li>
         </ul>
     </li>
 }

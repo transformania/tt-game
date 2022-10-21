@@ -73,6 +73,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChangeGender()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeGender);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SetBioSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBioSend);
@@ -252,6 +258,7 @@ namespace TT.Web.Controllers
             public readonly string Settings = ("Settings").ToLowerInvariant();
             public readonly string ChangeGameMode = ("ChangeGameMode").ToLowerInvariant();
             public readonly string ChangeRPMode = ("ChangeRPMode").ToLowerInvariant();
+            public readonly string ChangeGender = ("ChangeGender").ToLowerInvariant();
             public readonly string SetBio = ("SetBio").ToLowerInvariant();
             public readonly string SetBioSend = ("SetBioSend").ToLowerInvariant();
             public readonly string SetBioDelete = ("SetBioDelete").ToLowerInvariant();
@@ -309,6 +316,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ChangeRPMode
         {
             public readonly string inRP = ("inRP").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChangeGender s_params_ChangeGender = new ActionParamsClass_ChangeGender();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeGender ChangeGenderParams { get { return s_params_ChangeGender; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeGender
+        {
+            public readonly string changeGender = ("changeGender").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetBioSend s_params_SetBioSend = new ActionParamsClass_SetBioSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -700,6 +715,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeRPMode);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inRP", inRP);
             ChangeRPModeOverride(callInfo, inRP);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeGenderOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int changeGender);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeGender(int changeGender)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeGender);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "changeGender", changeGender);
+            ChangeGenderOverride(callInfo, changeGender);
             return callInfo;
         }
 

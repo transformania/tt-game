@@ -47,7 +47,9 @@
                         }
                     }
                 </tbody>
-            </table><br><br>
+            </table>
+            <br>
+            <br>
         }
     }
 
@@ -58,7 +60,9 @@
         @Html.AntiForgeryToken()
 
         <p>Reason for strike:</p>
-        @Html.TextAreaFor(m => m.Reason, new { @class = "text-container" })<br><br>
+        @Html.TextAreaFor(m => m.Reason, new { @class = "text-container" })
+        <br>
+        <br>
 
         @Html.HiddenFor(m => m.UserId)
 

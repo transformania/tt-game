@@ -669,7 +669,8 @@
 
             }
 
-            <br><br>
+            <br>
+            <br>
             if (ViewBag.DisableLinks == null)
             {
                 <input type="submit" value="Save">
@@ -690,7 +691,8 @@
         @{
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                <br><br>
+                <br>
+                <br>
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
                 <p>@Html.Raw(ViewBag.StaticFormExists)</p>
                 <p>@Html.Raw(ViewBag.StaticItemExists)</p>

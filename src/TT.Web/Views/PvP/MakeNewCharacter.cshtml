@@ -18,7 +18,8 @@
 
             @if (ViewBag.IsRerolling)
             {
-                <br><br>
+                <br>
+                <br>
                 <span class="tldr">You currently have an character named @ViewBag.OldFirstName @ViewBag.OldLastName.  If you start over you will no longer be able to perform any actions with them anymore.</span>
             }
 
@@ -72,12 +73,14 @@
         <p class="good">Start in Roleplaying (RP) mode?</p>
         @Html.CheckBoxFor(x => x.StartInRP)
 
-        <br><br>
+        <br>
+        <br>
 
         <p class="good">Which game mode should this character start in?</p>
         <p style="padding: 0 15% 0 15%">
             In Protection mode, you can only cast animate spells against other human players. SuperProtection keeps any spells from being cast on you by other human players. If someone is your friend, you can cast any spell you know against them and vice-versa.
-            <br /><br />
+            <br>
+            <br>
             If you choose to start in Player versus Player (PvP) mode, you will be vulnerable to inanimate and animal attacks from any other PvP player at any time.  You can only cast spells against other players in PvP in this mode unless they are your friend, in which case all spells are available
         </p>
         @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class="p-mode"> Protection</span><br>
@@ -85,23 +88,27 @@
         @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="pvp-mode"> PvP</span>
 
 
-        <br><br>
+        <br>
+        <br>
 
         <p class="good">Migrate any old messages to this character?  <br>(Note:This will not work inbetween rounds.)</p>
         @Html.CheckBoxFor(x => x.MigrateLetters)
 
-        <br><br>
+        <br>
+        <br>
 
         <p class="good">Start as an inanimate object or pet?</p>
         <p>This option immediately starts the character off as a locked object or pet.</p>
         <p>Click on the checkbox only if you want this to happen @Html.CheckBoxFor(x => x.StartAsInanimate, new { id = "itemBox" })</p>
         @Html.EnumDropDownListFor(model => model.InanimateForm, new { id = "itemForm", disabled = "disabled", @class = "disabled" })
 
-        <br><br>
+        <br>
+        <br>
 
         <p>Original Form:</p>
 
-        <img id="portrait" src="https://images.transformaniatime.com/portraits/woman_01_mtwof.png" style="width: 300px; height:  300px;"><br>
+        <img id="portrait" src="https://images.transformaniatime.com/portraits/woman_01_mtwof.png" style="width: 300px; height:  300px;">
+        <br>
 
         <p>Click any form below to change</p>
 
@@ -109,10 +116,12 @@
 
         @Html.HiddenFor(i => i.FormSourceId)
 
-        <br><br>
+        <br>
+        <br>
 
 
-        <br><br>
+        <br>
+        <br>
         <input class="btn btn-danger" type="submit" value="Begin">
 
     }

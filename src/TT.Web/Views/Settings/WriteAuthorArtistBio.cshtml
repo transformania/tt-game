@@ -8,10 +8,14 @@
 {
     @Html.AntiForgeryToken()
     <p>Email Address.  Know that bots routintely scrape websites so you may want to spell it out using (at), though bots have probably wised up to that eons ago too...</p>
-    @Html.TextBoxFor(m => m.Email)<br><br>
+    @Html.TextBoxFor(m => m.Email)
+    <br>
+    <br>
 
     <p>Artist name(s) you go by on other sites (eg Luxianne, Meddle, Nymic-TF, Babblingfaces, etc).  <i>Note: If this is not set, your account name will be listed instead.</i></p>
-    @Html.TextBoxFor(m => m.OtherNames)<br><br>
+    @Html.TextBoxFor(m => m.OtherNames)
+    <br>
+    <br>
     
         <p>Are you accepting commissions?</p>
     @Html.DropDownListFor(i => i.AcceptingComissions, new SelectList(
@@ -24,19 +28,28 @@
                   "value",
                   "text",
                    2))
-    <br><br>
+    <br>
+    <br>
 
     <p>Website URL (primary)</p>
-    @Html.TextBoxFor(m => m.Url1)<br><br>
+    @Html.TextBoxFor(m => m.Url1)
+    <br>
+    <br>
 
     <p>Website URL (secondary)</p>
-    @Html.TextBoxFor(m => m.Url2)<br><br>
+    @Html.TextBoxFor(m => m.Url2)
+    <br>
+    <br>
 
     <p>Website URL (third...ary)</p>
-    @Html.TextBoxFor(m => m.Url3)<br><br>
+    @Html.TextBoxFor(m => m.Url3)
+    <br>
+    <br>
     
     <p>Anything about you--your history, your favorite types of drawings, commission pricing, whatever you feel relevant.  If you want to include some basic styling here, you can use the follow html-like tags that will be converted to the html equivalent:  [br] (breakline), [p] and [/p] (paragraph), [h1] and [/h1] (header 1),  [h2] and [/h2] (header 2),  [h3] and [/h3] (header 3).</p>
-    @Html.TextAreaFor(m => m.Text)<br><br>
+    @Html.TextAreaFor(m => m.Text)
+    <br>
+    <br>
     
     <p>Would you like your ingame character name to be visible?  Choose your setting below.</p>
     @Html.DropDownListFor(i => i.PlayerNamePrivacyLevel, new SelectList(
@@ -49,18 +62,25 @@
                   "value",
                   "text",
                    2))
-    <br><br>
+    <br>
+    <br>
     
     <p>For the following three inputs you will be entering in the filenames of the graphis you have in the game.  Write out each file name (including file type extension) followed by a semicolon and no whitespaces.  An example input is <b>AwesomeGraphic_Yourname.png;NearGraphic_Yourname.jpg;</b>.  You can see what the name of the file is by right clicking on it.  Depending on your browser you'll see an option like "View background image" (Chrome) which will tell you what the name is by taking the text after the last '/' character in the URL.</p>
     
     <p>List the filenames of all of the ANIMATE form graphics you have created.></p>
-    @Html.TextAreaFor(m => m.AnimateImages)<br><br>
+    @Html.TextAreaFor(m => m.AnimateImages)
+    <br>
+    <br>
     
     <p>List the filenames of all of the INANIMATE form graphics you have created.</p>
-    @Html.TextAreaFor(m => m.InanimateImages)<br><br>
+    @Html.TextAreaFor(m => m.InanimateImages)
+    <br>
+    <br>
     
     <p>List the filenames of all of the ANIMAL/PET form graphics you have created.</p>
-    @Html.TextAreaFor(m => m.AnimalImages)<br><br>
+    @Html.TextAreaFor(m => m.AnimalImages)
+    <br>
+    <br>
 
     <p></p>
     

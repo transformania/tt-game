@@ -22,25 +22,38 @@
         @Html.HiddenFor(m => m.Id)
 
         <span>Player Id:</span>
-        @Model.Id<br><br>
+        @Model.Id
+        <br>
+        <br>
 
         <span>Original Name: <b id="origName" style ="cursor: pointer;" title="Click here to restore the player's original name.">@Model.OriginalFirstName @Model.OriginalLastName <i class="glyphicon glyphicon-repeat"></i></b></span>
-        <br><br>
+        <br>
+        <br>
 
         <span>First Name:</span>
-        @Html.TextBoxFor(m => m.NewFirstName, new { id = "firstName" })<br><br>
+        @Html.TextBoxFor(m => m.NewFirstName, new { id = "firstName" })
+        <br>
+        <br>
 
         <span>Last Name:</span>
-        @Html.TextBoxFor(m => m.NewLastName, new { id = "lastName" })<br><br>
+        @Html.TextBoxFor(m => m.NewLastName, new { id = "lastName" })
+        <br>
+        <br>
 
         <span>Form Source Id:</span>
-        @Html.TextBoxFor(m => m.NewFormSourceId, new { @type = "number" })<br><br>
+        @Html.TextBoxFor(m => m.NewFormSourceId, new { @type = "number" })
+        <br>
+        <br>
 
         <span>Level:</span>
-        @Html.TextBoxFor(m => m.Level, new { id = "level", @class = "checkInt" })<br><br>
+        @Html.TextBoxFor(m => m.Level, new { id = "level", @class = "checkInt" })
+        <br>
+        <br>
 
         <span>Arpeyjis:</span>
-        @Html.TextBoxFor(m => m.Money, new { id = "money", @class = "checkInt" })<br><br>
+        @Html.TextBoxFor(m => m.Money, new { id = "money", @class = "checkInt" })
+        <br>
+        <br>
 
         <input type="submit" value="Send">
     }

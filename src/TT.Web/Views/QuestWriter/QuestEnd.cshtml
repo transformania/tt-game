@@ -26,7 +26,8 @@
     <label>Quest End name:</label>    <br>
     @Html.TextBoxFor(m => m.QuestEnd.QuestEndName)
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Quest End Type:</label>    <br>
     @Html.DropDownListFor(m => m.QuestEnd.EndType, new SelectList(
@@ -38,9 +39,11 @@
                   "text",
                    2))
 
-    <br><br>
+    <br>
+    <br>
 
-    <label>Quest Reward Type:</label>    <br>
+    <label>Quest Reward Type:</label>
+    <br>
     @Html.DropDownListFor(m => m.QuestEnd.RewardType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.RewardType.Experience, text = "XP"  },
@@ -52,12 +55,15 @@
                   "text",
                    2))
 
-    <br><br>
+    <br>
+    <br>
 
-    <label>Quest Reward Amount:</label>    <br>
+    <label>Quest Reward Amount:</label>
+    <br>
     @Html.TextBoxFor(m => m.QuestEnd.RewardAmount)
 
-    <br><br>
+    <br>
+    <br>
 
     <input type="submit" class="btn btn-chat" value="Send">
 

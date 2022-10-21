@@ -17,32 +17,38 @@
     <label>UserId</label>
     @Html.TextBox("UserId", Model.Id)
 
-    <br><br>
+    <br>
+    <br>
 
     <label>UserName: </label>
     <b>@Model.UserName</b>
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Patreon Name</label>
     @Html.TextBox("PatreonName", Model.Donator.PatreonName)
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Tier (1, 2, or 3)</label>
     @Html.TextBox("Tier", Model.Donator.Tier, new { @type = "number", @min = "0", @max = "3" })
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Raw Donation Amount</label>
     @Html.TextBox("ActualDonationAmount", Model.Donator.ActualDonationAmount)
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Misc Notes</label>
     @Html.TextArea("SpecialNotes", Model.Donator.SpecialNotes)
 
-    <br><br>
+    <br>
+    <br>
 
     <input type="submit" value="Save">
 }

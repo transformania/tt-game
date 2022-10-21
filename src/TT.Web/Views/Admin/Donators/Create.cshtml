@@ -15,27 +15,32 @@
         <label>UserId</label>
         @Html.TextBox("UserId")
 
-        <br><br>
+        <br>
+        <br>
 
         <label>Patreon Name</label>
         @Html.TextBox("PatreonName")
 
-        <br><br>
+        <br>
+        <br>
 
         <label>Tier (1, 2, or 3)</label>
         @Html.TextBox("Tier", null, new { @type = "number", @min = "0", @max = "3" })
 
-        <br><br>
+        <br>
+        <br>
 
         <label>Raw Donation Amount</label>
         @Html.TextBox("ActualDonationAmount")
 
-        <br><br>
+        <br>
+        <br>
 
         <label>Misc Notes</label>
         @Html.TextArea("SpecialNotes")
 
-        <br><br>
+        <br>
+        <br>
 
         <input type="submit" value="Save">
     }
@@ -43,7 +48,8 @@
     <hr>
     
     <div>
-        Account Id lookup <input id ="lookupName" type="text" placeholder="account name"> <button class="btn" onclick="lookup()">Find</button><br>
+        Account Id lookup <input id ="lookupName" type="text" placeholder="account name"> <button class="btn" onclick="lookup()">Find</button>
+        <br>
         <b id="answer" class="copyable" data-clipboard-text=""></b>
     </div>
 

@@ -68,18 +68,21 @@
     <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
     @Html.TextBoxFor(m => m.QuestState.QuestStateName)
 
-    <br><br>
+    <br>
+    <br>
 
     <label>Text (the text the player sees when having first entered this state):</label>    <br>
     @Html.TextAreaFor(m => m.QuestState.Text)
 
-    <br><br>
+    <br>
+    <br>
 
 
     <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br>
     @Html.TextAreaFor(m => m.QuestState.Notes, new { @class = "short" })
 
-    <br><br>
+    <br>
+    <br>
 
     <input type="submit" class="btn btn-chat" value="Send">
 

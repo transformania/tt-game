@@ -24,6 +24,9 @@
     @using (Html.BeginForm(MVC.Settings.SetBioSend(), FormMethod.Post))
     {
         @Html.HiddenFor(m => m.Tags)
+        <div class="panel center-block text-center">
+            Toggle bio visibility: @Html.RadioButtonFor(m => m.PublicVisibility, "0") Show @Html.RadioButtonFor(m => m.PublicVisibility, "1") Hide
+        </div>
 
         <div class="messageInfoContainer">
             Website URLs:

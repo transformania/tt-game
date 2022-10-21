@@ -124,6 +124,11 @@ namespace TT.Web.Controllers
                 input.Tags = "";
             }
 
+            if (input.PublicVisibility > 1 || input.PublicVisibility < 0)
+            {
+                input.PublicVisibility = 0;
+            }
+
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (input.Text.Length > 2500 && !me.DonatorGetsMessagesRewards())
             {
@@ -177,9 +182,15 @@ namespace TT.Web.Controllers
             var output = new BioPageViewModel();
             output.Player = player;
             output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+            
             if (output.PlayerBio == null)
             {
                 TempData["Error"] = "It seems that this player has not written a player biography yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            else if (output.PlayerBio.PublicVisibility == 1 && !(User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin)))
+            {
+                TempData["Error"] = "It seems that this player is still working on their bio.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

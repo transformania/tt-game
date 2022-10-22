@@ -97,6 +97,38 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        public virtual ActionResult ChangeGender(int changeGender)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+
+            var Gender = "";
+
+            if (changeGender == 0)
+            {
+                Gender = "male";
+            }
+            else if (changeGender == 1)
+            {
+                Gender = "female";
+            }
+            else
+            {
+                Gender = "other";
+            }
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeGender { MembershipId = myMembershipId, changeGender = Gender });
+                TempData["Result"] = $"You have changed your gender to {Gender}.";
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
         public virtual ActionResult SetBio()
         {
             var myMembershipId = User.Identity.GetUserId();

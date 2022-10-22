@@ -1,4 +1,4 @@
-@model TT.Domain.ViewModels.SettingsPageViewModel
+﻿@model TT.Domain.ViewModels.SettingsPageViewModel
 @using TT.Domain.Statics
 @{
     ViewBag.Title = "Settings";
@@ -144,13 +144,23 @@
 
     <p><a href="@Url.Action(MVC.Settings.PlayerStats(Model.Player.MembershipId))">View your statistics for this round</a></p>
 
-    <h2>Base Form Options</h2>
+    <h2>Form Options</h2>
     <p>
-        Here you can see your starting form information, including name and form. While you are able to change your base form, you may not change your original name unless you reroll your character.<br><br>
-        <mark>Your original name is <b>@Model.Player.OriginalFirstName @Model.Player.OriginalLastName</b></mark><br><br>
+        Here you can see your starting form information, including name and form. While you are able to change your base form, you may not change your original name unless you reroll your character.
+        <br>
+        <br>
+        You are also able to change your form's gender here. Be aware that this will only change the ♀/♂ displayed on your current form as well as the text you recieve when targeted by a spell. Changing into another form will overwrite this setting. This will not change your form's description in any way and is purely for roleplaying purposes otherwise.
+        <br>
+        <br>
         You can also reserve your name so that no other players take it at the start of a new round and steal your identity.
-        You must be level 3 or higher in order to do this.<br><br>
-        <mark>Your current name is <b>@Model.Player.FirstName @Model.Player.LastName</b></mark><br><br>
+        You must be level 3 or higher in order to do this.
+        <br>
+        <br>
+        <mark>Your <u>original</u> name is <b>@Model.Player.OriginalFirstName @Model.Player.OriginalLastName</b></mark><br />
+        <mark>Your <b>current</b> name is <b>@Model.Player.FirstName @Model.Player.LastName</b></mark>
+        <br>
+        <br>
+        <a href="@Url.Action(MVC.Settings.ChangeGender(0))" class="mark" alt="Buoy" title="👯‍♂️">Male ♂</a> <a href="@Url.Action(MVC.Settings.ChangeGender(1))" class="mark" alt="Grill" title="👯‍♀️">Female ♀</a><br />
         <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <a href="@Url.Action(MVC.Settings.MyBaseForms())">Choose a custom or different base form</a>
     </p>

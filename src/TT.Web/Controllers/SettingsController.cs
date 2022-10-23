@@ -42,7 +42,8 @@ namespace TT.Web.Controllers
                 Player = me,
                 PlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id }),
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
-                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId })
+                ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId }),
+                OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId })
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -1051,6 +1052,29 @@ namespace TT.Web.Controllers
             catch (DomainException)
             {
                 TempData["Error"] = "Failed to change chaos changes enabled/disabled.";
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+
+        }
+
+        public virtual ActionResult AllowOwnershipVisibility(bool allowSearch)
+        {
+
+            var myMembershipId = User.Identity.GetUserId();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new SetOwnershipVisibility
+                {
+                    UserId = myMembershipId,
+                    OwnershipVisibilityEnabled = allowSearch
+                });
+                TempData["Result"] = $"Ownership visibility has been successfully set to {allowSearch}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change ownership visibility enabled/disabled.";
             }
 
             return RedirectToAction(MVC.PvP.Play());

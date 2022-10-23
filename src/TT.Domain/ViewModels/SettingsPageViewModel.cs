@@ -12,5 +12,6 @@ namespace TT.Domain.ViewModels
         public double TimeUntilLogout { get; set; }
         public IEnumerable<StrikeDetail> Strikes { get; set; }
         public bool ChaosChangesEnabled { get; set; }
+        public bool OwnershipVisibilityEnabled { get; set; }
     }
 }

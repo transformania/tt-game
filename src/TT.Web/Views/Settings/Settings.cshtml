@@ -78,9 +78,11 @@
             }
 
             <p>You currently <b>@(Model.PlayerItem.ConsentsToSoulbinding ? "consent" : "do not consent")</b> to being soulbound.</p>
-            <p><a href="@Url.Action(MVC.Item.SetSoulbindingConsent(!Model.PlayerItem.ConsentsToSoulbinding))">
-                @(!Model.PlayerItem.ConsentsToSoulbinding ? "Consent" : "Refuse consent") to be soulbound
-            </a><br></p>
+            <p>
+                <a href="@Url.Action(MVC.Item.SetSoulbindingConsent(!Model.PlayerItem.ConsentsToSoulbinding))">
+                    @(!Model.PlayerItem.ConsentsToSoulbinding ? "Consent" : "Refuse consent") to be soulbound
+                </a><br>
+            </p>
         }
 
 
@@ -192,43 +194,62 @@
         }
     </p>
 
+    <h2>Ownership Visibility</h2>
+
+    <p>
+        If you choose to turn on your ownership visibility, your items will be tagged with a link to your profile.
+        This means that players may be able to see all the items in your inventory even if you aren't wearing them.
+        Click on the link below to toggle.<br><br>
+
+        @{
+            if (Model.OwnershipVisibilityEnabled)
+            {
+                <span class="good">You have Ownership Visibility enabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(false))">HERE</a> to turn it off.</span>
+            }
+            else
+            {
+                <span class="bad">You have Ownership Visibility disabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(true))">HERE</a> to turn it on.</span>
+            }
+        }
+    </p>
+
     @{
         if (PvPStatics.ChaosMode)
         {
-        <p>
-            <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-            @using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-            {
-                var SP = (int)GameModeStatics.GameModes.Superprotection;
-                var P = (int)GameModeStatics.GameModes.Protection;
-                var PVP = (int)GameModeStatics.GameModes.PvP;
-
-                @Html.AntiForgeryToken()
-                @Html.Hidden("Mode", "")
-                <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@SP';this.closest('form').submit();return false;">Enter SuperProtection Mode</a><br>
-                <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
-                <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
-            }
-            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(0))">Revert to your base form</a><br>
-            <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(1))">Revert to your original name</a><br>
-
-            <a href="@Url.Action(MVC.Settings.LearnAnimateSpells())">Learn all animate spells</a><br>
-            <a href="@Url.Action(MVC.Settings.LearnInanimateSpells())">Learn all inanimate spells</a><br>
-            <a href="@Url.Action(MVC.Settings.LearnPetSpells())">Learn all pet spells</a><br>
-            <a href="@Url.Action(MVC.Settings.ForgetAllSpells())">Forget all spells</a><br>
-            @{
-                if (Model.ChaosChangesEnabled)
+            <p>
+                <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
+                @using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
                 {
-                    <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br>
-                }
-                else
-                {
-                    <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br>
-                }
-            }
+                    var SP = (int)GameModeStatics.GameModes.Superprotection;
+                    var P = (int)GameModeStatics.GameModes.Protection;
+                    var PVP = (int)GameModeStatics.GameModes.PvP;
 
-            <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br>
-        </p>
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("Mode", "")
+                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@SP';this.closest('form').submit();return false;">Enter SuperProtection Mode</a><br>
+                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
+                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
+                }
+                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(0))">Revert to your base form</a><br>
+                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(1))">Revert to your original name</a><br>
+
+                <a href="@Url.Action(MVC.Settings.LearnAnimateSpells())">Learn all animate spells</a><br>
+                <a href="@Url.Action(MVC.Settings.LearnInanimateSpells())">Learn all inanimate spells</a><br>
+                <a href="@Url.Action(MVC.Settings.LearnPetSpells())">Learn all pet spells</a><br>
+                <a href="@Url.Action(MVC.Settings.ForgetAllSpells())">Forget all spells</a><br>
+                @{
+                    if (Model.ChaosChangesEnabled)
+                    {
+                        <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br>
+                    }
+                }
+
+                <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br>
+            </p>
         }
     }
 
@@ -238,38 +259,38 @@
     <p>
         Transformania Time currently functions with three different modes; Super Protection, Protection, and Player v. Player. In <b>Super Protection</b>, all spells are disabled from being cast against you by other players. <b>Protection</b> mode is used for those players who do not wish to have inanimate, pet, or mind-control spells cast upon them by other players. Lastly, while in <b>Player v. Player (or PvP)</b> mode, the game is much more competitive and all spells can be cast upon you by other PvP players. Barring Super Protection mode, you may only cast the appropriate spells on players sharing your mode. The rules of these modes are exempt by AI players (psychopaths and bosses), as well as those you add to your friend's list. Being friends with another playing enables them to cast any type of spell on you, regardless of the game mode either of you are currently in.<br><br><span class="bad">While in PvP, you consent to being a target of any spell cast upon you. Another player does not have to respect your preferences. If you do not consent to such restriction or the play that Player versus Player entails, you may opt to set your mode to Super Protection. Once you have opted to set yourself to Protection or Super Protection, you may not switch your mode for the rest of the normal round. Neither moderators nor admins will assist in getting you back into PvP if you have opted for Protection in one way or another. Changing your mode to Protection will also remove any dungeon points you may have accumulated</span><br><br>
 
-            @{
-                switch (Model.Player.GameMode)
-                {
-                    case (int)GameModeStatics.GameModes.Protection:
-                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
-                            <input type="submit" value="Enter Super Protection Mode">
-                        }
+        @{
+            switch (Model.Player.GameMode)
+            {
+                case (int)GameModeStatics.GameModes.Protection:
+                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
+                        <input type="submit" value="Enter Super Protection Mode">
+                    }
                     break;
-                    case (int)GameModeStatics.GameModes.Superprotection:
-                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Protection)
-                            <input type="submit" value="Enter Protection Mode">
-                        }
+                case (int)GameModeStatics.GameModes.Superprotection:
+                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Protection)
+                        <input type="submit" value="Enter Protection Mode">
+                    }
                     break;
-                    case (int)GameModeStatics.GameModes.PvP when Math.Abs(Math.Floor(Model.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes)) > 30:
-                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
-                            <input type="submit" value="Enter Super Protection Mode">
-                        }
+                case (int)GameModeStatics.GameModes.PvP when Math.Abs(Math.Floor(Model.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes)) > 30:
+                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
+                        <input type="submit" value="Enter Super Protection Mode">
+                    }
                     break;
-                    case (int)GameModeStatics.GameModes.PvP:
-                        <span class="bad">You cannot leave PvP mode until you have been out of combat for thirty (30) minutes.</span>
+                case (int)GameModeStatics.GameModes.PvP:
+                    <span class="bad">You cannot leave PvP mode until you have been out of combat for thirty (30) minutes.</span>
                     break;
-                }
             }
+        }
     </p>
     @{
 
@@ -341,10 +362,10 @@
     <p id="toggleAudio_message"><a>Click here to toggle message audio notifications.</a>  This will play a short sound when you receive a new message from another player.</p>
 
     <h2>Chrome/Firefox Notifications</h2>
-<p id="togglePush"><a>Click here to toggle Chrome/Firefox notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receive a notice, even if the browser is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+    <p id="togglePush"><a>Click here to toggle Chrome/Firefox notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receive a notice, even if the browser is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
 
-<h2>Move with WASD Keys</h2>
-<p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</a></p>
+    <h2>Move with WASD Keys</h2>
+    <p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</a></p>
 
 </div>
 

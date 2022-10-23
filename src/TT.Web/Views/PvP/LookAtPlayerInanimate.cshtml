@@ -1,7 +1,10 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@using TT.Domain
 @using TT.Domain.Models
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
+@using TT.Domain.Identity.Queries
+
 @{
     ViewBag.Title = Model.PlayerForm.Player.GetFullName();
 }
@@ -42,8 +45,13 @@
 
                     <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
 
-                    if (!ViewBag.IsMe)
-                    {
+                                if (ViewBag.Owner?.Player != null && (ViewBag.OwnedByMe || ViewBag.IsMe || DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = ViewBag.Owner.Player.MembershipId })))
+                                {
+                        <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(ItemProcedures.BeingWornBy(Model.PlayerForm.Player.Id).Player.Id))">View Owner</a></li>
+                                }
+
+                                if (!ViewBag.IsMe)
+                                {
                         <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
                         <li><a href="#showBlacklist" id="showBlacklist" data-toggle="modal" data-target="#blacklistModal">Blacklist Player</a></li>
@@ -78,7 +86,7 @@
                                                 <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
                                             }
                                             else
-                                            {
+                    {
                                                 <span>They are not blacklisted.</span>
                                                 <br /><br />
                                                 <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>

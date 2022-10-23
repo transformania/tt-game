@@ -2335,6 +2335,7 @@ namespace TT.Web.Controllers
                 ShowInventory = !AIStatics.IsAFriendly(playerLookedAt.Player.BotId),
                 PlayerUserStrikesDetail = playerLookedAt.Player.MembershipId == null ? null : DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = playerLookedAt.Player.MembershipId }),
                 ChaosChangesEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = playerLookedAt.Player.MembershipId }),
+                OwnershipVisibilityEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = playerLookedAt.Player.MembershipId }),
                 IsAccountLockedOut = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId }),
                 IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId })
             };

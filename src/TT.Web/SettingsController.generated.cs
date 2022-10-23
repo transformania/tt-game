@@ -235,6 +235,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AllowOwnershipVisibility()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowOwnershipVisibility);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SetArtistBioVisibility()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetArtistBioVisibility);
@@ -293,6 +299,7 @@ namespace TT.Web.Controllers
             public readonly string DeleteRPClassifiedAd = ("DeleteRPClassifiedAd").ToLowerInvariant();
             public readonly string ChaosRestoreBase = ("ChaosRestoreBase").ToLowerInvariant();
             public readonly string AllowChaosChanges = ("AllowChaosChanges").ToLowerInvariant();
+            public readonly string AllowOwnershipVisibility = ("AllowOwnershipVisibility").ToLowerInvariant();
             public readonly string SetArtistBioVisibility = ("SetArtistBioVisibility").ToLowerInvariant();
             public readonly string LearnAnimateSpells = ("LearnAnimateSpells").ToLowerInvariant();
             public readonly string LearnInanimateSpells = ("LearnInanimateSpells").ToLowerInvariant();
@@ -544,6 +551,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_AllowChaosChanges
         {
             public readonly string allowChanges = ("allowChanges").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_AllowOwnershipVisibility s_params_AllowOwnershipVisibility = new ActionParamsClass_AllowOwnershipVisibility();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AllowOwnershipVisibility AllowOwnershipVisibilityParams { get { return s_params_AllowOwnershipVisibility; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AllowOwnershipVisibility
+        {
+            public readonly string allowSearch = ("allowSearch").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetArtistBioVisibility s_params_SetArtistBioVisibility = new ActionParamsClass_SetArtistBioVisibility();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1154,6 +1169,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowChaosChanges);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "allowChanges", allowChanges);
             AllowChaosChangesOverride(callInfo, allowChanges);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AllowOwnershipVisibilityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool allowSearch);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AllowOwnershipVisibility(bool allowSearch)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllowOwnershipVisibility);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "allowSearch", allowSearch);
+            AllowOwnershipVisibilityOverride(callInfo, allowSearch);
             return callInfo;
         }
 

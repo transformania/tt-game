@@ -27,6 +27,7 @@ namespace TT.Domain.Identity.Entities
 
         public ArtistBio ArtistBio { get; protected set; }
 
+        public bool AllowOwnershipVisibility { get; protected set; }
         public bool AllowChaosChanges { get; protected set; }
         public bool PvPLock { get; protected set; }
 
@@ -58,6 +59,11 @@ namespace TT.Domain.Identity.Entities
         public void SetAllowChaosChanges(bool allowChaosChanges)
         {
             this.AllowChaosChanges = allowChaosChanges;
+        }
+
+        public void SetAllowOwnershipVisibility(bool allowOwnershipVisibility)
+        {
+            this.AllowOwnershipVisibility = allowOwnershipVisibility;
         }
 
         public void SetPvPLockChanges(bool SetPvPLock)

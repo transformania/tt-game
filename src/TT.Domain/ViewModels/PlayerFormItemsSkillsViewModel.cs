@@ -13,6 +13,7 @@ namespace TT.Domain.ViewModels
         public bool ShowInventory { get; set; }
         public PlayerUserStrikesDetail PlayerUserStrikesDetail { get; set; }
         public bool ChaosChangesEnabled { get; set; }
+        public bool OwnershipVisibilityEnabled { get; set; }
         public bool IsAccountLockedOut { get; set; }
         public bool IsPvPLocked { get; set; }
     }

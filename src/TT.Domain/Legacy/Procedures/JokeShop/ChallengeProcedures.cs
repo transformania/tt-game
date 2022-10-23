@@ -680,6 +680,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Consumable
                 int[] itemTypes = { ItemStatics.CurseLifterItemSourceId,
                                     ItemStatics.AutoTransmogItemSourceId,
+                                    ItemStatics.DefectiveTransmogItemSourceId,
                                     ItemStatics.WillpowerBombVolatileItemSourceId,
                                     ItemStatics.WillpowerBombStrongItemSourceId,
                                     ItemStatics.WillpowerBombWeakItemSourceId,
@@ -1396,6 +1397,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             (int, int)[] items =
             {
                 (3, ItemStatics.AutoTransmogItemSourceId),
+                (4, ItemStatics.DefectiveTransmogItemSourceId),
                 (3, ItemStatics.CurseLifterItemSourceId),
                 (4, ItemStatics.WillpowerBombVolatileItemSourceId),
                 (3, ItemStatics.WillpowerBombStrongItemSourceId),

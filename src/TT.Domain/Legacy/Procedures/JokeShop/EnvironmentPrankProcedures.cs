@@ -260,6 +260,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Quality consumable
                 int[] itemTypes = { ItemStatics.CurseLifterItemSourceId,
                                     ItemStatics.AutoTransmogItemSourceId,
+                                    ItemStatics.DefectiveTransmogItemSourceId,
                                     ItemStatics.WillpowerBombVolatileItemSourceId,
                                     ItemStatics.SelfRestoreItemSourceId,
                                     ItemStatics.LullabyWhistleItemSourceId,

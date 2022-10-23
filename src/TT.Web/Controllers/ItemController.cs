@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
+using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Skills.Queries;
@@ -77,6 +79,47 @@ namespace TT.Web.Controllers
             if (!item.dbItem.IsEquipped)
             {
                 TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a defective transmog
+            if (item.dbItem.ItemSourceId == ItemStatics.DefectiveTransmogItemSourceId)
+            {
+                var rand = new Random();
+
+                var forms = JokeShopProcedures.InanimateForms();
+
+                if (forms.IsEmpty())
+                {
+                    TempData["Error"] = "Huh. It looks like something went wrong with that one.";
+                    ItemProcedures.DeleteItem(itemId);
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                var randForm = rand.Next(forms.Count());
+                FormDetail form = forms.ElementAt(randForm);
+
+                PlayerProcedures.InstantChangeToForm(me, form.FormSourceId);
+                ItemProcedures.DeleteItem(itemId);
+
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var target = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                target.Mobility = PvPStatics.MobilityFull;
+                playerRepo.SavePlayer(target);
+
+                var mobileTarget = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
+                playerRepo.SavePlayer(mobileTarget);
+
+                CharacterPrankProcedures.GiveEffect(me, JokeShopProcedures.ROOT_EFFECT, 3);
+
+                PlayerProcedures.SetTimestampToNow(me);
+                PlayerProcedures.AddItemUses(me.Id, 1);
+
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1);
+
+                TempData["Error"] = "Uh oh. Something seems off...";
+                TempData["SubError"] = "You've been pranked! You're going to need some time to recover.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

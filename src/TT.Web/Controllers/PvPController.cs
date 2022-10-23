@@ -3532,6 +3532,34 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        public virtual ActionResult InstantLock()
+        {
+
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert player is inanimate or an animal
+            if (me.Mobility == PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You can't do this.";
+                TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player is not already locked into their current form
+            var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+            if (itemMe != null && itemMe.IsPermanent)
+            {
+                TempData["Error"] = "You cannot return to an animate form again.";
+                TempData["SubError"] = "You have spent too long and performed too many actions as an item or animal and have lost your desire and ability to be human gain.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            //Instalock the player
+            TempData["Result"] = InanimateXPProcedures.InstaLock(myMembershipId);
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
         public virtual ActionResult CurseTransformOwner()
         {
             var myMembershipId = User.Identity.GetUserId();

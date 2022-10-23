@@ -201,13 +201,13 @@ namespace TT.Domain.Procedures
                 }
                 else if (strength == 11) //Ruthless 
                 {
-                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelThreeEffectSourceId, id);
                     EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelThreeEffectSourceId, id);
                 }
                 else if (strength == 13) //Eternal
                 {
-                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelFiveEffectSourceId, id);
                     EffectProcedures.GivePerkToPlayer(PsychopathicForLevelNineEffectSourceId, id);
+                    EffectProcedures.GivePerkToPlayer(PsychopathicForLevelFiveEffectSourceId, id);
                 }
 
                 // give this psycho a new rune with some random chance it is a higher level than they are, to a max of level 13
@@ -370,14 +370,9 @@ namespace TT.Domain.Procedures
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                         }
-                       else if ((bot.FirstName.Contains("Ruthless ") || bot.FirstName.Contains("Eternal ")) &&
-                            bot.IsInDungeon() != myTarget.IsInDungeon())
+                       else if (bot.IsInDungeon() != myTarget.IsInDungeon())
                         {
                             // Toggle idling when the target isn't in the dungeon.
-                            AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
-                        }
-                        else if (myTarget.IsInDungeon())
-                        {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                         }
 
@@ -444,7 +439,7 @@ namespace TT.Domain.Procedures
                         // attack stage
                         var playersHere = playerRepo.Players.Where
                             (p => p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull &&
-                                p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList();
+                                p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level-1).ToList();
 
                         // filter out offline players and Lindella
                         var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();

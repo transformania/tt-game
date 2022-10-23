@@ -270,6 +270,7 @@ namespace TT.Web.Controllers
             public readonly string ViewEffects = ("ViewEffects").ToLowerInvariant();
             public readonly string Teleport = ("Teleport").ToLowerInvariant();
             public readonly string FightTheTransformation = ("FightTheTransformation").ToLowerInvariant();
+            public readonly string InstantLock = ("InstantLock").ToLowerInvariant();
             public readonly string CurseTransformOwner = ("CurseTransformOwner").ToLowerInvariant();
             public readonly string EscapeFromOwner = ("EscapeFromOwner").ToLowerInvariant();
             public readonly string ReserveName = ("ReserveName").ToLowerInvariant();
@@ -1057,6 +1058,17 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FightTheTransformation);
             FightTheTransformationOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InstantLockOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InstantLock()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstantLock);
+            InstantLockOverride(callInfo);
             return callInfo;
         }
 

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Commands;
@@ -445,6 +444,33 @@ namespace TT.Domain.Procedures
 
                 return $"Unfortunately you are not able to struggle free from your form as {itemPlus.FriendlyName}.  Keep trying and you might succeed later... [Recovery chance next struggle:  {(int)GetStruggleChance(player, dungeonPenalty)}%]";
             }
+        }
+
+        public static string InstaLock(string membershipId)
+        {
+            IItemRepository itemRep = new EFItemRepository();
+
+            var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
+            var inanimateMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
+            var inanimateMe = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMeHack.Id); // TODO: Replace with proper Command
+
+            inanimateMe.IsPermanent = true;
+            itemRep.SaveItem(inanimateMe);
+            DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems { PlayerId = me.Id });
+            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = me.Id, IgnoreRunes = false });
+
+            var formRepo = new EFDbStaticFormRepository();
+            var form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == me.FormSourceId);
+
+            if (inanimateMe.OwnerId != null && form != null)
+            {
+                PlayerLogProcedures.AddPlayerLog(inanimateMe.OwnerId.Value, $"{me.GetFullName()} has locked and is now unable to escape their form as your {form.FriendlyName}!", true);
+            }
+
+            PlayerLogProcedures.AddPlayerLog(me.Id, $"You have locked in your current form as a {form.FriendlyName}!", false);
+            var resultMessage = "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
+
+            return resultMessage;
         }
 
         public static string CurseTransformOwner(Player player, Player owner, ItemDetail playerItem, bool isWhitelist)

@@ -2222,7 +2222,7 @@ namespace TT.Web.Controllers
             }
 
             // if this item is the self recaster, redirect to the animate spell listing page
-            if (item.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId)
+            if (item.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId || item.dbItem.ItemSourceId == ItemStatics.DefectiveTransmogItemSourceId)
             {
                 return RedirectToAction(MVC.Item.SelfCast(itemId));
             }

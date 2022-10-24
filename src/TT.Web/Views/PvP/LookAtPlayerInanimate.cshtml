@@ -45,7 +45,7 @@
 
                     <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
 
-                                if (ViewBag.Owner?.Player != null && (ViewBag.OwnedByMe || ViewBag.IsMe || DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = ViewBag.Owner.Player.MembershipId })))
+                                if (ViewBag.Owner?.Player != null && ViewBag.Owner.Player.MembershipId != null && (ViewBag.OwnedByMe || ViewBag.IsMe || DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = ViewBag.Owner.Player.MembershipId })))
                                 {
                         <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(ItemProcedures.BeingWornBy(Model.PlayerForm.Player.Id).Player.Id))">View Owner</a></li>
                                 }

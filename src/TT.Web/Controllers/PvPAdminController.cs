@@ -1144,7 +1144,7 @@ namespace TT.Web.Controllers
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View(MVC.PvPAdmin.Views.Index);
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -1157,7 +1157,7 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
             }
 
-            return View(MVC.PvPAdmin.Views.Index);
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 

@@ -3536,6 +3536,13 @@ namespace TT.Web.Controllers
         public virtual ActionResult InstantLock()
         {
 
+            //Check if we're in Chaos Mode
+            if (!PvPStatics.ChaosMode)
+            {
+                TempData["Error"] = "You can only do that in Chaos Mode";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -3551,13 +3558,20 @@ namespace TT.Web.Controllers
             var itemMe = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
             if (itemMe != null && itemMe.IsPermanent)
             {
-                TempData["Error"] = "You cannot return to an animate form again.";
-                TempData["SubError"] = "You have spent too long and performed too many actions as an item or animal and have lost your desire and ability to be human gain.";
+                TempData["Error"] = "You are already locked into your current form";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             //Instalock the player
-            TempData["Result"] = InanimateXPProcedures.InstaLock(myMembershipId);
+            try
+            {
+                TempData["Result"] = InanimateXPProcedures.InstaLock(myMembershipId);
+            }
+            catch
+            {
+                TempData["Error"] = "You can only do that in Chaos Mode";
+            }
+
             return RedirectToAction(MVC.PvP.Play());
         }
 

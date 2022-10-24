@@ -448,6 +448,13 @@ namespace TT.Domain.Procedures
 
         public static string InstaLock(string membershipId)
         {
+
+            //Check if we're in Chaos Mode
+            if (!PvPStatics.ChaosMode)
+            {
+                throw new Exception("Game is not in Chaos Mode");
+            }
+
             IItemRepository itemRep = new EFItemRepository();
 
             var me = PlayerProcedures.GetPlayerFromMembership(membershipId);

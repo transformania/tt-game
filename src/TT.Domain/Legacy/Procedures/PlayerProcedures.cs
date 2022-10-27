@@ -1519,6 +1519,16 @@ namespace TT.Domain.Procedures
             return playerRepo.Players.Where(p => (p.FirstName + " " + p.LastName).Contains(partialname) || (p.OriginalFirstName + " " + p.OriginalLastName).Contains(partialname)).Take(25).ToList();
         }
 
+        public static void ChangePlayerShoutsRemaining(int playerId, int shout)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            player.LastCombatTimestamp = DateTime.UtcNow;
+            player.LastActionTimestamp = DateTime.UtcNow;
+            player.ShoutsRemaining = shout;
+            playerRepo.SavePlayer(player);
+        }
+
         public static void FlagPlayerForSuspicousActivity(int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

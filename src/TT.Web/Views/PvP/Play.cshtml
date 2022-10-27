@@ -311,6 +311,11 @@
                                                 <a href="@Url.Action(MVC.MindControl.MindControlList())" class="attackLink">Mind Control</a>
                                             }
 
+                                            if (!AIStatics.IsAFriendly(p.Player.BotId) && Model.You.Player.GameMode != (int)GameModeStatics.GameModes.Invisible && Model.You.Player.ShoutsRemaining > 0)
+                                            {
+                                                <a href="@Url.Action(MVC.PvP.HeadPat(p.Player.Id))" class="attackLink">Headpat</a>
+                                            }
+
                                             if (p.Player.BotId == AIStatics.LindellaBotId)
                                             {
                                                 <a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))" class="attackLink">Trade</a>

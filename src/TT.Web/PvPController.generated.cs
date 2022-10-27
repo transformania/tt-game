@@ -205,6 +205,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult HeadPat()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeadPat);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult FlagForSuspiciousActivity()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FlagForSuspiciousActivity);
@@ -276,6 +282,7 @@ namespace TT.Web.Controllers
             public readonly string ReserveName = ("ReserveName").ToLowerInvariant();
             public readonly string Shout = ("Shout").ToLowerInvariant();
             public readonly string ShoutSend = ("ShoutSend").ToLowerInvariant();
+            public readonly string HeadPat = ("HeadPat").ToLowerInvariant();
             public readonly string FlagForSuspiciousActivity = ("FlagForSuspiciousActivity").ToLowerInvariant();
             public readonly string Duel = ("Duel").ToLowerInvariant();
             public readonly string Bus = ("Bus").ToLowerInvariant();
@@ -481,6 +488,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ShoutSend
         {
             public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_HeadPat s_params_HeadPat = new ActionParamsClass_HeadPat();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_HeadPat HeadPatParams { get { return s_params_HeadPat; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_HeadPat
+        {
+            public readonly string playerId = ("playerId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_FlagForSuspiciousActivity s_params_FlagForSuspiciousActivity = new ActionParamsClass_FlagForSuspiciousActivity();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1125,6 +1140,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShoutSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             ShoutSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void HeadPatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int playerId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult HeadPat(int playerId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeadPat);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
+            HeadPatOverride(callInfo, playerId);
             return callInfo;
         }
 

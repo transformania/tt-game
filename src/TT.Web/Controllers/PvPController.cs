@@ -3878,6 +3878,76 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        public virtual ActionResult HeadPat(int playerId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var target = PlayerProcedures.GetPlayer(playerId);
+
+            // assert player is not locked from PvP
+            if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "You have been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert target is not locked from PvP
+            if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = target.MembershipId }))
+            {
+                TempData["Error"] = "They have been locked from PvP functions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player does not currently have a lock on their account
+            if (me.FlaggedForAbuse)
+            {
+                TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that the victim is not the own player
+            if (target.Id == me.Id)
+            {
+                TempData["Error"] = "You can't cast magic on yourself.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player is mobile
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You must be fully animate in order to pat someone's head.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has shouts remaining
+            if (me.ShoutsRemaining <= 0)
+            {
+                TempData["Error"] = "You cannot pat anyone else on the head for this turn.";
+                TempData["SubError"] = "You will be able on the next turn.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // asset target does not have the effect already
+            if (EffectProcedures.PlayerHasEffect(target,EffectStatics.JOKESHOP_REGENERATION_EFFECT))
+            {
+                TempData["Error"] = "Something tells you they've already been given praise this way!";
+                TempData["SubError"] = "Wait until they need it again.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "You have given praise to " + target.FirstName + " " + target.LastName + "!";
+
+            // log the results for the players
+            PlayerLogProcedures.AddPlayerLog(me.Id, (string)TempData["Result"], true);
+            PlayerLogProcedures.AddPlayerLog(target.Id, "You have been given praise by " + me.FirstName + " " + me.LastName + "!", true);
+
+            EffectProcedures.GivePerkToPlayer(EffectStatics.JOKESHOP_REGENERATION_EFFECT, playerId, 1, 240);
+            
+            //Remove the shout
+            PlayerProcedures.ChangePlayerShoutsRemaining(me.Id, 0);
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
         public virtual ActionResult FlagForSuspiciousActivity(int playerId)
         {
             // assert the person flagging has mod permissions

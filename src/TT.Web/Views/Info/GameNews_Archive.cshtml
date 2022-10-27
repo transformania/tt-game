@@ -18,7 +18,7 @@
             {
                 <a href="@Url.Action(MVC.Moderator.EditNewsPost(n.Id))" class="bad">[Edit]</a>
             }
-            <p>@n.Timestamp.ToString("MMMM d")</p>
+            <p>@n.Timestamp.ToString("MMMM d yyyy")</p>
             @Html.Raw(n.Text)
             <hr>
         }

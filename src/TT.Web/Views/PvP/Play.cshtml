@@ -262,6 +262,15 @@
 
                     }
                 }
+                else
+                {
+                    /* Adding as a temporary measure for P-mode players. */
+                    if (Model.You.Player.IsInDungeon())
+                    {
+                        <br />
+                        <a href="@Url.Action(MVC.PvP.EnterDungeon("false"))">Leave the PvP Dungeon (10 AP)</a>
+                    }
+                }
             }
             @{
                 foreach (var item in Model.LocationItems)

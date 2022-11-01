@@ -497,7 +497,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (destination.dbName.Contains("dungeon_"))
             {
-                SkillProcedures.GiveSkillToPlayer(player.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
+                // Double-check the player is actually in PvP.
+                if(player.GameMode < (int)GameModeStatics.GameModes.PvP)
+                {
+                    PlayerLogProcedures.AddPlayerLog(player.Id, $"The dungeon senses you shouldn't be there and prevents you from entering.", false);
+                    return false;
+                }
+                else
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, PvPStatics.Dungeon_VanquishSpellSourceId);
+                }
             }
 
             PlayerProcedures.MovePlayer_InstantNoLog(player.Id, location);

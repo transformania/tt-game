@@ -789,14 +789,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert player is allowed to enter the dungeon (level, game mode, effects)
-            var message = "";
-            if (!me.IsInDungeon() && (!PlayerProcedures.CheckAllowedInDungeon(me, out message)))
-            {
-                TempData["Error"] = message;
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // assert player is in a correct location to do this if in overworld
             if (!me.IsInDungeon() && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
             {
@@ -816,6 +808,14 @@ namespace TT.Web.Controllers
 
             if (entering == "true")
             {
+                // assert player is allowed to enter the dungeon (level, game mode, effects)
+                var message = "";
+                if (!me.IsInDungeon() && (!PlayerProcedures.CheckAllowedInDungeon(me, out message)))
+                {
+                    TempData["Error"] = message;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
                 // assert player is not locked from pvp
                 if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
                 {

@@ -690,7 +690,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 minLevel = 1;
             }
 
-            if (npcPlayer == null)
+            if (npcPlayer == null || npcPlayer.dbLocationName.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            if (npcPlayer.IsInDungeon() && !PlayerProcedures.CheckAllowedInDungeon(player, out _))
             {
                 return null;
             }
@@ -740,7 +745,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var npcPlayer = playerRepo.Players.FirstOrDefault(p => p.BotId == npc);
 
-            if (npcPlayer == null || npcPlayer.dbLocationName == null)
+            if (npcPlayer == null || npcPlayer.dbLocationName.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            if (npcPlayer.IsInDungeon() && !PlayerProcedures.CheckAllowedInDungeon(player, out _))
             {
                 return null;
             }
@@ -796,6 +806,16 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var index = rand.Next(quests.Count());
             var quest = quests.ToArray()[index];
+
+            if (quest.dbName.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            if (quest.dbName.Contains("dungeon_") && !PlayerProcedures.CheckAllowedInDungeon(player, out _))
+            {
+                return null;
+            }
 
             if (!Teleport(player, quest.dbName, rand.Next(2) == 0))
             {

@@ -45,15 +45,15 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             var output = new CovenantViewModel();
+            var cov = covRepo.Covenants.FirstOrDefault(c => c.Id == id);
 
-            output.dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == id);
-
-            var playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
-
+            output.dbCovenant = cov;
             output.Leader = playerRepo.Players.FirstOrDefault(p => p.Id == output.dbCovenant.LeaderId);
 
-            output.Members = playerFormList;
+            var playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
+            output.Members = playerFormList.Where(p => p.Player.BotId != AIStatics.RerolledPlayerBotId);
 
+            output.IsFull = GetPlayerCountInCovenant(cov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount;
 
             return output;
         }
@@ -154,7 +154,6 @@ namespace TT.Domain.Procedures
             if (covMemberCount == 0)
             {
                 covRepo.DeleteCovenant(possible.Id);
-
             }
 
             // the covenant is not empty, so we need to give it a new leader.  For now the new leader is essentially random.
@@ -186,16 +185,21 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             return animateOnly
-                ? playerRepo.Players.Count(p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull)
-                : playerRepo.Players.Count(p => p.Covenant == covenant.Id);
+                ? playerRepo.Players.Count(p => p.Covenant == covenant.Id &&
+                                                p.BotId == AIStatics.ActivePlayerBotId &&
+                                                p.Mobility == PvPStatics.MobilityFull)
+                : playerRepo.Players.Count(p => p.Covenant == covenant.Id &&
+                                                p.BotId == AIStatics.ActivePlayerBotId);
         }
 
         public static int GetPlayerCountInCovenant_Animate_Lvl3(Covenant covenant)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             return
-                playerRepo.Players.Count(
-                    p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull && p.Level >= 3);
+                playerRepo.Players.Count(p => p.Covenant == covenant.Id &&
+                                              p.BotId == AIStatics.ActivePlayerBotId &&
+                                              p.Mobility == PvPStatics.MobilityFull &&
+                                              p.Level >= 3);
         }
 
         public static IEnumerable<CovenantListItemViewModel> GetCovenantsList()
@@ -209,7 +213,12 @@ namespace TT.Domain.Procedures
             {
                 dbCovenant = c,
                 MemberCount =
-                    playerRepo.Players.Count(p => p.Covenant == c.Id && p.BotId == AIStatics.ActivePlayerBotId),
+                    playerRepo.Players.Count(p => p.Covenant == c.Id &&
+                                                  p.BotId == AIStatics.ActivePlayerBotId),
+                AnimateMemberCount =
+                    playerRepo.Players.Count(p => p.Covenant == c.Id &&
+                                                  p.BotId == AIStatics.ActivePlayerBotId &&
+                                                  p.Mobility == PvPStatics.MobilityFull),
                 Leader = playerRepo.Players.FirstOrDefault(p => p.Id == c.LeaderId)
             }).ToList();
         }

@@ -77,6 +77,13 @@
                 <i>This covenant has a level <b>@Model.dbCovenant.Level</b> safeground at @LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>
             }
 
+            if (Model.IsFull)
+            {
+                <p class="bad">
+                    There is no more space in this covenant for animate members.
+                </p>
+            }
+
             <p style="margin-bottom:-15px;">Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon icon-money"></span></p>
 
             <br>

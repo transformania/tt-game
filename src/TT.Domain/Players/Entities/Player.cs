@@ -797,20 +797,23 @@ namespace TT.Domain.Players.Entities
 
         private bool HasRoomForNewItem(Item item)
         {
-            // bots have inlimited inventory sizes
+            // bots have unlimited inventory sizes
             if (this.BotId != AIStatics.ActivePlayerBotId)
             {
                 return true;
             }
 
+            // just need an empty slot for pets
+            if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            {
+                return this.Items.Count(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet) == 0;
+            }
+
+            // otherwise ensure space for another unequipped item
             var carriedItemCount = this.GetCarriedItemCount();
             var maxInventorySize = this.GetMaxInventorySize();
 
-            var hasRoom = carriedItemCount < maxInventorySize;
-
-            var petAlreadyEquipped = item.ItemSource.ItemType == PvPStatics.ItemType_Pet && this.Items.Count(i => i.ItemSource.ItemType == PvPStatics.ItemType_Pet) >= 1;
-
-            return hasRoom && !petAlreadyEquipped;
+            return carriedItemCount < maxInventorySize;
         }
 
     }

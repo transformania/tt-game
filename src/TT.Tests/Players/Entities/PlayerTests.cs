@@ -425,7 +425,7 @@ namespace TT.Tests.Players.Entities
         {
             var stats = new List<Stat>
             {
-                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMovedAsPet).With(t => t.Amount, 3).BuildAndSave()
             };
 
             var player = new PlayerBuilder()
@@ -453,7 +453,7 @@ namespace TT.Tests.Players.Entities
 
             Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
 
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsPet).Amount,
                 Is.EqualTo(4));
         }
 
@@ -462,7 +462,7 @@ namespace TT.Tests.Players.Entities
         {
             var stats = new List<Stat>
             {
-                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 3).BuildAndSave()
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMovedAsAnimate).With(t => t.Amount, 3).BuildAndSave()
             };
 
             var player = new PlayerBuilder()
@@ -508,7 +508,7 @@ namespace TT.Tests.Players.Entities
             Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
             Assert.That(player.ActionPoints, Is.EqualTo(9.5M));
 
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsAnimate).Amount,
                 Is.EqualTo(4));
 
             Assert.That(player.Items.ElementAt(0).dbLocationName, Is.Empty);
@@ -522,7 +522,7 @@ namespace TT.Tests.Players.Entities
         {
             var stats = new List<Stat>
             {
-                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 8).BuildAndSave()
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMovedAsAnimate).With(t => t.Amount, 8).BuildAndSave()
             };
 
             var player = new PlayerBuilder()
@@ -549,7 +549,7 @@ namespace TT.Tests.Players.Entities
             Assert.That(player.Location, Is.EqualTo("coffee_shop_patio"));
             Assert.That(player.ActionPoints, Is.EqualTo(9));
 
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsAnimate).Amount,
                 Is.EqualTo(9));
 
             Assert.That(player.LastActionTimestamp, Is.EqualTo(DateTime.UtcNow).Within(10).Seconds);

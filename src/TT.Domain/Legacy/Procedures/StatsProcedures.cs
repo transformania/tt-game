@@ -26,7 +26,9 @@ namespace TT.Domain.Procedures
         public const string Stat__SearchCount = "times_searched";
         public const string Stat__SpellSearchCount = "spell_searches";
         public const string Stat__SpellsCast = "spells_cast";
-        public const string Stat__TimesMoved = "times_moved";
+        public const string Stat__TimesMoved = "times_moved"; // RETIRED
+        public const string Stat__TimesMovedAsAnimate = "times_moved_as_animate";
+        public const string Stat__TimesMovedAsPet = "times_moved_as_pet";
         public const string Stat__TimesCleansed = "times_cleansed";
         public const string Stat__TimesMeditated = "times_meditated";
         public const string Stat__TimesEnchanted = "times_enchanted";
@@ -147,10 +149,30 @@ namespace TT.Domain.Procedures
                 },
                 
                 {
-                Stat__TimesMoved,
+                Stat__TimesMoved,  // RETIRED
                     new StatsDetailsMap{
                         FriendlyName = "The Restless One",
                         Description="Times moved",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
+                Stat__TimesMovedAsAnimate,
+                    new StatsDetailsMap{
+                        FriendlyName = "The Restless One",
+                        Description="Times moved while animate",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
+                Stat__TimesMovedAsPet,
+                    new StatsDetailsMap{
+                        FriendlyName = "Run, Rabbit, Run!",
+                        Description="Times moved as a feral pet",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }

@@ -3884,6 +3884,13 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var target = PlayerProcedures.GetPlayer(playerId);
 
+            // check character is a player and not a bot
+            if (target.MembershipId == null)
+            {
+                TempData["Error"] = "You can't get close enough to pat this person's head!";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player is not locked from PvP
             if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
             {

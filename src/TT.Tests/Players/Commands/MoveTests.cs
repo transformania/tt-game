@@ -49,7 +49,8 @@ namespace TT.Tests.Players.Commands
 
             stats = new List<Stat>
             {
-                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMoved).With(t => t.Amount, 88).BuildAndSave()
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMovedAsAnimate).With(t => t.Amount, 88).BuildAndSave(),
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__TimesMovedAsPet).With(t => t.Amount, 88).BuildAndSave()
             };
 
             player = new PlayerBuilder()
@@ -86,8 +87,10 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(player.Location, Is.EqualTo(destination));
             
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsAnimate).Amount,
                 Is.EqualTo(89));
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsPet).Amount,
+                Is.EqualTo(88));
         }
 
         [Test]
@@ -109,8 +112,10 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(player.Location, Is.EqualTo(destination));
             
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsAnimate).Amount,
                 Is.EqualTo(89));
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsPet).Amount,
+                Is.EqualTo(88));
         }
 
 
@@ -149,7 +154,9 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(player.Location, Is.EqualTo(destination));
             Assert.That(player.Item.dbLocationName, Is.EqualTo(destination));
-            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMoved).Amount,
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsAnimate).Amount,
+                Is.EqualTo(88));
+            Assert.That(player.User.Stats.First(s => s.AchievementType == StatsProcedures.Stat__TimesMovedAsPet).Amount,
                 Is.EqualTo(89));
 
         }

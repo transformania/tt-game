@@ -618,7 +618,7 @@ namespace TT.Domain.Players.Entities
             var playerLog = $"You moved from <b>{currentLocation.Name}</b> to <b>{nextLocation.Name}</b>.";
 
             AddLog(playerLog, false);
-            this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
+            this.User.AddStat(StatsProcedures.Stat__TimesMovedAsPet, 1);
             this.LastActionTimestamp = DateTime.UtcNow;
 
             var logBox = new MoveLogBox();
@@ -651,7 +651,7 @@ namespace TT.Domain.Players.Entities
             {
                 this.ActionPoints -= movementCost;
             }
-            this.User.AddStat(StatsProcedures.Stat__TimesMoved, 1);
+            this.User.AddStat(StatsProcedures.Stat__TimesMovedAsAnimate, 1);
             this.LastActionTimestamp = DateTime.UtcNow;
 
             // set location of all owned items/pets to this to blank so they don't appear on the ground

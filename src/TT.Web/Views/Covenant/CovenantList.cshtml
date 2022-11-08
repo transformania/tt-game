@@ -30,7 +30,7 @@
                 <div class="covFlag" style="background-image: url(https://images.transformaniatime.com/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
                 <span class="covBigName"><a href="@Url.Action(MVC.Covenant.LookAtCovenant(c.dbCovenant.Id))">@c.dbCovenant.Name</a></span>
                 <span>(lvl @c.dbCovenant.Level)</span>
-                <span class="covMemberCount">(@c.MemberCount members)</span>
+                <span class="covMemberCount">(@c.MemberCount members, @c.AnimateMemberCount animate)</span>
                 <span class="covLeader"><a href="@Url.Action(MVC.PvP.LookAtPlayer(c.Leader.Id))">Led by @c.Leader.GetFullName()</a></span>
 
                 <p>@c.dbCovenant.SelfDescription.  @HtmlHelpers.PrintCovenantSafeground(c.dbCovenant)</p>

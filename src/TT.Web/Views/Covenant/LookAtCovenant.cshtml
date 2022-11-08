@@ -40,6 +40,12 @@
 
     <p>
         <a href="@Url.Action(MVC.Covenant.ApplyToCovenant(Model.dbCovenant.Id))">Apply to join this covenant</a>
+        @{
+            if (Model.IsFull)
+            {
+                <span class="bad">(Currently full!)</span>
+            }
+        }
     </p>
 </div>
 

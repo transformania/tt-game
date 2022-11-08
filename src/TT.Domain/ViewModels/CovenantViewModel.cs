@@ -7,6 +7,7 @@ namespace TT.Domain.ViewModels
     {
         public Covenant dbCovenant { get; set; }
         public IEnumerable<PlayerFormViewModel> Members { get; set; }
+        public bool IsFull { get; set; }
         public Player Leader { get; set; }
     }
 
@@ -14,6 +15,7 @@ namespace TT.Domain.ViewModels
     {
         public Covenant dbCovenant { get; set; }
         public int MemberCount { get; set; }
+        public int AnimateMemberCount { get; set; }
         public Player Leader { get; set; }
     }
 

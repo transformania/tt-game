@@ -39,7 +39,8 @@
             <th>Spell Name</th>
             <th>Form Name</th>
             <th>Image</th>
-            <th></th>
+            <th>Date Added</th>
+            <th>Purchase</th>
         </tr>
         </thead>
         <tbody>
@@ -49,25 +50,26 @@
                 <td class="playerMediatingNotification"><b>@s.FriendlyName</b></td>
                 <td><b>@s.FormSource.FriendlyName</b></td>
                 <td>
-                @{
-                    if (s.MobilityType == PvPStatics.MobilityFull)
-                    {
-                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
-                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.Gender)</span>
-                        </div>
+                    @{
+                        if (s.MobilityType == PvPStatics.MobilityFull)
+                        {
+                            <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
+                                <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.Gender)</span>
+                            </div>
+                        }
+                        else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
+                        {
+                            <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
+                                <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.ItemSource.ItemType)</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <text>(no image)</text>
+                        }
                     }
-                    else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
-                    {
-                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
-                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.ItemSource.ItemType)</span>
-                        </div>
-                    }
-                    else
-                    {
-                        <text>(no image)</text>
-                    }
-                }
                 </td>
+                <td class="text-hide">@s.Id</td>
                 <td><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpellSend(s.Id))">Purchase Training</a></td>
             </tr>
         }

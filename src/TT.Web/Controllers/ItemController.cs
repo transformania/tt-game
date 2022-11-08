@@ -102,7 +102,7 @@ namespace TT.Web.Controllers
                 FormDetail form = forms.ElementAt(randForm);
 
                 PlayerProcedures.InstantChangeToForm(me, form.FormSourceId);
-                ItemProcedures.DeleteItem(itemId);
+                ItemProcedures.ResetUseCooldown(item);
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var target = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);

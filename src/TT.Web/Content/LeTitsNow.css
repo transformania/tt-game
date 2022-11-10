@@ -7,7 +7,7 @@ font-family: Arial, sans-serif;
 ;
 }
 
-@@-webkit-keyframes snowflakes-fall {
+@-webkit-keyframes snowflakes-fall {
 0% {
     top: -10%;
 }
@@ -17,7 +17,7 @@ font-family: Arial, sans-serif;
 }
 }
 
-@@-webkit-keyframes snowflakes-shake {
+@-webkit-keyframes snowflakes-shake {
 0% {
     -webkit-transform: translateX(0px);
     transform: translateX(0px);
@@ -34,7 +34,7 @@ font-family: Arial, sans-serif;
 }
 }
 
-@@keyframes snowflakes-fall {
+@keyframes snowflakes-fall {
 0% {
     top: -10%;
 }
@@ -44,7 +44,7 @@ font-family: Arial, sans-serif;
 }
 }
 
-@@keyframes snowflakes-shake {
+@keyframes snowflakes-shake {
 0% {
     transform: translateX(0px);
 }

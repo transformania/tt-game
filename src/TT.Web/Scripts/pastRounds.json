@@ -783,6 +783,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 99,
+      "name": "Alpha 99 (Adventure Time!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

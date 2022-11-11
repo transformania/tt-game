@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TT.Domain.Models;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Abstract
 {
@@ -15,6 +17,8 @@ namespace TT.Domain.Abstract
         void SaveSkill(Skill Skill);
 
         void DeleteSkill(int SkillId);
+
+        void DeleteSkillList(IEnumerable<SkillViewModel> skillList);
 
     }
 }

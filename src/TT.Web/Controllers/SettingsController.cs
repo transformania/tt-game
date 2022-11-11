@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Data;
 using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -1119,17 +1120,16 @@ namespace TT.Web.Controllers
             try
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-                var output = 
-                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityFull, playerId = me.Id });
-
-                foreach (var skill in output)
-                { 
-                    LearnSpell(skill.Id, me.Id);
-                }
+                SkillProcedures.GiveAllSkillsToPlayer(me.Id, PvPStatics.MobilityFull);
             }
-            catch
+            catch (DomainException)
             {
                 TempData["Error"] = "Failed to learn all animate spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "You already know every spell of this type";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1151,17 +1151,16 @@ namespace TT.Web.Controllers
             try
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-                var output =
-                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityInanimate, playerId = me.Id });
-
-                foreach (var skill in output)
-                {
-                    LearnSpell(skill.Id, me.Id);
-                }
+                SkillProcedures.GiveAllSkillsToPlayer(me.Id, PvPStatics.MobilityInanimate);
             }
-            catch
+            catch (DomainException)
             {
                 TempData["Error"] = "Failed to learn all inanimate spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "You already know every spell of this type";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1183,17 +1182,16 @@ namespace TT.Web.Controllers
             try
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-                var output =
-                    Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = PvPStatics.MobilityPet, playerId = me.Id });
-
-                foreach (var skill in output)
-                {
-                    LearnSpell(skill.Id, me.Id);
-                }
+                SkillProcedures.GiveAllSkillsToPlayer(me.Id, PvPStatics.MobilityPet);
             }
-            catch
+            catch (DomainException)
             {
                 TempData["Error"] = "Failed to learn all pet spells";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "You already know every spell of this type";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1217,6 +1215,11 @@ namespace TT.Web.Controllers
                 var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
                 ForgetSpells(me.Id);
             }
+            catch (DataException)
+            {
+                TempData["Error"] = "You have no spells to forget";
+                return RedirectToAction(MVC.PvP.Play());
+            }
             catch
             {
                 TempData["Error"] = "Failed to forget all spells";
@@ -1225,25 +1228,6 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "You have successfully forgotten all spells";
             return RedirectToAction(MVC.PvP.Play());
-
-        }
-
-        //Helper function for learning spells via chaos
-        public virtual void LearnSpell(int spellSourceId, int playerId)
-        {
-            //Checking if spell is learnable and if the player has it already
-            var spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spellSourceId);
-            var playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(playerId);
-
-            //Assert that the player does not have the spell and the spell is learnable
-            //Do nothing if any of these are true
-            if (!playerExistingSpells.Select(s => s.SkillSourceId).Contains(spellSourceId) &&
-              !(spellViewModel.StaticSkill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.StaticSkill.LearnedAtRegion.IsNullOrEmpty()) &&
-              spellViewModel.StaticSkill.IsPlayerLearnable)
-            {
-                //Checks pass, give player spell
-                SkillProcedures.GiveSkillToPlayer(playerId, spellViewModel.StaticSkill.Id);
-            }
 
         }
 
@@ -1260,12 +1244,14 @@ namespace TT.Web.Controllers
                 s.StaticSkill.Id != BossProcedures_FaeBoss.SpellUsedAgainstNarcissaSourceId &&
                 (s.StaticSkill.LearnedAtLocation ?? s.StaticSkill.LearnedAtRegion) != null);
 
-            //Remove the skills. The index is always 0 as the player's skill list decreases
-            ISkillRepository skillRepo = new EFSkillRepository();
-            while (!skills.IsEmpty())
+            if (skills.IsEmpty())
             {
-                skillRepo.DeleteSkill(skills.ElementAt(0).dbSkill.Id);
+                throw new DataException("You have no spells to forget");
             }
+
+            //Remove the skills
+            ISkillRepository skillRepo = new EFSkillRepository();
+            skillRepo.DeleteSkillList(skills);
 
         }
     }

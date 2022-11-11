@@ -6,6 +6,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Commands;
+using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -205,6 +206,17 @@ namespace TT.Domain.Procedures
             return output;
         }
 
+        public static string GiveAllSkillsToPlayer(int playerId, string mobility)
+        {
+            var skillList = Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = mobility, playerId = playerId });
+            if (skillList.IsEmpty())
+            {
+                throw new Exception("Skill list is empty");
+            }
+            var (_, message) = GiveAllSkillsToPlayerWithSuccess(playerId, skillList);
+            return message;
+        }
+
         public static string GiveSkillToPlayer(int playerId, int skillSourceId)
         {
             var (_, message) = GiveSkillToPlayerWithSuccess(playerId, skillSourceId);
@@ -229,6 +241,12 @@ namespace TT.Domain.Procedures
             {
                 return (false, "You discovered the spell '" + skill.FriendlyName + "' but unfortunately you already knew it.");
             }
+        }
+
+        public static (bool, string) GiveAllSkillsToPlayerWithSuccess(int playerId, IEnumerable<Domain.Skills.DTOs.LearnableSkillsDetail> skillList)
+        {
+            DomainRegistry.Repository.Execute(new CreateAllSkills { ownerId = playerId, skillList = skillList });
+            return (true, "Yay!");
         }
 
         public static void AddDiscoverableSpellStat(string membershipId, string stat)

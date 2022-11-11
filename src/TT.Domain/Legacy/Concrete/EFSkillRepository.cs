@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Models;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Concrete
 {
@@ -52,6 +54,21 @@ namespace TT.Domain.Concrete
                 context.Skills.Remove(dbEntry);
                 context.SaveChanges();
             }
+        }
+
+        public void DeleteSkillList(IEnumerable<SkillViewModel> skillList) 
+        {
+            
+            foreach (var skill in skillList)
+            { 
+                var dbEntry = context.Skills.Find(skill.dbSkill.Id);
+                if (dbEntry != null)
+                {
+                    context.Skills.Remove(dbEntry);
+                }
+            }
+            context.SaveChanges();
+
         }
 
     }

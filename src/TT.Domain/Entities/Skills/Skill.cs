@@ -26,5 +26,16 @@ namespace TT.Domain.Entities.Skills
             return newSkill;
         }
 
+        public static Skill CreateAll(Player player, SkillSource skillSource, CreateAllSkills cmd)
+        {
+            var newSkill = new Skill
+            {
+                Owner = player,
+                SkillSource = skillSource,
+                IsArchived = false,
+            };
+            return newSkill;
+        }
+
     }
 }

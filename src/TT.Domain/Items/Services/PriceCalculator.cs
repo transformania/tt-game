@@ -7,11 +7,11 @@
             var price = 0;
             if (itemCount == 1)
             {
-                price = 100;
+                price = 60;
             }
             else if (itemCount > 1)
             {
-                price = 100;
+                price = 60;
                 for (var i = 0; i < itemCount - 1; i++)
                 {
                     price *= 2;

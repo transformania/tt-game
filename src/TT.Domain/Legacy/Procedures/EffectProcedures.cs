@@ -138,14 +138,14 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string GivePerkToPlayer(int effectSourceId, int playerId, int? Duration = null, int? Cooldown = null)
+        public static string GivePerkToPlayer(int effectSourceId, int playerId, int? Duration = null, int? Cooldown = null, bool Silent = false)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            return GivePerkToPlayer(effectSourceId, dbPlayer, Duration, Cooldown);
+            return GivePerkToPlayer(effectSourceId, dbPlayer, Duration, Cooldown, Silent);
         }
 
-        public static string GivePerkToPlayer(int effectSourceId, Player player, int? Duration = null, int? Cooldown = null)
+        public static string GivePerkToPlayer(int effectSourceId, Player player, int? Duration = null, int? Cooldown = null, bool Silent = false)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
@@ -224,7 +224,7 @@ namespace TT.Domain.Procedures
                 //remove an unused perk from the player
                 person.UnusedLevelUpPerks--;
             }
-            else
+            else if (!Silent)
             {
                 // this is a temporary perk so return the flavor text
                 if (player.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
@@ -313,7 +313,7 @@ namespace TT.Domain.Procedures
 
             IEffectRepository effectRepo = new EFEffectRepository();
 
-            var possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.EffectSourceId == effectSourceId);
+            var possibleEffect = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
 
             if (possibleEffect == null)
             {

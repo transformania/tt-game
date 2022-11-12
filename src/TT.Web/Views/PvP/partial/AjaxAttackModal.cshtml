@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel>
+@using TT.Domain.Procedures
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
 
@@ -6,6 +7,14 @@
     <p>This spell will cost you <b>@PvPStatics.AttackManaCost</b> mana to cast against this opponent.</p>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
 <a href="@Url.Action(MVC.Duel.IssueChallenge((int)ViewBag.TargetId))" id="duel_challenge">Challenge to Duel</a>
+
+@{ 
+    if ((ViewBag.BotId == AIStatics.ActivePlayerBotId && ViewBag.MyShouts > 0))
+    {
+        <a href="@Url.Action(MVC.PvP.HeadPat((int)ViewBag.TargetId))" id="headpat">Headpat</a>
+    }
+}
+
 <span id="expand" onclick="expandModal()">Expand</span>
     <span id="toggle_all" onclick="toggleAll()">All</span>
     <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>

@@ -544,6 +544,18 @@ a.curse:hover {
     background-color: white;
 }
 
+#headpat {
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid black;
+    background-color: MediumAquamarine;
+    border-radius: 5px;
+}
+
+#headpat:hover {
+    background-color: white;
+}
+
 #youAreAttacking {
     color: black;
     font-size: 15px;

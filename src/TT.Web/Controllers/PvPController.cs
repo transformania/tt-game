@@ -876,6 +876,7 @@ namespace TT.Web.Controllers
                 output = SkillProcedures.AvailableSkills(me, target, false);
             }
 
+            ViewBag.MyShouts = me.ShoutsRemaining;
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;
@@ -3942,13 +3943,29 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert target is in PvP mode or is a friend
+            if (!FriendProcedures.MemberIsMyFriend(me.MembershipId, target.MembershipId) && (target.GameMode != (int)GameModeStatics.GameModes.PvP || me.GameMode != (int)GameModeStatics.GameModes.PvP))
+            {
+                TempData["Error"] = "You probably shouldn't pet strangers!";
+                TempData["SubError"] = "Why not try and make some friends?";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert target is in the same location
+            if (target.dbLocationName != me.dbLocationName)
+            {
+                TempData["Error"] = "Whoa! Slow down there, Stretch!";
+                TempData["SubError"] = "Your target doesn't seem to be in the same place as you.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             TempData["Result"] = "You have given praise to " + target.FirstName + " " + target.LastName + "!";
 
             // log the results for the players
             PlayerLogProcedures.AddPlayerLog(me.Id, (string)TempData["Result"], true);
             PlayerLogProcedures.AddPlayerLog(target.Id, "You have been given praise by " + me.FirstName + " " + me.LastName + "!", true);
 
-            EffectProcedures.GivePerkToPlayer(EffectStatics.JOKESHOP_REGENERATION_EFFECT, playerId, 1, 240);
+            EffectProcedures.GivePerkToPlayer(EffectStatics.JOKESHOP_REGENERATION_EFFECT, playerId, 1, 240, true);
             
             //Remove the shout
             PlayerProcedures.ChangePlayerShoutsRemaining(me.Id, 0);

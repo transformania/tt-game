@@ -241,7 +241,7 @@ namespace TT.Tests.Items.Commands
 
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
-                    .EqualTo("You cannot afford this.  You need <b>100</b> Arpeyjis and only have <b>0</b>."));
+                    .EqualTo("You cannot afford this.  You need <b>60</b> Arpeyjis and only have <b>0</b>."));
         }
 
         [Test]

@@ -932,13 +932,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         private static void TryAddingCombatRequirement(ChallengeType challengeType, Random die, Challenge challenge)
         {
             var difficulty = 1;
+            var minMinutesOutOfCombat = 15;
+            var turnLengthInMinutes = TurnTimesStatics.GetTurnLengthInSeconds() / 60;
 
             if (challenge.Difficulty + difficulty <= challengeType.MaxDifficulty &&
-                challenge.ResourceUsed(RESOURCE_COMBAT_TIMER) == 0)
+                challenge.ResourceUsed(RESOURCE_COMBAT_TIMER) == 0 &&
+                (challengeType.Duration - 1) * turnLengthInMinutes > minMinutesOutOfCombat)
             {
-                var minMinutesOutOfCombat = 15;
-                var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * TurnTimesStatics.GetTurnLengthInSeconds() / 60 / 2);
-                maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, Math.Min(30, maxMinutesOutOfCombat));
+                var maxMinutesOutOfCombat = Math.Min(30, challengeType.Duration * turnLengthInMinutes / 2);
+                maxMinutesOutOfCombat = Math.Max(minMinutesOutOfCombat, maxMinutesOutOfCombat);
 
                 var minutesToStayOutOfCombat = (int)die.Next(minMinutesOutOfCombat, maxMinutesOutOfCombat + 1);
 
@@ -1573,7 +1575,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var generalAchievements = new String[]{
                     StatsProcedures.Stat__SearchCount,
                     StatsProcedures.Stat__SpellsCast,
-                    StatsProcedures.Stat__TimesMoved,
+                    StatsProcedures.Stat__TimesMovedAsAnimate,
                     StatsProcedures.Stat__TimesCleansed,
                     StatsProcedures.Stat__TimesMeditated,
                     StatsProcedures.Stat__CovenantFurnitureUsed,

@@ -1441,7 +1441,7 @@ namespace TT.Web.Controllers
                     player.Level = input.Level;
                 }
 
-                if (input.Money > 0 && input.Money != player.Money)
+                if (input.Money >= 0 && input.Money != player.Money)
                 {
                     changed_money = " money,";
                     player.Money = input.Money;

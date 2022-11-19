@@ -90,10 +90,7 @@
         </ul>
     </li>
 
-    @if (Model.Item != null)
-    {
-        <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
-    }
+    <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
 }
 
 @Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)

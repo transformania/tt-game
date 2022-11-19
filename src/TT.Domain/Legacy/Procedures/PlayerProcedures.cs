@@ -643,13 +643,17 @@ namespace TT.Domain.Procedures
                 oldplayer.Covenant = null;
                 playerRepo.SavePlayer(oldplayer);
 
-                // turn the item they player became permanent
+                // turn the item the player became permanent, unless they were a lost item
                 IItemRepository itemRepo = new EFItemRepository();
                 var oldItemMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = oldplayer.Id});
-                var oldItemMe = itemRepo.Items.FirstOrDefault(i => i.Id == oldItemMeHack.Id);
-                oldItemMe.IsPermanent = true;
-                oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
-                itemRepo.SaveItem(oldItemMe);
+                if (oldItemMeHack != null)
+                {
+                    var oldItemMe = itemRepo.Items.FirstOrDefault(i => i.Id == oldItemMeHack.Id);
+                    oldItemMe.IsPermanent = true;
+                    oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
+                    itemRepo.SaveItem(oldItemMe);
+                }
+
                 DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = oldplayer.Id, IgnoreRunes = false});
                 DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = oldplayer.Id});
                 DomainRegistry.Repository.Execute(new SetSoulbindingConsent { IsConsenting = true, PlayerId = oldplayer.Id });

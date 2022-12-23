@@ -791,6 +791,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 100,
+      "name": "Alpha 100 (Absent Krampus!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

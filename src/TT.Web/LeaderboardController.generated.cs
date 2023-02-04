@@ -380,6 +380,7 @@ namespace TT.Web.Controllers
                     public class _ViewNamesClass
                     {
                         public readonly string Alpha_100 = "Alpha_100";
+                        public readonly string Alpha_101 = "Alpha_101";
                         public readonly string Alpha_17 = "Alpha_17";
                         public readonly string Alpha_18 = "Alpha_18";
                         public readonly string Alpha_19 = "Alpha_19";
@@ -465,6 +466,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_99 = "Alpha_99";
                     }
                     public readonly string Alpha_100 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_100.cshtml";
+                    public readonly string Alpha_101 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_101.cshtml";
                     public readonly string Alpha_17 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_17.cshtml";
                     public readonly string Alpha_18 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_18.cshtml";
                     public readonly string Alpha_19 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_19.cshtml";

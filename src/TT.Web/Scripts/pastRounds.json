@@ -807,6 +807,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 102,
+      "name": "Alpha 102 (Magical Healing Crystals!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

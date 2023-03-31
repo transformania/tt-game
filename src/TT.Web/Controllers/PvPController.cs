@@ -2052,7 +2052,7 @@ namespace TT.Web.Controllers
 
             // assert that the player is not in combat if they are trying to swap a consumable item.
             var lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            var secondsInCombat = 3 * TurnTimesStatics.GetTurnLengthInSeconds();
+            var secondsInCombat = 2 * TurnTimesStatics.GetTurnLengthInSeconds();
             if (lastAttackTimeAgo < secondsInCombat &&
                     (item.Item.ItemType == PvPStatics.ItemType_Consumable ||
                      item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable))

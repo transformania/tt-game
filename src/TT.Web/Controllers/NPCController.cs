@@ -505,10 +505,10 @@ namespace TT.Web.Controllers
 
             // assert that the player has not attacked too recently to move
             var lastAttackTimeAgo = Math.Abs(Math.Floor(victim.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo < 30)
+            if (lastAttackTimeAgo < 24)
             {
                 TempData["Error"] = "Your victim is resting from a recent attack.";
-                TempData["SubError"] = "You must wait " + (30 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
+                TempData["SubError"] = "You must wait " + (24 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

@@ -11,12 +11,12 @@ namespace TT.Domain.ViewModels
 
         public int GetMinutesUntilOutOfCombat()
         {
-            return (int)Math.Ceiling(15 - DateTime.UtcNow.Subtract(this.Player.LastCombatTimestamp).TotalMinutes);
+            return (int)Math.Ceiling(12 - DateTime.UtcNow.Subtract(this.Player.LastCombatTimestamp).TotalMinutes);
         }
 
         public bool InCombatTooRecently()
         {
-            return DateTime.UtcNow.Subtract(this.Player.LastCombatTimestamp).TotalMinutes < 15;
+            return DateTime.UtcNow.Subtract(this.Player.LastCombatTimestamp).TotalMinutes < 12;
         }
 
         public bool PlayerHasEnergy()

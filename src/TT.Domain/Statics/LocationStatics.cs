@@ -1266,13 +1266,22 @@ namespace TT.Domain.Statics
                 Name_East="ranch_hallway",
 
 
-        }, new Location {
+           }, new Location {
+                dbName = "ranch_silo",
+                Name = "Milton Ranch (Silo)",
+                Region = "ranch_outside",
+                X = 3,
+                Y = 2,
+                Name_East="ranch_pens",
+
+           }, new Location {
                 dbName = "ranch_pens",
                 Name = "Milton Ranch (Livestock Pens)",
                 Region = "ranch_outside",
                 X = 4,
                 Y = 2,
                 Name_East="ranch_pasture",
+                Name_West="ranch_silo",
 
            },  new Location {
                 dbName = "ranch_pasture",
@@ -1283,6 +1292,15 @@ namespace TT.Domain.Statics
                 Name_North = "ranch_hallway",
                 Name_East="ranch_barn",
                 Name_West="ranch_pens",
+                Name_South="ranch_orchard",
+
+           },  new Location {
+                dbName = "ranch_orchard",
+                Name = "Milton Ranch (Orchard)",
+                Region = "ranch_outside",
+                X = 5,
+                Y = 1,
+                Name_North = "ranch_pasture",
 
            },  new Location {
                 dbName = "ranch_barn",
@@ -1291,6 +1309,15 @@ namespace TT.Domain.Statics
                 X = 6,
                 Y = 2,
                 Name_West="ranch_pasture",
+                Name_East="ranch_riding",
+
+            },  new Location {
+                dbName = "ranch_riding",
+                Name = "Milton Ranch (Riding Arena)",
+                Region = "ranch_outside",
+                X = 7,
+                Y = 2,
+                Name_West="ranch_barn",
 
             }, new Location {
                 dbName = "290_west_9th_ave",

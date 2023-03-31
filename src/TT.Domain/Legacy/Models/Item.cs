@@ -20,6 +20,7 @@ namespace TT.Domain.Models
         public int? EmbeddedOnItemId { get; set; }
         public int? SoulboundToPlayerId { get; set; }
         public int? FormerPlayerId { get; set; }
+        public bool ConsentsToSoulbinding { get; set; }
 
         public Item()
         {
@@ -48,6 +49,7 @@ namespace TT.Domain.Models
         public int? EmbeddedOnItemId { get; set; }
         public int? SoulboundToPlayerId { get; set; }
         public int? FormerPlayerId { get; set; }
+        public bool ConsentsToSoulbinding { get; set; }
 
         public Item_VM()
         {

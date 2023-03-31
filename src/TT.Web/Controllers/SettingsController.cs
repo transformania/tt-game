@@ -99,6 +99,25 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult ChangeHardmode()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeHardmode { MembershipId = myMembershipId, InHardmode = true });
+                TempData["Result"] = $"You have changed your game mode to HARD MODE";
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
         public virtual ActionResult ChangeGender(int changeGender)
         {
             var myMembershipId = User.Identity.GetUserId();

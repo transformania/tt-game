@@ -24,6 +24,8 @@ namespace TT.Domain.ViewModels
 
         public bool StartInRP { get; set; }
 
+        public bool StartInHardmode { get; set; }
+
         public bool MigrateLetters { get; set; }
 
         public bool StartAsInanimate { get; set; }

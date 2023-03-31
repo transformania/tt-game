@@ -50,6 +50,7 @@ namespace TT.Domain.Models
         [Index("IX_MembershipIdAndInPvP", 2)]
         public int GameMode { get; set; }
         public bool InRP { get; set; }
+        public bool InHardmode { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
         [Index("IX_MembershipIdAndCovenant", 2)]
@@ -227,6 +228,7 @@ namespace TT.Domain.Models
         public int UnusedLevelUpPerks { get; set; }
         public int GameMode { get; set; }
         public bool InRP { get; set; }
+        public bool InHardmode { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
         public int? Covenant { get; set; }
@@ -346,6 +348,7 @@ namespace TT.Domain.Models
                 UnusedLevelUpPerks = this.UnusedLevelUpPerks,
                 GameMode = this.GameMode,
                 InRP = this.InRP,
+                InHardmode = this.InHardmode,
                 CleansesMeditatesThisRound = this.CleansesMeditatesThisRound,
                 Money = this.Money,
                 Covenant = this.Covenant,

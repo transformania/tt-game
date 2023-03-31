@@ -84,7 +84,7 @@ namespace TT.Domain.Players.Entities
 
         public int GameMode { get; protected set; }
         public bool InRP { get; protected set; }
-
+        public bool InHardmode { get; protected set; }
         public int CleansesMeditatesThisRound { get; protected set; }
         public decimal Money { get; protected set; }
         public Covenant Covenant { get; protected set; }
@@ -151,6 +151,7 @@ namespace TT.Domain.Players.Entities
                 UnusedLevelUpPerks = cmd.UnusedLevelUpPerks,
                 GameMode = cmd.GameMode,
                 InRP = cmd.InRP,
+                InHardmode = cmd.InHardmode,
                 CleansesMeditatesThisRound = cmd.CleansesMeditatesThisRound,
                 Money = cmd.Money,
                 Covenant = covenant,
@@ -424,6 +425,11 @@ namespace TT.Domain.Players.Entities
         public void ChangeRPMode(bool inRP)
         {
             InRP = inRP;
+        }
+
+        public void ChangeHardmode(bool inHardmode)
+        {
+            InHardmode = inHardmode;
         }
 
         public void ChangeGameMode(int gameMode)

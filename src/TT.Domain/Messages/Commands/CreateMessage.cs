@@ -32,7 +32,12 @@ namespace TT.Domain.Messages.Commands
                 if (receiver.BotId != AIStatics.ActivePlayerBotId && receiver.MembershipId == null)
                     throw new DomainException("You can't message NPCs.");
 
-                var message = Message.Create(sender, receiver, this);
+                var doNotRecycle = ctx.AsQueryable<Message>()
+                      .Any(m => m.ConversationId == ReplyingToThisMessage.ConversationId &&
+                                m.IsDeleted == false &&
+                                m.IsReportedAbusive);
+
+                var message = Message.Create(sender, receiver, doNotRecycle, this);
 
                 ctx.Add(message);
                 ctx.Commit();

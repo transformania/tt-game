@@ -382,13 +382,13 @@ namespace TT.Web.Controllers
 
         }
 
-        public virtual ActionResult MarkAsAbusive(int id)
+        public virtual ActionResult MarkAsAbusive(int id, Guid? conversationId)
         {
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             try
             {
-                DomainRegistry.Repository.Execute(new MarkAsAbusive { MessageId = id, OwnerId = me.Id });
+                DomainRegistry.Repository.Execute(new MarkAsAbusive { MessageId = id, OwnerId = me.Id, ConversationId = conversationId });
                 TempData["Result"] = "This message has been marked as abusive and a moderator will soon review it.";
                 return RedirectToAction(MVC.Messages.Index());
             }

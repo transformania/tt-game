@@ -218,6 +218,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_MarkAsAbusive
         {
             public readonly string id = ("id").ToLowerInvariant();
+            public readonly string conversationId = ("conversationId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_MarkAsAbusivePreview s_params_MarkAsAbusivePreview = new ActionParamsClass_MarkAsAbusivePreview();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -383,14 +384,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void MarkAsAbusiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void MarkAsAbusiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Guid? conversationId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult MarkAsAbusive(int id)
+        public override System.Web.Mvc.ActionResult MarkAsAbusive(int id, System.Guid? conversationId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MarkAsAbusive);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            MarkAsAbusiveOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "conversationId", conversationId);
+            MarkAsAbusiveOverride(callInfo, id, conversationId);
             return callInfo;
         }
 

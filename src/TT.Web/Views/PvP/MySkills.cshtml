@@ -44,10 +44,14 @@
                 {
                     <tr>
                         <td class="playerMediatingNotification">
-                            <b>@skill.SkillSource.FriendlyName</b>
+                            <a href="@Url.Action(MVC.Settings.BookmarkSpell(skill.SkillSource.Id))"><b>@skill.SkillSource.FriendlyName</b></a>
                             @if (skill.IsArchived)
                             {
                                 <b id="@skill.Id">(ARCHIVED)</b>
+                            }
+                            else if (skill.Bookmarked)
+                            { 
+                                <b id="@skill.Id">(<span class="good glyphicon glyphicon-bookmark"></span>)</b>
                             }
                             else
                             {

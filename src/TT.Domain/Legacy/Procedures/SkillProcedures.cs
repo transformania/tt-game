@@ -47,7 +47,7 @@ namespace TT.Domain.Procedures
                                                          Duration = skill.Duration,
                                                          TurnStamp = skill.TurnStamp,
                                                          IsArchived = skill.IsArchived,
-
+                                                         Bookmarked = skill.Bookmarked,
                                                      },
                                                      StaticSkill = new StaticSkill
                                                      {
@@ -96,7 +96,7 @@ namespace TT.Domain.Procedures
                                                           Duration = skill.Duration,
                                                           TurnStamp = skill.TurnStamp,
                                                           IsArchived = skill.IsArchived,
-
+                                                          Bookmarked = skill.Bookmarked,
                                                       },
                                                       StaticSkill = new StaticSkill
                                                       {
@@ -143,6 +143,7 @@ namespace TT.Domain.Procedures
                                                           Duration = skill.Duration,
                                                           TurnStamp = skill.TurnStamp,
                                                           IsArchived = skill.IsArchived,
+                                                          Bookmarked = skill.Bookmarked,
                                                       },
                                                       StaticSkill = new StaticSkill
                                                       {
@@ -458,6 +459,14 @@ namespace TT.Domain.Procedures
             skillRepo.SaveSkill(skill);
         }
 
+        public static void BookmarkSpell(int id)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            var skill = skillRepo.Skills.FirstOrDefault(s => s.Id == id);
+            skill.Bookmarked = !skill.Bookmarked;
+            skillRepo.SaveSkill(skill);
+        }
+
         public static void ArchiveAllSpells(int playerId, bool archiveOrNot)
         {
             string archiveBool;
@@ -471,7 +480,7 @@ namespace TT.Domain.Procedures
             }
             using (var context = new StatsContext())
             {
-                context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Skills] SET IsArchived = {archiveBool} WHERE OwnerId = {playerId} AND SkillSourceId != {PvPStatics.Spell_WeakenId}");
+                context.Database.ExecuteSqlCommand($"UPDATE [dbo].[Skills] SET IsArchived = {archiveBool} WHERE Bookmarked != 1 AND OwnerId = {playerId} AND SkillSourceId != {PvPStatics.Spell_WeakenId}");
             }
         }
 

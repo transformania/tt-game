@@ -181,6 +181,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BookmarkSpell()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BookmarkSpell);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult PlayerStats()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerStats);
@@ -288,6 +294,7 @@ namespace TT.Web.Controllers
             public readonly string MyBaseForms = ("MyBaseForms").ToLowerInvariant();
             public readonly string ArchiveSpell = ("ArchiveSpell").ToLowerInvariant();
             public readonly string ArchiveAllMySpells = ("ArchiveAllMySpells").ToLowerInvariant();
+            public readonly string BookmarkSpell = ("BookmarkSpell").ToLowerInvariant();
             public readonly string PlayerStats = ("PlayerStats").ToLowerInvariant();
             public readonly string PlayerStatsTopOfType = ("PlayerStatsTopOfType").ToLowerInvariant();
             public readonly string SetFriendNickname = ("SetFriendNickname").ToLowerInvariant();
@@ -470,6 +477,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ArchiveAllMySpells
         {
             public readonly string archive = ("archive").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_BookmarkSpell s_params_BookmarkSpell = new ActionParamsClass_BookmarkSpell();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BookmarkSpell BookmarkSpellParams { get { return s_params_BookmarkSpell; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BookmarkSpell
+        {
+            public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
         }
         static readonly ActionParamsClass_PlayerStats s_params_PlayerStats = new ActionParamsClass_PlayerStats();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1015,6 +1030,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ArchiveAllMySpells);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "archive", archive);
             ArchiveAllMySpellsOverride(callInfo, archive);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BookmarkSpellOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skillSourceId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BookmarkSpell(int skillSourceId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BookmarkSpell);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skillSourceId", skillSourceId);
+            BookmarkSpellOverride(callInfo, skillSourceId);
             return callInfo;
         }
 

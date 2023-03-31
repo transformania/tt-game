@@ -12,5 +12,6 @@ namespace TT.Domain.Skills.DTOs
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
         public bool IsArchived { get; set; }
+        public bool Bookmarked { get; set; }
     }
 }

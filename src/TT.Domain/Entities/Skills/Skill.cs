@@ -12,6 +12,7 @@ namespace TT.Domain.Entities.Skills
         public decimal Charge { get; protected set; }
         public int TurnStamp { get; protected set; }
         public bool IsArchived { get; protected set; }
+        public bool Bookmarked { get; protected set; }
 
         private Skill() { }
 
@@ -22,6 +23,7 @@ namespace TT.Domain.Entities.Skills
                 Owner = player,
                 SkillSource = skillSource,
                 IsArchived = false,
+                Bookmarked = false,
             };
             return newSkill;
         }
@@ -33,6 +35,7 @@ namespace TT.Domain.Entities.Skills
                 Owner = player,
                 SkillSource = skillSource,
                 IsArchived = false,
+                Bookmarked = false,
             };
             return newSkill;
         }

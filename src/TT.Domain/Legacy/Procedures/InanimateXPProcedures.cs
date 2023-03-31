@@ -483,7 +483,7 @@ namespace TT.Domain.Procedures
         public static string CurseTransformOwner(Player player, Player owner, ItemDetail playerItem, bool isWhitelist)
         {
             var rand = new Random();
-            var roll = rand.NextDouble() * 100;
+            var roll = rand.NextDouble();
 
 
             IInanimateXPRepository inanimateXpRepo = new EFInanimateXPRepository();
@@ -503,7 +503,7 @@ namespace TT.Domain.Procedures
                 };
             }
 
-            double chanceOfSuccess = (gameTurn - xp.LastActionTurnstamp);
+            double buildUp = (gameTurn - xp.LastActionTurnstamp);
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
             var tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormSourceId == playerItem.ItemSource.CurseTFFormSourceId);
@@ -517,7 +517,7 @@ namespace TT.Domain.Procedures
             if (playerItem.ItemSource.CurseTFFormSourceId == null)
             {
                 // No item-provided TF curse - reduce chance of transforming to a preset form
-                chanceOfSuccess /= 4.0;
+                buildUp /= 4.0;
                 newFormSourceId = PvPStatics.DefaultTFCurseForms[rand.Next(PvPStatics.DefaultTFCurseForms.Length)];
             }
             else
@@ -552,9 +552,10 @@ namespace TT.Domain.Procedures
                 }
             }
 
+            var chanceOfFailure = Math.Pow(0.987, buildUp);
 
             // success; owner is transformed!
-            if (roll < chanceOfSuccess)
+            if (roll > chanceOfFailure)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var newForm = FormStatics.GetForm(newFormSourceId);

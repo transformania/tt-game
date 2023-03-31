@@ -167,18 +167,18 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_PLUSHDEMON_RUNE
                 }
             },
-            //{
-            //    "fiendishFarmhand",
-            //    new MinibossData {
-            //        FormSourceId = 978,
-            //        FormName = "form_Fiendish_Farmhand_Judoo",
-            //        Title = "Farmhand",
-            //        Region = "ranch_outside",
-            //        Spells = new List<string> { "skill_Dairy_Factory_Sampleguy", "skill_Man's_Best_Friend_Soren_Reus", "skill_Pulling_Wool_Over_Their_Eyes_Kim_Steele"},
-            //        BotId = AIStatics.MinibossFiendishFarmhandId,
-            //        RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE
-            //    }
-            //},
+            {
+                "fiendishFarmhand",
+                new MinibossData {
+                    FormSourceId = 978,
+                    FormName = "form_Fiendish_Farmhand_Judoo",
+                    Title = "Farmhand",
+                    Region = "ranch_outside",
+                    Spells = new List<int> { 404, 1256, 355, 583, 508, 484, 1127, 1255},
+                    BotId = AIStatics.MinibossFiendishFarmhandId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE
+                }
+            },
             //{
             //    "lazyLifeguard",
             //    new MinibossData {

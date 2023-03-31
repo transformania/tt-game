@@ -113,7 +113,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.Money, 1000)
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
-                .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-14))
+                .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-11))
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
@@ -131,7 +131,7 @@ namespace TT.Tests.Players.Commands
                 .With(p => p.Money, 1000)
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
-                .With(p => p.LastCombatAttackedTimestamp, DateTime.UtcNow.AddMinutes(-14))
+                .With(p => p.LastCombatAttackedTimestamp, DateTime.UtcNow.AddMinutes(-11))
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };

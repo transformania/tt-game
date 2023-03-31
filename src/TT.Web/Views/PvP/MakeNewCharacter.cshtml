@@ -87,6 +87,11 @@
         @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class="sp-mode"> SuperProtection</span><br>
         @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="pvp-mode"> PvP</span>
 
+        <br>
+        <br>
+
+        <p class="bad"><strong>Start in Hard mode? (PREVENTS STRUGGLING)</strong></p>
+        @Html.CheckBoxFor(x => x.StartInHardmode)
 
         <br>
         <br>

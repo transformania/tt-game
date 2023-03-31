@@ -49,8 +49,8 @@ namespace TT.Domain.Players.Commands
 
         public int UnusedLevelUpPerks { get; set; }
         public int GameMode { get; set; }
-
         public bool InRP { get; set; }
+        public bool InHardmode { get; set; }
 
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }

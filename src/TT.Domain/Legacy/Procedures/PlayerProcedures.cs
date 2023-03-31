@@ -62,6 +62,7 @@ namespace TT.Domain.Procedures
                                                               UnusedLevelUpPerks = player.UnusedLevelUpPerks,
                                                               GameMode = player.GameMode,
                                                               InRP = player.InRP,
+                                                              InHardmode = player.InHardmode,
                                                               CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
                                                               Money = player.Money,
                                                               Covenant = player.Covenant,
@@ -175,6 +176,7 @@ namespace TT.Domain.Procedures
                                                               UnusedLevelUpPerks = player.UnusedLevelUpPerks,
                                                               GameMode = player.GameMode,
                                                               InRP = player.InRP,
+                                                              InHardmode = player.InHardmode,
                                                               CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
                                                               Money = player.Money,
                                                               Covenant = player.Covenant,
@@ -286,6 +288,7 @@ namespace TT.Domain.Procedures
                                                               UnusedLevelUpPerks = player.UnusedLevelUpPerks,
                                                               GameMode = player.GameMode,
                                                               InRP = player.InRP,
+                                                              InHardmode = player.InHardmode,
                                                               CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
                                                               Money = player.Money,
                                                               Covenant = player.Covenant,
@@ -398,6 +401,7 @@ namespace TT.Domain.Procedures
                                                               UnusedLevelUpPerks = player.UnusedLevelUpPerks,
                                                               GameMode = player.GameMode,
                                                               InRP = player.InRP,
+                                                              InHardmode = player.InHardmode,
                                                               CleansesMeditatesThisRound = player.CleansesMeditatesThisRound,
                                                               Money = player.Money,
                                                               Covenant = player.Covenant,
@@ -678,6 +682,7 @@ namespace TT.Domain.Procedures
                 BotId = AIStatics.ActivePlayerBotId,
                 GameMode = newCharacterViewModel.StartGameMode,
                 InRP = newCharacterViewModel.StartInRP,
+                InHardmode = newCharacterViewModel.StartInHardmode,
                 FormSourceId = newCharacterViewModel.FormSourceId
             };
 

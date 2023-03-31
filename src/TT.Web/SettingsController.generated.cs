@@ -270,6 +270,7 @@ namespace TT.Web.Controllers
             public readonly string Settings = ("Settings").ToLowerInvariant();
             public readonly string ChangeGameMode = ("ChangeGameMode").ToLowerInvariant();
             public readonly string ChangeRPMode = ("ChangeRPMode").ToLowerInvariant();
+            public readonly string ChangeHardmode = ("ChangeHardmode").ToLowerInvariant();
             public readonly string ChangeGender = ("ChangeGender").ToLowerInvariant();
             public readonly string SetBio = ("SetBio").ToLowerInvariant();
             public readonly string SetBioSend = ("SetBioSend").ToLowerInvariant();
@@ -745,6 +746,17 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeRPMode);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inRP", inRP);
             ChangeRPModeOverride(callInfo, inRP);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeHardmodeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeHardmode()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeHardmode);
+            ChangeHardmodeOverride(callInfo);
             return callInfo;
         }
 

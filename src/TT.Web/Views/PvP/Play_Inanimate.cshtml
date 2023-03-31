@@ -178,7 +178,11 @@
                             }
                         }
 
-                        if (!Model.Item.IsPermanent)
+                        if (Model.Player.InHardmode)
+                        {
+                            <span>If you could struggle and regain a human form you would find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But instead you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
+                        }
+                        else if (!Model.Item.IsPermanent)
                         {
                             <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
                         }
@@ -262,7 +266,7 @@
                     </p>
                 }
 
-                if (Model.Item != null && !Model.Item.IsPermanent)
+                if (Model.Item != null && !Model.Item.IsPermanent && !Model.Player.InHardmode)
                 {
                     <p class="center-block">
                         <span class="place">Struggle free from this form</span>

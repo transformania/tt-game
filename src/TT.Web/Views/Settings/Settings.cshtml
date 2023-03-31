@@ -45,7 +45,7 @@
                         }
                     </tbody>
                 </table>
-            }
+                            }
         }
 
     </p>
@@ -193,6 +193,49 @@
 
         }
     </p>
+
+    <h2>Hard Mode</h2>
+
+    <p>
+        If you choose to enter hard mode, you will not be able to struggle free from ANY inanimate or pet forms.
+        Regardless of the form, regardless of being dropped, you <strong>cannot be turned back by anyone</strong>.
+        This decision can only be undone by rerolling. Click on the link below to enter hard mode.<br><br>
+        @{
+            if (Model.Player.InHardmode)
+            {
+                <span class="bad">You are in hard mode.</span>
+            }
+            else
+            {
+                <span class="good">You are not in hard mode.  Click <a href="#showHardmode" id="showHardmode" data-toggle="modal" data-target="#hardmodeModal">HERE</a> to turn it on.</span>
+            }
+
+        }
+    </p>
+
+    <div class="modal fade" id="hardmodeModal" role="dialog">
+        <div class="modal-dialog modal-sm bg-warning">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close outline-text" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Activate Hard Mode</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="small">
+                        <span>Are you sure? This decision can't be undone. Not by ANYONE. If you change your mind, you <strong>MUST REROLL</strong></span>
+                        <br /><br />
+                        @{
+                            using (Html.BeginForm(MVC.Settings.ChangeHardmode(), FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Activate Hard Mode.">
+                            }
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h2>Ownership Visibility</h2>
 

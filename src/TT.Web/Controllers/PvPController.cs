@@ -3516,6 +3516,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assert player is not in hard mode
+            if (me.InHardmode)
+            {
+                TempData["Error"] = "You cannot return to an animate form again.";
+                TempData["SubError"] = "If only you still had any magic...";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             bool dungeonPenalty = ItemProcedures.ItemIncursDungeonPenalty(itemMe);
 
             TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonPenalty);

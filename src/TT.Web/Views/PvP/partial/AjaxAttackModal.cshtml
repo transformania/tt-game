@@ -39,7 +39,7 @@
 
 <span id="lastAttack"></span>
 
-    @foreach (var s in Model.OrderBy(s => s.StaticSkill.FriendlyName))
+    @foreach (var s in Model.OrderBy(s => s.StaticSkill.FriendlyName).OrderByDescending(s => s.dbSkill.Bookmarked))
     {
 
 

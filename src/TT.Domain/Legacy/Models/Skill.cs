@@ -9,7 +9,8 @@
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
         public bool IsArchived { get; set; }
-       
+        public bool Bookmarked { get; set; }
+
     }
 
     public class Skill_VM
@@ -21,6 +22,7 @@
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
         public bool IsArchived { get; set; }
+        public bool Bookmarked { get; set; }
 
     }
 }

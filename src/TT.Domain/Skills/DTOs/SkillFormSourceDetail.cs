@@ -7,6 +7,7 @@ namespace TT.Domain.Skills.DTOs
     {
         public int Id { get; set; }
         public bool IsArchived { get; set; }
+        public bool Bookmarked { get; set; }
         public FormSourceNameDetail SkillSource { get; set; }
     }
 

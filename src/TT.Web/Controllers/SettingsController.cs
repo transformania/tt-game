@@ -709,6 +709,12 @@ namespace TT.Web.Controllers
                 return PartialView(MVC.Settings.Views.partial.ArchiveNotice);
             }
 
+            if (skill.dbSkill.Bookmarked)
+            {
+                ViewBag.Message = $"You cannot archive a bookmarked spell.";
+                return PartialView(MVC.Settings.Views.partial.ArchiveNotice);
+            }
+
             SkillProcedures.ArchiveSpell(skill.dbSkill.Id);
 
             if (!skill.dbSkill.IsArchived)
@@ -730,14 +736,54 @@ namespace TT.Web.Controllers
             if (archive == "true")
             {
                 SkillProcedures.ArchiveAllSpells(me.Id, true);
-                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
+                TempData["Result"] = "You have archived all of your known non-bookmarked spells.  They will not appear on the attack modal until you unarchive them.";
             }
             else
             {
                 SkillProcedures.ArchiveAllSpells(me.Id, false);
-                TempData["Result"] = "You have unarchived all of your known spells.  They will all now appear on the attack modal again.";
+                TempData["Result"] = "You have unarchived all of your known non-bookmarked spells.  They will all now appear on the attack modal again.";
             }
 
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult BookmarkSpell(int skillSourceId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            // assert that player does own this skill
+            var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
+            
+            ISkillRepository skillRepo = new EFSkillRepository();
+            var countBookmark = skillRepo.Skills.Count(s => s.Bookmarked);
+
+            if (skill == null)
+            {
+                TempData["Result"] = "You don't know this spell yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (skill.dbSkill.IsArchived)
+            {
+                TempData["Result"] = "You cannot bookmark an archived spell.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (skill.dbSkill.Bookmarked)
+            {
+                SkillProcedures.BookmarkSpell(skill.dbSkill.Id);
+                TempData["Result"] = "You have successfully removed " + skill.StaticSkill.FriendlyName + " to your spell bookmark.";
+            }
+            else if(skillSourceId != skill.dbSkill.Id && countBookmark > 2)
+            {
+                TempData["Result"] = "You can only bookmark three spells.";
+            }
+            else if (!skill.dbSkill.Bookmarked)
+            {
+                SkillProcedures.BookmarkSpell(skill.dbSkill.Id);
+                TempData["Result"] = "You have successfully added " + skill.StaticSkill.FriendlyName + " from your spell bookmark.";
+            }
 
             return RedirectToAction(MVC.PvP.Play());
         }

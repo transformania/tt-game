@@ -30,7 +30,7 @@ namespace TT.Domain.Messages.Entities
 
         private Message() { }
 
-        public static Message Create(Player sender, Player receiver, CreateMessage cmd)
+        public static Message Create(Player sender, Player receiver, bool doNotRecycle, CreateMessage cmd)
         {
             var output = new Message
             {
@@ -41,7 +41,8 @@ namespace TT.Domain.Messages.Entities
                 MessageText = cmd.Text,
                 ReceiverMarkedAsDeleted = false,
                 ConversationId = Guid.NewGuid(),
-                IsRead = false
+                IsRead = false,
+                DoNotRecycleMe = doNotRecycle
 
             };
 
@@ -72,6 +73,11 @@ namespace TT.Domain.Messages.Entities
         {
             this.IsReportedAbusive = isReportedAbusive;
             this.DoNotRecycleMe = isReportedAbusive;
+        }
+
+        public void MarkAsPartOfAbusiveConversation()
+        {
+            this.DoNotRecycleMe = true;
         }
 
     }

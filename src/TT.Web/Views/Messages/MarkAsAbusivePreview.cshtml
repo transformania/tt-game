@@ -33,7 +33,7 @@
     <p id="confirmBtn" class="bad">Are you <b>SURE</b> you want to report this as abusive? <button onclick="confirm()" class="btn">Yes, I'm sure!</button></p>
 
     <div id="actualSendLink" style="display: none;">
-        <a href="@Url.Action(MVC.Messages.MarkAsAbusive(Model.MessageId))" class="bad" onclick="return confirm('Are you sure you wish to mark this message as abusive?');">Click here to finish submitting the report.</a>
+        <a href="@Url.Action(MVC.Messages.MarkAsAbusive(Model.MessageId, Model.ConversationId))" class="bad" onclick="return confirm('Are you sure you wish to mark this message as abusive?');">Click here to finish submitting the report.</a>
     </div>
 
 </div>

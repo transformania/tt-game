@@ -121,6 +121,18 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChangeBlacklistNote()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBlacklistNote);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChangeBlacklistNoteSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBlacklistNoteSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ViewPoll()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewPoll);
@@ -282,6 +294,8 @@ namespace TT.Web.Controllers
             public readonly string ToggleBlacklistOnPlayer = ("ToggleBlacklistOnPlayer").ToLowerInvariant();
             public readonly string MyBlacklistEntries = ("MyBlacklistEntries").ToLowerInvariant();
             public readonly string ChangeBlacklistType = ("ChangeBlacklistType").ToLowerInvariant();
+            public readonly string ChangeBlacklistNote = ("ChangeBlacklistNote").ToLowerInvariant();
+            public readonly string ChangeBlacklistNoteSend = ("ChangeBlacklistNoteSend").ToLowerInvariant();
             public readonly string ViewPolls = ("ViewPolls").ToLowerInvariant();
             public readonly string ViewPoll = ("ViewPoll").ToLowerInvariant();
             public readonly string ReplyToPoll = ("ReplyToPoll").ToLowerInvariant();
@@ -398,6 +412,23 @@ namespace TT.Web.Controllers
             public readonly string id = ("id").ToLowerInvariant();
             public readonly string playerId = ("playerId").ToLowerInvariant();
             public readonly string type = ("type").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChangeBlacklistNote s_params_ChangeBlacklistNote = new ActionParamsClass_ChangeBlacklistNote();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeBlacklistNote ChangeBlacklistNoteParams { get { return s_params_ChangeBlacklistNote; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeBlacklistNote
+        {
+            public readonly string blacklistId = ("blacklistId").ToLowerInvariant();
+            public readonly string playerId = ("playerId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChangeBlacklistNoteSend s_params_ChangeBlacklistNoteSend = new ActionParamsClass_ChangeBlacklistNoteSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeBlacklistNoteSend ChangeBlacklistNoteSendParams { get { return s_params_ChangeBlacklistNoteSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeBlacklistNoteSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ViewPoll s_params_ViewPoll = new ActionParamsClass_ViewPoll();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -595,6 +626,7 @@ namespace TT.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string AuthorArtistBio = "AuthorArtistBio";
+                public readonly string ChangeBlacklistNote = "ChangeBlacklistNote";
                 public readonly string CreateOrUpdateRPClassifiedAd = "CreateOrUpdateRPClassifiedAd";
                 public readonly string MyBaseForms = "MyBaseForms";
                 public readonly string MyBlacklistEntries = "MyBlacklistEntries";
@@ -610,6 +642,7 @@ namespace TT.Web.Controllers
                 public readonly string WriteAuthorArtistBio = "WriteAuthorArtistBio";
             }
             public readonly string AuthorArtistBio = "~/Views/Settings/AuthorArtistBio.cshtml";
+            public readonly string ChangeBlacklistNote = "~/Views/Settings/ChangeBlacklistNote.cshtml";
             public readonly string CreateOrUpdateRPClassifiedAd = "~/Views/Settings/CreateOrUpdateRPClassifiedAd.cshtml";
             public readonly string MyBaseForms = "~/Views/Settings/MyBaseForms.cshtml";
             public readonly string MyBlacklistEntries = "~/Views/Settings/MyBlacklistEntries.cshtml";
@@ -889,6 +922,31 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "type", type);
             ChangeBlacklistTypeOverride(callInfo, id, playerId, type);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeBlacklistNoteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int blacklistId, int playerId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeBlacklistNote(int blacklistId, int playerId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBlacklistNote);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "blacklistId", blacklistId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
+            ChangeBlacklistNoteOverride(callInfo, blacklistId, playerId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeBlacklistNoteSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.BlacklistEntryViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeBlacklistNoteSend(TT.Domain.ViewModels.BlacklistEntryViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBlacklistNoteSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            ChangeBlacklistNoteSendOverride(callInfo, input);
             return callInfo;
         }
 

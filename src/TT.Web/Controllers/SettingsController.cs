@@ -396,6 +396,8 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var target = PlayerProcedures.GetPlayer(id);
+            var getDate = DateTime.UtcNow;
+            var note = "Added to blacklist on " + getDate + ".";
 
             // assert that this player is not a bot
             if (target.BotId < AIStatics.ActivePlayerBotId)
@@ -413,7 +415,7 @@ namespace TT.Web.Controllers
             }
 
 
-            TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklist(me, target, type);
+            TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklist(me, target, type, note);
 
 
             return RedirectToAction(MVC.PvP.Play());
@@ -456,6 +458,71 @@ namespace TT.Web.Controllers
             TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklistType(id, type, me, target);
             return RedirectToAction(MVC.PvP.Play());
 
+        }
+
+        public virtual ActionResult ChangeBlacklistNote(int blacklistId, int playerId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var target = PlayerProcedures.GetPlayer(playerId);
+
+            if (target == null)
+            {
+                TempData["Result"] = "This is not an active player.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            IBlacklistEntryRepository blacklistRepo = new EFBlacklistEntryRepository();
+            var blacklist = blacklistRepo.BlacklistEntries.FirstOrDefault(b => b.Id == blacklistId && b.TargetMembershipId == target.MembershipId);
+
+            var output = new BlacklistEntryViewModel
+            {
+                PlayerId = playerId,
+                PlayerName = target.FirstName + " " + target.LastName,
+                MembershipId = target.MembershipId,
+                BlacklistId = blacklistId,
+                Note = blacklist.Note,
+            };
+
+
+            return View(MVC.Settings.Views.ChangeBlacklistNote, output);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult ChangeBlacklistNoteSend(BlacklistEntryViewModel input)
+        {
+
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var target = PlayerProcedures.GetPlayer(input.PlayerId);
+
+            IBlacklistEntryRepository blacklistRepo = new EFBlacklistEntryRepository();
+            var blacklist = blacklistRepo.BlacklistEntries.FirstOrDefault(b => b.Id == input.BlacklistId && b.TargetMembershipId == input.MembershipId);
+
+            if (target == null)
+            {
+                TempData["Result"] = "This is not an active player.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (blacklist == null)
+            {
+                TempData["Result"] = "There is no blacklist entry with that ID." + input.dbBlacklistEntry.Id;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(MVC.Settings.Views.ChangeBlacklistNote, input);
+            }
+
+            blacklist.Note = input.Note;
+            blacklistRepo.SaveBlacklistEntry(blacklist);
+
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have changed the blacklist note.", true);
+
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         public virtual ActionResult ViewPolls()

@@ -67,7 +67,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string TogglePlayerBlacklist(Player creator, Player receiver, int type)
+        public static string TogglePlayerBlacklist(Player creator, Player receiver, int type, string note)
         {
             IBlacklistEntryRepository repo = new EFBlacklistEntryRepository();
             var entry = repo.BlacklistEntries.FirstOrDefault(e => e.CreatorMembershipId == creator.MembershipId && e.TargetMembershipId == receiver.MembershipId);
@@ -87,7 +87,8 @@ namespace TT.Domain.Procedures
                     CreatorMembershipId = creator.MembershipId,
                     TargetMembershipId = receiver.MembershipId,
                     Timestamp = DateTime.UtcNow,
-                    BlacklistLevel = type
+                    BlacklistLevel = type,
+                    Note = note
                 };
                 repo.SaveBlacklistEntry(newentry);
 
@@ -111,7 +112,8 @@ namespace TT.Domain.Procedures
                     CreatorMembershipId = receiver.MembershipId,
                     TargetMembershipId = creator.MembershipId,
                     Timestamp = DateTime.UtcNow,
-                    BlacklistLevel = type
+                    BlacklistLevel = type,
+                    Note = note
                 };
                 repo.SaveBlacklistEntry(mirrorentry);
 

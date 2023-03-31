@@ -12,5 +12,6 @@ namespace TT.Domain.Models
         public string TargetMembershipId { get; set; }
         public DateTime Timestamp { get; set; }
         public int BlacklistLevel { get; set; } // 0 == No attacking, // 1 == No attacking or messaging
+        public string Note { get; set; }
     }
 }

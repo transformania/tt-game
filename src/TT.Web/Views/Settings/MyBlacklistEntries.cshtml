@@ -31,6 +31,8 @@
             }
 
             <br>
+            <b><a href="@Url.Action(MVC.Settings.ChangeBlacklistNote(m.dbBlacklistEntry.Id, m.PlayerId))">Note</a>:  </b> @m.dbBlacklistEntry.Note
+            <br>
             <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOrMessage"))">Set No attacking OR messaging</a>
             <br>
             <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOnly"))">Set No attacking but ALLOW messaging</a>
@@ -40,7 +42,6 @@
             {
                 <a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(m.PlayerId, 0))">Remove blacklist entry</a>
             }
-
 
         }
 

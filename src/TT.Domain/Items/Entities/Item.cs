@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Entities;
+using TT.Domain.Forms.Entities;
 using TT.Domain.Items.Commands;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
@@ -28,6 +29,7 @@ namespace TT.Domain.Items.Entities
         public ICollection<Item> Runes { get; protected set; }
         public Player SoulboundToPlayer { get; protected set; }
         public bool ConsentsToSoulbinding { get; protected set; }
+        
 
         private Item()
         {
@@ -330,6 +332,11 @@ namespace TT.Domain.Items.Entities
         public void SetSoulbindingConsent(bool isConsenting)
         {
             ConsentsToSoulbinding = isConsenting;
+        }
+
+        public void ChangeItemForm(ItemSource form)
+        {
+            ItemSource = form;
         }
 
     }

@@ -6,6 +6,7 @@
         public string Description { get; set; }
         public string PortraitUrl { get; set; }
         public string ItemType { get; set; }
+        public int Id { get; set; }
     }
 
 }

@@ -254,6 +254,192 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        public virtual ActionResult ItemCast(int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var item = ItemProcedures.GetItemViewModel(itemId);
+            var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
+            {
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is a player
+            if (itemPlayer.MembershipId == null)
+            {
+                TempData["Error"] = "You can only change items that still hold a soul.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot change an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is locked
+            if (!item.dbItem.IsPermanent)
+            {
+                TempData["Error"] = "You cannot change an item that is not locked.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item consents to soulbinding
+            if (!item.dbItem.ConsentsToSoulbinding)
+            {
+                TempData["Error"] = "You cannot change an item that has not consented to being soulbound.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is soulbound
+            if (item.dbItem.SoulboundToPlayerId == null)
+            {
+                TempData["Error"] = "You cannot change an item that is not soulbound.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is a friend
+            if (!FriendProcedures.MemberIsMyFriend(me.MembershipId, itemPlayer.MembershipId))
+            {
+                TempData["Error"] = "You should probably be on friendly terms with them first.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var model = new SelfCastViewModel
+            {
+                ItemId = itemId,
+                Skills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == itemPlayer.Mobility),
+                Item = item,
+                ItemPlayer = itemPlayer,
+                OwnerMoney = me.Money
+            };
+
+            return View(MVC.Item.Views.ItemCast, model);
+        }
+
+        public virtual ActionResult ItemCastSend(int itemId, int skillSourceId, int itemSourceId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var item = ItemProcedures.GetItemViewModel(itemId);
+            var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
+            {
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is a player
+            if (itemPlayer.MembershipId == null)
+            {
+                TempData["Error"] = "You can only change items that still hold a soul.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is locked
+            if (!item.dbItem.IsPermanent)
+            {
+                TempData["Error"] = "You cannot change an item that is not locked.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item consents to soulbinding
+            if (!item.dbItem.ConsentsToSoulbinding)
+            {
+                TempData["Error"] = "You cannot change an item that has not consented to being soulbound.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is soulbound
+            if (item.dbItem.SoulboundToPlayerId == null)
+            {
+                TempData["Error"] = "You cannot change an item that is not soulbound.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert item is a friend
+            if (!FriendProcedures.MemberIsMyFriend(me.MembershipId, itemPlayer.MembershipId))
+            {
+                TempData["Error"] = "You should probably be on friendly terms with them first.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player does own this skill
+            var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
+            if (skill == null)
+            {
+                TempData["Error"] = "You do not own this spell.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert desired form mobility matches the player item's current mobility
+            if (skill.MobilityType != itemPlayer.Mobility)
+            {
+                TempData["Error"] = "The target form must be the same as the item's form.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert form id matches skill
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            var getItem = itemRepo.DbStaticItems.FirstOrDefault(i => i.Id == itemSourceId);
+            var formItem = ItemProcedures.GetFormFromItem(getItem);
+            var form = FormStatics.GetForm(skill.StaticSkill.FormSourceId.Value);
+
+            // assert form id matches skill
+            if (formItem == null)
+            {
+                TempData["Error"] = "There seems to be something wrong with that form!";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert form names match
+            if (formItem.FriendlyName != form.FriendlyName)
+            {
+                TempData["Error"] = "Those forms don't seem to match.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player is not already in the form of the spell
+            if (itemPlayer.FormSourceId == skill.StaticSkill.FormSourceId)
+            {
+                TempData["Error"] = "Your item is already in the target form of that spell, so doing this would do you no good.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has enough ARP
+            var cost = item.dbItem.Level * 1000;
+            if (me.Money < cost)
+            {
+                TempData["Error"] = "You don't have enough arpeyjis to pay for a reshape!";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            DomainRegistry.Repository.Execute(new SoulbindChangeForm
+            {
+                PlayerId = itemPlayer.Id,
+                FormSourceId = skill.StaticSkill.FormSourceId.Value,
+                ItemId = itemId,
+                ItemSource = itemSourceId,
+                OwnerId = me.Id
+            });
+
+            var message = "You reshape your item, " + itemPlayer.FirstName + " " + itemPlayer.LastName + ", instantly transforming them into a " + form.FriendlyName + "!";
+            TempData["Result"] = message;
+            PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+            PlayerLogProcedures.AddPlayerLog(itemPlayer.Id, "You can feel your form beginning to change as it is instantly transformed into a " + form.FriendlyName + "!", true);
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
         public virtual ActionResult RemoveCurse(int itemId)
         {
             var myMembershipId = User.Identity.GetUserId();

@@ -49,7 +49,8 @@ namespace TT.Domain.Procedures
                                                              LastSouledTimestamp = item.LastSouledTimestamp,
                                                              EmbeddedOnItemId = item.EmbeddedOnItemId,
                                                              SoulboundToPlayerId = item.SoulboundToPlayerId,
-                                                             FormerPlayerId = item.FormerPlayerId
+                                                             FormerPlayerId = item.FormerPlayerId,
+                                                             ConsentsToSoulbinding = item.ConsentsToSoulbinding
                                                           },
 
 
@@ -150,7 +151,9 @@ namespace TT.Domain.Procedures
                                                          TurnsUntilUse = item.TurnsUntilUse,
                                                          LastSouledTimestamp = item.LastSouledTimestamp,
                                                          SoulboundToPlayerId = item.SoulboundToPlayerId,
-                                                         FormerPlayerId = item.FormerPlayerId
+                                                         FormerPlayerId = item.FormerPlayerId,
+                                                         ConsentsToSoulbinding = item.ConsentsToSoulbinding,
+
                                                      },
 
 
@@ -1258,6 +1261,7 @@ namespace TT.Domain.Procedures
             }
         }
 
+
         /// <summary>
         /// Get the amount of XP required for an item or pet to reach the next level
         /// </summary>
@@ -1281,6 +1285,14 @@ namespace TT.Domain.Procedures
             }
 
             return xp;
+        }
+
+        public static void InstantChangeToItem(int id, int itemSourceId)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            var item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+            item.ItemSourceId = itemSourceId;
+            itemRepo.SaveItem(item);
         }
 
     }

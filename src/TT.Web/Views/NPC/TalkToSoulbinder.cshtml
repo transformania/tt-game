@@ -39,8 +39,8 @@
                             <th>Victim Name</th>
                             <th>Item Name</th>
                             <th>Level</th>
-                            <th></th>
-                            <th></th>
+                            <th>Portrait</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +52,7 @@
                                     <td>@item.ItemSource.FriendlyName @Html.Partial(MVC.Item.Views.partial.RuneDetails, item)</td>
                                     <td>@item.Level</td>
                                     <td><img src="@HtmlHelpers.GetImageUrl(item.ItemSource.PortraitUrl, item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? PvPStatics.MobilityPet : PvPStatics.MobilityInanimate, true)" width="100px" height="100px" style="border: 1px solid black;"></td>
-                                    <td><a href="@Url.Action(MVC.NPC.SoulboundRename(item.FormerPlayer.Id))">Rename</a></td>
+                                    <td><a href="@Url.Action(MVC.NPC.SoulboundRename(item.FormerPlayer.Id))">Rename</a><br /><a href="@Url.Action(MVC.Item.ItemCast(item.Id))">Reshape</a></td>
                                 </tr>
                             }
                         }

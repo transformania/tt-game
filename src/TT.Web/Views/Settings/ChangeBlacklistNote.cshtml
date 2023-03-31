@@ -1,0 +1,32 @@
+﻿@model TT.Domain.ViewModels.BlacklistEntryViewModel
+
+<a href="@Url.Action(MVC.PvP.Play())">Back to game</a> |
+<a href="@Url.Action(MVC.Settings.Settings())">Back to Settings</a> |
+<a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">Back to Blacklist Entries</a>
+
+@using (Html.BeginForm(MVC.Settings.ChangeBlacklistNoteSend(), FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.BlacklistId)
+    @Html.HiddenFor(m => m.PlayerId)
+    @Html.HiddenFor(m => m.MembershipId)
+
+    <p>
+        <span>Note:</span>
+        @Html.TextBoxFor(m => m.Note)
+        <b>@Html.ValidationMessageFor(m => m.Note)</b>
+    </p>
+
+    <input type="submit" value="Send">
+}
+
+@section head
+{
+    <style>
+        input, textarea {
+            width: 100%;
+            border: 1px solid gray;
+        }
+    </style>
+}

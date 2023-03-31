@@ -418,6 +418,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_100.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_101.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_102.cshtml" />
+    <Content Include="Views\Settings\ChangeBlacklistNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>TT.Domain</AssemblyTitle>
@@ -10,11 +10,6 @@
   <ItemGroup>
     <EmbeddedResource Include="XMLs/**/*.txt" />
     <EmbeddedResource Include="XMLs/**/*.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="XMLs\LocationDescriptions\ranch_orchard.xml" />
-    <None Remove="XMLs\LocationDescriptions\ranch_riding.xml" />
-    <None Remove="XMLs\LocationDescriptions\ranch_silo.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.1" />

@@ -313,7 +313,7 @@ namespace TT.Domain.Players.Entities
 
             //  Increase the rate of cleansing outside of combat
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            if (lastAttackTimeAgo > 2 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
                 outOfCombat = true;
             }
@@ -364,7 +364,7 @@ namespace TT.Domain.Players.Entities
 
             //  Increase the rate of meditation outside of combat
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            if (lastAttackTimeAgo > 2 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
                 outOfCombat = true;
             }
@@ -408,7 +408,7 @@ namespace TT.Domain.Players.Entities
 
             //  Increase the rate of TFE cleansing outside of combat
             var lastAttackTimeAgo = Math.Abs(Math.Floor(GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo > 3 * TurnTimesStatics.GetTurnLengthInSeconds())
+            if (lastAttackTimeAgo > 2 * TurnTimesStatics.GetTurnLengthInSeconds())
             {
                 cleansePercentage = (cleansePercentage * 5);
             }

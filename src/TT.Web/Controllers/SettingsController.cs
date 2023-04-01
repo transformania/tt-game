@@ -520,7 +520,7 @@ namespace TT.Web.Controllers
             blacklist.Note = input.Note;
             blacklistRepo.SaveBlacklistEntry(blacklist);
 
-            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have changed the blacklist note.", true);
+            PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have updated the blacklist note.</b>", true);
 
             return RedirectToAction(MVC.PvP.Play());
         }

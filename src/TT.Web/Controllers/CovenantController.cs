@@ -107,8 +107,8 @@ namespace TT.Web.Controllers
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
-                TempData["Error"] = "You are not authorized to change the notice.";
-                TempData["SubError"] = "Only covenant leaders and captains can change a covenant's noticeboard.";
+                TempData["Error"] = "You are not authorized to review applications.";
+                TempData["SubError"] = "Only covenant leaders and captains can accept or reject applications";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
@@ -132,8 +132,8 @@ namespace TT.Web.Controllers
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
-                TempData["Error"] = "You are not authorized to change the notice.";
-                TempData["SubError"] = "Only covenant leaders and captains can change a covenant's noticeboard.";
+                TempData["Error"] = "You are not authorized to review applications.";
+                TempData["SubError"] = "Only covenant leaders and captains can accept or reject applications";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

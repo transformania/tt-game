@@ -92,7 +92,7 @@ namespace TT.Domain.Items.Commands
                         throw new DomainException($"ItemSource with id '{ItemSource}' could not be found");
                 }
 
-                var price = item.Level * 1000;
+                var price = item.Level * 250;
                 if (owner.Money < price)
                     throw new DomainException($"You cannot afford this.  You need <b>{price}</b> Arpeyjis and only have <b>{Math.Floor(owner.Money)}</b>.");
 

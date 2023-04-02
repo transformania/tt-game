@@ -1,0 +1,53 @@
+﻿@model TT.Web.ViewModels.SetNicknameViewModel
+
+<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
+
+<div class="center-block">
+    @using (Html.BeginForm(MVC.Item.SetNameSend(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ItemId)
+
+        <h3>A new you is just around the corner!</h3>
+
+        <p class="well well-lg center-block" style="width:50%">Continuing with this <b>Classic Me! Rejuvenative Lotion</b> will make a brand new you! Leave your troubles and worries behind you with a new life, a new you!</p>
+        <p class="alert-warning center-block small" style="width:25%">Continued exposure to this lotion may have unintended side-effects. Continue at your own caution.</p>
+        <br>
+        <b>First and last names must be 30 characters or less.</b>
+        <br>
+        if (!Model.HasSelfRenamed)
+        {
+            <p>
+                <span>First Name:</span>
+                @Html.TextBoxFor(m => m.OriginalFirstName)
+                <br>
+                <span>Last Name:</span>
+                @Html.TextBoxFor(m => m.OriginalLastName)
+                <br>
+                <span>Personality:</span>
+                @Html.EnumDropDownListFor(m => m.Personalities)
+            </p>
+            <br>
+        }
+        else
+        {
+            <p>
+                <span>First Name:</span>
+                @Model.OriginalFirstName
+                <br>
+                <span>Last Name:</span>
+                @Model.OriginalLastName
+                <br>
+                <span>Personality:</span>
+                @Html.EnumDropDownListFor(m => m.Personalities)
+
+            </p>
+            <br>
+            <i class="text-danger small">You can't seem to settle on a name for yourself. Are you sure you want to continue?</i>
+            <br>
+        }
+        <br>
+        <input class="btn btn-primary" type="submit" value="Use Classic Me!">
+    }
+</div>
+<br>

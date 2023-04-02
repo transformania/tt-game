@@ -85,6 +85,18 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetName()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetName);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetNameSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetNameSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult RemoveCurse()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveCurse);
@@ -152,6 +164,8 @@ namespace TT.Web.Controllers
             public readonly string SelfCastSend = ("SelfCastSend").ToLowerInvariant();
             public readonly string ItemCast = ("ItemCast").ToLowerInvariant();
             public readonly string ItemCastSend = ("ItemCastSend").ToLowerInvariant();
+            public readonly string SetName = ("SetName").ToLowerInvariant();
+            public readonly string SetNameSend = ("SetNameSend").ToLowerInvariant();
             public readonly string RemoveCurse = ("RemoveCurse").ToLowerInvariant();
             public readonly string RemoveCurseSend = ("RemoveCurseSend").ToLowerInvariant();
             public readonly string ReadSkillBook = ("ReadSkillBook").ToLowerInvariant();
@@ -200,6 +214,22 @@ namespace TT.Web.Controllers
             public readonly string itemId = ("itemId").ToLowerInvariant();
             public readonly string skillSourceId = ("skillSourceId").ToLowerInvariant();
             public readonly string itemSourceId = ("itemSourceId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SetName s_params_SetName = new ActionParamsClass_SetName();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetName SetNameParams { get { return s_params_SetName; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetName
+        {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SetNameSend s_params_SetNameSend = new ActionParamsClass_SetNameSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetNameSend SetNameSendParams { get { return s_params_SetNameSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetNameSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
         }
         static readonly ActionParamsClass_RemoveCurse s_params_RemoveCurse = new ActionParamsClass_RemoveCurse();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -281,6 +311,7 @@ namespace TT.Web.Controllers
                 public readonly string ItemCast = "ItemCast";
                 public readonly string RemoveCurse = "RemoveCurse";
                 public readonly string SelfCast = "SelfCast";
+                public readonly string SetName = "SetName";
                 public readonly string ShowStatsTable = "ShowStatsTable";
                 public readonly string SkillBook = "SkillBook";
                 public readonly string UnembedRunesList = "UnembedRunesList";
@@ -289,6 +320,7 @@ namespace TT.Web.Controllers
             public readonly string ItemCast = "~/Views/Item/ItemCast.cshtml";
             public readonly string RemoveCurse = "~/Views/Item/RemoveCurse.cshtml";
             public readonly string SelfCast = "~/Views/Item/SelfCast.cshtml";
+            public readonly string SetName = "~/Views/Item/SetName.cshtml";
             public readonly string ShowStatsTable = "~/Views/Item/ShowStatsTable.cshtml";
             public readonly string SkillBook = "~/Views/Item/SkillBook.cshtml";
             public readonly string UnembedRunesList = "~/Views/Item/UnembedRunesList.cshtml";
@@ -378,6 +410,30 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skillSourceId", skillSourceId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemSourceId", itemSourceId);
             ItemCastSendOverride(callInfo, itemId, skillSourceId, itemSourceId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetName(int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            SetNameOverride(callInfo, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetNameSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Web.ViewModels.SetNicknameViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetNameSend(TT.Web.ViewModels.SetNicknameViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetNameSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            SetNameSendOverride(callInfo, input);
             return callInfo;
         }
 

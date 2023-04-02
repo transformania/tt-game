@@ -81,7 +81,6 @@ namespace TT.Domain.Procedures
                                                               InQuestState = player.InQuestState,
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
-
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -807,6 +806,51 @@ namespace TT.Domain.Procedures
 
             message = "";
             return true;
+        }
+
+        public static bool CheckHasSelfRenamed(Player me)
+        {
+            // assert player has not changed their name
+            if (me.HasSelfRenamed)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void SetOriginalNameAndBase(string OriginalFirstName, string OriginalLastName, string membershipId, int formSourceId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
+
+            if (OriginalFirstName != null && OriginalFirstName.Length > 0)
+            {
+                player.OriginalFirstName = OriginalFirstName;
+                player.FirstName = OriginalFirstName;
+            }
+            else
+            {
+                player.OriginalFirstName = "Juderp";
+                player.FirstName = "Juderp";
+            }
+
+            if (OriginalLastName != null && OriginalLastName.Length > 0)
+            {
+                player.OriginalLastName = OriginalLastName;
+                player.LastName = OriginalLastName;
+            }
+            else
+            {
+                player.OriginalLastName = "Juderp";
+                player.LastName = "Juderp";
+            }
+
+            player.HasSelfRenamed = true;
+            player.OriginalFormSourceId = formSourceId;
+            player.FormSourceId = formSourceId;
+
+            playerRepo.SavePlayer(player);
         }
 
         public static void InstantRestoreToBase(Player player, bool restoreForm = true, bool restoreName = false)

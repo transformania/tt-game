@@ -6,6 +6,7 @@
 
 @section menu
 {
+<div class="list-inline navbar-text">
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View all Covenants</a></li>
     @{
@@ -31,6 +32,7 @@
         if (Model.dbCovenant != null && (TT.Domain.Procedures.CovenantProcedures.PlayerIsCaptain(Model.dbCovenant, ViewBag.Player)|| ViewBag.Player.Id == Model.dbCovenant.LeaderId))
         {
             <li><a href="@Url.Action(MVC.Covenant.ChangeNoticeboardMessage())">Update notice</a></li>
+            <li><a href="@Url.Action(MVC.Covenant.ReviewMyCovenantApplications())">View Applications</a></li>
         }
 
         <li><a href="@Url.Action(MVC.Covenant.MyCovenantLog())">Coven Log</a></li>
@@ -40,6 +42,7 @@
             <li><a href="@Url.Action(MVC.Chat.ChatLog($"coven_{Model.dbCovenant.Id}", "lasth"))" target="_blank">Moderate Chat</a></li>
         }
     }
+</div>
 }
 
 <div class="containerInner text-center">

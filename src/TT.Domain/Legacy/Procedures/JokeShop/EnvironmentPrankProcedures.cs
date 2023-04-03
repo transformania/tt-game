@@ -663,7 +663,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                          p.BotId == AIStatics.MinibossArchdemonId ||
                                                          p.BotId == AIStatics.MinibossDungeonSlimeId ||
                                                          p.BotId == AIStatics.MinibossPlushDemonId ||
-                                                         p.BotId == AIStatics.MinibossFiendishFarmhandId ||
                                                          p.BotId == AIStatics.MinibossExchangeProfessorId ||
                                                          p.BotId == AIStatics.MinibossFiendishFarmhandId ||
                                                          p.BotId == AIStatics.MinibossGroundskeeperId ||

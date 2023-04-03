@@ -235,7 +235,19 @@ namespace TT.Domain.Procedures
             };
             covAppRepo.SaveCovenantApplication(saveMe);
             var message = "<b><span style='color: #003300;'>" + applicant.FirstName + " " + applicant.LastName + " has applied to your covenant, " + covenant.Name + ".</span></b>";
-            PlayerLogProcedures.AddPlayerLog(covenant.LeaderId, message , true);
+
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            var CovCaptains = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id).Captains.TrimEnd(';');
+            var captains = CovCaptains.Split(';');
+
+            // Send message to coven leader
+            PlayerLogProcedures.AddPlayerLog(covenant.LeaderId, message, true);
+
+            // Send messcage to each captain
+            for (var i = 0; i < captains.Length; i++)
+            {
+                PlayerLogProcedures.AddPlayerLog(Int32.Parse(captains[i]), message, true);               
+            }
         }
 
         public static string RevokeApplication(Player player)

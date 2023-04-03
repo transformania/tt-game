@@ -842,7 +842,7 @@ namespace TT.Web.Controllers
             var skill = SkillProcedures.GetSkillViewModel(skillSourceId, me.Id);
             
             ISkillRepository skillRepo = new EFSkillRepository();
-            var countBookmark = skillRepo.Skills.Count(s => s.Bookmarked);
+            var countBookmark = skillRepo.Skills.Where(s => s.OwnerId == me.Id).Count(s => s.Bookmarked);
 
             if (skill == null)
             {

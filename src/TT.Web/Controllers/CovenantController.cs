@@ -103,12 +103,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            // assert that the player is a covenant leader
+            // assert that the player is a covenant leader or captain
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
-            if (myCov.LeaderId != me.Id)
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
-                TempData["Error"] = "You are not the leader of this covenant.";
-                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                TempData["Error"] = "You are not authorized to review applications.";
+                TempData["SubError"] = "Only covenant leaders and captains can accept or reject applications";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
@@ -128,12 +128,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            // assert that the player is a covenant leader
+            // assert that the player is a covenant leader or captain
             var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
-            if (myCov.LeaderId != me.Id)
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
-                TempData["Error"] = "You are not the leader of this covenant.";
-                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                TempData["Error"] = "You are not authorized to review applications.";
+                TempData["SubError"] = "Only covenant leaders and captains can accept or reject applications";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 

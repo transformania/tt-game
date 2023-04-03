@@ -465,11 +465,37 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            var fnamecheck = TrustStatics.NameIsReserved(input.OriginalFirstName);
+            if (!fnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("OriginalFirstName", "You can't use the first name '" + input.OriginalFirstName + "'.  It is reserved or else not allowed.");
+            }
+
+            // assert that the last name is not reserved by the system
+            var lnamecheck = TrustStatics.NameIsReserved(input.OriginalLastName);
+            if (!lnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("OriginalLastName", "You can't use the last name '" + input.OriginalLastName + "'.  It is reserved or else not allowed.");
+            }
+
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+            var resName = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == input.OriginalFirstName + " " + input.OriginalLastName);
+
+            if (resName != null && resName.MembershipId != me.MembershipId)
+            {
+                ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
+            }
+
             IItemRepository itemRepo = new EFItemRepository();
             var itemPlus = ItemProcedures.GetItemViewModel(input.ItemId);
 
             Random rand = new Random();
             var randomForm = Array.Empty<int>();
+
+            if (!ModelState.IsValid)
+            {
+                return View(MVC.Item.Views.SetName, input);
+            }
 
             if (input.Personalities == null)
             {
@@ -534,6 +560,9 @@ namespace TT.Web.Controllers
                 case "TREES":
                     randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.TREES).ToArray();
                     break;
+                default:
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
+                    break;
             }
 
             var formSourceId = randomForm[rand.Next(randomForm.Count())];
@@ -545,6 +574,7 @@ namespace TT.Web.Controllers
 
                 PlayerProcedures.SetOriginalNameAndBase(input.OriginalFirstName, input.OriginalLastName, myMembershipId, formSourceId);
                 TFEnergyProcedures.CleanseTFEnergies(me, 25);
+                PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                 
                 itemRepo.DeleteItem(input.ItemId);
@@ -577,6 +607,7 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.SetOriginalNameAndBase(input.OriginalFirstName, input.OriginalLastName, myMembershipId, formSourceId);
             TFEnergyProcedures.CleanseTFEnergies(me, 25);
+            PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
             LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
             itemRepo.DeleteItem(input.ItemId);
 

@@ -7,6 +7,7 @@
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.ItemId)
+        @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
 
         <h3>A new you is just around the corner!</h3>
 
@@ -21,8 +22,12 @@
                 <span>First Name:</span>
                 @Html.TextBoxFor(m => m.OriginalFirstName)
                 <br>
+                <b>@Html.ValidationMessageFor(m => m.OriginalFirstName)</b>
+                <br>
                 <span>Last Name:</span>
                 @Html.TextBoxFor(m => m.OriginalLastName)
+                <br>
+                <b>@Html.ValidationMessageFor(m => m.OriginalLastName)</b>
                 <br>
                 <span>Personality:</span>
                 @Html.EnumDropDownListFor(m => m.Personalities)

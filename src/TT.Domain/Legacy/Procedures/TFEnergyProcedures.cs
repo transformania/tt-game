@@ -469,12 +469,12 @@ namespace TT.Domain.Procedures
                 FormSourceId = targetForm.Id
             });
 
-            if (targetForm.MobilityType == PvPStatics.MobilityInanimate && (victim.BotId != AIStatics.MinibossPlushAngelId || victim.BotId != AIStatics.MinibossPlushDemonId)) //No reward for monsters that hurt an innocent little plush friend. :(
+            if (targetForm.MobilityType == PvPStatics.MobilityInanimate && !(victim.BotId == AIStatics.MinibossPlushAngelId || victim.BotId == AIStatics.MinibossPlushDemonId)) //No reward for monsters that hurt an innocent little plush friend. :(
             {
                 StatsProcedures.AddStat(victim.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1);
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1);
             }
-            else if (targetForm.MobilityType == PvPStatics.MobilityPet && (victim.BotId != AIStatics.MinibossPlushAngelId || victim.BotId != AIStatics.MinibossPlushDemonId)) //No reward for monsters that hurt an innocent little plush friend. :(
+            else if (targetForm.MobilityType == PvPStatics.MobilityPet && !(victim.BotId == AIStatics.MinibossPlushAngelId || victim.BotId == AIStatics.MinibossPlushDemonId)) //No reward for monsters that hurt an innocent little plush friend. :(
             {
                 StatsProcedures.AddStat(victim.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1);
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1);

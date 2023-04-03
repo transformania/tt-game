@@ -207,6 +207,13 @@ namespace TT.Domain.Procedures
             return output;
         }
 
+        public static DbStaticForm GetDbStaticForm(int formSourceId)
+        {
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            var form = formRepo.DbStaticForms.Where(f => f.Id == formSourceId).FirstOrDefault();
+            return form;
+        }
+
         public static string GiveAllSkillsToPlayer(int playerId, string mobility)
         {
             var skillList = Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = mobility, playerId = playerId });

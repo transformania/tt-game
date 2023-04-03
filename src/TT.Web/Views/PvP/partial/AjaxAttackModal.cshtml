@@ -43,9 +43,17 @@
     {
 
 
-        <span>
-            <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.SkillSourceId.Value))" class="@HtmlHelpers.GetSpellTypeClass(s)">@s.StaticSkill.FriendlyName</a>
-        </span>
+<span>
+    @if (s.MobilityType == "weaken" || s.MobilityType == "curse" || s.MobilityType == "mindcontrol")
+    {
+    <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.SkillSourceId.Value))" class="@HtmlHelpers.GetSpellTypeClass(s)">@s.StaticSkill.FriendlyName</a>
+    }
+    else
+    {
+    <a href="@Url.Action(MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.SkillSourceId.Value))" name="@SkillProcedures.GetDbStaticForm(s.StaticSkill.FormSourceId.Value).FriendlyName" class="@HtmlHelpers.GetSpellTypeClass(s)">@s.StaticSkill.FriendlyName</a>
+    }
+
+</span>
 
     }
 
@@ -146,6 +154,7 @@
         }
         $('.action_attack').hide();
         $('.action_attack:contains(' + $("#attack-search-box").val() + ')').show();
+        $('.action_attack[name*=' + $("#attack-search-box").val() + ']').show();
     }
 
     $('#attack-spell-count').on('input', function () {

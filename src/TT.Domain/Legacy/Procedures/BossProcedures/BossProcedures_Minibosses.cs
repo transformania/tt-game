@@ -186,7 +186,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Lazy_Lifeguard_Judoo",
                     Title = "Lifeguard",
                     Region = "pool",
-                    Spells = new List<int> { 678, 679, 974, 994, 458, 1290, 1432, 510, 1044, 1126, 455, 589 }, // There are a lot of pool-related forms. Twelve should be enough.
+                    Spells = new List<int> { 458, 974, 678, 1126, 510, 1044, 994, 1290, 455, 1432, 589, 679 }, // There are a lot of pool-related forms. Twelve should be enough.
                     BotId = AIStatics.MinibossLazyLifeguardId,
                     RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE
                 }

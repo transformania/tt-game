@@ -150,7 +150,7 @@ namespace TT.Web.Controllers
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
             TempData["Result"] = "You have purchased a " + purchased.ItemSource.FriendlyName + " from Lindella.";
-            return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
+            return RedirectToAction(MVC.NPC.TradeWithMerchant(purchased.ItemSource.ItemType));
         }
 
         public virtual ActionResult SellList()
@@ -208,7 +208,7 @@ namespace TT.Web.Controllers
             if (itemBeingSold.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Lindella does not purchase or sell pets or animals.";
-                return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.NPC.SellList());
             }
 
             // assert that the item is either permanent or consumable
@@ -217,14 +217,14 @@ namespace TT.Web.Controllers
                 itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Rune)
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
-                return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.NPC.SellList());
             }
 
             // assert item is not soulbound
             if (itemBeingSold.SoulboundToPlayer != null)
             {
-                TempData["Error"] = "You can't sell Lindella any soulbould items.";
-                return RedirectToAction(MVC.PvP.Play());
+                TempData["Error"] = "You can't sell Lindella any soulbound items.";
+                return RedirectToAction(MVC.NPC.SellList());
             }
 
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
@@ -235,7 +235,7 @@ namespace TT.Web.Controllers
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost);
 
             TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Lindella for {cost:0} Arpeyjis.";
-            return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
+            return RedirectToAction(MVC.NPC.SellList());
         }
 
         public virtual ActionResult TradeWithPetMerchant(int offset = 0)
@@ -429,7 +429,7 @@ namespace TT.Web.Controllers
             // assert that player does own this
             if (itemBeingSold.Owner.Id != me.Id)
             {
-                TempData["Error"] = "You do not own this item.";
+                TempData["Error"] = "You do not own this pet.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -437,21 +437,21 @@ namespace TT.Web.Controllers
             if (itemBeingSold.ItemSource.ItemType != PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Wüffie only buys and sells pets.";
-                return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.NPC.SellPetList());
             }
 
             // assert that the item is permanent
             if (!itemBeingSold.IsPermanent)
             {
                 TempData["Error"] = "Unfortunately Wüffie will not purchase pets that may later struggle free anymore.";
-                return RedirectToAction(MVC.PvP.Play());
+                return RedirectToAction(MVC.NPC.SellPetList());
             }
 
             // assert pet is not soulbound
             if (itemBeingSold.SoulboundToPlayer != null)
             {
-                TempData["Error"] = "You can't sell Wüffie any soulbould pets.";
-                return RedirectToAction(MVC.PvP.Play());
+                TempData["Error"] = "You can't sell Wüffie any soulbound pets.";
+                return RedirectToAction(MVC.NPC.SellPetList());
             }
 
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
@@ -469,7 +469,7 @@ namespace TT.Web.Controllers
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)-cost);
 
             TempData["Result"] = $"You sold your {itemBeingSold.ItemSource.FriendlyName} to Wüffie for {cost:0} Arpeyjis.";
-            return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
+            return RedirectToAction(MVC.NPC.SellPetList());
         }
 
         public virtual ActionResult MoveVictimSend(int id, string to)
@@ -1284,9 +1284,8 @@ namespace TT.Web.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
             SkillProcedures.AddDiscoverableSpellStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned);
-
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.StaticSkill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
-            return RedirectToAction(MVC.NPC.TalkToLorekeeper());
+            return RedirectToAction(MVC.NPC.LorekeeperLearnSpell(spellViewModel.MobilityType));
         }
 
         public virtual ActionResult TalkToValentine(string question)

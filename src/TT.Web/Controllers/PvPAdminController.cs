@@ -778,6 +778,7 @@ namespace TT.Web.Controllers
             ProofreadCopy.Luck = OldCopy.Luck;
 
             ProofreadCopy.ImageURL = OldCopy.ImageURL;
+            ProofreadCopy.AllowedEditor = OldCopy.AllowedEditor;
 
             // ------------------ ORIGINAL COPY ------------------------------
 

@@ -103,18 +103,23 @@ namespace TT.Web.Controllers
 
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
+            IEnumerable<Contribution> editorContributions = contributionRepo.Contributions.Where(c => c.AllowedEditor.Contains(currentUserId));
+
             Contribution contribution;
 
             if (Id != -1)
             {
                 // contribution = myContributions.FirstOrDefault(c => c.Id == Id);
                 contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id);
+
                 if (contribution != null)
                 {
                     ViewBag.Result = "Load successful.";
 
+                    var iAmEditor = contribution.AllowedEditor.Contains(currentUserId);
+
                     // assert player owns this
-                    if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader)
+                    if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader && !iAmEditor)
                     {
                         TempData["Error"] = "This contribution does not belong to your account.";
                         return RedirectToAction(MVC.PvP.Play());
@@ -160,7 +165,7 @@ namespace TT.Web.Controllers
 
             ViewBag.Result = TempData["Result"];
 
-            ViewBag.OtherContributions = myContributions;
+            ViewBag.OtherContributions = myContributions.Concat(editorContributions);
 
             var bbox = new BalanceBox();
             bbox.LoadBalanceBox(contribution);
@@ -261,8 +266,9 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmEditor = contribution.AllowedEditor.Contains(User.Identity.GetUserId());
 
-            if (!iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
+            if (!iAmEditor && !iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -279,8 +285,9 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            var iAmEditor = SaveMe.AllowedEditor.Contains(User.Identity.GetUserId());
 
-            if (!iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
+            if (!iAmEditor && !iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -480,7 +487,7 @@ namespace TT.Web.Controllers
 
             if (input.Id != -1)
             {
-
+                var iAmEditor = SaveMe.AllowedEditor.Contains(User.Identity.GetUserId());
                 // submitter is original author, ID stays the same and do NOT mark as proofreading version
                 if (SaveMe != null && SaveMe.OwnerMembershipId == myMembershipId)
                 {
@@ -491,7 +498,8 @@ namespace TT.Web.Controllers
                 else if (SaveMe != null && SaveMe.OwnerMembershipId != myMembershipId)
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
-                    if (SaveMe.ProofreadingCopy && iAmProofreader)
+                    // editors for not have to use only proofreader copy
+                    if (iAmEditor || (SaveMe.ProofreadingCopy && iAmProofreader))
                     {
                         SaveMe.Id = input.Id;
                         //SaveMe.ProofreadingCopy = true;
@@ -626,14 +634,15 @@ namespace TT.Web.Controllers
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (!iAmProofreader)
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            var iAmEditor = contribution.AllowedEditor.Contains(User.Identity.GetUserId());
+
+            if (!iAmProofreader && !iAmEditor)
             {
                 TempData["Error"] = "You must be a proofreader in order to do this.";
                 return RedirectToAction(MVC.PvP.Play());
             }
-
-            IContributionRepository contributionRepo = new EFContributionRepository();
-            var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
             if (!contribution.ProofreadingCopy)
             {
@@ -1639,7 +1648,75 @@ namespace TT.Web.Controllers
             return View(MVC.Contribution.Views.GetContributionTable, output);
         }
 
+        public virtual JsonResult AddEditor(int id, string name)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            
+            var player = PlayerProcedures.GetPlayerWithExactName(name);
+            var playerMembershipIdString = player.MembershipId + ";";
 
+            IContributionRepository contributionRepository = new EFContributionRepository();
+            var contribution = contributionRepository.Contributions.FirstOrDefault(i => i.Id == id);
 
+            // assert contribution is owned by player
+            if (contribution.OwnerMembershipId != myMembershipId)
+            {
+                return Json("You do not own this contribution.", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert player exists
+            if (player == null)
+            {
+                return Json("Could not find " + name + ".", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert submitted name does not belong to contribution owner
+            if (player.MembershipId == myMembershipId)
+            {
+                return Json("You can already edit your own contribution.", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert id is something to work with
+            if (id < 0)
+            {
+                return Json("Please use a valid contribution ID.", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert a name is available
+            if (name == null)
+            {
+                return Json("A name is required.", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert contribution exists
+            if (contribution == null)
+            {
+                return Json("Could not find contirbution with ID " + id + ".", JsonRequestBehavior.AllowGet);
+            }
+
+            // prevent null exceptions from empty strings
+            if (contribution.AllowedEditor == null)
+            {
+                contribution.AllowedEditor = "";
+                contributionRepository.SaveContribution(contribution);
+            }
+
+            var isEditor = contribution.AllowedEditor.Contains(playerMembershipIdString);
+
+            // remove as editor if currently available
+            if (isEditor)
+            {
+                contribution.AllowedEditor = contribution.AllowedEditor.Replace(playerMembershipIdString, "");
+                contribution.History += "Removed " + name + "as editor by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
+                contributionRepository.SaveContribution(contribution);
+                return Json("Removed " + name + " as an editor.", JsonRequestBehavior.AllowGet);
+            }
+
+            // if all checks pass, add player as editor
+            contribution.AllowedEditor += playerMembershipIdString;
+            contribution.History += "Added " + name + "as editor by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
+            contributionRepository.SaveContribution(contribution);
+            return Json("Added " + name + " as an editor.", JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model TT.Domain.Models.Contribution
 @using TT.Domain.Statics
 @using TT.Domain.Models
+@using TT.Domain.Procedures
 
 @section menu
 {
@@ -118,7 +119,7 @@
                     </tr>
                 </thead>
             </table>
-        }
+            }
         }
 
         <h1>Would you like to contribute to the Game?</h1>
@@ -156,9 +157,32 @@
             {
                 <a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a>
             }
+
+            if (Model.Id > 0)
+            {
+                <div>
+                    <h3>Contribution Editors</h3>
+                    <p>Here, you can add an editor to this contribution. Editors can edit the spell just like you, so this should be used with caution! There is no limit to what they can do with this feature. Only a contributor's owner can add or remove an editor. To add or remove an editor, you can type their full character name below and click 'add.' Please note that to add or remove an editor, they must have a current character.</p>
+                    Add Editor: <input id="lookupName" type="text" placeholder="Enter Player Name"> <button class="btn" onclick="lookup()">Add</button>
+                    <br>
+                    <b id="answer"></b>
+                    <br>
+                    Current Editors: 
+                    @{ 
+                        var editorList = Model.AllowedEditor.TrimEnd(';').Split(';');
+
+                        for(var e = 0; e < editorList.Length; e++)
+                        {
+                            if(PlayerProcedures.GetPlayerFromMembership(editorList[e]) != null)
+                            { 
+                                <br><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(editorList[e]))">- @PlayerProcedures.GetPlayerFromMembership(editorList[e]).FirstName @PlayerProcedures.GetPlayerFromMembership(editorList[e]).LastName</a>
+                            }
+                        }
+                    }
+                   
+                </div>
+            }
         }
-
-
 
         @using (Html.BeginForm(MVC.Contribution.SendContribution(), FormMethod.Post))
         {
@@ -886,6 +910,22 @@
 
             $("#Form_Description").attr("placeholder", "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.");
 
+            }
+
+        $.getScript("@Links.lib.clipboard_js.clipboard_js_")
+            .done(function () {
+                new ClipboardJS('.copyable');
+            })
+            .fail(function () {
+                alert("Failed to load clipboard.");
+            });
+
+        function lookup() {
+            $.ajax({
+                url: "/contribution/AddEditor?id=" + @Model.Id + "&name=" + $("#lookupName").val(),
+            }).done(function (data) {
+                $("#answer").html(data);
+            });
         }
         </script>
     }

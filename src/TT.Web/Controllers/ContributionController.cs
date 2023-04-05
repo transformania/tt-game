@@ -1651,23 +1651,33 @@ namespace TT.Web.Controllers
         public virtual JsonResult AddEditor(int id, string name)
         {
             var myMembershipId = User.Identity.GetUserId();
-            
+
+            // trim whitespace from start and end to assist with copy-paste
+            name = name.Trim();
+
             var player = PlayerProcedures.GetPlayerWithExactName(name);
-            var playerMembershipIdString = player.MembershipId + ";";
-
-            IContributionRepository contributionRepository = new EFContributionRepository();
-            var contribution = contributionRepository.Contributions.FirstOrDefault(i => i.Id == id);
-
-            // assert contribution is owned by player
-            if (contribution.OwnerMembershipId != myMembershipId)
-            {
-                return Json("You do not own this contribution.", JsonRequestBehavior.AllowGet);
-            }
 
             // assert player exists
             if (player == null)
             {
                 return Json("Could not find " + name + ".", JsonRequestBehavior.AllowGet);
+            }
+
+            var playerMembershipIdString = player.MembershipId + ";";
+
+            IContributionRepository contributionRepository = new EFContributionRepository();
+            var contribution = contributionRepository.Contributions.FirstOrDefault(i => i.Id == id);
+
+            // assert contribution exists
+            if (contribution == null)
+            {
+                return Json("Could not find contirbution with ID " + id + ".", JsonRequestBehavior.AllowGet);
+            }
+
+            // assert contribution is owned by player
+            if (contribution.OwnerMembershipId != myMembershipId)
+            {
+                return Json("You do not own this contribution.", JsonRequestBehavior.AllowGet);
             }
 
             // assert submitted name does not belong to contribution owner
@@ -1686,12 +1696,6 @@ namespace TT.Web.Controllers
             if (name == null)
             {
                 return Json("A name is required.", JsonRequestBehavior.AllowGet);
-            }
-
-            // assert contribution exists
-            if (contribution == null)
-            {
-                return Json("Could not find contirbution with ID " + id + ".", JsonRequestBehavior.AllowGet);
             }
 
             // prevent null exceptions from empty strings

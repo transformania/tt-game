@@ -49,7 +49,7 @@ namespace TT.Domain.Procedures
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
             }
-            else if (AIStatics.IsAMiniboss(victim.BotId) && (victim.BotId != AIStatics.MinibossPlushAngelId || victim.BotId != AIStatics.MinibossPlushDemonId)) // The plushies just want to make friends. No rewards for monsters.
+            else if (AIStatics.IsAMiniboss(victim.BotId) && !(victim.BotId == AIStatics.MinibossPlushAngelId || victim.BotId == AIStatics.MinibossPlushDemonId)) // The plushies just want to make friends. No rewards for monsters.
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MinibossAttacks, 1);
             }

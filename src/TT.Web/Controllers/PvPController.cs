@@ -1504,6 +1504,24 @@ namespace TT.Web.Controllers
                 }
             }
 
+            if (me.InHardmode == true)
+            {
+                var rand = new Random();
+                int chance = rand.Next(0, 100);
+
+                if (chance < 21)
+                {
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                    playerRepo.SavePlayer(player);
+
+                    TempData["Error"] = "You seem to lose focus as you attempt to concentrate.";
+                    TempData["SubError"] = "Maybe if you try again, you'll be able to work on restoring yourself.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             var buffs = ItemProcedures.GetPlayerBuffs(me);
 
             try
@@ -1547,6 +1565,24 @@ namespace TT.Web.Controllers
                 }
             }
 
+            if(me.InHardmode == true)
+            {
+                var rand = new Random();
+                int chance = rand.Next(0, 100);
+
+                if (chance < 21)
+                {
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                    playerRepo.SavePlayer(player);
+
+                    TempData["Error"] = "You seem to lose focus as you attempt to meditate.";
+                    TempData["SubError"] = "Maybe if you try again, you'll be able to concentrate.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             try
             {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new Meditate { PlayerId = me.Id, Buffs = mybuffs });
@@ -1579,6 +1615,24 @@ namespace TT.Web.Controllers
                 if (!result.IsNullOrEmpty())
                 {
                     TempData["Result"] = result;
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
+            if (me.InHardmode == true)
+            {
+                var rand = new Random();
+                int chance = rand.Next(0, 100);
+
+                if (chance < 21)
+                {
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                    playerRepo.SavePlayer(player);
+
+                    TempData["Error"] = "An overpowering force overwhelms you and prevents you from cleansing.";
+                    TempData["SubError"] = "Hopefully you have better luck on your next cleanse.";
                     return RedirectToAction(MVC.PvP.Play());
                 }
             }

@@ -179,18 +179,18 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE
                 }
             },
-            //{
-            //    "lazyLifeguard",
-            //    new MinibossData {
-            //        FormSourceId = 977,
-            //        FormName = "form_Lazy_Lifeguard_Judoo",
-            //        Title = "Lifeguard",
-            //        Region = "pool",
-            //        Spells = new List<string> { "skill_Game_on_the_Beach_Judoo", "skill_Slippery_Swimsuit_Illia_Malvusin", "skill_Summer_Fun_Alexander", "skill_Sink_or_Swim_Illia_Malvusin"},
-            //        BotId = AIStatics.MinibossLazyLifeguardId,
-            //        RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE
-            //    }
-            //},
+            {
+                "lazyLifeguard",
+                new MinibossData {
+                    FormSourceId = 977,
+                    FormName = "form_Lazy_Lifeguard_Judoo",
+                    Title = "Lifeguard",
+                    Region = "pool",
+                    Spells = new List<int> { 458, 974, 678, 1126, 510, 1044, 994, 1290, 455, 1432, 589, 679 }, // There are a lot of pool-related forms. Twelve should be enough.
+                    BotId = AIStatics.MinibossLazyLifeguardId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE
+                }
+            },
         };
 
         public static List<Exception> RunAll(int turnNumber)

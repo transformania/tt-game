@@ -191,6 +191,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ApproveDMRoll);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.JsonResult AddEditor()
+        {
+            return new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.AddEditor);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ContributionController Actions { get { return MVC.Contribution; } }
@@ -238,6 +244,7 @@ namespace TT.Web.Controllers
             public readonly string ReviewDMRolls = ("ReviewDMRolls").ToLowerInvariant();
             public readonly string ApproveDMRoll = ("ApproveDMRoll").ToLowerInvariant();
             public readonly string GetContributionTable = ("GetContributionTable").ToLowerInvariant();
+            public readonly string AddEditor = ("AddEditor").ToLowerInvariant();
         }
 
 
@@ -440,6 +447,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ApproveDMRoll
         {
             public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_AddEditor s_params_AddEditor = new ActionParamsClass_AddEditor();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AddEditor AddEditorParams { get { return s_params_AddEditor; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AddEditor
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+            public readonly string name = ("name").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -860,6 +876,19 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetContributionTable);
             GetContributionTableOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AddEditorOverride(T4MVC_System_Web_Mvc_JsonResult callInfo, int id, string name);
+
+        [NonAction]
+        public override System.Web.Mvc.JsonResult AddEditor(int id, string name)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.AddEditor);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            AddEditorOverride(callInfo, id, name);
             return callInfo;
         }
 

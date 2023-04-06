@@ -859,7 +859,7 @@ namespace TT.Web.Controllers
             if (skill.dbSkill.Bookmarked)
             {
                 SkillProcedures.BookmarkSpell(skill.dbSkill.Id);
-                TempData["Result"] = "You have successfully removed " + skill.StaticSkill.FriendlyName + " to your spell bookmark.";
+                TempData["Result"] = "You have successfully removed " + skill.StaticSkill.FriendlyName + " from your spell bookmark.";
             }
             else if(skillSourceId != skill.dbSkill.Id && countBookmark > 2)
             {
@@ -868,7 +868,7 @@ namespace TT.Web.Controllers
             else if (!skill.dbSkill.Bookmarked)
             {
                 SkillProcedures.BookmarkSpell(skill.dbSkill.Id);
-                TempData["Result"] = "You have successfully added " + skill.StaticSkill.FriendlyName + " from your spell bookmark.";
+                TempData["Result"] = "You have successfully added " + skill.StaticSkill.FriendlyName + " to your spell bookmark.";
             }
 
             return RedirectToAction(MVC.PvP.Play());

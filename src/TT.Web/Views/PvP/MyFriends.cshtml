@@ -13,6 +13,7 @@
 @{
     if (Model.ConfirmedFriends.Any(m => m.dbPlayer != null))
     {
+  
         <div class="specialBox specialHeader">
             <b>Active Friends (@Model.ConfirmedFriends.Count(m => m.dbPlayer != null))</b>
         </div>
@@ -54,7 +55,16 @@
                     <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (animal)</a>
                 </td>
             }
-            <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
+
+            if (!Model.IsOnlineToggled)
+            {
+                <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
+            }
+            else
+            {
+                <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.LastActionTimestamp.ToString("u")</td>
+            }
+            
                     <td>
                         <a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp.dbFriend.Id, "defriend"))">Defriend</a>
                     </td>

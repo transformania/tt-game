@@ -44,7 +44,8 @@ namespace TT.Web.Controllers
                 PlayerItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id }),
                 Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId }),
                 ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId }),
-                OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId })
+                OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId }),
+                IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -1384,6 +1385,28 @@ namespace TT.Web.Controllers
             //Remove the skills
             ISkillRepository skillRepo = new EFSkillRepository();
             skillRepo.DeleteSkillList(skills);
+
+        }
+
+        public virtual ActionResult ToggleOnline(bool setOnlineToggle)
+        {
+            var userId = User.Identity.GetUserId();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new SetOnlineToggle
+                {
+                    UserId = userId,
+                    OnlineToggle = setOnlineToggle
+                });
+                TempData["Result"] = $"Online toggle has been successfully set to: {setOnlineToggle}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change online toggle to enabled/disabled.";
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
 
         }
     }

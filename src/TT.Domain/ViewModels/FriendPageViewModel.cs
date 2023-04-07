@@ -7,5 +7,6 @@ namespace TT.Domain.ViewModels
         public IEnumerable<FriendPlayerViewModel> ConfirmedFriends;
         public IEnumerable<FriendPlayerViewModel> RequestsForMe;
         public IEnumerable<FriendPlayerViewModel> MyOutgoingRequests;
+        public bool IsOnlineToggled { get; set; }
     }
 }

@@ -3110,7 +3110,10 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            var output = new FriendPageViewModel();
+            var output = new FriendPageViewModel
+            {
+                IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
+            };
 
             var friends = FriendProcedures.GetMyFriends(myMembershipId);
 

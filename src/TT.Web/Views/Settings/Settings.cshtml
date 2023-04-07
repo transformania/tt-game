@@ -17,6 +17,14 @@
 
 <div class="containerInner center-block">
     <h2>Offline Timer</h2>
+    @if (!Model.IsOnlineToggled)
+    {
+        <p><a href="@Url.Action(MVC.Settings.ToggleOnline(true))">Use Action Timer for friends.</a></p>
+    }
+    else
+    {
+        <p><a href="@Url.Action(MVC.Settings.ToggleOnline(false))">Use Activity Timer for friends.</a></p>
+    }
 
     <p>
         Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
@@ -45,7 +53,7 @@
                         }
                     </tbody>
                 </table>
-                            }
+            }
         }
 
     </p>

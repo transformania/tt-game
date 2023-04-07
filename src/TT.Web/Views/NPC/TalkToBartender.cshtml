@@ -14,9 +14,9 @@
             <img class="img-responsive center-block" src="https://images.transformaniatime.com/portraits/Rusty_Luxianne.png">
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px; text-align: justify;">
-                @Html.Raw(ViewBag.Speech)
+            
+            <p id="dialog">@Html.Raw(ViewBag.Speech)</p>
 
-            <br>
             <div style="line-height: 1.7;">
                 <br> <a href="@Url.Action(MVC.NPC.TalkToBartender("lindella"))">Where is Lindella?</a>
                 <br> <a href="@Url.Action(MVC.NPC.TalkToBartender("wuffie"))">Where is Wuffie?</a>
@@ -38,3 +38,14 @@
 </div>
 
 
+@section head
+{
+    <style>
+    #dialog br {
+        display: block;
+        content: "";
+        border-bottom: 5px solid transparent;
+        margin-bottom: 5px;
+    }
+    </style>
+}

@@ -42,7 +42,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Sorority_House_Mother_Judoo",
                     Title = "Sorority House Mother",
                     Region = "sorority",
-                    Spells = new List<int> { 522, 354, 678},
+                    Spells = new List<int> { 522, 1421, 1436, 521, 1332, 354, 784, 678, 868, 1584},
                     RuneIdToGive = RuneStatics.MINIBOSS_SORORITY_MOTHER_RUNE,
                     BotId = AIStatics.MinibossSororityMotherId
 ,                }
@@ -54,7 +54,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Pop_Goddess_Judoo",
                     Title = "Pop Goddess",
                     Region = "concert_hall",
-                    Spells = new List<int> { 1102, 363, 431},
+                    Spells = new List<int> { 1102, 360, 1325, 363, 441, 1501, 530, 1221, 431, 1386},
                     BotId = AIStatics.MinibossPopGoddessId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POP_GODDESS_RUNE,
                 }
@@ -66,7 +66,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Possessed_Maid_Judoo",
                     Title = "Maid",
                     Region = "mansion",
-                    Spells = new List<int> { 361, 390, 376},
+                    Spells = new List<int> { 361, 1285, 862, 1536, 390, 376, 1224, 1539, 1558, 1289},
                     BotId = AIStatics.MinibossPossessedMaidId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POSSESSED_MAID_RUNE,
                 }
@@ -78,7 +78,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Sanguine_Seamstress_Judoo",
                     Title = "Seamstress",
                     Region = "clothing",
-                    Spells = new List<int> { 976, 1037, 1061},
+                    Spells = new List<int> { 1230, 976, 683, 1145, 1037, 1449, 1557, 313, 1061, 336},
                     BotId = AIStatics.MinibossSeamstressId,
                     RuneIdToGive = RuneStatics.MINIBOSS_SEAMSTRESS_RUNE,
                 }
@@ -90,7 +90,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Disgruntled_Groundskeeper_Judoo",
                     Title = "Groundskeeper",
                     Region = "park",
-                    Spells = new List<int> { 947, 1049, 791},
+                    Spells = new List<int> { 947, 1242, 1190, 436, 1199, 1049, 1050, 791, 456, 1331},
                     BotId = AIStatics.MinibossGroundskeeperId,
                     RuneIdToGive = RuneStatics.MINIBOSS_GROUNDSKEEPER_RUNE
                 }
@@ -102,7 +102,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     FormName = "form_Exchange_Professor_Judoo",
                     Title = "Professor",
                     Region = "lab",
-                    Spells = new List<int> { 891, 446, 420},
+                    Spells = new List<int> { 891, 1435, 883, 966, 446, 1237, 1356, 1095, 1116, 420},
                     BotId = AIStatics.MinibossExchangeProfessorId,
                     RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE
                 }

@@ -1,5 +1,7 @@
 ﻿@model TT.Domain.ViewModels.FriendPageViewModel
+@using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
+@using TT.Domain.Procedures
 @{
     ViewBag.Title = "My Friends";
 }
@@ -11,9 +13,27 @@
 }
 
 @{
+
+    if (!Model.IsOnlineToggled)
+    {
+        <div class="specialBox">
+            You are showing your friends your activity timer. <a href="@Url.Action(MVC.Settings.ToggleOnline(true))">Toggle it to your last action timer.</a>
+            <br>
+            Your last activity was <b>@HtmlHelpers.DatetimeToTimeago(PlayerProcedures.GetPlayerLastActivityTimestamp(Model.PlayerId))</b>.
+        </div>
+    }
+    else
+    {
+        <div class="specialBox">
+            You are showing your friends your last action timer. <a href="@Url.Action(MVC.Settings.ToggleOnline(false))">Toggle it to your activity timer.</a>
+            <br>
+            Your last action was <b>@HtmlHelpers.DatetimeToTimeago(PlayerProcedures.GetPlayerLastActionTimestamp(Model.PlayerId))</b>.
+        </div>
+    }
+
     if (Model.ConfirmedFriends.Any(m => m.dbPlayer != null))
     {
-  
+
         <div class="specialBox specialHeader">
             <b>Active Friends (@Model.ConfirmedFriends.Count(m => m.dbPlayer != null))</b>
         </div>
@@ -31,65 +51,65 @@
                 <tbody>
 
                     @{
-        foreach (var fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
-        {
-            <tr>
+                        foreach (var fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
+                        {
+                            <tr>
 
-                @{
-            if (fp.dbPlayer.Mobility == PvPStatics.MobilityFull)
-            {
-                <td>
-                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName()</a>
-                </td>
-            }
-            else if (fp.dbPlayer.Mobility == PvPStatics.MobilityInanimate)
-            {
-                <td>
-                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (inanimate)</a>
-                </td>
-            }
+                                @{
+                                    if (fp.dbPlayer.Mobility == PvPStatics.MobilityFull)
+                                    {
+                                        <td>
+                                            <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName()</a>
+                                        </td>
+                                    }
+                                    else if (fp.dbPlayer.Mobility == PvPStatics.MobilityInanimate)
+                                    {
+                                        <td>
+                                            <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (inanimate)</a>
+                                        </td>
+                                    }
 
-            else if (fp.dbPlayer.Mobility == PvPStatics.MobilityPet)
-            {
-                <td>
-                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (animal)</a>
-                </td>
-            }
+                                    else if (fp.dbPlayer.Mobility == PvPStatics.MobilityPet)
+                                    {
+                                        <td>
+                                            <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (animal)</a>
+                                        </td>
+                                    }
 
-            if (!Model.IsOnlineToggled)
-            {
-                <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
-            }
-            else
-            {
-                <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.LastActionTimestamp.ToString("u")</td>
-            }
-            
-                    <td>
-                        <a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp.dbFriend.Id, "defriend"))">Defriend</a>
-                    </td>
+                                    if (!PlayerProcedures.GetPlayerOnlineToggle(fp.dbPlayer.MembershipId))
+                                    {
+                                        <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.LastActionTimestamp.ToString("u")</td>
+                                    }
 
-                    <td>
+                                    <td>
+                                        <a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp.dbFriend.Id, "defriend"))">Defriend</a>
+                                    </td>
 
-                        
-            @if (fp.dbPlayer.MembershipId != fp.dbFriend.OwnerMembershipId)
-            {
-                <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.OwnerNicknameForFriend</a>
-            }
-            else
-            {
-                <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.FriendNicknameForOwner</a>
-
-            }
-                       
+                                    <td>
 
 
-                    </td>
+                                        @if (fp.dbPlayer.MembershipId != fp.dbFriend.OwnerMembershipId)
+                                        {
+                                            <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.OwnerNicknameForFriend</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.FriendNicknameForOwner</a>
 
-                }
+                                        }
 
-            </tr>
-        }
+
+
+                                    </td>
+
+                                }
+
+                            </tr>
+                        }
 
                     }
                 </tbody>
@@ -207,48 +227,48 @@
 @section head
 {
     <style>
-    h1 {
-        text-align: center;
-    }
+        h1 {
+            text-align: center;
+        }
 
-    .friendListing {
-        width: 100%;
-        border: 1px solid lightgray;
-        position: relative;
-        float: left;
-        margin-top: 5px;
-        padding: 0;
-    }
+        .friendListing {
+            width: 100%;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+            margin-top: 5px;
+            padding: 0;
+        }
 
-    .friendonline {
-        color: green;
-    }
+        .friendonline {
+            color: green;
+        }
 
-    .friendoffline {
-        color: red;
-    }
+        .friendoffline {
+            color: red;
+        }
 
-    .divblock {
-        position: relative;
-        float: left;
-        width: 100%;
-    }
+        .divblock {
+            position: relative;
+            float: left;
+            width: 100%;
+        }
     </style>
 }
 
 @section scripts
 {
     <script>
-    $(document).ready(function () {
-        $('#MyFriends').dataTable({
-            "columnDefs": [{
-                "targets": 1,
-                "render": function (data, type, full, meta) {
-                    if (type == "display") return moment(data).fromNow();
-                    return data;
-                }
-            }]
+        $(document).ready(function () {
+            $('#MyFriends').dataTable({
+                "columnDefs": [{
+                    "targets": 1,
+                    "render": function (data, type, full, meta) {
+                        if (type == "display") return moment(data).fromNow();
+                        return data;
+                    }
+                }]
+            });
         });
-    });
     </script>
 }

@@ -3113,6 +3113,7 @@ namespace TT.Web.Controllers
             var output = new FriendPageViewModel
             {
                 IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
+                PlayerId = PlayerProcedures.GetPlayerFromMembership(myMembershipId).Id,
             };
 
             var friends = FriendProcedures.GetMyFriends(myMembershipId);

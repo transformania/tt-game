@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
@@ -1801,5 +1803,27 @@ namespace TT.Domain.Procedures
             return resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == membershipId);
         }
 
+        public static bool GetPlayerOnlineToggle(string membershipId)
+        {
+            var IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = membershipId });
+
+            return IsOnlineToggled;
+        }
+
+        public static DateTime GetPlayerLastActionTimestamp(int playerId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+
+            return dbplayer.LastActionTimestamp;
+        }
+
+        public static DateTime GetPlayerLastActivityTimestamp(int playerId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+
+            return dbplayer.OnlineActivityTimestamp;
+        }
     }
 }

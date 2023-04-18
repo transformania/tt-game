@@ -815,6 +815,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 103,
+      "name": "Alpha 103 (Schoolyard Bully!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

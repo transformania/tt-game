@@ -3801,9 +3801,9 @@ namespace TT.Web.Controllers
             ItemProcedures.DropItem(inanimateMe.Id);
             var message = $"{me.GetFullName()}, your {inanimateMe.ItemSource.FriendlyName}, slipped free due to your inactivity and can be claimed by a new owner.";
             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
-            PlayerLogProcedures.AddPlayerLog(me.Id, $"You slip free of your former owner, {owner.GetFullName()}", false);
+            PlayerLogProcedures.AddPlayerLog(me.Id, $"You slip free from the person holding you, {owner.GetFullName()}", false);
 
-            TempData["Result"] = "You have slipped free from your owner.";
+            TempData["Result"] = "You have slipped free from the person holding you.";
             return RedirectToAction(MVC.PvP.Play());
         }
 

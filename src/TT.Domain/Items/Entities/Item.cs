@@ -307,7 +307,7 @@ namespace TT.Domain.Items.Entities
                 else if (previouslyBoundTo != null)
                 {
                     FormerPlayer.PlayerLogs.Add(PlayerLog.Create(FormerPlayer,
-                        "Your past owner has lost the last of their own humanity, shattering the soulbinding between you.",
+                        "Your soulbinding has been shattered between you and your owner!",
                         DateTime.UtcNow, true));
                 }
             }

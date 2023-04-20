@@ -172,7 +172,7 @@ namespace TT.Tests.Items.Commands
             Assert.That(formerPlayerInanimateLoaded.PlayerLogs, Has.Exactly(1).Items);
             Assert.That(formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).Message,
                 Is.EqualTo(
-                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you."));
+                    "Your soulbinding has been shattered between you and your owner!"));
             Assert.That(formerPlayerInanimateLoaded.PlayerLogs.ElementAt(0).IsImportant, Is.True);
 
             var formerPlayerPetLoaded = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == this.formerPlayerPet.Id);
@@ -180,7 +180,7 @@ namespace TT.Tests.Items.Commands
             Assert.That(formerPlayerPetLoaded.PlayerLogs, Has.Exactly(1).Items);
             Assert.That(formerPlayerPetLoaded.PlayerLogs.ElementAt(0).Message,
                 Is.EqualTo(
-                    "Your past owner has lost the last of their own humanity, shattering the soulbinding between you."));
+                    "Your soulbinding has been shattered between you and your owner!"));
             Assert.That(formerPlayerPetLoaded.PlayerLogs.ElementAt(0).IsImportant, Is.True);
         }
     }

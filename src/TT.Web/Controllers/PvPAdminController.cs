@@ -1468,10 +1468,10 @@ namespace TT.Web.Controllers
 
                     if (form.MobilityType == PvPStatics.MobilityFull && player.Mobility != PvPStatics.MobilityFull)
                     {
-                        var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer {PlayerId = player.Id});
+                        var item = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
                         player.Mobility = PvPStatics.MobilityFull;
                         DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = item.Id });
-                        DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
+                        DomainRegistry.Repository.Execute(new DeleteItem { ItemId = item.Id });
                     }
 
                     //This is for animate pets and items. Reusing from the hacky Joke Shop way
@@ -1496,7 +1496,7 @@ namespace TT.Web.Controllers
                         var mobileTarget = playerInanChange.Players.FirstOrDefault(p => p.Id == player.Id);
                         mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
                         playerInanChange.SavePlayer(mobileTarget);
-                        
+
                     }
                 }
 
@@ -1568,16 +1568,179 @@ namespace TT.Web.Controllers
                 playerRepo.SavePlayer(newPlayer);
 
                 var cm = changed_name + changed_form + changed_level + changed_money;
-                if(cm.Length > 0)
+
+                //Exit early if nothing was changed
+                if(string.IsNullOrEmpty(cm))
                 {
-                    cm = cm.TrimEnd(cm[cm.Length - 1]);
+                    TempData["Error"] = "No changes were made";
+                    return RedirectToAction(MVC.PvP.Play());
                 }
+
+                cm = cm.TrimEnd(cm[cm.Length - 1]);
 
                 // if chaoslord changes themself, they won't get a notification that they changed themself.
                 if (player.Id != me.Id)
                 {
                     PlayerLogProcedures.AddPlayerLog(player.Id, $"Player <b>\"{me.GetFullName()}\"</b> has changed your{cm}.", false);
                 }
+            }
+            else
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            TempData["Result"] = "Yay!";
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult SwapPlayerSend(PlayerNameViewModel input) 
+        {
+
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
+            {
+                //Get our and the world's info
+                var myMembershipId = User.Identity.GetUserId();
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+                if (!PvPStatics.ChaosMode && !world.TestServer)
+                {
+                    TempData["Error"] = "The rename tool only works in chaos mode.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Retrieve the first player
+                //Redirecting from the chaos page means they exist so no need to check for null
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+                if (player.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = player.MembershipId }))
+                {
+                    TempData["Error"] = "This player does not have chaos mode changes enabled.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Get the other player
+                //Both players need chaos changes enabled & other player ID must be valid
+                var otherPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == input.SwapTargetId);
+
+                //Was the input valid
+                if (otherPlayer == null)
+                {
+                    TempData["Error"] = "Invalid swap target ID.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Check for chaos changes
+                if (otherPlayer.BotId == AIStatics.ActivePlayerBotId && !DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = otherPlayer.MembershipId }))
+                {
+                    TempData["Error"] = "The swap target does not have chaos mode changes enabled.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Check if they input their own ID
+                if (otherPlayer.Id == player.Id)
+                {
+                    TempData["Error"] = "You cannot have someone swap with themself.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Check if both players are animate
+                if ((!(player.Mobility == PvPStatics.MobilityFull) || !(otherPlayer.Mobility == PvPStatics.MobilityFull)))
+                {
+                    TempData["Error"] = "Both players must be animate in order to swap.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Check if the forms are marked as isUnique
+                if (FormStatics.GetForm(player.FormSourceId).IsUnique ||
+                   FormStatics.GetForm(otherPlayer.FormSourceId).IsUnique) 
+                {
+                    TempData["Error"] = "Both players must not have unique forms in order to swap.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                //Swap the names, levels, and money
+                //Swap means all values are valid since they already exist
+                //Store Player 1's info to swap
+                string temp_first_name = player.FirstName;
+                string temp_last_name = player.LastName;
+                decimal temp_money = player.Money;
+                int temp_level = player.Level;
+                int temp_form_id = player.FormSourceId;
+
+                //Player 1 takes Player 2's info
+                player.FirstName = otherPlayer.FirstName;
+                player.LastName = otherPlayer.LastName;
+                player.Money = otherPlayer.Money;
+                player.Level = otherPlayer.Level;
+
+                //Player 2 takes Player 1's info
+                otherPlayer.FirstName = temp_first_name;
+                otherPlayer.LastName = temp_last_name;
+                otherPlayer.Money = temp_money;
+                otherPlayer.Level = temp_level;
+
+                //Swap the forms
+                //Player 1
+                IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
+                var player1Form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.Id == otherPlayer.FormSourceId);
+
+                DomainRegistry.Repository.Execute(new ChangeForm
+                {
+                    PlayerId = player.Id,
+                    FormSourceId = player1Form.Id
+                });
+
+                player.Health = 99999;
+                player.MaxHealth = 99999;
+
+                //Fix Player 1 if their swap target was a mobile inanimate/pet
+                if (player1Form?.MobilityType != PvPStatics.MobilityFull)
+                {
+                    IPlayerRepository playerInanChange = new EFPlayerRepository();
+                    var target = playerInanChange.Players.FirstOrDefault(p => p.Id == player.Id);
+                    target.Mobility = PvPStatics.MobilityFull;
+                    playerInanChange.SavePlayer(target);
+
+                    var mobileTarget = playerInanChange.Players.FirstOrDefault(p => p.Id == player.Id);
+                    mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
+                    playerInanChange.SavePlayer(mobileTarget);
+                }
+
+                //Player 2
+                var player2Form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.Id == temp_form_id);
+
+                DomainRegistry.Repository.Execute(new ChangeForm
+                {
+                    PlayerId = otherPlayer.Id,
+                    FormSourceId = player2Form.Id
+                });
+
+                otherPlayer.Health = 99999;
+                otherPlayer.MaxHealth = 99999;
+
+                //Fix Player 2 if their swap target was a mobile inanimate/pet
+                if (player2Form?.MobilityType != PvPStatics.MobilityFull)
+                {
+                    IPlayerRepository playerInanChange = new EFPlayerRepository();
+                    var target = playerInanChange.Players.FirstOrDefault(p => p.Id == otherPlayer.Id);
+                    target.Mobility = PvPStatics.MobilityFull;
+                    playerInanChange.SavePlayer(target);
+
+                    var mobileTarget = playerInanChange.Players.FirstOrDefault(p => p.Id == otherPlayer.Id);
+                    mobileTarget.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(mobileTarget));
+                    playerInanChange.SavePlayer(mobileTarget);
+                }
+
+                //Save the results
+                playerRepo.SavePlayer(player);
+                playerRepo.SavePlayer(otherPlayer);
+
+                //Log and return
+                PlayerLogProcedures.AddPlayerLog(player.Id, $"Player <b>\"{me.GetFullName()}\"</b> made you swap bodies with Player <b>\"{player.GetFullName()}.\"</b>", false);
+                PlayerLogProcedures.AddPlayerLog(otherPlayer.Id, $"Player <b>\"{me.GetFullName()}\"</b> made you swap bodies with Player <b>\"{otherPlayer.GetFullName()}.\"</b>", false);
             }
             else
             {

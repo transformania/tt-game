@@ -181,7 +181,11 @@
                 @HtmlHelpers.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
                 @HtmlHelpers.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
                 @HtmlHelpers.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
-            </span>
+            </span> 
+            @if (Model.PlayerForm.Player.InHardmode)
+            {
+                <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+            }
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>

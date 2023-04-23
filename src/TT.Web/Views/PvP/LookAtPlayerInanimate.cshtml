@@ -119,6 +119,10 @@
     <center>
         <div class="leftDisplay" style="background-image: url(https://images.transformaniatime.com/@ViewBag.ImgUrl);">
             <span class="icon icon-level"><b>@ViewBag.ItemLevel</b></span>
+            @if (Model.PlayerForm.Player.InHardmode)
+            {
+                <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+            }
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>

@@ -178,13 +178,17 @@
                             }
                         }
 
-                        if (Model.Player.InHardmode)
+
+                        if (!Model.Item.IsPermanent)
                         {
-                            <span>If you could struggle and regain a human form you would find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But instead you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
-                        }
-                        else if (!Model.Item.IsPermanent)
-                        {
-                            <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            if (Model.Player.InHardmode)
+                            {
+                                <span>If you could struggle and regain a human form you would find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But instead you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            }
+                            else
+                            {
+                                <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But for now you are a level @Model.Item.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            }
                         }
                         else
                         {
@@ -266,12 +270,16 @@
                     </p>
                 }
 
-                if (Model.Item != null && !Model.Item.IsPermanent && !Model.Player.InHardmode)
+                if (Model.Item != null && !Model.Item.IsPermanent)
                 {
                     <p class="center-block">
                         <span class="place">Struggle free from this form</span>
                     </p>
-                    if (Model.StruggleChance <= -100)
+                    if (Model.Player.InHardmode)
+                    {
+                        <p>If you could struggle this turn you would have a <b>@Model.StruggleChance% chance</b> of escaping your current form. Too bad you can't.</p>
+                    }
+                    else if (Model.StruggleChance <= -100)
                     {
                         <p>If you enjoy being an object too much <strong>you might find yourself trapped like this forever!</strong>  You still have a chance of escape if you can bring yourself to fight your transformation.  (@Model.StruggleChance% chance)</p>
                     }
@@ -287,9 +295,12 @@
                     {
                         <p>If you struggle this turn you have a <b>@Model.StruggleChance% chance</b> of escaping your current form.</p>
                     }
-                    <p class="center-block">
-                        <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
-                    </p>
+                    if (!Model.Player.InHardmode)
+                    {
+                        <p class="center-block">
+                            <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
+                        </p>
+                    }
                     if (PvPStatics.ChaosMode)
                     {
                         <p class="center-block">

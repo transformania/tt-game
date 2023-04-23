@@ -166,18 +166,21 @@
                             }
                         }
 
-                        if (Model.You.InHardmode)
+
+                        if (!Model.IsPermanent)
                         {
-                            <span>If you could struggle and regain a human form you would find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But instead you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
-                        }
-                        else if (!Model.IsPermanent)
-                        {
-                            <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            if (Model.You.InHardmode)
+                            {
+                                <span>If you could struggle and regain a human form you would find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But instead you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            }
+                            else
+                            {
+                                <span>Should you struggle and regain a human form you will find yourself at level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next. But for now you are a level @Model.YouItem.Level <b>@Model.Form.FriendlyName</b>.</span>
+                            }
                         }
                         else
                         {
                             <span>You have lost any last hope of restoring yourself to human and are now wholly dedicated to serving your master or mistress as their pet as a level <b>@Model.YouItem.Level @Model.Form.FriendlyName</b>.</span>
-
                             if (Model.YouItem.SoulboundToPlayer != null)
                             {
                                 @Html.Partial(MVC.PvP.Views.partial.SoulboundTo, Model.YouItem)
@@ -246,12 +249,16 @@
                     </p>
                 }
 
-                if (Model.YouItem != null && !Model.IsPermanent && !Model.You.InHardmode)
+                if (Model.YouItem != null && !Model.IsPermanent)
                 {
                     <p class="center-block">
                         <span class="place">Struggle free from this form</span>
                     </p>
-                    if (Model.StruggleChance <= -100)
+                    if (Model.You.InHardmode)
+                    {
+                        <p>If you could struggle this turn you would have a <b>@Model.StruggleChance% chance</b> of escaping your current form. Too bad you can't.</p>
+                    }
+                    else if (Model.StruggleChance <= -100)
                     {
                         <p>If you enjoy being a pet too much <strong>you might find yourself trapped like this forever!</strong>  You still have a chance of escape if you can bring yourself to fight your transformation.  (@Model.StruggleChance% chance)</p>
                     }
@@ -267,9 +274,12 @@
                     {
                         <p>If you struggle this turn you have a <b>@Model.StruggleChance% chance</b> of escaping your current form.</p>
                     }
-                    <p class="center-block">
-                        <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
-                    </p>
+                    if (!Model.You.InHardmode)
+                    {
+                        <p class="center-block">
+                            <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
+                        </p>
+                    }
                     if (PvPStatics.ChaosMode)
                     {
                         <p class="center-block">

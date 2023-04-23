@@ -269,14 +269,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 var itemType = itemTypes[rand.Next(itemTypes.Count())];
 
-                return ItemProcedures.GiveNewItemToPlayer(player, itemType);
+                var (_, message) = ItemProcedures.GiveNewItemToPlayer(player, itemType);
+                return message;
             }
             else if (roll < 2)
             {
                 // Regular item
                 var level = (int)(rand.NextDouble() * rand.NextDouble() * 6 + 1);
                 var itemType = ItemProcedures.GetRandomPlayableItem();
-                var message = ItemProcedures.GiveNewItemToPlayer(player, itemType, level);
+                var (_, message) = ItemProcedures.GiveNewItemToPlayer(player, itemType, level);
 
                 // Don't permit player to carry untamed pet (pet items aren't automatically tamed)
                 if (itemType.ItemType == PvPStatics.ItemType_Pet)

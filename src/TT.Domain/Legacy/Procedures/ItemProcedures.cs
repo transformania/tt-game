@@ -274,7 +274,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string GiveNewItemToPlayer(Player player, DbStaticItem item, int level = 1)
+        public static (int, string) GiveNewItemToPlayer(Player player, DbStaticItem item, int level = 1)
         {
 
             var cmd = new CreateItem
@@ -304,10 +304,10 @@ namespace TT.Domain.Procedures
             }
             var newItemId = DomainRegistry.Repository.Execute(cmd);
             ItemTransferLogProcedures.AddItemTransferLog(newItemId, player.Id);
-            return "You found a " + item.FriendlyName + "!";
+            return (newItemId, "You found a " + item.FriendlyName + "!");
         }
 
-        public static string GiveNewItemToPlayer(Player player, int itemSourceId, int level = 1)
+        public static (int, string) GiveNewItemToPlayer(Player player, int itemSourceId, int level = 1)
         {
             var i = ItemStatics.GetStaticItem(itemSourceId);
             return GiveNewItemToPlayer(player, i, level);

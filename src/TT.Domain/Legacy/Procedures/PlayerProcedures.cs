@@ -1184,13 +1184,12 @@ namespace TT.Domain.Procedures
             {
                 var justFound = ItemProcedures.GetRandomFindableItem();
 
-                var output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
+                var (itemId, output) = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player))
                 {
-                    var randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Last(i => i.dbItem.ItemSourceId == justFound.Id);
-                    ItemProcedures.DropItem(randomItem.dbItem.Id);
+                    ItemProcedures.DropItem(itemId);
                     output += "  However, your arms are full and you dropped it.";
                 }
 

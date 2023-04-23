@@ -917,7 +917,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     message = "It's a tranquil moment, so you pause to think.  You didn't realize how much you were enjoying your current form.  Perhaps you'll revisit it sometime?";
                     break;
                 case 2:
-                    message = "Hmmm, is that body not to your liking?  How humiliating would it be to find you couldnn't shake it?";
+                    message = "Hmmm, is that body not to your liking?  How humiliating would it be to find you couldn't shake it?";
                     break;
                 case 3:
                     message = "You get a sudden urge to take a selfie.  You whip your smartphone out from your pocket and snap some pics.  Maybe you'll look at them later.";
@@ -1409,7 +1409,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 if (rand.Next(5) == 0)
                 {
-                    return ItemProcedures.GiveNewItemToPlayer(player, BossProcedures_BimboBoss.CureItemSourceId);
+                    var (_, message) = ItemProcedures.GiveNewItemToPlayer(player, BossProcedures_BimboBoss.CureItemSourceId);
+                    return message;
                 }
                 else if (TryAnimateTransform(player, BossProcedures_BimboBoss.RegularBimboFormSourceId))
                 {

@@ -94,7 +94,7 @@ namespace TT.Web.Controllers
                 if (forms.IsEmpty())
                 {
                     TempData["Error"] = "Huh. It looks like something went wrong with that one.";
-                    ItemProcedures.DeleteItem(itemId);
+                    ItemProcedures.ResetUseCooldown(item);
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
@@ -577,7 +577,7 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                 
-                itemRepo.DeleteItem(input.ItemId);
+                ItemProcedures.ResetUseCooldown(itemPlus);
 
                 TempData["Error"] = "Your mind wanders as you apply the lotion.";
                 TempData["SubError"] = "You recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
@@ -609,7 +609,7 @@ namespace TT.Web.Controllers
             TFEnergyProcedures.CleanseTFEnergies(me, 25);
             PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
             LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-            itemRepo.DeleteItem(input.ItemId);
+            ItemProcedures.ResetUseCooldown(itemPlus);
 
             TempData["Result"] = "You seem to recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
             return RedirectToAction(MVC.PvP.Play());

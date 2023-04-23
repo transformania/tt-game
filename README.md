@@ -21,7 +21,7 @@ Please read through CONTRIBUTING.md if you would like to contribute code to the 
 
 Below are some tools I keep in my developer environment used daily:
 
-* [Visual Studio 2019 Community](https://www.visualstudio.com/downloads/)
+* [Visual Studio 2022 Community](https://www.visualstudio.com/downloads/)
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms) (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
 * [7-Zip](http://www.7-zip.org) or another similar file archiving program (to extract the SQL backups)
 * [Sourcetree](https://www.sourcetreeapp.com) (GUI for Git; command line via Bash also works fine if you are comfortable with it)

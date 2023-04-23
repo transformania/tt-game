@@ -201,7 +201,7 @@ namespace TT.Domain.Procedures
             {
                 dbSkill = tempskill,
                 StaticSkill = tempstatic,
-                
+                MobilityType = dbstatic.MobilityType
             };
 
             return output;

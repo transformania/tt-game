@@ -54,7 +54,6 @@ namespace TT.Domain.Items.Commands
                 if (item.FormerPlayer.BotId == AIStatics.FemaleRatBotId || item.FormerPlayer.BotId == AIStatics.MaleRatBotId)
                 {
                     var stat = ctx.AsQueryable<World.Entities.World>()
-                        .Include(w => w.Boss_Thief)
                         .FirstOrDefault();
 
                     if (stat.Boss_Thief == AIStatics.ACTIVE)

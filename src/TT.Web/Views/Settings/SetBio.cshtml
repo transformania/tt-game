@@ -36,7 +36,7 @@
         <br>
 
         <div class="messageInfoContainer">
-            Main text of your bio. You can force line-breaks in this text by writing <b>[br]</b>:
+            Main text of your bio:
             <span class="charCounter"></span>
         </div>
         @Html.TextAreaFor(m => m.Text, new { maxlength = Model.IsDonator? "10000" : "2500" })

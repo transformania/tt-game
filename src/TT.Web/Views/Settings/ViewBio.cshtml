@@ -54,7 +54,7 @@
 
             @*<p>@HtmlHelpers.StringToWebsite(Model.WebsiteURL)</p>*@
 
-            <p>@Model.PlayerBio.WebsiteURL</p>
+            <p style="white-space: pre-line">@Model.PlayerBio.WebsiteURL</p>
         }
     }
 
@@ -64,7 +64,7 @@
     @{
         if (!Model.PlayerBio.Text.IsNullOrEmpty())
         {
-            <p>@Html.Raw(Model.PlayerBio.Text.Replace("[br]", "<br>"))</p>
+            <p style="white-space: pre-line">@Html.Raw(Model.PlayerBio.Text.Replace("[br]", "<br>"))</p>
         }
     }
 

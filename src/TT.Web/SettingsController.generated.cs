@@ -263,6 +263,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetArtistBioVisibility);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ToggleOnline()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleOnline);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SettingsController Actions { get { return MVC.Settings; } }
@@ -327,6 +333,7 @@ namespace TT.Web.Controllers
             public readonly string LearnInanimateSpells = ("LearnInanimateSpells").ToLowerInvariant();
             public readonly string LearnPetSpells = ("LearnPetSpells").ToLowerInvariant();
             public readonly string ForgetAllSpells = ("ForgetAllSpells").ToLowerInvariant();
+            public readonly string ToggleOnline = ("ToggleOnline").ToLowerInvariant();
         }
 
 
@@ -614,6 +621,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SetArtistBioVisibility
         {
             public readonly string isLive = ("isLive").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ToggleOnline s_params_ToggleOnline = new ActionParamsClass_ToggleOnline();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ToggleOnline ToggleOnlineParams { get { return s_params_ToggleOnline; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ToggleOnline
+        {
+            public readonly string setOnlineToggle = ("setOnlineToggle").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1334,6 +1349,18 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgetAllSpells);
             ForgetAllSpellsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ToggleOnlineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool setOnlineToggle);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ToggleOnline(bool setOnlineToggle)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleOnline);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setOnlineToggle", setOnlineToggle);
+            ToggleOnlineOverride(callInfo, setOnlineToggle);
             return callInfo;
         }
 

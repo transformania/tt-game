@@ -30,6 +30,7 @@ namespace TT.Domain.Identity.Entities
         public bool AllowOwnershipVisibility { get; protected set; }
         public bool AllowChaosChanges { get; protected set; }
         public bool PvPLock { get; protected set; }
+        public bool OnlineToggle { get; protected set; }
 
         private User() { }
 
@@ -69,6 +70,10 @@ namespace TT.Domain.Identity.Entities
         public void SetPvPLockChanges(bool SetPvPLock)
         {
             this.PvPLock = SetPvPLock;
+        }
+        public void SetOnlineToggleChanges(bool SetOnlineToggle)
+        {
+            this.OnlineToggle = SetOnlineToggle;
         }
 
         public void SetLockoutEndDateUtc(DateTime dateTime)

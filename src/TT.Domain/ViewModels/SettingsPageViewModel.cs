@@ -13,5 +13,6 @@ namespace TT.Domain.ViewModels
         public IEnumerable<StrikeDetail> Strikes { get; set; }
         public bool ChaosChangesEnabled { get; set; }
         public bool OwnershipVisibilityEnabled { get; set; }
+        public bool IsOnlineToggled { get; set; }
     }
 }

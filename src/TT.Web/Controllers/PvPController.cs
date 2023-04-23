@@ -2309,6 +2309,12 @@ namespace TT.Web.Controllers
 
             }
 
+            // if this item is a rejuvenative lotion, redirect to the appropriate page
+            if (item.dbItem.ItemSourceId == ItemStatics.OtherRestoreItemSourceId)
+            {
+                return RedirectToAction(MVC.Item.SetName(item.dbItem.Id));
+            }
+
             var (success, result) = ItemProcedures.UseItem(itemId, myMembershipId);
 
             if (success == true)

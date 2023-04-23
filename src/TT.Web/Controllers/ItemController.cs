@@ -11,11 +11,13 @@ using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.JokeShop;
+using TT.Domain.Legacy.Services;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
 {
@@ -437,6 +439,179 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
             PlayerLogProcedures.AddPlayerLog(itemPlayer.Id, "You can feel your form beginning to change as it is instantly transformed into a " + form.FriendlyName + "!", true);
 
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult SetName(int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var output = new SetNicknameViewModel
+            {
+                OriginalFirstName = me.OriginalFirstName,
+                OriginalLastName = me.OriginalLastName,
+                HasSelfRenamed = me.HasSelfRenamed,
+                ItemId = itemId,
+            };
+
+            return View(MVC.Item.Views.SetName, output);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult SetNameSend(SetNicknameViewModel input)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var fnamecheck = TrustStatics.NameIsReserved(input.OriginalFirstName);
+            if (!fnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("OriginalFirstName", "You can't use the first name '" + input.OriginalFirstName + "'.  It is reserved or else not allowed.");
+            }
+
+            // assert that the last name is not reserved by the system
+            var lnamecheck = TrustStatics.NameIsReserved(input.OriginalLastName);
+            if (!lnamecheck.IsNullOrEmpty())
+            {
+                ModelState.AddModelError("OriginalLastName", "You can't use the last name '" + input.OriginalLastName + "'.  It is reserved or else not allowed.");
+            }
+
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+            var resName = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == input.OriginalFirstName + " " + input.OriginalLastName);
+
+            if (resName != null && resName.MembershipId != me.MembershipId)
+            {
+                ModelState.AddModelError("", "This name has been reserved by a different player.  Choose another.");
+            }
+
+            IItemRepository itemRepo = new EFItemRepository();
+            var itemPlus = ItemProcedures.GetItemViewModel(input.ItemId);
+
+            Random rand = new Random();
+            var randomForm = Array.Empty<int>();
+
+            if (!ModelState.IsValid)
+            {
+                return View(MVC.Item.Views.SetName, input);
+            }
+
+            if (input.Personalities == null)
+            {
+                TempData["Error"] = "Nothing seems to happen when you use the lotion.";
+                TempData["SubError"] = "You must select a personality.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            switch (input.Personalities.ToString())
+            {
+                case "BIMBOS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
+                    break;
+                case "CATS_AND_NEKOS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CATS_AND_NEKOS).ToArray();
+                    break;
+                case "CHRISTMAS_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.CHRISTMAS_FORMS).ToArray();
+                    break;
+                case "DOGS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DOGS).ToArray();
+                    break;
+                case "DRONES":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.DRONES).ToArray();
+                    break;
+                case "EASTER_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.EASTER_FORMS).ToArray();
+                    break;
+                case "FAIRIES":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.FAIRIES).ToArray();
+                    break;
+                case "GHOSTS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.GHOSTS).ToArray();
+                    break;
+                case "HALLOWEEN_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.HALLOWEEN_FORMS).ToArray();
+                    break;
+                case "MAIDS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MAIDS).ToArray();
+                    break;
+                case "MANA_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MANA_FORMS).ToArray();
+                    break;
+                case "MISCHIEVOUS_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.MISCHIEVOUS_FORMS).ToArray();
+                    break;
+                case "RODENTS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.RODENTS).ToArray();
+                    break;
+                case "ROMANTIC_FORMS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.ROMANTIC_FORMS).ToArray();
+                    break;
+                case "SHEEP":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.SHEEP).ToArray();
+                    break;
+                case "STRIPPERS":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.STRIPPERS).ToArray();
+                    break;
+                case "THIEVES":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.THIEVES).ToArray();
+                    break;
+                case "TREES":
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.TREES).ToArray();
+                    break;
+                default:
+                    randomForm = JokeShopProcedures.AnimateForms().Select(f => f.FormSourceId).Intersect(JokeShopProcedures.BIMBOS).ToArray();
+                    break;
+            }
+
+            var formSourceId = randomForm[rand.Next(randomForm.Count())];
+
+            if (PlayerProcedures.CheckHasSelfRenamed(me))
+            {
+                input.OriginalFirstName = NameService.GetRandomFirstName();
+                input.OriginalLastName = NameService.GetRandomLastName();
+
+                PlayerProcedures.SetOriginalNameAndBase(input.OriginalFirstName, input.OriginalLastName, myMembershipId, formSourceId);
+                TFEnergyProcedures.CleanseTFEnergies(me, 25);
+                PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
+                LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
+                
+                itemRepo.DeleteItem(input.ItemId);
+
+                TempData["Error"] = "Your mind wanders as you apply the lotion.";
+                TempData["SubError"] = "You recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (input.OriginalFirstName == null || input.OriginalLastName == null)
+            {
+                TempData["Error"] = "Nothing seems to happen when you use the lotion.";
+                TempData["SubError"] = "Your name may not be blank.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (input.OriginalFirstName.Length < 2 || input.OriginalLastName.Length < 2)
+            {
+                TempData["Error"] = "Nothing seems to happen when you use the lotion.";
+                TempData["SubError"] = "Names must be at least 2 characters.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if ((input.OriginalFirstName != null && input.OriginalFirstName.Length > 30) || (input.OriginalLastName != null && input.OriginalLastName.Length > 30))
+            {
+                TempData["Error"] = "Nothing seems to happen when you use the lotion.";
+                TempData["SubError"] = "First or last names must be no longer than 30 characters.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            PlayerProcedures.SetOriginalNameAndBase(input.OriginalFirstName, input.OriginalLastName, myMembershipId, formSourceId);
+            TFEnergyProcedures.CleanseTFEnergies(me, 25);
+            PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
+            itemRepo.DeleteItem(input.ItemId);
+
+            TempData["Result"] = "You seem to recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
             return RedirectToAction(MVC.PvP.Play());
         }
 

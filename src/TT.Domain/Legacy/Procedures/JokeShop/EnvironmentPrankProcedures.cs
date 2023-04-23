@@ -263,6 +263,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                     ItemStatics.DefectiveTransmogItemSourceId,
                                     ItemStatics.WillpowerBombVolatileItemSourceId,
                                     ItemStatics.SelfRestoreItemSourceId,
+                                    ItemStatics.OtherRestoreItemSourceId,
                                     ItemStatics.LullabyWhistleItemSourceId,
                                     ItemStatics.SpellbookLargeItemSourceId,
                                     ItemStatics.TeleportationScrollItemSourceId };

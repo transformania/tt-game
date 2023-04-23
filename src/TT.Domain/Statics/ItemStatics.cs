@@ -53,7 +53,10 @@ namespace TT.Domain.Statics
         
         public const int MallKeySourceId = 585;
 
+        //Defective items!
         public const int DefectiveTransmogItemSourceId = 737;
+        public const int OtherRestoreItemSourceId = 774;
+
 
         public enum ConsumableSubItemTypes { Rune = 0, Tome = 1, Spellbook = 2, Restorative = 3, WillpowerBomb = 4 }
 

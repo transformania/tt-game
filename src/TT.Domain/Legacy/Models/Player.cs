@@ -58,6 +58,7 @@ namespace TT.Domain.Models
         public int OriginalFormSourceId { get; set; }
         public string OriginalFirstName { get; set; }
         public string OriginalLastName { get; set; }
+        public bool HasSelfRenamed { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
@@ -208,7 +209,7 @@ namespace TT.Domain.Models
         public int ExtraInventory { get; set; }
         public decimal MoveActionPointDiscount { get; set; }
         public decimal SneakPercent { get; set; }
-
+        public bool HasSelfRenamed { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
         public string Gender { get; set; }

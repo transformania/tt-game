@@ -75,6 +75,10 @@
                     <span class="icon icon-sleep" title="This player is offline and will be harder to attack."></span>
                 }
                 }
+                @if (Model.Player.InHardmode)
+                {
+                    <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+                }
                 <span class="iconPortraitLarge">
                     @HtmlHelpers.PrintDonatorIcon(Model.Player.ToDbPlayer())
                     @HtmlHelpers.PrintRPIcon(Model.Player.ToDbPlayer())

@@ -36,6 +36,10 @@
                     <span class="icon icon-sleep" title="This player is offline and cannot be attacked."></span>
                 }
             }
+            @if (Model.Player.InHardmode)
+            {
+                <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+            }
         </div>
     </div>
 

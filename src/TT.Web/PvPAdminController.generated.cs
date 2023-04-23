@@ -163,6 +163,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SwapPlayerSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SwapPlayerSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult JokeShopAdminActionsSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.JokeShopAdminActionsSend);
@@ -267,6 +273,7 @@ namespace TT.Web.Controllers
             public readonly string ViewItemTransferLog = ("ViewItemTransferLog").ToLowerInvariant();
             public readonly string RenamePlayer = ("RenamePlayer").ToLowerInvariant();
             public readonly string RenamePlayerSend = ("RenamePlayerSend").ToLowerInvariant();
+            public readonly string SwapPlayerSend = ("SwapPlayerSend").ToLowerInvariant();
             public readonly string JokeShopAdminActions = ("JokeShopAdminActions").ToLowerInvariant();
             public readonly string JokeShopAdminActionsSend = ("JokeShopAdminActionsSend").ToLowerInvariant();
             public readonly string ModDeleteClassified = ("ModDeleteClassified").ToLowerInvariant();
@@ -435,6 +442,14 @@ namespace TT.Web.Controllers
         public ActionParamsClass_RenamePlayerSend RenamePlayerSendParams { get { return s_params_RenamePlayerSend; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_RenamePlayerSend
+        {
+            public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SwapPlayerSend s_params_SwapPlayerSend = new ActionParamsClass_SwapPlayerSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SwapPlayerSend SwapPlayerSendParams { get { return s_params_SwapPlayerSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SwapPlayerSend
         {
             public readonly string input = ("input").ToLowerInvariant();
         }
@@ -1123,6 +1138,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RenamePlayerSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             RenamePlayerSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SwapPlayerSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.PlayerNameViewModel input);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SwapPlayerSend(TT.Domain.ViewModels.PlayerNameViewModel input)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SwapPlayerSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
+            SwapPlayerSendOverride(callInfo, input);
             return callInfo;
         }
 

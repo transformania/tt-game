@@ -5,7 +5,7 @@
 
     <h1>Chaos Actions</h1>
 
-    <p>You can use this tool to rename a player, change their form (animate forms only), level, or Arpeyjis.  Some rules:</p>
+    <p>You can use this tool to rename a player, change their form, level, or Arpeyjis.  Some rules:</p>
     <ul class="listdots">
         <li>This tool only works in chaos mode.</li>
         <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
@@ -55,6 +55,16 @@
         <br>
         <br>
 
+        <input type="submit" value="Send"><br><br>
+    }
+
+    @using (Html.BeginForm(MVC.PvPAdmin.SwapPlayerSend(), FormMethod.Post, new { id = "swapPlayer" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <span>Swap Player ID:</span>
+        @Html.TextBoxFor(m => m.SwapTargetId, new { id = "swapId", @class = "checkInt" })<br><br>
         <input type="submit" value="Send">
     }
 

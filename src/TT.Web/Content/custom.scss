@@ -796,6 +796,10 @@ body.location-joke_shop .container {
   text-decoration: line-through;
 }
 
+.cooldown {
+    filter: grayscale(100%) opacity(75%);
+}
+
 .onlinePlayersButton {
   border: none !important;
 }

@@ -1144,7 +1144,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 int itemsOnCooldown(Player p) => DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = p.Id }).Count(i => i.TurnsUntilUse > 0);
 
                 AddPart(challenge,
-                        $"Use a reusable consumable and keep carrying it (you can remove it from your consumable slot after using it)",
+                        "Use a consumable item",
                         p => itemsOnCooldown(p) >= 1,
                         p => (itemsOnCooldown(p), 1));
                 AddResourceContribution(challenge, r => (r == RESOURCE_CONSUMABLE_USE) ? 1 : 0);
@@ -1211,7 +1211,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             if (itemType == PvPStatics.ItemType_Consumable_Reuseable || itemType == PvPStatics.ItemType_Consumable)
             {
-                // Equipping consumable is harder due to combat timer
+                // Equipping consumable is harder due to cooldown timer
                 difficulty++;
             }
             else if (itemType == PvPStatics.ItemType_Pet)
@@ -1495,7 +1495,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 if (item.Category == PvPStatics.ItemType_Consumable_Reuseable)
                 {
-                    // Equipping consumable is harder due to combat timer
+                    // Equipping consumable is harder due to cooldown timer
                     difficulty++;
                 }
                 else if (item.Category == PvPStatics.ItemType_Pet)

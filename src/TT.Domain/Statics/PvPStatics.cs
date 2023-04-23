@@ -157,6 +157,8 @@ namespace TT.Domain.Statics
         public const int FriendNicknameMaxLength = 100;
 
         public const int Spell_WeakenId = 312;
+
+        public const int DefaultConsumableCooldown = 8;
     }
 
     public static class MindControlStatics

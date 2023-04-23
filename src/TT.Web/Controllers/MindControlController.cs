@@ -67,7 +67,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.MindControl.MindControlList());
             }
 
-            var victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
+            var victimItems = ItemProcedures.GetAllPlayerItems(victim.Id)
+                .Where(i => i.dbItem.TurnsUntilUse == 0)
+                .ToList();
 
             if (victimItems.Any())
             {
@@ -116,7 +118,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                TempData["Error"] = "It seems " + victim.GetFullName() + " was not carrying or wearing anything to drop!";
+                TempData["Error"] = "It seems " + victim.GetFullName() + " was not carrying or wearing anything they could drop!";
             }
 
             return RedirectToAction(MVC.PvP.Play());

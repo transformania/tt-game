@@ -113,6 +113,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
+            // assert this item is not an expired consumable
+            if (purchased.ItemSource.ItemType == PvPStatics.ItemType_Consumable && purchased.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = $"This item is not for sale.";
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
+            }
+
             var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
 
             // assert that the player has enough money for this
@@ -171,6 +178,7 @@ namespace TT.Web.Controllers
             // show the permanent and consumable items the player is carrying
             var output = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id })
                 .Where(i => i.ItemSource.ItemType != PvPStatics.ItemType_Pet &&
+                (i.ItemSource.ItemType != PvPStatics.ItemType_Consumable || i.TurnsUntilUse == 0) &&
                 !i.IsEquipped &&
                 i.SoulboundToPlayer == null &&
                 (i.IsPermanent || i.ItemSource.ItemType == PvPStatics.ItemType_Consumable || i.ItemSource.ItemType == PvPStatics.ItemType_Rune));
@@ -218,6 +226,13 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction(MVC.NPC.SellList());
+            }
+
+            // assert this item is not an expired consumable
+            if (itemBeingSold.ItemSource.ItemType == PvPStatics.ItemType_Consumable && itemBeingSold.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = $"This item is a single use consumable on cooldown and cannot be sold.";
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
             // assert item is not soulbound

@@ -153,12 +153,14 @@
                         @{
                             if (item.FormerPlayer == null)
                             {
-                                <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName'></div>
+                                <a href="@Url.Action(MVC.Item.MyInventory())">
+                                    <div class="playPageInventoryItem @(((item.ItemSource.ItemType == PvPStatics.ItemType_Consumable || item.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) && item.TurnsUntilUse > 0) ? "cooldown" : "")" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName'></div>
+                                </a>
                             }
                             else
                             {
                                 <a href="@Url.Action(MVC.PvP.LookAtPlayer(item.FormerPlayer.Id))">
-                                    <div class="playPageInventoryItem" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName, formerly @item.FormerPlayer.FullName'></div>
+                                    <div class="playPageInventoryItem @(((item.ItemSource.ItemType == PvPStatics.ItemType_Consumable || item.ItemSource.ItemType == PvPStatics.ItemType_Consumable_Reuseable) && item.TurnsUntilUse > 0) ? "cooldown" : "")" style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true));" title='@item.ItemSource.FriendlyName, formerly @item.FormerPlayer.FullName'></div>
                                 </a>
                             }
                         }

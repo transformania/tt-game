@@ -194,9 +194,13 @@ namespace TT.Domain.Players.Entities
         {
             foreach (var i in Items)
             {
-                if (!ignoreRunes || i.ItemSource.ItemType != PvPStatics.ItemType_Rune)
+                // Don't drop expired single-use consumables (will self destruct after cooldown)
+                if (i.ItemSource.ItemType != PvPStatics.ItemType_Consumable || i.TurnsUntilUse == 0)
                 {
-                    i.Drop(this);
+                    if (!ignoreRunes || i.ItemSource.ItemType != PvPStatics.ItemType_Rune)
+                    {
+                        i.Drop(this);
+                    }
                 }
             }
         }

@@ -94,7 +94,7 @@ namespace TT.Web.Controllers
                 if (forms.IsEmpty())
                 {
                     TempData["Error"] = "Huh. It looks like something went wrong with that one.";
-                    ItemProcedures.DeleteItem(itemId);
+                    ItemProcedures.ResetUseCooldown(item);
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
@@ -102,7 +102,7 @@ namespace TT.Web.Controllers
                 FormDetail form = forms.ElementAt(randForm);
 
                 PlayerProcedures.InstantChangeToForm(me, form.FormSourceId);
-                ItemProcedures.DeleteItem(itemId);
+                ItemProcedures.ResetUseCooldown(item);
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 var target = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
@@ -243,7 +243,7 @@ namespace TT.Web.Controllers
             }
 
             PlayerProcedures.InstantChangeToForm(me, skill.StaticSkill.FormSourceId.Value);
-            ItemProcedures.DeleteItem(itemId);
+            ItemProcedures.ResetUseCooldown(item);
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
@@ -577,7 +577,7 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                 
-                itemRepo.DeleteItem(input.ItemId);
+                ItemProcedures.ResetUseCooldown(itemPlus);
 
                 TempData["Error"] = "Your mind wanders as you apply the lotion.";
                 TempData["SubError"] = "You recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
@@ -609,7 +609,7 @@ namespace TT.Web.Controllers
             TFEnergyProcedures.CleanseTFEnergies(me, 25);
             PlayerLogProcedures.AddPlayerLog(me.Id, "You can feel your form beginning to change as it is instantly transformed by the " + itemPlus.Item.FriendlyName + "!", true);
             LocationLogProcedures.AddLocationLog(me.dbLocationName, me.FirstName + " " + me.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-            itemRepo.DeleteItem(input.ItemId);
+            ItemProcedures.ResetUseCooldown(itemPlus);
 
             TempData["Result"] = "You seem to recall your name being " + input.OriginalFirstName + " " + input.OriginalLastName + ".";
             return RedirectToAction(MVC.PvP.Play());
@@ -715,16 +715,8 @@ namespace TT.Web.Controllers
                 EffectProcedures.SetPerkDurationToZero(curseToRemove.Id, me);
             }
 
-            // if the item is a consumable type, delete it.  Otherwise reset its cooldown
-            if (itemToUse.Item.ItemType == PvPStatics.ItemType_Consumable)
-            {
-                ItemProcedures.DeleteItem(itemToUse.dbItem.Id);
-            }
-            // else if (itemToUse.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
-            else
-            {
-                ItemProcedures.ResetUseCooldown(itemToUse);
-            }
+            // if the item is a consumable type, it will be deleted once its cooldown expires
+            ItemProcedures.ResetUseCooldown(itemToUse);
 
             PlayerProcedures.AddItemUses(me.Id, 1);
 
@@ -797,7 +789,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            ItemProcedures.DeleteItem(book.dbItem.Id);
+            ItemProcedures.ResetUseCooldown(book);
             ItemProcedures.AddBookReading(me, book.dbItem.ItemSourceId);
             PlayerProcedures.GiveXP(me, 35);
             PlayerProcedures.AddItemUses(me.Id, 1);

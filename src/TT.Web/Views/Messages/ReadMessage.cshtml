@@ -22,7 +22,8 @@
             <span class="messageTimeContainer">@HtmlHelpers.DatetimeToTimeago(Model.Timestamp)</span>
         </div>
         <div class="messageTextContainer">
-            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br>"))</p>
+            <p style="white-space: pre-line">@Html.Raw(Model.MessageText.Replace("[br]", "<br>"))</p>
+
         </div>
 
         @{

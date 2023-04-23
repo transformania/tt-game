@@ -27,8 +27,8 @@
             <tr>
                 <th>Spell Name</th>
                 <th>Form Name</th>
-                <th>Graphic</th>
                 <th>Form Type</th>
+                <th>Spell Type</th>
                 <th>Description</th>
                 <th>Effect</th>
                 <th>Archive</th>
@@ -72,10 +72,12 @@
                                         @if (skill.SkillSource.MobilityType == PvPStatics.MobilityInanimate || skill.SkillSource.MobilityType == PvPStatics.MobilityPet)
                                         {
                                             <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(skill.SkillSource.FormSource.ItemSource.ItemType)</span>
+                                            <b class="text-hide">@skill.SkillSource.FormSource.ItemSource.ItemType</b>
                                         }
                                         else if (skill.SkillSource.MobilityType == PvPStatics.MobilityFull)
                                         {
                                             <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(skill.SkillSource.FormSource.Gender)</span>
+                                            <b class="text-hide">@skill.SkillSource.FormSource.Gender</b>
                                         }
                                     </div>
                                 }

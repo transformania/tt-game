@@ -211,7 +211,23 @@
                 }
                 else if (Model.YouItem != null)
                 {
-                    <p>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.</p>
+                    if (Model.OwnedBy.Player.BotId == AIStatics.SoulbinderBotId)
+                    {
+                        
+                        if (Model.YouItem.SoulboundToPlayer != null)
+                        {
+                            <p>
+                            You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.YouItem.SoulboundToPlayer.Id))">@Model.YouItem.SoulboundToPlayer.FullName</a>.
+                            </p><br>
+                        }
+                        <p>
+                        You are currently held by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will be kept safe while your owner is indisposed.
+                        </p>
+                    }
+                    else
+                    {
+                        <p>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.</p>
+                    }
 
                     if (Model.OwnedBy.Player.BotId == AIStatics.ActivePlayerBotId)
                     {
@@ -245,7 +261,14 @@
                     }
 
                     <p>
-                        <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
+                        <a href="#showEscape" id="showEscape" class="inanimateAction">Attempt to slip free!</a>
+                        <div id="escapeDiv" style="display: none;">
+                            <p class="bg-warning small">
+                                <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="btn-sm btn-warning center-block">Yes, I want slip free from the person holding me.</a>
+                                <br>
+                                By selecting this option, you will be dropped from the person holding you. If you are soulbound, this will break it and you will need to be soulbound again.
+                            </p>
+                        </div>
                     </p>
                 }
 
@@ -476,6 +499,14 @@
             $(this).attr('href',href);
         });
 
+    });
+
+    $("#showEscape").click(function () {
+        if ($("#escapeDiv").is(":visible") === false) {
+            $("#escapeDiv").show();
+        } else {
+            $("#escapeDiv").hide();
+        }
     });
 
     </script>

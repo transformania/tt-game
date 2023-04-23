@@ -225,7 +225,22 @@
                 }
                 else if (Model.WornBy != null)
                 {
-                    <p>You are currently @(Model.Item.IsEquipped ? "being worn" : "owned") by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+                    if(Model.WornBy.Player.BotId == AIStatics.SoulbinderBotId)
+                    {
+                        if (Model.Item.SoulboundToPlayer != null)
+                        {
+                            <p>
+                            You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Item.SoulboundToPlayer.Id))">@Model.Item.SoulboundToPlayer.FullName</a>.
+                            </p><br>
+                        }
+                        <p>
+                        You are currently held by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a> and will be kept safe while your owner is indisposed.
+                        </p>
+                    }
+                    else
+                    {
+                         <p>You are currently @(Model.Item.IsEquipped ? "being worn" : "owned") by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>   
+                    }
 
                     if (Model.WornBy.Player.BotId == AIStatics.ActivePlayerBotId)
                     {
@@ -238,16 +253,16 @@
                         Although inanimate, you can still move just the tiniest bit.  You can still...
                         <ul class="inanimateActionList">
                             <li>
-                                <a href="@Url.Action(MVC.PvP.InanimateAction("rub"))" class="check inanimateAction">Affectionately rub against your owner</a>
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("rub"))" class="check inanimateAction">Affectionately rub against your owner (+WP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.InanimateAction("pinch"))" class="check inanimateAction">Peskily pinch your owner</a>
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("pinch"))" class="check inanimateAction">Peskily pinch your owner (-WP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.InanimateAction("soothe"))" class="check inanimateAction">Kindly soothe your owner</a>
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("soothe"))" class="check inanimateAction">Kindly soothe your owner (+MP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner</a>
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner (-MP)</a>
                             </li>
 
                             @{
@@ -261,8 +276,14 @@
                                 if (Model.WornBy != null)
                                 {
                                     <li>
-                                        <br>
-                                        <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
+                                        <a href="#showEscape" id="showEscape" class="inanimateAction">Attempt to slip free!</a>
+                                        <div id="escapeDiv" style="display: none;">
+                                            <p class="bg-warning small">
+                                                <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="btn-sm btn-warning center-block">Yes, I want slip free from the person holding me.</a>
+                                                <br>
+                                                By selecting this option, you will be dropped from the person holding you. If you are soulbound, this will break it and you will need to be soulbound again.
+                                            </p>
+                                        </div>
                                     </li>
                                 }
                             }
@@ -432,6 +453,14 @@
     function fail() {
         // alert("fail");
     }
+
+    $("#showEscape").click(function () {
+        if ($("#escapeDiv").is(":visible") === false) {
+            $("#escapeDiv").show();
+        } else {
+            $("#escapeDiv").hide();
+        }
+    });
 
     </script>
 }

@@ -38,8 +38,8 @@
         <tr>
             <th>Spell Name</th>
             <th>Form Name</th>
-            <th>Image</th>
-            <th>Date Added</th>
+            <th>Form Type</th>
+            <th>Form ID</th>
             <th>Purchase</th>
         </tr>
         </thead>
@@ -55,12 +55,14 @@
                         {
                             <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
                                 <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.Gender)</span>
+                                <b class="text-hide">@s.FormSource.Gender</b>
                             </div>
                         }
                         else if (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet)
                         {
                             <div class="portrait" style="background-image: url(@HtmlHelpers.GetImageUrl(s.FormSource.ItemSource.PortraitUrl, s.MobilityType, true)); float: right; bottom: 0; border: 1px solid black;">
                                 <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(s.FormSource.ItemSource.ItemType)</span>
+                                <b class="text-hide">@s.FormSource.ItemSource.ItemType</b>
                             </div>
                         }
                         else
@@ -69,7 +71,7 @@
                         }
                     }
                 </td>
-                <td class="text-hide">@s.Id</td>
+                <td>@s.Id</td>
                 <td><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpellSend(s.Id))">Purchase Training</a></td>
             </tr>
         }

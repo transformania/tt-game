@@ -303,7 +303,7 @@
                             <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
                         </p>
                     }
-                    if (PvPStatics.ChaosMode)
+                    if (PvPStatics.ChaosMode || Model.You.InHardmode)
                     {
                         <p class="center-block">
                             <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Submit to your transformation and lock as this form</a>

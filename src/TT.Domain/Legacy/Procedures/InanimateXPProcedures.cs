@@ -448,16 +448,16 @@ namespace TT.Domain.Procedures
 
         public static string InstaLock(string membershipId)
         {
+            var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
 
-            //Check if we're in Chaos Mode
-            if (!PvPStatics.ChaosMode)
+            //Check if we're in Chaos Mode or Hard Mode
+            if (!PvPStatics.ChaosMode && !me.InHardmode)
             {
-                throw new Exception("Game is not in Chaos Mode");
+                throw new Exception("You cannot do that right now.");
             }
 
             IItemRepository itemRep = new EFItemRepository();
 
-            var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             var inanimateMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
             var inanimateMe = itemRep.Items.FirstOrDefault(i => i.Id == inanimateMeHack.Id); // TODO: Replace with proper Command
 

@@ -3598,15 +3598,15 @@ namespace TT.Web.Controllers
         public virtual ActionResult InstantLock()
         {
 
-            //Check if we're in Chaos Mode
-            if (!PvPStatics.ChaosMode)
-            {
-                TempData["Error"] = "You can only do that in Chaos Mode";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            //Check if we're in Chaos Mode or Hard Mode
+            if (!PvPStatics.ChaosMode && !me.InHardmode)
+            {
+                TempData["Error"] = "You cannot do that right now.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player is inanimate or an animal
             if (me.Mobility == PvPStatics.MobilityFull)

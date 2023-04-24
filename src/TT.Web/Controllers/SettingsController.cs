@@ -106,10 +106,30 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
 
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // Make sure the player object exists
+            if (me == null) 
+            {
+                TempData["Error"] = "That player does not seem to exist.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             try
             {
-                DomainRegistry.Repository.Execute(new ChangeHardmode { MembershipId = myMembershipId, InHardmode = true });
-                TempData["Result"] = $"You have changed your game mode to HARD MODE";
+                // set up chaos mode toggle
+                if (!PvPStatics.ChaosMode)
+                {
+                    DomainRegistry.Repository.Execute(new ChangeHardmode { MembershipId = myMembershipId, InHardmode = true });
+                    TempData["Result"] = $"You have changed your game mode to HARD MODE";
+                }
+                else
+                {
+                    var toggleHardMode = !me.InHardmode;
+                    DomainRegistry.Repository.Execute(new ChangeHardmode { MembershipId = myMembershipId, InHardmode = toggleHardMode });
+                    TempData["Result"] = $"You have changed your set Hard Mode to " + toggleHardMode;
+                }
+
             }
             catch (DomainException e)
             {

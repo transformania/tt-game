@@ -116,10 +116,10 @@ namespace TT.Web.Controllers
                 {
                     ViewBag.Result = "Load successful.";
 
-                    var iAmEditor = contribution.AllowedEditor.Contains(currentUserId);
+                    var iAmEditor = editorContributions;
 
                     // assert player owns this
-                    if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader && !iAmEditor)
+                    if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader && !iAmEditor.Any())
                     {
                         TempData["Error"] = "This contribution does not belong to your account.";
                         return RedirectToAction(MVC.PvP.Play());
@@ -266,9 +266,11 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
-            var iAmEditor = contribution.AllowedEditor.Contains(User.Identity.GetUserId());
 
-            if (!iAmEditor && !iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
+            IEnumerable<Contribution> editorContributions = contributionRepo.Contributions.Where(c => c.AllowedEditor.Contains(me.MembershipId));
+            var iAmEditor = editorContributions;
+
+            if (!iAmEditor.Any() && !iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -285,9 +287,11 @@ namespace TT.Web.Controllers
 
             var me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             var iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
-            var iAmEditor = SaveMe.AllowedEditor.Contains(User.Identity.GetUserId());
 
-            if (!iAmEditor && !iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
+            IEnumerable<Contribution> editorContributions = contributionRepo.Contributions.Where(c => c.AllowedEditor.Contains(me.MembershipId));
+            var iAmEditor = editorContributions;
+
+            if (!iAmEditor.Any() && !iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction(MVC.PvP.Play());
@@ -487,7 +491,8 @@ namespace TT.Web.Controllers
 
             if (input.Id != -1)
             {
-                var iAmEditor = SaveMe.AllowedEditor.Contains(User.Identity.GetUserId());
+                IEnumerable<Contribution> editorContributions = contributionRepo.Contributions.Where(c => c.AllowedEditor.Contains(myMembershipId));
+                var iAmEditor = editorContributions;
                 // submitter is original author, ID stays the same and do NOT mark as proofreading version
                 if (SaveMe != null && SaveMe.OwnerMembershipId == myMembershipId)
                 {
@@ -499,7 +504,7 @@ namespace TT.Web.Controllers
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
                     // editors for not have to use only proofreader copy
-                    if (iAmEditor || (SaveMe.ProofreadingCopy && iAmProofreader))
+                    if (iAmEditor.Any() || (SaveMe.ProofreadingCopy && iAmProofreader))
                     {
                         SaveMe.Id = input.Id;
                         //SaveMe.ProofreadingCopy = true;
@@ -636,9 +641,11 @@ namespace TT.Web.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
             var contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
-            var iAmEditor = contribution.AllowedEditor.Contains(User.Identity.GetUserId());
 
-            if (!iAmProofreader && !iAmEditor)
+            IEnumerable<Contribution> editorContributions = contributionRepo.Contributions.Where(c => c.AllowedEditor.Contains(me.MembershipId));
+            var iAmEditor = editorContributions;
+
+            if (!iAmProofreader && !iAmEditor.Any())
             {
                 TempData["Error"] = "You must be a proofreader in order to do this.";
                 return RedirectToAction(MVC.PvP.Play());

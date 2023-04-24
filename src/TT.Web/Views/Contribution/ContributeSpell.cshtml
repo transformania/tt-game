@@ -169,14 +169,21 @@
                     <br>
                     Current Editors: 
                     @{ 
-                        var editorList = Model.AllowedEditor.TrimEnd(';').Split(';');
-
-                        for(var e = 0; e < editorList.Length; e++)
+                        if (Model.AllowedEditor != null)
                         {
-                            if(PlayerProcedures.GetPlayerFromMembership(editorList[e]) != null)
-                            { 
-                                <br><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(editorList[e]))">- @PlayerProcedures.GetPlayerFromMembership(editorList[e]).FirstName @PlayerProcedures.GetPlayerFromMembership(editorList[e]).LastName</a>
+                            var editorList = Model.AllowedEditor.TrimEnd(';').Split(';');
+
+                            for(var e = 0; e < editorList.Length; e++)
+                            {
+                                if(PlayerProcedures.GetPlayerFromMembership(editorList[e]) != null)
+                                {
+                                    <br><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(editorList[e]))">- @PlayerProcedures.GetPlayerFromMembership(editorList[e]).FirstName @PlayerProcedures.GetPlayerFromMembership(editorList[e]).LastName</a>
+                                }
                             }
+                        }
+                        else
+                        {
+                            <br><b>None.</b>
                         }
                     }
                    

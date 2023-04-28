@@ -535,7 +535,7 @@ namespace TT.Domain.Procedures
                         chance = 100;
                     }
 
-                    output += qs.PrintRequirementStatAsString() + " - " + chance + "%";
+                    output += qs.PrintRequirementStatAsString() + " - " + chance.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%";
 
                 }
 

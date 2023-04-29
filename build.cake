@@ -3,11 +3,11 @@
 #addin nuget:?package=System.ValueTuple&version=4.5.0
 #addin nuget:?package=Microsoft.Data.SqlClient&version=5.0.1
 
-#tool nuget:?package=NuGet.CommandLine&version=6.3.1
+#tool nuget:?package=NuGet.CommandLine&version=6.5.0
 #tool nuget:?package=FluentMigrator.Console&version=3.3.2
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.15.2
+#tool nuget:?package=NUnit.ConsoleRunner&version=3.16.3
 #tool nuget:?package=OpenCover&version=4.7.1221
-#tool nuget:?package=ReportGenerator&version=5.1.10
+#tool nuget:?package=ReportGenerator&version=5.1.20
 
 using static Cake.Common.Tools.ReportGenerator.ReportGeneratorReportType;
 using static System.Globalization.CultureInfo;

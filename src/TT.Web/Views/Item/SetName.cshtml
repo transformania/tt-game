@@ -1,6 +1,10 @@
 ﻿@model TT.Web.ViewModels.SetNicknameViewModel
 
-<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Item.MyInventory())">Back to Inventory</a></li>
+}
 
 <div class="center-block">
     @using (Html.BeginForm(MVC.Item.SetNameSend(), FormMethod.Post))
@@ -37,9 +41,11 @@
         else
         {
             <p>
+                @Html.HiddenFor(m => m.OriginalFirstName)
                 <span>First Name:</span>
                 @Model.OriginalFirstName
                 <br>
+                @Html.HiddenFor(m => m.OriginalLastName)
                 <span>Last Name:</span>
                 @Model.OriginalLastName
                 <br>

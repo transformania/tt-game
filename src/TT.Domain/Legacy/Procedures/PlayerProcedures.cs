@@ -824,6 +824,9 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            var form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == formSourceId);
+
             if (OriginalFirstName != null && OriginalFirstName.Length > 0)
             {
                 player.OriginalFirstName = OriginalFirstName;
@@ -847,8 +850,9 @@ namespace TT.Domain.Procedures
             }
 
             player.HasSelfRenamed = true;
-            player.OriginalFormSourceId = formSourceId;
-            player.FormSourceId = formSourceId;
+            player.OriginalFormSourceId = form.Id;
+            player.FormSourceId = form.Id;
+            player.Gender = form.Gender;
 
             playerRepo.SavePlayer(player);
         }

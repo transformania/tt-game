@@ -31,41 +31,9 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__DiceGameScore, score);
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>." + "<br />" + CalculateOdds());
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
 
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
-        }
-
-        private static void Roll(int[] rolls, int remaining, int sides, int runningTotal)
-        {
-            for (var i = 1; i <= sides; i++)
-            {
-                if (remaining == 1)
-                {
-                    rolls[i + runningTotal] += 1;
-                }
-                else
-                {
-                    Roll(rolls, remaining - 1, sides, runningTotal + i);
-                }
-            }
-        }
-
-        private static string CalculateOdds()
-        {
-            var rolls = new int[100];
-            Roll(rolls, 4, 20, 0);
-
-            var text = "";
-            var total = 0;
-            for (var i = 4; i < rolls.Length; i++)
-            {
-                var score = CalculateDiceGameScore(i);
-                total += rolls[i] * score;
-                text += i + " = " + rolls[i] + " -- " + score + "<br>";
-            }
-
-            return total + "<br>" + text;
         }
 
         private static int CalculateDiceGameScore(int total)

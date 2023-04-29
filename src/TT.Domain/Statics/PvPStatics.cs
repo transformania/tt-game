@@ -158,7 +158,7 @@ namespace TT.Domain.Statics
 
         public const int Spell_WeakenId = 312;
 
-        public const int DefaultConsumableCooldown = 8;
+        public const int DefaultConsumableCooldown = 5;
     }
 
     public static class MindControlStatics

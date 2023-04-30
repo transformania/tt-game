@@ -179,6 +179,12 @@ namespace TT.Domain.Procedures
             };
 
             var dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.Id == skillSourceId);
+
+            if (dbstatic == null)
+            {
+                return null;
+            }
+
             var tempstatic = new StaticSkill
             {
                 Id = dbstatic.Id,

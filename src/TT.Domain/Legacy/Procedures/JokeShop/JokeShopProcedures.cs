@@ -1138,39 +1138,43 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             rand = rand ?? new Random();
             var roll = rand.Next(100);
 
-            if (roll < 13)  // 13%
+            if (roll < 12)  // 12%
             {
                 return EnvironmentPrankProcedures.MeanResourcePrank(player, rand);
             }
-            else if (roll < 26)  // 13%
+            else if (roll < 24)  // 12%
             {
                 return EnvironmentPrankProcedures.MeanLocationPrank(player, rand);
             }
-            else if (roll < 35)  // 9%
+            else if (roll < 33)  // 9%
             {
                 return EnvironmentPrankProcedures.MeanQuotasAndTimerPrank(player, rand);
             }
-            else if (roll < 47)  // 12%
+            else if (roll < 45)  // 12%
             {
                 return CharacterPrankProcedures.MeanTransformationPrank(player, rand);
             }
-            else if (roll < 60)  // 13%
+            else if (roll < 57)  // 12%
             {
                 return CharacterPrankProcedures.MeanEffectsPrank(player, rand);
             }
-            else if (roll < 65)  // 5%
+            else if (roll < 62)  // 5%
             {
                 return NovelPrankProcedures.SummonPsychopath(player, rand);
             }
-            else if (roll < 69)  // 4%
+            else if (roll < 66)  // 4%
             {
                 return NovelPrankProcedures.SummonDoppelganger(player, rand);
             }
-            else if (roll < 73)  // 4%
+            else if (roll < 70)  // 4%
+            {
+                return NovelPrankProcedures.TakeIdentity(player, rand);
+            }
+            else if (roll < 74)  // 4%
             {
                 return NovelPrankProcedures.OpenPsychoNip(player);
             }
-            else if (roll < 78)  // 5%
+            else if (roll < 78)  // 4%
             {
                 return NovelPrankProcedures.ForceAttack(player, false, rand);
             }

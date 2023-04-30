@@ -1375,7 +1375,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return true;
         }
 
-        private static void SetInitialItemXP(Player player)
+        public static void SetInitialItemXP(Player player)
         {
             var inanimXpRepo = new EFInanimateXPRepository();
 

@@ -24,7 +24,7 @@
 
                     if (ViewBag.HasBio)
                     {
-                        <li><a href="@Url.Action(MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))">View Bio</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.ViewBio(Model.EffectivePlayerForm.Player.MembershipId))">View Bio</a></li>
                     }
                     else if (ViewBag.IsMe)
                     {
@@ -33,19 +33,22 @@
 
                     if (ViewBag.HasArtistAuthorBio)
                     {
-                        <li><a href="@Url.Action(MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))">View Artist/Author Bio</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.AuthorArtistBio(Model.EffectivePlayerForm.Player.MembershipId))">View Artist/Author Bio</a></li>
                     }
 
                     if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {
-                        <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.    PlayerForm.Player.MembershipId))">View Statistics</a></li>
                     }
 
                     <li><a href="@Url.Action(MVC.PvP.ViewEffects(Model.PlayerForm.Player.Id))">View Effects</a></li>
 
+                    if (Model.EffectivePlayerForm.Player.BotId == AIStatics.ActivePlayerBotId && !ViewBag.IsMe)
+                    {
+                        <li><a href="@Url.Action(MVC.Messages.Write(Model.EffectivePlayerForm.Player.Id, -1))">Send a Message</a></li>
+                    }
                     if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId && !ViewBag.IsMe)
                     {
-                        <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
                         <li><a href="#showBlacklist" id="showBlacklist" data-toggle="modal" data-target="#blacklistModal">Blacklist Player</a></li>
                         <li><a href="@Url.Action(MVC.Report.Report(Model.PlayerForm.Player.MembershipId))">Report Player</a></li>

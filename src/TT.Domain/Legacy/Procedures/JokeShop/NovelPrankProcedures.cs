@@ -40,7 +40,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
         {
             // Aims:
             // - Scores 69 for the target total of 69
-            // - Scores further from the target score less
+            // - Totals further from the target score less
             // - Weighted average score is 0, i.e. no advantage for rolling more times
             // - Good variety of possible scores
 
@@ -69,15 +69,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 // Fine tune to average 0
                 if (total <= 16)
                 {
-                    --score;
+                    score--;
                 }
                 if (total <= 11)
                 {
-                    ++score;
+                    score++;
                 }
                 if (total <= 6)
                 {
-                    ++score;
+                    score++;
                 }
                 if (total <= 4)
                 {

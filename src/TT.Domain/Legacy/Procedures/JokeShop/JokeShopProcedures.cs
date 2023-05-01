@@ -286,7 +286,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
                 else
                 {
-                    var message = "The Joke Shop drains you of your energies.";
+                    var message = "The Joke Shop drains you of some of your energies!";
 
                     if ((double)player.Health > (double)healthDrain * 1.5)
                     {
@@ -303,13 +303,13 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 message = "You feel yourself rocked by a sudden force.  Your body has withstood the impact this time, but your mind has taken a dent!";
                                 break;
                             case 3:
-                                message = "The walls around you shift, as if by some ancient mechanism built to ensnare unwary adventurers,  This is not the place you were just in, and yet it looks identical.  You fear a trap may be at work - you should be on your guard";
+                                message = "The walls around you shift, as if by some ancient mechanism built to ensnare unwary adventurers.  This is not the place you were just in, and yet it looks identical.  You fear a trap may be at work - you should be on your guard";
                                 break;
                             case 4:
                                 message = "\"Psst!\"  You hear a voice in your ear.  You turn to see who it is, but immediately find yourself falling through a whirling spiral vortex!  All meaning of space and time dissolves in this trip through some Daliesque wonderland!  Whether or not this pit has a bottom, you know you don't want to end up there.  So you cast a spell and find yourself back where you were, but the experience has taken its toll on you!";
                                 break;
                             case 5:
-                                message = "You catch a glimpse of some movement out of the corner of your eyes.  It's the shopkeeper.  You see them walking among some artifacts, and then they are gone, only to reappear in another part of the shop, still walking.  Again their likeness is obscured, only for it to appear somewhere else - this time behind you.  Conventional space has no meaning in this realm.  You contiue to watch as the proprietor's unbroken steps find passage between disparate spaces, only this time it's you that has moved, and you can feel its effects!";
+                                message = "You catch a glimpse of some movement out of the corner of your eye.  It's the shopkeeper.  You see them walking among some artifacts, and then they are gone, only to reappear in another part of the shop, still walking.  Again their likeness is obscured, only for it to appear somewhere else - this time behind you.  Conventional space has no meaning in this realm.  You contiue to watch as the proprietor's unbroken steps find passage between disparate spaces, only this time it's you that has moved, and you can feel its effects!";
                                 break;
                         }
                     }

@@ -237,6 +237,114 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return candidates;
         }
 
+        public static string Relocate(Random rand = null)
+        {
+            rand = rand ?? new Random();
+
+            LocationsStatics.MoveJokeShop();
+            return JokeShopProcedures.DrainPlayers(rand);
+        }
+
+        public static string DrainPlayers(Random rand = null)
+        {
+            rand = rand ?? new Random();
+
+            var cutoff = DateTime.UtcNow.AddMinutes(-TurnTimesStatics.GetOfflineAfterXMinutes());
+
+            var playerRepo = new EFPlayerRepository();
+            var players = playerRepo.Players.Where(p => p.dbLocationName == LocationsStatics.JOKE_SHOP &&
+                                                        p.LastActionTimestamp >= cutoff &&
+                                                        p.Mobility == PvPStatics.MobilityFull &&
+                                                        p.InDuel <= 0 &&
+                                                        p.InQuest <= 0 &&
+                                                        p.BotId == AIStatics.ActivePlayerBotId).ToList();
+
+            var numDrained = 0;
+            var numInanimated = 0;
+
+            foreach (var player in players)
+            {
+                // Drain players of willpower and mana
+                var healthDrain = player.MaxHealth / 4;
+                var manaDrain = player.MaxMana / 10;
+                player.Health = Math.Max(0, player.Health - healthDrain);
+                player.Mana = Math.Max(0, player.Mana - manaDrain);
+                playerRepo.SavePlayer(player);
+
+                numDrained++;
+
+                // Mobile inanimates at 0 WP may be unable to retain their mobility...
+                if (player.Health == 0 && rand.Next(3) == 0 && InanimateForms().Any(f => player.FormSourceId == f.FormSourceId) && PlayerHasBeenWarned(player))
+                {
+                    if(CharacterPrankProcedures.TryInanimateTransform(player, player.FormSourceId, dropInventory: false, severe: false, logChanges: false))
+                    {
+                        PlayerLogProcedures.AddPlayerLog(player.Id, $"As the Joke Shop drains more of your willpower you find you no longer have the strength of mind to remain fully mobile!", true);
+                        LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> succumbs to the effects of the Joke Shop after losing the will to remain fully mobile!");
+
+                        numInanimated++;
+                    }
+                }
+                else
+                {
+                    var message = "The Joke Shop drains you of some of your energies!";
+
+                    if ((double)player.Health > (double)healthDrain * 1.5)
+                    {
+                        // Gentle warning
+                        switch (rand.Next(6))
+                        {
+                            case 0:
+                                message = "The ground shakes and your head feels dizzy.  Perhaps you should take a moment to recover your health.";
+                                break;
+                            case 1:
+                                message = "A cloud of dust dances in the air, as if buoyed by some force unseen.  It coats a nearby cobweb and threatens to engulf you, leaving you feeling quite dirty.  Perhaps you should cleanse?";
+                                break;
+                            case 2:
+                                message = "You feel yourself rocked by a sudden force.  Your body has withstood the impact this time, but your mind has taken a dent!";
+                                break;
+                            case 3:
+                                message = "The walls around you shift, as if by some ancient mechanism built to ensnare unwary adventurers.  This is not the place you were just in, and yet it looks identical.  You fear a trap may be at work - you should be on your guard";
+                                break;
+                            case 4:
+                                message = "\"Psst!\"  You hear a voice in your ear.  You turn to see who it is, but immediately find yourself falling through a whirling spiral vortex!  All meaning of space and time dissolves in this trip through some Daliesque wonderland!  Whether or not this pit has a bottom, you know you don't want to end up there.  So you cast a spell and find yourself back where you were, but the experience has taken its toll on you!";
+                                break;
+                            case 5:
+                                message = "You catch a glimpse of some movement out of the corner of your eye.  It's the shopkeeper.  You see them walking among some artifacts, and then they are gone, only to reappear in another part of the shop, still walking.  Again their likeness is obscured, only for it to appear somewhere else - this time behind you.  Conventional space has no meaning in this realm.  You contiue to watch as the proprietor's unbroken steps find passage between disparate spaces, only this time it's you that has moved, and you can feel its effects!";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // Severe warning
+                        switch (rand.Next(5))
+                        {
+                            case 0:
+                                message = "Your surroundings contort underfoot and your head can't seem to find gravity as the foreboding and sinister vibe of this unholy vault drains you of your precious reserves, threatening to dismantle all you hold dear at any moment...";
+                                break;
+                            case 1:
+                                message = "You feel helpless as you sense your energies being leeched away by this most imposing of liminal spaces.  Perhaps you should leave now, lest you fall permanently under its effects...";
+                                break;
+                            case 2:
+                                message = "Reality itself appears to condense into a cloud of droplets, the fabric of this place's very existence coursing away like rain dripping down a window, your willpower trickling away with it.  Nothing seems real, except the impending threat of losing everythig you are...";
+                                break;
+                            case 3:
+                                message = "Your will begins to falter as your lightheaded resolve threatens to break.  Distracted by the illusion of space itself deconstructing before your eyes, you almsot forget how quickly you must act to save yourself from impending doom...";
+                                break;
+                            case 4:
+                                message = "Coulrophobia may seem irrational.  The fear of that which is just harmless fun.  Why would we dare think it could be so sinister?  Maybe our primal fears know something our conscious minds do not?  You can barely feel the enjoyment of this place eating away your will.  Perhaps it's not just clowns you should fear...";
+                                break;
+                        }
+                    }
+
+                    // Notify player immediately, but don't put them in combat
+                    DomainRegistry.AttackNotificationBroker.Notify(player.Id, $"<p>{message}</p>");
+                    PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
+                }
+            }
+
+            return $"{numDrained} players were drained, of which {numInanimated} lost their will to remain animate.";
+        }
+
         public static bool IsJokeShopActive()
         {
             return LocationsStatics.LocationList.GetLocation.Any(l => l.dbName == LocationsStatics.JOKE_SHOP);

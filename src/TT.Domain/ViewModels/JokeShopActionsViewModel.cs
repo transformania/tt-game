@@ -11,6 +11,7 @@ namespace TT.Domain.ViewModels
         EjectPlayer,
         EjectOfflinePlayers,
         EjectAllPlayers,
+        Drain,
 
         MildPrank,
         MischievousPrank,
@@ -24,6 +25,7 @@ namespace TT.Domain.ViewModels
         Activate,
         Deactivate,
         Relocate,
+        RelocateGently,
 
         AnimateSafetyNet,
         BlowWhistle,

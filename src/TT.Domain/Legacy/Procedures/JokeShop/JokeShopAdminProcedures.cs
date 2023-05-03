@@ -55,8 +55,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     JokeShopProcedures.SetJokeShopActive(false);
                     return "Joke shop deactivated";
                 case JokeShopActions.Relocate:
+                    return $"Joke Shop moved: {JokeShopProcedures.Relocate()}";
+                case JokeShopActions.RelocateGently:
                     LocationsStatics.MoveJokeShop();
                     return "Joke Shop moved";
+                case JokeShopActions.Drain:
+                    return JokeShopProcedures.DrainPlayers();
 
                 case JokeShopActions.AnimateSafetyNet:
                     return JokeShopProcedures.Restore(victim);

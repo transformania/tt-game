@@ -911,9 +911,10 @@ namespace TT.Domain.Procedures
                 {
                     JokeShopProcedures.EjectOfflineCharacters();
 
-                    if (new Random().Next(20) == 0)
+                    var rand = new Random();
+                    if (rand.Next(20) == 0)
                     {
-                        LocationsStatics.MoveJokeShop();
+                        JokeShopProcedures.Relocate(rand);
                     }
 
                     ChallengeProcedures.CheckChallenges();

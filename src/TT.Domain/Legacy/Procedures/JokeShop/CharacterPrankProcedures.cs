@@ -1342,7 +1342,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             return true;
         }
 
-        private static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true, bool logChanges = true)
+        public static bool TryInanimateTransform(Player player, int formSourceId, bool dropInventory, bool createItem = true, bool severe = true, bool logChanges = true)
         {
             if (severe && !JokeShopProcedures.PlayerHasBeenWarnedTwice(player) || !severe && !JokeShopProcedures.PlayerHasBeenWarned(player))
             {

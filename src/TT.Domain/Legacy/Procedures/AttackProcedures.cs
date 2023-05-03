@@ -300,6 +300,12 @@ namespace TT.Domain.Procedures
         public static (bool, string) Attack(Player attacker, Player victim, int skillSourceId)
         {
             var vm = SkillProcedures.GetSkillViewModel_NotOwned(skillSourceId);
+
+            if (vm == null)
+            {
+                return (false, "");
+            }
+
             return Attack(attacker, victim, vm);
         }
 

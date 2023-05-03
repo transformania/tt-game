@@ -583,9 +583,10 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                            && p.BotId == AIStatics.PsychopathBotId
                                                            && p.Mobility == PvPStatics.MobilityFull)
                                                   .OrderBy(p => p.Level)
+                                                  .ToList()
+                                                  .Where(p => p.IsInDungeon() == player.IsInDungeon())
                                                   .Select(p => p.Id)
-                                                  .Take(3)
-                                                  .ToArray();
+                                                  .Take(3);
 
             foreach (var botId in botsToAttract)
             {

@@ -349,6 +349,15 @@ namespace TT.Web.CustomHtmlHelpers
             return timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2] ? new MvcHtmlString("<span class='icon icon-souled2'></span>") : new MvcHtmlString("");
         }
 
+        public static MvcHtmlString GoodBad(bool pred, string good="✔ Yes", string bad="❌ No")
+        {
+            if (pred)
+            {
+                return new MvcHtmlString("<span class='good'>" + good + "</span>");
+            }
+            return new MvcHtmlString("<span class='bad'>" + bad + "</span>");
+        }
+
         public static MvcHtmlString WithinBalanceTarget(decimal amount, string type)
         {
             if (type == "Forms")

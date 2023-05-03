@@ -109,6 +109,7 @@ namespace TT.Domain.ViewModels
         AutoRestore,
         ClearAutoRestore,
 
+        TeleportToJokeShop,
         TeleportToOverworld,
         TeleportToDungeon,
         TeleportToFriendlyNPC,

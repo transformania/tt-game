@@ -231,6 +231,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 case JokeShopActions.ClearAutoRestore:
                     return RemoveEffect(victim, JokeShopProcedures.AUTO_RESTORE_EFFECT, "Player will no longer autorestore.<br><b>Important:</b>  If they are a lost item they will be trapped in limbo and require you to give them a form change in order to escape!");
 
+                case JokeShopActions.TeleportToJokeShop:
+                    if(JokeShopProcedures.IsJokeShopActive())
+                    {
+                        return PlayerProcedures.TeleportPlayer(victim, LocationsStatics.JOKE_SHOP, false);
+                    }
+                    return null;
                 case JokeShopActions.TeleportToOverworld:
                     return EnvironmentPrankProcedures.TeleportToOverworld(victim, root: false, curse: false);
                 case JokeShopActions.TeleportToDungeon:

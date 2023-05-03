@@ -20,8 +20,6 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
         public static string DiceGame(Player player)
         {
-            var target = 69;
-
             // /roll 4d20
             var die1 = PlayerProcedures.RollDie(20);
             var die2 = PlayerProcedures.RollDie(20);
@@ -29,31 +27,64 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             var die4 = PlayerProcedures.RollDie(20);
             var total = die1 + die2 + die3 + die4;
 
-            // Arbitrary score calculation, trying to avoid any big advantage for those who roll more often
-            int score;
-            if (total == target)
-            {
-                score = total;
-            }
-            else
-            {
-                var distance = Math.Abs(total - target);
-
-                if (distance <= 11)
-                {
-                    score = (11 - distance) * 4;
-                }
-                else
-                {
-                    score = (11 - distance) / 10;
-                }
-            }
+            var score = CalculateDiceGameScore(total);
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__DiceGameScore, score);
 
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
 
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
+        }
+
+        private static int CalculateDiceGameScore(int total)
+        {
+            // Aims:
+            // - Scores 69 for the target total of 69
+            // - Totals further from the target score less
+            // - Weighted average score is 0, i.e. no advantage for rolling more times
+            // - Good variety of possible scores
+
+            if (total == 69)
+            {
+                // Bullseye
+                return total;
+            }
+            else if (total >= 42)
+            {
+                // Near miss
+                var dist = 69 - total;
+                var quarter = Math.PI / 2;
+                var angle = quarter * dist / 27;
+                var cos = Math.Cos(angle);
+                var amp = 45 * cos * cos + 0.9;
+                return (int)amp;
+            }
+            else
+            {
+                // Linear taper off (low scores)
+                var m = 1.583;
+                var c = -42 * m;
+                var score = m * total + c;
+
+                // Fine tune to average 0
+                if (total <= 16)
+                {
+                    score--;
+                }
+                if (total <= 11)
+                {
+                    score++;
+                }
+                if (total <= 6)
+                {
+                    score++;
+                }
+                if (total <= 4)
+                {
+                    score += 2;
+                }
+                return (int)score;
+            }
         }
 
         public static string PlaceBountyOnPlayersHead(Player player, Random rand = null)

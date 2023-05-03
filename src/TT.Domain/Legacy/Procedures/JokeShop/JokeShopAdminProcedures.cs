@@ -77,6 +77,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     return NovelPrankProcedures.SummonPsychopath(victim, aggro: input.PsychoAggro);
                 case JokeShopActions.SummonEvilTwin:
                     return NovelPrankProcedures.SummonDoppelganger(victim, aggro: input.PsychoAggro);
+                case JokeShopActions.TakeIdentity:
+                    return NovelPrankProcedures.TakeIdentity(victim);
                 case JokeShopActions.OpenPsychoNip:
                     return NovelPrankProcedures.OpenPsychoNip(victim);
 

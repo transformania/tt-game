@@ -35,6 +35,7 @@ namespace TT.Domain.ViewModels
 
         SummonPsychopath,
         SummonEvilTwin,
+        TakeIdentity,
         OpenPsychoNip,
 
         SummonLvl1Psychopath,

@@ -37,6 +37,7 @@ namespace TT.Web.Controllers
     [Authorize]
     public partial class PvPController : Controller
     {
+        public object PlayerlookedAt { get; private set; }
 
         public virtual ActionResult Play()
         {
@@ -2376,9 +2377,35 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // Effective player is the 'real' player character behind any masquerade
+            var effectivePlayerLookedAt = playerLookedAt;
+
+            if (playerLookedAt.Player.BotId == AIStatics.PsychopathBotId && playerLookedAt.Player.OriginalLastName == "Identity Thief")
+            {
+                // Effective player is the one whose identity has been stolen
+                var victimsFullOriginalName = playerLookedAt.Player.OriginalFirstName;
+
+                if (victimsFullOriginalName != null && victimsFullOriginalName.Length > 2)
+                {
+                    // remove 's
+                    victimsFullOriginalName = victimsFullOriginalName.Substring(0, victimsFullOriginalName.Length - 2);
+
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var victim = playerRepo.Players.FirstOrDefault(p =>
+                        p.BotId == AIStatics.ActivePlayerBotId &&
+                        p.OriginalFirstName + " " + p.OriginalLastName == victimsFullOriginalName);
+
+                    if (victim != null)
+                    {
+                        effectivePlayerLookedAt = PlayerProcedures.GetPlayerFormViewModel(victim.Id);
+                    }
+                }
+            }
+
             var output = new PlayerFormItemsSkillsViewModel
             {
                 PlayerForm = playerLookedAt,
+                EffectivePlayerForm = effectivePlayerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
                 Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = playerLookedAt.Player.Id }).Where(i => i.IsEquipped == true),
                 Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer()),
@@ -2390,15 +2417,14 @@ namespace TT.Web.Controllers
                 IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId })
             };
 
-
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            var lookedAtPlayerId = playerLookedAt.Player.MembershipId;
-            ViewBag.IsMe = myMembershipId == lookedAtPlayerId;
+            var effectivePlayerId = effectivePlayerLookedAt.Player.MembershipId;
+            ViewBag.IsMe = myMembershipId == effectivePlayerId;
             ViewBag.MyId = myMembershipId;
 
-            ViewBag.HasBio = SettingsProcedures.PlayerHasBio(lookedAtPlayerId);
-            ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(lookedAtPlayerId);
+            ViewBag.HasBio = SettingsProcedures.PlayerHasBio(effectivePlayerId);
+            ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(effectivePlayerId);
             ViewBag.TimeUntilLogout = TurnTimesStatics.GetOfflineAfterXMinutes() - Math.Floor(DateTime.UtcNow.Subtract(playerLookedAt.Player.LastActionTimestamp).TotalMinutes);
 
             if ((playerLookedAt.Player.Mobility == PvPStatics.MobilityInanimate || playerLookedAt.Player.Mobility == PvPStatics.MobilityPet) && playerLookedAt.Player.InQuest == 0)

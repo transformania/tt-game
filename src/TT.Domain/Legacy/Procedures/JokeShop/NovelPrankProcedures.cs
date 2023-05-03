@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Services;
 using TT.Domain.Models;
@@ -435,6 +435,139 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned their evil twin!");
 
             return "In the corner of the room is a freestanding mirror with a silver gilt frame.  You smear some of the dust off the glass to see your reflection staring back at you through the clearing in the misty haze.  As you look into it you catch sight of yourself twitching slightly, but you don't actually feel anything.  Then your reflection narrows their gaze into a scowl and steps through the rippling glazed portal, bringing you face-to-face with your mirror self!  You should be careful.  Meeting your doppelganger never ends well..";
+        }
+
+        public static string TakeIdentity(Player player, Random rand = null)
+        {
+            rand = rand ?? new Random();
+
+            // Create identity thief
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var cmd = new CreatePlayer
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                OriginalFirstName = $"{player.OriginalFirstName} {player.OriginalLastName}'s",
+                OriginalLastName = "Identity Thief",
+                Location = player.dbLocationName,
+                FormSourceId = player.FormSourceId,
+                Level = Math.Min(5, player.Level),
+                Health = player.MaxHealth * 2,
+                MaxHealth = player.MaxHealth * 2,
+                Mana = player.MaxMana * 2,
+                MaxMana = player.MaxMana * 2,
+                BotId = AIStatics.PsychopathBotId,
+                UnusedLevelUpPerks = 0,
+                XP = 0,
+                Money = 100 + player.Money / 10,
+                Gender = player.Gender,
+            };
+
+            var botId = DomainRegistry.Repository.Execute(cmd);
+            var bot = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
+
+            // Give spells to thief
+            var thiefSkills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(player.Id).Where(s =>
+                                    s.StaticSkill.ExclusiveToFormSourceId == null &&
+                                    s.StaticSkill.ExclusiveToItemSourceId == null &&
+                                    s.StaticSkill.IsPlayerLearnable &&
+                                    (s.MobilityType == PvPStatics.MobilityInanimate || s.MobilityType == PvPStatics.MobilityPet))
+                                .Take(5).Select(s => s.StaticSkill.Id);
+
+            foreach(var skillId in thiefSkills)
+            {
+                SkillProcedures.GiveSkillToPlayer(botId, skillId);
+            }
+
+            // Give bonuses to thief
+            EffectProcedures.GivePerkToPlayer(AIProcedures.PsychopathicForLevelFiveEffectSourceId, botId);
+
+            var boosts = CharacterPrankProcedures.BOOST_EFFECTS;
+            var penalties = CharacterPrankProcedures.PENALTY_EFFECTS;
+            EffectProcedures.GivePerkToPlayer(boosts[rand.Next(boosts.Length)], botId, 10);
+            EffectProcedures.MergePlayerPerk(boosts[rand.Next(boosts.Length)], bot, 20, stackDuration: true);
+            EffectProcedures.MergePlayerPerk(boosts[rand.Next(boosts.Length)], bot, 30, stackDuration: true);
+            EffectProcedures.MergePlayerPerk(boosts[rand.Next(boosts.Length)], bot, 40, stackDuration: true);
+
+            for(var extra = 0; extra < rand.Next(3); extra++)
+            {
+                EffectProcedures.MergePlayerPerk(boosts[rand.Next(boosts.Length)], bot, 50 * (1 + extra), stackDuration: true);
+                EffectProcedures.MergePlayerPerk(penalties[rand.Next(penalties.Length)], bot, 50 * (1 + extra), stackDuration: true);
+            }
+
+            // Turn player into item on thief
+            var forms = JokeShopProcedures.InanimateForms();
+
+            if (forms.IsEmpty())
+            {
+                return null;
+            }
+
+            var index = rand.Next(forms.Count());
+            var form = forms.ElementAt(index);
+
+            PlayerProcedures.InstantChangeToForm(player, form.FormSourceId);
+            var formDetail = FormStatics.GetForm(form.FormSourceId);
+
+            ItemProcedures.PlayerBecomesItem(player, formDetail, bot, false);
+            CharacterPrankProcedures.SetInitialItemXP(player);
+
+            // Change player's name
+            var possibleFirstNames = new string[]{ $"{player.GetFullName()}'s", $"{player.FirstName}'s", $"{(player.Gender == PvPStatics.GenderMale ? "Master" : "Mistress")} {player.LastName}'s", $"Psychopath {player.LastName}'s", "Thief's", "A", "Some", "Just A", "Another", "Just Another", "Yet Another", "Rejected", "Second Hand", "Second Rate", "Enchanted", "Worthless", "Expensive", "Clean", "Dirty", "Discarded", "Prized", "New", "Old", "Broken", "Boring", "Plain", "Bright", "Dull", "Cherished", "Bespoke", "Mass-Produced", "Downtrodden", "Unloved", "Beloved", "Wanted", "Desirable", "Nobody's", "Somebody's", "Homeless", "Cute", "Pretty", "Ugly", "Tiny", "Huge", "Drab", "Filthy", "Coveted", "Cheap", "Trashy", "Useless", "Silly", "Pathetic", "Ordinary", "Proud", "Demanding", "Ultimate", "Inevitable", "Predestined", "Inescapable", "Devoted", "Loyal", "Obedient", "Lifeless", "Cold", "Hot", "Emotionless", "Regal", "Forever", "Disposable", "Public", "Disowned", "Heavenly", "Cursed", "Pure", "Sinful" };
+
+            var user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            user.FirstName = possibleFirstNames[rand.Next(possibleFirstNames.Length)];
+            user.LastName = formDetail.FriendlyName;
+            playerRepo.SavePlayer(user);
+
+            // Equip item
+            var item = ItemProcedures.GetAllPlayerItems(botId)
+                        .FirstOrDefault(i => i.dbItem.FormerPlayerId == player.Id);
+
+            if (item != null)
+            {
+                ItemProcedures.EquipItem(item.dbItem.Id, true);
+            }
+
+            // Give runes (round level down to odd)
+            var runeLevel = Math.Min(12, player.Level - 1) / 2;
+            runeLevel = runeLevel - (runeLevel % 2) + 1;
+            var quantity = 1;
+            if(item.Item.ItemType == PvPStatics.ItemType_Pet)
+            {
+                quantity = 2;
+            }
+            else if(item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+            {
+                quantity = 0;
+            }
+
+            for (var c = 0; c < quantity; c++)
+            {
+                var runeId = DomainRegistry.Repository.FindSingle(new GetRandomRuneAtLevel { RuneLevel = runeLevel, Random = rand });
+                DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = runeId, PlayerId = botId });
+            }
+
+            // Embed runes
+            if(quantity > 0)
+            {
+                var runes = ItemProcedures.GetAllPlayerItems(botId)
+                            .Where(i => i.Item.ItemType == PvPStatics.ItemType_Rune);
+
+                foreach(var rune in runes)
+                {
+                    DomainRegistry.Repository.Execute(new EmbedRune { ItemId = item.dbItem.Id, PlayerId = botId, RuneId = rune.dbItem.Id });
+                }
+            }
+
+            // Balance stats
+            var psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
+            psychoEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(psychoEF));
+            playerRepo.SavePlayer(psychoEF);
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Your identity has been stolen by am imposter!</b>  You are now just their {formDetail.FriendlyName}!", true);
+
+            return $"Suddenly, and without warning, you feel the lifeforce abruptly sucked out of you!  You remain conscious, but seem to have been displaced onto the floor!  Looking up, you can see the husk of your body just where you left it, but much as you strain your mind it refuses to answer your command!  Its arms then unexpectedly reach down and pick you up - an imposter!!!  They have stolen your body, your identity and your life, and you can't do anything about it because you're now just their {formDetail.FriendlyName}!";
         }
 
         public static string OpenPsychoNip(Player player)

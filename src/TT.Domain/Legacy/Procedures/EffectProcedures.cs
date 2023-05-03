@@ -202,7 +202,7 @@ namespace TT.Domain.Procedures
             if (effectPlus.AvailableAtLevel == 0)
             {
                 var duration = Duration ?? effectPlus.Duration;
-                var cooldown = Cooldown.HasValue ? Math.Max(duration, Cooldown.Value) : effectPlus.Cooldown;
+                var cooldown = Math.Max(duration, Cooldown.HasValue ? Cooldown.Value : effectPlus.Cooldown);
 
                 cmd.Duration = duration;
                 cmd.Cooldown = cooldown;
@@ -248,7 +248,7 @@ namespace TT.Domain.Procedures
             return logMessage;
         }
 
-        public static string MergePlayerPerk(int effectSourceId, Player player, int? duration = null, int? cooldown = null)
+        public static string MergePlayerPerk(int effectSourceId, Player player, int? duration = null, int? cooldown = null, bool stackDuration = false)
         {
             var effectRepo = new EFEffectRepository();
             var perk = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == effectSourceId && e.OwnerId == player.Id);
@@ -263,14 +263,39 @@ namespace TT.Domain.Procedures
                 return null;
             }
 
-            if (duration.HasValue)
+            if (stackDuration)
             {
-                perk.Duration = Math.Max(perk.Duration, duration.Value);
-            }
+                // Accumulate duratiom
+                if (duration.HasValue)
+                {
+                    perk.Duration += duration.Value;
 
-            if (cooldown.HasValue)
+                    if (cooldown.HasValue)
+                    {
+                        perk.Cooldown = Math.Max(perk.Cooldown + cooldown.Value, perk.Duration);
+                    }
+                    else
+                    {
+                        perk.Cooldown += duration.Value;
+                    }
+                }
+                else if (cooldown.HasValue)
+                {
+                    perk.Cooldown += cooldown.Value;
+                }
+            }
+            else
             {
-                perk.Cooldown = Math.Max(Math.Max(perk.Cooldown, cooldown.Value), perk.Duration);
+                // Take highest duration
+                if (duration.HasValue)
+                {
+                    perk.Duration = Math.Max(perk.Duration, duration.Value);
+                }
+
+                if (cooldown.HasValue)
+                {
+                    perk.Cooldown = Math.Max(Math.Max(perk.Cooldown, cooldown.Value), perk.Duration);
+                }
             }
 
             effectRepo.SaveEffect(perk);

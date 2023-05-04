@@ -34,12 +34,16 @@ namespace TT.Domain.Items.Commands
                 
                 var query = ctx.AsQueryable<Item>()
                     .Where(i => i.FormerPlayer.BotId == AIStatics.PsychopathBotId &&
+                                i.FormerPlayer.MembershipId == null &&
                                 i.Owner != null &&
                                 (i.Owner.Id == lindella.Id || i.Owner.Id == wuffie.Id)
                                 && i.TimeDropped < cutoff)
                     .Include(i => i.Runes)
                     .Include(i => i.FormerPlayer)
                     .Include(i => i.FormerPlayer.Effects)
+                    .Include(i => i.FormerPlayer.Items)
+                    .Include(i => i.FormerPlayer.Items.Select(ii => ii.ItemSource))
+                    .Include(i => i.FormerPlayer.ItemXP)
                     .Include(i => i.FormerPlayer.Skills)
                     .Include(i => i.FormerPlayer.PlayerLogs)
                     .Include(i => i.FormerPlayer.TFEnergies)
@@ -69,6 +73,15 @@ namespace TT.Domain.Items.Commands
                     {
                         ctx.Remove(x);
                     }
+
+                    if (p.ItemXP != null)
+                    {
+                        // Just in case the psychopath somehow has inanimate XP, let's get rid of it
+                        ctx.Remove(p.ItemXP);
+                    }
+                    // And if they somehow still have any of their items, lets drop those on the ground too
+                    p.DropAllItems();
+
                     ctx.Remove(p);
 
                 }

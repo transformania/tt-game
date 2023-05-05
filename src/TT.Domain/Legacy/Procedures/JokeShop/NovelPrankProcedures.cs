@@ -565,7 +565,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             psychoEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(psychoEF));
             playerRepo.SavePlayer(psychoEF);
 
-            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Your identity has been stolen by am imposter!</b>  You are now just their {formDetail.FriendlyName}!", true);
+            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Your identity has been stolen by an imposter!</b>  You are now just their {formDetail.FriendlyName}!", true);
 
             return $"Suddenly, and without warning, you feel the lifeforce abruptly sucked out of you!  You remain conscious, but seem to have been displaced onto the floor!  Looking up, you can see the husk of your body just where you left it, but much as you strain your mind it refuses to answer your command!  Its arms then unexpectedly reach down and pick you up - an imposter!!!  They have stolen your body, your identity and your life, and you can't do anything about it because you're now just their {formDetail.FriendlyName}!";
         }

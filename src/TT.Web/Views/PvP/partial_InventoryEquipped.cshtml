@@ -29,9 +29,44 @@
 </div>
     
 <div class="row rowP">
+    <span>
+    @{
+        // For formatting reasons, we need to put the first 6 items in a <span> tag
+        var itemIndex = 0;
+        for (; itemIndex < 6; ++itemIndex)
+        {
+            // Break early if we go over the item count
+            if (itemIndex >= items.Count())
+            {
+                break;
+            }
+            var item = items[itemIndex];
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true)); " title="@item.ItemSource.FriendlyName--@item.ItemSource.Description">
+                <span class="icon icon-level"><b>@item.Level</b></span>
+                <p class="slotName">
+                    Item @(itemIndex + 1)
+
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(item.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+
+                </p>
+            </div>
+        }
+
+        // Pad out to show empty slots
+        for (var emptyIndex = itemIndex; emptyIndex < 6; ++emptyIndex)
+        {
+            <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('https://images.transformaniatime.com/itemsportraits/none.jpg');"><p class="slotName">Item @(emptyIndex + 1)</p></div>
+
+        }
+    }
+    </span>
+
     <div style="float: left;">
     @{
-        for (var index = 0; index < items.Count(); ++index)
+
+        // Print out the last two potential slots here and the empty slots here for formatting
+        // We can cheat a little with indexing since the previous item loop only went to 6
+        for (var index = 6; index < items.Count(); ++index)
         {
             var item = items[index];
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true)); " title="@item.ItemSource.FriendlyName--@item.ItemSource.Description">
@@ -46,7 +81,7 @@
         }
 
         // Pad out to show empty slots
-        for (var index = items.Count(); index < 8; ++index)
+        for (var index = items.Count() + 6; index < 8; ++index)
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('https://images.transformaniatime.com/itemsportraits/none.jpg');"><p class="slotName">Item @(index + 1)</p></div>
         }

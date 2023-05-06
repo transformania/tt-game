@@ -2115,6 +2115,15 @@ namespace TT.Web.Controllers
 
             if (putOn)
             {
+                //Disallow the player from equipping multiple consumables of the same type
+                if ((item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable) &&
+                     ItemProcedures.PlayerIsWearingNumberOfThisExactItem(me.Id, item.dbItem.ItemSourceId) == 1)
+                {
+                    TempData["Error"] = "You already have a " + item.Item.FriendlyName + " equipped.";
+                    TempData["SubError"] = "You can't equip two of the same consumable.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
                 // If the item is a consumable or a reusable consumable, allow the player to wear a maximum of three
                 if ((item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable) &&
                      ItemProcedures.PlayerTotalConsumableCount(me.Id) > 2)

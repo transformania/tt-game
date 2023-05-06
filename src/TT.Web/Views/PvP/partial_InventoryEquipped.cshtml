@@ -36,7 +36,7 @@
         for (; itemIndex < 6; ++itemIndex)
         {
             // Break early if we go over the item count
-            if (itemIndex >= items.Count())
+            if (itemIndex >= items.Count)
             {
                 break;
             }
@@ -64,15 +64,16 @@
     <div style="float: left;">
     @{
 
-        // Print out the last two potential slots here and the empty slots here for formatting
-        // We can cheat a little with indexing since the previous item loop only went to 6
-        for (var index = 6; index < items.Count(); ++index)
-        {
-            var item = items[index];
+            // Print out the last two potential slots here and the empty slots here for formatting
+            // We can cheat a little with indexing since the previous item loop only went to 6
+            var accIndex = 6;
+            for (; accIndex < items.Count; accIndex++)
+            {
+            var item = items[accIndex];
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@PortraitHelper.GetGraphicByItemType(item.ItemSource.ItemType, item.ItemSource.PortraitUrl, true)); " title="@item.ItemSource.FriendlyName--@item.ItemSource.Description">
                 <span class="icon icon-level"><b>@item.Level</b></span>
                 <p class="slotName">
-                    Item @(index + 1)
+                    Item @(accIndex + 1)
 
                     @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(item.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
@@ -81,7 +82,7 @@
         }
 
         // Pad out to show empty slots
-        for (var index = items.Count() + 6; index < 8; ++index)
+        for (var index = accIndex; index < 8; ++index)
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url('https://images.transformaniatime.com/itemsportraits/none.jpg');"><p class="slotName">Item @(index + 1)</p></div>
         }

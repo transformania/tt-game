@@ -70,6 +70,13 @@ namespace TT.Web.Controllers
 
             var item = ItemProcedures.GetItemViewModel(itemId);
 
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
             {
@@ -199,6 +206,13 @@ namespace TT.Web.Controllers
 
             var item = ItemProcedures.GetItemViewModel(itemId);
 
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
             {
@@ -263,6 +277,13 @@ namespace TT.Web.Controllers
 
             var item = ItemProcedures.GetItemViewModel(itemId);
             var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
@@ -332,6 +353,13 @@ namespace TT.Web.Controllers
 
             var item = ItemProcedures.GetItemViewModel(itemId);
             var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
@@ -465,6 +493,35 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            // assert player is animate
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You must be animate in order to use this.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
+            }
+
             var fnamecheck = TrustStatics.NameIsReserved(input.OriginalFirstName);
             if (!fnamecheck.IsNullOrEmpty())
             {
@@ -488,6 +545,34 @@ namespace TT.Web.Controllers
 
             IItemRepository itemRepo = new EFItemRepository();
             var itemPlus = ItemProcedures.GetItemViewModel(input.ItemId);
+
+            //asert item has not been used.
+            if (itemPlus.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player does own this
+            if (itemPlus.dbItem.OwnerId != me.Id)
+            {
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!itemPlus.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a rejuvenative lotion
+            if (itemPlus.dbItem.ItemSourceId != ItemStatics.OtherRestoreItemSourceId)
+            {
+                TempData["Error"] = "You cannot do that with this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             Random rand = new Random();
             var randomForm = Array.Empty<int>();
@@ -637,6 +722,13 @@ namespace TT.Web.Controllers
             // assert player owns at least one of the type of item needed
             var itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.Id == itemId);
 
+            //asert item has not been used.
+            if (itemToUse.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -679,8 +771,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Item.MyInventory());
             }
 
-            // assert player owns this item
             var itemToUse = ItemProcedures.GetItemViewModel(id);
+
+            //asert item has not been used.
+            if (itemToUse.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player owns this item
             if (itemToUse == null || itemToUse.dbItem.OwnerId != me.Id)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -765,6 +865,13 @@ namespace TT.Web.Controllers
             }
 
             var book = ItemProcedures.GetItemViewModel(id);
+
+            //asert item has not been used.
+            if (book.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player owns this book
             if (book.dbItem.OwnerId != me.Id)

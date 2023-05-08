@@ -15,6 +15,7 @@ using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.DTOs;
+using TT.Domain.Items.Entities;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Messages.Queries;
@@ -1973,6 +1974,13 @@ namespace TT.Web.Controllers
 
             var dropme = DomainRegistry.Repository.FindSingle(new GetItem { ItemId = itemId });
 
+            //asert item has not been used.
+            if (dropme.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You can't drop this item yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // assert player does own this
             if (dropme.Owner.Id != me.Id)
             {
@@ -2073,6 +2081,13 @@ namespace TT.Web.Controllers
             }
 
             var item = ItemProcedures.GetItemViewModel(itemId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You cannot equip this item yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
@@ -2182,6 +2197,13 @@ namespace TT.Web.Controllers
             }
 
             var item = ItemProcedures.GetItemViewModel(itemId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)
@@ -3510,6 +3532,13 @@ namespace TT.Web.Controllers
             }
 
             var item = ItemProcedures.GetItemViewModel(itemId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             // assert player does own this
             if (item.dbItem.OwnerId != me.Id)

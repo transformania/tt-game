@@ -771,8 +771,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Item.MyInventory());
             }
 
-            // assert player owns this item
             var itemToUse = ItemProcedures.GetItemViewModel(id);
+
+            //asert item has not been used.
+            if (itemToUse.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player owns this item
             if (itemToUse == null || itemToUse.dbItem.OwnerId != me.Id)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";

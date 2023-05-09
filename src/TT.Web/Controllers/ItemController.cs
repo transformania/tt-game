@@ -950,7 +950,7 @@ namespace TT.Web.Controllers
                 TempData["Error"] = e.Message;
             }
 
-            return RedirectToAction(MVC.PvP.Play());
+            return RedirectToAction(MVC.Item.MyInventory());
         }
 
         public virtual ActionResult UnembedRunesList()

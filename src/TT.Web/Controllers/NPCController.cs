@@ -1440,6 +1440,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            var playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
+            if (player != null)
+            {
+                player = PlayerProcedures.ReadjustMaxes(player, ItemProcedures.GetPlayerBuffs(player));
+                playerRepo.SavePlayer(player);
+            }
+
             return RedirectToAction(MVC.NPC.TalkToSoulbinder());
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
@@ -87,6 +86,10 @@ namespace TT.Tests.Items.Commands
             };
 
             Assert.That(() => Repository.Execute(cmd), Throws.Nothing);
+
+            Assert.That(() => ownerPlayer.Money, Is.EqualTo(0));
+            Assert.That(() => formerItemPlayer.FormSource.Id, Is.EqualTo(formSource.Id));
+            Assert.That(() => item.ItemSource.Id, Is.EqualTo(itemSource.Id));
         }
 
         [Test]

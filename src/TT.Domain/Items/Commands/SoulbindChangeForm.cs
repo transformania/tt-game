@@ -99,7 +99,7 @@ namespace TT.Domain.Items.Commands
 
                 player.ChangeForm(formPlayer);
                 item.ChangeItemForm(formItem);
-                player.ChangeMoney(-price);
+                owner.ChangeMoney(-price);
 
                 ctx.Commit();
             };

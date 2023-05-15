@@ -616,7 +616,7 @@ namespace TT.Domain.ViewModels
                 "Fortitude", 
                 new BuffDetail {
                     DisplayName = "Fortitude",
-                    Description = "Although brute force is generally looked down on in the wizarding world, having some extra strength allows you to carry more posessions at a time, plus the extra bulk of your body will make your opponent expend a little more effort to transform.", 
+                    Description = "Although brute force is generally looked down on in the wizarding world, having some extra strength allows you to carry more possessions at a time, plus the extra bulk of your body will make your opponent expend a little more effort to transform.",
                     PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
                     MinusIcons =  new  List<string> { }
                 }

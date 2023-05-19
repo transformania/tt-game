@@ -2776,26 +2776,26 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var posession = itemPlayer.Mobility == PvPStatics.MobilityPet ? "pet" : "item";
+            var possession = itemPlayer.Mobility == PvPStatics.MobilityPet ? "pet" : "item";
 
             // assert player owns item/pet
             if (item.Owner.Id != me.Id)
             {
-                TempData["Error"] = $"You do not currently own this {posession}.";
+                TempData["Error"] = $"You do not currently own this {possession}.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
             {
-                TempData["Error"] = $"Wriggle as you might, you find you cannot interact with your {posession} until you are fully animate again!";
+                TempData["Error"] = $"Wriggle as you might, you find you cannot interact with your {possession} until you are fully animate again!";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player has not already used an item this turn
             if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
             {
-                TempData["Error"] = $"You don't have enough time to devote to your {posession} right now.";
+                TempData["Error"] = $"You don't have enough time to devote to your {possession} right now.";
                 TempData["SubError"] = "Try again in a few moments.";
                 return RedirectToAction(MVC.PvP.Play());
             }
@@ -2803,7 +2803,7 @@ namespace TT.Web.Controllers
             // assert item/pet has not been interacted with this turn
             if (itemPlayer.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
             {
-                TempData["Error"] = $"This {posession} is getting a lot of attention and is nearly worn out!  They need to be left alone to recover.";
+                TempData["Error"] = $"This {possession} is getting a lot of attention and is nearly worn out!  They need to be left alone to recover.";
                 TempData["SubError"] = "Try again in a few moments.";
                 return RedirectToAction(MVC.PvP.Play());
             }
@@ -2811,7 +2811,7 @@ namespace TT.Web.Controllers
             // assert item has not acted too many times already
             if ((actionName == "hush" || actionName == "restrain") && itemPlayer.TimesAttackingThisUpdate >= PvPStatics.MaxActionsPerUpdate)
             {
-                TempData["Error"] = $"Your {posession} has already acted this turn.";
+                TempData["Error"] = $"Your {possession} has already acted this turn.";
                 TempData["SubError"] = "Maybe you can block their actions next turn.";
                 return RedirectToAction(MVC.PvP.Play());
             }
@@ -2822,7 +2822,7 @@ namespace TT.Web.Controllers
             // check item has performed an action
             if (xp == null)
             {
-                TempData["Error"] = $"Your {posession} is currently unresponsive.";
+                TempData["Error"] = $"Your {possession} is currently unresponsive.";
 
                 if (itemPlayer.Mobility == PvPStatics.MobilityPet)
                 {
@@ -2868,7 +2868,7 @@ namespace TT.Web.Controllers
             }
             else if (itemPlayer.Mobility == PvPStatics.MobilityPet && actionName == "praise")
             {
-                secondP = $"Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good {posession}!";
+                secondP = $"Your delighted owner, {me.GetFullName()}, heaps praise upon you and rewards you for being such a good {possession}!";
                 firstP = $"You heap praise upon {item.FormerPlayer.FullName}, your {item.ItemSource.FriendlyName}!";
                 didStuffTo = "praised";
                 boost = true;

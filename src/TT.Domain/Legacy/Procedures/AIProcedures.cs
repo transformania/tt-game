@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Legacy.Procedures.BossProcedures;
 using TT.Domain.Legacy.Procedures.JokeShop;
@@ -11,7 +12,6 @@ using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
-using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 using TT.Domain.World.DTOs;
 
@@ -291,6 +291,9 @@ namespace TT.Domain.Procedures
 
                                 foreach (var i in dropList)
                                 {
+                                    // Keep runes back until psycho is defeated
+                                    DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = i.Id });
+
                                     ItemProcedures.DropItem(i.Id);
 
                                     var name = "a";
@@ -921,12 +924,28 @@ namespace TT.Domain.Procedures
             if (playerIsBot)
             {
                 // have the bot equip any new item they are carrying (psychos take off duplicates later in world update)
-                var item = ItemProcedures.GetAllPlayerItems(owner.Id)
-                        .FirstOrDefault(i => i.dbItem.FormerPlayerId == defeatedPlayer.Id);
+
+                var items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = owner.Id });
+                var item = items.FirstOrDefault(i => i.FormerPlayer?.Id == defeatedPlayer.Id);
 
                 if (item != null)
                 {
-                    ItemProcedures.EquipItem(item.dbItem.Id, true);
+                    ItemProcedures.EquipItem(item.Id, true);
+                }
+
+                var rune = items.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Rune &&
+                                            i.ItemSource.RuneLevel <= defeatedPlayer.Level)
+                                .OrderByDescending(i => i.ItemSource.RuneLevel)
+                                .FirstOrDefault();
+
+                if (rune != null)
+                {
+                    DomainRegistry.Repository.Execute(new EmbedRune { ItemId = item.Id, PlayerId = owner.Id, RuneId = rune.Id });
+
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
+                    newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
+                    playerRepo.SavePlayer(newMe);
                 }
             }
         }

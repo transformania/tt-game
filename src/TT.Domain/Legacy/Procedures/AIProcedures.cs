@@ -934,7 +934,8 @@ namespace TT.Domain.Procedures
                 }
 
                 var rune = items.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Rune &&
-                                            i.ItemSource.RuneLevel <= defeatedPlayer.Level)
+                                            i.ItemSource.RuneLevel <= defeatedPlayer.Level &&
+                                            i.EmbeddedOnItem == null)
                                 .OrderByDescending(i => i.ItemSource.RuneLevel)
                                 .FirstOrDefault();
 

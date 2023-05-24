@@ -283,6 +283,7 @@ namespace TT.Domain.Procedures
                             PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt
                         };
 
+                        var droppedAny = false;
                         foreach (var typeToDrop in itemTypes)
                         {
                             if (botItems.Count(i => i.ItemSource.ItemType == typeToDrop) > 1)
@@ -295,6 +296,7 @@ namespace TT.Domain.Procedures
                                     DomainRegistry.Repository.Execute(new UnbembedRunesOnItem { ItemId = i.Id });
 
                                     ItemProcedures.DropItem(i.Id);
+                                    droppedAny = true;
 
                                     var name = "a";
 
@@ -314,7 +316,17 @@ namespace TT.Domain.Procedures
                                             "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
                                     }
                                 }
+
                             }
+                        }
+
+                        if (droppedAny)
+                        {
+                            DomainRegistry.Repository.Execute(new ReadjustMaxes
+                            {
+                                playerId = bot.Id,
+                                buffs = ItemProcedures.GetPlayerBuffs(bot)
+                            });
                         }
 
                         #endregion
@@ -931,22 +943,29 @@ namespace TT.Domain.Procedures
                 if (item != null)
                 {
                     ItemProcedures.EquipItem(item.Id, true);
-                }
 
-                var rune = items.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Rune &&
-                                            i.ItemSource.RuneLevel <= defeatedPlayer.Level &&
-                                            i.EmbeddedOnItem == null)
-                                .OrderByDescending(i => i.ItemSource.RuneLevel)
-                                .FirstOrDefault();
+                    if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumable_Reuseable)
+                    {
+                        var num = item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? 2 : 1;
+                        var runes = items.Where(i => i.ItemSource.ItemType == PvPStatics.ItemType_Rune &&
+                                                     i.ItemSource.RuneLevel <= defeatedPlayer.Level &&
+                                                     i.EmbeddedOnItem == null)
+                                         .OrderByDescending(i => i.ItemSource.RuneLevel)
+                                         .Take(num);
 
-                if (rune != null)
-                {
-                    DomainRegistry.Repository.Execute(new EmbedRune { ItemId = item.Id, PlayerId = owner.Id, RuneId = rune.Id });
+                        if (!runes.IsEmpty())
+                        {
+                            foreach (var rune in runes)
+                            {
+                                DomainRegistry.Repository.Execute(new EmbedRune { ItemId = item.Id, PlayerId = owner.Id, RuneId = rune.Id });
+                            }
 
-                    IPlayerRepository playerRepo = new EFPlayerRepository();
-                    var newMe = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
-                    newMe.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newMe));
-                    playerRepo.SavePlayer(newMe);
+                            IPlayerRepository playerRepo = new EFPlayerRepository();
+                            var newOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
+                            newOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newOwner));
+                            playerRepo.SavePlayer(newOwner);
+                        }
+                    }
                 }
             }
         }

@@ -823,6 +823,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 104,
+      "name": "Alpha 104 (Puppy Profit!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

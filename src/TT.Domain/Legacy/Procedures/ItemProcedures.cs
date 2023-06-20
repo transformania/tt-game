@@ -924,9 +924,6 @@ namespace TT.Domain.Procedures
                 }
                 else
                 {
-                    // add waiting time back on to the item
-                    ResetUseCooldown(itemPlus);
-
                     // there is both a health and mana restoration / loss effect to this spell
                     if (itemPlus.Item.ReuseableHealthRestore != 0 && itemPlus.Item.ReuseableManaRestore != 0)
                     {
@@ -950,6 +947,9 @@ namespace TT.Domain.Procedures
                             return (false, "You don't have enough mana to use this item.");
                         }
 
+                        // add waiting time back on to the item
+                        ResetUseCooldown(itemPlus);
+
                         playerRepo.SavePlayer(owner);
 
                         return (true, name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore) + " willpower and " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana");
@@ -964,6 +964,9 @@ namespace TT.Domain.Procedures
                         {
                             owner.Health = owner.MaxHealth;
                         }
+
+                        // add waiting time back on to the item
+                        ResetUseCooldown(itemPlus);
 
                         playerRepo.SavePlayer(owner);
 
@@ -985,6 +988,9 @@ namespace TT.Domain.Procedures
                             owner.Mana = owner.MaxMana;
                         }
 
+                        // add waiting time back on to the item
+                        ResetUseCooldown(itemPlus);
+
                         playerRepo.SavePlayer(owner);
 
                         return (true, name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana");
@@ -992,6 +998,9 @@ namespace TT.Domain.Procedures
 
                     else if (itemPlus.Item.GivesEffectSourceId != null)
                     {
+                        // add waiting time back on to the item
+                        ResetUseCooldown(itemPlus);
+
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffectSourceId.Value, owner);
                         var effectPlus = EffectStatics.GetDbStaticEffect(itemPlus.Item.GivesEffectSourceId.Value);
                         if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())

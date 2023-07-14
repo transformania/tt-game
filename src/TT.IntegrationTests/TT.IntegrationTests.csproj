@@ -28,7 +28,7 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Highway.Data.EntityFramework" Version="7.0.4" />
     <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.3" />
+    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NSubstitute" Version="5.0.0" />

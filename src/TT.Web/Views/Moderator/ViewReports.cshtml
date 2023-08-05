@@ -13,8 +13,9 @@
     <table class="table table-hover messageTable">
         <thead>
             <tr>
-                <th style="width: 25%;">Timestamp</th>
-                <th style="width: 25%;">Sender</th>
+                <th style="width: 20%;">Round</th>
+                <th style="width: 20%;">Timestamp (YYYY/MM/DD)</th>
+                <th style="width: 20%;">Sender</th>
                 <th>Message</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
                 foreach (var report in Model.Where(r => r.Reporter.Id == r.Reported.Id))
                 {
                     <tr>
-                        <td>Round @report.Round, @report.Timestamp.ToString("MM/dd/yyyy")</td>
+                        <td>@report.Round</td>
+                        <td>@report.Timestamp.ToString("yyyy/MM/dd")</td>
                         <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
                         <td>@report.Reason</td>
                     </tr>
@@ -37,7 +39,8 @@
     <table class="table table-hover messageTable">
         <thead>
             <tr>
-                <th>Timestamp</th>
+                <th>Round</th>
+                <th>Timestamp (YYYY/MM/DD)</th>
                 <th>Reporter</th>
                 <th>Reported</th>
                 <th>Message</th>
@@ -52,7 +55,8 @@
                 foreach (var report in Model.Where(r => r.Reporter.Id != r.Reported.Id))
                 {
                     <tr>
-                        <td>Round @report.Round, @report.Timestamp.ToString("MM/dd/yyyy")</td>
+                        <td>@report.Round</td>
+                        <td>@report.Timestamp.ToString("yyyy/MM/dd")</td>
                         <td class="good"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reporter.Id))">@report.Reporter.UserName</a></td>
                         <td class="bad"><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(report.Reported.Id))">@report.Reported.UserName</a></td>
                         <td>@report.Reason</td>

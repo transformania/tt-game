@@ -244,9 +244,12 @@ namespace TT.Domain.Procedures
             PlayerLogProcedures.AddPlayerLog(covenant.LeaderId, message, true);
 
             // Send messcage to each captain
-            for (var i = 0; i < captains.Length; i++)
+            if (captains.Length > 0)
             {
-                PlayerLogProcedures.AddPlayerLog(Int32.Parse(captains[i]), message, true);               
+                for (var i = 0; i < captains.Length; i++)
+                {
+                    PlayerLogProcedures.AddPlayerLog(Int32.Parse(captains[i]), message, true);
+                }
             }
         }
 

@@ -839,6 +839,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 106,
+      "name": "Alpha 106 (Maximally Transmogrified!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

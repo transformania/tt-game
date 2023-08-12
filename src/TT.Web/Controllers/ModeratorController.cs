@@ -40,20 +40,9 @@ namespace TT.Web.Controllers
             return View(MVC.Moderator.Views.ViewAbusiveMessages, output);
         }
 
-        public virtual ActionResult ViewStrikes(string id)
-        {
-            var output = new AddStrikeViewModel
-            {
-                UserId = id,
-                PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = id })
-            };
-            return View(MVC.Moderator.Views.ViewStrikes, output);
-        }
-
         [ValidateAntiForgeryToken]
         public virtual ActionResult AddStrike(AddStrikeViewModel input)
         {
-
             // TODO:  get rid of this crap once all links to round number are done via integer, not string
             var round = Int32.Parse(PvPStatics.AlphaRound.Split(' ')[2]); // 'Alpha Round 42' gets split up, take the 3rd position which is the number... hack, I know
 

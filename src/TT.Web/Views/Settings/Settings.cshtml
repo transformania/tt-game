@@ -26,37 +26,11 @@
         <p><a href="@Url.Action(MVC.Settings.ToggleOnline(false))">Use Activity Timer for friends.</a></p>
     }
 
-    <p>
-        Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
-
-        @{
-            if (Model.Strikes.Any())
-            {
-                <table class="table table-hover dt-responsive messageTable">
-                    <thead>
-                        <tr>
-                            <th>Date/Time</th>
-                            <th>Reason</th>
-                            <th>Round</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            foreach (var strike in Model.Strikes)
-                            {
-                                <tr>
-                                    <td>@strike.Timestamp.ToString("MMMM dd, yyyy")</td>
-                                    <td>@strike.Reason</td>
-                                    <td>@strike.Round</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-            }
-        }
-
-    </p>
+        <p>
+            Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
+            <br />
+            You may view your strike history <a href="@Url.Action(MVC.Settings.ViewStrikes(Model.Player.MembershipId))">here</a>.
+        </p>
 
     @{
         if (Model.TimeUntilLogout >= 60)

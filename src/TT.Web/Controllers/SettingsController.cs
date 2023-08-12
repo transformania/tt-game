@@ -24,6 +24,7 @@ using TT.Domain.Players.Commands;
 using TT.Web.ViewModels;
 using TT.Domain.Skills.Queries;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Players.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -169,6 +170,27 @@ namespace TT.Web.Controllers
             }
 
             return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult ViewStrikes(String id)
+        {
+
+            var myMembershipId = User.Identity.GetUserId();
+
+            //Let moderators and admins into any strike page for moderation purposes
+            if (id != myMembershipId && !User.IsInRole(PvPStatics.Permissions_Moderator) && !User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                TempData["Error"] = "You cannot view another player's strikes.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var output = new AddStrikeViewModel
+            {
+                UserId = id,
+                PlayerUserStrikesDetail = DomainRegistry.Repository.FindSingle(new GetPlayerUserStrikes { UserId = id })
+            };
+
+            return View(MVC.Settings.Views.ViewStrikes, output);
         }
 
         public virtual ActionResult SetBio()

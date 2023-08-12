@@ -424,6 +424,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_104.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_105.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_106.cshtml" />
+    <Content Include="Views\Settings\ViewStrikes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />
@@ -777,7 +778,6 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_41.cshtml" />
     <Content Include="Views\Moderator\ViewAbusiveMessages.cshtml" />
     <Content Include="Views\Account\TermsOfService.cshtml" />
-    <Content Include="Views\Moderator\ViewStrikes.cshtml" />
     <Content Include="Views\Moderator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

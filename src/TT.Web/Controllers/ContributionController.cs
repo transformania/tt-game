@@ -1418,7 +1418,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MarkAsLive(int id)
         {
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            // assert only admins and publishers can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return RedirectToAction(MVC.PvP.Play());
             }
@@ -1482,7 +1483,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult SetSpellAsLive(int id)
         {
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            // assert only admins and publishers can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return RedirectToAction(MVC.PvP.Play());
             }

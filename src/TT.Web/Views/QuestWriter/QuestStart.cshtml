@@ -23,7 +23,7 @@
     <br>
     <br>
 
-    if (User.IsInRole(PvPStatics.Permissions_Admin))
+    if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
     {
         <p>
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

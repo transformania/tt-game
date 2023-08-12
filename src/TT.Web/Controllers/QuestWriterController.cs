@@ -68,8 +68,8 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult MarkQuestAsLive(int Id, bool live)
         {
-            // assert only admins can view this
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            // assert only admins and publishers can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return RedirectToAction(MVC.QuestWriter.QuestStart(Id));
             }

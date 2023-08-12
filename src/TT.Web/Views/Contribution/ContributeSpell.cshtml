@@ -679,7 +679,7 @@
 
             }
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
             {
 
                 <div class="form__panel group" style="background-color: #ffc278; ">
@@ -733,10 +733,7 @@
                 <a href="@Url.Action(MVC.Contribution.PublishItem(Model.Id))">Publish Item</a><br>
                 <p class="playerSearchingNotification">Note: always publish in this order: items, forms, spells.  Because foreign key stuff.</p>
 
-            }
-
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
-            {
+            
                 <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br>
                 <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br>
             }

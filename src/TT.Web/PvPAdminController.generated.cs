@@ -552,7 +552,6 @@ namespace TT.Web.Controllers
                 public readonly string RenamePlayer = "RenamePlayer";
                 public readonly string Scratchpad = "Scratchpad";
                 public readonly string ServerBalance = "ServerBalance";
-                public readonly string UpdateWorld = "UpdateWorld";
                 public readonly string ViewItemTransferLog = "ViewItemTransferLog";
                 public readonly string ViewPlayerItems = "ViewPlayerItems";
                 public readonly string ViewPlayerLog = "ViewPlayerLog";
@@ -578,7 +577,6 @@ namespace TT.Web.Controllers
             public readonly string RenamePlayer = "~/Views/PvPAdmin/RenamePlayer.cshtml";
             public readonly string Scratchpad = "~/Views/PvPAdmin/Scratchpad.cshtml";
             public readonly string ServerBalance = "~/Views/PvPAdmin/ServerBalance.cshtml";
-            public readonly string UpdateWorld = "~/Views/PvPAdmin/UpdateWorld.cshtml";
             public readonly string ViewItemTransferLog = "~/Views/PvPAdmin/ViewItemTransferLog.cshtml";
             public readonly string ViewPlayerItems = "~/Views/PvPAdmin/ViewPlayerItems.cshtml";
             public readonly string ViewPlayerLog = "~/Views/PvPAdmin/ViewPlayerLog.cshtml";

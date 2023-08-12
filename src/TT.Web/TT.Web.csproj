@@ -474,7 +474,6 @@
     <Content Include="Views\PvP\Play_Inanimate.cshtml" />
     <Content Include="Views\Info\HowToPlay.cshtml" />
     <Content Include="Views\PvP\LookAtPlayer.cshtml" />
-    <Content Include="Views\PvPAdmin\UpdateWorld.cshtml" />
     <Content Include="Views\Info\GameNews.cshtml" />
     <Content Include="Views\PvP\partial_XpBar.cshtml" />
     <Content Include="Views\PvP\partial_FormBuffs.cshtml" />

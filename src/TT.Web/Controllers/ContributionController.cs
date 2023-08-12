@@ -615,7 +615,7 @@ namespace TT.Web.Controllers
 
             SaveMe.AssignedToArtist = input.AssignedToArtist;
 
-            if (!input.ImageURL.IsNullOrEmpty() && User.IsInRole(PvPStatics.Permissions_Admin))
+            if (!input.ImageURL.IsNullOrEmpty() && (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher)))
             {
                 SaveMe.ImageURL = input.ImageURL;
             }

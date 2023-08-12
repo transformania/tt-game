@@ -79,6 +79,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ViewStrikes()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewStrikes);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SetBioSend()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBioSend);
@@ -290,6 +296,7 @@ namespace TT.Web.Controllers
             public readonly string ChangeRPMode = ("ChangeRPMode").ToLowerInvariant();
             public readonly string ChangeHardmode = ("ChangeHardmode").ToLowerInvariant();
             public readonly string ChangeGender = ("ChangeGender").ToLowerInvariant();
+            public readonly string ViewStrikes = ("ViewStrikes").ToLowerInvariant();
             public readonly string SetBio = ("SetBio").ToLowerInvariant();
             public readonly string SetBioSend = ("SetBioSend").ToLowerInvariant();
             public readonly string SetBioDelete = ("SetBioDelete").ToLowerInvariant();
@@ -360,6 +367,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ChangeGender
         {
             public readonly string changeGender = ("changeGender").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ViewStrikes s_params_ViewStrikes = new ActionParamsClass_ViewStrikes();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ViewStrikes ViewStrikesParams { get { return s_params_ViewStrikes; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ViewStrikes
+        {
+            public readonly string id = ("id").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetBioSend s_params_SetBioSend = new ActionParamsClass_SetBioSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -654,6 +669,7 @@ namespace TT.Web.Controllers
                 public readonly string ViewBio = "ViewBio";
                 public readonly string ViewPoll = "ViewPoll";
                 public readonly string ViewPolls = "ViewPolls";
+                public readonly string ViewStrikes = "ViewStrikes";
                 public readonly string WriteAuthorArtistBio = "WriteAuthorArtistBio";
             }
             public readonly string AuthorArtistBio = "~/Views/Settings/AuthorArtistBio.cshtml";
@@ -670,6 +686,7 @@ namespace TT.Web.Controllers
             public readonly string ViewBio = "~/Views/Settings/ViewBio.cshtml";
             public readonly string ViewPoll = "~/Views/Settings/ViewPoll.cshtml";
             public readonly string ViewPolls = "~/Views/Settings/ViewPolls.cshtml";
+            public readonly string ViewStrikes = "~/Views/Settings/ViewStrikes.cshtml";
             public readonly string WriteAuthorArtistBio = "~/Views/Settings/WriteAuthorArtistBio.cshtml";
             static readonly _partialClass s_partial = new _partialClass();
             public _partialClass partial { get { return s_partial; } }
@@ -817,6 +834,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeGender);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "changeGender", changeGender);
             ChangeGenderOverride(callInfo, changeGender);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ViewStrikesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ViewStrikes(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewStrikes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ViewStrikesOverride(callInfo, id);
             return callInfo;
         }
 

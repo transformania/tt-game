@@ -61,12 +61,6 @@ namespace TT.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ViewStrikes()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewStrikes);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AddStrike()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddStrike);
@@ -143,7 +137,6 @@ namespace TT.Web.Controllers
         {
             public readonly string Index = ("Index").ToLowerInvariant();
             public readonly string ViewAbusiveMessages = ("ViewAbusiveMessages").ToLowerInvariant();
-            public readonly string ViewStrikes = ("ViewStrikes").ToLowerInvariant();
             public readonly string AddStrike = ("AddStrike").ToLowerInvariant();
             public readonly string LockPvP = ("LockPvP").ToLowerInvariant();
             public readonly string ViewReports = ("ViewReports").ToLowerInvariant();
@@ -160,14 +153,6 @@ namespace TT.Web.Controllers
         }
 
 
-        static readonly ActionParamsClass_ViewStrikes s_params_ViewStrikes = new ActionParamsClass_ViewStrikes();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ViewStrikes ViewStrikesParams { get { return s_params_ViewStrikes; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ViewStrikes
-        {
-            public readonly string id = ("id").ToLowerInvariant();
-        }
         static readonly ActionParamsClass_AddStrike s_params_AddStrike = new ActionParamsClass_AddStrike();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_AddStrike AddStrikeParams { get { return s_params_AddStrike; } }
@@ -275,7 +260,6 @@ namespace TT.Web.Controllers
                 public readonly string SetAccountLockoutDate = "SetAccountLockoutDate";
                 public readonly string ViewAbusiveMessages = "ViewAbusiveMessages";
                 public readonly string ViewReports = "ViewReports";
-                public readonly string ViewStrikes = "ViewStrikes";
             }
             public readonly string EditNewsPost = "~/Views/Moderator/EditNewsPost.cshtml";
             public readonly string HandleReport = "~/Views/Moderator/HandleReport.cshtml";
@@ -284,7 +268,6 @@ namespace TT.Web.Controllers
             public readonly string SetAccountLockoutDate = "~/Views/Moderator/SetAccountLockoutDate.cshtml";
             public readonly string ViewAbusiveMessages = "~/Views/Moderator/ViewAbusiveMessages.cshtml";
             public readonly string ViewReports = "~/Views/Moderator/ViewReports.cshtml";
-            public readonly string ViewStrikes = "~/Views/Moderator/ViewStrikes.cshtml";
         }
     }
 
@@ -312,18 +295,6 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewAbusiveMessages);
             ViewAbusiveMessagesOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ViewStrikesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ViewStrikes(string id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewStrikes);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ViewStrikesOverride(callInfo, id);
             return callInfo;
         }
 

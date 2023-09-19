@@ -847,6 +847,15 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 107,
+      "name": "Alpha 107 (The Freedom of the Inanimating Petmaker!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
+
   ]
 }

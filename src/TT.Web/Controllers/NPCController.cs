@@ -702,6 +702,7 @@ namespace TT.Web.Controllers
             }
             else if (question == "miniboss")
             {
+                IPlayerRepository playerRepo = new EFPlayerRepository();
                 var output = "\"";
                 var sororityMother = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossSororityMotherId);
                 var popGoddess = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPopGoddessId);
@@ -716,6 +717,7 @@ namespace TT.Web.Controllers
                 var archDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchdemonId);
                 var dungeonSlime = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossDungeonSlimeId);
                 var plushDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushDemonId);
+                var bossRematchCount = playerRepo.Players.Count(b => b.BotId <= AIStatics.MinibossMaleThiefId && b.Mobility == PvPStatics.MobilityFull);
 
                 if (sororityMother != null)
                 {
@@ -769,7 +771,10 @@ namespace TT.Web.Controllers
                 {
                     output += "If you see a plush angel in the<b class=\'pvp-mode\'> dungeon</b>, it is better to leave it alone. Unlike the friendly angel on the streets, it is a bit of a dick.<br>";
                 }
-
+                if (bossRematchCount > 0)
+                {
+                    output += "I'm sensing some powerful presences in the <b class=\'pvp-mode\'> dungeon</b>... They seem to be spirits of incredibly powerful mages that once terrorized Sunnyglade in the past. I sense at least <b>" + bossRematchCount + "</b> of them down there. Be careful if you choose to take them on!<br>";
+                }
                 if (output.Length < 3)
                 {
                     output += "I've not heard of any notable figures prowling about, sorry. Is there anything else I can assist you with?\"";

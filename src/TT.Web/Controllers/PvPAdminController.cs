@@ -206,6 +206,13 @@ namespace TT.Web.Controllers
 
             data.TurnNumber = input.TurnNumber;
             data.RoundDuration = input.RoundDuration;
+            
+            //If we are changing from regular to Chaos mode - auto update the global turn maximum to avoid hitting the cap in Chaos Mode
+            if (input.ChaosMode && !data.ChaosMode && data.RoundDuration + 100000 < 250000)
+            {
+                data.RoundDuration += 100000;
+            }
+
             data.ChaosMode = input.ChaosMode;
             data.JokeShop = input.JokeShop;
             data.TestServer = input.TestServer;

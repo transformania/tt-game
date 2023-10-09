@@ -16,11 +16,11 @@
     @{
         foreach (var app in Model)
         {
-            <p>
-                @app.dbPlayer.GetFullName() applied @HtmlHelpers.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
-                <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "yes"))">Accept</a>
-                <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "no"))">Deny</a>
-            </p>
+        <p>
+            <a href="@Url.Action(MVC.PvP.LookAtPlayer(app.dbPlayer.Id))">@app.dbPlayer.GetFullName()</a> applied @HtmlHelpers.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
+            <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "yes"))">Accept</a>
+            <a href="@Url.Action(MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "no"))">Deny</a>
+        </p>
         }
 
         if (!Model.Any())

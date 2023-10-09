@@ -22,6 +22,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
         public string Region { get; set; }
         public List<int> Spells { get; set; }
         public int BotId { get; set; }
+        public DateTime LastActionTime { get; set; }
     }
 
     public static class BossProcedures_Minibosses
@@ -44,7 +45,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "sorority",
                     Spells = new List<int> { 522, 1421, 1436, 521, 1332, 354, 784, 678, 868, 1584},
                     RuneIdToGive = RuneStatics.MINIBOSS_SORORITY_MOTHER_RUNE,
-                    BotId = AIStatics.MinibossSororityMotherId
+                    BotId = AIStatics.MinibossSororityMotherId,
+                    LastActionTime = DateTime.MinValue
 ,                }
             },
             {
@@ -57,6 +59,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Spells = new List<int> { 1102, 360, 1325, 363, 441, 1501, 530, 1221, 431, 1386},
                     BotId = AIStatics.MinibossPopGoddessId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POP_GODDESS_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -69,6 +72,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Spells = new List<int> { 361, 1285, 862, 1536, 390, 376, 1224, 1539, 1558, 1289},
                     BotId = AIStatics.MinibossPossessedMaidId,
                     RuneIdToGive = RuneStatics.MINIBOSS_POSSESSED_MAID_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -81,6 +85,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Spells = new List<int> { 1230, 976, 683, 1145, 1037, 1449, 1557, 313, 1061, 336},
                     BotId = AIStatics.MinibossSeamstressId,
                     RuneIdToGive = RuneStatics.MINIBOSS_SEAMSTRESS_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -92,7 +97,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "park",
                     Spells = new List<int> { 947, 1242, 1190, 436, 1199, 1049, 1050, 791, 456, 1331},
                     BotId = AIStatics.MinibossGroundskeeperId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_GROUNDSKEEPER_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_GROUNDSKEEPER_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -104,7 +110,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "lab",
                     Spells = new List<int> { 891, 1435, 883, 966, 446, 1237, 1356, 1095, 1116, 420},
                     BotId = AIStatics.MinibossExchangeProfessorId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_PROFESSOR_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -116,7 +123,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "streets",
                     Spells = new List<int> { 943, 765, 391},
                     BotId = AIStatics.MinibossPlushAngelId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHANGEL_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHANGEL_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -128,7 +136,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "forest",
                     Spells = new List<int> { 1340, 1343, 1345},
                     BotId = AIStatics.MinibossArchangelId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHANGEL_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHANGEL_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -140,7 +149,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "castle",
                     Spells = new List<int> { 941, 954, 1351},
                     BotId = AIStatics.MinibossArchdemonId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHDEMON_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_ARCHDEMON_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -152,7 +162,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "dungeon",
                     Spells = new List<int> { 349, 446, 841, 891, 955, 1245, 1392, 1428, 1529},
                     BotId = AIStatics.MinibossDungeonSlimeId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)] // Give a random item from its list.
+                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)], // Give a random item from its list.
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -164,7 +175,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "dungeon",
                     Spells = new List<int> { 630, 857, 950},
                     BotId = AIStatics.MinibossPlushDemonId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHDEMON_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_PLUSHDEMON_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -176,7 +188,8 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "ranch_outside",
                     Spells = new List<int> { 404, 1256, 355, 583, 508, 484, 1127, 1255},
                     BotId = AIStatics.MinibossFiendishFarmhandId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_FARMHAND_RUNE,
+                    LastActionTime = DateTime.MinValue
                 }
             },
             {
@@ -188,7 +201,112 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                     Region = "pool",
                     Spells = new List<int> { 458, 974, 678, 1126, 510, 1044, 994, 1290, 455, 1432, 589, 679 }, // There are a lot of pool-related forms. Twelve should be enough.
                     BotId = AIStatics.MinibossLazyLifeguardId,
-                    RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE
+                    RuneIdToGive = RuneStatics.MINIBOSS_LIFEGUARD_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "maleRatThief",
+                new MinibossData {
+                    FormSourceId = 278,
+                    FormName = "form_Male_Rat_Thief_Miniboss",
+                    Title = "Brother Lukajo Seekshadow",
+                    Region = "dungeon",
+                    Spells = new List<int> { 609 },
+                    BotId = AIStatics.MinibossMaleThiefId,
+                    RuneIdToGive = RuneStatics.RAT_THIEF_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "femaleRatThief",
+                new MinibossData {
+                    FormSourceId = 279,
+                    FormName = "form_Female_Rat_Thief_Miniboss",
+                    Title = "Sister Lujienne Seekshadow",
+                    Region = "dungeon",
+                    Spells = new List<int> { 609 },
+                    BotId = AIStatics.MinibossFemaleThiefId,
+                    RuneIdToGive = RuneStatics.RAT_THIEF_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "roadQueen",
+                new MinibossData {
+                    FormSourceId = 934,
+                    FormName = "form_Road_Queen_Miniboss",
+                    Title = "Road Queen Harley Punksplitter",
+                    Region = "dungeon",
+                    Spells = new List<int> { 1197 },
+                    BotId = AIStatics.MinibossRoadQueenId,
+                    RuneIdToGive = RuneStatics.MOTORCYCLE_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "bimboBoss",
+                new MinibossData {
+                    FormSourceId = 233,
+                    FormName = "form_Lovebringer_Miniboss",
+                    Title = "Lady Lovebringer, PHD",
+                    Region = "dungeon",
+                    Spells = new List<int> { 406, 428, 558, 691, 908, 909, 915, 1175, 1419, 1425, 1438, 1484  }, //Lovebringer has no inanimate spells. We'll give her twelve thematic ones like the Slime boss.
+                    BotId = AIStatics.MinibossBimbossId,
+                    RuneIdToGive = RuneStatics.BIMBO_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "donnaMilton",
+                new MinibossData {
+                    FormSourceId = 287,
+                    FormName = "form_Donna_Miniboss",
+                    Title = "'Aunt' Donna Milton",
+                    Region = "dungeon",
+                    Spells = new List<int> { 465, 595, 596, 597, 649 },
+                    BotId = AIStatics.MinibossDonnaId,
+                    RuneIdToGive = RuneStatics.DONNA_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "faeBoss",
+                new MinibossData {
+                    FormSourceId = 582,
+                    FormName = "form_Narcissa_Miniboss",
+                    Title = "Narcissa the Exiled",
+                    Region = "dungeon",
+                    Spells = new List<int> { 929, 930 },
+                    BotId = AIStatics.MinibossNarcissaId,
+                    RuneIdToGive = RuneStatics.NARCISSA_RUNE,
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "nerdMouse",
+                new MinibossData {
+                    FormSourceId = 317,
+                    FormName = "form_Nerd_Mouse_Miniboss",
+                    Title = "Headmistress Arianna Brisby",
+                    Region = "dungeon",
+                    Spells = new List<int> { 1183 },
+                    BotId = AIStatics.MinibossNerdMouseId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)], //Mouse sisters don't seem to have a rune... Steal from the Slime here
+                    LastActionTime = DateTime.MinValue
+                }
+            },
+            {
+                "bimboMouse",
+                new MinibossData {
+                    FormSourceId = 522,
+                    FormName = "form_Bimbo_Mouse_Miniboss",
+                    Title = "Beautician Candice Brisby",
+                    Region = "dungeon",
+                    Spells = new List<int> { 1177 },
+                    BotId = AIStatics.MinibossBimboMouseId,
+                    RuneIdToGive = RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE[rand.Next(0, RuneStatics.MINIBOSS_DUNGEONSLIME_RUNE.Length)], //Mouse sisters don't seem to have a rune... Steal from the Slime here
+                    LastActionTime = DateTime.MinValue
                 }
             },
         };
@@ -221,29 +339,68 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             // spawn a new boss if last is null
             if (miniboss == null && rand.NextDouble() < ChanceToRespawn)
             {
+                int id;
 
-                var spawnLocation = LocationsStatics.GetRandomLocation_InRegion(data.Region);
-
-                var cmd = new CreatePlayer
+                /* Round bosses spawn in the dungeon under 3 conditions
+                 * 1. The main round version was defeated
+                 * 2. They do not currently have an animate version
+                 * 3. It has been at least 1 hour since their last action (moving, attacking, spawning)
+                 */
+                if (data.BotId <= AIStatics.MinibossMaleThiefId && DateTime.UtcNow - data.LastActionTime > TimeSpan.FromHours(1)) 
                 {
-                    FirstName = data.Title,
-                    LastName = NameService.GetRandomLastName(),
-                    Location = spawnLocation,
-                    Gender = PvPStatics.GenderFemale,
-                    Health = 100000,
-                    Mana = 100000,
-                    MaxHealth = 100000,
-                    MaxMana = 100000,
-                    FormSourceId = data.FormSourceId,
-                    Money = 2000,
-                    Mobility = PvPStatics.MobilityFull,
-                    Level = GetLevel(turnNumber),
-                    BotId = data.BotId
-                };
-                var id = DomainRegistry.Repository.Execute(cmd);
+                    //Determine which boss value to check
+                    var stats = PvPWorldStatProcedures.GetWorldStats();
+                    string isCompleted = "";
+                    switch (data.BotId)
+                    { 
+                        case AIStatics.MinibossMaleThiefId:
+                            isCompleted = stats.Boss_Thief;
+                            break;
+                        case AIStatics.MinibossFemaleThiefId:
+                            isCompleted = stats.Boss_Thief;
+                            break;
+                        case AIStatics.MinibossRoadQueenId:
+                            isCompleted = stats.Boss_MotorcycleGang;
+                            break;
+                        case AIStatics.MinibossBimbossId:
+                            isCompleted = stats.Boss_Bimbo;
+                            break;
+                        case AIStatics.MinibossDonnaId:
+                            isCompleted = stats.Boss_Donna;
+                            break;
+                        case AIStatics.MinibossNarcissaId:
+                            isCompleted = stats.Boss_Faeboss;
+                            break;
+                        case AIStatics.MinibossNerdMouseId:
+                            isCompleted = stats.Boss_Sisters;
+                            break;
+                        case AIStatics.MinibossBimboMouseId:
+                            isCompleted = stats.Boss_Sisters;
+                            break;
+                    }
+                    
+                    //COMPLETED is private const where it's defined. Either redefine, hardcode, or make public
+                    if (isCompleted.Equals("completed"))
+                    {
+                        id = SpawnBossRematch(turnNumber, LocationsStatics.GetRandomLocation_InRegion(data.Region), data);
+                    }
+                    else
+                    {
+                        //Boss rematch failed. Exit early
+                        return;
+                    }
 
-                // give the parasitic slime lots of buffs for all of the things they've clearly eaten!
-                if (data.BotId == AIStatics.MinibossDungeonSlimeId)
+                }
+
+                //Regular miniboss check
+                else
+                {
+                    id = SpawnMiniboss(turnNumber, LocationsStatics.GetRandomLocation_InRegion(data.Region), data);
+                }
+
+                // Give the parasitic slime lots of buffs for all of the things they've clearly eaten!
+                // And also the old bosses, they're big threats after all!
+                if (data.BotId == AIStatics.MinibossDungeonSlimeId || data.BotId <= AIStatics.MinibossMaleThiefId)
                 {
 
                     int effectsTotal = 3;
@@ -275,6 +432,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             if (miniboss != null && miniboss.Mobility == PvPStatics.MobilityFull)
             {
                 // move to a randomn location in this region
+                data.LastActionTime = DateTime.UtcNow;
                 var nextLocation = LocationsStatics.GetRandomLocation_InRegion(data.Region);
                 var actualNextLocation = AIProcedures.MoveTo(miniboss, nextLocation, 11);
                 miniboss.dbLocationName = actualNextLocation;
@@ -294,6 +452,50 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             
         }
 
+        public static int SpawnMiniboss(int turnNumber, string spawnLocation, MinibossData miniBossData)
+        {
+
+            var cmd = new CreatePlayer
+            {
+                FirstName = miniBossData.Title,
+                LastName = NameService.GetRandomLastName(),
+                Location = spawnLocation,
+                Gender = PvPStatics.GenderFemale,
+                Health = 100000,
+                Mana = 100000,
+                MaxHealth = 100000,
+                MaxMana = 100000,
+                FormSourceId = miniBossData.FormSourceId,
+                Money = 2000,
+                Mobility = PvPStatics.MobilityFull,
+                Level = GetLevel(turnNumber),
+                BotId = miniBossData.BotId
+            };
+            return DomainRegistry.Repository.Execute(cmd);
+        }
+
+        public static int SpawnBossRematch(int turnNumber, string spawnLocation, MinibossData miniBossData)
+        {
+
+            var cmd = new CreatePlayer
+            {
+                FirstName = NameService.GetRandomBossRematchName(),
+                LastName = miniBossData.Title,
+                Location = spawnLocation,
+                Gender = PvPStatics.GenderFemale,
+                Health = 100000,
+                Mana = 100000,
+                MaxHealth = 100000,
+                MaxMana = 100000,
+                FormSourceId = miniBossData.FormSourceId,
+                Money = 2000,
+                Mobility = PvPStatics.MobilityFull,
+                Level = GetLevel(turnNumber),
+                BotId = miniBossData.BotId
+            };
+            return DomainRegistry.Repository.Execute(cmd);
+        }
+
         public static void CounterAttack(Player victim, Player boss)
         {
             var definition = bossData.SingleOrDefault(d => d.Value.BotId == boss.BotId);
@@ -304,6 +506,9 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             for (var i = 0; i < counterAttackTimes && !complete; i++)
             {
                 (complete, _) = AttackProcedures.Attack(boss, victim, ChooseSpell(boss, world.TurnNumber, definition.Value.Spells));
+
+                //Update last action here for respawn delay on boss rematches
+                definition.Value.LastActionTime = DateTime.UtcNow;
             }
 
             if (complete)

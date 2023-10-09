@@ -672,7 +672,15 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                                          p.BotId == AIStatics.MinibossPopGoddessId ||
                                                          p.BotId == AIStatics.MinibossPossessedMaidId ||
                                                          p.BotId == AIStatics.MinibossSeamstressId ||
-                                                         p.BotId == AIStatics.MinibossSororityMotherId)).ToList();
+                                                         p.BotId == AIStatics.MinibossSororityMotherId ||
+                                                         p.BotId == AIStatics.MinibossMaleThiefId ||
+                                                         p.BotId == AIStatics.MinibossFemaleThiefId ||
+                                                         p.BotId == AIStatics.MinibossRoadQueenId ||
+                                                         p.BotId == AIStatics.MinibossBimbossId ||
+                                                         p.BotId == AIStatics.MinibossDonnaId ||
+                                                         p.BotId == AIStatics.MinibossNarcissaId ||
+                                                         p.BotId == AIStatics.MinibossNerdMouseId ||
+                                                         p.BotId == AIStatics.MinibossBimboMouseId)).ToList();
             }
 
             rand = rand ?? new Random();

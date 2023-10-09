@@ -37,6 +37,14 @@ namespace TT.Domain.Statics
         public const int MinibossArchdemonId = -29;
         public const int MinibossDungeonSlimeId = -30;
         public const int MinibossPlushDemonId = -31;
+        public const int MinibossMaleThiefId = -32;
+        public const int MinibossFemaleThiefId = -33;
+        public const int MinibossRoadQueenId = -34;
+        public const int MinibossBimbossId = -35;
+        public const int MinibossDonnaId = -36;
+        public const int MinibossNarcissaId = -37;
+        public const int MinibossNerdMouseId = -38;
+        public const int MinibossBimboMouseId = -39;
 
         public const int DungeonDemonFormId = 371;
 
@@ -70,7 +78,15 @@ namespace TT.Domain.Statics
                    id == MinibossArchangelId ||
                    id == MinibossArchdemonId ||
                    id == MinibossDungeonSlimeId ||
-                   id == MinibossPlushDemonId;
+                   id == MinibossPlushDemonId ||
+                   id == MinibossMaleThiefId ||
+                   id == MinibossFemaleThiefId ||
+                   id == MinibossRoadQueenId ||
+                   id == MinibossBimbossId ||
+                   id == MinibossDonnaId ||
+                   id == MinibossNarcissaId ||
+                   id == MinibossNerdMouseId ||
+                   id == MinibossBimboMouseId;
         }
 
         public static bool IsAFriendly(int id)

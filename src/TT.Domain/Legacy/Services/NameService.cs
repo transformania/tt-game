@@ -21,6 +21,12 @@ namespace TT.Domain.Legacy.Services
             return allFirstNames.ElementAt((int)Math.Floor(rand.NextDouble() * allFirstNames.Count));
         }
 
+        public static string GetRandomBossRematchName()
+        {
+            var allFirstNames = GetNames("DungeonBossRematchNames");
+            return allFirstNames.ElementAt((int)Math.Floor(rand.NextDouble() * allFirstNames.Count));
+        }
+
         private static List<string> GetNames(string firstOrLast)
         {
             return XmlResourceLoader.Load<List<string>>($"TT.Domain.XMLs.{firstOrLast}.xml");

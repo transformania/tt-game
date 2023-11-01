@@ -855,7 +855,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 108,
+      "name": "Alpha 108 (This is Halloween!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
-
   ]
 }

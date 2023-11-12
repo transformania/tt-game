@@ -118,6 +118,8 @@ namespace TT.Web.Hubs
                             break;
                         case "08b476c3-d262-45b6-9e6a-7d94b472fefe":
                             break; //So is this one.
+                        case "99690ee2-9b6a-4b7e-990f-cc8a2a5a28f2": //Kyri is also probably a filthy casual.
+                            break;
                         default:
                             name = name + " (Mod)";
                             break;

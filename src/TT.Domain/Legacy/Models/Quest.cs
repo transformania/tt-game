@@ -52,6 +52,16 @@ namespace TT.Domain.Models
         public int PrerequisiteQuest { get; set; }
 
         /// <summary>
+        /// The ID of the form the player must be in before the quest can be started.  Set to 0 if there is no prerequisite.
+        /// </summary>
+        public int PrerequisiteForm { get; set; }
+
+        /// <summary>
+        /// The ID of the quest that locks out this quest from being attempted. Set to 0 if there is no prerequisite.
+        /// </summary>
+        public int LockoutQuest { get; set; }
+
+        /// <summary>
         /// The sex the player must be in order to begin this quest
         /// </summary>
         public int RequiredGender { get; set; }

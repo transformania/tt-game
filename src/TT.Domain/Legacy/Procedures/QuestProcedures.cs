@@ -97,6 +97,10 @@ namespace TT.Domain.Procedures
             {
                 return false;
             }
+            else if (questStart.PrerequisiteForm > 0 && questStart.PrerequisiteForm != player.FormSourceId)
+            {
+                return false;
+            }
 
             foreach (var q in questPlayerStatuses)
             {
@@ -141,6 +145,18 @@ namespace TT.Domain.Procedures
                     return false;
                 }
 
+            }
+
+            //Quest lockout from a different quest
+            if (questStart.LockoutQuest > 0)
+            {
+                foreach (var q in questPlayerStatuses)
+                {
+                    if (q.QuestId == questStart.LockoutQuest && q.Outcome == (int)QuestStatics.QuestOutcomes.Completed)
+                    {
+                        return false;
+                    }
+                }
             }
 
             // all checks passed, return true
@@ -372,6 +388,19 @@ namespace TT.Domain.Procedures
                         return false;
                     }
 
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                //Convert the string value to int for form comparison
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Form)
+                {
+                    if (Int32.Parse(q.RequirementValue) != player.FormSourceId)
+                    {
+                        return false;
+                    }
                     else
                     {
                         continue;

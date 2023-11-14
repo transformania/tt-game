@@ -323,6 +323,7 @@ namespace TT.Domain.Models
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 dbLocationName = this.dbLocationName,
+                FormSourceId = this.FormSourceId,
                 Health = this.Health,
                 MaxHealth = this.MaxHealth,
                 Mana = this.Mana,

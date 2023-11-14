@@ -33,6 +33,8 @@ namespace TT.Domain.Procedures
             questStart.MinStartTurn = input.MinStartTurn;
             questStart.Name = input.Name;
             questStart.PrerequisiteQuest = input.PrerequisiteQuest;
+            questStart.PrerequisiteForm = input.PrerequisiteForm;
+            questStart.LockoutQuest = input.LockoutQuest;
             questStart.RequiredGender = input.RequiredGender;
             questStart.StartState = input.StartState;
             questStart.Tags = input.Tags;

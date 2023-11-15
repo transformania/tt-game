@@ -63,6 +63,12 @@ namespace TT.Domain.Procedures
             }
         }
 
+        public static bool PlayersAreFriends(Player sender, Player receiver)
+        {
+            var friends = FriendProcedures.GetMyFriends(sender.MembershipId);
+            var confirmedFriends = friends.Where(f => f.dbFriend.IsAccepted && f.dbPlayer.MembershipId == receiver.MembershipId);
+            return confirmedFriends.Any();
+        }
 
     }
 }

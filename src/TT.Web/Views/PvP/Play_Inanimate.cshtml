@@ -122,6 +122,10 @@
                 <span style="float: right; margin: 10px;" class="icon">
                     @HtmlHelpers.PrintItemTypeIcon(Model.Item?.ItemSource.ItemType)
                 </span>
+                @if (Model.FriendOnlyMessages)
+                {
+                    <span class="glyphicon glyphicon-headphones text-danger stroke-white well-sm" style="position: absolute; top: auto; bottom: 6px; right: 70px; width: 16px; height: 16px;" title="Only allowing messages from friends"></span>
+                }
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
@@ -325,7 +329,7 @@
                     if (PvPStatics.ChaosMode || Model.Player.InHardmode)
                     {
                         <p class="center-block">
-                            <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Submit to your transform and lock as this form</a>
+                            <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Submit to your transformation and lock as this form</a>
                         </p>
                     }
                 }

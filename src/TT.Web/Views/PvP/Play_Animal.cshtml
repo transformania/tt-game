@@ -121,6 +121,10 @@
             <div class="petItemPortrait img-responsive" style="background-image: url(https://images.transformaniatime.com/animalPortraits/@Model.PortraitUrl);">
                 @HtmlHelpers.PrintOwnerSubPortrait(Model.OwnedBy)
             </div>
+            @if (Model.FriendOnlyMessages)
+            {
+                <span class="glyphicon glyphicon-headphones text-danger stroke-white well-sm" style="position: absolute; top: auto; bottom: 6px; right: 70px; width: 16px; height: 16px;" title="Only allowing messages from friends"></span>
+            }
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>

@@ -172,7 +172,8 @@ namespace TT.Web.Controllers
                     UnreadMessageCount = unreadMessageCount,
                     PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse(),
                     StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(itemMe))),
-                    Message = InanimateXPProcedures.GetProspectsMessage(me)
+                    Message = InanimateXPProcedures.GetProspectsMessage(me),
+                    FriendOnlyMessages = me.FriendOnlyMessages
                 };
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
                 inanimateOutput.PortraitUrl = ItemStatics.GetStaticItem(inanimateOutput.Form.ItemSourceId.Value).PortraitUrl;
@@ -295,6 +296,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.StruggleChance = Math.Round(InanimateXPProcedures.GetStruggleChance(me, ItemProcedures.ItemIncursDungeonPenalty(animalOutput.YouItem)));
                 animalOutput.Message = InanimateXPProcedures.GetProspectsMessage(me);
+                animalOutput.FriendOnlyMessages = me.FriendOnlyMessages;
 
                 return View(MVC.PvP.Views.Play_Animal, animalOutput);
 
@@ -2437,7 +2439,7 @@ namespace TT.Web.Controllers
                 ChaosChangesEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = playerLookedAt.Player.MembershipId }),
                 OwnershipVisibilityEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = playerLookedAt.Player.MembershipId }),
                 IsAccountLockedOut = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId }),
-                IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId })
+                IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId }),
             };
 
             var myMembershipId = User.Identity.GetUserId();
@@ -3179,6 +3181,8 @@ namespace TT.Web.Controllers
             output.RequestsForMe = friends.Where(f => !f.dbFriend.IsAccepted && (f.dbFriend.FriendMembershipId == myMembershipId));
 
             output.MyOutgoingRequests = friends.Where(f => !f.dbFriend.IsAccepted && (f.dbFriend.OwnerMembershipId == myMembershipId));
+
+            output.FriendOnlyMessages = PlayerProcedures.GetPlayerFromMembership(myMembershipId).FriendOnlyMessages;
 
             return View(MVC.PvP.Views.MyFriends, output);
         }

@@ -47,6 +47,7 @@ namespace TT.Web.Controllers
                 ChaosChangesEnabled = DomainRegistry.Repository.FindSingle(new IsChaosChangesEnabled { UserId = myMembershipId }),
                 OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId }),
                 IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
+                FriendOnlyMessages = me.FriendOnlyMessages,
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -564,6 +565,28 @@ namespace TT.Web.Controllers
             blacklistRepo.SaveBlacklistEntry(blacklist);
 
             PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have updated the blacklist note.</b>", true);
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult UpdateFriendOnlyMessages(bool friendOnlyMessages)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new UpdateFriendOnlyMessages
+                {
+                    UserId = myMembershipId,
+                    FriendOnlyMessages = friendOnlyMessages
+                });
+                TempData["Result"] = $"Updated Friend Only Messages to {friendOnlyMessages}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change friend only message setting enabled/disabled.";
+            }
 
             return RedirectToAction(MVC.PvP.Play());
         }

@@ -123,6 +123,10 @@
             {
                 <span class="icon icon-hard" title="This player is in Hard Mode."></span>
             }
+            @if (Model.PlayerForm.Player.FriendOnlyMessages)
+            {
+                <span class="glyphicon glyphicon-headphones text-danger stroke-white well-sm" style="position: absolute; top: auto; bottom: 6px; right: 7px; width: 16px; height: 16px;" title="Only allowing messages from friends"></span>
+            }
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>

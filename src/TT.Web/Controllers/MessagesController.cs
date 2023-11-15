@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Exceptions;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Messages.Commands;
 using TT.Domain.Messages.DTOs;
@@ -52,6 +53,8 @@ namespace TT.Web.Controllers
                     output.WearerName = personWearingMe.Player.GetFullName();
                 }
             }
+
+            output.FriendOnlyMessages = me.FriendOnlyMessages;
 
             var isDonator = me.DonatorGetsMessagesRewards();
 
@@ -271,6 +274,13 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // if either user has friend only messaging on, assert that the players are friends
+            if ((me.FriendOnlyMessages || receiver.FriendOnlyMessages) && !MessageProcedures.PlayersAreFriends(me, receiver))
+            {
+                TempData["Error"] = "You and/or the recipient has friend only messaging turn ON and you are not friends with this user";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

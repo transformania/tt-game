@@ -81,6 +81,7 @@ namespace TT.Domain.Procedures
                                                               InQuestState = player.InQuestState,
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
+                                                              FriendOnlyMessages = player.FriendOnlyMessages,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -193,7 +194,8 @@ namespace TT.Domain.Procedures
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
                                                               OriginalFirstName = player.OriginalFirstName,
-                                                              OriginalLastName = player.OriginalLastName
+                                                              OriginalLastName = player.OriginalLastName,
+                                                              FriendOnlyMessages = player.FriendOnlyMessages,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -305,7 +307,8 @@ namespace TT.Domain.Procedures
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
                                                               OriginalFirstName = player.OriginalFirstName,
-                                                              OriginalLastName = player.OriginalLastName
+                                                              OriginalLastName = player.OriginalLastName,
+                                                              FriendOnlyMessages = player.FriendOnlyMessages,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -418,7 +421,8 @@ namespace TT.Domain.Procedures
                                                               InQuest = player.InQuest,
                                                               InQuestState = player.InQuestState,
                                                               OriginalFirstName = player.OriginalFirstName,
-                                                              OriginalLastName = player.OriginalLastName
+                                                              OriginalLastName = player.OriginalLastName,
+                                                              FriendOnlyMessages = player.FriendOnlyMessages,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form

@@ -70,6 +70,7 @@ namespace TT.Domain.Models
         public int InQuest { get; set; }
         public int InQuestState { get; set; }
         public int ItemsUsedThisTurn { get; set; }
+        public bool FriendOnlyMessages { get; set; }
 
         public string GetFullName()
         {
@@ -248,6 +249,7 @@ namespace TT.Domain.Models
         public int InQuestState { get; set; }
 
         public int ItemsUsedThisTurn { get; set; }
+        public bool FriendOnlyMessages { get; set; }
 
         public string GetFullName()
         {
@@ -366,6 +368,7 @@ namespace TT.Domain.Models
                 InQuest = this.InQuest,
                 InQuestState = this.InQuestState,
                 ItemsUsedThisTurn = this.ItemsUsedThisTurn,
+                FriendOnlyMessages = this.FriendOnlyMessages,
 
             };
             return output;

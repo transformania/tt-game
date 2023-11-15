@@ -14,5 +14,6 @@ namespace TT.Domain.ViewModels
         public bool ChaosChangesEnabled { get; set; }
         public bool OwnershipVisibilityEnabled { get; set; }
         public bool IsOnlineToggled { get; set; }
+        public bool FriendOnlyMessages { get; set; }
     }
 }

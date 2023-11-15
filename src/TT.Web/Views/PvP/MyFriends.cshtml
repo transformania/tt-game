@@ -31,6 +31,21 @@
         </div>
     }
 
+    if (Model.FriendOnlyMessages)
+    {
+        <div class="specialBox">
+            You are currently only allowing messages from friends. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Toggle it to allow messages from all users.</a>
+            <br>
+        </div>
+    }
+    else
+    {
+        <div class="specialBox">
+            You are currently allowing messages from all users. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Toggle it to allow messages only from friends.</a>
+            <br>
+        </div>
+    }
+
     if (Model.ConfirmedFriends.Any(m => m.dbPlayer != null))
     {
 

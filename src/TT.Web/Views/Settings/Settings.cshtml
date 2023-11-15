@@ -378,9 +378,21 @@
         <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br><br>
     </p>
 
-    <h2>Player Blacklist</h2>
+    <h2>Player Blacklist & Messaging</h2>
     <p>
-        View and update any blacklist entries you have set. <a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My Blacklist Entries</a>
+        View and update any blacklist entries you have set. <a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My Blacklist Entries</a><br><br>
+        You can update your friend message privacy settings here. 
+        @{
+            if (Model.FriendOnlyMessages)
+            {
+                <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Click here to turn OFF friend only messages</a><br>
+            }
+            else
+            {
+                <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Click here to turn ON friend only messages</a><br>
+            }
+
+        }
     </p>
 
     <h2>Audio Notifications</h2>

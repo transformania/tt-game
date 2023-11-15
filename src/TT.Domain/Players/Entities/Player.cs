@@ -101,6 +101,7 @@ namespace TT.Domain.Players.Entities
         public int InQuest { get; protected set; } // TODO:  Convert to nullable FK to Quests
         public int InQuestState { get; protected set; } // TODO:  Convert to nullable FK to QuestStates
         public int ItemsUsedThisTurn { get; protected set; }
+        public bool FriendOnlyMessages { get; protected set; }
 
         public Covenant CovenantLed { get; protected set; }
 
@@ -166,7 +167,8 @@ namespace TT.Domain.Players.Entities
                 InDuel = cmd.InDuel,
                 InQuest = cmd.InQuest,
                 InQuestState = cmd.InQuestState,
-                ItemsUsedThisTurn = cmd.ItemsUsedThisTurn
+                ItemsUsedThisTurn = cmd.ItemsUsedThisTurn,
+                FriendOnlyMessages = false
 
             };
         }
@@ -444,6 +446,11 @@ namespace TT.Domain.Players.Entities
         public void ChangeGender(string changeGender)
         {
             Gender = changeGender;
+        }
+
+        public void ChangeFriendOnlyMessages(bool friendOnlyMessages)
+        {
+            FriendOnlyMessages = friendOnlyMessages;
         }
 
 

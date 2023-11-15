@@ -184,10 +184,14 @@
                 @HtmlHelpers.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
                 @HtmlHelpers.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
                 @HtmlHelpers.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
-            </span> 
+            </span>
             @if (Model.PlayerForm.Player.InHardmode)
             {
                 <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+            }
+            if (Model.PlayerForm.Player.FriendOnlyMessages)
+            {
+                <span class="glyphicon glyphicon-headphones text-danger stroke-white well-sm" style="position: absolute; top: auto; bottom: 6px; right: 7px; width: 16px; height: 16px;" title="Only allowing messages from friends"></span>
             }
         </div>
         <div class="rightDisplay">

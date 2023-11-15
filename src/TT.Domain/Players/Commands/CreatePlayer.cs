@@ -70,6 +70,7 @@ namespace TT.Domain.Players.Commands
         public int ItemsUsedThisTurn { get; set; }
 
         public int FormSourceId { get; set; }
+        public bool FriendOnlyMessages { get; set; }
 
         public CreatePlayer()
         {

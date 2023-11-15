@@ -9,5 +9,6 @@ namespace TT.Domain.ViewModels
         public IEnumerable<FriendPlayerViewModel> MyOutgoingRequests;
         public bool IsOnlineToggled { get; set; }
         public int PlayerId { get; set; }
+        public bool FriendOnlyMessages { get; set; }
     }
 }

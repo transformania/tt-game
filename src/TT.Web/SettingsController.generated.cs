@@ -139,6 +139,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateFriendOnlyMessages()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFriendOnlyMessages);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ViewPoll()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewPoll);
@@ -309,6 +315,7 @@ namespace TT.Web.Controllers
             public readonly string ChangeBlacklistType = ("ChangeBlacklistType").ToLowerInvariant();
             public readonly string ChangeBlacklistNote = ("ChangeBlacklistNote").ToLowerInvariant();
             public readonly string ChangeBlacklistNoteSend = ("ChangeBlacklistNoteSend").ToLowerInvariant();
+            public readonly string UpdateFriendOnlyMessages = ("UpdateFriendOnlyMessages").ToLowerInvariant();
             public readonly string ViewPolls = ("ViewPolls").ToLowerInvariant();
             public readonly string ViewPoll = ("ViewPoll").ToLowerInvariant();
             public readonly string ReplyToPoll = ("ReplyToPoll").ToLowerInvariant();
@@ -451,6 +458,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ChangeBlacklistNoteSend
         {
             public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_UpdateFriendOnlyMessages s_params_UpdateFriendOnlyMessages = new ActionParamsClass_UpdateFriendOnlyMessages();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateFriendOnlyMessages UpdateFriendOnlyMessagesParams { get { return s_params_UpdateFriendOnlyMessages; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateFriendOnlyMessages
+        {
+            public readonly string friendOnlyMessages = ("friendOnlyMessages").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ViewPoll s_params_ViewPoll = new ActionParamsClass_ViewPoll();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -991,6 +1006,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBlacklistNoteSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
             ChangeBlacklistNoteSendOverride(callInfo, input);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateFriendOnlyMessagesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool friendOnlyMessages);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateFriendOnlyMessages(bool friendOnlyMessages)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFriendOnlyMessages);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "friendOnlyMessages", friendOnlyMessages);
+            UpdateFriendOnlyMessagesOverride(callInfo, friendOnlyMessages);
             return callInfo;
         }
 

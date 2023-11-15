@@ -25,6 +25,23 @@
     }
 </div>
 
+@{ 
+    if (Model.FriendOnlyMessages)
+    {
+        <div class="specialBox">
+            You are currently only allowing messages from friends. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Toggle it to allow messages from all users.</a>
+            <br>
+        </div>
+    }
+    else
+    {
+        <div class="specialBox">
+            You are currently allowing messages from all users. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Toggle it to allow messages only from friends.</a>
+            <br>
+        </div>
+    }
+}
+
 <div class="specialBox specialHeader">
     <b>Received Messages (@Model.Paginator.TotalCount/@Model.InboxSize)</b>
 </div>
@@ -74,19 +91,19 @@
                     }
 
                     <tr>
-                       
+
                     <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Sender.Id))">@msg.Sender.GetFullName()</a></td>
 
                     @{
-                    if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
-                    {
-                        <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
-                    }
-                    else
-                    {
-                        <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
-                    }
+                        if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
+                        {
+                            <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
                         }
+                        else
+                        {
+                            <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
+                        }
+                    }
 
                         <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
                         <td>
@@ -112,7 +129,7 @@
                             }
                             else
                             {
-                               using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
+                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input name="messageId" type="hidden" value="@msg.MessageId">

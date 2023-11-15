@@ -12,5 +12,6 @@ namespace TT.Domain.ViewModels
         public string WearerName { get; set; }
         public Paginator Paginator { get; set; }
         public int InboxSize { get; set; }
+        public bool FriendOnlyMessages { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormViewModel
 @using TT.Web.CustomHtmlHelpers
+@using TT.Domain
 @using TT.Domain.Procedures
 @using TT.Domain.Statics
+@using TT.Domain.Identity.Queries;
 
 @{
     var HealthWidth = Math.Min(100, Model.Player.Health / Model.Player.MaxHealth * 100);
@@ -39,6 +41,10 @@
             @if (Model.Player.InHardmode)
             {
                 <span class="icon icon-hard" title="This player is in Hard Mode."></span>
+            }
+            @if (Model.Player.FriendOnlyMessages)
+            {
+            <span class="glyphicon glyphicon-headphones text-danger stroke-white well-sm" style="position: absolute; top: auto; bottom: 6px; left: 10px; width: 16px; height: 16px;" title="Only allowing messages from friends"></span>
             }
         </div>
     </div>

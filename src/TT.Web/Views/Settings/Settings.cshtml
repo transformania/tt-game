@@ -141,7 +141,7 @@
         <br>
         <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <br>
-            @if(!String.IsNullOrEmpty(Model.ReservedName))
+            @if(!string.IsNullOrEmpty(Model.ReservedName))
             {
                 <mark class="small" title="This name is the one you will start a new round with.">Your <i>reserved</i> name is <b>@Model.ReservedName</b></mark><br />
             }

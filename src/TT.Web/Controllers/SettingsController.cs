@@ -36,7 +36,7 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
+            
             var output = new SettingsPageViewModel
             {
                 TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
@@ -48,7 +48,7 @@ namespace TT.Web.Controllers
                 OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId }),
                 IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
                 FriendOnlyMessages = me.FriendOnlyMessages,
-                ReservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId).FullName,
+                ReservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId)?.FullName,
             };
 
             return View(MVC.Settings.Views.Settings, output);

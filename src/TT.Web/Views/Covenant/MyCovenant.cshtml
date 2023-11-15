@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
 @using TT.Domain.Statics
+@using TT.Domain.Procedures
 @{
     ViewBag.Title = "My Covenant";
 }
@@ -119,9 +120,20 @@
         foreach (var p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
         {
             <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-                <div class="charaBoxInner">
+                <div class="charaBoxInner text-center">
                     <div>
                         <p>
+                            @if (!PlayerProcedures.GetPlayerOnlineToggle(p.Player.MembershipId))
+                            {
+                                <br>
+                                <b class="timeago small">@p.Player.OnlineActivityTimestamp.ToString("g")</b>
+                            }
+                            else
+                            {
+                                <br>
+                                <b class="timeago small">@p.Player.LastActionTimestamp.ToString("g")</b>
+                            }
+
                             @Html.Partial(MVC.PvP.Views.Player_Partial, p)
                             @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain)
                             {

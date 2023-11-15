@@ -248,7 +248,11 @@ namespace TT.Domain.Procedures
             {
                 for (var i = 0; i < captains.Length; i++)
                 {
-                    PlayerLogProcedures.AddPlayerLog(Int32.Parse(captains[i]), message, true);
+                    // Make sure a captain is actually there.
+                    if (!string.IsNullOrEmpty(captains[i]))
+                    {
+                        PlayerLogProcedures.AddPlayerLog(Int32.Parse(captains[i]), message, true);
+                    }
                 }
             }
         }

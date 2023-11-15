@@ -32,7 +32,12 @@
 
             if (f.CanUse(f.MyUserId))
             {
-                <a href="@Url.Action(MVC.Covenant.UseFurniture(f.dbFurniture.Id))">Use</a>
+                <a href="@Url.Action(MVC.Covenant.UseFurniture(f.dbFurniture.Id))">Use</a><br>
+            }
+
+            if (Model.playerIsCovenantLeader || Model.IAmCaptain)
+            {
+                <a href="@Url.Action(MVC.Covenant.SellFurniture(f.dbFurniture.Id))">Sell</a><br>
             }
             <hr>
         }

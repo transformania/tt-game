@@ -121,6 +121,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SellFurniture()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SellFurniture);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UseFurniture()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UseFurniture);
@@ -177,6 +183,7 @@ namespace TT.Web.Controllers
             public readonly string UpgradeSafeground = ("UpgradeSafeground").ToLowerInvariant();
             public readonly string ViewAvailableFurniture = ("ViewAvailableFurniture").ToLowerInvariant();
             public readonly string PurchaseFurniture = ("PurchaseFurniture").ToLowerInvariant();
+            public readonly string SellFurniture = ("SellFurniture").ToLowerInvariant();
             public readonly string MyCovenantFurniture = ("MyCovenantFurniture").ToLowerInvariant();
             public readonly string UseFurniture = ("UseFurniture").ToLowerInvariant();
             public readonly string MyCovenantLog = ("MyCovenantLog").ToLowerInvariant();
@@ -266,6 +273,14 @@ namespace TT.Web.Controllers
         public ActionParamsClass_PurchaseFurniture PurchaseFurnitureParams { get { return s_params_PurchaseFurniture; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_PurchaseFurniture
+        {
+            public readonly string id = ("id").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SellFurniture s_params_SellFurniture = new ActionParamsClass_SellFurniture();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SellFurniture SellFurnitureParams { get { return s_params_SellFurniture; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SellFurniture
         {
             public readonly string id = ("id").ToLowerInvariant();
         }
@@ -630,6 +645,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PurchaseFurniture);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             PurchaseFurnitureOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SellFurnitureOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SellFurniture(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SellFurniture);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            SellFurnitureOverride(callInfo, id);
             return callInfo;
         }
 

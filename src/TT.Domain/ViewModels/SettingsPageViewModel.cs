@@ -15,5 +15,6 @@ namespace TT.Domain.ViewModels
         public bool OwnershipVisibilityEnabled { get; set; }
         public bool IsOnlineToggled { get; set; }
         public bool FriendOnlyMessages { get; set; }
+        public string ReservedName { get; set; }
     }
 }

@@ -48,6 +48,7 @@ namespace TT.Web.Controllers
                 OwnershipVisibilityEnabled = DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = myMembershipId }),
                 IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
                 FriendOnlyMessages = me.FriendOnlyMessages,
+                ReservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId).FullName,
             };
 
             return View(MVC.Settings.Views.Settings, output);

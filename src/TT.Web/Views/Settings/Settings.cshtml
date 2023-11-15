@@ -139,13 +139,17 @@
         You can also reserve your name so that no other players take it at the start of a new round and steal your identity.
         You must be level 3 or higher in order to do this.
         <br>
+        <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <br>
-        <mark>Your <u>original</u> name is <b>@Model.Player.OriginalFirstName @Model.Player.OriginalLastName</b></mark><br />
-        <mark>Your <b>current</b> name is <b>@Model.Player.FirstName @Model.Player.LastName</b></mark>
+            @if(!String.IsNullOrEmpty(Model.ReservedName))
+            {
+                <mark class="small" title="This name is the one you will start a new round with.">Your <i>reserved</i> name is <b>@Model.ReservedName</b></mark><br />
+            }
+        <mark class="small" title="This name is the one you will start additional new characters with.">Your <u>original</u> name is <b>@Model.Player.OriginalFirstName @Model.Player.OriginalLastName</b></mark><br />
+        <mark class="small" title="This name is the one you are currently displaying.">Your <b>current</b> name is <b>@Model.Player.FirstName @Model.Player.LastName</b></mark>
         <br>
         <br>
         <a href="@Url.Action(MVC.Settings.ChangeGender(0))" class="mark" alt="Buoy" title="👯‍♂️">Male ♂</a> <a href="@Url.Action(MVC.Settings.ChangeGender(1))" class="mark" alt="Grill" title="👯‍♀️">Female ♀</a><br />
-        <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <a href="@Url.Action(MVC.Settings.MyBaseForms())">Choose a custom or different base form</a>
     </p>
 

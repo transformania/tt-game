@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.World.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -905,6 +907,10 @@ namespace TT.Web.Controllers
 
             ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(myCov, me);
 
+            var getWorldState = DomainRegistry.Repository.FindSingle(new GetWorld());
+            var getTurnNumner = getWorldState.TurnNumber;
+            ViewBag.TurnNumber = getTurnNumner;
+
             return View(MVC.Covenant.Views.ViewAvailableFurniture, output);
         }
 
@@ -974,6 +980,57 @@ namespace TT.Web.Controllers
 
         }
 
+        public virtual ActionResult SellFurniture(int id)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert that player is in a covenant
+            if (me.Covenant == null || me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the player is a covenant leader or captain
+            var myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            var furniture = FurnitureProcedures.GetdbFurniture(id);
+
+            // assert that the covenant has a safeground
+            if (myCov.HomeLocation.IsNullOrEmpty())
+            {
+                TempData["Error"] = "Your covenant needs a safeground before it can sell any furniture.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // assert that the furniture is owned by coven
+            if (furniture.CovenantId != myCov.Id)
+            {
+                TempData["Error"] = "This piece of furniture is owned by another coven.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            // all checks have passed; sell the furniture
+
+            FurnitureProcedures.RemoveFurnitureToCovenant(furniture, myCov);
+
+            var result = "Congratulations, your covenant, " + myCov.Name + ", has successfully sold the contract for " + furniture.HumanName + " and received " + ((furniture.Price) / 4) + " ARP.";
+            TempData["Result"] = result;
+
+            ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
+
+
+            return RedirectToAction(MVC.Covenant.MyCovenant());
+
+        }
+
         public virtual ActionResult MyCovenantFurniture()
         {
 
@@ -996,13 +1053,16 @@ namespace TT.Web.Controllers
                 : $"Your covenant\'s safeground is at {LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation)?.Name ?? "unknown"}";
 
             var playerIsAtSafeground = !myCov.HomeLocation.IsNullOrEmpty() && me.dbLocationName == myCov.HomeLocation;
+            var playerIsCovenantLeader = myCov.LeaderId == me.Id && me.Covenant > 0;
 
             var output = new UseFurnitureViewModel
             {
                 CovenantSafeground = covSafegroundLocation,
                 FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov),
                 Furniture = furniture.ToList(),
-                AtCovenantSafeground = playerIsAtSafeground
+                AtCovenantSafeground = playerIsAtSafeground,
+                playerIsCovenantLeader = playerIsCovenantLeader,
+                IAmCaptain = CovenantProcedures.PlayerIsCaptain(myCov, me),
             };
 
             output.Furniture.ForEach(f => f.MyUserId = me.Id);

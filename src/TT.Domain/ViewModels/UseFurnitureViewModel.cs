@@ -8,5 +8,7 @@ namespace TT.Domain.ViewModels
         public string CovenantSafeground { get; set; }
         public int FurnitureLimit { get; set; }
         public bool AtCovenantSafeground { get; set; }
+        public bool playerIsCovenantLeader { get; set; }
+        public bool IAmCaptain { get; set; }
     }
 }

@@ -12,20 +12,34 @@
 <div class="containerInner">
     <h1>Available Covenant Furniture Contracts</h1>
 
-    <p>Human Resource Furniture(TM) proudly pairs people desiring a temporary placement as a piece of furniture with eager owners for a price.  These enchanted household belongings are highly in demand as the rare and powerful spells that transform them also allow them to return various gifts and magics to their new owners. </p>
+    <p>Human Resource Furniture(TM) proudly pairs people desiring a temporary placement as a piece of furniture with eager owners for a price.  These enchanted household belongings are highly in demand as the rare and powerful spells that transform them also allow them to return various gifts and magics to their new owners. </p><br>
+    <p>The current round is <b>@ViewBag.TurnNumber</b>. Stock typically rotates every 18 minutes.</p>
+    <div class="progress">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="@(ViewBag.TurnNumber % 6)" aria-valuemin="0" aria-valuemax="6" style="width:@((ViewBag.TurnNumber % 6)*20)%">
+            @if ((ViewBag.TurnNumber % 6) != 5)
+            {
+                <b>@((ViewBag.TurnNumber % 6)*20)%</b>
+            }
+            else
+            {
+                <b>Restocking next turn.</b>
+            }
 
-    <p>Your covenant has <span title="Arpeyjis" class="icon icon-money"></span><b>@ViewBag.CovenantMoney</b> Arpeyjis available to spend.  Your covenant is able to hold at most <b>@ViewBag.FurnitureLimit</b> pieces of furniture in your safeground.  Upgrade your safeground to be able to keep more at once.</p>
+        </div>
+    </div>
+    <p>Your covenant has <span title="Arpeyjis" class="icon icon-money"></span><b>@ViewBag.CovenantMoney</b> Arpeyjis available to spend.  Your covenant is able to hold at most <b>@ViewBag.FurnitureLimit</b> pieces of furniture in your safeground.  To have more furniture, you will need to upgrade your safeground.</p><br>
+
     @{
         foreach (var f in Model.OrderBy(l => l.dbFurniture.HumanName))
         {
             @Html.Partial(MVC.Covenant.Views.partial.FurnitureViewModel, f);
 
-                                                      if (ViewBag.playerIsCovenantLeader || ViewBag.IAmCaptain)
-                                                      {
-                                                          <a href="@Url.Action(MVC.Covenant.PurchaseFurniture(f.dbFurniture.Id))">Purchase Contract</a>
-                                                      }
+            if (ViewBag.playerIsCovenantLeader || ViewBag.IAmCaptain)
+            {
+                <a href="@Url.Action(MVC.Covenant.PurchaseFurniture(f.dbFurniture.Id))">Purchase Contract</a>
+            }
 
-                                                    <hr>
+            <hr>
         }
 
     }

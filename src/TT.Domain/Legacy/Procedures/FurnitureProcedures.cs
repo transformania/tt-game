@@ -133,6 +133,28 @@ namespace TT.Domain.Procedures
 
         }
 
+        public static void RemoveFurnitureToCovenant(Furniture furniture, Covenant covenant)
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            ICovenantRepository covRepo = new EFCovenantRepository();
+
+            var dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
+            var dbFurniture = furnRepo.Furnitures.First(f => f.Id == furniture.Id);
+
+            dbCovenant.Money += (furniture.Price) / 4;
+            dbFurniture.CovenantId = -1;
+
+            // update the contract begin/end dates for this furniture
+            dbFurniture.ContractStartTurn = 0;
+            dbFurniture.ContractEndTurn = 0;
+
+            covRepo.SaveCovenant(dbCovenant);
+            furnRepo.SaveFurniture(dbFurniture);
+
+            var message = "The leader of the covenant has sold the furniture contract for " + dbFurniture.HumanName + " for " + ((furniture.Price) / 4) + "ARP.";
+            CovenantProcedures.WriteCovenantLog(message, covenant.Id, true);
+        }
+
         public static double GetMinutesUntilReuse(FurnitureViewModel furniture) {
 
             var rechargeTime = (double)furniture.FurnitureType.MinutesUntilReuse;

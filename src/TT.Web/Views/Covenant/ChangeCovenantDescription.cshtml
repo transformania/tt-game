@@ -26,7 +26,16 @@
         @Html.TextAreaFor(m => m.SelfDescription, new { @class = "form__panel textarea", maxlength = "200", autofocus = true })
         <hr>
         <h4>Coven Blurb</h4>
-        <p>Your coven blurb can be up to 250 characters and will display under the room description of your safeground at  <b>@LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.HomeLocation).Name</b>.</p>
+        <p>Your coven blurb can be up to 250 characters and will display under the room description of your safeground at <b>
+            @if(!string.IsNullOrEmpty(Model.HomeLocation))
+            {
+                @LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.HomeLocation).Name
+            }
+            else
+            {
+                <i>... well, you might have a safeground some day</i>
+            }
+        .</b></p>
         <span class="charCounter label label-info" id="textRemainingBlurb"></span>
         @Html.TextAreaFor(m => m.CovenBlurb, new { @class = "form__panel textarea", maxlength = "250" })
         <hr>

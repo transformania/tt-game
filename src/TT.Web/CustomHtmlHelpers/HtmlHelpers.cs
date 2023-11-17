@@ -306,7 +306,7 @@ namespace TT.Web.CustomHtmlHelpers
             }
 
             var temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
-            var output = "<span class='covRptName'>Member of <b><a href='/covenant/lookatcovenant/" + player.Covenant + "'>" + temp.Name + "</a></b></span>";
+            var output = "<span class='covRptName'>Member of <b><a class='covRptName' href='/covenant/lookatcovenant/" + player.Covenant + "'>" + temp.Name + "</a></b></span>";
 
             return new MvcHtmlString(output);
         }

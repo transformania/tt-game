@@ -1748,3 +1748,32 @@ strong {
 .showByType-merchant span {
     vertical-align: top
 }
+
+.mascot {
+    width: 100px;
+    height: 100px;
+    border: 2px #734752 dashed;
+    border-top: 2px #734752 solid;
+    background: #DFCBBF;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    overflow: hidden;
+    float: right;
+    position: relative;
+    background-size: 100% 100%;
+    text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+}
+
+.mascot:hover {
+    border: 2px red dashed;
+    border-top: 2px red solid;
+}
+
+.mascot::after {
+    content: "Mascot";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

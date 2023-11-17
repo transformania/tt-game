@@ -1,4 +1,6 @@
 ﻿@model TT.Domain.Models.Covenant
+@using TT.Domain.Statics
+@using TT.Domain.Procedures
 @{
     ViewBag.Title = "Change Covenant Description";
 }
@@ -9,27 +11,48 @@
     <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
 }
 <div class="containerInner">
-    <h3>Change Covenant Description</h3>
+    <h3>Coven Settings</h3>
 
-    <p>You can change the self-description of your covenant, @Model.Name, here.</p>
-
+    <p>You can change the settings of your covenant here.</p>
+    <br>
     @using (Html.BeginForm(MVC.Covenant.ChangeCovenantDescriptionSubmit(), FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea", autofocus = true })
-
+        <input type="submit" value="Save changes" class="btn btn-primary">
+        <h4>Coven Name</h4>
+        @Html.TextBoxFor(m => m.Name, new { maxlength = "50" })
         <hr>
+        <h4>Coven Description</h4>
+        <span class="charCounter label label-info" id="textRemainingDescription"></span>
+        @Html.TextAreaFor(m => m.SelfDescription, new { @class = "form__panel textarea", maxlength = "200", autofocus = true })
+        <hr>
+        <h4>Coven Blurb</h4>
+        <p>Your coven blurb can be up to 250 characters and will display under the room description of your safeground at  <b>@LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.HomeLocation).Name</b>.</p>
+        <span class="charCounter label label-info" id="textRemainingBlurb"></span>
+        @Html.TextAreaFor(m => m.CovenBlurb, new { @class = "form__panel textarea", maxlength = "250" })
+        <hr>
+        <h4>Coven Mascot</h4>
+        <p>You can nominate a mascot for your coven! Just select the option below.</p>
+        <select name="selectMascot" id="selectMascot" class="form__panel select selectMascot">
+            <option value="0">None</option>
+            @foreach (var p in CovenantProcedures.GetCovenantViewModel(Model.Id).Members)
+            {
+                <option value="@p.Player.Id">@p.Player.FirstName @p.Player.LastName</option>
 
+            }
+        </select>
+        <hr>
+        <h4>Coven Flag</h4>
         <p>Choose a flag for your covenant from the options below.</p>
 
         @*<p>Set flag</p>
-         @Html.DropDownListFor(m => m.FlagUrl, new SelectList(
-                  new List<Object>{
-                       new { value = "region"  , text = "1"  },
-                       new { value = "location"  , text = "Location"  },
-                    },
-                  "value",
-                  "text",
-                   2))*@
+            @Html.DropDownListFor(m => m.FlagUrl, new SelectList(
+                     new List<Object>{
+                          new { value = "region"  , text = "1"  },
+                          new { value = "location"  , text = "Location"  },
+                       },
+                     "value",
+                     "text",
+                      2))*@
 
         <img src="https://images.transformaniatime.com/CovenantFlags/bars1.jpg" width="150px" width="150px" id="choice">
 
@@ -38,14 +61,15 @@
             <img src="https://images.transformaniatime.com/CovenantFlags/@s" height="50px" width="50px" class="selectable" filename="@s">
         }
 
-        <input type="submit" value="Save">
 
-        @Html.HiddenFor(m => m.Name)
         @Html.HiddenFor(m => m.Id)
-        @Html.TextBoxFor(m => m.FlagUrl)
+        @Html.HiddenFor(m => m.FlagUrl)
         @Html.HiddenFor(m => m.LastMemberAcceptance)
         @Html.HiddenFor(m => m.IsPvP)
         @Html.HiddenFor(m => m.LeaderId)
+        @Html.HiddenFor(m => m.CovenMascot)
+        <hr>
+        <input type="submit" value="Save changes" class="btn btn-primary">
     }
 
 </div>
@@ -59,6 +83,35 @@
        // alert(img);
         $("#choice").attr("src", img);
         $("#FlagUrl").val(filename);
+    });
+
+    $(".selectMascot").click(function () {
+        var covenmember = $(this).val()
+        $("#CovenMascot").val(covenmember);
+    });
+
+    $(document).ready(function () {
+        var max = 200;
+        $('#textRemainingDescription').html(max + ' characters remaining');
+
+        $('#SelfDescription').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = max - length;
+
+            $('#textRemainingDescription').html(remaining + ' characters remaining');
+        });
+    });
+
+    $(document).ready(function () {
+        var max = 250;
+        $('#textRemainingBlurb').html(max + ' characters remaining');
+
+        $('#CovenBlurb').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = max - length;
+
+            $('#textRemainingBlurb').html(remaining + ' characters remaining');
+        });
     });
     </script>
 }

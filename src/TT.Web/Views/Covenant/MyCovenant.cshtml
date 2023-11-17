@@ -64,7 +64,13 @@
         if (Model.dbCovenant != null)
         {
             <div class="covFlag" style="background-image: url(https://images.transformaniatime.com/CovenantFlags/@Model.dbCovenant.FlagUrl)"></div>
-            <p class="covHeader">You are a member of <span class="covName">@Model.dbCovenant.Name.</span></p>
+            if (Model.dbCovenant.CovenMascot > 0)
+            {
+                <a class="mascot" style="background-image: url(@TT.Web.CustomHtmlHelpers.HtmlHelpers.GetImageURL(PlayerProcedures.GetPlayerFormViewModel(Model.Mascot.Id), true));" href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Mascot.Id))">
+                @Model.Mascot.FirstName @Model.Mascot.LastName
+                </a>
+            }
+            <p class="covHeader">You are a member of <span class="covName">@Model.dbCovenant.Name.</span></p><br>
             <p style="margin-bottom:1px;"><b>@Model.dbCovenant.SelfDescription</b></p>
 
             if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)

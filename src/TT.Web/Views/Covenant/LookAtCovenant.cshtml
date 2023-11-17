@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.ViewModels.CovenantViewModel
 @using TT.Domain.Statics
+@using TT.Domain.Procedures
 @{
     ViewBag.Title = "Look at Covenant";
 }
@@ -24,7 +25,14 @@
 }
 
 <div class="containerInner text-center">
-    <p class="covHeader"><span class="covName">@Model.dbCovenant.Name</span></p>
+    <div class="covFlag" style="background-image: url(https://images.transformaniatime.com/CovenantFlags/@Model.dbCovenant.FlagUrl)"></div>
+    @if (Model.dbCovenant.CovenMascot > 0)
+    {
+        <a class="mascot" style="background-image: url(@TT.Web.CustomHtmlHelpers.HtmlHelpers.GetImageURL(PlayerProcedures.GetPlayerFormViewModel(Model.Mascot.Id), true));" href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Mascot.Id))">
+        @Model.Mascot.FirstName @Model.Mascot.LastName
+        </a>
+    }
+    <p class="covHeader"><span class="covName">@Model.dbCovenant.Name</span></p><br>
     <p>
         <b>@Model.dbCovenant.SelfDescription</b>
     </p>

@@ -49,6 +49,7 @@ namespace TT.Domain.Procedures
 
             output.dbCovenant = cov;
             output.Leader = playerRepo.Players.FirstOrDefault(p => p.Id == output.dbCovenant.LeaderId);
+            output.Mascot = playerRepo.Players.FirstOrDefault(p => p.Id == output.dbCovenant.CovenMascot);
 
             var playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
             output.Members = playerFormList.Where(p => p.Player.BotId != AIStatics.RerolledPlayerBotId);
@@ -73,6 +74,8 @@ namespace TT.Domain.Procedures
                     Name = c.Name,
                     HomeLocation = c.HomeLocation,
                     CovLevel = c.Level,
+                    CovenBlurb = c.CovenBlurb,
+                    CovenMascot = c.CovenMascot,
                 };
                 CovenantDictionary.IdNameFlagLookup.Add(c.Id, temp);
             }
@@ -148,6 +151,13 @@ namespace TT.Domain.Procedures
             // delete the covenant if it is now empty
             ICovenantRepository covRepo = new EFCovenantRepository();
             var possible = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
+
+            // remove player from coven mascot
+            if (possible.CovenMascot == player.Id)
+            {
+                possible.CovenMascot = 0;
+                covRepo.SaveCovenant(possible);
+            }
 
             var covMemberCount = GetPlayerCountInCovenant(possible, false);
 
@@ -311,12 +321,15 @@ namespace TT.Domain.Procedures
             return covAppRepo.CovenantApplications.FirstOrDefault(c => c.Id == id);
         }
 
-        public static void UpdateCovenantDescription(int covId, string newDescription, string flagUrl)
+        public static void UpdateCovenantDescription(int covId, string newDescription, string flagUrl, int covenMascot, string covenBlurb, string covenName)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             var oldcov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
             oldcov.SelfDescription = newDescription;
             oldcov.FlagUrl = flagUrl;
+            oldcov.CovenMascot = covenMascot;
+            oldcov.CovenBlurb = covenBlurb;
+            oldcov.Name = covenName;
             covRepo.SaveCovenant(oldcov);
         }
 

@@ -210,7 +210,13 @@
                 if (!Model.Blind)
                 {
                     <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br> </span>
+
                     @Model.Location.GetDescription()<br />
+                    if (safegroundCoven.Value != null && !Model.Blind)
+                    {
+                        <br>
+                        <b>@safegroundCoven.Value.CovenBlurb</b>
+                    }
                 }
 
                 var enchanted = false;

@@ -325,8 +325,8 @@ namespace TT.Web.Controllers
             // assert model is okay
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "Your description was not saved";
-                TempData["SubError"] = "Covenant description must be between 25 and 200 characters long.";
+                TempData["Error"] = "Your update was not saved";
+                TempData["SubError"] = "An error occured.";
                 return ChangeCovenantDescription();
             }
 
@@ -347,6 +347,29 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
+            // assert coven name is the correct length
+            if (input.Name.Length > 50 || input.Name.Length < 8 || input.SelfDescription.Length > 200 || input.SelfDescription.Length < 25)
+            {
+                TempData["Error"] = "Your covenant was not renamed.";
+                TempData["SubError"] = "Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
+                return View(MVC.Covenant.Views.StartNewCovenant);
+            }
+
+            // assert that a covenant of this name does not already exists
+            if ((input.Name != myCov.Name) && CovenantProcedures.CovenantOfNameExists(input.Name))
+            {
+                TempData["Error"] = "A covenant of that name already exists.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
+            var mascot = PlayerProcedures.GetPlayer(input.CovenMascot);
+            // assert the coven mascot is a member of the covenant
+            if ((input.CovenMascot != 0) && myCov.Id != mascot.Covenant)
+            {
+                TempData["Error"] = "They are not a member of this covenant.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             // assert that the flag is not taken
             if (myCov.FlagUrl != input.FlagUrl && CovenantProcedures.FlagIsInUse(input.FlagUrl))
             {
@@ -362,9 +385,17 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
+            // assert the coven blurb is the right length
+            if (!string.IsNullOrEmpty(myCov.CovenBlurb) && myCov.CovenBlurb.Length > 250)
+            {
+                TempData["Error"] = "The length of your blurb cannot exceed 250 characters.";
+                return RedirectToAction(MVC.Covenant.MyCovenant());
+            }
+
             // finally update the covenant
-            CovenantProcedures.UpdateCovenantDescription(myCov.Id, input.SelfDescription, input.FlagUrl);
-            TempData["Result"] = "Description updated.";
+            CovenantProcedures.UpdateCovenantDescription(myCov.Id, input.SelfDescription, input.FlagUrl, input.CovenMascot, input.CovenBlurb, input.Name);
+            CovenantProcedures.LoadCovenantDictionary();
+            TempData["Result"] = "Covenant updated.";
 
 
             return RedirectToAction(MVC.Covenant.MyCovenant());

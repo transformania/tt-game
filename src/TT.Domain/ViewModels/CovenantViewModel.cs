@@ -9,6 +9,7 @@ namespace TT.Domain.ViewModels
         public IEnumerable<PlayerFormViewModel> Members { get; set; }
         public bool IsFull { get; set; }
         public Player Leader { get; set; }
+        public Player Mascot { get; set; }
     }
 
     public class CovenantListItemViewModel
@@ -25,6 +26,8 @@ namespace TT.Domain.ViewModels
         public string FlagUrl { get; set; }
         public string HomeLocation { get; set; }
         public int CovLevel { get; set; }
+        public string CovenBlurb { get; set; }
+        public int CovenMascot { get; set; }
     }
 
     public class CovenantUpdateViewModel

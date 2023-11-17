@@ -32,5 +32,7 @@ namespace TT.Domain.Models
         public string HomeLocation { get; set; }
 
         public int Level { get; set; }
+        public int CovenMascot { get; set; }
+        public string CovenBlurb { get; set; }
     }
 }

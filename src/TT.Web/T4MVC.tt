@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 4.2.4
+T4MVC Version 4.2.5
 Find latest version and documentation at https://github.com/T4MVC/T4MVC/wiki/Documentation
 Discuss on StackOverflow or on GitHub (https://github.com/T4MVC/T4MVC/issues)
 
@@ -172,9 +172,10 @@ RenderAdditionalCode();
 <#manager.StartNewFile(controller.GeneratedFileName); #>
 namespace <#=controller.Namespace #>
 {
-    [<#= GeneratedCode #>, DebuggerNonUserCode]
+    [<#= GeneratedCode #>]
     public partial class <#=controller.ClassName #>
     {
+        [DebuggerNonUserCode]
         protected <#=controller.ClassName #>() { }
     }
 }

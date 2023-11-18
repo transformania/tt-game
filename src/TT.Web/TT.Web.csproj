@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TT.Web</RootNamespace>
     <AssemblyName>TT.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -880,7 +880,7 @@
       <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="T4MVC">
-      <Version>4.2.4</Version>
+      <Version>4.2.5</Version>
     </PackageReference>
     <PackageReference Include="WebGrease">
       <Version>1.6.0</Version>

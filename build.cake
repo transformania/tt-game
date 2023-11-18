@@ -98,7 +98,7 @@ Task("Run-Unit-Tests")
         {
             var unitCoverage = new FilePath("unit-test-coverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.Tests.dll", new NUnit3Settings {
+               tool.NUnit3("./src/**/bin/" + configuration + "/net48/*.Tests.dll", new NUnit3Settings {
                    Results = new[]  {new NUnit3Result { FileName = "unit-test-result.xml", Transform = "nunit3-junit.xslt" } }
                    });
             },
@@ -114,7 +114,7 @@ Task("Run-Unit-Tests")
         }
         else
         {
-            NUnit3("./src/**/bin/" + configuration + "/net472/*.Tests.dll");
+            NUnit3("./src/**/bin/" + configuration + "/net48/*.Tests.dll");
         }
     }
 );
@@ -122,7 +122,7 @@ Task("Run-Unit-Tests")
 Task("Run-Integration-Tests")
     .IsDependentOn("Build")
     .Does(() => {
-        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/net472/ConnectionStrings.config"))
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/net48/ConnectionStrings.config"))
         {
             file.WriteLine($"<connectionStrings><add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{connectionString}\"/></connectionStrings>");
         }
@@ -132,7 +132,7 @@ Task("Run-Integration-Tests")
         {
             var integrationCoverage = new FilePath("integration-test-coverage.xml");
             OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/net472/*.IntegrationTests.dll", new NUnit3Settings {
+               tool.NUnit3("./src/**/bin/" + configuration + "/net48/*.IntegrationTests.dll", new NUnit3Settings {
                    Results = new[]  {new NUnit3Result { FileName = "integration-test-result.xml", Transform = "nunit3-junit.xslt" } }
                    });
             },
@@ -148,10 +148,10 @@ Task("Run-Integration-Tests")
         }
         else
         {
-            NUnit3("./src/**/bin/" + configuration + "/net472/*.IntegrationTests.dll");
+            NUnit3("./src/**/bin/" + configuration + "/net48/*.IntegrationTests.dll");
         }
         
-        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/net472/ConnectionStrings.config");
+        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/net48/ConnectionStrings.config");
     }
 );
 
@@ -199,7 +199,7 @@ Task("Migrate")
             file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
         }
         var migrationStatus = StartProcess("./tools/FluentMigrator.Console.3.3.2/net461/any/Migrate.exe", new ProcessSettings {
-            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
+            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net48/TT.Migrations.dll --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
         });
         if (migrationStatus != 0)
         {
@@ -226,7 +226,7 @@ Task("Rollback")
             file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
         }
         var migrationStatus = StartProcess("./tools/FluentMigrator.Console.3.3.2/net461/any/Migrate.exe", new ProcessSettings {
-            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net472/TT.Migrations.dll --task rollback --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
+            Arguments = $"--assembly=./src/TT.Migrations/bin/{configuration}/net48/TT.Migrations.dll --task rollback --dbType=SqlServer2016 --connection=StatsWebConnection --connectionStringConfigPath=./tools/ConnectionStrings.config"
         });
         if (migrationStatus != 0)
         {

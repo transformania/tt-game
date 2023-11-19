@@ -45,8 +45,9 @@
             <option value="0">None</option>
             @foreach (var p in CovenantProcedures.GetCovenantViewModel(Model.Id).Members)
             {
-                <option value="@p.Player.Id">@p.Player.FirstName @p.Player.LastName</option>
-
+                <option value="@p.Player.Id" @(p.Player.Id == Model.CovenMascot ? "selected" : "")>
+                    @p.Player.FirstName @p.Player.LastName
+                </option>
             }
         </select>
         <hr>

@@ -86,6 +86,7 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
+                                                              Id = form.Id,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -200,6 +201,7 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
+                                                              Id = form.Id,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -313,6 +315,7 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
+                                                              Id = form.Id,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,
@@ -427,6 +430,7 @@ namespace TT.Domain.Procedures
 
                                                           Form = new TT.Domain.ViewModels.Form
                                                           {
+                                                              Id = form.Id,
                                                               FriendlyName = form.FriendlyName,
                                                               Description = form.Description,
                                                               TFEnergyType = form.TFEnergyType,

@@ -36,7 +36,7 @@
                         @form.FriendlyName
                     </td>
                     <td>
-                        <div class="portrait" style="background-image: url(@HtmlHelpers.GetFormImageURL(form.PortraitUrl, true)); float: right; bottom: 0;">
+                        <div class="portrait" alt="Form: @form.FriendlyName (@form.Id)" title="Form: @form.FriendlyName (@form.Id)" style="background-image: url(@HtmlHelpers.GetFormImageURL(form.PortraitUrl, true)); float: right; bottom: 0;">
                             <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(form.Gender)</span>
                         </div>
                     </td>

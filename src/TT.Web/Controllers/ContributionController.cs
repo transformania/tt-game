@@ -190,7 +190,7 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.StaticSkillExists += $"<p class='good'>Static skill found: {staticSkill.FriendlyName} </p>";
+                    ViewBag.StaticSkillExists += $"<p class='good'>Static skill found: {staticSkill.FriendlyName} ({staticSkill.Id})</p>";
                 }
 
                 if (staticForm == null)
@@ -199,7 +199,7 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.StaticFormExists = $"<p class='good'>Static form found: {staticForm.FriendlyName}</p>";
+                    ViewBag.StaticFormExists = $"<p class='good'>Static form found: {staticForm.FriendlyName} ({staticForm.Id})</p>";
                 }
 
                 if (staticItem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
@@ -208,7 +208,7 @@ namespace TT.Web.Controllers
                 }
                 else if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
                 {
-                    ViewBag.StaticItemExists += $"<p class='good'>Static item/pet found:  {staticItem.FriendlyName}</p>";
+                    ViewBag.StaticItemExists += $"<p class='good'>Static item/pet found:  {staticItem.FriendlyName} ({staticItem.Id})</p>";
                 }
 
             }

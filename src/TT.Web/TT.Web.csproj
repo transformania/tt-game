@@ -427,6 +427,7 @@
     <Content Include="Views\Settings\ViewStrikes.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_107.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_108.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_109.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

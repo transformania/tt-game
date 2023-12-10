@@ -1519,7 +1519,7 @@ namespace TT.Web.Controllers
                 catch (DomainException)
                 {
                     TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
-                    return View(MVC.PvP.Play());
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
             else

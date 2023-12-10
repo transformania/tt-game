@@ -115,6 +115,7 @@ namespace TT.Domain.Procedures
         public const string Stat__BountyCount = "bounty_count";
         public const string Stat__BountiesClaimed = "bounties_claimed";
         public const string Stat__ChallengesPassed = "challenges_passed";
+        public const string Stat__GiftsOpened = "presents_opened";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -756,6 +757,17 @@ namespace TT.Domain.Procedures
                 new StatsDetailsMap{
                     FriendlyName="Challenging Opponent",
                     Description="Number of challenges completed",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+
+            { 
+                Stat__GiftsOpened,
+                new StatsDetailsMap{
+                    FriendlyName="Gift Grabber",
+                    Description="Number of holiday gifts opened",
                     ImageUrl="trophy.jpg",
                     Active = true,
                     ResetsOnReroll = false

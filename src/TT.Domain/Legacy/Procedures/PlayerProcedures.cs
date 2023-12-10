@@ -82,6 +82,7 @@ namespace TT.Domain.Procedures
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
+                                                              LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -197,6 +198,7 @@ namespace TT.Domain.Procedures
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
+                                                              LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -311,6 +313,7 @@ namespace TT.Domain.Procedures
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
+                                                              LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -426,6 +429,7 @@ namespace TT.Domain.Procedures
                                                               OriginalFirstName = player.OriginalFirstName,
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
+                                                              LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form

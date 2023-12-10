@@ -104,6 +104,17 @@ namespace TT.Domain.Statics
         }
 
         /// <summary>
+        /// Return a random location dbName anywhere on the streets
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRandomLocation_OnStreets()
+        {
+            // set a random location for this character to spawn in
+            var spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "streets").Select(l => l.dbName).ToList();
+            return GetRandom(spawnableLocations);
+        }
+
+        /// <summary>
         /// Return a random location dbName anywhere in the dungeon
         /// </summary>
         /// <returns></returns>
@@ -124,6 +135,18 @@ namespace TT.Domain.Statics
             // set a random location for this character to spawn in
             var spawnableLocations = LocationList.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
             return GetRandom(spawnableLocations);
+        }
+
+        /// <summary>
+        /// Return whether or not the given location is on the streets
+        /// </summary>
+        /// <param name="location">Name of location dbName anywhere</param>
+        /// <returns></returns>
+        public static bool IsLocation_OnStreets(string location)
+        { 
+            // get the locations on the street
+            var streetLocations = LocationList.GetLocation.Where(l => l.Region == "streets").Select(l => l.dbName).ToList();
+            return streetLocations.Contains(location);
         }
 
         public static class LocationList

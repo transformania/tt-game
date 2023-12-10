@@ -49,6 +49,7 @@ namespace TT.Domain.Procedures
 
                 Player lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
                 Player wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
+                var holidaySpirit = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.HolidaySpiritBotId);
 
                 #region spawn NPCS
                 // make sure the NPCs have been spawned early turn
@@ -109,6 +110,16 @@ namespace TT.Domain.Procedures
                     var newSoulbinder = playerRepo.Players.FirstOrDefault(p => p.Id == id);
                     newSoulbinder.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newSoulbinder));
                     playerRepo.SavePlayer(newSoulbinder);
+                    }
+
+                    //Holiday Spirit. Month must be 2 (Valentine's), 3 (Easter), 10 (Halloween), 11 (Thanksgiving), or 12 (Christmas)
+                    //Other months can be added later if wanted
+                    //If we spawn her, reassign variable for logging purposes
+                    var currentMonth = DateTime.UtcNow.Month;
+                    if (holidaySpirit == null && (currentMonth == 2 || currentMonth == 3 || currentMonth == 10 || currentMonth == 11 || currentMonth == 12))
+                    {
+                        BossProcedures_HolidaySpirit.SpawnHolidaySpirit();
+                        holidaySpirit = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.HolidaySpiritBotId);
                     }
                 }
                 #endregion
@@ -646,8 +657,25 @@ namespace TT.Domain.Procedures
                 {
                     log.Errors++;
                     log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Wuffie actions", e));
-                }
+                } 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
+
+                //Holiday Spirit will not always spawn. Only log her if she's around
+                if (holidaySpirit != null)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started HolidaySpirit actions");
+                    serverLogRepo.SaveServerLog(log);
+                    try
+                    {
+                        BossProcedures_HolidaySpirit.RunActions(turnNo);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  HolidaySpirit ERROR:  " + e);
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished HolidaySpirit actions");
+                }
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started running effect-related actions");
                 try

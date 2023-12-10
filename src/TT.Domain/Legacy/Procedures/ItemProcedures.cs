@@ -13,6 +13,7 @@ using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
+using TT.Domain.Procedures.BossProcedures;
 
 namespace TT.Domain.Procedures
 {
@@ -898,6 +899,15 @@ namespace TT.Domain.Procedures
                     ResetUseCooldown(itemPlus);
                     return (true,output);
                 }
+
+                //Holiday spirit gift
+                if (itemPlus.dbItem.ItemSourceId == ItemStatics.GiftItemSourceId)
+                {
+                    var output = OpenHolidayGift(owner);
+                    ResetUseCooldown(itemPlus);
+                    StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__GiftsOpened, 1);
+                    return (true, output);
+                }
             }
 
                 #endregion
@@ -1309,6 +1319,117 @@ namespace TT.Domain.Procedures
             itemRepo.SaveItem(item);
         }
 
-    }
+        public static string OpenHolidayGift(Player user)
+        {
+            //Get a random item/effect
+            Random rand = new Random();
+            var itemList = ItemStatics.GetAllFindableItems();
+            var randResult = rand.Next(itemList.Count() + 1); //0 index for IEnumerable, returns random number between 0 and Count
+            var userMessage = "";
 
+            //Present will act like a Willpower Splash Orb, damaging players on the same tile as well as the user
+            if (randResult == itemList.Count())
+            {
+                //Willpower damage to user and surrounding players
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+
+                var userLocation = user.dbLocationName;
+                var here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == userLocation);
+
+                var playersHere = new List<Player>();
+                var playersHereOnline = new List<Player>();
+                if (user.GameMode == (int)GameModeStatics.GameModes.PvP)
+                {
+                    playersHere = playerRepo.Players.Where(p => p.dbLocationName == userLocation &&
+                        (p.GameMode == (int)GameModeStatics.GameModes.PvP || p.BotId < AIStatics.RerolledPlayerBotId) &&
+                        p.Mobility == PvPStatics.MobilityFull &&
+                        p.InDuel <= 0 &&
+                        p.InQuest <= 0).ToList();
+                }
+                else if (user.GameMode == (int)GameModeStatics.GameModes.Protection || user.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+                {
+                    playersHere = playerRepo.Players.Where(p => p.dbLocationName == userLocation &&
+                        p.BotId < AIStatics.RerolledPlayerBotId &&
+                        p.Mobility == PvPStatics.MobilityFull &&
+                        p.InDuel <= 0 &&
+                        p.InQuest <= 0).ToList();
+                }
+
+                // filter out offline players
+                foreach (var p in playersHere)
+                {
+                    if (!PlayerProcedures.PlayerIsOffline(p))
+                    {
+                        playersHereOnline.Add(p);
+                    }
+                }
+
+                //Present will deal 100 willpower damage
+                foreach (var p in playersHereOnline)
+                {
+                    p.Health -= 100;
+                    if (p.Health < 0)
+                    {
+                        p.Health = 0;
+                    }
+                    playerRepo.SavePlayer(p);
+
+                    string message = "";
+
+                    //Message for players hit by the present. Save gift opener for later
+                    if (p != user)
+                    {
+                        message = "<span class='playerAttackNotification'>" + user.GetFullName() + " opened a holiday gift at " + here.Name + " that blew up in their face! You were caught in the explosion and it lowered your willpower by 100, along with " + (playersHereOnline.Count - 1) + " others.</span>";
+                    }
+
+                    //Log the message
+                    PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
+                }
+
+                var logMessage = user.FirstName + " " + user.LastName + " opened a holiday gift that blew up in their face!";
+                LocationLogProcedures.AddLocationLog(userLocation, logMessage);
+
+                // set the player's last action flag, combat time
+                var dbAttacker = playerRepo.Players.First(p => p.Id == user.Id);
+                dbAttacker.LastActionTimestamp = DateTime.UtcNow;
+                dbAttacker.LastCombatTimestamp = DateTime.UtcNow;
+                dbAttacker.TimesAttackingThisUpdate++;
+                playerRepo.SavePlayer(dbAttacker);
+
+                userMessage = "You opened a holiday gift at " + here.Name + " that blew up in your face! The explosion lowered your willpower by 100, along with " + (playersHereOnline.Count - 1) + " others.";
+            }
+            //Give an item to the player
+            else
+            {
+
+                var cmd = new CreateItem
+                {
+                    OwnerId = user.Id,
+                    dbLocationName = "",
+                    EquippedThisTurn = false,
+                    LastSouledTimestamp = DateTime.UtcNow,
+                    Level = 0,
+                    ItemSourceId = itemList.ElementAt(randResult).Id
+                };
+
+                DomainRegistry.Repository.Execute(cmd);
+
+                userMessage = "You opened your holiday gift and found a " + itemList.ElementAt(randResult).FriendlyName + " inside!";
+            }
+
+            //Do another check to see if the user gets the 1% chance to turn into a holiday form
+            Random formRand = new Random();
+            int formRandMax = 101;
+            var formRandResult = formRand.Next(1, formRandMax);
+
+            if (formRandResult == formRandMax - 1 && user.FormSourceId != BossProcedures_HolidaySpirit.HolidayMimicFormSourceId)
+            {
+                PlayerProcedures.InstantChangeToForm(user, BossProcedures_HolidaySpirit.HolidayMimicFormSourceId);
+                var formMessage = "Your holiday present spontaneously turns you into a Holiday Mimic!";
+                PlayerLogProcedures.AddPlayerLog(user.Id, formMessage, true);
+            }
+
+            return userMessage;
+        }
+    }
 }

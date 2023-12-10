@@ -57,6 +57,8 @@ namespace TT.Domain.Statics
         public const int DefectiveTransmogItemSourceId = 737;
         public const int OtherRestoreItemSourceId = 774;
 
+        //Holiday Spirit gift
+        public const int GiftItemSourceId = 816;
 
         public enum ConsumableSubItemTypes { Rune = 0, Tome = 1, Spellbook = 2, Restorative = 3, WillpowerBomb = 4 }
 

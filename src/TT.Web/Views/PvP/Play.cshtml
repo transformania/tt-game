@@ -363,6 +363,10 @@
                                             {
                                                 <a href="@Url.Action(MVC.NPC.TalkToSoulbinder())" class="attackLink">Talk</a>
                                             }
+                                            if (p.Player.BotId == AIStatics.HolidaySpiritBotId)
+                                            {
+                                                <a href="@Url.Action(MVC.NPC.TalkToHolidaySpirit("none"))" class="attackLink">Talk</a>
+                                            }
                                         }
                                     </div>
                                 </p>

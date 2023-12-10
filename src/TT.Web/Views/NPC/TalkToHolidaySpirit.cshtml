@@ -1,0 +1,29 @@
+﻿@model TT.Domain.Models.JewdewfaeEncounter
+@using TT.Domain.Procedures.BossProcedures
+@{
+    ViewBag.Title = "Talk to Holiday Spirit";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
+            <img class="img-responsive center-block" src="https://images.transformaniatime.com/portraits/holiday_spirit_luxianne.png">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+
+            <p id="dialog">@Html.Raw(ViewBag.Speech)</p>
+
+            @{
+                {
+                    <br><a href="@Url.Action(MVC.NPC.TalkToHolidaySpirit("check"))">Approach the Spirit for your karmic judgment</a>
+                }
+            }
+        </div>
+    </div>
+</div>
+

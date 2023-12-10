@@ -71,6 +71,7 @@ namespace TT.Domain.Players.Commands
 
         public int FormSourceId { get; set; }
         public bool FriendOnlyMessages { get; set; }
+        public int LastHolidaySpiritInteraction { get; set; }
 
         public CreatePlayer()
         {
@@ -93,6 +94,7 @@ namespace TT.Domain.Players.Commands
             Money = 0;
             CleansesMeditatesThisRound = 0;
             ChatColor = "black";
+            LastHolidaySpiritInteraction = 0;
         }
 
         public override int Execute(IDataContext context)

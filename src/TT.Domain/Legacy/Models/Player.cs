@@ -71,6 +71,7 @@ namespace TT.Domain.Models
         public int InQuestState { get; set; }
         public int ItemsUsedThisTurn { get; set; }
         public bool FriendOnlyMessages { get; set; }
+        public int LastHolidaySpiritInteraction { get; set; }
 
         public string GetFullName()
         {
@@ -251,6 +252,8 @@ namespace TT.Domain.Models
         public int ItemsUsedThisTurn { get; set; }
         public bool FriendOnlyMessages { get; set; }
 
+        public int LastHolidaySpiritInteraction { get; set; }
+
         public string GetFullName()
         {
             if (this.DonatorLevel >= 2 && !this.Nickname.IsNullOrEmpty())
@@ -369,6 +372,7 @@ namespace TT.Domain.Models
                 InQuestState = this.InQuestState,
                 ItemsUsedThisTurn = this.ItemsUsedThisTurn,
                 FriendOnlyMessages = this.FriendOnlyMessages,
+                LastHolidaySpiritInteraction = this.LastHolidaySpiritInteraction,
 
             };
             return output;

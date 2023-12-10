@@ -102,6 +102,7 @@ namespace TT.Domain.Players.Entities
         public int InQuestState { get; protected set; } // TODO:  Convert to nullable FK to QuestStates
         public int ItemsUsedThisTurn { get; protected set; }
         public bool FriendOnlyMessages { get; protected set; }
+        public int LastHolidaySpiritInteraction { get; protected set; }
 
         public Covenant CovenantLed { get; protected set; }
 
@@ -168,7 +169,8 @@ namespace TT.Domain.Players.Entities
                 InQuest = cmd.InQuest,
                 InQuestState = cmd.InQuestState,
                 ItemsUsedThisTurn = cmd.ItemsUsedThisTurn,
-                FriendOnlyMessages = false
+                FriendOnlyMessages = false,
+                LastHolidaySpiritInteraction = 0,
 
             };
         }
@@ -451,6 +453,11 @@ namespace TT.Domain.Players.Entities
         public void ChangeFriendOnlyMessages(bool friendOnlyMessages)
         {
             FriendOnlyMessages = friendOnlyMessages;
+        }
+
+        public void ChangeLastHolidaySpiritInteraction(int lastHolidaySpiritInteraction)
+        {
+            LastHolidaySpiritInteraction = lastHolidaySpiritInteraction;
         }
 
 

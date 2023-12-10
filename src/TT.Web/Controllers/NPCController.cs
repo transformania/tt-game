@@ -1,12 +1,15 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Exceptions;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Items.Services;
@@ -19,6 +22,10 @@ using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.NPCs;
+using TT.Domain.Identity.DTOs;
+using TT.Domain.World.Queries;
+using TT.Domain.Players.Commands;
+using TT.Domain.Effects.Entities;
 
 namespace TT.Web.Controllers
 {
@@ -717,7 +724,7 @@ namespace TT.Web.Controllers
                 var archDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossArchdemonId);
                 var dungeonSlime = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossDungeonSlimeId);
                 var plushDemon = PlayerProcedures.GetAnimatePlayerFromBotId(AIStatics.MinibossPlushDemonId);
-                var bossRematchCount = playerRepo.Players.Count(b => b.BotId <= AIStatics.MinibossMaleThiefId && b.Mobility == PvPStatics.MobilityFull);
+                var bossRematchCount = playerRepo.Players.Count(b => b.BotId <= AIStatics.MinibossMaleThiefId && b.BotId >= AIStatics.MinibossBimboMouseId && b.Mobility == PvPStatics.MobilityFull);
 
                 if (sororityMother != null)
                 {
@@ -791,6 +798,12 @@ namespace TT.Web.Controllers
                 var stats = PvPWorldStatProcedures.GetWorldStats();
                 var output = "";
 
+                var holidaySpirit = PlayerProcedures.GetPlayerFromBotId(AIStatics.HolidaySpiritBotId);
+                if (holidaySpirit != null)
+                {
+                    var spiritLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == holidaySpirit.dbLocationName);
+                    output += "\"Happy Holidays! Oh, sorry, I didn't mean to shout so loudly. That festive Holiday Spirit came into town recently and I haven't been able to shake this holiday cheer with her around! If you want to get some holiday cheer yourself, I believe the Holiday Spirit was last spotted at <b>" + spiritLocation.Name + "</b>. Just don't try to trick her - she's never wrong when it comes to telling you who's naughty and who's nice!<br>";
+                }
                 if (stats.Boss_Thief == AIStatics.ACTIVE)
                 {
                     output += "\"There are a pair of rat thieves from the Seekshadow guild going about the town brashly mugging any inhabitants with enough Arpeyjis in their wallet.  Keep an eye out for them, and if possible make sure you don't carry too much money on you at once.  Careful, if you manage to defeat one, the other will not be too happy and will relentlessly pursue anyone who possesses the other.\"<br><br>";
@@ -1372,6 +1385,206 @@ namespace TT.Web.Controllers
 
             return View(MVC.NPC.Views.TalkToValentine);
 
+        }
+
+        public virtual ActionResult TalkToHolidaySpirit(string question)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var spirit = PlayerProcedures.GetPlayerFromBotId(AIStatics.HolidaySpiritBotId);
+            var minSpiritWaitTime = 5;
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.HolidaySpiritBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var response = "";
+
+            //Do stuff!
+            if (question != "none")
+            {
+                //World and effects for checking availability and bonus giving
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+                IEffectRepository effectRepo = new EFEffectRepository();
+
+                //Exit early if the player isn't allowed to interact with the spirit right now
+                if (world.TurnNumber - me.LastHolidaySpiritInteraction < minSpiritWaitTime && !world.ChaosMode)
+                {
+                    ViewBag.Speech = "\"Sorry honey, but I think you've gotten enough holiday cheer for now! Why not try waiting a bit, let some others enjoy the holiday with me a for a bit, okay~?\"<br>";
+                    return View(MVC.NPC.Views.TalkToHolidaySpirit);
+                }
+
+                //Check the player's achievements being naughty or nice
+                var statsCmd = new GetPlayerStats { OwnerId = myMembershipId };
+                var playerStats = DomainRegistry.Repository.Find(statsCmd);
+
+                int naughtyCount = NaughtyCount(playerStats);
+                int niceCount = NiceCount(playerStats);
+
+                response = "The Spirit eyes you from head to toe with an inquisitive look on her face, as if she's judging all of your actions since you've arrived at Sunnyglade. You shiver in both nervousness and anticipation of her judgment on you. It isn't long before she perks back up and speaks:<br>";
+
+                if (naughtyCount > niceCount)
+                {
+                    response += "<br>\"Oh my, I can tell that you're quite a naughty one, aren't you! Causing so much trouble for your fellow townsfolk, getting in the way of all their fun! I don't think I can give a blessing to someone as mean as you until you show me that you deserve one!\"<br>";
+
+                    //Check if the user has an unequipped gift in their inventory. If so, give them a buff. If not, hint at what they need to do
+                    var playerInventory = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id });
+                    var giftInInventory = playerInventory.FirstOrDefault(i => i.ItemSource.Id == ItemStatics.GiftItemSourceId  && !i.IsEquipped);
+
+                    if (giftInInventory != null)
+                    {
+                        ItemProcedures.DeleteItem(giftInInventory.Id);
+
+                        response += "<br>You suddenly remember that you've been carrying around a gift that you stole off the ground. Whose gift it was originally you have no idea, but all that mattered was that you had it now. You pull out the gift and offer it to the Spirit, wondering if she'll accept this as a way of showing that you deserve a blessing.<br>";
+
+                        //Check if the player should get the Naughty buff. They need to not have it already nor have the Nice buff
+                        var hasNicePerk = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == EffectStatics.HolidayNiceBlessingId && e.OwnerId == me.Id);
+                        if (hasNicePerk != null || !EffectProcedures.GivePerkToPlayer(EffectStatics.HolidayNaughtyBlessingId, me, Silent: true).Equals("You have gained the perk Naughty Gift."))
+                        {
+                            response += "<br>\"Oh my, for me?! You shouldn't haaaaaaaaaave! But wait, I can already feel that you have one of my blessings on you - are you trying to butter me up or something? Come back when you actually need a blessing! Oh, but I'm still taking the present: no take-backsies~!\"<br>";
+                            response += "<br>The Spirit snatches the present out of your hands, gives you a wink while sticking her tongue out, and then turns away from you to offer that gift to any nice townsfolk that come to cross her path. You should come back with another gift when you actually need that blessing!<br>";
+                        }
+                        else 
+                        {
+                            response += "<br>\"Oh my, for me?! You shouldn't haaaaaaaaaave! Maybe you aren't as bad as I once thought... Oh, but I just gave my last present to someone I thought was sooooo nice, so I don't have one to give you! Maybe this will suffice, especially for someone as naughty as you~!\"<br>";
+                            response += "<br>The Spirit leans over and gives you a quick peck on the cheek. This cute little gesture has you recoil at first, but you can feel a surge of energy on the spot where her lips touched your skin. You feel like your magical capabilities have been given a huge boost, but at the same time you feel more susceptile to other's magic. Maybe you can use this for some naughty holiday fun...?<br>";
+                            response += "<br>\"Come back later, hon! I hope next time you'll be nice though, I have presents for good residents of Sunnyglade!\"<br>";
+
+                            var message = "You gave a present to the Holiday Spirit and were given a naughty blessing in return!";
+                            PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+                        }
+                    }
+                    else
+                    {
+                        response += "<br>You try to think of something that would get the spirit to believe that you're actually nice, but you're coming up short. However, you do see that the Spirit herself is handing out presents to people around you. Perhaps you could find - or steal - one around town and give to her?<br>";
+                    }
+                }
+                else
+                {
+                    var cmd = new CreateItem
+                    {
+                        OwnerId = me.Id,
+                        dbLocationName = "",
+                        IsEquipped = false,
+                        EquippedThisTurn = false,
+                        IsPermanent = false,
+                        Level = 0,
+                        PvPEnabled = -1,
+                        TurnsUntilUse = 0,
+                        LastSouledTimestamp = DateTime.UtcNow,
+                        ItemSourceId = ItemStatics.GiftItemSourceId,
+                    };
+
+                    DomainRegistry.Repository.Execute(cmd);
+
+                    var message = "You were given a gift by the Holiday Spirit!";
+                    PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+
+                    response += "<br>\"Well I'll be, I think I have a super duper nice one in front of me! I'm sure you've worked extra hard to be nice in this mean old town - you deserve something nice!\"<br>";
+                    response += "<br>The Spirit gives you a hand-wrapped present, complete with an intricate bow on top. The gift has a bit of heft to it, and you can definitely hear something rattling around inside when you shake it. You should take the time to open it later.<br>";
+
+                    //Check if the player should get the Nice buff. They need to not have it already nor have the Naughty buff
+                    var hasNaughtyPerk = effectRepo.Effects.FirstOrDefault(e => e.EffectSourceId == EffectStatics.HolidayNaughtyBlessingId && e.OwnerId == me.Id);
+
+                    if (hasNaughtyPerk != null || !EffectProcedures.GivePerkToPlayer(EffectStatics.HolidayNiceBlessingId, me, Silent: true).Equals("You have gained the perk Nice Gift."))
+                    {
+                        response += "<br>As the present is given to you, you can feel something tingling within your body. However, it fizzles out for some reason or another. Perhaps you're already super nice, or maybe you have a naughty blessing? Either way, you gain no additional power from the gift you were just handed. Maybe next time...<br>";
+                    }
+                    else
+                    {
+                        response += "<br>As the present is given to you, you can feel something tingling within your body. You can't put your finger on it, but you feel much nicer than before and your body feels much more formidible! The Spirit winks at you, knowing that her blessing has positively affected you!<br>";
+
+                        message = "You were given a nice blessing by the Holiday Spirit!";
+                        PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+                    }
+
+                    response += "<br>\"Do come back and talk to me again later, sweetie! I'm always open to sharing more of my holiday cheer with you! But please remember to let others have their turn too - hogging all of the holiday joy yourself will turn you naughty! Tee hee~\"<br>";
+                    response += "<br>The Spirit then turns away from you, waving to some other townsfolk down the street. Perhaps you should come back later if you want another gift - the Spirit seems busy and you'd do well not to interrupt her for the time being.<br>";
+                }
+                try
+                {
+                    DomainRegistry.Repository.Execute(new UpdateLastHolidaySpiritInteraction
+                    {
+                        UserId = myMembershipId,
+                        LastHolidaySpiritInteraction = world.TurnNumber,
+                    });
+                }
+                catch (DomainException)
+                {
+                    TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
+                    return View(MVC.PvP.Play());
+                }
+            }
+            else
+            {
+                response = "Before you stands what can only be described as an amalgamation of several different holiday themes. She carries a sack full of Christmas presents, yet has clothing and decorations that remind you of just about every other holiday - Valentine's Day, Easter, Halloween, you name it - as if she were trying to celebrate them all at once.<br>";
+                response += "<br>\"Seasons greetings, residents of Sunnyglade! I'm here to spread the holiday cheer - all year 'round! Come and have a chat and I'll let you know if you've been good or bad this year! If you're good, you might even get a little something for it~!\"<br>";
+                response += "<br>She seems friendly and excited. Should you approach her and learn if you've been naughty or nice?<br>";
+            }
+
+            ViewBag.Speech = response;
+            return View(MVC.NPC.Views.TalkToHolidaySpirit);
+        }
+
+        public virtual int NaughtyCount(IEnumerable<StatDetail> playerStats)
+        {
+            int count = 0;
+            StatDetail statDetail;
+
+            //Count up all the PVP related achievements from the player's stats (found in StatProcedures)
+            //Things considered naughty: dungeon points stolen, players turned items/pets & total level turned, mind control commands
+
+            //Dungeon points stolen
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__DungeonPointsStolen));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Players turned item/pet
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__PvPPlayerNumberTakedowns));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Total level turned item/pet
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__PvPPlayerLevelTakedowns));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Mind control commands
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__MindControlCommandsIssued));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            return count;
+        }
+
+        public virtual int NiceCount(IEnumerable<StatDetail> playerStats)
+        {
+            int count = 0;
+            StatDetail statDetail;
+
+            //Count up all the PVE related achievements from the player's stats (found in StatProcedures)
+            //Things considered nice: psychos defeated, dungeon demons defeated, boss/miniboss attacks
+
+            //Psychos defeated
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__PsychopathsDefeated));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Dungeon demons defeated
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__DungeonDemonsDefeated));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Bosses attacked
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__BossAllAttacks));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            //Minibosses attacked
+            statDetail = playerStats.FirstOrDefault(c => c.AchievementType.Equals(StatsProcedures.Stat__MinibossAttacks));
+            count += statDetail == null ? 0 : (int)statDetail.Amount;
+
+            return count;
         }
 
         public virtual ActionResult TalkToSoulbinder()

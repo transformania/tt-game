@@ -36,6 +36,10 @@ namespace TT.Domain.Statics
         public const int JOKESHOP_INVENTORY_EFFECT = 238;
         public const int JOKESHOP_MOBILITY_EFFECT = 239;
 
+        //Holiday Spirit effects
+        public const int HolidayNaughtyBlessingId = 257;
+        public const int HolidayNiceBlessingId = 258;
+
         // Super Psycho. No, I don't think you'll win.
         public static readonly int[] SUPER_PSYCHO_EFFECT = { 19, 20, 21, 22, 23 };
 

@@ -127,6 +127,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult TalkToHolidaySpirit()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToHolidaySpirit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SoulbindItem()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItem);
@@ -173,6 +179,7 @@ namespace TT.Web.Controllers
             public readonly string LorekeeperLearnSpell = ("LorekeeperLearnSpell").ToLowerInvariant();
             public readonly string LorekeeperLearnSpellSend = ("LorekeeperLearnSpellSend").ToLowerInvariant();
             public readonly string TalkToValentine = ("TalkToValentine").ToLowerInvariant();
+            public readonly string TalkToHolidaySpirit = ("TalkToHolidaySpirit").ToLowerInvariant();
             public readonly string TalkToSoulbinder = ("TalkToSoulbinder").ToLowerInvariant();
             public readonly string SoulbindItemList = ("SoulbindItemList").ToLowerInvariant();
             public readonly string SoulbindItem = ("SoulbindItem").ToLowerInvariant();
@@ -278,6 +285,14 @@ namespace TT.Web.Controllers
         {
             public readonly string question = ("question").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_TalkToHolidaySpirit s_params_TalkToHolidaySpirit = new ActionParamsClass_TalkToHolidaySpirit();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_TalkToHolidaySpirit TalkToHolidaySpiritParams { get { return s_params_TalkToHolidaySpirit; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_TalkToHolidaySpirit
+        {
+            public readonly string question = ("question").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_SoulbindItem s_params_SoulbindItem = new ActionParamsClass_SoulbindItem();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_SoulbindItem SoulbindItemParams { get { return s_params_SoulbindItem; } }
@@ -314,6 +329,7 @@ namespace TT.Web.Controllers
                 public readonly string TalkToAdrianna = "TalkToAdrianna";
                 public readonly string TalkToBartender = "TalkToBartender";
                 public readonly string TalkToCandice = "TalkToCandice";
+                public readonly string TalkToHolidaySpirit = "TalkToHolidaySpirit";
                 public readonly string TalkToLorekeeper = "TalkToLorekeeper";
                 public readonly string TalkToSoulbinder = "TalkToSoulbinder";
                 public readonly string TalkToValentine = "TalkToValentine";
@@ -330,6 +346,7 @@ namespace TT.Web.Controllers
             public readonly string TalkToAdrianna = "~/Views/NPC/TalkToAdrianna.cshtml";
             public readonly string TalkToBartender = "~/Views/NPC/TalkToBartender.cshtml";
             public readonly string TalkToCandice = "~/Views/NPC/TalkToCandice.cshtml";
+            public readonly string TalkToHolidaySpirit = "~/Views/NPC/TalkToHolidaySpirit.cshtml";
             public readonly string TalkToLorekeeper = "~/Views/NPC/TalkToLorekeeper.cshtml";
             public readonly string TalkToSoulbinder = "~/Views/NPC/TalkToSoulbinder.cshtml";
             public readonly string TalkToValentine = "~/Views/NPC/TalkToValentine.cshtml";
@@ -587,6 +604,18 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToValentine);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "question", question);
             TalkToValentineOverride(callInfo, question);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TalkToHolidaySpiritOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string question);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TalkToHolidaySpirit(string question)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TalkToHolidaySpirit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "question", question);
+            TalkToHolidaySpiritOverride(callInfo, question);
             return callInfo;
         }
 

@@ -28,9 +28,9 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnHolidaySpirit()
         {
-            var bimboBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.BimboBossBotId });
+            var holidaySpirit = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.HolidaySpiritBotId });
 
-            if (bimboBoss == null)
+            if (holidaySpirit == null)
             {
                 var cmd = new CreatePlayer
                 {

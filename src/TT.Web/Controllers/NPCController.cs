@@ -26,7 +26,6 @@ using TT.Domain.Identity.DTOs;
 using TT.Domain.World.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Effects.Entities;
-using System.Diagnostics;
 
 namespace TT.Web.Controllers
 {

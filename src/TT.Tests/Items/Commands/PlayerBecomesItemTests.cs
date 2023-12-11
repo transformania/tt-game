@@ -191,7 +191,7 @@ namespace TT.Tests.Items.Commands
             Assert.That(newItem.Level, Is.EqualTo(botVictim.Level));
             Assert.That(newItem.dbLocationName, Is.Empty);
             Assert.That(newItem.ItemSource.FriendlyName, Is.EqualTo(itemSource.FriendlyName));
-            Assert.That(newItem.ConsentsToSoulbinding, Is.True);
+            Assert.That(newItem.ConsentsToSoulbinding, Is.False);
         }
 
         [Test]

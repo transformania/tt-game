@@ -26,6 +26,7 @@ using TT.Domain.Identity.DTOs;
 using TT.Domain.World.Queries;
 using TT.Domain.Players.Commands;
 using TT.Domain.Effects.Entities;
+using System.Diagnostics;
 
 namespace TT.Web.Controllers
 {
@@ -1683,16 +1684,7 @@ namespace TT.Web.Controllers
             }
 
             var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Count();
-            var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 10;
-
-            if (me.Money < price)
-            {
-                TempData["Error"] = "You do not have enough money to rename this item.";
-                TempData["SubError"] = "You need " + price + " arpeyjis to do this.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
-            PlayerProcedures.GiveMoneyToPlayer(me, -price);
+            var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 4;
 
             var output = new PlayerNameViewModel
             {
@@ -1700,7 +1692,8 @@ namespace TT.Web.Controllers
                 SoulboundCount = itemSoulboundCount,
                 Id = item.FormerPlayer.Id,
                 NewFirstName = item.FormerPlayer.FirstName,
-                NewLastName = item.FormerPlayer.LastName
+                NewLastName = item.FormerPlayer.LastName,
+                Price = price,
             };
 
             return View(MVC.NPC.Views.SoulboundRename, output);
@@ -1708,7 +1701,7 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult SoulboundRename(PlayerNameViewModel input)
+        public virtual ActionResult SoulboundRenameSend(PlayerNameViewModel input)
         {
 
             var myMembershipId = User.Identity.GetUserId();
@@ -1782,6 +1775,18 @@ namespace TT.Web.Controllers
             }
 
             playerRepo.SavePlayer(player);
+
+            var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Count();
+            var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 4;
+
+            if (me.Money < price)
+            {
+                TempData["Error"] = "You do not have enough money to rename this item.";
+                TempData["SubError"] = "You need " + price + " arpeyjis to do this.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            PlayerProcedures.GiveMoneyToPlayer(me, -price);
 
             PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed your soulbound object: </b>" + input.NewFirstName + " " + input.NewLastName, true);
             PlayerLogProcedures.AddPlayerLog(player.Id, "<b>Your owner has renamed you to </b>" + input.NewFirstName + " " + input.NewLastName, true);

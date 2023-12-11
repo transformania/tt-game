@@ -35,5 +35,6 @@ namespace TT.Domain.ViewModels
         public string OriginalLastName { get; set; }
 
         public int SwapTargetId { get; set; }
+        public int Price { get; set; }
     }
 }

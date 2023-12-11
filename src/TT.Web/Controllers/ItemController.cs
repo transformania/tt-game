@@ -446,7 +446,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has enough ARP
-            var cost = item.dbItem.Level * 250;
+            var cost = 300;
             if (me.Money < cost)
             {
                 TempData["Error"] = "You don't have enough arpeyjis to pay for a reshape!";

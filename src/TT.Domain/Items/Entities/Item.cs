@@ -86,6 +86,13 @@ namespace TT.Domain.Items.Entities
                 newItem.ConsentsToSoulbinding = false;
                 newItem.SetGameMode(attacker);
             }
+            else if (formerPlayer.BotId == AIStatics.PsychopathBotId || formerPlayer.BotId == AIStatics.RerolledPlayerBotId) 
+            {
+                newItem.IsPermanent = true;
+                newItem.LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+                newItem.PvPEnabled = (int)GameModeStatics.GameModes.Any;
+                newItem.ConsentsToSoulbinding = false;
+            }
             else
             {
                 newItem.IsPermanent = true;

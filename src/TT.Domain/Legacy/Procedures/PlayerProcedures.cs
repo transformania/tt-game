@@ -18,6 +18,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.World.Queries;
 using System.Text.RegularExpressions;
+using TT.Domain.Items.Services;
 
 namespace TT.Domain.Procedures
 {
@@ -669,6 +670,16 @@ namespace TT.Domain.Procedures
                     oldItemMe.IsPermanent = true;
                     oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                     itemRepo.SaveItem(oldItemMe);
+
+                    // If item rerolls and is soulbound to owner, give former owner small refund
+                    if (oldItemMe.SoulboundToPlayerId != null)
+                    {
+                        var getOwner = GetPlayer(oldItemMe.SoulboundToPlayerId);
+                        var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = getOwner.Id }).Count();
+                        var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 3;
+                        GiveMoneyToPlayer(getOwner, -price);
+                        PlayerLogProcedures.AddPlayerLog(getOwner.Id, "<b>One of your soulbind items has rerolled. You have been refunded <span title=\'Arpeyjis\' class=\'icon icon-money\'></span> " + price + " for the inconvenience.</b>", true);
+                    }
                 }
 
                 DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = oldplayer.Id, IgnoreRunes = false});

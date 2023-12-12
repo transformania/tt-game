@@ -1535,6 +1535,10 @@ namespace TT.Web.Controllers
                 {
                     fail = true;
                 }
+                else if (adjustedChance < 91 && turnNumber > 6400)
+                {
+                    fail = true;
+                }
 
                 if (fail)
                 {
@@ -1624,6 +1628,10 @@ namespace TT.Web.Controllers
                 {
                     fail = true;
                 }
+                else if (adjustedChance < 91 && turnNumber > 6400)
+                {
+                    fail = true;
+                }
 
                 if (fail)
                 {
@@ -1703,6 +1711,10 @@ namespace TT.Web.Controllers
                     fail = true;
                 }
                 else if (adjustedChance < 71 && (turnNumber > 4800 && turnNumber <= 6400))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 91 && turnNumber > 6400)
                 {
                     fail = true;
                 }

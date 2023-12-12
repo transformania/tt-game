@@ -3763,13 +3763,6 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            //Check if we're in Chaos Mode or Hard Mode
-            if (!PvPStatics.ChaosMode && !me.InHardmode)
-            {
-                TempData["Error"] = "You cannot do that right now.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // assert player is inanimate or an animal
             if (me.Mobility == PvPStatics.MobilityFull)
             {
@@ -3793,7 +3786,7 @@ namespace TT.Web.Controllers
             }
             catch
             {
-                TempData["Error"] = "You can only do that in Chaos Mode";
+                TempData["Error"] = "You cannot do that.";
             }
 
             return RedirectToAction(MVC.PvP.Play());

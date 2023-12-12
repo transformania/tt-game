@@ -324,9 +324,16 @@
                     {
                         <p class="center-block">
                             <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
+                            <br>
+                            <a href="#showInstantLock" id="showInstantLock" class="check inanimateAction">Submit to your transformation and lock as this form</a>
+                            <div id="instantlockDiv" style="display: none;">
+                                <p class="small">
+                                    <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Yes, I wish to accept my fate.</a>
+                                </p>
+                            </div>
                         </p>
                     }
-                    if (PvPStatics.ChaosMode || Model.Player.InHardmode)
+                    if (Model.Player.InHardmode)
                     {
                         <p class="center-block">
                             <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Submit to your transformation and lock as this form</a>
@@ -464,6 +471,16 @@
         } else {
             $("#escapeDiv").hide();
         }
+    });
+
+    $(document).ready(function () {
+        $("#showInstantLock").click(function () {
+            if ($("#instantlockDiv").is(":visible") === false) {
+                $("#instantlockDiv").show();
+            } else {
+                $("#instantlockDiv").hide();
+            }
+        });
     });
 
     </script>

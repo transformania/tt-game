@@ -450,12 +450,6 @@ namespace TT.Domain.Procedures
         {
             var me = PlayerProcedures.GetPlayerFromMembership(membershipId);
 
-            //Check if we're in Chaos Mode or Hard Mode
-            if (!PvPStatics.ChaosMode && !me.InHardmode)
-            {
-                throw new Exception("You cannot do that right now.");
-            }
-
             IItemRepository itemRep = new EFItemRepository();
 
             var inanimateMeHack = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = me.Id });
@@ -463,7 +457,12 @@ namespace TT.Domain.Procedures
 
             inanimateMe.IsPermanent = true;
             itemRep.SaveItem(inanimateMe);
-            DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems { PlayerId = me.Id });
+
+            var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Count();
+            if (itemSoulboundCount > 0)
+            {
+                DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems { PlayerId = me.Id });
+            }
             DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = me.Id, IgnoreRunes = false });
 
             var formRepo = new EFDbStaticFormRepository();
@@ -473,7 +472,7 @@ namespace TT.Domain.Procedures
             {
                 PlayerLogProcedures.AddPlayerLog(inanimateMe.OwnerId.Value, $"{me.GetFullName()} has locked and is now unable to escape their form as your {form.FriendlyName}!", true);
             }
-
+            
             PlayerLogProcedures.AddPlayerLog(me.Id, $"You have locked in your current form as a {form.FriendlyName}!", false);
             var resultMessage = "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
 

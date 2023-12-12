@@ -26,20 +26,20 @@
 </div>
 
 @{ 
-    if (Model.FriendOnlyMessages)
-    {
-        <div class="specialBox">
-            You are currently only allowing messages from friends. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Toggle it to allow messages from all users.</a>
-            <br>
+    <div class="specialBox">
+        <div class="small">
+            @if (Model.FriendOnlyMessages)
+            {
+                <p>You are currently only allowing messages from friends. <a href="#showToggle" id="showToggle">Toggle it to allow messages from all users.</a></p>
+                <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Allow messages from all users.</a></p>
+            }
+            else
+            {
+                <p>You are currently allowing messages from all users. <a href="#showToggle" id="showToggle">Toggle it to allow messages only from friends.</a></p>
+                <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Allow messages only from friends.</a></p>
+            }
         </div>
-    }
-    else
-    {
-        <div class="specialBox">
-            You are currently allowing messages from all users. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Toggle it to allow messages only from friends.</a>
-            <br>
-        </div>
-    }
+    </div>
 }
 
 <div class="specialBox specialHeader">
@@ -223,6 +223,14 @@
             $('#DeleteLink').on('click', function () {
                 document.getElementById('realLink').style.display = "block";
             });
+        });
+
+        $("#showToggle").click(function () {
+            if ($("#toggleDiv").is(":visible") === false) {
+                $("#toggleDiv").show();
+            } else {
+                $("#toggleDiv").hide();
+            }
         });
     </script>
 }

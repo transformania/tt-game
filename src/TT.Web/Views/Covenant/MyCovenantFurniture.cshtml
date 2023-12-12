@@ -37,10 +37,33 @@
 
             if (Model.playerIsCovenantLeader || Model.IAmCaptain)
             {
-                <a href="@Url.Action(MVC.Covenant.SellFurniture(f.dbFurniture.Id))">Sell</a><br>
+                <a href="#showSell" id="showSell">Sell</a>
+                <div id="sellDiv" style="display: none;">
+                    <p>
+                        Are you sure you want to sell this piece of furniture?
+                        <br />
+                        <a href="@Url.Action(MVC.Covenant.SellFurniture(f.dbFurniture.Id))">Yes.</a>
+                    </p>
+                </div>
+                <br>
             }
             <hr>
         }
 
     }
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#showSell").click(function () {
+                if ($("#sellDiv").is(":visible") === false) {
+                    $("#sellDiv").show();
+                } else {
+                    $("#sellDiv").hide();
+                }
+            });
+        });
+    </script>
+}

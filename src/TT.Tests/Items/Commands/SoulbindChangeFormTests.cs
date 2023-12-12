@@ -64,7 +64,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.FirstName, "Sam")
                 .With(p => p.Items, new List<Item>())
                 .With(p => p.Level, 5)
-                .With(p => p.Money, 1250)
+                .With(p => p.Money, 300)
                 .BuildAndSave();
 
             item = new ItemBuilder()
@@ -354,7 +354,7 @@ namespace TT.Tests.Items.Commands
 
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
-                    .EqualTo($"You cannot afford this.  You need <b>1250</b> Arpeyjis and only have <b>0</b>."));
+                    .EqualTo($"You cannot afford this.  You need <b>300</b> Arpeyjis and only have <b>0</b>."));
         }
     }
 }

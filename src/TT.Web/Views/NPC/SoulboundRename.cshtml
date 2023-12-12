@@ -9,9 +9,9 @@
     <h1>Rename Soulbound Item / Pet</h1>
 
     <div>
-        <p>You can use this tool to rename a soulbound object or pet. To rename this item, it will cost <b>@(PriceCalculator.GetPriceToSoulbindNextItem(Model.SoulboundCount) / 10)</b> arpeyjis. You currently have <b>@Math.Truncate(Model.OwnerMoney)</b> arpeyjis. Some rules:</p>
+        <p>You can use this tool to rename a soulbound object or pet. To rename this item, it will cost <b>@Model.Price</b> arpeyjis. You currently have <b>@Math.Truncate(Model.OwnerMoney)</b> arpeyjis. Some rules:</p>
         <ul class="listdots">
-            <li>This tool only works if the person has consented to being soulbound..</li>
+            <li>This tool only works if the person has consented to being soulbound.</li>
             <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
             <li>Do not make any words so long that it cannot text wrap comfortably.</li>
             <li>Names are limited to 30 characters, with apostrophes and hyphens allowed.</li>
@@ -20,7 +20,7 @@
     </div>
 
     <div>
-        @using (Html.BeginForm(MVC.NPC.SoulboundRename(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.NPC.SoulboundRenameSend(), FormMethod.Post))
         {
             <div style="font-weight: bold;">
                 @Html.ValidationSummary("", new { @class = "alert alert-danger text-center" })
@@ -29,6 +29,8 @@
             @Html.AntiForgeryToken()
 
             @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.Price)
+            @Html.HiddenFor(m => m.OwnerMoney)
 
             <div class="center-block">
                 <p class="input-group col-md-5" style="margin: 0 auto; padding: 5px;">

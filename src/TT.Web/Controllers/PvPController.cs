@@ -1511,14 +1511,46 @@ namespace TT.Web.Controllers
             {
                 var rand = new Random();
                 int chance = rand.Next(0, 100);
+                int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+                bool fail = false;
+                float statLuck = ItemProcedures.GetPlayerBuffs(me.Id).Luck();
+                float statRestoration = ItemProcedures.GetPlayerBuffs(me.Id).Allure();
 
-                if (chance < 21)
+                var adjustedChance = chance + (statLuck * .1) + (statRestoration * .1);
+
+                // The chance to fail to mediate or cleanse gets more and more difficult as the round progresses.
+                if (adjustedChance < 11 && (turnNumber > 800 && turnNumber <= 1600))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 31 && (turnNumber > 1600 && turnNumber <= 3200))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 51 && (turnNumber > 3200 && turnNumber <= 4800))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 71 && (turnNumber > 4800 && turnNumber <= 6400))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 91 && turnNumber > 6400)
+                {
+                    fail = true;
+                }
+
+                if (fail)
                 {
                     IPlayerRepository playerRepo = new EFPlayerRepository();
                     var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
-                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
-                    playerRepo.SavePlayer(player);
 
+                    if (player.CleansesMeditatesThisRound < 3)
+                    {
+                        player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                        playerRepo.SavePlayer(player);
+                    }    
+                    
                     TempData["Error"] = "You seem to lose focus as you attempt to concentrate.";
                     TempData["SubError"] = "Maybe if you try again, you'll be able to work on restoring yourself.";
                     return RedirectToAction(MVC.PvP.Play());
@@ -1572,13 +1604,45 @@ namespace TT.Web.Controllers
             {
                 var rand = new Random();
                 int chance = rand.Next(0, 100);
+                int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+                bool fail = false;
+                float statLuck = ItemProcedures.GetPlayerBuffs(me.Id).Luck();
+                float statRestoration = ItemProcedures.GetPlayerBuffs(me.Id).Allure();
 
-                if (chance < 21)
+                var adjustedChance = chance + (statLuck * .1) + (statRestoration * .1);
+
+                // The chance to fail to mediate or cleanse gets more and more difficult as the round progresses.
+                if (adjustedChance < 11 && (turnNumber > 800 && turnNumber <= 1600))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 31 && (turnNumber > 1600 && turnNumber <= 3200))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 51 && (turnNumber > 3200 && turnNumber <= 4800))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 71 && (turnNumber > 4800 && turnNumber <= 6400))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 91 && turnNumber > 6400)
+                {
+                    fail = true;
+                }
+
+                if (fail)
                 {
                     IPlayerRepository playerRepo = new EFPlayerRepository();
                     var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
-                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
-                    playerRepo.SavePlayer(player);
+
+                    if (player.CleansesMeditatesThisRound < 3)
+                    {
+                        player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                        playerRepo.SavePlayer(player);
+                    }
 
                     TempData["Error"] = "You seem to lose focus as you attempt to meditate.";
                     TempData["SubError"] = "Maybe if you try again, you'll be able to concentrate.";
@@ -1626,13 +1690,45 @@ namespace TT.Web.Controllers
             {
                 var rand = new Random();
                 int chance = rand.Next(0, 100);
+                int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+                bool fail = false;
+                float statLuck = ItemProcedures.GetPlayerBuffs(me.Id).Luck();
+                float statRestoration = ItemProcedures.GetPlayerBuffs(me.Id).Allure();
 
-                if (chance < 21)
+                var adjustedChance = chance + (statLuck * .1) + (statRestoration * .1);
+
+                // The chance to fail to mediate or cleanse gets more and more difficult as the round progresses.
+                if (adjustedChance < 11 && (turnNumber > 800 && turnNumber <= 1600))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 31 && (turnNumber > 1600 && turnNumber <= 3200))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 51 && (turnNumber > 3200 && turnNumber <= 4800))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 71 && (turnNumber > 4800 && turnNumber <= 6400))
+                {
+                    fail = true;
+                }
+                else if (adjustedChance < 91 && turnNumber > 6400)
+                {
+                    fail = true;
+                }
+
+                if (fail)
                 {
                     IPlayerRepository playerRepo = new EFPlayerRepository();
                     var player = playerRepo.Players.FirstOrDefault(p => p.Id == me.Id);
-                    player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
-                    playerRepo.SavePlayer(player);
+
+                    if (player.CleansesMeditatesThisRound < 3)
+                    {
+                        player.CleansesMeditatesThisRound = player.CleansesMeditatesThisRound + 1;
+                        playerRepo.SavePlayer(player);
+                    }
 
                     TempData["Error"] = "An overpowering force overwhelms you and prevents you from cleansing.";
                     TempData["SubError"] = "Hopefully you have better luck on your next cleanse.";

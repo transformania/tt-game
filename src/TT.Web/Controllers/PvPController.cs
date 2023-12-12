@@ -2314,6 +2314,13 @@ namespace TT.Web.Controllers
                 return View(MVC.Item.Views.SkillBook, output);
             }
 
+            // if this item is the reward tome
+            if (item.dbItem.ItemSourceId == ItemStatics.TomeRewards)
+            {
+                return RedirectToAction(MVC.Item.SelfRewardCast(itemId));
+            }
+
+
             if (item.dbItem.ItemSourceId == ItemStatics.CurseLifterItemSourceId || item.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId)
             {
                 return RedirectToAction(MVC.Item.RemoveCurse(item.dbItem.Id));

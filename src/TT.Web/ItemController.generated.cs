@@ -61,6 +61,18 @@ namespace TT.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SelfRewardCast()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfRewardCast);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SelfRewardCastSend()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfRewardCastSend);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SelfCast()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfCast);
@@ -160,6 +172,8 @@ namespace TT.Web.Controllers
         public class ActionNamesClass
         {
             public readonly string MyInventory = ("MyInventory").ToLowerInvariant();
+            public readonly string SelfRewardCast = ("SelfRewardCast").ToLowerInvariant();
+            public readonly string SelfRewardCastSend = ("SelfRewardCastSend").ToLowerInvariant();
             public readonly string SelfCast = ("SelfCast").ToLowerInvariant();
             public readonly string SelfCastSend = ("SelfCastSend").ToLowerInvariant();
             public readonly string ItemCast = ("ItemCast").ToLowerInvariant();
@@ -180,6 +194,23 @@ namespace TT.Web.Controllers
         }
 
 
+        static readonly ActionParamsClass_SelfRewardCast s_params_SelfRewardCast = new ActionParamsClass_SelfRewardCast();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SelfRewardCast SelfRewardCastParams { get { return s_params_SelfRewardCast; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SelfRewardCast
+        {
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_SelfRewardCastSend s_params_SelfRewardCastSend = new ActionParamsClass_SelfRewardCastSend();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SelfRewardCastSend SelfRewardCastSendParams { get { return s_params_SelfRewardCastSend; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SelfRewardCastSend
+        {
+            public readonly string formId = ("formId").ToLowerInvariant();
+            public readonly string itemId = ("itemId").ToLowerInvariant();
+        }
         static readonly ActionParamsClass_SelfCast s_params_SelfCast = new ActionParamsClass_SelfCast();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_SelfCast SelfCastParams { get { return s_params_SelfCast; } }
@@ -311,6 +342,7 @@ namespace TT.Web.Controllers
                 public readonly string ItemCast = "ItemCast";
                 public readonly string RemoveCurse = "RemoveCurse";
                 public readonly string SelfCast = "SelfCast";
+                public readonly string SelfRewardCast = "SelfRewardCast";
                 public readonly string SetName = "SetName";
                 public readonly string ShowStatsTable = "ShowStatsTable";
                 public readonly string SkillBook = "SkillBook";
@@ -320,6 +352,7 @@ namespace TT.Web.Controllers
             public readonly string ItemCast = "~/Views/Item/ItemCast.cshtml";
             public readonly string RemoveCurse = "~/Views/Item/RemoveCurse.cshtml";
             public readonly string SelfCast = "~/Views/Item/SelfCast.cshtml";
+            public readonly string SelfRewardCast = "~/Views/Item/SelfRewardCast.cshtml";
             public readonly string SetName = "~/Views/Item/SetName.cshtml";
             public readonly string ShowStatsTable = "~/Views/Item/ShowStatsTable.cshtml";
             public readonly string SkillBook = "~/Views/Item/SkillBook.cshtml";
@@ -359,6 +392,31 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MyInventory);
             MyInventoryOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SelfRewardCastOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SelfRewardCast(int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfRewardCast);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            SelfRewardCastOverride(callInfo, itemId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SelfRewardCastSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int formId, int itemId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SelfRewardCastSend(int formId, int itemId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SelfRewardCastSend);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "formId", formId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
+            SelfRewardCastSendOverride(callInfo, formId, itemId);
             return callInfo;
         }
 

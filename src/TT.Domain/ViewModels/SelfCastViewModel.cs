@@ -8,6 +8,7 @@ namespace TT.Domain.ViewModels
     {
         public int ItemId { get; set; }
         public IEnumerable<SkillSourceFormSourceDetail> Skills { get; set; }
+        public IEnumerable<DbStaticForm> Forms { get; set; }
         public ItemViewModel Item { get; set; }
         public Player ItemPlayer { get; set; }
         public decimal OwnerMoney { get; set; }

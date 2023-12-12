@@ -62,6 +62,187 @@ namespace TT.Web.Controllers
 
             return View(MVC.PvP.Views.Inventory, output);
         }
+        public virtual ActionResult SelfRewardCast(int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            var item = ItemProcedures.GetItemViewModel(itemId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
+            {
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is the proper tome
+            if (item.dbItem.ItemSourceId != ItemStatics.TomeRewards)
+            {
+                TempData["Error"] = "You cannot change form with that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var formRepo = new EFDbStaticFormRepository();
+            var rewardForms = formRepo.DbStaticForms.Where(f => f.FriendlyName.Contains("*")).ToArray();
+
+            // Shuffle forms so players don't always pick the first one
+            var rand = new Random();
+            for (var backstop = rewardForms.Length; backstop > 1; backstop--)
+            {
+                var dest = backstop - 1;
+                var src = rand.Next(0, backstop);
+                var temp = rewardForms[dest];
+                rewardForms[dest] = rewardForms[src];
+                rewardForms[src] = temp;
+            }
+
+            var model = new SelfCastViewModel
+            {
+                ItemId = itemId,
+                Forms = rewardForms
+            };
+
+            return View(MVC.Item.Views.SelfRewardCast, model);
+        }
+
+        public virtual ActionResult SelfRewardCastSend(int formId, int itemId)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert player is animate
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You must be animate in order to use this.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you use this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn >= PvPStatics.MaxItemUsesPerUpdate)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction(MVC.Item.MyInventory());
+            }
+
+            var item = ItemProcedures.GetItemViewModel(itemId);
+
+            //asert item has not been used.
+            if (item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "You have already used this item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player does own this
+            if (item.dbItem.OwnerId != me.Id)
+            {
+                TempData["Error"] = "You don't own that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert that it is equipped
+            if (!item.dbItem.IsEquipped)
+            {
+                TempData["Error"] = "You cannot use an item you do not have equipped.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert this item is a transmog
+            if (item.dbItem.ItemSourceId != ItemStatics.TomeRewards)
+            {
+                TempData["Error"] = "You cannot change form with that item.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var form = FormStatics.GetForm(formId);
+
+            if (form == null)
+            {
+                TempData["Error"] = "That form does not exist.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            if (!form.FriendlyName.Contains("*"))
+            {
+                TempData["Error"] = "That is not a selectable reward form.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert desired form is animate
+            if (form.MobilityType != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "The target form must be an animate form.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // assert player is not already in the form of the spell
+            if (me.FormSourceId == form.Id)
+            {
+                TempData["Error"] = "You are already in the target form of that spell, so doing this would do you no good.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            PlayerProcedures.InstantChangeToForm(me, formId);
+            ItemProcedures.ResetUseCooldown(item);
+            PlayerProcedures.SetTimestampToNow(me);
+            PlayerProcedures.AddItemUses(me.Id, 1);
+            
+            TempData["Result"] = "You read your copy of '<b>" + item.Item.FriendlyName + "</b>', absorbing its knowledge to take on the form it calls '<b>" + form.FriendlyName + "</b>'.The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
         public virtual ActionResult SelfCast(int itemId)
         {

@@ -1,0 +1,63 @@
+﻿@model TT.Domain.ViewModels.SelfCastViewModel
+@using TT.Web.CustomHtmlHelpers
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Settings.Settings())">Back to settings</a></li>
+}
+
+<div class="containerInner">
+    <h1>Choose a Reward Form</h1>
+
+    <table id="RewardForms" class="table table-hover messageTable dt-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Portrait</th>
+                <th>Description</th>
+                <th>Choose</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var form in Model.Forms)
+            {
+                <tr>
+                    <td>
+                        @form.FriendlyName
+                    </td>
+                    <td>
+                        <div class="portrait" alt="Form: @form.FriendlyName (@form.Id)" title="Form: @form.FriendlyName (@form.Id)" style="background-image: url(@HtmlHelpers.GetFormImageURL(form.PortraitUrl, true)); float: right; bottom: 0;">
+                            <span style="float: right;">@HtmlHelpers.PrintItemTypeIcon(form.Gender)</span>
+                        </div>
+                    </td>
+                    <td>
+                        @form.Description
+                    </td>
+                    <td>
+                        <a href="@Url.Action(MVC.Item.SelfRewardCastSend(form.Id,Model.ItemId))">Select</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script>
+        $('#RewardForms').dataTable({
+            "lengthMenu": [[10, 50, 100, 200, -1], [10, 50, 100, 200, "All"]]
+        });
+    </script>
+}
+
+@section head
+{
+    <style>
+        tr {
+            border: 1px dashed rgb(161, 105, 105);
+            text-align: center;
+        }
+    </style>
+}

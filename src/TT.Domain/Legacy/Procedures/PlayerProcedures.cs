@@ -682,6 +682,16 @@ namespace TT.Domain.Procedures
                     }
                 }
 
+                // If item rerolls and is a mascot, remove from coven mascot
+                ICovenantRepository covRepo = new EFCovenantRepository();
+                var oldCoven = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
+
+                if (oldCoven.CovenMascot == oldplayer.Id)
+                {
+                    oldCoven.CovenMascot = 0;
+                    covRepo.SaveCovenant(oldCoven);
+                }
+
                 DomainRegistry.Repository.Execute(new DropAllItems {PlayerId = oldplayer.Id, IgnoreRunes = false});
                 DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems {PlayerId = oldplayer.Id});
                 DomainRegistry.Repository.Execute(new SetSoulbindingConsent { IsConsenting = true, PlayerId = oldplayer.Id });

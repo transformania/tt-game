@@ -1459,6 +1459,7 @@ namespace TT.Web.Controllers
 
                             var message = "You gave a present to the Holiday Spirit and were given a naughty blessing in return!";
                             PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+                            StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__NaughtyBlessings, 1);
                         }
                     }
                     else
@@ -1503,6 +1504,7 @@ namespace TT.Web.Controllers
 
                         message = "You were given a nice blessing by the Holiday Spirit!";
                         PlayerLogProcedures.AddPlayerLog(me.Id, message, true);
+                        StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__NiceBlessings, 1);
                     }
 
                     response += "<br>\"Do come back and talk to me again later, sweetie! I'm always open to sharing more of my holiday cheer with you! But please remember to let others have their turn too - hogging all of the holiday joy yourself will turn you naughty! Tee hee~\"<br>";
@@ -1515,6 +1517,7 @@ namespace TT.Web.Controllers
                         UserId = myMembershipId,
                         LastHolidaySpiritInteraction = world.TurnNumber,
                     });
+                    StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__HolidaySpiritInteractions, 1);
                 }
                 catch (DomainException)
                 {

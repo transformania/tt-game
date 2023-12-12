@@ -116,6 +116,9 @@ namespace TT.Domain.Procedures
         public const string Stat__BountiesClaimed = "bounties_claimed";
         public const string Stat__ChallengesPassed = "challenges_passed";
         public const string Stat__GiftsOpened = "presents_opened";
+        public const string Stat__NaughtyBlessings = "naughty_blessings";
+        public const string Stat__NiceBlessings = "nice_blessings";
+        public const string Stat__HolidaySpiritInteractions = "holiday_spirit_interactions";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -774,7 +777,39 @@ namespace TT.Domain.Procedures
                 }
             },
 
-            };
+            {
+                Stat__NaughtyBlessings,
+                new StatsDetailsMap{
+                    FriendlyName="Naughty Naughty",
+                    Description="Number of naughty blessings received",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+
+            {
+                Stat__NiceBlessings,
+                new StatsDetailsMap{
+                    FriendlyName="Goodie Two Shoes",
+                    Description="Number of nice blessings received",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+
+            {
+                Stat__HolidaySpiritInteractions,
+                new StatsDetailsMap{
+                    FriendlyName="Season Spirit",
+                    Description="Times interacting with the Holiday Spirit",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+        };
 
 
         public static void AddStat(string membershipId, string type, float amount, float? cap = null)

@@ -4182,7 +4182,10 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(target.Id, "You have been given praise by " + me.FirstName + " " + me.LastName + "!", true);
 
             EffectProcedures.GivePerkToPlayer(EffectStatics.JOKESHOP_REGENERATION_EFFECT, playerId, 1, 240, true);
-            
+
+            // Give the player their own headpat in a form of an achievement.
+            StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__Headpats, 1);
+
             //Remove the shout
             PlayerProcedures.ChangePlayerShoutsRemaining(me.Id, 0);
             return RedirectToAction(MVC.PvP.Play());

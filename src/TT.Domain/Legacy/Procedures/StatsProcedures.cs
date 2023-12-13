@@ -119,6 +119,7 @@ namespace TT.Domain.Procedures
         public const string Stat__NaughtyBlessings = "naughty_blessings";
         public const string Stat__NiceBlessings = "nice_blessings";
         public const string Stat__HolidaySpiritInteractions = "holiday_spirit_interactions";
+        public const string Stat__Headpats = "headpats";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -804,6 +805,17 @@ namespace TT.Domain.Procedures
                 new StatsDetailsMap{
                     FriendlyName="Season Spirit",
                     Description="Times interacting with the Holiday Spirit",
+                    ImageUrl="trophy.jpg",
+                    Active = true,
+                    ResetsOnReroll = false
+                }
+            },
+
+            {
+                Stat__Headpats,
+                new StatsDetailsMap{
+                    FriendlyName="Heaps of Praise",
+                    Description="Number of head pats given to others",
                     ImageUrl="trophy.jpg",
                     Active = true,
                     ResetsOnReroll = false

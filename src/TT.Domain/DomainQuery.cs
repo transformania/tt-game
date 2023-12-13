@@ -6,7 +6,7 @@ namespace TT.Domain
 {
     public abstract class DomainQuery<T> : Highway.Data.Query<T>, IDomainQuery<T>
     {
-        public new abstract IEnumerable<T> Execute(IDataContext context);
+        public abstract IEnumerable<T> Execute(IDataContext context);
 
         protected virtual void Validate() { }
 

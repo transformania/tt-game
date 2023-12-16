@@ -24,6 +24,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public const int GiftRespawnTimer = 5;
         public const int MoveDistance = 20;
         public const string SpawnLocation = "300_west_9th_ave";
+        public static int BadFormId = 1703;
+        public static int GoodFormId = 1705;
         public static int LastGiftDropTurn;
 
         public static void SpawnHolidaySpirit()

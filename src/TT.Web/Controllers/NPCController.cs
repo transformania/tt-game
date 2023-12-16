@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Linq;
-using System.Threading;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
@@ -25,7 +23,6 @@ using TT.Domain.ViewModels.NPCs;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.World.Queries;
 using TT.Domain.Players.Commands;
-using TT.Domain.Effects.Entities;
 
 namespace TT.Web.Controllers
 {
@@ -1408,7 +1405,7 @@ namespace TT.Web.Controllers
             var response = "";
 
             //Do stuff!
-            if (question != "none")
+            if (question == "check")
             {
                 //World and effects for checking availability and bonus giving
                 var world = DomainRegistry.Repository.FindSingle(new GetWorld());
@@ -1425,8 +1422,8 @@ namespace TT.Web.Controllers
                 var statsCmd = new GetPlayerStats { OwnerId = myMembershipId };
                 var playerStats = DomainRegistry.Repository.Find(statsCmd);
 
-                int naughtyCount = NaughtyCount(playerStats);
-                int niceCount = NiceCount(playerStats);
+                var naughtyCount = NaughtyCount(playerStats);
+                var niceCount = NiceCount(playerStats);
 
                 response = "The Spirit eyes you from head to toe with an inquisitive look on her face, as if she's judging all of your actions since you've arrived at Sunnyglade. You shiver in both nervousness and anticipation of her judgment on you. It isn't long before she perks back up and speaks:<br>";
 
@@ -1436,7 +1433,7 @@ namespace TT.Web.Controllers
 
                     //Check if the user has an unequipped gift in their inventory. If so, give them a buff. If not, hint at what they need to do
                     var playerInventory = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = me.Id });
-                    var giftInInventory = playerInventory.FirstOrDefault(i => i.ItemSource.Id == ItemStatics.GiftItemSourceId  && !i.IsEquipped);
+                    var giftInInventory = playerInventory.FirstOrDefault(i => i.ItemSource.Id == ItemStatics.GiftItemSourceId && !i.IsEquipped);
 
                     if (giftInInventory != null)
                     {
@@ -1451,7 +1448,7 @@ namespace TT.Web.Controllers
                             response += "<br>\"Oh my, for me?! You shouldn't haaaaaaaaaave! But wait, I can already feel that you have one of my blessings on you - are you trying to butter me up or something? Come back when you actually need a blessing! Oh, but I'm still taking the present: no take-backsies~!\"<br>";
                             response += "<br>The Spirit snatches the present out of your hands, gives you a wink while sticking her tongue out, and then turns away from you to offer that gift to any nice townsfolk that come to cross her path. You should come back with another gift when you actually need that blessing!<br>";
                         }
-                        else 
+                        else
                         {
                             response += "<br>\"Oh my, for me?! You shouldn't haaaaaaaaaave! Maybe you aren't as bad as I once thought... Oh, but I just gave my last present to someone I thought was sooooo nice, so I don't have one to give you! Maybe this will suffice, especially for someone as naughty as you~!\"<br>";
                             response += "<br>The Spirit leans over and gives you a quick peck on the cheek. This cute little gesture has you recoil at first, but you can feel a surge of energy on the spot where her lips touched your skin. You feel like your magical capabilities have been given a huge boost, but at the same time you feel more susceptile to other's magic. Maybe you can use this for some naughty holiday fun...?<br>";
@@ -1523,6 +1520,154 @@ namespace TT.Web.Controllers
                 {
                     TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
                     return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+            else if (question == "niceAsk")
+            {
+                //World for checking availability
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+
+                //Exit early if the player isn't allowed to interact with the spirit right now
+                if (world.TurnNumber - me.LastHolidaySpiritInteraction < minSpiritWaitTime && !world.ChaosMode)
+                {
+                    ViewBag.Speech = "\"Sorry honey, but I think you've gotten enough holiday cheer for now! Why not try waiting a bit, let some others enjoy the holiday with me a for a bit, okay~?\"<br>";
+                    return View(MVC.NPC.Views.TalkToHolidaySpirit);
+                }
+
+                //Check the player's achievements being naughty or nice
+                var statsCmd = new GetPlayerStats { OwnerId = myMembershipId };
+                var playerStats = DomainRegistry.Repository.Find(statsCmd);
+
+                var naughtyCount = NaughtyCount(playerStats);
+                var niceCount = NiceCount(playerStats);
+
+                //Bad player asking in good way - they get a random animate transformation
+                if (naughtyCount > niceCount)
+                {
+
+                    response += "The Spirit narrows her eyes at you, clearly seeing through your nice façade. You pause for a moment as you seem to realize the mistake that you've made...<br>";
+                    response += "<br>\"Oho, trying to fool me of all people? Honey, I know how good or bad everyone in town is without even needing to see them! Frankly, your little performance of being nice and giving me puppy dog eyes is plain disrespectful! I have this little magic number for tricksters like you, hehehe~!\"<br>";
+                    response += "<br>The Spirit hits you with a burst of karmic energy, which morphs your body in a very strange, random way! Even the Spirit doesn't know what you're becoming, but you should get a closer look at yourself soon so you you can fix yourself if you need to!<br>";
+
+                    var formRepo = new EFDbStaticFormRepository();
+                    var possibleForms = formRepo.DbStaticForms.Where(f => !f.FriendlyName.Contains("*") && !f.IsUnique && f.MobilityType == PvPStatics.MobilityFull).Select(t => new { t.Id }).ToList();
+                    Random rand = new Random();
+                    var randResult = rand.Next(possibleForms.Count());
+                    var randFormId = possibleForms[randResult].Id;
+
+                    PlayerProcedures.InstantChangeToForm(me, randFormId);
+                    var formMessage = "The Holiday Spirit instantly transformed you into a random form for trying to trick her!";
+                    PlayerLogProcedures.AddPlayerLog(me.Id, formMessage, true);
+
+                    try
+                    {
+                        DomainRegistry.Repository.Execute(new UpdateLastHolidaySpiritInteraction
+                        {
+                            UserId = myMembershipId,
+                            LastHolidaySpiritInteraction = world.TurnNumber,
+                        });
+                        StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__HolidaySpiritInteractions, 1);
+                    }
+                    catch (DomainException)
+                    {
+                        TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+                }
+                //Good player asking in good way - they get Nice Form
+                else
+                {
+                    response += "The Spirit is delighted to see you as she smiles and waves while you approach her. Seems like that was the right way to act!<br>";
+                    response += "<br>\"Hiya, sweetie! I can see that you're living up to your good-willed nature and I think you deserve a reward for that! I have a look in mind that will be suuuuuper good for such a nice person like you! Hold still so I don't miss and accidentally hit a naughty person with it~!\"<br>";
+                    response += "<br>The Spirit hits you with a burst of karmic energy, instantly transforming you into an avatar of niceness for the current holiday season! Now everyone will know just how nice you really are~!<br>";
+
+                    PlayerProcedures.InstantChangeToForm(me, BossProcedures_HolidaySpirit.GoodFormId);
+                    var formMessage = "The Holiday Spirit instantly transformed you into a good form!";
+                    PlayerLogProcedures.AddPlayerLog(me.Id, formMessage, true);
+
+                    try
+                    {
+                        DomainRegistry.Repository.Execute(new UpdateLastHolidaySpiritInteraction
+                        {
+                            UserId = myMembershipId,
+                            LastHolidaySpiritInteraction = world.TurnNumber,
+                        });
+                        StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__HolidaySpiritInteractions, 1);
+                    }
+                    catch (DomainException)
+                    {
+                        TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+                }
+
+            }
+            else if (question == "naughtyAsk")
+            {
+                //World for checking availability
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+
+                //Exit early if the player isn't allowed to interact with the spirit right now
+                if (world.TurnNumber - me.LastHolidaySpiritInteraction < minSpiritWaitTime && !world.ChaosMode)
+                {
+                    ViewBag.Speech = "\"Sorry honey, but I think you've gotten enough holiday cheer for now! Why not try waiting a bit, let some others enjoy the holiday with me a for a bit, okay~?\"<br>";
+                    return View(MVC.NPC.Views.TalkToHolidaySpirit);
+                }
+
+                //Check the player's achievements being naughty or nice
+                var statsCmd = new GetPlayerStats { OwnerId = myMembershipId };
+                var playerStats = DomainRegistry.Repository.Find(statsCmd);
+
+                var naughtyCount = NaughtyCount(playerStats);
+                var niceCount = NiceCount(playerStats);
+
+                //Bad player asking in bad way - they get Bad Form
+                if (naughtyCount > niceCount)
+                {
+                    response += "The Spirit groans as you approach her with such an air of pompousness and rudeness. However, she doesn't seem too surprised by it, as if she was expecting you to act that way. She does a half-hearted wave in your direction and then speaks up:<br>";
+                    response += "<br>\"Good tidings, city-goers! Oh, I can tell you're just the naughtiest little thing around, aren't you? However, I don't give away things lightly, especially to meanies like yourself! The best I can do is to have you match what your inner spirit is telling me you are, so hold still for juuuuust a moment~!\"<br>";
+                    response += "<br>The Spirit hits you with a burst of karmic energy and you can feel that bad nature inside of you start to fully take form. In only a moment, you're fully transformed into an avatar of badness for the current holiday season! Now everyone will know just how bad you really are~!<br>";
+
+                    PlayerProcedures.InstantChangeToForm(me, BossProcedures_HolidaySpirit.BadFormId);
+                    var formMessage = "The Holiday Spirit instantly transformed you into a bad form!";
+                    PlayerLogProcedures.AddPlayerLog(me.Id, formMessage, true);
+
+                    try
+                    {
+                        DomainRegistry.Repository.Execute(new UpdateLastHolidaySpiritInteraction
+                        {
+                            UserId = myMembershipId,
+                            LastHolidaySpiritInteraction = world.TurnNumber,
+                        });
+                        StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__HolidaySpiritInteractions, 1);
+                    }
+                    catch (DomainException)
+                    {
+                        TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+                }
+                //Good player asking in bad way - they get nothing
+                else
+                {
+                    response += "The Spirit seems taken aback by your brash and mean words. It's almost as if she can tell that you aren't acting as you should, as if you're actually a good person trying to act mean! The Spirit pouts and furrows her brow before speaking up at you:<br>";
+                    response += "<br>\"Well I never...! I can clearly tell that you're a good person, but you're acting oh so mean to me! Are you trying to sound tough to your peers? Did someone dare you to be mean to such a sweet girl like myself? Whatever the case, you need to learn a lesson - you'll get nothing from me today! Good day, you ruffian - and maybe try again when you've learned some manners!\"<br>";
+                    response += "<br>With that, the Spirit turns away from you in disgust and confusion. Seems like you weren't supposed to act like that with your karma the way it is. You should re-evaluate yourself and try again later once the Spirit has calmed herself down...<br>";
+
+                    try
+                    {
+                        DomainRegistry.Repository.Execute(new UpdateLastHolidaySpiritInteraction
+                        {
+                            UserId = myMembershipId,
+                            LastHolidaySpiritInteraction = world.TurnNumber,
+                        });
+                        StatsProcedures.AddStat(myMembershipId, StatsProcedures.Stat__HolidaySpiritInteractions, 1);
+                    }
+                    catch (DomainException)
+                    {
+                        TempData["Error"] = "Something went wrong updating your last interaction with the Holiday Spirit!";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
                 }
             }
             else

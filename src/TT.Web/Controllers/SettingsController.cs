@@ -253,7 +253,7 @@ namespace TT.Web.Controllers
 
             if (input.PlayerInfo.Length > 1500)
             {
-                TempData["Error"] = "The text of your website URL is too long (more than 1,500 characters).";
+                TempData["Error"] = "The text of your player info is too long (more than 1,500 characters).";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

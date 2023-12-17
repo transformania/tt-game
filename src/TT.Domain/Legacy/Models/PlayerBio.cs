@@ -9,7 +9,7 @@ namespace TT.Domain.Models
         [StringLength(128)]
         public string OwnerMembershipId { get; set; }
         public string Text { get; set; }
-        public string WebsiteURL { get; set; }
+        public string PlayerInfo { get; set; }
         public int PublicVisibility { get; set; }
         public string OtherNames { get; set; }
         public string Tags { get; set; }

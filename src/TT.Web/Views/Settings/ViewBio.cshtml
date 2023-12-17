@@ -48,18 +48,18 @@
     <h1>Player Bio for @ViewBag.Name</h1>
 
     @{
-        if (!Model.PlayerBio.WebsiteURL.IsNullOrEmpty())
+        if (!Model.PlayerBio.PlayerInfo.IsNullOrEmpty())
         {
-            <h3>Website</h3>
+            <h3>Player Info</h3>
 
-            @*<p>@HtmlHelpers.StringToWebsite(Model.WebsiteURL)</p>*@
+            @*<p>@HtmlHelpers.StringToWebsite(Model.PlayerInfo)</p>*@
 
-            <p style="white-space: pre-line">@Model.PlayerBio.WebsiteURL</p>
+            <p style="white-space: pre-line">@Model.PlayerBio.PlayerInfo</p>
         }
     }
 
 
-    <h3>Bio</h3>
+    <h3>Character Bio</h3>
 
     @{
         if (!Model.PlayerBio.Text.IsNullOrEmpty())

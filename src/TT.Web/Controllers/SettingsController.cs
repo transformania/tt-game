@@ -240,9 +240,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (input.WebsiteURL == null)
+            if (input.PlayerInfo == null)
             {
-                input.WebsiteURL = "";
+                input.PlayerInfo = "";
             }
 
             if (input.Tags.Length > 1000)
@@ -251,9 +251,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (input.WebsiteURL.Length > 1500)
+            if (input.PlayerInfo.Length > 1500)
             {
-                TempData["Error"] = "The text of your website URL is too long (more than 1,500 characters).";
+                TempData["Error"] = "The text of your player info is too long (more than 1,500 characters).";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

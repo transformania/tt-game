@@ -143,7 +143,7 @@
 				.replace(/\. /, '~ ')
 				.replace('n', 'ny')
 				.replace(/per|pe/gi, 'purr')
-				.replace('a', 'nya')
+				.replace(/a /gi, 'nya ')
 				.replace(/m[eiouy]/gi, 'mew')
 				.replace(/no/gi, 'nyo')
 				.replace('you', 'nyou')

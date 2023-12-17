@@ -68,11 +68,11 @@
     }
 
     function renderActionText(message, messageClass, model, useUserColour) {
-        var text = $('<span></span>')
-            .addClass(messageClass)
-            .append(applyHighlightToMessage(linkify(message)))
-            .doubletap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
-            .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
+		var text = $('<span></span>')
+			.addClass(messageClass)
+			.append(applyHighlightToMessage(linkify(message)))
+			.doubletap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
+			.prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
 
         if (useUserColour)
             text.css('color', model.Color);
@@ -129,7 +129,9 @@
 	        .text(user + ': ')
 	        .doubletap(function(e) { ChatModule.onUserDoubleTapped(user, e); });
 
-	    if (model.IsStaff)
+	    if (model.SpecialSnowflake)
+			userName.css('color', 'mediumvioletred');
+	    else if (model.IsStaff)
 	    	userName.addClass('adminFont');
 	    else
 	    	userName.css('color', model.Color);

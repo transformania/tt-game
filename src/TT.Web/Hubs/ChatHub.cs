@@ -143,6 +143,7 @@ namespace TT.Web.Hubs
                 {
                     User = name,
                     IsStaff = me.Player.BotId == AIStatics.ActivePlayerBotId ? ChatStatics.Staff.ContainsKey(me.Player.MembershipId) : false,
+                    SpecialSnowflake = me.Player.BotId == AIStatics.ActivePlayerBotId ? ChatStatics.SpecialSnowflake.Contains(me.Player.MembershipId) : false,
                     Color = colorOut,
                     Pic = pic,
                     Message = WebUtility.HtmlEncode(output.Text),

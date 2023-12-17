@@ -303,6 +303,30 @@
         ConfigModule.save();
     });
 
+    $("#toggleColors").click(function () {
+        if (ConfigModule.chat.colorsDisabled === false) {
+            alert('Colors disabled');
+            ConfigModule.chat.colorsDisabled = true;
+        } else {
+            alert('Colors enabled');
+            ConfigModule.chat.colorsDisabled = false;
+        }
+
+        ConfigModule.save();
+    });
+
+    $("#toggleNyan").click(function () {
+        if (ConfigModule.chat.nyanEnabled === false) {
+            alert('Oh nyo...');
+            ConfigModule.chat.nyanEnabled = true;
+        } else {
+            alert('Nyou\'re free!');
+            ConfigModule.chat.nyanEnabled = false;
+        }
+
+        ConfigModule.save();
+    });
+
     $('li.audioConfig').click(function() {
         var newMode = $(this).attr('data-audio-mode');
 
@@ -316,6 +340,14 @@
         };
 
         alert(alertText[newMode]);
+    });
+
+    $("#showSettings").click(function () {
+        if ($("#settingsDiv").is(":visible") === false) {
+            $("#settingsDiv").show();
+        } else {
+            $("#settingsDiv").hide();
+        }
     });
 
     $("#showIgnore").click(function () {

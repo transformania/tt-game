@@ -133,10 +133,26 @@
 			userName.css('color', 'mediumvioletred');
 	    else if (model.IsStaff)
 	    	userName.addClass('adminFont');
-	    else
+		else if (ConfigModule.chat.colorsDisabled)
+			userName.css('color', 'black');
+		else
 	    	userName.css('color', model.Color);
 
-	    var message = linkify(model.Message);
+		if (ConfigModule.chat.nyanEnabled)
+			var message = linkify(model.Message)
+				.replace(/\. /, '~ ')
+				.replace('n', 'ny')
+				.replace(/per|pe/gi, 'purr')
+				.replace('a', 'nya')
+				.replace(/m[eiouy]/gi, 'mew')
+				.replace(/no/gi, 'nyo')
+				.replace('you', 'nyou')
+				.replace('inyg', 'ing')
+				.replace('nyanyd', 'nyand')
+				.replace('kidding', 'kitten')
+				.replace('ny ', 'nya ');
+		else
+			var message = linkify(model.Message);
 
 	    return $('<li></li>')
 	        .prepend(userName)

@@ -8,7 +8,7 @@ namespace TT.Domain.ViewModels
         public int Id { get; set; }
         public string OwnerMembershipId { get; set; }
         public string Text { get; set; }
-        public string WebsiteURL { get; set; }
+        public string PlayerInfo { get; set; }
         public int PublicVisibility { get; set; }
         public string OtherNames { get; set; }
         public string Tags { get; set; }
@@ -18,7 +18,7 @@ namespace TT.Domain.ViewModels
         public SetBioViewModel()
         {
             Timestamp = DateTime.UtcNow;
-            WebsiteURL = "";
+            PlayerInfo = "";
             Text = "";
         }
 
@@ -27,7 +27,7 @@ namespace TT.Domain.ViewModels
             Id = playerBio.Id;
             OwnerMembershipId = playerBio.OwnerMembershipId;
             Text = playerBio.Text;
-            WebsiteURL = playerBio.WebsiteURL;
+            PlayerInfo = playerBio.PlayerInfo;
             PublicVisibility = playerBio.PublicVisibility;
             Tags = playerBio.Tags;
             Timestamp = playerBio.Timestamp;

@@ -29,14 +29,14 @@
         </div>
 
         <div class="messageInfoContainer">
-            Website URLs:
+            Information about you as the player:
             <span class="charCounter"></span>
         </div>
-        @Html.TextAreaFor(m => m.WebsiteURL, new { @class = "", maxlength = "1500" })
+        @Html.TextAreaFor(m => m.PlayerInfo, new { @class = "", maxlength = "1500" })
         <br>
 
         <div class="messageInfoContainer">
-            Main text of your bio:
+           Text for your character bio:
             <span class="charCounter"></span>
         </div>
         @Html.TextAreaFor(m => m.Text, new { maxlength = Model.IsDonator? "10000" : "2500" })
@@ -149,7 +149,7 @@
                 });
             });
 
-            $('#WebsiteURL, #Text').on('input', function () {
+            $('#PlayerInfo, #Text').on('input', function () {
                 var jQthis = $(this);
 
                 var length = jQthis.val().length;

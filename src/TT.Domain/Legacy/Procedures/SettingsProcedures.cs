@@ -25,7 +25,7 @@ namespace TT.Domain.Procedures
 
             playerBio.Timestamp = DateTime.UtcNow;
             playerBio.Text = bio.Text;
-            playerBio.WebsiteURL = bio.WebsiteURL;
+            playerBio.PlayerInfo = bio.PlayerInfo;
             playerBio.PublicVisibility = bio.PublicVisibility;
             playerBio.Tags = bio.Tags;
 

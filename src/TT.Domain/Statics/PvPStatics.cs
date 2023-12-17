@@ -183,7 +183,6 @@ namespace TT.Domain.Statics
     public static class ChatStatics
     {
         public const int OnlineActivityCutoffMinutes = -2;
-        private const string MizuhoThumbnail = PvPStatics.ImageURL + "portraits/Thumbnails/100/Mizuho.jpg";
 
         private static IDictionary<string, PlayerDescriptorDTO> staff
             = new Dictionary<string, PlayerDescriptorDTO>
@@ -197,23 +196,9 @@ namespace TT.Domain.Statics
                     }
                 },
                 {
-                    "3490", new PlayerDescriptorDTO // Mizuho
-                    {
-                        Name = "Mizuho",
-                        PictureURL = MizuhoThumbnail,
-                        TagBehaviorEnum = TagEnum.ReplaceFullName,
-                    }
-                },
-                {
                     "251", new PlayerDescriptorDTO // Arrhae
                     {
                      // PictureURL = ArrhaeThumbnail, Arrhae wants to keep regular portrait for now, not admin/dev custom one
-                    }
-                },
-                {
-                    "834", new PlayerDescriptorDTO // Eric
-                    {
-                     // PictureURL = EricThumbnail, Not likely
                     }
                 },
                 {
@@ -223,7 +208,21 @@ namespace TT.Domain.Statics
                      // PictureURL = TempestThumbnail, no custom portrait yet
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
                     }
-                }
+                },
+                {
+                    "7570", new PlayerDescriptorDTO // Annabelle
+                    {
+                        Name = "Annabelle",
+                        TagBehaviorEnum = TagEnum.ReplaceFullName,
+                    }
+                },
+                {
+                    "2047", new PlayerDescriptorDTO // Alyx
+                    {
+                        Name = "Alyx",
+                        TagBehaviorEnum = TagEnum.ReplaceFullName,
+                    }
+                },
             };
 
         /// <summary>
@@ -236,6 +235,11 @@ namespace TT.Domain.Statics
         {
             "69",
             "3490",
+            "7570",
+        };
+
+        public static readonly IEnumerable<string> SpecialSnowflake = new List<string>
+        {
             "7570",
         };
 

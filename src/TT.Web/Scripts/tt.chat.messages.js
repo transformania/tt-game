@@ -142,7 +142,7 @@
 			var message = linkify(model.Message)
 				.replace(/\. /, '~ ')
 				.replace('n', 'ny')
-				.replace(/per|pe/gi, 'purr')
+				.replace(/per|pr/gi, 'purr')
 				.replace(/a /gi, 'nya ')
 				.replace('at', 'nyat')
 				.replace(/m[eiouy]/gi, 'mew')

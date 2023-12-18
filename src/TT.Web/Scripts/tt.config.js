@@ -4,6 +4,8 @@
     var defaultConfig = {
         chat: {
             imagesEnabled: localStorage['chat_ImagesOn'] !== undefined || localStorage['chat_ImagesOn'] === 'false' ? false : true,
+            colorsDisabled: localStorage['chat_ColorsOff'] !== undefined || localStorage['chat_ColorsOff'] === 'false' ? false : true,
+            nyanEnabled: localStorage['chat_nyanOn'] !== undefined || localStorage['chat_nyanOn'] === 'false' ? false : true,
             autoScrollEnabled: true,
             ignoreList: localStorage['chat_IgnoreList'] !== undefined ? JSON.parse(localStorage['chat_IgnoreList']) : [],
             roomConfig: {}

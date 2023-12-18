@@ -144,6 +144,7 @@
 				.replace('n', 'ny')
 				.replace(/per|pe/gi, 'purr')
 				.replace(/a /gi, 'nya ')
+				.replace('at', 'nyat')
 				.replace(/m[eiouy]/gi, 'mew')
 				.replace(/no/gi, 'nyo')
 				.replace('you', 'nyou')

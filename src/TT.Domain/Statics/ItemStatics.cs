@@ -57,6 +57,7 @@ namespace TT.Domain.Statics
         public const int DefectiveTransmogItemSourceId = 737;
         public const int OtherRestoreItemSourceId = 774;
         public const int TomeRewards = 820;
+        public const int TranslocationScrollItemSourceId = 821;
 
         //Holiday Spirit gift
         public const int GiftItemSourceId = 816;

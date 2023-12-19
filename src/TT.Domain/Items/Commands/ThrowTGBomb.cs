@@ -9,6 +9,7 @@ using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.Entities.LocationLogs;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Items.Commands
 {
@@ -17,6 +18,7 @@ namespace TT.Domain.Items.Commands
 
         public int PlayerId { get; set; }
         public int ItemId { get; set; }
+        public BuffBox Buffs { get; set; }
         public override string Execute(IDataContext context)
         {
 
@@ -30,6 +32,8 @@ namespace TT.Domain.Items.Commands
                     .Include(p => p.Item.ItemSource)
                     .Include(p => p.User)
                     .Include(p => p.User.Stats)
+                    .Include(p => p.FormSource)
+                    .Include(p => p.FormSource.AltSexFormSource)
                     .FirstOrDefault(p => p.Id == PlayerId);
 
                 if (player == null)
@@ -53,6 +57,22 @@ namespace TT.Domain.Items.Commands
                 ).Include(p => p.FormSource)
                 .Include(p => p.FormSource.AltSexFormSource)
                 .ToList();
+
+                // Will the player also dodge?
+                var rand = new Random();
+                int chance = rand.Next(0, 100);              
+                var adjustedChance = chance + (Buffs.Agility() * 0.1) + (Buffs.Luck() * 0.1);
+
+                // Different boosts for normal vs hard
+                if (player.InHardmode)
+                {
+                    adjustedChance /= 2;
+                }
+
+                if (adjustedChance < 50)
+                {
+                    affectedPlayers.Add(player);
+                }
 
                 foreach (var p in affectedPlayers)
                 {
@@ -109,6 +129,9 @@ namespace TT.Domain.Items.Commands
 
             if (ItemId == 0)
                 throw new DomainException("ItemId is required.");
+
+            if (Buffs == null)
+                throw new DomainException("Buffs are missing.");
         }
     }
 }

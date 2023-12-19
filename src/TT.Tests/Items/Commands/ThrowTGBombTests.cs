@@ -9,6 +9,7 @@ using TT.Domain.Items.Entities;
 using TT.Domain.Players.Entities;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
@@ -23,6 +24,16 @@ namespace TT.Tests.Items.Commands
         private const string RegularGuy = "Regular Guy";
         private const string RegularGirl = "Regular Girl";
         private const string TavernLocation = "tavern_bar";
+
+        private BuffBox buffs = new BuffBox
+        {
+            FromItems_Agility = 50,
+            FromForm_Agility = 50,
+            FromEffects_Agility = 50,
+            FromItems_Luck = 50,
+            FromForm_Luck= 50,
+            FromEffects_Luck = 50
+        };
 
         [Test]
         public void can_throw_tg_bomb()
@@ -126,7 +137,7 @@ namespace TT.Tests.Items.Commands
                .With(p => p.PlayerLogs, new List<PlayerLog>())
                .BuildAndSave();
 
-            Assert.That(Repository.Execute(new ThrowTGBomb {ItemId = bomb.Id, PlayerId = thrower.Id}),
+            Assert.That(Repository.Execute(new ThrowTGBomb {ItemId = bomb.Id, PlayerId = thrower.Id, Buffs = buffs }),
                 Is.EqualTo(
                     "You throw your TG Splash Orb and swap the sex of 2 other mages near you: <b>Female Bystander</b> and <b>Male Bystander</b> and gain <b>6</b> XP!"));
 
@@ -172,7 +183,7 @@ namespace TT.Tests.Items.Commands
                 .With(i => i.Id, 5)
                 .BuildAndSave();
 
-            var cmd = new ThrowTGBomb { ItemId = bomb.Id, PlayerId = 12 };
+            var cmd = new ThrowTGBomb { ItemId = bomb.Id, PlayerId = 12, Buffs = buffs };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message.EqualTo("player with ID 12 could not be found."));
         }
@@ -180,7 +191,7 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void should_throw_exception_if_player_id_not_specified()
         {
-            var cmd = new ThrowTGBomb { ItemId = 12 };
+            var cmd = new ThrowTGBomb { ItemId = 12, Buffs = buffs };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message.EqualTo("PlayerId is required."));
         }
@@ -194,7 +205,7 @@ namespace TT.Tests.Items.Commands
                 .With(p => p.Items, new List<Item>())
                 .BuildAndSave();
 
-            var cmd = new ThrowTGBomb { ItemId = 2365, PlayerId = thrower.Id };
+            var cmd = new ThrowTGBomb { ItemId = 2365, PlayerId = thrower.Id, Buffs = buffs };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message
                     .EqualTo("Item with ID 2365 could not be found or does not belong to you."));
@@ -203,9 +214,30 @@ namespace TT.Tests.Items.Commands
         [Test]
         public void should_throw_exception_if_item_id_not_specified()
         {
-            var cmd = new ThrowTGBomb { PlayerId = 12 };
+            var cmd = new ThrowTGBomb { PlayerId = 12, Buffs = buffs };
             Assert.That(() => Repository.Execute(cmd),
                 Throws.TypeOf<DomainException>().With.Message.EqualTo("ItemId is required."));
+        }
+
+        [Test]
+        public void should_throw_exception_if_buffs_not_specified()
+        {
+            var thrower = new PlayerBuilder()
+                .With(p => p.Id, 5)
+                .With(p => p.Location, TavernLocation)
+                .With(p => p.Items, new List<Item>())
+                .BuildAndSave();
+
+            var bomb = new ItemBuilder()
+                .With(i => i.ItemSource, new ItemSourceBuilder().BuildAndSave())
+                .With(i => i.Id, 5)
+                .BuildAndSave();
+
+            thrower.GiveItem(bomb);
+
+            var cmd = new ThrowTGBomb { ItemId = bomb.Id, PlayerId = thrower.Id };
+            Assert.That(() => Repository.Execute(cmd),
+                Throws.TypeOf<DomainException>().With.Message.EqualTo("Buffs are missing."));
         }
     }
 }

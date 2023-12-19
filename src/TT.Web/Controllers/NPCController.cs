@@ -843,16 +843,25 @@ namespace TT.Web.Controllers
             else if (question == "quests")
             {
                 var output = "\"Looking for an adventure, eh?  You may want to go take a look at these locations...\"<br><br>";
-                var quests = QuestProcedures.GetAllAvailableQuestsForPlayer(me, PvPWorldStatProcedures.GetWorldTurnNumber());
+                var gameTurnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
+                var quests = QuestProcedures.GetAllAvailableQuestsForPlayer(me, gameTurnNum);
 
                 foreach (var q in quests)
                 {
                     var Loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location);
-
+                    var lastTurnAttempted = QuestProcedures.GetLastTurnQuestEnded(me, q.Id);
                     // just in case a location is misnamed, skip over it
                     if (Loc != null)
                     {
-                        output += "\"<b>" + q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
+                        // let's have Rusty tell the player when they can reattempt a quest
+                        if (gameTurnNum - lastTurnAttempted < QuestStatics.QuestFailCooldownTurnLength)
+                        {
+                            output += "\"<b>" + q.Name + "</b> will be available for you at <b>" + Loc.Name + "</b> in <b>" + (QuestStatics.QuestFailCooldownTurnLength + lastTurnAttempted - gameTurnNum) + " turns</b>.\"<br><br>";
+                        }
+                        else
+                        {
+                            output += "\"<b>" + q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
+                        }
                     }
                 }
 

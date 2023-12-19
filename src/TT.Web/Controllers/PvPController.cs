@@ -2416,17 +2416,21 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Item.SelfRewardCast(itemId));
             }
 
-
             if (item.dbItem.ItemSourceId == ItemStatics.CurseLifterItemSourceId || item.dbItem.ItemSourceId == ItemStatics.ButtPlugItemSourceId)
             {
                 return RedirectToAction(MVC.Item.RemoveCurse(item.dbItem.Id));
             }
 
+            // if this item is a tg splash orb
             if (item.dbItem.ItemSourceId == ItemStatics.TgSplashOrbItemSourceId)
             {
                 try
                 {
-                    TempData["Result"] = DomainRegistry.Repository.Execute(new ThrowTGBomb { PlayerId = me.Id, ItemId = item.dbItem.Id });
+                    TempData["Result"] = DomainRegistry.Repository.Execute(new ThrowTGBomb { 
+                        PlayerId = me.Id, 
+                        ItemId = item.dbItem.Id,
+                        Buffs = ItemProcedures.GetPlayerBuffs(me)
+                    });
                     ItemProcedures.ResetUseCooldown(item);
                     return RedirectToAction(MVC.PvP.Play());
                 }

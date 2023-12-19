@@ -27,12 +27,12 @@ namespace TT.Tests.Items.Commands
 
         private BuffBox buffs = new BuffBox
         {
-            FromItems_Agility = 50,
-            FromForm_Agility = 50,
-            FromEffects_Agility = 50,
-            FromItems_Luck = 50,
-            FromForm_Luck= 50,
-            FromEffects_Luck = 50
+            FromItems_Agility = 200,
+            FromForm_Agility = 200,
+            FromEffects_Agility = 200,
+            FromItems_Luck = 200,
+            FromForm_Luck= 200,
+            FromEffects_Luck = 200
         };
 
         [Test]

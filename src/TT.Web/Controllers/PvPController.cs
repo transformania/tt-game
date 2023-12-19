@@ -2440,7 +2440,7 @@ namespace TT.Web.Controllers
                         PlayerProcedures.AddItemUses(me.Id, 1);
                         ItemProcedures.ResetUseCooldown(item);
 
-                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it was a sent you somewhere in the dungeon!";
+                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it sent you somewhere in the dungeon!";
                     }
                     else
                     {
@@ -2451,7 +2451,7 @@ namespace TT.Web.Controllers
                         PlayerProcedures.AddItemUses(me.Id, 1);
                         ItemProcedures.ResetUseCooldown(item);
 
-                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it was a sent you somewhere random!";
+                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it sent you somewhere random!";
                     }
                 }
                 else if (chance <= 80) // Telefrag

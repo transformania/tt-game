@@ -2385,6 +2385,157 @@ namespace TT.Web.Controllers
                 }
             }
 
+            // if this item is a translocation scroll
+            if (item.dbItem.ItemSourceId == ItemStatics.TranslocationScrollItemSourceId)
+            {
+
+                // assert that this player is not in a duel
+                if (me.InDuel > 0)
+                {
+                    TempData["Error"] = "You must finish your duel before you use this item.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                // assert that this player is not in a quest
+                if (me.InQuest > 0)
+                {
+                    TempData["Error"] = "You must finish your quest before you use this item.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+
+                var rand = new Random();
+                int chance = rand.Next(0, 100);
+
+                if (chance <= 25) // Work normally
+                {
+                    if (me.IsInDungeon())
+                    {
+                        var model = new TT.Domain.ViewModels.TeleportMapViewModel
+                        {
+                            ItemId = itemId,
+                            Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon")
+                        };
+
+                        return View(MVC.PvP.Views.TeleportMap, model);
+                    }
+                    else
+                    {
+                        var model = new TT.Domain.ViewModels.TeleportMapViewModel
+                        {
+                            ItemId = itemId,
+                            Destinations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.dbName != LocationsStatics.JOKE_SHOP && l.Region != "dungeon")
+                        };
+
+                        return View(MVC.PvP.Views.TeleportMap, model);
+                    }
+                }
+                else if (chance <= 75) // Teleport to random location.
+                {
+                    if (me.IsInDungeon())
+                    {
+                        var teleportLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                        PlayerProcedures.TeleportPlayer(me, teleportLocation, false);
+
+                        PlayerProcedures.SetTimestampToNow(me);
+                        PlayerProcedures.AddItemUses(me.Id, 1);
+                        ItemProcedures.ResetUseCooldown(item);
+
+                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it sent you somewhere in the dungeon!";
+                    }
+                    else
+                    {
+                        var teleportLocation = LocationsStatics.GetRandomLocationNotInDungeon();
+                        PlayerProcedures.TeleportPlayer(me, teleportLocation, false);
+
+                        PlayerProcedures.SetTimestampToNow(me);
+                        PlayerProcedures.AddItemUses(me.Id, 1);
+                        ItemProcedures.ResetUseCooldown(item);
+
+                        TempData["Error"] = "You attempted to use a translocation scroll, but it looks like it sent you somewhere random!";
+                    }
+                }
+                else if (chance <= 80) // Telefrag
+                {
+                    // Get highest-level psychos in the world, including the dungeon.
+                    IPlayerRepository playerRepo = new EFPlayerRepository();
+                    IEnumerable<int> id = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
+                        p.BotId == AIStatics.PsychopathBotId).OrderByDescending(p => p.Level).Take(1).Select(p => p.Id);
+
+                    var psycho = PlayerProcedures.GetPlayer(id.FirstOrDefault());
+
+                    PlayerProcedures.TeleportPlayer(me, psycho.dbLocationName, false);
+                    AttackProcedures.SuddenDeathExplosion(me, psycho, 240);
+                    AIDirectiveProcedures.SetAIDirective_Attack(psycho.Id, me.Id);
+
+                    PlayerProcedures.SetTimestampToNow(me);
+                    PlayerProcedures.AddItemUses(me.Id, 1);
+                    ItemProcedures.ResetUseCooldown(item);
+
+                    TempData["Error"] = "You are randomly teleported with the scroll. You seem to have caused a bit of an explosion and now " + psycho.FirstName + " " + psycho.LastName + " looks a little mad.";
+                }
+                else if (chance <= 90) // "Teleport" a new form onto player
+                {
+
+                    var getLocationSkills = SkillStatics.GetSkillsLearnedAtLocation(me.dbLocationName).Where(s =>
+                            s.IsPlayerLearnable == true &&
+                            s.IsLive == "live" &&
+                            s.FormSourceId != null &&
+                            s.MobilityType == PvPStatics.MobilityFull);
+                    var getRegionSkills = SkillStatics.GetSkillsLearnedAtRegion(me.dbLocationName).Where(s =>
+                            s.IsPlayerLearnable == true &&
+                            s.IsLive == "live" &&
+                            s.FormSourceId != null &&
+                            s.MobilityType == PvPStatics.MobilityFull);
+                    var countLocationSkills = getLocationSkills.Count();
+                    var countRegionSkills = getRegionSkills.Count();
+
+                    if (countLocationSkills > 0) // First look at the current tile.
+                    {
+                        var skills = getLocationSkills.ToList();
+                        var randSkill = skills[rand.Next(0, skills.Count())];
+                        var getSkill = SkillStatics.GetStaticSkill(randSkill.Id);
+
+                        PlayerProcedures.InstantChangeToForm(me, Convert.ToInt32(getSkill.FormSourceId));
+                    }
+                    else if (countRegionSkills > 0) // Then look at the tile's region.
+                    {
+                        var skills = getRegionSkills.ToList();
+                        var randSkill = skills[rand.Next(0, skills.Count())];
+                        var getSkill = SkillStatics.GetStaticSkill(randSkill.Id);
+
+                        PlayerProcedures.InstantChangeToForm(me, Convert.ToInt32(getSkill.FormSourceId));
+                    }
+                    else // Then just go with everything
+                    {
+                        var skills = SkillStatics.GetAllStaticSkills().Where(s => 
+                            s.IsPlayerLearnable == true && 
+                            s.IsLive == "live" &&
+                            s.FormSourceId != null &&
+                            s.MobilityType == PvPStatics.MobilityFull).ToList();
+                        var randSkill = skills[rand.Next(0, skills.Count())];
+                        var getSkill = SkillStatics.GetStaticSkill(randSkill.Id);
+
+                        PlayerProcedures.InstantChangeToForm(me, Convert.ToInt32(getSkill.FormSourceId));
+                    }
+                    
+                    PlayerProcedures.SetTimestampToNow(me);
+                    PlayerProcedures.AddItemUses(me.Id, 1);
+                    ItemProcedures.ResetUseCooldown(item);
+
+                    TempData["Error"] = "Instead of being teleported to a different location, you appear to have had a new form teleported onto you.";
+                }
+                else // A dud!
+                {
+                    PlayerProcedures.SetTimestampToNow(me);
+                    PlayerProcedures.AddItemUses(me.Id, 1);
+                    ItemProcedures.ResetUseCooldown(item);
+
+                    TempData["Error"] = "You attempt to use the scroll, but it merely crumbles in your hands.";
+                    TempData["SubError"] = "It looks like that one was a dud!";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
+
             // if this item is the self recaster, redirect to the animate spell listing page
             if (item.dbItem.ItemSourceId == ItemStatics.AutoTransmogItemSourceId || item.dbItem.ItemSourceId == ItemStatics.DefectiveTransmogItemSourceId)
             {
@@ -3665,7 +3816,7 @@ namespace TT.Web.Controllers
             }
 
             // assert this item is a teleportation scroll
-            if (item.dbItem.ItemSourceId != ItemStatics.TeleportationScrollItemSourceId)
+            if (item.dbItem.ItemSourceId != ItemStatics.TeleportationScrollItemSourceId && item.dbItem.ItemSourceId != ItemStatics.TranslocationScrollItemSourceId)
             {
                 TempData["Error"] = "You cannot teleport with an item that is not a teleportation scroll.";
                 return RedirectToAction(MVC.PvP.Play());

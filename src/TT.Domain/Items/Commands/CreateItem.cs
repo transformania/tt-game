@@ -34,7 +34,7 @@ namespace TT.Domain.Items.Commands
             Level = 1;
             TimeDropped = DateTime.UtcNow;
             EquippedThisTurn = false;
-            PvPEnabled = 0;
+            PvPEnabled = -1;
             IsPermanent = false;
             LastSouledTimestamp = DateTime.UtcNow;
             LastSold = DateTime.UtcNow;

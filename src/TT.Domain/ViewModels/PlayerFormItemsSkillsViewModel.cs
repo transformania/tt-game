@@ -17,5 +17,7 @@ namespace TT.Domain.ViewModels
         public bool OwnershipVisibilityEnabled { get; set; }
         public bool IsAccountLockedOut { get; set; }
         public bool IsPvPLocked { get; set; }
+        public string PortraitImage { get; set; }
+        public string PortraitType { get; set; }
     }
 }

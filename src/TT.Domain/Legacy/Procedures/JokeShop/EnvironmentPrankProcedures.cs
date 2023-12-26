@@ -266,7 +266,8 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                     ItemStatics.OtherRestoreItemSourceId,
                                     ItemStatics.LullabyWhistleItemSourceId,
                                     ItemStatics.SpellbookLargeItemSourceId,
-                                    ItemStatics.TeleportationScrollItemSourceId };
+                                    ItemStatics.TeleportationScrollItemSourceId,
+                                    ItemStatics.TranslocationScrollItemSourceId };
 
                 var itemType = itemTypes[rand.Next(itemTypes.Count())];
 

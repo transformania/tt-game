@@ -204,9 +204,16 @@
                     {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
                 else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                 {<p class="bad">Offline</p>}
+                    <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br>
+                    if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
+                    }
+                    else
+                    {
+                        <span class="mana">Mana:  @Model.PlayerForm.Player.MaxMana / @Model.PlayerForm.Player.MaxMana</span>
+                    }
                 }
-                <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br>
-                <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
                 @{
                     if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 3)
                     {

@@ -1930,8 +1930,6 @@ namespace TT.Web.Controllers
                 return View(MVC.NPC.Views.SoulboundRename, input);
             }
 
-            playerRepo.SavePlayer(player);
-
             var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).Count();
             var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 4;
 
@@ -1942,6 +1940,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            playerRepo.SavePlayer(player);
             PlayerProcedures.GiveMoneyToPlayer(me, -price);
 
             PlayerLogProcedures.AddPlayerLog(me.Id, "<b>You have renamed your soulbound object: </b>" + input.NewFirstName + " " + input.NewLastName, true);

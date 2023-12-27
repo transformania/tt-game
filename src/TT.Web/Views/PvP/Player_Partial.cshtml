@@ -7,7 +7,16 @@
 
 @{
     var HealthWidth = Math.Min(100, Model.Player.Health / Model.Player.MaxHealth * 100);
-    var ManaWidth = Math.Min(100, Model.Player.Mana / Model.Player.MaxMana * 100);
+    var ManaWidth = 0m;
+    if (Model.Player.BotId == AIStatics.ActivePlayerBotId)
+    {
+        ManaWidth = Math.Min(100, Model.Player.Mana / Model.Player.MaxMana * 100);
+    }
+    else
+    {
+        ManaWidth = Math.Min(100, Model.Player.MaxMana / Model.Player.MaxMana * 100);
+    }
+
     string gendercolor;
     if (Model.Player.Gender == PvPStatics.GenderMale)
     {
@@ -63,9 +72,18 @@
         <div class="healthWrapper" title="@Model.Player.Health / @Model.Player.MaxHealth willpower">
             <div class="healthBar" style="width: @HealthWidth%"></div>
         </div>
-        <div class="manaWrapper" title="@Model.Player.Mana / @Model.Player.MaxMana mana">
-            <div class="manaBar" style="width: @ManaWidth%"></div>
-        </div>
+        @if (Model.Player.BotId == AIStatics.ActivePlayerBotId)
+        {
+            <div class="manaWrapper" title="@Model.Player.Mana / @Model.Player.MaxMana mana">
+                <div class="manaBar" style="width: @ManaWidth%"></div>
+            </div>
+        }
+        else
+        {
+            <div class="manaWrapper" title="@Model.Player.MaxMana / @Model.Player.MaxMana mana">
+                <div class="manaBar" style="width: @ManaWidth%"></div>
+            </div>
+        }
     </div>
 </div>
 

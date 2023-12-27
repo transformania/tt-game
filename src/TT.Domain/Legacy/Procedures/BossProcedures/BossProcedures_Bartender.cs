@@ -14,7 +14,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnBartender()
         {
-            var bartender = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.DonnaBotId });
+            var bartender = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.BartenderBotId });
 
             if (bartender == null)
             {

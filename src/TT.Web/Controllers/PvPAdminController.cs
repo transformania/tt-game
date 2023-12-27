@@ -515,6 +515,7 @@ namespace TT.Web.Controllers
             BossProcedures_Jewdewfae.SpawnFae();
             BossProcedures_Bartender.SpawnBartender();
             BossProcedures_Loremaster.SpawnLoremaster();
+            BossProcedures_Soulbinder.SpawnSoulbinder();
 
             return RedirectToAction(MVC.PvPAdmin.Index());
         }

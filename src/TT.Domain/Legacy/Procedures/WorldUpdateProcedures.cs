@@ -89,27 +89,7 @@ namespace TT.Domain.Procedures
                     var soulbinder = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.SoulbinderBotId);
                     if (soulbinder == null)
                     {
-                        var id = DomainRegistry.Repository.Execute(new CreatePlayer
-                        {
-                            FirstName = "Karin",
-                            LastName = "Kezesul-Adriz the Soulbinder",
-                            FormSourceId = 1000,
-                            Location = "stripclub_office",
-                            Level = 10,
-                            Mobility = PvPStatics.MobilityFull,
-                            Money = 0,
-                            Gender = PvPStatics.GenderFemale,
-                            Health = 9999,
-                            MaxHealth = 9999,
-                            Mana = 9999,
-                            MaxMana = 9999,
-                            OnlineActivityTimestamp = DateTime.UtcNow,
-                            BotId = AIStatics.SoulbinderBotId
-                        });
-
-                    var newSoulbinder = playerRepo.Players.FirstOrDefault(p => p.Id == id);
-                    newSoulbinder.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newSoulbinder));
-                    playerRepo.SavePlayer(newSoulbinder);
+                        BossProcedures_Soulbinder.SpawnSoulbinder();
                     }
 
                     //Holiday Spirit. Month must be 2 (Valentine's), 3 (Easter), 10 (Halloween), 11 (Thanksgiving), or 12 (Christmas)

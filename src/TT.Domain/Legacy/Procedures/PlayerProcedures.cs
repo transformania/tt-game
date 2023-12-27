@@ -1739,7 +1739,7 @@ namespace TT.Domain.Procedures
             {
                 dbPlayer.Money += amount; 
             }
-            else 
+            else
             {
                 dbPlayer.Money = PvPStatics.MaxMoney;
             }

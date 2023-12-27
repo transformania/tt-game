@@ -2684,6 +2684,45 @@ namespace TT.Web.Controllers
                 }
             }
 
+            String getPortraintImage;
+            Random rnd = new Random();
+            int d100 = rnd.Next(1, 101);
+
+
+            if (!String.IsNullOrEmpty(playerLookedAt.Form.TertiaryPortraitUrl) && d100 == 100)
+            {
+                getPortraintImage = playerLookedAt.Form.TertiaryPortraitUrl;
+            }
+            else if (!String.IsNullOrEmpty(playerLookedAt.Form.SecondaryPortraitUrl) && d100 >= 66)
+            {
+                getPortraintImage = playerLookedAt.Form.SecondaryPortraitUrl;
+            }
+            else
+            {
+                getPortraintImage = playerLookedAt.Form.PortraitUrl;
+            }
+
+            if (getPortraintImage.IsNullOrEmpty() && playerLookedAt.Form.ItemSourceId.HasValue)
+            {
+                var staticItem = new GetStaticItem { ItemSourceId = playerLookedAt.Form.ItemSourceId.Value }.Find();
+
+                if (staticItem != null)
+                {
+                    getPortraintImage = staticItem.PortraitUrl;
+                }
+            }
+
+            String getPortraits = "portraits";
+
+            if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
+            {
+                getPortraits = "animalPortraits";
+            }
+            else if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
+            {
+                getPortraits = "itemsPortraits";
+            }
+
             var output = new PlayerFormItemsSkillsViewModel
             {
                 PlayerForm = playerLookedAt,
@@ -2697,6 +2736,8 @@ namespace TT.Web.Controllers
                 OwnershipVisibilityEnabled = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = playerLookedAt.Player.MembershipId }),
                 IsAccountLockedOut = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = playerLookedAt.Player.MembershipId }),
                 IsPvPLocked = playerLookedAt.Player.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = playerLookedAt.Player.MembershipId }),
+                PortraitImage = getPortraintImage,
+                PortraitType = getPortraits
             };
 
             var myMembershipId = User.Identity.GetUserId();

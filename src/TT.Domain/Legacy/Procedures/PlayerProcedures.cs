@@ -1731,14 +1731,20 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            if (dbPlayer.Money + amount < PvPStatics.MaxMoney)
+            if (dbPlayer.Money + amount < 0)
+            {
+                dbPlayer.Money = 0;
+            }
+            else if(dbPlayer.Money + amount < PvPStatics.MaxMoney)
             {
                 dbPlayer.Money += amount; 
             }
-            else
+            else 
             {
                 dbPlayer.Money = PvPStatics.MaxMoney;
             }
+
+
             
             playerRepo.SavePlayer(dbPlayer);
          

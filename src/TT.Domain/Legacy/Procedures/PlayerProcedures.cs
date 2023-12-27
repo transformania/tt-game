@@ -686,7 +686,7 @@ namespace TT.Domain.Procedures
                 ICovenantRepository covRepo = new EFCovenantRepository();
                 var oldCoven = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
 
-                if (oldCoven.CovenMascot > 0 && oldCoven.CovenMascot == oldplayer.Id)
+                if (oldCoven != null && oldCoven.CovenMascot == oldplayer.Id)
                 {
                     oldCoven.CovenMascot = 0;
                     covRepo.SaveCovenant(oldCoven);

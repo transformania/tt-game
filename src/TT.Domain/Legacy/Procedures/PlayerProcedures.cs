@@ -677,7 +677,7 @@ namespace TT.Domain.Procedures
                         var getOwner = GetPlayer(oldItemMe.SoulboundToPlayerId);
                         var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = getOwner.Id }).Count();
                         var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 3;
-                        GiveMoneyToPlayer(getOwner, -price);
+                        GiveMoneyToPlayer(getOwner, price);
                         PlayerLogProcedures.AddPlayerLog(getOwner.Id, "<b>One of your soulbind items has rerolled. You have been refunded <span title=\'Arpeyjis\' class=\'icon icon-money\'></span> " + price + " for the inconvenience.</b>", true);
                     }
                 }
@@ -686,7 +686,7 @@ namespace TT.Domain.Procedures
                 ICovenantRepository covRepo = new EFCovenantRepository();
                 var oldCoven = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
 
-                if (oldCoven.CovenMascot == oldplayer.Id)
+                if (oldCoven.CovenMascot > 0 && oldCoven.CovenMascot == oldplayer.Id)
                 {
                     oldCoven.CovenMascot = 0;
                     covRepo.SaveCovenant(oldCoven);

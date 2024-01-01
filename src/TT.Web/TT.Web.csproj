@@ -430,6 +430,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_109.cshtml" />
     <Content Include="Views\NPC\TalkToHolidaySpirit.cshtml" />
     <Content Include="Views\Item\SelfRewardCast.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_110.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

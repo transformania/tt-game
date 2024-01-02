@@ -866,7 +866,15 @@
     },
     {
       "number": 109,
-      "name": "Alpha 108 (Clumsy!)",
+      "name": "Alpha 109 (Clumsy!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 110,
+      "name": "Alpha 110 (The Holiday Spirit!)",
       "pvp": true,
       "item": true,
       "xp": true,

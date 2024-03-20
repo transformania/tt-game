@@ -95,12 +95,13 @@ namespace TT.Domain.Procedures
                     //Holiday Spirit. Month must be 2 (Valentine's), 3 (Easter), 10 (Halloween), 11 (Thanksgiving), or 12 (Christmas)
                     //Other months can be added later if wanted
                     //If we spawn her, reassign variable for logging purposes
+                    /* Disabling until art can be procured.
                     var currentMonth = DateTime.UtcNow.Month;
                     if (holidaySpirit == null && (currentMonth == 2 || currentMonth == 3 || currentMonth == 10 || currentMonth == 11 || currentMonth == 12))
                     {
                         BossProcedures_HolidaySpirit.SpawnHolidaySpirit();
                         holidaySpirit = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.HolidaySpiritBotId);
-                    }
+                    }*/
                 }
                 #endregion
 

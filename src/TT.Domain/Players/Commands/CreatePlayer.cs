@@ -72,6 +72,8 @@ namespace TT.Domain.Players.Commands
         public int FormSourceId { get; set; }
         public bool FriendOnlyMessages { get; set; }
         public int LastHolidaySpiritInteraction { get; set; }
+        public string AbuseLockoutMessage { get; set; }
+        public string ChatLockoutMessage { get; set; }
 
         public CreatePlayer()
         {

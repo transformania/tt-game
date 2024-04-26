@@ -1171,7 +1171,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult ToggleBanOnGlobalChat(int id)
+        public virtual ActionResult ToggleBanOnGlobalChat(SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
 
             // assert only admin can view this
@@ -1184,7 +1184,7 @@ namespace TT.Web.Controllers
 
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            var bannedPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+            var bannedPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == suspendTimeoutViewModel.PlayerId);
 
             if (bannedPlayer.IsBannedFromGlobalChat)
             {
@@ -1195,6 +1195,7 @@ namespace TT.Web.Controllers
             else
             {
                 bannedPlayer.IsBannedFromGlobalChat = true;
+                PlayerProcedures.ChangeChatLockoutMessage(bannedPlayer.Id, suspendTimeoutViewModel.lockoutMessage);
                 TempData["Result"] = "Player has been banned from global chat.";
             }
             playerRepo.SavePlayer(bannedPlayer);

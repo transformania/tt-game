@@ -61,17 +61,18 @@ namespace TT.Web.Controllers
 
         }
 
-        public virtual ActionResult LockPvP(string userId, bool setPvPLock)
+        public virtual ActionResult LockPvP(SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
 
             try
             {
                 DomainRegistry.Repository.Execute(new SetPvPLock
                 {
-                    UserId = userId,
-                    PvPLock = setPvPLock
+                    UserId = suspendTimeoutViewModel.UserId,
+                    LockoutMessage = suspendTimeoutViewModel.lockoutMessage,
+                    PvPLock = suspendTimeoutViewModel.isPvPLocked
                 });
-                TempData["Result"] = $"PvP lock has been successfully set to {setPvPLock}.";
+                TempData["Result"] = $"PvP lock has been successfully set to {suspendTimeoutViewModel.isPvPLocked}.";
             }
             catch (DomainException)
             {
@@ -119,10 +120,11 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Moderator.ViewReports());
         }
 
-        public virtual ActionResult SetAccountLockoutDate(string userId)
+        public virtual ActionResult SetAccountLockoutDate(string userId, string userName, bool isPvpLocked, bool isAccountLocked)
         {
             var player = PlayerProcedures.GetPlayerFromMembership(userId);
-            return View(MVC.Moderator.Views.SetAccountLockoutDate, new SuspendTimeoutViewModel{Player = player, UserId = player.MembershipId, date = DateTime.UtcNow.AddYears(99)});
+            var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = userName });
+            return View(MVC.Moderator.Views.SetAccountLockoutDate, new SuspendTimeoutViewModel{User = user, Player = player, UserId = player.MembershipId, PlayerId = player.Id, isPvPLocked = isPvpLocked, isAccountLocked = isAccountLocked, date = DateTime.UtcNow.AddYears(99)});
         }
 
         [ValidateAntiForgeryToken]
@@ -130,7 +132,7 @@ namespace TT.Web.Controllers
         {
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new SetLockoutTimestamp { UserId = suspendTimeoutViewModel.UserId, date = suspendTimeoutViewModel.date });
+                TempData["Result"] = DomainRegistry.Repository.Execute(new SetLockoutTimestamp { UserId = suspendTimeoutViewModel.UserId, date = suspendTimeoutViewModel.date, message = suspendTimeoutViewModel.lockoutMessage });
                 return RedirectToAction(MVC.PvP.Play());
             }
             catch (DomainException e)

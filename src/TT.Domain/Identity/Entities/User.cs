@@ -24,6 +24,8 @@ namespace TT.Domain.Identity.Entities
         public ICollection<Role> Roles { get; private set; } = new List<Role>();
         public Donator Donator { get; protected set; }
         public DateTime? LockoutEndDateUtc { get; protected set; }
+        public String AccountLockoutMessage { get; protected set; }
+        public String PvPLockoutMessage { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }
 
@@ -79,6 +81,16 @@ namespace TT.Domain.Identity.Entities
         public void SetLockoutEndDateUtc(DateTime dateTime)
         {
             LockoutEndDateUtc = dateTime;
+        }
+
+        public void SetAccountLockoutMessage(String message)
+        {
+            AccountLockoutMessage = message;
+        }
+
+        public void SetPvPLockoutMessage(String message)
+        {
+            PvPLockoutMessage = message;
         }
     }
 

@@ -8,19 +8,138 @@
 <div class="containerInner">
     <h3>Set account lockout</h3>
 
-    <p>You are setting a lockout date for <b>@Model.Player.GetFullName()</b> with user Id <b>@Model.Player.MembershipId</b> with last used ip address <b>@Model.Player.IpAddress</b>.</p><br>
+    <p>You are setting a lockout for <b>@Model.Player.GetFullName()</b> with user Id <b>@Model.Player.MembershipId</b> with last used ip address <b>@Model.Player.IpAddress</b>. Please use one of the submissions below to lock out certain parts of this player's account.</p><br>
 
     @using (Html.BeginForm(MVC.Moderator.SetAccountLockoutDateSend(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        //User - LockoutEndDate
+        <p><b>Lock User's Entire Account</b></p>
 
-        <p>Lock until:</p>
+        <br>
+
+        if (Model.isAccountLocked)
+        {
+            <p><i>This user's account is already locked. You may update the lock here</i></p><br>
+            <p><i>Lockout reason: <b>@Model.User.AccountLockoutMessage</b></i></p><br>
+        }
+        else
+        {
+            <p>Lock entire account until:</p>
+        }
+
         @Html.TextBoxFor(m => m.date)
+
+        <br>
+
+        <p>Lockout reason:</p>
+        @Html.TextBoxFor(m => m.lockoutMessage, new { @Value = "Enter reason here" })
 
         @Html.HiddenFor(m => m.UserId)
 
         <br>
-        <input type="submit" class="btn btn-chat" value="Send">
+        <br>
+        <input type="submit" class="btn btn-chat" value="Set Account Lockout Timer">
     }
 
+    <br>
+    <br>
+
+    @using (Html.BeginForm(MVC.PvP.FlagForSuspiciousActivity(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <p><b>Lock this player for suspicious activity</b></p>
+        //Player - FlaggedForAbuse
+        <br>
+
+        if (Model.Player.FlaggedForAbuse)
+        {
+            <p><i>This player is already locked for suspicious activity. You may remove the lock here</i></p><br>
+            <p><i>Lockout reason: <b>@Model.Player.AbuseLockoutMessage</b></i></p><br>
+            @Html.HiddenFor(m => m.lockoutMessage, new { @Value = "unlocked" })
+            @Html.HiddenFor(m => m.PlayerId)
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Unlock Player for Suspicious Activity">
+        }
+        else
+        {
+            <p>Lockout reason:</p>
+            @Html.TextBoxFor(m => m.lockoutMessage, new { @Value = "Enter reason here" })
+            @Html.HiddenFor(m => m.PlayerId)
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Lock Player for Suspicious Activity">
+        }
+
+    }
+
+    <br>
+    <br>
+
+    @using (Html.BeginForm(MVC.Moderator.LockPvP(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        bool oppPVP = !Model.isPvPLocked;
+        <p><b>Lock this player from PVP</b></p>
+        //User - PvpLock
+        <br>
+
+        if (Model.isPvPLocked)
+        {
+            <p><i>This player is already locked from PVP activity. You may remove the lock here</i></p><br>
+            <p><i>Lockout reason: <b>@Model.User.PvPLockoutMessage</b></i></p><br>
+            @Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m => m.isPvPLocked, new { @Value = oppPVP })
+            @Html.HiddenFor(m => m.lockoutMessage, new { @Value = "unlocked" })
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Unlock Player from PVP">
+        }
+        else
+        {
+            <p>Lockout reason:</p>
+            @Html.TextBoxFor(m => m.lockoutMessage, new { @Value = "Enter reason here" })
+
+            @Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m => m.isPvPLocked, new { @Value = oppPVP })
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Lock Player from PVP">
+        }
+    }
+
+    <br>
+    <br>
+
+    @using (Html.BeginForm(MVC.PvPAdmin.ToggleBanOnGlobalChat(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <p><b>Toggle ban on global chat</b></p>
+        //Player - IsBannedFromGlobalChat
+        <br>
+
+        if (Model.Player.IsBannedFromGlobalChat)
+        {
+            <p><i>This player is already locked from global chatting. You may remove the lock here</i></p><br>
+            <p><i>Lockout reason: <b>@Model.Player.ChatLockoutMessage</b></i></p><br>
+            //@Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m => m.PlayerId)
+            @Html.HiddenFor(m => m.lockoutMessage, new { @Value = "unlocked" })
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Unban Player from Global Chat">
+        }
+        else
+        {
+            <p>Lockout reason:</p>
+            @Html.TextBoxFor(m => m.lockoutMessage, new { @Value = "Enter reason here" })
+            @Html.HiddenFor(m => m.PlayerId)
+            <br>
+            <br>
+            <input type="submit" class="btn btn-chat" value="Ban Player from Global Chat">
+        }
+    }
 </div>

@@ -403,7 +403,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ToggleBanOnGlobalChat
         {
-            public readonly string id = ("id").ToLowerInvariant();
+            public readonly string suspendTimeoutViewModel = ("suspendTimeoutViewModel").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ViewPlayerItems s_params_ViewPlayerItems = new ActionParamsClass_ViewPlayerItems();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1013,14 +1013,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ToggleBanOnGlobalChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void ToggleBanOnGlobalChatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ToggleBanOnGlobalChat(int id)
+        public override System.Web.Mvc.ActionResult ToggleBanOnGlobalChat(TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleBanOnGlobalChat);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ToggleBanOnGlobalChatOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
+            ToggleBanOnGlobalChatOverride(callInfo, suspendTimeoutViewModel);
             return callInfo;
         }
 

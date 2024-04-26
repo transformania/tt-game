@@ -21,7 +21,13 @@
             @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
             {
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
+                { 
+                    MvcHtmlString validationSummary = Html.ValidationSummary(true);
+
+                    if (validationSummary != null) {
+                        @Html.Raw(HttpUtility.HtmlDecode(validationSummary.ToHtmlString()));
+                    }
+                }
 
                 <fieldset>
 
@@ -33,7 +39,7 @@
                     @Html.ValidationMessageFor(m => m.Password)
 
                     @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe) <br>
-                    
+
                     <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">Terms of Service</a>. <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
                     <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent"></p><br>
 
@@ -51,13 +57,13 @@
             }
             @if (ViewBag.ReturnUrl == "/" || String.IsNullOrEmpty(ViewBag.ReturnUrl))
             {
-            <br>
-            <br>
+                <br>
+                <br>
 
-            <p>
-                Or did you want to play single player javascript game -
-                <a href="https://tt-gameshow.transformaniatime.com/">Transformania Gameshow</a> ?
-            </p>
+                <p>
+                    Or did you want to play single player javascript game -
+                    <a href="https://tt-gameshow.transformaniatime.com/">Transformania Gameshow</a> ?
+                </p>
             }
         </div>
 

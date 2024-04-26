@@ -503,7 +503,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_FlagForSuspiciousActivity
         {
-            public readonly string playerId = ("playerId").ToLowerInvariant();
+            public readonly string suspendTimeoutViewModel = ("suspendTimeoutViewModel").ToLowerInvariant();
         }
         static readonly ActionParamsClass_TakeBus s_params_TakeBus = new ActionParamsClass_TakeBus();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1156,14 +1156,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void FlagForSuspiciousActivityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int playerId);
+        partial void FlagForSuspiciousActivityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult FlagForSuspiciousActivity(int playerId)
+        public override System.Web.Mvc.ActionResult FlagForSuspiciousActivity(TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FlagForSuspiciousActivity);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
-            FlagForSuspiciousActivityOverride(callInfo, playerId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
+            FlagForSuspiciousActivityOverride(callInfo, suspendTimeoutViewModel);
             return callInfo;
         }
 

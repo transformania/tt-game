@@ -72,6 +72,8 @@ namespace TT.Domain.Models
         public int ItemsUsedThisTurn { get; set; }
         public bool FriendOnlyMessages { get; set; }
         public int LastHolidaySpiritInteraction { get; set; }
+        public string AbuseLockoutMessage { get; set; }
+        public string ChatLockoutMessage { get; set; }
 
         public string GetFullName()
         {
@@ -251,6 +253,8 @@ namespace TT.Domain.Models
 
         public int ItemsUsedThisTurn { get; set; }
         public bool FriendOnlyMessages { get; set; }
+        public string AbuseLockoutMessage { get; set; }
+        public string ChatLockoutMessage { get; set; }
 
         public int LastHolidaySpiritInteraction { get; set; }
 
@@ -373,6 +377,8 @@ namespace TT.Domain.Models
                 ItemsUsedThisTurn = this.ItemsUsedThisTurn,
                 FriendOnlyMessages = this.FriendOnlyMessages,
                 LastHolidaySpiritInteraction = this.LastHolidaySpiritInteraction,
+                AbuseLockoutMessage = this.AbuseLockoutMessage,
+                ChatLockoutMessage = this.ChatLockoutMessage,
 
             };
             return output;

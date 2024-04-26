@@ -9,6 +9,7 @@ namespace TT.Domain.Identity.Commands
     {
 
         public string UserId { get; set; }
+        public string LockoutMessage { get; set; }
         public bool PvPLock { get; set; }
 
         public override void Execute(IDataContext context)
@@ -21,6 +22,7 @@ namespace TT.Domain.Identity.Commands
                     throw new DomainException($"User with Id '{UserId}' could not be found");
 
                 user.SetPvPLockChanges(PvPLock);
+                user.SetPvPLockoutMessage(LockoutMessage);
 
                 ctx.Update(user);
                 ctx.Commit();

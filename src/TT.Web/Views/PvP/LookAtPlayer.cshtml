@@ -291,32 +291,7 @@
                 }
             }
 
-            @if (Model.PlayerForm.Player.FlaggedForAbuse)
-            {
-                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
-            }
-            @if (Model.IsPvPLocked)
-            {
-                <li><a href="@Url.Action(MVC.Moderator.LockPvP(Model.PlayerForm.Player.MembershipId, false))">Unlock this player from PvP</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.Moderator.LockPvP(Model.PlayerForm.Player.MembershipId, true))">Lock this player from PvP</a></li>
-            }
-
             <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
-            @if (Model.PlayerForm.Player.IsBannedFromGlobalChat)
-            {
-                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Lift ban on global chat</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
-            }
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))">Audit items</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             <li><a href="@Url.Action(MVC.Chat.ChatLog($"owner_{Model.PlayerForm.Player.Id}", "lasth"))">Owner chat log</a></li>
@@ -328,7 +303,7 @@
                 <li><a href="@Url.Action(MVC.PvPAdmin.JokeShopAdminActions(Model.PlayerForm.Player.Id))">Joke Shop Actions</a></li>
             }
             <li><a href="@Url.Action(MVC.Settings.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
-            <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Account Lockout Date</a></li>
+            <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId, Model.PlayerUserStrikesDetail.User.UserName, Model.IsPvPLocked, Model.IsAccountLockedOut))">Set Lock on Account</a></li>
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
             <li><a href="#showAlts" id="showAlts">Show Potential Alts</a></li>
         }

@@ -103,6 +103,8 @@ namespace TT.Domain.Players.Entities
         public int ItemsUsedThisTurn { get; protected set; }
         public bool FriendOnlyMessages { get; protected set; }
         public int LastHolidaySpiritInteraction { get; protected set; }
+        public string AbuseLockoutMessage { get; protected set; }
+        public string ChatLockoutMessage { get; protected set; }
 
         public Covenant CovenantLed { get; protected set; }
 
@@ -171,6 +173,8 @@ namespace TT.Domain.Players.Entities
                 ItemsUsedThisTurn = cmd.ItemsUsedThisTurn,
                 FriendOnlyMessages = false,
                 LastHolidaySpiritInteraction = 0,
+                AbuseLockoutMessage = cmd.AbuseLockoutMessage,
+                ChatLockoutMessage = cmd.ChatLockoutMessage
 
             };
         }
@@ -463,6 +467,16 @@ namespace TT.Domain.Players.Entities
         public void ChangeLastHolidaySpiritInteraction(int lastHolidaySpiritInteraction)
         {
             LastHolidaySpiritInteraction = lastHolidaySpiritInteraction;
+        }
+
+        public void ChangeAbuseLockoutMessage(string message)
+        { 
+            AbuseLockoutMessage = message;
+        }
+
+        public void ChangeChatLockoutMessage(string message)
+        {
+            ChatLockoutMessage = message;
         }
 
 

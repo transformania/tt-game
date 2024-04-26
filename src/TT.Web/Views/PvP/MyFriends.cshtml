@@ -34,15 +34,10 @@
     if (Model.FriendOnlyMessages)
     {
         <div class="specialBox">
-            You are currently only allowing messages from friends. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Toggle it to allow messages from all users.</a>
-            <br>
-        </div>
-    }
-    else
-    {
-        <div class="specialBox">
-            You are currently allowing messages from all users. <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Toggle it to allow messages only from friends.</a>
-            <br>
+            <div class="small">
+                <p>You are currently only allowing messages from friends. <a href="#showToggle" id="showToggle">Toggle it to allow messages from all users.</a></p>
+                <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Allow messages from all users.</a></p>
+            </div>
         </div>
     }
 
@@ -284,6 +279,14 @@
                     }
                 }]
             });
+        });
+
+        $("#showToggle").click(function () {
+            if ($("#toggleDiv").is(":visible") === false) {
+                $("#toggleDiv").show();
+            } else {
+                $("#toggleDiv").hide();
+            }
         });
     </script>
 }

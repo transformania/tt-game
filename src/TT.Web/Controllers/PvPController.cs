@@ -810,7 +810,8 @@ namespace TT.Web.Controllers
                 // assert player is not locked from pvp
                 if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
                 {
-                    TempData["Error"] = "You have been locked from PvP functions.";
+                    var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = User.Identity.GetUserName() });
+                    TempData["Error"] = "You have been locked from PvP functions for the following reason: " + user.PvPLockoutMessage;
                     return RedirectToAction(MVC.PvP.Play());
                 }
 
@@ -1041,20 +1042,22 @@ namespace TT.Web.Controllers
             if (me.FlaggedForAbuse)
             {
                 TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
+                TempData["SubError"] = "Reason: " + me.AbuseLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert play is not locked from pvp when attacking another player
             if (targeted.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
             {
-                TempData["Error"] = "You have been locked from PvP functions.";
+                var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = User.Identity.GetUserName() });
+                TempData["Error"] = "You have been locked from PvP functions for the following reason: " + user.PvPLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the victim is not locked from pvp
             if (targeted.MembershipId != null && DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = targeted.MembershipId }))
             {
-                TempData["Error"] = "Your target has been locked from PvP functions.";
+                TempData["Error"] = "Your target has been locked from PvP activity and cannot be targeted by attacks";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -1272,7 +1275,8 @@ namespace TT.Web.Controllers
             // assert player is not locked from pvp
             if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
             {
-                TempData["Error"] = "You have been locked from PvP functions.";
+                var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = User.Identity.GetUserName() });
+                TempData["Error"] = "You have been locked from PvP functions for the following reason: " + user.PvPLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -3006,6 +3010,7 @@ namespace TT.Web.Controllers
             if (me.FlaggedForAbuse)
             {
                 TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
+                TempData["SubError"] = "Reason: " + me.AbuseLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -4307,11 +4312,12 @@ namespace TT.Web.Controllers
             // assert player is not locked from PvP
             if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = me.MembershipId }))
             {
-                TempData["Error"] = "You have been locked from PvP functions.";
+                var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = User.Identity.GetUserName() });
+                TempData["Error"] = "You have been locked from PvP functions for the following reason: " + user.PvPLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert target is not locked from PvP
+            // assert target is not locked from PvP - don't reveal reason for other player being locked
             if (DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = target.MembershipId }))
             {
                 TempData["Error"] = "They have been locked from PvP functions.";
@@ -4322,6 +4328,7 @@ namespace TT.Web.Controllers
             if (me.FlaggedForAbuse)
             {
                 TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
+                TempData["SubError"] = "Reason: " + me.AbuseLockoutMessage;
                 return RedirectToAction(MVC.PvP.Play());
             }
 
@@ -4387,7 +4394,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult FlagForSuspiciousActivity(int playerId)
+        public virtual ActionResult FlagForSuspiciousActivity(SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
             // assert the person flagging has mod permissions
             // assert only admins can view this
@@ -4398,7 +4405,8 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "Player suspicious lock toggled.";
-            PlayerProcedures.FlagPlayerForSuspicousActivity(playerId);
+            PlayerProcedures.FlagPlayerForSuspicousActivity(suspendTimeoutViewModel.PlayerId);
+            PlayerProcedures.ChangeAbuseLockoutMessage(suspendTimeoutViewModel.PlayerId, suspendTimeoutViewModel.lockoutMessage);
 
             return RedirectToAction(MVC.PvP.Play());
         }

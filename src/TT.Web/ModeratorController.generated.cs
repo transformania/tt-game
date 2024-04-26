@@ -167,8 +167,7 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_LockPvP
         {
-            public readonly string userId = ("userId").ToLowerInvariant();
-            public readonly string setPvPLock = ("setPvPLock").ToLowerInvariant();
+            public readonly string suspendTimeoutViewModel = ("suspendTimeoutViewModel").ToLowerInvariant();
         }
         static readonly ActionParamsClass_HandleReport s_params_HandleReport = new ActionParamsClass_HandleReport();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -193,6 +192,9 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SetAccountLockoutDate
         {
             public readonly string userId = ("userId").ToLowerInvariant();
+            public readonly string userName = ("userName").ToLowerInvariant();
+            public readonly string isPvpLocked = ("isPvpLocked").ToLowerInvariant();
+            public readonly string isAccountLocked = ("isAccountLocked").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetAccountLockoutDateSend s_params_SetAccountLockoutDateSend = new ActionParamsClass_SetAccountLockoutDateSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -311,15 +313,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void LockPvPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, bool setPvPLock);
+        partial void LockPvPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult LockPvP(string userId, bool setPvPLock)
+        public override System.Web.Mvc.ActionResult LockPvP(TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LockPvP);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setPvPLock", setPvPLock);
-            LockPvPOverride(callInfo, userId, setPvPLock);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
+            LockPvPOverride(callInfo, suspendTimeoutViewModel);
             return callInfo;
         }
 
@@ -359,14 +360,17 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId);
+        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, string userName, bool isPvpLocked, bool isAccountLocked);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId)
+        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId, string userName, bool isPvpLocked, bool isAccountLocked)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
-            SetAccountLockoutDateOverride(callInfo, userId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isPvpLocked", isPvpLocked);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isAccountLocked", isAccountLocked);
+            SetAccountLockoutDateOverride(callInfo, userId, userName, isPvpLocked, isAccountLocked);
             return callInfo;
         }
 

@@ -264,8 +264,8 @@ namespace TT.Web.Controllers
             // assert player is not banned from chat
             if (me.IsBannedFromGlobalChat)
             {
-                TempData["Error"] = "You have been banned and cannot send any messages.";
-                TempData["SubError"] = "If you feel this is in error or wish to make an appeal you may do so on the forums.";
+                TempData["Error"] = "You have been banned and cannot send any messages for the following reason: " + me.ChatLockoutMessage;
+                TempData["SubError"] = "If you feel this is in error or wish to make an appeal you may do so via Discord.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 

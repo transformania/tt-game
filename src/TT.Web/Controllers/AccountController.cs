@@ -14,6 +14,7 @@ using TT.Domain.Identity.Queries;
 using TT.Domain.Legacy.Procedures;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Players.Queries;
 
 namespace TT.Web.Controllers
 {
@@ -68,6 +69,7 @@ namespace TT.Web.Controllers
             if (ModelState.IsValid)
             {
                 var result = signInManager.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = model.UserName });
 
                 if (result == SignInStatus.Success)
                 {
@@ -75,7 +77,10 @@ namespace TT.Web.Controllers
                 }
                 ModelState.AddModelError("",
                     result == SignInStatus.LockedOut
-                        ? $"Account disabled until {signInManager.UserManager.FindByName(model.UserName).LockoutEndDateUtc} UTC."
+                        ? $"Your account has been disabled until the following date:<br>" +
+                        $"{signInManager.UserManager.FindByName(model.UserName).LockoutEndDateUtc} UTC.<br><br>" +
+                        $"Reason: {user.AccountLockoutMessage}" + "<br><br>" +
+                        $"Please contact the moderation team via Discord or email support@transformaniatime.com for assistance if you want to make an appeal."
                         : "Invalid username or password.");
             }
 

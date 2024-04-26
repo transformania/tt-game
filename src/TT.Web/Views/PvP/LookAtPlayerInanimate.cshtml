@@ -48,10 +48,10 @@
                     if (ViewBag.Owner?.Player != null && ViewBag.Owner.Player.MembershipId != null && (ViewBag.OwnedByMe || ViewBag.IsMe || DomainRegistry.Repository.FindSingle(new IsOwnershipVisibilityEnabled { UserId = ViewBag.Owner.Player.MembershipId })))
                     {
                         <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(ItemProcedures.BeingWornBy(Model.PlayerForm.Player.Id).Player.Id))">View Owner</a></li>
-                                }
+                    }
 
-                                if (!ViewBag.IsMe)
-                                {
+                    if (!ViewBag.IsMe)
+                    {
                         <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
                         <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
                         <li><a href="#showBlacklist" id="showBlacklist" data-toggle="modal" data-target="#blacklistModal">Blacklist Player</a></li>
@@ -68,31 +68,31 @@
                                     <div class="modal-body">
                                         <p class="small">
                                             @{
-                                            var BlacklistLevel = BlacklistProcedures.IsAttackBlacklisted(new Player { MembershipId = ViewBag.MyId }, new Player { MembershipId = Model.PlayerForm.Player.MembershipId });
-                                            if (BlacklistLevel == "0")
-                                            {
-                                                <span>They cannot attack you.</span><br /><br />
-                                                <li class="outline-text">
-                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOrMessage"))">No attacking or messaging.</a>
-                                                </li>
-                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                                var BlacklistLevel = BlacklistProcedures.IsAttackBlacklisted(new Player { MembershipId = ViewBag.MyId }, new Player { MembershipId = Model.PlayerForm.Player.MembershipId });
+                                                if (BlacklistLevel == "0")
+                                                {
+                                                    <span>They cannot attack you.</span><br /><br />
+                                                    <li class="outline-text">
+                                                        <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOrMessage"))">No attacking or messaging.</a>
+                                                    </li>
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                                }
+                                                else if (BlacklistLevel == "1")
+                                                {
+                                                    <span>They cannot attack or message you.</span><br /><br />
+                                                    <li class="outline-text">
+                                                        <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOnly"))">No attacking.</a>
+                                                    </li>
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <span>They are not blacklisted.</span>
+                                                    <br /><br />
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" >No attacking or messaging.</a></li>
+                                                }
                                             }
-                                            else if (BlacklistLevel == "1")
-                                            {
-                                                <span>They cannot attack or message you.</span><br /><br />
-                                                <li class="outline-text">
-                                                <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(0, Model.PlayerForm.Player.Id, "noAttackOnly"))">No attacking.</a>
-                                                </li>
-                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">Remove blacklist entry.</a></li>
-                                            }
-                                            else
-                    {
-                                                <span>They are not blacklisted.</span>
-                                                <br /><br />
-                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>
-                                                <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" >No attacking or messaging.</a></li>
-                                            }
-                                        }
                                         </p>
                                     </div>
                                 </div>
@@ -263,34 +263,34 @@
         {
             @{ if (Model.PlayerForm.Player.MembershipId != null)
                 {
-               <div id="altsDiv" style="display: none;">
-                    <p class="small center-block">
-                        <text>
-                            @{
-                                foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
-                                {
-                                    string mode;
+                    <div id="altsDiv" style="display: none;">
+                        <p class="small center-block">
+                            <text>
+                                @{
+                                    foreach (var user in PlayerProcedures.GetLikeIp(Model.PlayerForm.Player.IpAddress))
+                                    {
+                                        string mode;
 
-                                if (user.GameMode == 0)
-                                {
-                                    mode = "sp-mode";
-                                }
-                                else if (user.GameMode == 1)
-                                {
-                                    mode = "p-mode";
-                                }
-                                else
-                                {
-                                    mode = "pvp-mode";
-                                }
+                                        if (user.GameMode == 0)
+                                        {
+                                            mode = "sp-mode";
+                                        }
+                                        else if (user.GameMode == 1)
+                                        {
+                                            mode = "p-mode";
+                                        }
+                                        else
+                                        {
+                                            mode = "pvp-mode";
+                                        }
 
-                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
-                                {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
+                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                            {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
+                                    }
                                 }
-                            }
-                        </text>
-                    </p>
-               </div>
+                            </text>
+                        </p>
+                    </div>
                     <div style="text-align:center;">
                         <p class="rowDivider">
 
@@ -337,32 +337,6 @@
                 }
             }
 
-            @if (Model.PlayerForm.Player.FlaggedForAbuse)
-            {
-                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
-            }
-            @if (Model.IsPvPLocked)
-            {
-                <li><a href="@Url.Action(MVC.Moderator.LockPvP(Model.PlayerForm.Player.MembershipId, false))">Unlock this player from PvP</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.Moderator.LockPvP(Model.PlayerForm.Player.MembershipId, true))">Lock this player from PvP</a></li>
-            }
-
-            <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
-            @if (Model.PlayerForm.Player.IsBannedFromGlobalChat)
-            {
-                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Lift ban on global chat</a></li>
-            }
-            else
-            {
-                <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
-            }
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             @if (ViewBag.Owner?.Player != null)
             {
@@ -376,7 +350,7 @@
                 <li><a href="@Url.Action(MVC.PvPAdmin.JokeShopAdminActions(Model.PlayerForm.Player.Id))">Joke Shop Actions</a></li>
             }
             <li><a href="@Url.Action(MVC.Settings.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
-            <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Account Lockout Date</a></li>
+            <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId, Model.PlayerUserStrikesDetail.User.UserName, Model.IsPvPLocked, Model.IsAccountLockedOut))">Set Lock on Account</a></li>
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
             <li><a href="#showAlts" id="showAlts">Show Potential Alts</a></li>
 

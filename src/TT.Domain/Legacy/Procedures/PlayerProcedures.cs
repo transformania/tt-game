@@ -84,6 +84,8 @@ namespace TT.Domain.Procedures
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
+                                                              AbuseLockoutMessage = player.AbuseLockoutMessage,
+                                                              ChatLockoutMessage = player.ChatLockoutMessage,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -200,6 +202,8 @@ namespace TT.Domain.Procedures
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
+                                                              AbuseLockoutMessage = player.AbuseLockoutMessage,
+                                                              ChatLockoutMessage = player.ChatLockoutMessage,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -315,6 +319,8 @@ namespace TT.Domain.Procedures
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
+                                                              AbuseLockoutMessage = player.AbuseLockoutMessage,
+                                                              ChatLockoutMessage = player.ChatLockoutMessage,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -431,6 +437,8 @@ namespace TT.Domain.Procedures
                                                               OriginalLastName = player.OriginalLastName,
                                                               FriendOnlyMessages = player.FriendOnlyMessages,
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
+                                                              AbuseLockoutMessage = player.AbuseLockoutMessage,
+                                                              ChatLockoutMessage = player.ChatLockoutMessage,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -717,7 +725,9 @@ namespace TT.Domain.Procedures
                 GameMode = newCharacterViewModel.StartGameMode,
                 InRP = newCharacterViewModel.StartInRP,
                 InHardmode = newCharacterViewModel.StartInHardmode,
-                FormSourceId = newCharacterViewModel.FormSourceId
+                FormSourceId = newCharacterViewModel.FormSourceId,
+                AbuseLockoutMessage = string.Empty,
+                ChatLockoutMessage = string.Empty,
             };
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
@@ -1625,6 +1635,22 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             player.FlaggedForAbuse = !player.FlaggedForAbuse;
+            playerRepo.SavePlayer(player);
+        }
+
+        public static void ChangeAbuseLockoutMessage(int playerId, string message)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            player.AbuseLockoutMessage = message;
+            playerRepo.SavePlayer(player);
+        }
+
+        public static void ChangeChatLockoutMessage(int playerId, string message)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            var player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            player.ChatLockoutMessage = message;
             playerRepo.SavePlayer(player);
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
@@ -11,6 +10,7 @@ namespace TT.Domain.Identity.Commands
     {
         public string UserId { get; set; }
         public DateTime date { get; set; }
+        public String message { get; set; }
 
         public override string Execute(IDataContext context)
         {
@@ -26,6 +26,7 @@ namespace TT.Domain.Identity.Commands
                     throw new DomainException($"User with Id '{UserId}' does not exist");
 
                 user.SetLockoutEndDateUtc(date);
+                user.SetAccountLockoutMessage(message);
 
                 ctx.Update(user);
                 ctx.Commit();

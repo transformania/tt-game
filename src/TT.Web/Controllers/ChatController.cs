@@ -41,7 +41,7 @@ namespace TT.Web.Controllers
 
             if (me.Player.IsBannedFromGlobalChat && room == "global")
             {
-                TempData["Error"] = "A moderator has temporarily banned you from global chat.";
+                TempData["Error"] = "A moderator has temporarily banned you from global chat for the following reason: " + me.Player.ChatLockoutMessage;
                 TempData["SubError"] = "To restore your chat privileges please make an appeal on Discord.";
                 return RedirectToAction(MVC.PvP.Play());
             }

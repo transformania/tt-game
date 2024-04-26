@@ -26,20 +26,15 @@
 </div>
 
 @{ 
-    <div class="specialBox">
-        <div class="small">
-            @if (Model.FriendOnlyMessages)
-            {
+    if (Model.FriendOnlyMessages)
+    {
+        <div class="specialBox">
+            <div class="small">
                 <p>You are currently only allowing messages from friends. <a href="#showToggle" id="showToggle">Toggle it to allow messages from all users.</a></p>
                 <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Allow messages from all users.</a></p>
-            }
-            else
-            {
-                <p>You are currently allowing messages from all users. <a href="#showToggle" id="showToggle">Toggle it to allow messages only from friends.</a></p>
-                <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Allow messages only from friends.</a></p>
-            }
+            </div>
         </div>
-    </div>
+    }
 }
 
 <div class="specialBox specialHeader">

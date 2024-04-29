@@ -97,8 +97,6 @@ namespace TT.Domain.Players.Commands
             CleansesMeditatesThisRound = 0;
             ChatColor = "black";
             LastHolidaySpiritInteraction = 0;
-            AbuseLockoutMessage = string.Empty;
-            ChatLockoutMessage = string.Empty;
         }
 
         public override int Execute(IDataContext context)

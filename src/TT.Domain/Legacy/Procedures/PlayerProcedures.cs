@@ -725,9 +725,7 @@ namespace TT.Domain.Procedures
                 GameMode = newCharacterViewModel.StartGameMode,
                 InRP = newCharacterViewModel.StartInRP,
                 InHardmode = newCharacterViewModel.StartInHardmode,
-                FormSourceId = newCharacterViewModel.FormSourceId,
-                AbuseLockoutMessage = string.Empty,
-                ChatLockoutMessage = string.Empty,
+                FormSourceId = newCharacterViewModel.FormSourceId
             };
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest

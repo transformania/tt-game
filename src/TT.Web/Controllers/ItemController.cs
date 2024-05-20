@@ -456,6 +456,17 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var item = ItemProcedures.GetItemViewModel(itemId);
             var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);
 
@@ -531,6 +542,17 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             var item = ItemProcedures.GetItemViewModel(itemId);
             var itemPlayer = PlayerProcedures.GetPlayer(item.dbItem.FormerPlayerId);

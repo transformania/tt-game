@@ -1749,6 +1749,18 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var output = new TalkToSoulbinderViewModel
             {
                 AllSoulboundItems = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id })
@@ -1767,6 +1779,18 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var npc = PlayerProcedures.GetPlayerFromBotId(AIStatics.SoulbinderBotId);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var output = new TalkToSoulbinderViewModel
             {
                 Items = DomainRegistry.Repository.Find(new GetPlayerItemsOfSoulbindableTypes { OwnerId = me.Id }).ToList(),
@@ -1789,6 +1813,17 @@ namespace TT.Web.Controllers
 
             try
             {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            try
+            {
                 TempData["Result"] = DomainRegistry.Repository.Execute(new SoulbindItemToPlayer { ItemId = itemId, OwnerId = me.Id });
             }
             catch (DomainException e)
@@ -1804,6 +1839,17 @@ namespace TT.Web.Controllers
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             try
             {
@@ -1832,6 +1878,17 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             var item = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = me.Id }).FirstOrDefault(i => i.FormerPlayer.Id == id);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             if (item == null)
             {
@@ -1862,6 +1919,17 @@ namespace TT.Web.Controllers
 
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                DomainRegistry.Repository.FindSingle(
+                    new CanInteractWith { BotId = AIStatics.SoulbinderBotId, PlayerId = me.Id });
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);

@@ -120,11 +120,20 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Moderator.ViewReports());
         }
 
-        public virtual ActionResult SetAccountLockoutDate(string userId, string userName, bool isPvpLocked, bool isAccountLocked)
+        public virtual ActionResult SetAccountLockoutDate(string userId)
         {
+            if (userId == null)
+            {
+                TempData["Error"] = "You cannot set a lock on this user";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             var player = PlayerProcedures.GetPlayerFromMembership(userId);
-            var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = userName });
-            return View(MVC.Moderator.Views.SetAccountLockoutDate, new SuspendTimeoutViewModel{User = user, Player = player, UserId = player.MembershipId, PlayerId = player.Id, isPvPLocked = isPvpLocked, isAccountLocked = isAccountLocked, date = DateTime.UtcNow.AddYears(99)});
+            var user = DomainRegistry.Repository.FindSingle(new GetUserFromMembershipId { UserId = userId });
+            bool isPvPLocked = DomainRegistry.Repository.FindSingle(new IsPvPLocked { UserId = userId });
+            bool isAccountLocked = DomainRegistry.Repository.FindSingle(new IsAccountLockedOut { userId = userId });
+
+            return View(MVC.Moderator.Views.SetAccountLockoutDate, new SuspendTimeoutViewModel{User = user, Player = player, UserId = player.MembershipId, PlayerId = player.Id, isPvPLocked = isPvPLocked, isAccountLocked = isAccountLocked, date = DateTime.UtcNow.AddYears(99)});
         }
 
         [ValidateAntiForgeryToken]

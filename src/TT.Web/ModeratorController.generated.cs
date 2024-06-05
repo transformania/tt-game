@@ -192,9 +192,6 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SetAccountLockoutDate
         {
             public readonly string userId = ("userId").ToLowerInvariant();
-            public readonly string userName = ("userName").ToLowerInvariant();
-            public readonly string isPvpLocked = ("isPvpLocked").ToLowerInvariant();
-            public readonly string isAccountLocked = ("isAccountLocked").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SetAccountLockoutDateSend s_params_SetAccountLockoutDateSend = new ActionParamsClass_SetAccountLockoutDateSend();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -360,17 +357,14 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, string userName, bool isPvpLocked, bool isAccountLocked);
+        partial void SetAccountLockoutDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId, string userName, bool isPvpLocked, bool isAccountLocked)
+        public override System.Web.Mvc.ActionResult SetAccountLockoutDate(string userId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetAccountLockoutDate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isPvpLocked", isPvpLocked);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "isAccountLocked", isAccountLocked);
-            SetAccountLockoutDateOverride(callInfo, userId, userName, isPvpLocked, isAccountLocked);
+            SetAccountLockoutDateOverride(callInfo, userId);
             return callInfo;
         }
 

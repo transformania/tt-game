@@ -333,6 +333,18 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // pass without marking as complete
+            else if (endType == (int)QuestStatics.QuestOutcomes.RepeatCompleted)
+            {
+                var passMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.RepeatCompleted);
+                QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
+
+                //StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__RepeatableQuestsPassed, 1); //Since its repeatable, this might make sense to have a new stat
+
+                TempData["Result"] = "Your journey in <b>" + quest.Name + "</b> has reached an end... but perhaps you should try again later!" + passMessage;
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             // pass!
             var victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);

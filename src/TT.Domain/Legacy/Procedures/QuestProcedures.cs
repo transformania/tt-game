@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Items.Entities;
+using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
@@ -251,26 +253,32 @@ namespace TT.Domain.Procedures
             questPlayerStatus.LastEndedTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             questPlayerStatus.Outcome = endType;
 
+            if (endType == 2) {
+                questPlayerStatus.Outcome = 0; //Collapsing the non-final ending outcomes into one value for consistency
+            }
+
             questRepo.SaveQuestPlayerStatus(questPlayerStatus);
 
             // assing completion bonuses
-            if (endType == (int)QuestStatics.QuestOutcomes.Completed)
+            if (endType != (int)QuestStatics.QuestOutcomes.Failed)
             {
 
                 var questState = GetQuestState(player.InQuestState);
 
                 decimal xpGain = 0;
+                decimal moneyGain = 0;
+                decimal pvpScoreGain = 0;
 
                 foreach (var q in questState.QuestEnds)
                 {
                     // experience gain
-                    if (q.RewardType==(int)QuestStatics.RewardType.Experience)
+                    if (q.RewardType == (int)QuestStatics.RewardType.Experience)
                     {
                         xpGain += Int32.Parse(q.RewardAmount);
                     }
 
                     // item gain
-                    else if (q.RewardType==(int)QuestStatics.RewardType.Item)
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Item)
                     {
                         var item = ItemStatics.GetStaticItem(System.Convert.ToInt32(q.RewardAmount));
                         ItemProcedures.GiveNewItemToPlayer(player, item);
@@ -293,14 +301,35 @@ namespace TT.Domain.Procedures
                         message += "<br>You learned the spell <b>" + spell.FriendlyName + "</b>.";
                     }
 
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Money)
+                    {
+                        moneyGain += Int32.Parse(q.RewardAmount);
+                    }
+
+                    else if (q.RewardType == (int)QuestStatics.RewardType.PvPScore)
+                    {
+                        pvpScoreGain += Int32.Parse(q.RewardAmount);
+                    }
+
                 }
 
                 if (xpGain > 0)
                 {
                     message += "<br>You earned <b>" + xpGain + "</b> XP.";
                 }
-
                 PlayerProcedures.GiveXP(player, xpGain);
+
+                if (moneyGain > 0)
+                {
+                    message += "<br>You earned <b>" + moneyGain + "</b> Arpeyjis.";
+                }
+                PlayerProcedures.GiveMoneyToPlayer(player, moneyGain);
+
+                if (pvpScoreGain > 0)
+                {
+                    message += "<br>You earned <b>" + pvpScoreGain + "</b> PvP Score.";
+                }
+                PlayerProcedures.GivePlayerPvPScore_NoLoser(player, pvpScoreGain);
             }
 
             // delete all of the player's quest variables
@@ -398,6 +427,96 @@ namespace TT.Domain.Procedures
                 else if (q.RequirementType == (int)QuestStatics.RequirementType.Form)
                 {
                     if (Int32.Parse(q.RequirementValue) != player.FormSourceId)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                //Convert the string value to int for form comparison
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Item)
+                {
+                    var itemToUse = ItemProcedures.GetAllPlayerItems(player.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == Int32.Parse(q.RequirementValue));
+
+                    if (itemToUse != null && !itemToUse.dbItem.FormerPlayerId.HasValue && itemToUse.dbItem.TurnsUntilUse == 0)
+                    {
+                        continue;
+                    }
+                    return false;
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Hardmode)
+                {
+                    if (Boolean.Parse(q.RequirementValue) != player.InHardmode)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.PvPScore)
+                {
+                    isAvailable = ExpressionIsTrue((float)player.PvPScore, q);
+                    if (!isAvailable)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Mana)
+                {
+                    isAvailable = ExpressionIsTrue((float)player.Mana, q);
+                    if (!isAvailable)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Willpower)
+                {
+                    isAvailable = ExpressionIsTrue((float)player.Health, q);
+                    if (!isAvailable)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Money)
+                {
+                    isAvailable = ExpressionIsTrue((float)player.Money, q);
+                    if (!isAvailable)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Spell)
+                {
+                    var playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(player.Id);
+
+                    if (!playerExistingSpells.Select(s => s.SkillSourceId).Contains(Int32.Parse(q.RequirementValue)))
                     {
                         return false;
                     }
@@ -654,7 +773,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // change form
-                if (p.ActionType==(int)QuestStatics.PreactionType.Form)
+                if (p.ActionType == (int)QuestStatics.PreactionType.Form)
                 {
                     DomainRegistry.Repository.Execute(new ChangeForm
                     {
@@ -684,6 +803,10 @@ namespace TT.Domain.Procedures
                     {
                         dbPlayer.Health += valueAsNumber;
                     }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Percent)
+                    {
+                        dbPlayer.Health *= (1 + valueAsNumber / 100);
+                    }
                 }
 
                 // change mana
@@ -697,10 +820,14 @@ namespace TT.Domain.Procedures
                     {
                         dbPlayer.Mana += valueAsNumber;
                     }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Percent)
+                    {
+                        dbPlayer.Mana *= (1 + valueAsNumber / 100);
+                    }
                 }
 
                 // update or set a variable
-                else if (p.ActionType==(int)QuestStatics.PreactionType.Variable)
+                else if (p.ActionType == (int)QuestStatics.PreactionType.Variable)
                 {
                     if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
                     {
@@ -710,10 +837,55 @@ namespace TT.Domain.Procedures
                     {
                         QuestProcedures.EditQuestPlayerVariable(p.QuestId, dbPlayer.Id, p.VariableName, p.ActionValue);
                     }
-                    
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Percent)
+                    {
+                        QuestProcedures.EditQuestPlayerVariablePercent(p.QuestId, dbPlayer.Id, p.VariableName, p.ActionValue);
+                    }
+
+                }
+
+                else if (p.ActionType == (int)QuestStatics.PreactionType.Money)
+                {
+                    if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
+                    {
+                        dbPlayer.Money = valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Number)
+                    {
+                        dbPlayer.Money += valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Percent)
+                    {
+                        dbPlayer.Money *= (1 + valueAsNumber / 100);
+                    }
+                }
+
+                else if (p.ActionType == (int)QuestStatics.PreactionType.PvPScore)
+                {
+                    if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
+                    {
+                        dbPlayer.PvPScore = valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Number)
+                    {
+                        dbPlayer.PvPScore += valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Percent)
+                    {
+                        dbPlayer.PvPScore *= (1 + valueAsNumber / 100);
+                    }
+                }
+
+                else if (p.ActionType == (int)QuestStatics.PreactionType.Item)
+                {
+                    var itemToUse = ItemProcedures.GetAllPlayerItems(player.Id).FirstOrDefault(i => i.dbItem.ItemSourceId == (int) valueAsNumber);
+
+                    if (itemToUse != null && !itemToUse.dbItem.FormerPlayerId.HasValue && itemToUse.dbItem.TurnsUntilUse == 0)
+                    {
+                        ItemProcedures.DeleteItem(itemToUse.dbItem.Id);
+                    }
                 }
             }
-
             dbPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbPlayer));
             playerRepo.SavePlayer(dbPlayer);
 
@@ -794,6 +966,31 @@ namespace TT.Domain.Procedures
             var oldValueAsFloat = float.Parse(variable.VariableValue);
             var updateValueAsFloat =  float.Parse(variableValue);
             var endValueAsFloat = oldValueAsFloat + updateValueAsFloat;
+
+            variable.VariableValue = endValueAsFloat.ToString();
+
+            repo.SaveQuestPlayerVariable(variable);
+        }
+
+        public static void EditQuestPlayerVariablePercent(int questId, int playerId, string variableName, string variableValue)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            var variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+
+            if (variable == null)
+            {
+                variable = new QuestPlayerVariable
+                {
+                    QuestId = questId,
+                    PlayerId = playerId,
+                    VariableName = variableName.ToUpper(),
+                    VariableValue = "0",
+                };
+            }
+
+            var oldValueAsFloat = float.Parse(variable.VariableValue);
+            var updateValueAsFloat = float.Parse(variableValue);
+            var endValueAsFloat = oldValueAsFloat * (1+updateValueAsFloat/100);
 
             variable.VariableValue = endValueAsFloat.ToString();
 

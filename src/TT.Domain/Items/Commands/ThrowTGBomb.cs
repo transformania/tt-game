@@ -69,7 +69,7 @@ namespace TT.Domain.Items.Commands
                     adjustedChance /= 2;
                 }
 
-                if (adjustedChance < 50)
+                if (adjustedChance < 50 && player.FormSource.AltSexFormSource != null)
                 {
                     affectedPlayers.Add(player);
                 }

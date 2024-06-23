@@ -10,5 +10,6 @@
 
         public int responseToId { get; set; }
         public string RespondingToMsg { get; set; }
+        public bool StaffOverride { get; set; }
     }
 }

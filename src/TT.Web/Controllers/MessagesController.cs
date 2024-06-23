@@ -269,41 +269,45 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assert no blacklist exists
-            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message"))
+            //If the moderator bypass value is set and the user has the correct permissions, ignore all other checks and send the message
+            if (!(input.StaffOverride && (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))))
             {
-                TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
-                TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
+                // assert no blacklist exists
+                if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message"))
+                {
+                    TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                    TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
 
-            // if either user has friend only messaging on, assert that the players are friends
-            if ((me.FriendOnlyMessages || receiver.FriendOnlyMessages) && !MessageProcedures.PlayersAreFriends(me, receiver))
-            {
-                TempData["Error"] = "You and/or the recipient has friend only messaging turn ON and you are not friends with this user";
-                return RedirectToAction(MVC.PvP.Play());
-            }
+                // if either user has friend only messaging on, assert that the players are friends
+                if ((me.FriendOnlyMessages || receiver.FriendOnlyMessages) && !MessageProcedures.PlayersAreFriends(me, receiver))
+                {
+                    TempData["Error"] = "You and/or the recipient has friend only messaging turn ON and you are not friends with this user";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
 
-            if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.HUSHED_EFFECT))
-            {
-                TempData["ErrorMessage"] = "You have been hushed and cannot currently send a message.  Try again once the effect has worn off.";
-                TempData["MessageText"] = input.MessageText;
-                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
-            }
+                if (EffectProcedures.PlayerHasActiveEffect(me, CharacterPrankProcedures.HUSHED_EFFECT))
+                {
+                    TempData["ErrorMessage"] = "You have been hushed and cannot currently send a message.  Try again once the effect has worn off.";
+                    TempData["MessageText"] = input.MessageText;
+                    return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
+                }
 
-            if (input.MessageText.IsNullOrEmpty())
-            {
-                TempData["ErrorMessage"] = "You need to write something to send to this person.";
-                TempData["MessageText"] = input.MessageText;
-                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
+                if (input.MessageText.IsNullOrEmpty())
+                {
+                    TempData["ErrorMessage"] = "You need to write something to send to this person.";
+                    TempData["MessageText"] = input.MessageText;
+                    return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
 
-            }
+                }
 
-            if (input.MessageText.Length > 1000)
-            {
-                TempData["ErrorMessage"] = "Your message is too long.";
-                TempData["MessageText"] = input.MessageText;
-                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
+                if (input.MessageText.Length > 1000)
+                {
+                    TempData["ErrorMessage"] = "Your message is too long.";
+                    TempData["MessageText"] = input.MessageText;
+                    return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
+                }
             }
 
             MessageDetail repliedMsg = null;

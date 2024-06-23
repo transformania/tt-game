@@ -1,4 +1,5 @@
 ﻿@model TT.Domain.ViewModels.MessageSubmitViewModel
+@using TT.Domain.Statics
 @{
     ViewBag.Title = "Write Message";
 }
@@ -27,13 +28,20 @@
             Writing to <span class="messageNicknameContainer">@Model.SendingToName</span>:
             <span class="charCounter" id="textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000", autofocus = true, rows = "10"})<br>
+        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000", autofocus = true, rows = "10" })<br>
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)
         @Html.HiddenFor(m => m.responseToId)
 
         <br>
+
+        if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
+        {
+            @Html.CheckBoxFor(m => m.StaffOverride)
+            <label for="StaffOverride">Moderator Bypass</label>
+        }
+
         <input type="submit" class="btn btn-chat" value="Send">
     }
 </div>

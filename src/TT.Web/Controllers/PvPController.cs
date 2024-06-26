@@ -1,4 +1,3 @@
-using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -30,6 +29,7 @@ using TT.Domain.ViewModels;
 using TT.Domain.World.DTOs;
 using TT.Domain.World.Queries;
 using TT.Web.CustomHtmlHelpers;
+using TT.Web.Services;
 using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
@@ -38,6 +38,13 @@ namespace TT.Web.Controllers
     public partial class PvPController : Controller
     {
         public object PlayerlookedAt { get; private set; }
+
+        private readonly bool useCaptcha;
+
+        public PvPController(IFeatureService featureService)
+        {
+            useCaptcha = featureService.IsFeatureEnabled(Features.UseCaptcha);
+        }
 
         public virtual ActionResult Play()
         {
@@ -132,7 +139,7 @@ namespace TT.Web.Controllers
             }
 
             var renderCaptcha = false;
-            if (FeatureContext.IsEnabled<UseCaptcha>() && me.Mobility != PvPStatics.MobilityFull)
+            if (useCaptcha && me.Mobility != PvPStatics.MobilityFull)
             {
                 try
                 {
@@ -2879,7 +2886,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has submitted their captcha recently
-            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+            if (useCaptcha &&
                 DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
             {
                 TempData["Error"] = "Please complete this captcha on the page.";
@@ -2960,7 +2967,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has submitted their captcha recently
-            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+            if (useCaptcha &&
                 DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
             {
                 TempData["Error"] = "Please complete this captcha on the page to continue with this action.";
@@ -4016,7 +4023,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has submitted their captcha recently
-            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+            if (useCaptcha &&
                 DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
             {
                 TempData["Error"] = "Please complete this captcha on the page.";

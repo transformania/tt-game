@@ -28,9 +28,6 @@ namespace TT.Web.Controllers
     public partial class ChatController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ChatController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected ChatController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

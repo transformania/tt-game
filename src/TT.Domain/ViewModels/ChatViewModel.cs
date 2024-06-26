@@ -6,5 +6,6 @@ namespace TT.Domain.ViewModels
         public string RoomName { get; set; }
         public string ChatUser { get; set; }
         public string ChatColor { get; set; }
+        public bool ChatV2 { get; set; }
     }
 }

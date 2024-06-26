@@ -5,7 +5,7 @@
 
 @section menu
 {
-    @Html.Partial(MVC.Chat.Views._ChatMenu, new ViewDataDictionary { { "room", Model.Room } })
+    @Html.Partial(MVC.Chat.Views._ChatMenu, Model, new ViewDataDictionary { { "room", Model.Room } })
 }
 
 <p class="infoMessage error" id="connectionStatus" style="display: none;">

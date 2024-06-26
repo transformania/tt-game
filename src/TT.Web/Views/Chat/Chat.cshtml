@@ -1,6 +1,8 @@
-﻿@section menu
+﻿@model TT.Domain.ViewModels.ChatViewModel
+
+@section menu
 {
-    @Html.Partial(MVC.Chat.Views._ChatMenu)
+    @Html.Partial(MVC.Chat.Views._ChatMenu, Model)
 }
 
 <div id="infoBar" style="display:none">

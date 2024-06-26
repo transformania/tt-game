@@ -173,6 +173,7 @@
     <Compile Include="RestockItemController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\FeaturesService.cs" />
     <Compile Include="Services\HubContextAccessor.cs" />
     <Compile Include="Services\IHubContextAccessor.cs" />
     <Compile Include="Services\OwinContextAccessor.cs" />
@@ -823,9 +824,6 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
-    </PackageReference>
-    <PackageReference Include="FeatureSwitch">
-      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="FluentValidation">
       <Version>7.1.1</Version>

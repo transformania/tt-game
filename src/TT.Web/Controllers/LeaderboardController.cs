@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Items.DTOs;
-using TT.Domain.Items.Queries;
 using TT.Domain.Items.Queries.Leaderboard;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels.World;
@@ -37,7 +36,7 @@ namespace TT.Web.Controllers
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
-                ViewBag.MyId = me.Id;
+                ViewBag.MyId = me == null ? "" : me.Id.ToString();
             }
             return View(MVC.Leaderboard.Views.Leaderboard, PlayerProcedures.GetLeadingPlayers__XP(100));
         }
@@ -54,7 +53,7 @@ namespace TT.Web.Controllers
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
-                ViewBag.MyId = me.Id;
+                ViewBag.MyId = me == null ? "" : me.Id.ToString();
             }
             return View(MVC.Leaderboard.Views.PvPLeaderboard, PlayerProcedures.GetLeadingPlayers__PvP(100));
         }
@@ -71,7 +70,7 @@ namespace TT.Web.Controllers
             {
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
-                ViewBag.MyId = me.Id;
+                ViewBag.MyId = me == null ? "" : me.Id.ToString();
             }
 
             var output = await mediator.Send(new ItemLeaderboardRequest { Limit = 100 });

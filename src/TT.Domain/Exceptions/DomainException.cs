@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions
 {
-    [Serializable]
     public class DomainException : Exception
     {
         public string UserFriendlyError { get; set; }
@@ -22,12 +20,6 @@ namespace TT.Domain.Exceptions
         }
 
         public DomainException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected DomainException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

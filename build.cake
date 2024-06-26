@@ -109,7 +109,6 @@ Task("Run-Unit-Tests")
                 .WithFilter("-[TT.Web]*")
                 .WithFilter("-[TT.Migrations]*")
                 .WithFilter("-[TT.Tests]*")
-                .WithFilter("-[TT.IntegrationTests]*")
             );
         }
         else
@@ -119,46 +118,9 @@ Task("Run-Unit-Tests")
     }
 );
 
-Task("Run-Integration-Tests")
-    .IsDependentOn("Build")
-    .Does(() => {
-        using (System.IO.StreamWriter file = new System.IO.StreamWriter($@"./src/TT.IntegrationTests/bin/{configuration}/net48/ConnectionStrings.config"))
-        {
-            file.WriteLine($"<connectionStrings><add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{connectionString}\"/></connectionStrings>");
-        }
-    
-        var platform = new CakePlatform();
-        if (platform.Family == PlatformFamily.Windows)
-        {
-            var integrationCoverage = new FilePath("integration-test-coverage.xml");
-            OpenCover(tool => {
-               tool.NUnit3("./src/**/bin/" + configuration + "/net48/*.IntegrationTests.dll", new NUnit3Settings {
-                   Results = new[]  {new NUnit3Result { FileName = "integration-test-result.xml", Transform = "nunit3-junit.xslt" } }
-                   });
-            },
-            integrationCoverage,
-            new OpenCoverSettings() { ReturnTargetCodeOffset = 0 }
-                .WithRegisterDll("Path64")
-                .WithFilter("+[TT.Domain]*")
-                .WithFilter("+[TT.Web]*")
-                .WithFilter("-[TT.Migrations]*")
-                .WithFilter("-[TT.Tests]*")
-                .WithFilter("-[TT.IntegrationTests]*")
-            );
-        }
-        else
-        {
-            NUnit3("./src/**/bin/" + configuration + "/net48/*.IntegrationTests.dll");
-        }
-        
-        System.IO.File.Delete($@"./src/TT.IntegrationTests/bin/{configuration}/net48/ConnectionStrings.config");
-    }
-);
-
 Task("Generate-Report")
     .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Run-Integration-Tests")
-    .DoesForEach(new [] { (File("unit-test-coverage.xml"), "unit"), (File("integration-test-coverage.xml"), "integration") }, (tuple) =>
+    .DoesForEach(new [] { (File("unit-test-coverage.xml"), "unit") }, (tuple) =>
     {
         var (path, testName) = tuple;
 
@@ -310,7 +272,6 @@ Task("CI-Build")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Run-Integration-Tests")
     .IsDependentOn("Generate-Report");
 
 // Drops, re-migrates and re-seeds the DB

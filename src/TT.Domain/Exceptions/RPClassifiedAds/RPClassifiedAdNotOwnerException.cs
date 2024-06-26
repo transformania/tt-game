@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.RPClassifiedAds
 {
@@ -18,12 +17,6 @@ namespace TT.Domain.Exceptions.RPClassifiedAds
         }
 
         public RPClassifiedAdNotOwnerException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        private RPClassifiedAdNotOwnerException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

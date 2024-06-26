@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.RPClassifiedAds
 {
-    [Serializable]
     public sealed class RPClassifiedAdInvalidInputException : RPClassifiedAdException
     {
         public RPClassifiedAdInvalidInputException()
@@ -19,12 +17,6 @@ namespace TT.Domain.Exceptions.RPClassifiedAds
         }
 
         public RPClassifiedAdInvalidInputException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        private RPClassifiedAdInvalidInputException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

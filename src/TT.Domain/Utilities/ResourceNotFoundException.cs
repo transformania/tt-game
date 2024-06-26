@@ -1,10 +1,8 @@
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Utilities
 {
-    [Serializable]
     public class ResourceNotFoundException : Exception
     {
         public Assembly Assembly { get; private set; }
@@ -22,12 +20,6 @@ namespace TT.Domain.Utilities
         }
 
         public ResourceNotFoundException(string message, Exception inner, Assembly assembly, string resourceName) : base(message, inner)
-        {
-            Assembly = assembly;
-            ResourceName = resourceName;
-        }
-
-        protected ResourceNotFoundException(SerializationInfo info, StreamingContext context, Assembly assembly, string resourceName) : base(info, context)
         {
             Assembly = assembly;
             ResourceName = resourceName;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.RPClassifiedAds
 {
-    [Serializable]
     public sealed class RPClassifiedAdNotFoundException : RPClassifiedAdException
     {
         public RPClassifiedAdNotFoundException()
@@ -19,12 +17,6 @@ namespace TT.Domain.Exceptions.RPClassifiedAds
         }
 
         public RPClassifiedAdNotFoundException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        private RPClassifiedAdNotFoundException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

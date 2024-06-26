@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Mvc;
-using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Chat.Queries;
@@ -9,15 +8,23 @@ using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
     [Authorize]
     public partial class ChatController : Controller
     {
+        private readonly bool chatV2Enabled;
+
+        public ChatController(IFeatureService featureService)
+        {
+            chatV2Enabled = featureService.IsFeatureEnabled(Features.ChatV2);
+        }
+
         public virtual ActionResult Index(string room)
         {
-            return FeatureContext.IsEnabled<ChatV2>() ? ChatV2() : ChatV1(room);
+            return chatV2Enabled ? ChatV2() : ChatV1(room);
         }
 
         private ActionResult ChatV1(string room)
@@ -59,6 +66,7 @@ namespace TT.Web.Controllers
                 RoomName = roomName,
                 ChatUser = me.Player.GetDescriptor().Item1,
                 ChatColor = me.Player.ChatColor,
+                ChatV2 = false,
             };
 
             ViewBag.Result = TempData["Result"];
@@ -139,7 +147,7 @@ namespace TT.Web.Controllers
 
         private ActionResult ChatV2()
         {
-            return View(MVC.Chat.Views.Chat);
+            return View(MVC.Chat.Views.Chat, new ChatViewModel { ChatV2 = true });
         }
 
         public virtual ActionResult Chat(string room)

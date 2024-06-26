@@ -28,9 +28,6 @@ namespace TT.Web.Controllers
     public partial class PvPController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public PvPController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected PvPController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

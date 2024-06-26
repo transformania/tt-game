@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
-using FeatureSwitch;
 
 namespace TT.Web
 {
@@ -12,8 +11,6 @@ namespace TT.Web
     {
         protected void Application_Start()
         {
-            new FeatureSetBuilder().Build();
-
             AreaRegistration.RegisterAllAreas();
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

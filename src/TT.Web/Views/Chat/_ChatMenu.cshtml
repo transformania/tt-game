@@ -1,7 +1,6 @@
-﻿@using FeatureSwitch
-@using TT.Domain
+﻿@model TT.Domain.ViewModels.ChatViewModel
 
-@if (FeatureContext.IsEnabled<ChatV2>())
+@if (Model.ChatV2)
 {
     <li><a data-toggle="modal" data-target="#createChatRoomModal">Create Room</a></li>
     <li><a data-toggle="modal" data-target="#listChatRoomsModal">Room List</a></li>

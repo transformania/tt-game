@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
-using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -15,6 +14,7 @@ using TT.Domain.Legacy.Procedures;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Players.Queries;
+using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
@@ -24,12 +24,14 @@ namespace TT.Web.Controllers
         private ApplicationUserManager userManager;
         private ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;
+        private readonly bool useCaptcha;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager, IFeatureService featureService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.authenticationManager = authenticationManager;
+            useCaptcha = featureService.IsFeatureEnabled(Features.UseCaptcha);
         }
 
         //
@@ -39,7 +41,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View(MVC.Account.Views.Login);
+            return View(MVC.Account.Views.Login, new LoginModel { UseCaptcha = useCaptcha });
         }
 
         //
@@ -50,8 +52,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Login(LoginModel model, string returnUrl)
         {
-
-            if (FeatureContext.IsEnabled<UseCaptcha>())
+            if (useCaptcha)
             {
                 var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
@@ -106,7 +107,7 @@ namespace TT.Web.Controllers
         [AllowAnonymous]
         public virtual ActionResult Register()
         {
-            return View(MVC.Account.Views.Register);
+            return View(MVC.Account.Views.Register, new RegisterModel { UseCaptcha = useCaptcha });
         }
 
         //
@@ -118,7 +119,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult Register(RegisterModel model)
         {
 
-            if (FeatureContext.IsEnabled<UseCaptcha>())
+            if (useCaptcha)
             {
                 var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
@@ -344,7 +345,7 @@ namespace TT.Web.Controllers
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (FeatureContext.IsEnabled<UseCaptcha>() && DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
+            if (useCaptcha && DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
             {
                 var recaptchaHelper = this.GetRecaptchaVerificationHelper();
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))

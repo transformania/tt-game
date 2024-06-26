@@ -1,17 +1,16 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using FeatureSwitch;
-using TT.Domain;
+using TT.Web.Services;
 
 namespace TT.Web
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public static void RegisterRoutes(RouteCollection routes, IFeatureService featureService)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            if (FeatureContext.IsEnabled<ChatV2>())
+            if (featureService.IsFeatureEnabled(Features.ChatV2))
                 routes.MapRoute("Chat", "chat", MVC.Chat.Index());
 
             routes.MapRoute("ChatRoom", "chat/rooms/{room}", MVC.Chat.Index(null).AddRouteValue("room", UrlParameter.Optional));

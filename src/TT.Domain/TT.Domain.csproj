@@ -16,7 +16,6 @@
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="DelegateDecompiler.EntityFramework" Version="0.32.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="FeatureSwitch" Version="5.0.0" />
     <PackageReference Include="FluentValidation" Version="7.1.1" />
     <PackageReference Include="Highway.Data.EntityFramework" Version="8.0.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />

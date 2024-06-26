@@ -48,10 +48,14 @@ namespace TT.Web
                         { container.GetTypesToRegister(typeof(IValidator<>), new []{ domainAssembly }), CreationPolicy.Singleton }
                     });
 
+            // Features
+            var featureService = new FeatureService();
+            container.RegisterInstance(typeof(IFeatureService), featureService);
+
             // MVC
             container.RegisterMvcControllers(webAssembly);
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RouteConfig.RegisterRoutes(RouteTable.Routes, featureService);
 
             // WebApi
             container.RegisterWebApiControllers(httpConfig);

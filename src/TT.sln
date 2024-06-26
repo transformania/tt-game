@@ -11,11 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.Tests", "TT.Tests\TT.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.Migrations", "TT.Migrations\TT.Migrations.csproj", "{10556679-DA4A-4F86-ADAE-D98B4AD6260C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TT.IntegrationTests", "TT.IntegrationTests\TT.IntegrationTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6A6DA43C-7502-4656-A5FD-83A0A7561246} = {6A6DA43C-7502-4656-A5FD-83A0A7561246}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +33,6 @@ Global
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10556679-DA4A-4F86-ADAE-D98B4AD6260C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

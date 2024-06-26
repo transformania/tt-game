@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.RPClassifiedAds
 {
-    [Serializable]
     public class RPClassifiedAdException : DomainException
     {
         public RPClassifiedAdException()
@@ -19,12 +17,6 @@ namespace TT.Domain.Exceptions.RPClassifiedAds
         }
 
         public RPClassifiedAdException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected RPClassifiedAdException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

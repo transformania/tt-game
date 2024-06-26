@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.Identity
 {
-    [Serializable]
     public class UserException : DomainException
     {
         public UserException()
@@ -19,12 +17,6 @@ namespace TT.Domain.Exceptions.Identity
         }
 
         public UserException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected UserException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

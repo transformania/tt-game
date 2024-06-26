@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Domain", "src\TT.Domain\TT.Domain.csproj", "{0C4741AF-5A72-4460-A1B9-3B0D9315E427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Migrations", "src\TT.Migrations\TT.Migrations.csproj", "{38DCD0DC-87C0-4020-B814-55979212D612}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Tests", "src\TT.Tests\TT.Tests.csproj", "{BB9D928B-339B-46DC-86EC-C3FF783269FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Web", "src\TT.Web\TT.Web.csproj", "{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{28476165-72C9-4AB2-B1E7-04FD5C2FBAB0}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		cake.config = cake.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{8A8E95B1-DAE5-457A-BE1E-0BF05C771043}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
+		COPYING = COPYING
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Env", "Env", "{3DC01293-2403-43AC-9365-3D2C99FEE6A6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.gitlab-ci.yml = .gitlab-ci.yml
+		.mailmap = .mailmap
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C4741AF-5A72-4460-A1B9-3B0D9315E427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4741AF-5A72-4460-A1B9-3B0D9315E427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4741AF-5A72-4460-A1B9-3B0D9315E427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4741AF-5A72-4460-A1B9-3B0D9315E427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38DCD0DC-87C0-4020-B814-55979212D612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DCD0DC-87C0-4020-B814-55979212D612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DCD0DC-87C0-4020-B814-55979212D612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DCD0DC-87C0-4020-B814-55979212D612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9D928B-339B-46DC-86EC-C3FF783269FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9D928B-339B-46DC-86EC-C3FF783269FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9D928B-339B-46DC-86EC-C3FF783269FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9D928B-339B-46DC-86EC-C3FF783269FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C08D0ECD-4D1B-461D-886F-E0ACA492DD31}
+	EndGlobalSection
+EndGlobal

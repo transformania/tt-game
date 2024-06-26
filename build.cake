@@ -67,7 +67,7 @@ var connectionString = connectionStringBuilder.ToString();
 
 Task("Clean")
     .Does(() => {
-        MSBuild("./src/TT.sln", settings =>
+        MSBuild("./TT.sln", settings =>
             settings.SetConfiguration(configuration)
                 .SetVerbosity(Verbosity.Minimal)
                 .WithTarget("Clean"));
@@ -76,7 +76,7 @@ Task("Clean")
 
 Task("Restore-NuGet-Packages")
     .Does(() => {
-        NuGetRestore("./src/TT.sln");
+        NuGetRestore("./TT.sln");
     }
 );
 
@@ -84,7 +84,7 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() => {
-    MSBuild("./src/TT.sln", settings =>
+    MSBuild("./TT.sln", settings =>
         settings.SetConfiguration(configuration)
         .SetVerbosity(Verbosity.Minimal));
     }

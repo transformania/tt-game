@@ -95,7 +95,7 @@ namespace TT.Web
 
             container.Register(() => container.GetInstance<IOwinContextAccessor>().CurrentContext.Authentication, Lifestyle.Scoped);
 
-            container.Register<IDataContext, DomainContext>(Lifestyle.Scoped);
+            container.Register<IDataContext>(() => new DataContext("StatsWebConnection"), Lifestyle.Scoped);
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();

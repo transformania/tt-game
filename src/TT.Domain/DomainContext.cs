@@ -7,7 +7,7 @@ namespace TT.Domain
 {
     public class DomainContext : DataContext
     {
-        public DomainContext() : base("StatsWebConnection", new EntityMappings())
+        public DomainContext(string connectionStringOrName) : base(connectionStringOrName, new EntityMappings())
         {
             Database.SetInitializer(new NullDatabaseInitializer<DomainContext>());
         }

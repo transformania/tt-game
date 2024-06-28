@@ -24,6 +24,8 @@ namespace TT.Domain
         [ThreadStatic]
         private static IList<Guid> _sentNotifications;
 
+        private static string connectionStringOrName;
+
         public static IRoot Root
         {
             get { return _root ?? (_root = new Root()); }
@@ -35,7 +37,7 @@ namespace TT.Domain
             get
             {
                 return (_repository == null || _repository.Disposed) ?
-                    (_repository = new DomainRepository(new DomainContext())) :
+                    (_repository = new DomainRepository(new DomainContext(connectionStringOrName ?? "StatsWebConnection"))) :
                     _repository;
             }
             set { _repository = value; }
@@ -59,6 +61,11 @@ namespace TT.Domain
         public static void SetMapperFunc(Func<IMapper> mapperFunc)
         {
             DomainRegistry.mapperFunc = mapperFunc;
+        }
+
+        public static void SetConectionStringOrName(string connectionString)
+        {
+            connectionStringOrName = connectionString;
         }
     }
 }

@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "twitter-bootstrap@3.4.1",
+      "destination": "wwwroot/lib/twitter-bootstrap/"
+    },
+    {
+      "library": "signalr.js@2.0.3",
+      "destination": "wwwroot/lib/signalr.js/"
+    },
+    {
+      "library": "jquery@2.2.4",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/"
+    },
+    {
+      "library": "moment.js@2.26.0",
+      "destination": "wwwroot/lib/moment.js/",
+      "files": [
+        "moment.min.js",
+        "moment.js"
+      ]
+    },
+    {
+      "library": "datatables.net-responsive-bs@2.2.5",
+      "destination": "wwwroot/lib/datatables.net-responsive-bs/"
+    },
+    {
+      "library": "datatables.net-responsive@2.2.5",
+      "destination": "wwwroot/lib/datatables.net-responsive/"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/",
+      "files": [
+        "jquery-ui.min.js",
+        "jquery-ui.js"
+      ]
+    },
+    {
+      "library": "datatables.net@2.1.1",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+    {
+      "library": "datatables.net-bs@2.1.1",
+      "destination": "wwwroot/lib/datatables.net-bs/"
+    },
+    {
+      "library": "jquery-touch-events@2.0.3",
+      "destination": "wwwroot/lib/jquery-touch-events/"
+    },
+    {
+      "library": "clipboard.js@2.0.6",
+      "destination": "wwwroot/lib/clipboard.js/"
+    },
+    {
+      "library": "vis@4.21.0",
+      "destination": "wwwroot/lib/vis/"
+    },
+    {
+      "library": "Chart.js@2.9.3",
+      "destination": "wwwroot/lib/Chart.js/",
+      "files": [
+        "Chart.min.js",
+        "Chart.css",
+        "Chart.js",
+        "Chart.min.css"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "mispell@1.2.0",
+      "destination": "wwwroot/lib/mispell/",
+      "files": [
+        "dist/mispell.js"
+      ]
+    }
+  ]
+}

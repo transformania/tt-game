@@ -283,6 +283,8 @@ custom.min.css
 *-test-coverage.xml
 coverage/
 src/TT.Web/lib/
+src/TT.Server/wwwroot/lib/
+localsettings.json
 
 # Cake
 /tools/

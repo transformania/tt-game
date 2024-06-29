@@ -1,0 +1,916 @@
+﻿{
+  "rounds": [
+    {
+      "number": 1,
+      "name": "Alpha R1 (Era of Julia Medina)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 2,
+      "name": "Alpha R2 (Era of Kiara Kitsu)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 3,
+      "name": "Alpha R3 (Era of Elyn Kitsu)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 4,
+      "name": "Alpha R4 (Era of Celisi Tabiki)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 5,
+      "name": "Alpha R5 (Era of Rust Kitsu)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 6,
+      "name": "Alpha R6 (Era of Helia Harris)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 7,
+      "name": "Alpha R7 (2nd Era of Elyn Kitsu)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 8,
+      "name": "Alpha R8 (Era of Alicia Arriola)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 9,
+      "name": "Alpha R9 (Era of Hanna Patterson)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 10,
+      "name": "Alpha R10 (Era of Cole Kurz)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 11,
+      "name": "Alpha R11 (Era of Jess Ganes)",
+      "pvp": true,
+      "item": false,
+      "xp": false,
+      "achievement": false
+    },
+    {
+      "number": 12,
+      "name": "Alpha R12 (Era of Soul Blossom)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": false
+    },
+    {
+      "number": 13,
+      "name": "Alpha R13 (Era of Alexander Dantes)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": false
+    },
+    {
+      "number": 14,
+      "name": "Alpha R14",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": false
+    },
+    {
+      "number": 15,
+      "name": "Alpha R15 (Era of Nerati Sua)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": false
+    },
+    {
+      "number": 16,
+      "name": "Alpha R16",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": false
+    },
+    {
+      "number": 17,
+      "name": "Alpha R17",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 18,
+      "name": "Alpha R18 (Era of Parker Page)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 19,
+      "name": "Alpha R19 (Era of Lex Fairchild)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 20,
+      "name": "Alpha R20",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 21,
+      "name": "Alpha R21",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 22,
+      "name": "Alpha R22",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 23,
+      "name": "Alpha R23 (2nd Era of Nerati Sua)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 24,
+      "name": "Alpha R24 (Era of Heather 'Elaine' Brandenburg)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 25,
+      "name": "Alpha R25 (Era of Princess Cadance II the Psycho Hunter)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 26,
+      "name": "Alpha R26 (Era of Genevieve Moen)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 27,
+      "name": "Alpha R27 (Era of Sammi Wells)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 28,
+      "name": "Alpha R28 (Era of Kristyne Mercy)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 29,
+      "name": "Alpha R29 (Era of Lilith Valentine)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 30,
+      "name": "Alpha R30 (Second Era of Jess 'Street Sweeper' Ganes)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 31,
+      "name": "Alpha R31 (Era of Fox Cross)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 32,
+      "name": "Alpha R32 (Era of Dane Redd)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 33,
+      "name": "Alpha R33 (Second Era of Dane Redd)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 34,
+      "name": "Alpha R34 (Third Era of Dane Redd)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 35,
+      "name": "Alpha R35 (Era of Evangelina 'Sylwinds and Shadows' Kraft))",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 36,
+      "name": "Alpha R36 (Era of Dark Blade)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 37,
+      "name": "Alpha R37 (Era of Maria Rein)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 38,
+      "name": "Alpha R38 (Era of Freya Rein)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 39,
+      "name": "Alpha R39 (Era of Annabelle Jumeau)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 40,
+      "name": "Alpha R40 (Fourth Era of Dane Redd)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 41,
+      "name": "Alpha R41 (Era of Aleksander Vonhel)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 42,
+      "name": "Alpha R42 (Second Era of Dark Blade)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 43,
+      "name": "Alpha R43 (Era of Lara Ithilwen)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 44,
+      "name": "Alpha R44 (Era of Kasey Westler)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 45,
+      "name": "Alpha R45 (Era of Pepe Maus)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 46,
+      "name": "Alpha R46 (Era of Lucius Valentine)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 47,
+      "name": "Alpha R47 (Era of Elle Sawyer)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 48,
+      "name": "Alpha R48 (Era of Cali Ziegler)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 49,
+      "name": "Alpha R49 (Era of Henny Wuns)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 50,
+      "name": "Alpha R50 (Era of Yuriko Oyama)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 51,
+      "name": "Alpha R51 (Era of Iris Waldron)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 52,
+      "name": "Alpha R52 (Era of Abigail Jasione)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 53,
+      "name": "Alpha R53 (Era of Lydia Gemma)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 54,
+      "name": "Alpha R54 (Era of Yvesza Sylwind)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 55,
+      "name": "Alpha R55 (Era of Emily Hart)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 56,
+      "name": "Alpha R56 (Second Era of Lucius Valentine)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 57,
+      "name": "Alpha R57 (Era of Sorcha Primrose)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 58,
+      "name": "Alpha R58 (Second Era of Abigail Jasione)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 59,
+      "name": "Alpha R59 (Era of Celine Nysa)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 60,
+      "name": "Alpha 60 (Second Era of Lara Ithilwen)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 61,
+      "name": "Alpha 61 (Era of Amie Proffitt)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 62,
+      "name": "Alpha 62 (Era of Grizel Indivar)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 63,
+      "name": "Alpha 63 (Era of Razlien Banks)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 64,
+      "name": "Alpha 64 (Era of Titania Siofra)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 65,
+      "name": "Alpha 65 (Era of Viola Hawthorne)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 66,
+      "name": "Alpha 66 (Era of Alice Grayson)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 67,
+      "name": "Alpha 67 (Era of Sunnyglade Mafia)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 68,
+      "name": "Alpha 68 (Era of a Hallow Victory)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 69,
+      "name": "Alpha 69 (Era of Food for Thought)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 70,
+      "name": "Alpha 70 (Era of Krampus Fun)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 71,
+      "name": "Alpha 71 (Era of Back to School)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 72,
+      "name": "Alpha 72 (Era of Freeeeedom!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 73,
+      "name": "Alpha 73 (Era of Funny Bunnies!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 74,
+      "name": "Alpha 74 (Era of Flowers)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 75,
+      "name": "Alpha 75 (Era of Fairy Games)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 76,
+      "name": "Alpha 76 (Era of Loyal Maids)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 77,
+      "name": "Alpha 77 (Era of the Tournament Arc!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 78,
+      "name": "Alpha 78 (Era of the Nerdy Road Transmogrifiers!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 79,
+      "name": "Alpha 79 (Era of Tender Affection!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 80,
+      "name": "Alpha 80 (Era of Krampus Fun 2, Electric Boogaloo)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 81,
+      "name": "Alpha 81 (Era of Randomness)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 82,
+      "name": "Alpha 82 (Era of Nephthyma's Tomb)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 83,
+      "name": "Alpha 83 (Era of the Joke Shop)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 84,
+      "name": "Alpha 84 (Era of Lions, Tigers, and Bears)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 85,
+      "name": "Alpha 85 (Era of Heaven and Hell)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 86,
+      "name": "Alpha 86 (Era of Participation Trophy)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 87,
+      "name": "Alpha 87 (Era of Down for Lucky Freedom)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 88,
+      "name": "Alpha 88 (Era of Looter Shooter, Dogs, and Cooters)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 89,
+      "name": "Alpha 89 (Era of Toast and Waffles)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 90,
+      "name": "Alpha 90 (Only 90s Kids Will Remember)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 91,
+      "name": "Alpha 91 (Going Back to Basics)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 92,
+      "name": "Alpha 92 (Picnic Basket)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 93,
+      "name": "Beta 1 (Wow, that was lame.)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 94,
+      "name": "Alpha 94 (Out with the New. In with the Old.)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 95,
+      "name": "Alpha 95 (Public Transportation)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 96,
+      "name": "Alpha 96 (*notices ur Wüffie* wat's this? OwO)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 97,
+      "name": "Alpha 97 (Battle of the Sexes)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 98,
+      "name": "Alpha 98 (PvP and a Quest to Fail)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 99,
+      "name": "Alpha 99 (Adventure Time!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 100,
+      "name": "Alpha 100 (Absent Krampus!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 101,
+      "name": "Alpha 101 (Revenge of the Nerds!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 102,
+      "name": "Alpha 102 (Magical Healing Crystals!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 103,
+      "name": "Alpha 103 (Schoolyard Bully!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 104,
+      "name": "Alpha 104 (Puppy Profit!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 105,
+      "name": "Alpha 105 (Get In Character!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 106,
+      "name": "Alpha 106 (Maximally Transmogrified!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 107,
+      "name": "Alpha 107 (The Freedom of the Inanimating Petmaker!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 108,
+      "name": "Alpha 108 (This is Halloween!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 109,
+      "name": "Alpha 109 (Clumsy!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 110,
+      "name": "Alpha 110 (The Holiday Spirit!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 111,
+      "name": "Alpha 111 (Energetic Swap!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 112,
+      "name": "Alpha 112 (Easter? Eggs come from birds!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 113,
+      "name": "Alpha 113 (Doe, Fae, Me!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 114,
+      "name": "Alpha 113 (The Beach Episode!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    }
+  ]
+}

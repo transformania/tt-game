@@ -1,0 +1,20 @@
+﻿@model LocalEmailModel
+
+<form asp-controller="Account" asp-action="ChangeEmail" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <fieldset>
+        <legend>Change E-mail</legend>
+        <ol>
+            <li>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" />
+            </li>
+            <li>
+                <label asp-for="OldPassword"></label>
+                <input asp-for="OldPassword" />
+            </li>
+        </ol>
+        <input type="submit" value="Change E-mail">
+    </fieldset>
+</form>

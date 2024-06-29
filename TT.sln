@@ -35,6 +35,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Env", "Env", "{3DC01293-240
 		.mailmap = .mailmap
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Server", "src\TT.Server\TT.Server.csproj", "{B766284C-A8A1-40CE-B425-312D6D8524BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeedData", "SeedData", "{16337D92-0B56-40B9-AE5B-2D12D446DE03}"
+	ProjectSection(SolutionItems) = preProject
+		src\SeedData\01_InitialStatics.sql = src\SeedData\01_InitialStatics.sql
+		src\SeedData\InitialAdmin.sql = src\SeedData\InitialAdmin.sql
+		src\SeedData\InitialDMRolls.sql = src\SeedData\InitialDMRolls.sql
+		src\SeedData\InitialJewdewfaeEncounters.sql = src\SeedData\InitialJewdewfaeEncounters.sql
+		src\SeedData\InitialPvPStats.sql = src\SeedData\InitialPvPStats.sql
+		src\SeedData\InitialQuest.sql = src\SeedData\InitialQuest.sql
+		src\SeedData\InitialRestockItems.sql = src\SeedData\InitialRestockItems.sql
+		src\SeedData\InitialTFMessages.sql = src\SeedData\InitialTFMessages.sql
+		src\SeedData\InitialTomes.sql = src\SeedData\InitialTomes.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PreSeed", "PreSeed", "{D09FC8AC-9F06-4EB8-9B71-50308C4153BD}"
+	ProjectSection(SolutionItems) = preProject
+		src\SeedData\PreSeed\InitialEFMigration.sql = src\SeedData\PreSeed\InitialEFMigration.sql
+		src\SeedData\PreSeed\InitialRoles.sql = src\SeedData\PreSeed\InitialRoles.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,11 +78,18 @@ Global
 		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C08D0ECD-4D1B-461D-886F-E0ACA492DD31}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D09FC8AC-9F06-4EB8-9B71-50308C4153BD} = {16337D92-0B56-40B9-AE5B-2D12D446DE03}
 	EndGlobalSection
 EndGlobal

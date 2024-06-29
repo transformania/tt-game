@@ -1,0 +1,33 @@
+﻿@model LocalPasswordModel
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+@section menu
+{
+    <li><a asp-controller="PvP" asp-action="Play">Back to game</a></li>
+    <li><a asp-action="ChangeEmail">Change e-mail address</a></li>
+    <li><a asp-action="TermsOfService">View Terms of Service</a></li>
+    <li><a asp-action="PrivacyPolicy">View Privacy Policy</a></li>
+    <li><a asp-action="DeleteAccount"><span class="bad">Delete Account</span></a></li>
+}
+
+
+<div class="containerInner">
+
+    <h1>Manage Account</h1>
+
+    <p class="message-success">@ViewBag.StatusMessage</p>
+
+    <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+
+    @if (ViewBag.HasLocalPassword)
+    {
+        <partial name="_ChangePasswordPartial" />
+    }
+    else
+    {
+        <partial name="_SetPasswordPartial" />
+    }
+
+</div>

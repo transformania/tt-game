@@ -7,7 +7,7 @@ namespace TT.Domain.Concrete
     public class StatsContext : DbContext
     {
         public StatsContext()
-            : base("StatsWebConnection")
+            : base(StatsConnectionStringProvider.ConnectionStringOrName)
         {
             Database.SetInitializer(new NullDatabaseInitializer<StatsContext>());
         }

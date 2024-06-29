@@ -1,4 +1,5 @@
 using TT.Domain;
+using TT.Domain.Concrete;
 using TT.Server.Conventions;
 using TT.Server.Features.Identity;
 
@@ -8,6 +9,7 @@ builder.Configuration.AddJsonFile("localsettings.json", optional: true, reloadOn
 var configuration = builder.Configuration;
 
 DomainRegistry.SetConectionStringOrName(configuration.GetConnectionString("StatsWebConnection"));
+StatsConnectionStringProvider.ConnectionStringOrName = configuration.GetConnectionString("StatsWebConnection");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

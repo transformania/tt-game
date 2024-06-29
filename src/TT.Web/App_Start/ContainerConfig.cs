@@ -19,6 +19,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using TT.Domain;
+using TT.Domain.Concrete;
 using TT.Domain.CreationPolices;
 using TT.Domain.Services;
 using TT.Domain.Validation;
@@ -96,6 +97,7 @@ namespace TT.Web
             container.Register(() => container.GetInstance<IOwinContextAccessor>().CurrentContext.Authentication, Lifestyle.Scoped);
 
             container.Register<IDataContext>(() => new DataContext("StatsWebConnection"), Lifestyle.Scoped);
+            StatsConnectionStringProvider.ConnectionStringOrName = "StatsWebConnection";
 
             // Mediator
             container.RegisterSingleton<IMediator, Mediator>();

@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TT.Server: test.transformaniatime.com" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
+    <riderPublish configuration="Release" platform="Any CPU" publish_profile="test.transformaniatime.com.pubxml" user_name="transformania_dploy" uuid_high="-5231449607432486706" uuid_low="-5465908501563497285" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,107 @@
+﻿@model RegisterModel
+@using TT.Domain.Statics
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="offlinePlayersWrapperBG containerInner text-center">
+    <p class="frontHeader">THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</p>
+    <p>By registering for this site you agree that you are <b>at least 18 years of age</b> or <b>the legal in age of your country to view or read sexually explicit material</b>.  If you do not meet these criteria, please leave now.</p>
+</div>
+<div class="containerInner text-center">
+    <p class="frontHeader">What is Transformania Time?</p>
+    <p>Transformania Time game is a massively multiplayer player-versus-player browser-based game that revolves primarily around transformation themes, including transgender, trans-species, absorption, and inanimation (being turned into an item).  You will also encounter themes revolving around BDSM, mind control, and bimbofication.  <b>By registering or logging into this game you are agreeing that you are comfortable with these themes and are both informed of and obeying the local laws governing you.</b></p>
+</div>
+<div class="onlinePlayersWrapperBG containerInner text-center">
+
+    <div class="row">
+        <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
+            <img src="~/img/login-left.png">
+        </div>
+
+        <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+
+                <fieldset>
+
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username", autofocus = true })
+
+                    @Html.LabelFor(m => m.Email) <b><i>(Optional but encouraged)</i></b>
+                    @Html.TextBoxFor(m => m.Email, new {  @class = "form-control frontForm", placeholder = "Email" })
+
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control frontForm", placeholder = "Password" })
+
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control frontForm", placeholder = "Confirm Password" })
+
+                    <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the
+                        <a asp-action="@nameof(AccountController.TermsOfService)" target="_blank">Terms of Service</a>.
+                        <i>Updated @PvPStatics.LastTosUpdate</i>
+                    </p>
+                    <br>
+                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent"></p><br>
+
+                    <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled">
+                </fieldset>
+            }
+
+            <p style="margin-top: 50px;">
+                <a asp-action="@nameof(AccountController.Login)">Log in</a> <br>if you already have an account.
+            </p>
+
+        </div>
+
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/img/login-right.png">
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+        //toggleForms(true);
+        $("#consent").click(function () {
+            if ((this).checked) {
+                toggleForms(false);
+            } else {
+                toggleForms(true);
+            }
+        });
+    });
+
+    function toggleForms(value) {
+        $("#registerBtn").prop("disabled", value);
+    }
+    </script>
+}
+
+@section head
+{
+    <style>
+    .fullpageWarning {
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+        background-color: #ffc1fe;
+        color: black;
+        border: 5px solid darkviolet;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    input:disabled {
+        background: #b6b6b6;
+    }
+    </style>
+}

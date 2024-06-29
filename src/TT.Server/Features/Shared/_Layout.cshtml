@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="referrer" content="never" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+        <title>@(string.IsNullOrEmpty(ViewBag.Title) ? "Transformania Time" : $"{ViewBag.Title} - Transformania Time")</title>
+
+        <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/custom.css" rel="stylesheet" />
+        <link href="~/css/PvP.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net-bs/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/datatables.net-responsive-bs/responsive.bootstrap.min.css" rel="stylesheet" />
+
+        <link rel="shortcut icon" href="https://images.transformaniatime.com/Icons/tt_logo.ico" />
+        @RenderSection("head", false)
+    </head>
+    <body class="@(string.IsNullOrEmpty(ViewBag.BodyClasses) ? "" : ViewBag.BodyClasses)">
+        <div class="container" id="siteTop">
+            <nav class="navbar navbar-default outsideContainer navbarTT1">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <partial name="_MenuPartial" />
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+            @if (IsSectionDefined("menu"))
+            {
+                <nav class="navbar navbar-default outsideContainer navbarTT2">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                            <ul class="nav navbar-nav" style="width:100%;">
+                                @RenderSection("menu")
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                </nav>
+            }
+            <div>
+                <p id="resultContainer" class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+                <p id="errorContainer" class="infoMessage error">@Html.Raw(ViewBag.ErrorMessage)</p>
+                <p id="suberrorContainer" class="infoMessage suberror">@Html.Raw(ViewBag.SubErrorMessage)</p>
+            </div>
+            @RenderBody()
+            @if (IsSectionDefined("menubottom"))
+            {
+                <nav class="navbar navbar-default outsideContainer navbarTT2">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                            <ul class="nav navbar-nav" style="width: 100%;">
+                                @RenderSection("menubottom")
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                </nav>
+            }
+        </div>
+
+        <div class="container" >
+            <footer class="outsideContainer footerTT">
+                <a href="#siteTop">[ Back to top ]</a> ||
+                <a asp-controller="Account" asp-action="TermsOfService" target="_blank">[ Terms of Service ]</a> ||
+                <a asp-controller="Account" asp-action="PrivacyPolicy" target="_blank">[ Privacy Policy ]</a> ||
+                Transformania Time :: 2013 - @DateTime.UtcNow.Year
+            </footer>
+        </div>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/datatables.net-bs/dataTables.bootstrap.min.js"></script>
+        <script src="~/lib/datatables.net-responsive/dataTables.responsive.min.js"></script>
+        <script src="~/lib/datatables.net-responsive-bs/responsive.bootstrap.min.js"></script>
+        <script src="~/lib/moment.js/moment.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
+        @RenderSection("scripts", false)
+        <script src="~/js/boxesResize.js"></script>
+    </body>
+</html>

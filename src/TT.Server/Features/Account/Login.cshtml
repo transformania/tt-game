@@ -1,0 +1,94 @@
+﻿@model TT.Server.Features.Account.LoginModel
+@using TT.Domain.Statics
+
+<div class="offlinePlayersWrapperBG containerInner text-center">
+    <p class="frontHeader">THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</p>
+    <p>By registering for this site you agree that you are <b>at least 18 years of age</b> or <b>the legal in age of your country to view or read sexually explicit material</b>.  If you do not meet these criteria, please leave now.</p>
+</div>
+<div class="containerInner text-center">
+    <p class="frontHeader">What is Transformania Time?</p>
+    <p>Transformania Time game is a massively multiplayer player-versus-player browser-based game that revolves primarily around transformation themes, including transgender, trans-species, absorption, and inanimation (being turned into an item).  You will also encounter themes revolving around BDSM, mind control, and bimbofication.  <b>By registering or logging into this game you are agreeing that you are comfortable with these themes and are both informed of and obeying the local laws governing you.</b></p>
+</div>
+<div class="onlinePlayersWrapperBG containerInner text-center">
+    <div class="row">
+        <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
+            <img src="~/img/login-left.png"></div>
+
+        <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true);
+
+                <fieldset>
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control frontForm", placeholder = "Username", autofocus = true })
+                    @Html.ValidationMessageFor(m => m.UserName)
+
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control frontForm", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password)
+
+                    @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe) <br>
+
+                    <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the <a asp-action="@nameof(AccountController.TermsOfService)">Terms of Service</a>. <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
+                    <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent"></p><br>
+
+                    <input type="submit" class="btn" value="Login" id="submitBtn" disabled="disabled">
+                </fieldset>
+
+                <p style="margin-top: 50px;">
+                    <a asp-action="@nameof(AccountController.Register)">Register</a> <br>if you don't have an account.
+                </p>
+            }
+            @if (ViewBag.ReturnUrl == "/" || String.IsNullOrEmpty(ViewBag.ReturnUrl))
+            {
+                <br>
+                <br>
+
+                <p>
+                    Or did you want to play single player javascript game -
+                    <a href="https://tt-gameshow.transformaniatime.com/">Transformania Gameshow</a> ?
+                </p>
+            }
+        </div>
+
+
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/img/login-right.png"></div>
+    </div>
+</div>
+    <section id="loginForm">
+
+    </section>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+       //toggleForms(true);
+        $("#consent").click(function () {
+            if ((this).checked) {
+                toggleForms(false);
+            } else {
+                toggleForms(true);
+            }
+        });
+    });
+
+    function toggleForms(value) {
+        $("#submitBtn").prop("disabled", value);
+    }
+
+    </script>
+}
+
+@section head
+{
+    <style>
+
+   @@media (max-width: 768px) {
+    .loginCenter{
+        padding: 0px;
+    }
+        }
+    </style>
+}

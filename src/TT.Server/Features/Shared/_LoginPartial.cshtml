@@ -1,0 +1,13 @@
+﻿@if (User.Identity.IsAuthenticated) {
+    <text>
+        <li><a asp-action="Manage" class="username" title="Manage">id: @User.Identity.Name</a></li>
+        <form asp-action="LogOff" method="post" id="logoutForm">
+            <li class="logout">
+                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a>
+            </li>
+        </form>
+    </text>
+} else {
+        <li><a asp-action="Register" id="registerLink">Register</a></li>
+        <li><a asp-action="Login" id="loginLink">Log in</a></li>
+}

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
 using TT.Domain.Messages.DTOs;
@@ -15,15 +16,16 @@ namespace TT.Domain.Messages.Queries
         {
             ContextQuery = ctx =>
             {
-                var output = ctx.AsQueryable<Message>()
-                            .Where(m => m.Id == MessageId &&
-                                m.IsDeleted == false)
-                            .ProjectToFirstOrDefault<MessageDetail>();
+                var output = ctx
+                    .AsQueryable<Message>()
+                    .Include(m => m.Sender)
+                    .Include(m => m.Receiver)
+                    .FirstOrDefault(m => m.Id == MessageId && m.IsDeleted == false);
 
-                if (output.Receiver.Id != OwnerId)
+                if (output?.Receiver.Id != OwnerId)
                     throw new DomainException($"Player {OwnerId} does not own message {MessageId}");
 
-                return output;
+                return output.MapToDto();
             };
 
             return ExecuteInternal(context);

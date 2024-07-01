@@ -1,13 +1,11 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
 using TT.Domain.Covenants.Entities;
-using TT.Domain.Identity.Entities;
 using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Covenants.Mappings
 {
-    public class CovenantMappings : Profile, IMappingConfiguration
+    public class CovenantMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -19,11 +17,6 @@ namespace TT.Domain.Covenants.Mappings
                 .HasOptional(p => p.CovenantLed)
                 .WithRequired(d => d.Leader)
                 .Map(m => m.MapKey("LeaderId"));
-
-        }
-
-        public CovenantMappings()
-        {
 
         }
     }

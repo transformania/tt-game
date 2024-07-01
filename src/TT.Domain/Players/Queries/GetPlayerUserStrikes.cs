@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Entities;
+using TT.Domain.Players.Mappings;
 
 namespace TT.Domain.Players.Queries
 {
@@ -13,9 +15,13 @@ namespace TT.Domain.Players.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Player>()
-                            .Where(p => p.User.Id == UserId)
-                            .ProjectToFirstOrDefault<PlayerUserStrikesDetail>();
+                var player = ctx
+                    .AsQueryable<Player>()
+                    .Include(p => p.User.Strikes.Select(s => s.User))
+                    .Include(p => p.User.Strikes.Select(s => s.FromModerator))
+                    .FirstOrDefault(p => p.User.Id == UserId);
+
+                return player.MapToPlayerStrikesDto();
             };
 
             return ExecuteInternal(context);

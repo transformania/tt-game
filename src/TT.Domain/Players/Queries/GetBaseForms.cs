@@ -14,7 +14,13 @@ namespace TT.Domain.Players.Queries
                 ctx =>
                     ctx.AsQueryable<FormSource>()
                         .Where(m => m.FriendlyName == "Regular Guy" || m.FriendlyName == "Regular Girl")
-                        .ProjectToQueryable<BaseFormDetail>().OrderByDescending(f => f.FriendlyName);
+                        .OrderByDescending(f => f.FriendlyName)
+                        .Select(f => new BaseFormDetail
+                        {
+                            Id = f.Id,
+                            FriendlyName = f.FriendlyName,
+                            PortraitUrl = f.PortraitUrl
+                        });
             return ExecuteInternal(context);
         }
     }

@@ -14,11 +14,15 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery =
                 ctx =>
-                    ctx.AsQueryable<Report>()
+                {
+                    var reports = ctx.AsQueryable<Report>()
                         .Include(r => r.Reporter)
                         .Include(r => r.Reported)
                         .OrderByDescending(s => s.Timestamp)
-                        .ProjectToQueryable<ReportDetail>();
+                        .ToList();
+
+                    return reports.Select(r => r.MapToDto()).AsQueryable();
+                };
 
             return ExecuteInternal(context);
         }

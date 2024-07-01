@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Queries.Leaderboard;
+using TT.Domain.Players.DTOs;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels.World;
 using TT.Domain.World.Queries;
@@ -74,7 +75,7 @@ namespace TT.Web.Controllers
             }
 
             var output = await mediator.Send(new ItemLeaderboardRequest { Limit = 100 });
-            var castedOutput = output.Select(i => (ItemFormerPlayerDetail)i).Memoize();
+            var castedOutput = output.Select(i => i.MapToFormerPlayerDto()).Memoize();
 
             return View(MVC.Leaderboard.Views.ItemLeaderboard, castedOutput);
         }

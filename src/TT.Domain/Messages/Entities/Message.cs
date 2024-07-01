@@ -1,7 +1,9 @@
 ﻿using System;
 using TT.Domain.Entities;
 using TT.Domain.Messages.Commands;
+using TT.Domain.Messages.DTOs;
 using TT.Domain.Players.Entities;
+using TT.Domain.Players.Mappings;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Messages.Entities
@@ -57,6 +59,20 @@ namespace TT.Domain.Messages.Entities
             }
 
             return output;
+        }
+
+        public MessageDetail MapToDto()
+        {
+            return new MessageDetail
+            {
+                MessageId = Id,
+                Sender = Sender?.MapToPlayerMessageDto(),
+                Receiver = Receiver?.MapToPlayerMessageDto(),
+                ReadStatus = ReadStatus,
+                MessageText = MessageText,
+                Timestamp = Timestamp,
+                ConversationId = ConversationId,
+            };
         }
 
         public void MarkAsRead(int isRead)

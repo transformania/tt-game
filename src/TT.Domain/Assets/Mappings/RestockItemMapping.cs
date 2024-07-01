@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.Assets.DTOs;
 using TT.Domain.Assets.Entities;
 
 namespace TT.Domain.Assets.Mappings
 {
-    public class RestockItemMappings : Profile, IMappingConfiguration
+    public class RestockItemMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -15,11 +13,6 @@ namespace TT.Domain.Assets.Mappings
                 .HasKey(cr => cr.Id)
                 .HasRequired(cr => cr.BaseItem).WithMany();
 
-        }
-
-        public RestockItemMappings()
-        {
-            CreateMap<RestockItem, RestockItemDetail>();
         }
     }
 }

@@ -2,23 +2,23 @@
 {
     public class EffectSourceDetail
     {
-        public string FriendlyName { get; protected set; }
-        public string Description { get; protected set; }
-        public int AvailableAtLevel { get; protected set; }
-        public string PreRequesite { get; protected set; }
+        public string FriendlyName { get; protected internal set; }
+        public string Description { get; protected internal set; }
+        public int AvailableAtLevel { get; protected internal set; }
+        public string PreRequesite { get; protected internal set; }
 
-        public bool isLevelUpPerk { get; protected set; }
-        public int Duration { get; protected set; }
-        public int Cooldown { get; protected set; }
+        public bool isLevelUpPerk { get; protected internal set; }
+        public int Duration { get; protected internal set; }
+        public int Cooldown { get; protected internal set; }
 
-        public string ObtainedAtLocation { get; protected set; }
+        public string ObtainedAtLocation { get; protected internal set; }
 
-        public bool IsRemovable { get; protected set; }
+        public bool IsRemovable { get; protected internal set; }
 
-        public int BlessingCurseStatus { get; protected set; }
+        public int BlessingCurseStatus { get; protected internal set; }
 
-        public string MessageWhenHit { get; protected set; }
-        public string MessageWhenHit_M { get; protected set; }
+        public string MessageWhenHit { get; protected internal set; }
+        public string MessageWhenHit_M { get; protected internal set; }
         public string MessageWhenHit_F { get; protected set; }
 
         public string AttackerWhenHit { get; protected set; }

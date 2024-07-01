@@ -1,5 +1,4 @@
 using System;
-using AutoMapper;
 using TT.Domain.Abstract;
 using TT.Domain.Services;
 using System.Collections.Generic;
@@ -52,15 +51,6 @@ namespace TT.Domain
         public static IList<Guid> SentNotifications
         {
             get { return _sentNotifications ?? (_sentNotifications = new List<Guid>()); }
-        }
-
-        public static IMapper Mapper => mapperFunc();
-
-        private static Func<IMapper> mapperFunc;
-
-        public static void SetMapperFunc(Func<IMapper> mapperFunc)
-        {
-            DomainRegistry.mapperFunc = mapperFunc;
         }
 
         public static void SetConectionStringOrName(string connectionString)

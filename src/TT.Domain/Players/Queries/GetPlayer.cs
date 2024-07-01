@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Entities;
@@ -13,9 +14,13 @@ namespace TT.Domain.Players.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Player>()
-                            .Where(p => p.BotId == BotId)
-                            .ProjectToFirstOrDefault<PlayerDetail>();
+                var player = ctx
+                    .AsQueryable<Player>()
+                    .Include(p => p.User)
+                    .Include(p => p.ItemXP)
+                    .FirstOrDefault(p => p.BotId == BotId);
+
+                return player?.MapToDto();
             };
 
             return ExecuteInternal(context);

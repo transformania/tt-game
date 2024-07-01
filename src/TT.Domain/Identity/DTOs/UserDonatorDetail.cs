@@ -6,23 +6,19 @@ namespace TT.Domain.Identity.DTOs
     {
         public string Id { get; set; }
         public string UserName { get; set; }
-        public Donator Donator { get; set; }
+        public DonatorDetail Donator { get; set; }
 
         public string GetStyleColor()
         {
-            var caseSwitch = this.Donator.Tier;
-            switch (caseSwitch)
+            var caseSwitch = this.Donator?.Tier;
+            return caseSwitch switch
             {
-                case 0:
-                    return "lightgray";
-                case 1:
-                    return "white";
-                case 2:
-                    return "cyan";
-                case 3:
-                    return "lightgreen";
-            }
-            return "";
+                0 => "lightgray",
+                1 => "white",
+                2 => "cyan",
+                3 => "lightgreen",
+                _ => ""
+            };
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TT.Domain.Items.DTOs
         public PlayPageItemDetail.PlayPagePlayerDetail Owner { get; set; }
         public PlayPageItemDetail.PlayPagePlayerDetail FormerPlayer { get; set; }
         public int Level { get; set; }
-        public List<ItemRuneObject> Runes { get; protected set; }
+        public List<ItemRuneObject> Runes { get; protected internal set; }
 
         public string PrintVictimName()
         {

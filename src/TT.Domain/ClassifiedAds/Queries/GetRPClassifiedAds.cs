@@ -23,14 +23,25 @@ namespace TT.Domain.ClassifiedAds.Queries
             ContextQuery = ctx =>
             {
                 var query = (from ad in ctx.AsQueryable<RPClassifiedAd>()
-                             join player in ctx.AsQueryable<Player>() // GROUP JOIN
-                                 on ad.OwnerMembershipId equals player.MembershipId into players
-                             where ad.RefreshTimestamp >= time
-                             orderby ad.RefreshTimestamp descending
-                             select new { RPClassifiedAd = ad, Players = players })
-                    .ProjectToQueryable<RPClassifiedAdAndPlayerDetail>();
+                        join player in ctx.AsQueryable<Player>() // GROUP JOIN
+                            on ad.OwnerMembershipId equals player.MembershipId into players
+                        where ad.RefreshTimestamp >= time
+                        orderby ad.RefreshTimestamp descending
+                        select new { RPClassifiedAd = ad, Players = players })
+                    .ToList();
 
-                return query;
+                return query.Select(cr => new RPClassifiedAdAndPlayerDetail
+                {
+                    RPClassifiedAd = cr.RPClassifiedAd.MapToDto(),
+                    Players = cr.Players.Select(p => new PlayerDetail
+                    {
+                        Id = p.Id,
+                        DonatorLevel = p.DonatorLevel,
+                        Nickname = p.Nickname,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName
+                    }).ToList()
+                }).AsQueryable();
             };
 
             return ExecuteInternal(context);

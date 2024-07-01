@@ -15,7 +15,13 @@ namespace TT.Domain.Players.Queries
             {
                 return ctx.AsQueryable<Player>()
                             .Where(p => p.Id == playerId)
-                            .ProjectToFirstOrDefault<PlayerBusDetail>();
+                            .Select(p => new PlayerBusDetail
+                            {
+                                Money = p.Money,
+                                ActionPoints = p.ActionPoints,
+                                LastCombatTimestamp = p.LastCombatTimestamp
+                            })
+                            .FirstOrDefault();
             };
 
             return ExecuteInternal(context);

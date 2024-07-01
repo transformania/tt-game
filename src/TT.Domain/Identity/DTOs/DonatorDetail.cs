@@ -7,6 +7,6 @@
         public int Tier { get; set; }
         public decimal ActualDonationAmount { get; set; }
         public string SpecialNotes { get; set; }
-        public virtual UserDetail Owner { get; protected set; }
+        public virtual UserDetail Owner { get; protected internal set; }
     }
 }

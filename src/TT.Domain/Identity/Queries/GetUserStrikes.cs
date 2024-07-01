@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Identity.DTOs;
@@ -15,10 +16,16 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery =
                 ctx =>
-                    ctx.AsQueryable<Strike>()
+                {
+                    var strikes = ctx.AsQueryable<Strike>()
+                        .Include(s => s.User)
+                        .Include(s => s.FromModerator)
                         .Where(m => m.User.Id == UserId)
                         .OrderByDescending(s => s.Timestamp)
-                        .ProjectToQueryable<StrikeDetail>();
+                        .ToList();
+
+                    return strikes.Select(s => s.MapToDto()).AsQueryable();
+                };
 
             return ExecuteInternal(context);
         }

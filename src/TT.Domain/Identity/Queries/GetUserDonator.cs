@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Entities;
@@ -14,9 +15,12 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<User>()
-                           .Where(p => p.Donator.Id == Id)
-                           .ProjectToFirstOrDefault<UserDonatorDetail>();
+                var donator = ctx
+                    .AsQueryable<User>()
+                    .Include(m => m.Donator)
+                    .FirstOrDefault(p => p.Donator.Id == Id);
+
+                return donator?.MapToDonatorDto();
             };
 
             return ExecuteInternal(context);

@@ -1,11 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
 using TT.Domain.Entities.TFEnergies;
 
 namespace TT.Domain.TFEnergies.Mappings
 {
-    public class SelfRestoreMappings : Profile, IMappingConfiguration
+    public class SelfRestoreMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {

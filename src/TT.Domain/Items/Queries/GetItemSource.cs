@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Entities;
+using TT.Domain.Items.Mappings;
 
 namespace TT.Domain.Items.Queries
 {
@@ -13,9 +15,12 @@ namespace TT.Domain.Items.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<ItemSource>()
-                           .Where(p => p.Id == ItemSourceId)
-                           .ProjectToFirstOrDefault<ItemSourceDetail>();
+                var itemSource = ctx
+                    .AsQueryable<ItemSource>()
+                    .Include(i => i.GivesEffectSource)
+                    .FirstOrDefault(p => p.Id == ItemSourceId);
+
+                return itemSource.MapToItemSourceDto();
             };
 
             return ExecuteInternal(context);

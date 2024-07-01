@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.World.DTOs;
@@ -12,10 +13,17 @@ namespace TT.Domain.World.Queries
 
         public override IEnumerable<XpLeaderboardEntryDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<XpLeaderboardEntry>()
-            .Where(r => r.RoundNumber == Round)
-            .OrderBy(r => r.Rank)
-            .ProjectToQueryable<XpLeaderboardEntryDetail>();
+            ContextQuery = ctx =>
+            {
+                var entries = ctx.AsQueryable<XpLeaderboardEntry>()
+                    .Include(r => r.FormSource)
+                    .Where(r => r.RoundNumber == Round)
+                    .OrderBy(r => r.Rank)
+                    .ToList();
+
+                return entries.Select(r => r.MapToDto()).AsQueryable();
+            };
+
             return ExecuteInternal(context);
         }
     }

@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Identity.Mappings
 {
-    public class IdentityMappings : Profile, IMappingConfiguration
+    public class IdentityMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -75,15 +73,6 @@ namespace TT.Domain.Identity.Mappings
             modelBuilder.Entity<Role>()
                 .ToTable("AspNetRoles")
                 .HasKey(r => r.Id);
-        }
-
-        public IdentityMappings()
-        {
-            CreateMap<User, UserDetail>();
-            CreateMap<User, UserDonatorDetail>();
-            CreateMap<Stat, StatDetail>();
-            CreateMap<Strike, StrikeDetail>();
-            CreateMap<Report, ReportDetail>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using TT.Domain.Players.Entities;
 using TT.Domain.Skills.Commands;
+using TT.Domain.Skills.DTOs;
 
 namespace TT.Domain.Entities.Skills
 {
@@ -40,5 +41,31 @@ namespace TT.Domain.Entities.Skills
             return newSkill;
         }
 
+        public SkillDetail MapToDto()
+        {
+            return new SkillDetail
+            {
+                Id = Id,
+                Owner = Owner.MapToDto(),  // MapToDetailDto() are assumed methods in Player and SkillSource
+                Name = Name,
+                SkillSource = SkillSource.MapToDto(),
+                Duration = Duration,
+                Charge = Charge,
+                TurnStamp = TurnStamp,
+                IsArchived = IsArchived,
+                Bookmarked = Bookmarked
+            };
+        }
+
+        public SkillSourceFormSourceDetail MapToFormSourceDto()
+        {
+            return new SkillSourceFormSourceDetail
+            {
+                Id = Id,
+                IsArchived = IsArchived,
+                Bookmarked = Bookmarked,
+                SkillSource = SkillSource.MapToFormSourceNameDto()
+            };
+        }
     }
 }

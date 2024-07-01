@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Assets.DTOs;
 using TT.Domain.Assets.Entities;
@@ -14,9 +15,12 @@ namespace TT.Domain.Assets.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Tome>()
-                            .Where(cr => cr.BaseItem.Id == ItemSourceId)
-                            .ProjectToFirstOrDefault<TomeDetail>();
+                var tome = ctx
+                    .AsQueryable<Tome>()
+                    .Include(cr => cr.BaseItem)
+                    .FirstOrDefault(cr => cr.BaseItem.Id == ItemSourceId);
+
+                return tome?.MapToDto();
             };
 
             return ExecuteInternal(context);

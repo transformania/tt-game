@@ -15,14 +15,15 @@ namespace TT.Domain.Skills.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Skill>()
+                var skills = ctx.AsQueryable<Skill>()
                             .Include(s => s.SkillSource)
                             .Include(s => s.SkillSource.FormSource)
                             .Include(s  => s.SkillSource.FormSource.ItemSource)
-                            .Include(s => s.SkillSource.FormSource.Gender)
                             .Include(s => s.SkillSource.GivesEffectSource)
                            .Where(s => s.Owner.Id == playerId)
-                           .ProjectToQueryable<SkillSourceFormSourceDetail>();
+                           .ToList();
+
+                return skills.Select(s => s.MapToFormSourceDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

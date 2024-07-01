@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -25,6 +26,28 @@ namespace TT.Domain.Identity.Entities
         public void SetLiveStatus(bool isLive)
         {
             IsLive = isLive;
+        }
+
+        public ArtistBioDetail MapToDto()
+        {
+            return new ArtistBioDetail
+            {
+                Id = Id,
+                Owner = Owner.MapToDto(),
+                PlayerNamePrivacyLevel = PlayerNamePrivacyLevel,
+                OtherNames = OtherNames,
+                Email = Email,
+                Url1 = Url1,
+                Url2 = Url2,
+                Url3 = Url3,
+                Text = Text,
+                AcceptingComissions = AcceptingComissions,
+                LastUpdated = LastUpdated,
+                AnimateImages = AnimateImages,
+                InanimateImages = InanimateImages,
+                AnimalImages = AnimalImages,
+                IsLive = IsLive
+            };
         }
     }
 }

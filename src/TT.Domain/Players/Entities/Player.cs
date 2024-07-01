@@ -11,6 +11,7 @@ using TT.Domain.Identity.Entities;
 using TT.Domain.Items.Entities;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
+using TT.Domain.Players.DTOs;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -176,6 +177,23 @@ namespace TT.Domain.Players.Entities
                 AbuseLockoutMessage = cmd.AbuseLockoutMessage,
                 ChatLockoutMessage = cmd.ChatLockoutMessage
 
+            };
+        }
+
+        public PlayerDetail MapToDto()
+        {
+            return new PlayerDetail
+            {
+                Id = Id,
+                FirstName = FirstName,
+                LastName = LastName,
+                Nickname = Nickname,
+                Gender = Gender,
+                DonatorLevel = DonatorLevel,
+                Mobility = Mobility,
+                BotId = BotId,
+                User = User?.MapToDto(),
+                ItemXP = ItemXP?.MapToDto(),
             };
         }
 
@@ -858,6 +876,5 @@ namespace TT.Domain.Players.Entities
 
             return carriedItemCount < maxInventorySize;
         }
-
     }
 }

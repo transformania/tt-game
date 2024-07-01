@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Items.Entities
@@ -14,5 +15,17 @@ namespace TT.Domain.Items.Entities
         public int LastActionTurnstamp { get; protected set; }
 
         private InanimateXP(){ }
+
+        public InanimateXPDetail MapToDto()
+        {
+            return new InanimateXPDetail
+            {
+                Id = Id,
+                Amount = Amount,
+                TimesStruggled = TimesStruggled,
+                LastActionTimestamp = LastActionTimestamp,
+                LastActionTurnstamp = LastActionTurnstamp,
+            };
+        }
     }
 }

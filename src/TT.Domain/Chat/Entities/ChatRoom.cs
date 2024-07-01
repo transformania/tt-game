@@ -1,4 +1,5 @@
 using System;
+using TT.Domain.Chat.DTOs;
 using TT.Domain.Entities;
 using TT.Domain.Identity.Entities;
 
@@ -20,6 +21,16 @@ namespace TT.Domain.Chat.Entities
                 Name = roomName,
                 Creator = creator,
                 CreatedAt = DateTime.UtcNow
+            };
+        }
+
+        public ChatRoomDetail MapToDto()
+        {
+            return new ChatRoomDetail
+            {
+                Id = Id,
+                Name = Name,
+                Topic = Topic ?? string.Empty,
             };
         }
     }

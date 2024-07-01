@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Messages.DTOs;
@@ -16,12 +17,18 @@ namespace TT.Domain.Messages.Queries
         {
             ContextQuery =
                 ctx =>
-                    ctx.AsQueryable<Message>()
+                {
+                    var messages = ctx.AsQueryable<Message>()
+                        .Include(m => m.Sender)
+                        .Include(m => m.Receiver)
                         .Where(m => m.Sender.Id == SenderId
-                            && m.IsDeleted == false)
+                                    && m.IsDeleted == false)
                         .OrderByDescending(m => m.Timestamp)
                         .Take(Take)
-                        .ProjectToQueryable<MessageDetail>();
+                        .ToList();
+
+                    return messages.Select(m => m.MapToDto()).AsQueryable();
+                };
                         
             return ExecuteInternal(context);
         }

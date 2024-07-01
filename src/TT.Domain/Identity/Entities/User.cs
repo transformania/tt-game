@@ -5,6 +5,7 @@ using TT.Domain.Entities;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Identity.CommandRequests;
 using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -91,6 +92,27 @@ namespace TT.Domain.Identity.Entities
         public void SetPvPLockoutMessage(String message)
         {
             PvPLockoutMessage = message;
+        }
+
+        public UserDetail MapToDto()
+        {
+            return new UserDetail
+            {
+                Id = Id,
+                UserName = UserName,
+                Email = Email,
+                AllowChaosChanges = AllowChaosChanges,
+            };
+        }
+
+        public UserDonatorDetail MapToDonatorDto()
+        {
+            return new UserDonatorDetail
+            {
+                Id = Id,
+                UserName = UserName,
+                Donator = Donator?.MapToDto(false)
+            };
         }
     }
 

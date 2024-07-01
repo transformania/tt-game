@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using Highway.Data;
 using TT.Domain.Entities.Skills;
 using TT.Domain.Skills.DTOs;
@@ -23,15 +24,18 @@ namespace TT.Domain.Skills.Queries
 
                 var learnableSkills = ctx.AsQueryable<SkillSource>()
                            .Include(s => s.FormSource)
+                           .Include(s => s.FormSource.ItemSource)
                            .Where(s => s.IsPlayerLearnable
                                 && s.MobilityType == MobilityType
                                 && s.FormSource != null
                                 && s.IsLive == "live"
                                 && (s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != ""))
-                           .ProjectToQueryable<LearnableSkillsDetail>();
+                           .ToList();
 
-                return learnableSkills.Where(x => !ownedSkillSourceIds.Contains(x.Id));
-
+                return learnableSkills
+                    .Select(s => s.MapToLearnableSkillsDto())
+                    .Where(x => !ownedSkillSourceIds.Contains(x.Id))
+                    .AsQueryable();
             };
 
             return ExecuteInternal(context);

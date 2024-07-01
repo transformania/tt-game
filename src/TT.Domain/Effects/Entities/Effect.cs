@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Effects.Commands;
+using TT.Domain.Effects.DTOs;
 using TT.Domain.Entities;
 using TT.Domain.Players.Entities;
 
@@ -28,6 +29,19 @@ namespace TT.Domain.Effects.Entities
                 IsPermanent = cmd.IsPermanent
             };
             return effect;
+        }
+
+        public EffectDetail MapToDto()
+        {
+            return new EffectDetail
+            {
+                Owner = Owner.MapToDto(),
+                Duration = Duration,
+                IsPermanent = IsPermanent,
+                Level = Level,
+                Cooldown = Cooldown,
+                EffectSource = EffectSource.MapToDto(),
+            };
         }
     }
 }

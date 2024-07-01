@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Highway.Data;
+﻿using Highway.Data;
 using MediatR;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using TT.Domain.Items.Entities;
+using TT.Domain.Items.Mappings;
 using TT.Domain.Items.Queries.Leaderboard.DTOs;
 using TT.Domain.Statics;
 
@@ -13,25 +13,43 @@ namespace TT.Domain.Items.Queries.Leaderboard
     public class ItemLeaderboardHandler : RequestHandler<ItemLeaderboardRequest, IEnumerable<ItemLeaderboardDetail>>
     {
         private readonly IDataContext context;
-        private readonly IMapper mapper;
 
-        public ItemLeaderboardHandler(IDataContext context, IMapper mapper)
+        public ItemLeaderboardHandler(IDataContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         protected override IEnumerable<ItemLeaderboardDetail> Handle(ItemLeaderboardRequest message)
         {
-            var query = context.AsQueryable<Item>()
-                .ProjectTo<ItemLeaderboardDetail>(mapper.ConfigurationProvider)
+            var item = context.AsQueryable<Item>()
+                .Include(i => i.ItemSource)
+                .Include(i => i.FormerPlayer.ItemXP)
                 .Where(i => i.FormerPlayer.BotId == AIStatics.ActivePlayerBotId)
-                .OrderByDescending(i => i.Item.Level)
-                .ThenByDescending(i => i.ItemXP.Amount)
+                .OrderByDescending(i => i.Level)
+                .ThenByDescending(i => i.FormerPlayer.ItemXP.Amount)
                 .Take(message.Limit)
-                .Memoize();
+                .ToList();
 
-            return mapper.Map<IEnumerable<ItemLeaderboardDetail>>(query);
+            return item.Select(i => new ItemLeaderboardDetail
+                {
+                    Item = new ItemLeaderboardItemDetail
+                    {
+                        Id = i.Id,
+                        FormerPlayer = i.FormerPlayer.MapToLeaderboardPlayerDto(),
+                        ItemSource = i.ItemSource.MapToLeaderboardItemSourceDetail(),
+                        IsPermanent = i.IsPermanent,
+                        Level = i.Level
+                    },
+                    FormerPlayer = i.FormerPlayer.MapToLeaderboardPlayerDto(),
+                    ItemSource = i.ItemSource.MapToLeaderboardItemSourceDetail(),
+                    ItemXP = new ItemLeaderboardInanimateXPDetail
+                    {
+                        Id = i.FormerPlayer.ItemXP.Id,
+                        Amount = i.FormerPlayer.ItemXP.Amount
+                    }
+                })
+                .AsQueryable()
+                .Memoize();
         }
     }
 }

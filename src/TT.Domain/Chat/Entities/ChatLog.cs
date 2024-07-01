@@ -1,4 +1,5 @@
 ﻿using System;
+using TT.Domain.Chat.DTOs;
 using TT.Domain.Entities;
 
 namespace TT.Domain.Chat.Entities
@@ -27,6 +28,21 @@ namespace TT.Domain.Chat.Entities
                 UserId = userId,
                 PortraitUrl = portraitUrl,
                 Color = color
+            };
+        }
+
+        public ChatLogDetail MapToDto()
+        {
+            return new ChatLogDetail
+            {
+                Id = Id,
+                Message = Message,
+                Timestamp = Timestamp,
+                Room = Room,
+                UserId = UserId,
+                Name = Name,
+                PortraitUrl = PortraitUrl,
+                Color = Color
             };
         }
     }

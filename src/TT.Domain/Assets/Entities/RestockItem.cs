@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.DTOs;
 using TT.Domain.Entities;
 using TT.Domain.Items.Entities;
 
@@ -33,6 +34,18 @@ namespace TT.Domain.Assets.Entities
             AmountToRestockTo = cmd.AmountToRestockTo;
             AmountBeforeRestock = cmd.AmountBeforeRestock;
             return this;
+        }
+
+        public RestockItemDetail MapToDto()
+        {
+            return new RestockItemDetail
+            {
+                Id = Id,
+                BaseItem = BaseItem.MapToDto(),
+                AmountBeforeRestock = AmountBeforeRestock,
+                AmountToRestockTo = AmountToRestockTo,
+                BotId = BotId
+            };
         }
     }
 }

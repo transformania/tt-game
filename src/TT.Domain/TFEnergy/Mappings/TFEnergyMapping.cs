@@ -1,12 +1,9 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.TFEnergies.DTOs;
-
 
 namespace TT.Domain.TFEnergies.Mappings
 {
-    public class TFEnergyMappings : Profile, IMappingConfiguration
+    public class TFEnergyMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -27,11 +24,6 @@ namespace TT.Domain.TFEnergies.Mappings
                 .HasRequired(p => p.FormSource)
                 .WithMany().Map(p => p.MapKey("FormSourceId"));
 
-        }
-
-        public TFEnergyMappings()
-        {
-            CreateMap<Entities.TFEnergy, TFEnergyDetail>();
         }
     }
 }

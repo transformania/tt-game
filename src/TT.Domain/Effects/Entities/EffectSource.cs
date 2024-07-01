@@ -1,4 +1,5 @@
-﻿using TT.Domain.Entities;
+﻿using TT.Domain.Effects.DTOs;
+using TT.Domain.Entities;
 
 namespace TT.Domain.Effects.Entities
 {
@@ -64,5 +65,24 @@ namespace TT.Domain.Effects.Entities
         public float Chaos_Order { get; protected set; }
 
         private EffectSource() { }
+
+        public EffectSourceDetail MapToDto()
+        {
+            return new EffectSourceDetail
+            {
+                FriendlyName = FriendlyName,
+                Description = Description,
+                AvailableAtLevel = AvailableAtLevel,
+                PreRequesite = PreRequesite,
+                isLevelUpPerk = isLevelUpPerk,
+                Duration = Duration,
+                Cooldown = Cooldown,
+                ObtainedAtLocation = ObtainedAtLocation,
+                IsRemovable = IsRemovable,
+                BlessingCurseStatus = BlessingCurseStatus,
+                MessageWhenHit = MessageWhenHit,
+                MessageWhenHit_M = MessageWhenHit_M
+            };
+        }
     }
 }

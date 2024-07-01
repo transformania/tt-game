@@ -15,9 +15,10 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Stat>()
+                var stats = ctx.AsQueryable<Stat>()
                            .Where(p => p.Owner.Id == OwnerId)
-                           .ProjectToQueryable<StatDetail>();
+                           .ToList();
+                return stats.Select(p => p.MapToDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

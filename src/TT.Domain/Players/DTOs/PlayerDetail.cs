@@ -1,6 +1,4 @@
 ﻿using System;
-using TT.Domain.AI.DTOs;
-using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.Items.DTOs;
 
@@ -13,8 +11,6 @@ namespace TT.Domain.Players.DTOs
         public string LastName { get; set; }
         public string Nickname { get; set; }
         public UserDetail User { get; set; }
-        public FormSource FormSource { get; set; }
-        public NPCDetail NPC { get; set; }
         public string Gender { get; set; }
 
         public int DonatorLevel { get; set; }

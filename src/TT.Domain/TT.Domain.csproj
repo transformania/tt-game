@@ -13,7 +13,6 @@
     <EmbeddedResource Include="XMLs/**/*.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="DelegateDecompiler.EntityFramework" Version="0.32.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />

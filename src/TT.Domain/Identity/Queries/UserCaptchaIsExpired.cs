@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
-using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Identity.Queries
@@ -15,9 +15,10 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery = ctx =>
             {
-                var output = ctx.AsQueryable<CaptchaEntry>()
-                            .Where(m => m.User.Id == UserId)
-                            .ProjectToFirstOrDefault<CaptchaEntryDetail>();
+                var output = ctx
+                    .AsQueryable<CaptchaEntry>()
+                    .Include(m => m.User)
+                    .FirstOrDefault(m => m.User.Id == UserId);
 
                 if (output == null)
                 {

@@ -48,7 +48,12 @@ namespace TT.Domain.Chat.Queries
 
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<ChatLog>().Where(c => c.Room == Room && c.Timestamp >= cutoff).OrderBy(c => c.Timestamp).ProjectToQueryable<ChatLogDetail>();
+                var logs = ctx.AsQueryable<ChatLog>()
+                    .Where(c => c.Room == Room && c.Timestamp >= cutoff)
+                    .OrderBy(c => c.Timestamp)
+                    .ToList();
+
+                return logs.Select(c => c.MapToDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

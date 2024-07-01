@@ -1,6 +1,7 @@
 ﻿using TT.Domain.Effects.Entities;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Items.Entities;
+using TT.Domain.Skills.DTOs;
 
 namespace TT.Domain.Entities.Skills
 {
@@ -40,6 +41,56 @@ namespace TT.Domain.Entities.Skills
             this.GivesEffectSource = givesEffectSource;
             this.ExclusiveToFormSource = exclusiveToFormSource;
             this.ExclusiveToItemSource = exlusiveToItemSource;
+        }
+
+        public SkillSourceDetail MapToDto()
+        {
+            return new SkillSourceDetail
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                FormSource = FormSource?.MapToDto(),
+                Description = Description,
+                ManaCost = ManaCost,
+                TFPointsAmount = TFPointsAmount,
+                HealthDamageAmount = HealthDamageAmount,
+                LearnedAtRegion = LearnedAtRegion,
+                LearnedAtLocation = LearnedAtLocation,
+                DiscoveryMessage = DiscoveryMessage,
+                IsLive = IsLive,
+                IsPlayerLearnable = IsPlayerLearnable,
+                GivesEffect = GivesEffect,
+                GivesEffectSource = GivesEffectSource?.MapToDto(),
+                ExclusiveToForm = ExclusiveToForm,
+                ExclusiveToFormSource = ExclusiveToFormSource?.MapToDto(),
+                ExclusiveToItem = ExclusiveToItem,
+                ExclusiveToItemSource = ExclusiveToItemSource?.MapToDto(),
+                MobilityType = MobilityType
+            };
+        }
+
+        public FormSourceNameDetail MapToFormSourceNameDto()
+        {
+            return new FormSourceNameDetail
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                Description = Description,
+                GivesEffectSource = GivesEffectSource?.MapToDto(),
+                FormSource = FormSource?.MapToFormNameDescriptionDto(),
+                MobilityType = MobilityType
+            };
+        }
+
+        public LearnableSkillsDetail MapToLearnableSkillsDto()
+        {
+            return new LearnableSkillsDetail
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                MobilityType = MobilityType,
+                FormSource = FormSource?.MapToFormNameDescriptionDto()
+            };
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using Highway.Data;
 using MediatR;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -96,7 +95,7 @@ namespace TT.Web
 
             container.Register(() => container.GetInstance<IOwinContextAccessor>().CurrentContext.Authentication, Lifestyle.Scoped);
 
-            container.Register<IDataContext>(() => new DataContext("StatsWebConnection"), Lifestyle.Scoped);
+            container.Register<IDataContext>(() => new DataContext("StatsWebConnection", new EntityMappings()), Lifestyle.Scoped);
             StatsConnectionStringProvider.ConnectionStringOrName = "StatsWebConnection";
 
             // Mediator
@@ -180,26 +179,6 @@ namespace TT.Web
                     }
                 }
             };
-
-            // AutoMapper
-            container.Collection.Register(typeof(Profile), typeof(DomainRegistry).Assembly);
-
-            IMapper CreateMapper() => new MapperConfiguration(cfg =>
-            {
-#pragma warning disable 618
-                cfg.CreateMissingTypeMaps = true;
-#pragma warning restore 618
-                cfg.AddMaps(typeof(DomainRegistry).Assembly);
-            }).CreateMapper();
-
-            // This function is called once when the mapper singleton is needed.
-            container.RegisterSingleton(CreateMapper);
-
-            // This function is called only when something accesses the static Mapper instance.
-            DomainRegistry.SetMapperFunc(container.GetInstance<IMapper>);
-
-            DomainRegistry.Mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
             container.Verify();
         }
 

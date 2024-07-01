@@ -1,0 +1,162 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using TT.Domain.ViewModels
+
+@model NewCharacterViewModel
+
+@{
+    ViewBag.Title = "New Character";
+}
+
+@section scripts
+{
+    <script src="~/js/randomFirstLastNames.js"></script>
+    <script src="~/js/newCharacter.js"></script>
+}
+
+<div class="specialBox textSpaced">
+    <p>
+        <b>
+            Welcome to Transformania Time!  Here you can choose a name for your brave mage who dares to enter the town of Sunnyglade in all its
+            dangers and oddities.  If you are starting your first character for the round, you will begin at level 1.
+            If your previous character has been inanimated or turned into a pet, you can "reroll" yourself a new character immediately but will
+            lose 3 levels and all of your Arpeyjis.  You may keep your same name as before, but your newer incarnation will have a roman numeral
+            appended to the end, ie "Aelianus Marcellius II".
+
+            @if (ViewBag.IsRerolling)
+            {
+                <br>
+                <br>
+                <span class="tldr">
+                    You currently have an character named @ViewBag.OldFirstName @ViewBag.OldLastName. If you start over you will no longer be
+                    able to perform any actions with them anymore.
+                </span>
+            }
+        </b>
+    </p>
+    <p class="bad">
+        By creating a character, you acknowledge that you have looked over the <a asp-controller="Info" asp-action="Rules">Rules of Play</a>.
+    </p>
+</div>
+
+<div class="specialBox specialBox2">
+    <p>
+        <b>
+            Please be aware that you are only allowed one animate player per IP Address. If there is more than one player on the same IP address
+            actively playing the game, all players on that address will be unable to attack until all but one is inanimate or animal.
+        </b>
+    </p>
+</div>
+
+<div class="specialBox">
+    <p class="bad">
+        If you choose to start in Player versus Player (PvP) mode, you will be vulnerable to inanimate and animal attacks from any other
+        PvP player at any time. You can only cast spells against other players in PvP in this mode unless they are your friend, in which case
+        all spells are available.
+    </p>
+</div>
+
+<div class="specialBox specialBox2">
+    <p>
+        If you do not choose to start out in PvP mode then you are considered to be in Protection mode. You can only cast animate spells against
+        other human players unless they are your friend, in which case you can cast any spell you know against them.
+    </p>
+</div>
+
+<div class="specialBox">
+    <p class="good">
+        If you choose to start with the Roleplaying flag, you are indicating to other players that you enjoy roleplaying and are open to
+        roleplaying sessions. You can turn this flag on or off whenever you like. Enabling or disabling this flag does not alter gameplay in any way.
+    </p>
+</div>
+<div class="containerInner center-block">
+    <p>Who are you?</p>
+
+    <button class="btn btn-default" id="randomize" style="margin-bottom: 25px;">Random</button>
+    <form asp-action="NewCharacter" method="post">
+        <input id="oldFirstName" type="hidden" value="@ViewBag.OldFirstName">
+        <input id="oldLastName" type="hidden" value="@ViewBag.OldLastName">
+        <input id="oldFormSourceId" type="hidden" value="@ViewBag.OldFormSourceId">
+
+        <text>First name:  </text>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+
+        <br>
+
+        <text>Last name:</text>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+
+        <br>
+        <br>
+
+        <p class="good">Start in Roleplaying (RP) mode?</p>
+        <input asp-for="StartInRP" />
+
+        <br>
+        <br>
+
+        <p class="good">Which game mode should this character start in?</p>
+        <p style="padding: 0 15% 0 15%">
+            In Protection mode, you can only cast animate spells against other human players. SuperProtection keeps any spells from
+            being cast on you by other human players. If someone is your friend, you can cast any spell you know against them and vice-versa.
+            <br>
+            <br>
+            If you choose to start in Player versus Player (PvP) mode, you will be vulnerable to inanimate and animal attacks from any other
+            PvP player at any time.  You can only cast spells against other players in PvP in this mode unless they are your friend,
+            in which case all spells are available
+        </p>
+        <input asp-for="StartGameMode" value="1" type="radio" checked="checked" /><span class="p-mode"> Protection</span><br>
+        <input asp-for="StartGameMode" value="0" type="radio" /><span class="sp-mode"> SuperProtection</span><br>
+        <input asp-for="StartGameMode" value="2" type="radio" /><span class="pvp-mode"> PvP</span>
+
+        <br>
+        <br>
+
+        <p class="bad"><strong>Start in Hard mode? (PREVENTS STRUGGLING)</strong></p>
+        <input asp-for="StartInHardmode" />
+
+        <br>
+        <br>
+
+        <p class="good">Migrate any old messages to this character?  <br>(Note:This will not work inbetween rounds.)</p>
+        <input asp-for="MigrateLetters" />
+
+        <br>
+        <br>
+
+        <p class="good">Start as an inanimate object or pet?</p>
+        <p>This option immediately starts the character off as a locked object or pet.</p>
+        <p>Click on the checkbox only if you want this to happen <input asp-for="StartAsInanimate" id="itemBox" />
+
+        <select
+            asp-for="InanimateForm"
+            asp-items="Html.GetEnumSelectList<NewCharacterViewModel.InanimateTypesEnum>()"
+            id="itemForm"
+            disabled="disabled"
+            class="disabled">
+        </select>
+
+        <br>
+        <br>
+
+        <p>Original Form:</p>
+
+        <img id="portrait" src="https://images.transformaniatime.com/portraits/woman_01_mtwof.png" style="width: 300px; height:  300px;">
+        <br>
+
+        <p>Click any form below to change</p>
+
+        <div id="selections"></div>
+
+        @Html.HiddenFor(i => i.FormSourceId)
+
+        <br>
+        <br>
+
+
+        <br>
+        <br>
+        <input class="btn btn-danger" type="submit" value="Begin">
+    </form>
+</div>

@@ -3,18 +3,18 @@
 $(document).ready(function () {
 
     $.ajax({
-        url: "/Info/StartingForms"
+        url: "/character/startingforms"
     }).done(function (response) {
         startingForms = shuffle(response);
 
-        $("#FormSourceId").val(startingForms[0].Id);
+        $("#FormSourceId").val(startingForms[0].id);
 
         var selectionsBox = $('#selections');
 
         // load form dropdown
         for (var i = 0; i < startingForms.length; i++) {
             var form = startingForms[i];
-            selectionsBox.append("<img src='https://images.transformaniatime.com/portraits/Thumbnails/100/" + form.PortraitUrl + "' class='selectable' onclick='setForm(\"" + form.Id + "\")'></img>");
+            selectionsBox.append("<img src='https://images.transformaniatime.com/portraits/Thumbnails/100/" + form.portraitUrl + "' class='selectable' onclick='setForm(\"" + form.id + "\")'></img>");
         }
 
 
@@ -64,10 +64,10 @@ function renderPortrait() {
     var x = $("#FormSourceId").val();
 
     var form = startingForms.find(function (element) {
-        return element.Id == x;
+        return element.id == x;
     });
 
-    $("#portrait").attr("src", "https://images.transformaniatime.com/portraits/" + form.PortraitUrl);
+    $("#portrait").attr("src", "https://images.transformaniatime.com/portraits/" + form.portraitUrl);
 
 }
 
@@ -85,13 +85,13 @@ function shuffle(array) {
 function randomize() {
 
     var gender;
-    setForm(startingForms[Math.floor(Math.random() * startingForms.length)].Id);
+    setForm(startingForms[Math.floor(Math.random() * startingForms.length)].id);
 
     var form = startingForms.find(function (element) {
-        return element.Id == $("#FormSourceId").val();
+        return element.id == $("#FormSourceId").val();
     });
 
-    if (form.FriendlyName == "Regular Girl") {
+    if (form.friendlyName == "Regular Girl") {
         gender = "female";
     } else {
         gender = "male";

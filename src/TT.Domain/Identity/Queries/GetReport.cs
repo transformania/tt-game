@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Identity.DTOs;
@@ -16,12 +15,16 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery =
                 ctx =>
-                    ctx.AsQueryable<Report>()
+                {
+                    var report = ctx
+                        .AsQueryable<Report>()
                         .Include(r => r.Reporter)
                         .Include(r => r.Reported)
                         .OrderByDescending(s => s.Timestamp)
-                        .Where(r => r.Id == ReportId)
-                        .ProjectToSingleOrDefault<ReportDetail>();
+                        .SingleOrDefault(r => r.Id == ReportId);
+
+                    return report?.MapToDto();
+                };
 
             return ExecuteInternal(context);
         }

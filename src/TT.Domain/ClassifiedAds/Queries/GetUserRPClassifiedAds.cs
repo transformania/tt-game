@@ -14,13 +14,12 @@ namespace TT.Domain.ClassifiedAds.Queries
         {
             ContextQuery = ctx =>
             {
-                var query = (from ad in ctx.AsQueryable<RPClassifiedAd>()
-                             where ad.OwnerMembershipId == UserId
-                             orderby ad.RefreshTimestamp descending
-                             select ad)
-                    .ProjectToQueryable<RPClassifiedAdDetail>();
+                var ads = ctx.AsQueryable<RPClassifiedAd>()
+                    .Where(cr => cr.OwnerMembershipId == UserId)
+                    .OrderByDescending(cr => cr.RefreshTimestamp)
+                    .ToList();
 
-                return query;
+                return ads.Select(cr => cr.MapToDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

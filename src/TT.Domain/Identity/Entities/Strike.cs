@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -28,6 +29,19 @@ namespace TT.Domain.Identity.Entities
                 Reason = reason,
                 Timestamp = DateTime.UtcNow,
                 Round = round
+            };
+        }
+
+        public StrikeDetail MapToDto()
+        {
+            return new StrikeDetail
+            {
+                Id = Id,
+                User = User.MapToDto(),
+                Timestamp = Timestamp,
+                FromModerator = FromModerator.MapToDto(),
+                Reason = Reason,
+                Round = Round
             };
         }
     }

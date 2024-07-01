@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Exceptions;
@@ -16,9 +17,18 @@ namespace TT.Domain.Messages.Queries
         public override IEnumerable<MessageDetail> Execute(IDataContext context)
         {
 
-            ContextQuery = ctx => ctx.AsQueryable<Message>()
-            .Where(m => m.ConversationId == conversationId)
-            .ProjectToQueryable<MessageDetail>().OrderByDescending(m => m.Timestamp);
+            ContextQuery = ctx =>
+            {
+                var messages = ctx.AsQueryable<Message>()
+                    .Include(m => m.Sender)
+                    .Include(m => m.Receiver)
+                    .Where(m => m.ConversationId == conversationId)
+                    .OrderByDescending(m => m.Timestamp)
+                    .ToList();
+
+                return messages.Select(m => m.MapToDto()).AsQueryable();
+            };
+
             return ExecuteInternal(context);
         }
 

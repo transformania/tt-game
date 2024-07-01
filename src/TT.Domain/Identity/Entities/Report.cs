@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -38,6 +39,18 @@ namespace TT.Domain.Identity.Entities
             this.ModeratorResponse = moderatorResponse;
         }
 
-
+        public ReportDetail MapToDto()
+        {
+            return new ReportDetail
+            {
+                Id = Id,
+                Reporter = Reporter.MapToDto(),
+                Reported = Reported.MapToDto(),
+                Timestamp = Timestamp,
+                Reason = Reason,
+                ModeratorResponse = ModeratorResponse,
+                Round = Round
+            };
+        }
     }
 }

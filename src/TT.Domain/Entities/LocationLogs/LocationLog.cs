@@ -1,4 +1,5 @@
 ﻿using System;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.Entities.LocationLogs
 {
@@ -22,5 +23,16 @@ namespace TT.Domain.Entities.LocationLogs
             };
         }
 
+        public LocationLogDetail MapToDto()
+        {
+            return new LocationLogDetail
+            {
+                Id = Id,
+                dbLocationName = dbLocationName,
+                Message = Message,
+                Timestamp = Timestamp,
+                ConcealmentLevel = ConcealmentLevel,
+            };
+        }
     }
 }

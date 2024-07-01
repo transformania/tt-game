@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.ClassifiedAds.Commands;
+using TT.Domain.ClassifiedAds.DTOs;
 using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Entities.RPClassifiedAds
@@ -53,6 +54,22 @@ namespace TT.Domain.Entities.RPClassifiedAds
             RefreshTimestamp = DateTime.UtcNow;
 
             return this;
+        }
+
+        public RPClassifiedAdDetail MapToDto()
+        {
+            return new RPClassifiedAdDetail
+            {
+                Id = Id,
+                OwnerMembershipId = OwnerMembershipId,
+                Title = Title,
+                Text = Text,
+                YesThemes = YesThemes,
+                NoThemes = NoThemes,
+                CreationTimestamp = CreationTimestamp,
+                RefreshTimestamp = RefreshTimestamp,
+                PreferredTimezones = PreferredTimezones
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Identity.DTOs;
@@ -13,10 +14,13 @@ namespace TT.Domain.Identity.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<ArtistBio>()
+                var bios = ctx.AsQueryable<ArtistBio>()
+                           .Include(p => p.Owner)
                            .Where(p => p.IsLive == true)
                            .OrderBy(p => p.OtherNames)
-                           .ProjectToQueryable<ArtistBioDetail>();
+                           .ToList();
+
+                return bios.Select(p => p.MapToDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

@@ -11,12 +11,8 @@ namespace TT.Domain.Chat.Queries
         public override IEnumerable<ChatRoomDetail> Execute(IDataContext context)
         {
             ContextQuery = ctx => {
-                return ctx.AsQueryable<ChatRoom>().Select(cr => new ChatRoomDetail
-                {
-                    Id = cr.Id,
-                    Name = cr.Name,
-                    Topic = cr.Topic ?? string.Empty
-                });
+                var rooms = ctx.AsQueryable<ChatRoom>().ToList();
+                return rooms.Select(cr => cr.MapToDto()).AsQueryable();
             };
 
             return ExecuteInternal(context);

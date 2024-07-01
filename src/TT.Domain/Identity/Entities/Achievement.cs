@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -32,5 +33,16 @@ namespace TT.Domain.Identity.Entities
             Timestamp = DateTime.UtcNow;
         }
 
+        public StatDetail MapToDto()
+        {
+            return new StatDetail
+            {
+                Id = Id,
+                Amount = Amount,
+                AchievementType = AchievementType,
+                TimesEarned = TimesEarned,
+                Timestamp = Timestamp
+            };
+        }
     }
 }

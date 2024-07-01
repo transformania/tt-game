@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.World.Entities
 {
@@ -34,5 +35,32 @@ namespace TT.Domain.World.Entities
             this.RoundNumber = roundNumber;
         }
 
+        public WorldDetail MapToDto()
+        {
+            return new WorldDetail
+            {
+                Id = Id,
+                TurnNumber = TurnNumber,
+                LastUpdateTimestamp = LastUpdateTimestamp,
+                WorldIsUpdating = WorldIsUpdating,
+                LastUpdateTimestamp_Finished = LastUpdateTimestamp_Finished,
+                Boss_Donna = Boss_Donna,
+                Boss_Valentine = Boss_Valentine,
+                Boss_Bimbo = Boss_Bimbo,
+                Boss_Thief = Boss_Thief,
+                Boss_Sisters = Boss_Sisters,
+                Boss_Faeboss = Boss_Faeboss,
+                Boss_MotorcycleGang = Boss_MotorcycleGang,
+                JokeShop = JokeShop,
+                GameNewsDate = GameNewsDate,
+                TestServer = TestServer,
+                ChaosMode = ChaosMode,
+                RoundDuration = RoundDuration,
+                InbetweenRoundsNonChaos = InbetweenRoundsNonChaos,
+                RoundNumber = RoundNumber,
+                RoundStartsAt = RoundStartsAt,
+                TurnTimeConfiguration = TurnTimeConfiguration
+            };
+        }
     }
 }

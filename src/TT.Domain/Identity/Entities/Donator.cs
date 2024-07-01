@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -29,6 +30,19 @@ namespace TT.Domain.Identity.Entities
                 Tier = tier,
                 ActualDonationAmount = actualDonationAmount,
                 SpecialNotes = specialNotes
+            };
+        }
+
+        public DonatorDetail MapToDto(bool mapOwner = true)
+        {
+            return new DonatorDetail
+            {
+                Id = Id,
+                PatreonName = PatreonName,
+                Tier = Tier,
+                ActualDonationAmount = ActualDonationAmount,
+                SpecialNotes = SpecialNotes,
+                Owner = mapOwner ? Owner?.MapToDto() : null
             };
         }
     }

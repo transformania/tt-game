@@ -53,6 +53,6 @@
         public string CursedTF_Succeed_M { get;  set; }
         public string CursedTF_Succeed_F { get;  set; }
 
-        public FormSourceDetail FormSource { get; protected set; }
+        public FormSourceDetail FormSource { get; protected internal set; }
     }
 }

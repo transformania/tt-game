@@ -1,4 +1,5 @@
-﻿using TT.Domain.Players.Entities;
+﻿using TT.Domain.Combat.DTOs;
+using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Entities.MindControl
 {
@@ -10,5 +11,17 @@ namespace TT.Domain.Entities.MindControl
         public int TimesUsedThisTurn { get; protected set; }
 
         private VictimMindControl() { }
+
+        public VictimMindControlDetail MapToDto()
+        {
+            return new VictimMindControlDetail
+            {
+                Id = this.Id,
+                TurnsRemaining = this.TurnsRemaining,
+                FormSourceId = this.FormSourceId,
+                TimesUsedThisTurn = this.TimesUsedThisTurn,
+                Victim = Victim.MapToDto(),
+            };
+        }
     }
 }

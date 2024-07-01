@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
 using TT.Domain.Entities.LocationLogs;
-using TT.Domain.World.DTOs;
 
 namespace TT.Domain.World.Mappings
 {
-    public class LocationLogMappings : Profile, IMappingConfiguration
+    public class LocationLogMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -14,11 +12,6 @@ namespace TT.Domain.World.Mappings
                .ToTable("LocationLogs")
                .HasKey(l => l.Id);
 
-        }
-
-        public LocationLogMappings()
-        {
-            CreateMap<LocationLog, LocationLogDetail>();
         }
     }
 }

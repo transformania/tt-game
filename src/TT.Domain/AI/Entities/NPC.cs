@@ -1,4 +1,5 @@
 ﻿using TT.Domain.AI.Commands;
+using TT.Domain.AI.DTOs;
 using TT.Domain.Entities;
 
 namespace TT.Domain.AI.Entities
@@ -23,6 +24,15 @@ namespace TT.Domain.AI.Entities
             Id = cmd.NPCId;
             SpawnText = cmd.SpawnText;
             return this;
+        }
+
+        public NPCDetail MapToDto()
+        {
+            return new NPCDetail()
+            {
+                Id = Id,
+                SpawnText = SpawnText
+            };
         }
     }
 }

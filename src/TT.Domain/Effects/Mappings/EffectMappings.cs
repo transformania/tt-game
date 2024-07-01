@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.Effects.DTOs;
 using TT.Domain.Effects.Entities;
 
 namespace TT.Domain.Effects.Mappings
 {
-    public class EffectMappings : Profile, IMappingConfiguration
+    public class EffectMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -21,11 +19,6 @@ namespace TT.Domain.Effects.Mappings
             modelBuilder.Entity<Effect>()
                 .HasOptional(e => e.Owner)
                 .WithMany(e => e.Effects).Map(m => m.MapKey("OwnerId"));
-        }
-
-        public EffectMappings()
-        {
-            CreateMap<Effect, EffectDetail>();
         }
     }
 }

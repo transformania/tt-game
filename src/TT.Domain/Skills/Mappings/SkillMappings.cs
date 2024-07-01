@@ -1,12 +1,10 @@
 using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
 using TT.Domain.Entities.Skills;
-using TT.Domain.Skills.DTOs;
 
 namespace TT.Domain.Skills.Mappings
 {
-    public class SkillMappings : Profile, IMappingConfiguration
+    public class SkillMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -22,11 +20,6 @@ namespace TT.Domain.Skills.Mappings
                 .HasRequired(cr => cr.Owner)
                 .WithMany(s => s.Skills).Map(m => m.MapKey("OwnerId"));
 
-        }
-
-        public SkillMappings()
-        {
-            CreateMap<Skill, SkillDetail>();
         }
     }
 }

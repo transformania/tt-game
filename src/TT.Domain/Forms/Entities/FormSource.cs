@@ -1,4 +1,6 @@
 ﻿using TT.Domain.Entities;
+using TT.Domain.Forms.DTOs;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Items.Entities;
 
 namespace TT.Domain.Forms.Entities
@@ -65,6 +67,72 @@ namespace TT.Domain.Forms.Entities
         public void SetItemSource(ItemSource itemSource)
         {
             ItemSource = itemSource;
+        }
+
+        public FormSourceDetail MapToDto()
+        {
+            var formSourceDetailDto = new FormSourceDetail
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                Description = Description,
+                TFEnergyType = TFEnergyType,
+                TFEnergyRequired = TFEnergyRequired,
+                Gender = Gender,
+                MobilityType = MobilityType,
+                BecomesItemDbName = BecomesItemDbName,
+                PortraitUrl = PortraitUrl,
+                IsUnique = IsUnique,
+                HealthBonusPercent = HealthBonusPercent,
+                ManaBonusPercent = ManaBonusPercent,
+                ExtraSkillCriticalPercent = ExtraSkillCriticalPercent,
+                HealthRecoveryPerUpdate = HealthRecoveryPerUpdate,
+                ManaRecoveryPerUpdate = ManaRecoveryPerUpdate,
+                SneakPercent = SneakPercent,
+                EvasionPercent = EvasionPercent,
+                EvasionNegationPercent = EvasionNegationPercent,
+                MeditationExtraMana = MeditationExtraMana,
+                CleanseExtraHealth = CleanseExtraHealth,
+                MoveActionPointDiscount = MoveActionPointDiscount,
+                SpellExtraTFEnergyPercent = SpellExtraTFEnergyPercent,
+                SpellExtraHealthDamagePercent = SpellExtraHealthDamagePercent,
+                CleanseExtraTFEnergyRemovalPercent = CleanseExtraTFEnergyRemovalPercent,
+                SpellMisfireChanceReduction = SpellMisfireChanceReduction,
+                SpellHealthDamageResistance = SpellHealthDamageResistance,
+                SpellTFEnergyDamageResistance = SpellTFEnergyDamageResistance,
+                ExtraInventorySpace = ExtraInventorySpace,
+                Discipline = Discipline,
+                Perception = Perception,
+                Charisma = Charisma,
+                Fortitude = Fortitude,
+                Agility = Agility,
+                Allure = Allure,
+                Magicka = Magicka,
+                Succour = Succour,
+                Luck = Luck,
+                TfMessage = TfMessage.MapToDto(includeFormSource: false),
+            };
+
+            return formSourceDetailDto;
+        }
+
+        public FormNameDescriptionDetail MapToFormNameDescriptionDto()
+        {
+            return new FormNameDescriptionDetail
+            {
+                FriendlyName = FriendlyName,
+                Description = Description,
+                PortraitUrl = PortraitUrl,
+                Gender = Gender,
+                ItemSource = ItemSource != null ? new ItemSourceNameDescription
+                {
+                    Id = ItemSource.Id,
+                    FriendlyName = ItemSource.FriendlyName,
+                    ItemType = ItemSource.ItemType,
+                    Description = ItemSource.Description,
+                    PortraitUrl = ItemSource.PortraitUrl
+                } : null,
+            };
         }
     }
 

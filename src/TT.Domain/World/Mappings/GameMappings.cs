@@ -1,22 +1,15 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.World.DTOs;
 
 namespace TT.Domain.World.Mappings
 {
-    public class DonatorMappings : Profile, IMappingConfiguration
+    public class DonatorMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Entities.World>()
                 .ToTable("PvPWorldStats")
                 .HasKey(u => u.Id);
-        }
-
-        public DonatorMappings()
-        {
-            CreateMap<Entities.World, WorldDetail>();
         }
     }
 }

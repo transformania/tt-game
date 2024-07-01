@@ -14,23 +14,13 @@ namespace TT.Domain.ClassifiedAds.Queries
 
         public bool CheckUserId { get; set; } = true;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        /// <exception cref="RPClassifiedAdNotFoundException"></exception>
-        /// <exception cref="RPClassifiedAdNotOwnerException"></exception>
-        /// <exception cref="RPClassifiedAdInvalidInputException"></exception>
         public override RPClassifiedAdDetail Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
-                var query = from q in ctx.AsQueryable<RPClassifiedAd>()
-                            where q.Id == RPClassifiedAdId
-                            select q;
-
-                var ad = query.ProjectToFirstOrDefault<RPClassifiedAdDetail>();
+                var ad = context
+                    .AsQueryable<RPClassifiedAd>()
+                    .FirstOrDefault(cr => cr.Id == RPClassifiedAdId);
 
                 if (ad == null)
                 {
@@ -48,7 +38,7 @@ namespace TT.Domain.ClassifiedAds.Queries
                     };
                 }
 
-                return ad;
+                return ad.MapToDto();
             };
 
             return ExecuteInternal(context);

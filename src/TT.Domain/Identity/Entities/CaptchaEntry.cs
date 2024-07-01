@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.Identity.Entities
 {
@@ -54,6 +55,18 @@ namespace TT.Domain.Identity.Entities
                 TimesFailed = 0,
                 ExpirationTimestamp = DateTime.UtcNow.AddMinutes(1),
                 User = user
+            };
+        }
+
+        public CaptchaEntryDetail MapToDto()
+        {
+            return new CaptchaEntryDetail
+            {
+                Id = Id,
+                User = User.MapToDto(),
+                TimesPassed = TimesPassed,
+                TimesFailed = TimesFailed,
+                ExpirationTimestamp = ExpirationTimestamp
             };
         }
 

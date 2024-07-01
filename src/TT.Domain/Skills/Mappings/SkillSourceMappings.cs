@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
 using TT.Domain.Entities.Skills;
-using TT.Domain.Skills.DTOs;
 
 namespace TT.Domain.Skills.Mappings
 {
-    public class SkillSourceMappings : Profile, IMappingConfiguration
+    public class SkillSourceMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -29,12 +27,6 @@ namespace TT.Domain.Skills.Mappings
             modelBuilder.Entity<SkillSource>()
                 .HasOptional(cr => cr.ExclusiveToItemSource)
                 .WithMany().Map(m => m.MapKey("ExclusiveToItemSourceId"));
-        }
-
-        public SkillSourceMappings()
-        {
-            CreateMap<SkillSource, SkillSourceDetail>();
-            CreateMap<SkillSource, LearnableSkillsDetail>();
         }
     }
 }

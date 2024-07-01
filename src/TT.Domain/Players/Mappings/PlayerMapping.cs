@@ -1,12 +1,13 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
+using System.Linq;
 using Highway.Data;
+using TT.Domain.Identity.DTOs;
 using TT.Domain.Players.DTOs;
 using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Players.Mappings
 {
-    public class PlayerMappings : Profile, IMappingConfiguration
+    public class PlayerMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -37,12 +38,48 @@ namespace TT.Domain.Players.Mappings
                 .WithMany(c => c.Players).Map(c => c.MapKey("Covenant"));
 
         }
+    }
 
-        public PlayerMappings()
+    public static class PlayerMappingExtensions
+    {
+        public static PlayerMessageDetail MapToPlayerMessageDto(this Player player)
         {
-            CreateMap<Player, PlayerDetail>();
-            CreateMap<Player, PlayerMessageDetail>();
-            CreateMap<Player, PlayerBusDetail>();
+            if (player == null) return null;
+
+            return new PlayerMessageDetail
+            {
+                Id = player.Id,
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                DonatorLevel = player.DonatorLevel,
+                Nickname = player.Nickname
+            };
+        }
+
+        public static PlayerUserStrikesDetail MapToPlayerStrikesDto(this Player player)
+        {
+            if (player == null) return null;
+
+            return new PlayerUserStrikesDetail
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                User = new UserStrikeDetail
+                {
+
+                    UserName = player.User.UserName,
+                    Strikes = player.User.Strikes.Select(s => new StrikeDetail
+                    {
+                        Id = s.Id,
+                        User = s.User.MapToDto(),
+                        FromModerator = s.User.MapToDto(),
+                        Timestamp = s.Timestamp,
+                        Reason = s.Reason,
+                        Round = s.Round
+                    })
+                },
+            };
         }
     }
+
 }

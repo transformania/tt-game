@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.Forms.DTOs;
 using TT.Domain.Forms.Entities;
 
 namespace TT.Domain.Forms.Mappings
 {
-    public class FormMappings : Profile, IMappingConfiguration
+    public class FormMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -32,13 +30,6 @@ namespace TT.Domain.Forms.Mappings
                 .WithOptionalPrincipal()
                .Map(m => m.MapKey("AltSexFormSourceId"));
 
-        }
-
-        public FormMappings()
-        {
-            CreateMap<FormSource, FormSourceDetail>();
-            CreateMap<FormSource, BaseFormDetail>();
-            CreateMap<TFMessage, TFMessageDetail>();
         }
     }
 }

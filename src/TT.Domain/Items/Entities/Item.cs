@@ -4,6 +4,7 @@ using System.Linq;
 using TT.Domain.Entities;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Items.Commands;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
 

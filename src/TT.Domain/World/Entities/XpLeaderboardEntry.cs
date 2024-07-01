@@ -1,6 +1,7 @@
 ﻿using TT.Domain.Entities;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Players.Entities;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.World.Entities
 {
@@ -40,5 +41,21 @@ namespace TT.Domain.World.Entities
             return newLeaderboard;
         }
 
+        public XpLeaderboardEntryDetail MapToDto()
+        {
+            return new XpLeaderboardEntryDetail
+            {
+                Rank = Rank,
+                PlayerName = PlayerName,
+                GameMode = GameMode,
+                Sex = Sex,
+                CovenantName = CovenantName,
+                FormName = FormName,
+                Mobility = Mobility,
+                FormSource = new FormImageDetail { PortraitUrl = FormSource.PortraitUrl },
+                Level = Level,
+                XP = XP
+            };
+        }
     }
 }

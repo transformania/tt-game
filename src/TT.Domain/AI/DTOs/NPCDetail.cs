@@ -2,7 +2,7 @@
 {
     public class NPCDetail
     {
-        public int Id { get; private set; }
-        public string SpawnText { get; protected set; }
+        public int Id { get; set; }
+        public string SpawnText { get; set; }
     }
 }

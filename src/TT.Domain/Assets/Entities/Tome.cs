@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.DTOs;
 using TT.Domain.Entities;
 using TT.Domain.Items.Entities;
 
@@ -26,6 +27,16 @@ namespace TT.Domain.Assets.Entities
             Text = cmd.Text;
             BaseItem = baseItem;
             return this;
+        }
+
+        public TomeDetail MapToDto()
+        {
+            return new TomeDetail
+            {
+                Id = Id,
+                Text = Text,
+                BaseItem = BaseItem.MapToDto()
+            };
         }
     }
 }

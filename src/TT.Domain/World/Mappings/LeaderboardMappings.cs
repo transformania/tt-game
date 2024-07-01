@@ -1,12 +1,9 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.World.DTOs;
-using TT.Domain.World.Entities;
 
 namespace TT.Domain.World.Mappings
 {
-    public class LeaderboardMappings : Profile, IMappingConfiguration
+    public class LeaderboardMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -33,13 +30,6 @@ namespace TT.Domain.World.Mappings
             modelBuilder.Entity<Entities.ItemLeaderboardEntry>()
                .HasRequired(p => p.ItemSource)
                .WithMany().Map(p => p.MapKey("ItemSourceId"));
-        }
-
-        public LeaderboardMappings()
-        {
-            CreateMap<PvPLeaderboardEntry, PvPLeaderboardEntryDetail>();
-            CreateMap<ItemLeaderboardEntry, ItemLeaderboardEntryDetail>();
-            CreateMap<XpLeaderboardEntry, XpLeaderboardEntryDetail>();
         }
     }
 }

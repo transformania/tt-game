@@ -18,7 +18,7 @@ namespace TT.Domain.Items.DTOs
         public int PvPEnabled { get;  set; }
         public bool IsPermanent { get;  set; }
         public DateTime LastSouledTimestamp { get;  set; }
-        public DateTime LastSold { get; protected set; }
+        public DateTime LastSold { get; protected internal set; }
         public ICollection<ItemRuneDetail> Runes { get; set; }
         public ItemRuneDetail EmbeddedOnItem { get; set; }
         public PlayPageItemDetail.PlayPagePlayerDetail SoulboundToPlayer { get; set; }

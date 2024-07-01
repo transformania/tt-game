@@ -1,13 +1,12 @@
-﻿
-using TT.Domain.Effects.Entities;
+﻿using TT.Domain.Effects.Entities;
 using TT.Domain.Entities;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Items.Entities
 {
     public class ItemSource : Entity<int>
     {
-
         public string FriendlyName { get; protected set; }
         public string Description { get; protected set; }
         public string PortraitUrl { get; protected set; }
@@ -65,20 +64,100 @@ namespace TT.Domain.Items.Entities
 
         public int? RuneLevel { get; protected set; }
 
-        private ItemSource() { }
+        private ItemSource()
+        {
+        }
 
         public static ItemSource Create()
         {
-            return new ItemSource
-            {
-                
-            };
+            return new ItemSource();
         }
 
         public bool IsPermanentFromCreation()
         {
-            return this.ItemType == PvPStatics.ItemType_Consumable || this.ItemType == PvPStatics.ItemType_Rune;
+            return ItemType == PvPStatics.ItemType_Consumable || ItemType == PvPStatics.ItemType_Rune;
         }
 
+        public ItemSourceDetail MapToDto()
+        {
+            return new ItemSourceDetail
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                Description = Description,
+                PortraitUrl = PortraitUrl,
+                MoneyValue = MoneyValue,
+                MoneyValueSell = MoneyValueSell,
+                ItemType = ItemType,
+                UseCooldown = UseCooldown,
+                UsageMessage_Item = UsageMessage_Item,
+                UsageMessage_Player = UsageMessage_Player,
+                Findable = Findable,
+                FindWeight = FindWeight,
+                GivesEffectSource = GivesEffectSource?.MapToDto(),
+                IsUnique = IsUnique,
+                HealthBonusPercent = HealthBonusPercent,
+                ManaBonusPercent = ManaBonusPercent,
+                ExtraSkillCriticalPercent = ExtraSkillCriticalPercent,
+                HealthRecoveryPerUpdate = HealthRecoveryPerUpdate,
+                ManaRecoveryPerUpdate = ManaRecoveryPerUpdate,
+                SneakPercent = SneakPercent,
+                EvasionPercent = EvasionPercent,
+                EvasionNegationPercent = EvasionNegationPercent,
+                MeditationExtraMana = MeditationExtraMana,
+                CleanseExtraHealth = CleanseExtraHealth,
+                MoveActionPointDiscount = MoveActionPointDiscount,
+                SpellExtraTFEnergyPercent = SpellExtraTFEnergyPercent,
+                SpellExtraHealthDamagePercent = SpellExtraHealthDamagePercent,
+                CleanseExtraTFEnergyRemovalPercent = CleanseExtraTFEnergyRemovalPercent,
+                SpellMisfireChanceReduction = SpellMisfireChanceReduction,
+                SpellHealthDamageResistance = SpellHealthDamageResistance,
+                SpellTFEnergyDamageResistance = SpellTFEnergyDamageResistance,
+                ExtraInventorySpace = ExtraInventorySpace,
+                Discipline = Discipline,
+                Perception = Perception,
+                Charisma = Charisma,
+                Submission_Dominance = Submission_Dominance,
+                Fortitude = Fortitude,
+                Agility = Agility,
+                Allure = Allure,
+                Corruption_Purity = Corruption_Purity,
+                Magicka = Magicka,
+                Succour = Succour,
+                Luck = Luck,
+                Chaos_Order = Chaos_Order,
+                InstantHealthRestore = InstantHealthRestore,
+                InstantManaRestore = InstantManaRestore,
+                ReuseableHealthRestore = ReuseableHealthRestore,
+                ReuseableManaRestore = ReuseableManaRestore,
+                RuneLevel = RuneLevel
+            };
+        }
+
+        public InventoryItemSource MapToInventoryItemSourceDto()
+        {
+            return new InventoryItemSource
+            {
+                Id = Id,
+                FriendlyName = FriendlyName,
+                Description = Description,
+                PortraitUrl = PortraitUrl,
+                MoneyValue = MoneyValue,
+                MoneyValueSell = MoneyValueSell,
+                ItemType = ItemType,
+                GivesEffectSourceId = GivesEffectSource?.Id,
+                CurseTFFormSourceId = CurseTFFormSourceId,
+                Discipline = Discipline,
+                Perception = Perception,
+                Charisma = Charisma,
+                Fortitude = Fortitude,
+                Agility = Agility,
+                Allure = Allure,
+                Magicka = Magicka,
+                Succour = Succour,
+                Luck = Luck,
+                RuneLevel = RuneLevel
+            };
+        }
     }
 }

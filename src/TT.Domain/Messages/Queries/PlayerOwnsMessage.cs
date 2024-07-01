@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Highway.Data;
-using TT.Domain.Messages.DTOs;
 using TT.Domain.Messages.Entities;
 
 namespace TT.Domain.Messages.Queries
@@ -14,11 +14,12 @@ namespace TT.Domain.Messages.Queries
         {
             ContextQuery = ctx =>
             {
-                var output = ctx.AsQueryable<Message>()
-                            .Where(m => m.Id == MessageId)
-                            .ProjectToFirstOrDefault<MessageDetail>();
+                var output = ctx
+                    .AsQueryable<Message>()
+                    .Include(m => m.Receiver)
+                    .FirstOrDefault(m => m.Id == MessageId);
 
-                if (output.Receiver.Id == OwnerId)
+                if (output?.Receiver.Id == OwnerId)
                 {
                     return true;
                 }

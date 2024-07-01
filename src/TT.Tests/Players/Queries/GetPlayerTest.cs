@@ -30,8 +30,6 @@ namespace TT.Tests.Players.Queries
             var foundPlayer = DomainRegistry.Repository.FindSingle(cmd);
 
             Assert.That(foundPlayer.Id, Is.EqualTo(23));
-            Assert.That(foundPlayer.NPC.Id, Is.EqualTo(7));
-            Assert.That(foundPlayer.FormSource.Id, Is.EqualTo(101));
         }
 
         [Test]

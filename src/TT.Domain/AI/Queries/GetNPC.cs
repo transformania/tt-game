@@ -14,9 +14,11 @@ namespace TT.Domain.AI.Queries
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<NPC>()
-                            .Where(cr => cr.Id == NPCId)
-                            .ProjectToFirstOrDefault<NPCDetail>();
+                var npc = ctx
+                    .AsQueryable<NPC>()
+                    .FirstOrDefault(cr => cr.Id == NPCId);
+
+                return npc?.MapToDto();
             };
 
             return ExecuteInternal(context);

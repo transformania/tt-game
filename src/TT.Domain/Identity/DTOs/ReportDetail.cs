@@ -6,14 +6,14 @@ namespace TT.Domain.Identity.DTOs
     {
         public int Id { get; set; }
 
-        public UserDetail Reporter { get; protected set; }
-        public UserDetail Reported { get; protected set; }
+        public UserDetail Reporter { get; protected internal set; }
+        public UserDetail Reported { get; protected internal set; }
 
-        public DateTime Timestamp { get; protected set; }
+        public DateTime Timestamp { get; protected internal set; }
 
-        public string Reason { get; protected set; }
+        public string Reason { get; protected internal set; }
         public string ModeratorResponse { get; set; }
 
-        public int Round { get; protected set; }
+        public int Round { get; protected internal set; }
     }
 }

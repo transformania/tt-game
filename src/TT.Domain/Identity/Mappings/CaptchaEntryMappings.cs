@@ -1,12 +1,10 @@
 ﻿using System.Data.Entity;
-using AutoMapper;
 using Highway.Data;
-using TT.Domain.Identity.DTOs;
 using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Identity.Mappings
 {
-    public class CaptchaEntryMappings : Profile, IMappingConfiguration
+    public class CaptchaEntryMappings : IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
@@ -14,11 +12,6 @@ namespace TT.Domain.Identity.Mappings
                 .ToTable("CaptchaEntries")
                 .HasKey(u => u.Id);
 
-        }
-
-        public CaptchaEntryMappings()
-        {
-            CreateMap<CaptchaEntry, CaptchaEntryDetail>();
         }
     }
 }

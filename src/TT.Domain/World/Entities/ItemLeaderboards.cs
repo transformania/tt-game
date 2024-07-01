@@ -1,5 +1,6 @@
 ﻿using TT.Domain.Entities;
 using TT.Domain.Items.Entities;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.World.Entities
 {
@@ -41,5 +42,21 @@ namespace TT.Domain.World.Entities
             return newLeaderboard;
         }
 
+        public ItemLeaderboardEntryDetail MapToDto()
+        {
+            return new ItemLeaderboardEntryDetail
+            {
+                Rank = Rank,
+                PlayerName = PlayerName,
+                GameMode = GameMode,
+                Sex = Sex,
+                ItemName = ItemName,
+                ItemSource = new ItemImageDetail { PortraitUrl = ItemSource.PortraitUrl },
+                CovenantName = CovenantName,
+                ItemType = ItemType,
+                Level = Level,
+                XP = XP
+            };
+        }
     }
 }

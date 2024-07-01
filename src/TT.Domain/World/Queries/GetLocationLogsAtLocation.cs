@@ -14,11 +14,17 @@ namespace TT.Domain.World.Queries
 
         public override IEnumerable<LocationLogDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<LocationLog>()
-            .Where(l => l.dbLocationName == Location && l.ConcealmentLevel <= ConcealmentLevel)
-            .OrderByDescending(l => l.Timestamp)
-            .ThenByDescending(l => l.Id)
-            .ProjectToQueryable<LocationLogDetail>();
+            ContextQuery = ctx =>
+            {
+                var logs = ctx.AsQueryable<LocationLog>()
+                    .Where(l => l.dbLocationName == Location && l.ConcealmentLevel <= ConcealmentLevel)
+                    .OrderByDescending(l => l.Timestamp)
+                    .ThenByDescending(l => l.Id)
+                    .ToList();
+
+                return logs.Select(l => l.MapToDto()).AsQueryable();
+            };
+
             return ExecuteInternal(context);
         }
     }

@@ -20,6 +20,7 @@
       <_ContentIncludedByDefault Remove="Shared\_ViewStart.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="Features\Play\Play.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

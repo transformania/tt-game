@@ -15,7 +15,7 @@ namespace TT.Server.Features.Account
         : Controller
     {
         [HttpGet("")]
-        [HttpGet("/Account/Login")]
+        [HttpGet("/account/login")]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
@@ -23,7 +23,7 @@ namespace TT.Server.Features.Account
             return View();
         }
 
-        [HttpPost("/Account/Login")]
+        [HttpPost("/account/login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model, string returnUrl)
@@ -36,7 +36,7 @@ namespace TT.Server.Features.Account
 
             if (result == SignInResult.Success)
             {
-                return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) : RedirectToAction(nameof(Manage));
+                return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) : RedirectToAction("Play", "Play");
             }
 
             ModelState.AddModelError("",
@@ -51,7 +51,7 @@ namespace TT.Server.Features.Account
             return View(model);
         }
 
-        [HttpPost("/Account/LogOff")]
+        [HttpPost("/account/logoff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
@@ -60,14 +60,14 @@ namespace TT.Server.Features.Account
 
         }
 
-        [HttpGet("/Account/Register")]
+        [HttpGet("/account/register")]
         [AllowAnonymous]
         public virtual IActionResult Register()
         {
             return View();
         }
 
-        [HttpPost("/Account/Register")]
+        [HttpPost("/account/register")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
@@ -80,7 +80,7 @@ namespace TT.Server.Features.Account
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction(nameof(Manage));
+                return RedirectToAction("Restart", "Character");
             }
 
             AddErrors(result);
@@ -91,7 +91,7 @@ namespace TT.Server.Features.Account
         //
         // GET: /Account/Manage
 
-        [HttpGet("/Account/Manage")]
+        [HttpGet("/account/manage")]
         public async Task<IActionResult> Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -106,7 +106,7 @@ namespace TT.Server.Features.Account
             return View();
         }
 
-        [HttpGet("/Account/ChangeEmail")]
+        [HttpGet("/account/change-email")]
         public async Task<IActionResult> ChangeEmail()
         {
             var model = new LocalEmailModel
@@ -116,7 +116,7 @@ namespace TT.Server.Features.Account
             return View(model);
         }
 
-        [HttpPost("/Account/ChangeEmail")]
+        [HttpPost("/account/change-email")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeEmail(LocalEmailModel model)
         {
@@ -144,13 +144,13 @@ namespace TT.Server.Features.Account
             return View(nameof(ChangeEmail), model);
         }
 
-        [HttpGet("/Account/DeleteAccount")]
+        [HttpGet("/account/delete-account")]
         public IActionResult DeleteAccount()
         {
             return View(nameof(DeleteAccount));
         }
 
-        [HttpPost("/Account/DeleteAccountConfirm")]
+        [HttpPost("/account/confirm-delete-account")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccountConfirm()
         {
@@ -169,21 +169,21 @@ namespace TT.Server.Features.Account
             return RedirectToAction(nameof(Register));
         }
 
-        [HttpGet("/Account/TermsOfService")]
+        [HttpGet("/terms-of-service")]
         [AllowAnonymous]
         public IActionResult TermsOfService()
         {
             return View();
         }
 
-        [HttpGet("/Account/PrivacyPolicy")]
+        [HttpGet("/privacy-policy")]
         [AllowAnonymous]
         public IActionResult PrivacyPolicy()
         {
             return View();
         }
 
-        [HttpPost("/Account/Manage")]
+        [HttpPost("/account/manage")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Manage(LocalPasswordModel model)
         {

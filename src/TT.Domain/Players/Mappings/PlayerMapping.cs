@@ -72,7 +72,7 @@ namespace TT.Domain.Players.Mappings
                     {
                         Id = s.Id,
                         User = s.User.MapToDto(),
-                        FromModerator = s.User.MapToDto(),
+                        FromModerator = s.FromModerator.MapToDto(),
                         Timestamp = s.Timestamp,
                         Reason = s.Reason,
                         Round = s.Round

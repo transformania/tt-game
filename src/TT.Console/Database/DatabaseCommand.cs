@@ -9,6 +9,7 @@ using Spectre.Console.Rendering;
 
 namespace TT.Console.Database;
 
+[Description("Performs operations on the databse")]
 public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
 {
     public override async Task<bool> Execute(DatabaseInput input)

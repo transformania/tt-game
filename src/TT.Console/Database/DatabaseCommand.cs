@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Oakton;
@@ -19,8 +21,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
 
         if (!CheckConfig(context.ConfigFile)) return false;
 
-        var services = DatabaseTools.Configure(context.ConfigFile);
-        var status = await CheckStatus(services, context.Database);
+        var status = await CheckStatus(context);
 
         if (!status.IsConStrGood)
         {
@@ -35,7 +36,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             case DatabaseInput.SubCommands.status:
                 return true;
             case DatabaseInput.SubCommands.up:
-                await Up(services, status, context);
+                await Up(status, context);
                 break;
             case DatabaseInput.SubCommands.migrate:
                 Migrate(context);
@@ -44,7 +45,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
                 Rollback(context);
                 break;
             case DatabaseInput.SubCommands.recreate:
-                await Recreate(services, context);
+                await Recreate(context);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -69,22 +70,32 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         return true;
     }
 
-    private async Task<DatabaseStatus> CheckStatus(IServiceProvider services, string database)
+    private async Task<DatabaseStatus> CheckStatus(DatabaseCommandContext context)
     {
         return await AnsiConsole.Status()
-            .StartAsync($"Checking status of [b]{database}[/]", async context =>
+            .StartAsync($"Checking status of [b]{context.Database}[/]", async ctx =>
             {
-                var status = await DatabaseTools.CheckDatabaseStatus(services, database);
-
-                context.Status($"Status checked");
+                var configTable = new Table();
+                configTable.SimpleBorder();
+                configTable.AddColumns("Setting", "Value");
+                configTable.AddRow("Config file", context.ConfigFile);
+                configTable.AddRow("Seed data", context.SeedDataPath);
+                
                 AnsiConsole.WriteLine();
-                AnsiConsole.Write(RenderStatus(status, database));
+                AnsiConsole.Write(configTable);
+                
+                var status = await DatabaseTools.CheckDatabaseStatus(context.Services, context.Database);
+                
+                ctx.Status($"Status checked");
+                
+                AnsiConsole.WriteLine();
+                AnsiConsole.Write(RenderStatus(status, context));
 
                 return status;
             });
     }
 
-    private IRenderable RenderStatus(DatabaseStatus status, string database)
+    private IRenderable RenderStatus(DatabaseStatus status, DatabaseCommandContext context)
     {
         string[] FormatResult(string check, bool condition, string helpText) => condition
             ? [check, "[green]OK[/]", ""]
@@ -101,24 +112,23 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
 
         var panel = new Panel(table);
         panel.AsciiBorder();
-        panel.Header($"DATABASE STATUS FOR [b]{database}[/]");
+        panel.Header($"DATABASE STATUS FOR [b]{context.Database}[/]");
 
         return panel;
     }
 
-    private static async Task Up(IServiceProvider services, DatabaseStatus status, DatabaseCommandContext context)
+    private static async Task Up(DatabaseStatus status, DatabaseCommandContext context)
     {
         await AnsiConsole.Status()
             .StartAsync($"Initialising [b]{context.Database}[/]...", async statusContext =>
             {
                 var databasePrefix = $"[b]{context.Database}[/]";
-                var connectionString = services.GetConnectionString();
-                await using var connection = DatabaseTools.CreateConnection(connectionString);
+                await using var connection = DatabaseTools.CreateConnection(context.ConnectionString);
 
                 if (!status.Exists)
                 {
                     AnsiConsole.MarkupLine($"{databasePrefix}: Creating database...");
-                    await DatabaseTools.CreateDatabase(connectionString, context.Database);
+                    await DatabaseTools.CreateDatabase(context.ConnectionString, context.Database);
                     AnsiConsole.MarkupLine($"{databasePrefix}: Database [green]created[/]");
                 }
 
@@ -222,7 +232,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         return true;
     }
 
-    private static async Task Recreate(IServiceProvider services, DatabaseCommandContext context)
+    private static async Task Recreate(DatabaseCommandContext context)
     {
         if (context.ConfigFile.Contains(".Production"))
         {
@@ -244,11 +254,10 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             return;
         }
 
-        var connectionString = services.GetConnectionString();
-        await DatabaseTools.DropDatabaseAsync(connectionString, database);
+        await DatabaseTools.DropDatabaseAsync(context.ConnectionString, database);
         AnsiConsole.MarkupLine($"[b]{database}[/] [yellow]dropped[/]");
 
-        await Up(services, new DatabaseStatus(true), context);
+        await Up( new DatabaseStatus(true), context);
     }
 }
 
@@ -294,16 +303,24 @@ public class DatabaseCommandContext
     public string SeedDataPath { get; private init; }
     public bool SkipConfirmation { get; private init; }
     public int RollBackSteps { get; private init; }
+    public IServiceProvider Services { get; private init; }
+    public string ConnectionString { get; private init; }
 
     public static DatabaseCommandContext FromInput(DatabaseInput input)
     {
+        var configFile = !input.ConfigFileFlag.IsNullOrEmpty() ? input.ConfigFileFlag : FindDefaultConfigFile();
+        var services = DatabaseTools.Configure(configFile);
+        var connectionString = services.GetService<IConfiguration>().GetConnectionString("StatsWebConnection");
+        
         return new DatabaseCommandContext
         {
             Database = input.DatabaseFlag,
-            ConfigFile = !input.ConfigFileFlag.IsNullOrEmpty() ? input.ConfigFileFlag : FindDefaultConfigFile(),
+            ConfigFile = configFile,
             SeedDataPath = !input.SeedDataPathFlag.IsNullOrEmpty() ? input.SeedDataPathFlag : FindDefaultSeedData(),
             SkipConfirmation = input.SkipConfirmationFlag,
             RollBackSteps = input.RollBackStepsFlag,
+            Services = services,
+            ConnectionString = connectionString,
         };
     }
 

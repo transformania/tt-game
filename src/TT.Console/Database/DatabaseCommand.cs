@@ -2,6 +2,7 @@ using System.Diagnostics;
 using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Oakton;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -13,12 +14,12 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
     public override async Task<bool> Execute(DatabaseInput input)
     {
         var stopwatch = Stopwatch.StartNew();
+        var context = DatabaseCommandContext.FromInput(input);
 
-        if (!CheckConfig(input)) return false;
+        if (!CheckConfig(context.ConfigFile)) return false;
 
-        var services = DatabaseTools.Configure(input.ConfigFile);
-        var database = input.DatabaseFlag;
-        var status = await CheckStatus(services, database);
+        var services = DatabaseTools.Configure(context.ConfigFile);
+        var status = await CheckStatus(services, context.Database);
 
         if (!status.IsConStrGood)
         {
@@ -33,13 +34,13 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             case DatabaseInput.SubCommands.status:
                 return true;
             case DatabaseInput.SubCommands.up:
-                await Up(services, status, input);
+                await Up(services, status, context);
                 break;
             case DatabaseInput.SubCommands.migrate:
-                Migrate(database, services);
+                Migrate(context);
                 break;
             case DatabaseInput.SubCommands.recreate:
-                await Recreate(services, new DatabaseStatus(true), input);
+                await Recreate(services, context);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -52,11 +53,11 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         return true;
     }
 
-    private static bool CheckConfig(DatabaseInput input)
+    private static bool CheckConfig(string configFile)
     {
-        if (!File.Exists(input.ConfigFile))
+        if (!File.Exists(configFile))
         {
-            AnsiConsole.MarkupLine($"[red b]Config file does not exist:[/] {input.ConfigFile}");
+            AnsiConsole.MarkupLine($"[red b]Config file does not exist:[/] {configFile}");
             AnsiConsole.MarkupLine("Check the path to your 'localsettings.json' or 'appsettings.Development.json'");
             return false;
         }
@@ -82,7 +83,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
     private IRenderable RenderStatus(DatabaseStatus status, string database)
     {
         string[] FormatResult(string check, bool condition, string helpText) => condition
-            ? [check, "[green]:check_mark:[/]", ""]
+            ? [check, "[green]OK[/]", ""]
             : [check, "[red]X[/]", helpText];
 
         var table = new Table();
@@ -101,40 +102,39 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         return panel;
     }
 
-    private async Task Up(IServiceProvider services, DatabaseStatus status, DatabaseInput input)
+    private static async Task Up(IServiceProvider services, DatabaseStatus status, DatabaseCommandContext context)
     {
-        var database = input.DatabaseFlag;
         await AnsiConsole.Status()
-            .StartAsync($"Initialising [b]{database}[/]...", async context =>
+            .StartAsync($"Initialising [b]{context.Database}[/]...", async statusContext =>
             {
-                var databasePrefix = $"[b]{database}[/]";
+                var databasePrefix = $"[b]{context.Database}[/]";
                 var connectionString = services.GetConnectionString();
                 await using var connection = DatabaseTools.CreateConnection(connectionString);
 
                 if (!status.Exists)
                 {
                     AnsiConsole.MarkupLine($"{databasePrefix}: Creating database...");
-                    await DatabaseTools.CreateDatabase(connectionString, database);
+                    await DatabaseTools.CreateDatabase(connectionString, context.Database);
                     AnsiConsole.MarkupLine($"{databasePrefix}: Database [green]created[/]");
                 }
 
                 if (!status.IsPreSeeded)
                 {
-                    context.Status($"Pre-seeding {databasePrefix}...");
-                    if (!PreSeed(input, databasePrefix, connection)) return false;
+                    statusContext.Status($"Pre-seeding {databasePrefix}...");
+                    if (!PreSeed(context, connection)) return false;
                 }
 
                 if (!status.IsMigrated)
                 {
-                    context.Status($"Migrating {databasePrefix}...");
-                    Migrate(database, services);
+                    statusContext.Status($"Migrating {databasePrefix}...");
+                    Migrate(context);
                 }
 
                 if (!status.IsSeeded)
                 {
-                    context.Status($"Seeding {databasePrefix}...");
+                    statusContext.Status($"Seeding {databasePrefix}...");
 
-                    if (!Seed(input, connection)) return false;
+                    if (!Seed(context, connection)) return false;
                 }
 
                 AnsiConsole.WriteLine();
@@ -144,19 +144,24 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             });
     }
 
-    private void Migrate(string database, IServiceProvider services)
+    private static void Migrate(DatabaseCommandContext context)
     {
+        // FluentMigrator seems to cache the output from the VersionInfo table if it is called previously
+        // This is a problem if we drop the database as it then thinks it exists when it tries to migrate and goes boom.
+        // The solution is to just rebuild the service collection.
+        var services = DatabaseTools.Configure(context.ConfigFile);
         var runner = services.GetService<IMigrationRunner>();
-        runner.LoadVersionInfoIfRequired();
-        runner.MigrateUp();
-        AnsiConsole.MarkupLine($"[b]{database}[/]: Migration [green]complete[/]");
+        if (runner.HasMigrationsToApplyUp())
+            runner.MigrateUp();
+
+        AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Migration [green]complete[/]");
     }
 
-    private static bool PreSeed(DatabaseInput input, string databasePrefix, SqlConnection connection)
+    private static bool PreSeed(DatabaseCommandContext context, SqlConnection connection)
     {
-        AnsiConsole.MarkupLine($"{databasePrefix}: Pre-seeding database...");
+        AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Pre-seeding database...");
 
-        var path = Path.Combine(input.SeedDataPathFlag, "PreSeed");
+        var path = Path.Combine(context.SeedDataPath, "PreSeed");
         if (!Directory.Exists(path))
         {
             AnsiConsole.MarkupLine($"Pre-seed directory [b]{path}[/] does not exist");
@@ -169,13 +174,13 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             DatabaseTools.SeedDatabaseWithFile(connection, file);
         }
 
-        AnsiConsole.MarkupLine($"{databasePrefix}: Pre-seeding [green]complete[/]");
+        AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Pre-seeding [green]complete[/]");
         return true;
     }
 
-    private static bool Seed(DatabaseInput input, SqlConnection connection)
+    private static bool Seed(DatabaseCommandContext context, SqlConnection connection)
     {
-        var path = input.SeedDataPathFlag;
+        var path = context.SeedDataPath;
         if (!Directory.Exists(path))
         {
             AnsiConsole.MarkupLine($"Seed directory [b]{path}[/] does not exist");
@@ -183,7 +188,11 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             return false;
         }
 
-        foreach (var file in Directory.EnumerateFiles(path, "*.sql").Order())
+        var files = new List<string>();
+        files.AddRange(Directory.EnumerateFiles(path, "*.sql").Order());
+        files.AddRange(Directory.EnumerateFiles(Path.Combine(path, "StoredProcs"), "*.sql"));
+
+        foreach (var file in files)
         {
             DatabaseTools.SeedDatabaseWithFile(connection, file);
         }
@@ -191,19 +200,19 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         return true;
     }
 
-    private async Task Recreate(IServiceProvider services, DatabaseStatus status, DatabaseInput input)
+    private static async Task Recreate(IServiceProvider services, DatabaseCommandContext context)
     {
-        if (input.ConfigFile.Contains(".Production"))
+        if (context.ConfigFile.Contains(".Production"))
         {
-            AnsiConsole.MarkupLine($"[red b]Config file targets PRODUCTION:[/] {input.ConfigFile}");
+            AnsiConsole.MarkupLine($"[red b]Config file targets PRODUCTION:[/] {context.ConfigFile}");
             AnsiConsole.MarkupLine("You probably didn't want to do this. Check the config file provided");
             return;
         }
 
-        var database = input.DatabaseFlag;
+        var database = context.Database;
         AnsiConsole.MarkupLine($"Preparing to [red b]DROP[/] and [b]RECREATE[/] [b]{database}[/]");
 
-        var confirm = input.SkipConfirmationFlag || AnsiConsole.Prompt(new ConfirmationPrompt($"Are you sure you want to do this?")
+        var confirm = context.SkipConfirmation || AnsiConsole.Prompt(new ConfirmationPrompt($"Are you sure you want to do this?")
         {
             DefaultValue = false
         });
@@ -217,7 +226,7 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         await DatabaseTools.DropDatabaseAsync(connectionString, database);
         AnsiConsole.MarkupLine($"[b]{database}[/] [yellow]dropped[/]");
 
-        await Up(services, status, input);
+        await Up(services, new DatabaseStatus(true), context);
     }
 }
 
@@ -231,11 +240,12 @@ public class DatabaseInput
         recreate,
     }
 
-    [Description("The operation to perform on the databsae", Name="sub-command")]
+    [Description("The operation to perform on the database", Name="sub-command")]
     public SubCommands SubCommand { get; set; }
 
-    [Description("Path to JSON file containing connection string to be used", Name = "config")]
-    public string ConfigFile { get; set; }
+    [FlagAlias("config-file", 'c')]
+    [Description("Path to JSON file containing connection string to be used")]
+    public string ConfigFileFlag { get; set; }
 
     [FlagAlias("seed-data", 's')]
     [Description("Seeds database with files in the provided path and performs migrations")]
@@ -248,4 +258,49 @@ public class DatabaseInput
     [FlagAlias("skip-confirmation", 'Y')]
     [Description("Skip confirmation prompts such as when dropping/recreating the database")]
     public bool SkipConfirmationFlag { get; set; }
+}
+
+public class DatabaseCommandContext
+{
+    public string Database { get; private init; }
+    public string ConfigFile { get; private init; }
+    public string SeedDataPath { get; private init; }
+    public bool SkipConfirmation { get; private init; }
+
+    public static DatabaseCommandContext FromInput(DatabaseInput input)
+    {
+        return new DatabaseCommandContext
+        {
+            Database = input.DatabaseFlag,
+            ConfigFile = !input.ConfigFileFlag.IsNullOrEmpty() ? input.ConfigFileFlag : FindDefaultConfigFile(),
+            SeedDataPath = !input.SeedDataPathFlag.IsNullOrEmpty() ? input.SeedDataPathFlag : FindDefaultSeedData(),
+            SkipConfirmation = input.SkipConfirmationFlag,
+        };
+    }
+
+    public static string FindCheckoutRoot(string workingDir)
+    {
+        return Directory.EnumerateDirectories(workingDir, ".git").Any() ? workingDir : Path.Combine("../", workingDir);
+    }
+
+    public static string FindDefaultConfigFile()
+    {
+        var basePath = FindCheckoutRoot(Environment.CurrentDirectory);
+        var localSettings = Path.Combine(basePath, "src/TT.Server/localsettings.json");
+        var appSettings = Path.Combine(basePath, "src/TT.Server/appsettings.Development.json");
+
+        var localSettingsExists = File.Exists(localSettings);
+        var appSettingsExists = File.Exists(appSettings);
+
+        if (localSettingsExists) return localSettings;
+        return appSettingsExists ? appSettings : null;
+    }
+
+    public static string FindDefaultSeedData()
+    {
+        var basePath = FindCheckoutRoot(Environment.CurrentDirectory);
+        var seedDataPath = Path.Combine(basePath, "src/SeedData");
+
+        return Directory.Exists(seedDataPath) ? seedDataPath : null;
+    }
 }

@@ -172,7 +172,7 @@ Task("Migrate")
         Information("Applying stored procedures against {0}", dbServer);
         using(var connection = OpenSqlConnection(connectionString))
         {
-            ExecuteSqlFile(connection, "./src/TT.Web/Schema/GetPlayerBuffs.sql");
+            ExecuteSqlFile(connection, "./src/SeedData/StoredProcs/GetPlayerBuffs.sql");
         }
     }
 );

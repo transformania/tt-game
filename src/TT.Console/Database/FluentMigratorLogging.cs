@@ -21,13 +21,13 @@ public class FluentMigratorAnsiConsoleLogger(FluentMigratorLoggerOptions options
     protected override void WriteError(Exception exception) => AnsiConsole.WriteException(exception, ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods);
     protected override void WriteHeading(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [yellow]${message}[/]");
     protected override void WriteEmphasize(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [bold aqua]${message}[/");
-    protected override void WriteEmptySql() => AnsiConsole.MarkupLine("[b]Migrator[/]: [black]No SQL statement executed.[/]");
+    protected override void WriteEmptySql() => AnsiConsole.MarkupLine("[b]Migrator[/]: [grey]No SQL statement executed.[/]");
     protected override void WriteElapsedTime(TimeSpan timeSpan) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [grey]=> {timeSpan.TotalSeconds}s");
-    protected override void WriteSay(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [black]{message}[/]");
+    protected override void WriteSay(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [grey]{message}[/]");
 
     protected override void WriteSql(string sql)
     {
         var message = !string.IsNullOrEmpty(sql) ? sql : "No SQL statement executed.";
-        AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [black]{message}[/]");
+        AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [grey]{message}[/]");
     }
 }

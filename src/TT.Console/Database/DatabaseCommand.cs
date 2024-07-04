@@ -39,6 +39,9 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
             case DatabaseInput.SubCommands.migrate:
                 Migrate(context);
                 break;
+            case DatabaseInput.SubCommands.rollback:
+                Rollback(context);
+                break;
             case DatabaseInput.SubCommands.recreate:
                 await Recreate(services, context);
                 break;
@@ -157,6 +160,24 @@ public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
         AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Migration [green]complete[/]");
     }
 
+    private static void Rollback(DatabaseCommandContext context)
+    {
+        var services = DatabaseTools.Configure(context.ConfigFile);
+        var runner = services.GetService<IMigrationRunner>();
+
+        try
+        {
+            runner.Rollback(context.RollBackSteps);
+        }
+        catch (InvalidOperationException)
+        {
+            AnsiConsole.MarkupLine("[red b]Rollback failed - only forward migration supported[/]");
+            return;
+        }
+
+        AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Rollback [green]complete[/]");
+    }
+
     private static bool PreSeed(DatabaseCommandContext context, SqlConnection connection)
     {
         AnsiConsole.MarkupLine($"[b]{context.Database}[/]: Pre-seeding database...");
@@ -237,6 +258,7 @@ public class DatabaseInput
         status,
         up,
         migrate,
+        rollback,
         recreate,
     }
 
@@ -258,6 +280,10 @@ public class DatabaseInput
     [FlagAlias("skip-confirmation", 'Y')]
     [Description("Skip confirmation prompts such as when dropping/recreating the database")]
     public bool SkipConfirmationFlag { get; set; }
+
+    [FlagAlias("rollback-steps", 'r')]
+    [Description("Number of steps to rollback when used with rollback sub-command")]
+    public int RollBackStepsFlag { get; set; } = 1;
 }
 
 public class DatabaseCommandContext
@@ -266,6 +292,7 @@ public class DatabaseCommandContext
     public string ConfigFile { get; private init; }
     public string SeedDataPath { get; private init; }
     public bool SkipConfirmation { get; private init; }
+    public int RollBackSteps { get; private init; }
 
     public static DatabaseCommandContext FromInput(DatabaseInput input)
     {
@@ -275,6 +302,7 @@ public class DatabaseCommandContext
             ConfigFile = !input.ConfigFileFlag.IsNullOrEmpty() ? input.ConfigFileFlag : FindDefaultConfigFile(),
             SeedDataPath = !input.SeedDataPathFlag.IsNullOrEmpty() ? input.SeedDataPathFlag : FindDefaultSeedData(),
             SkipConfirmation = input.SkipConfirmationFlag,
+            RollBackSteps = input.RollBackStepsFlag,
         };
     }
 

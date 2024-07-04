@@ -1,116 +1,171 @@
+using System.Text.RegularExpressions;
 using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 using TT.Migrations;
 
 namespace TT.Console.Database;
 
+public record DatabaseStatus(
+    bool Success,
+    bool IsConStrGood = false,
+    bool Exists = false,
+    bool IsPreSeeded = false,
+    bool IsMigrated = false,
+    bool IsSeeded = false
+    );
+
 public static class DatabaseTools
 {
-    private const string ConnectionStringName = "StatsWebConnection";
+    public const string ConnectionStringName = "StatsWebConnection";
 
-    public static bool CreateDatabase(DatabaseInput input)
+    public static IServiceProvider Configure(string configFile)
     {
-        using var host = DatabaseUtilityHost.BuildDatabaseUtilityHost(input.ConfigFile);
-        var connectionString = host.Services.GetService<IConfiguration>().GetConnectionString(ConnectionStringName);
+        var builder = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration(configuration => configuration.AddJsonFile(configFile, false))
+            .ConfigureServices((ctx, services) =>
+            {
+                services.AddFluentMigratorCore()
+                    .ConfigureRunner(rb =>
+                    {
+                        rb.AddSqlServer2016()
+                            .WithGlobalConnectionString(
+                                ctx.Configuration.GetConnectionString(ConnectionStringName))
+                            .ScanIn(typeof(AddChatRooms).Assembly).For.Migrations();
+                    })
+                    .AddLogging(lb => lb.Services
+                        .RemoveAll(typeof(ILogger))
+                        .RemoveAll(typeof(ILoggerProvider))
+                        .AddSingleton<ILoggerProvider, FluentMigratorAnsiConsoleLoggerProvider>())
+                    .BuildServiceProvider(false);
+            });
 
+        return builder.Build().Services;
+    }
+
+    public static string GetConnectionString(this IServiceProvider services) =>
+        services.GetService<IConfiguration>().GetConnectionString(ConnectionStringName);
+
+    public static SqlConnection CreateConnection(string connectionString)
+    {
         var conStr = new SqlConnectionStringBuilder(connectionString) { InitialCatalog = "master" };
         var connection = new SqlConnection(conStr.ConnectionString);
         connection.Open();
-        
-        using var command = new SqlCommand(
-                $"IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = @DatabaseName) CREATE DATABASE {input.Database};",
-                connection);
-        command.Parameters.Add(new SqlParameter("@DatabaseName", input.Database));
 
-        command.ExecuteNonQuery();
+        return connection;
+    }
+
+    public static async Task<bool> CreateDatabase(string connectionString, string database)
+    {
+        await using var connection = CreateConnection(connectionString);
+        await using var command = new SqlCommand(
+                $"IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = @DatabaseName) CREATE DATABASE {database};",
+                connection);
+        command.Parameters.Add(new SqlParameter("@DatabaseName", database));
+
+        await command.ExecuteNonQueryAsync();
 
         return true;
     }
     
-    public static bool DropDatabase(DatabaseInput input)
+    public static async Task<bool> DropDatabaseAsync(string connectionString, string database)
     {
-        using var host = DatabaseUtilityHost.BuildDatabaseUtilityHost(input.ConfigFile);
-        var connectionString = host.Services.GetService<IConfiguration>().GetConnectionString(ConnectionStringName);
+        await using var connection = CreateConnection(connectionString);
 
-        var conStr = new SqlConnectionStringBuilder(connectionString) { InitialCatalog = "master" };
-        var connection = new SqlConnection(conStr.ConnectionString);
-        connection.Open();
-        
-        using var command =
-            new SqlCommand(
-                $"DROP DATABASE IF EXISTS {input.Database};",
-                connection);
+        var cmd = $@"IF (SELECT DB_ID(@DatabaseName)) IS NOT NULL
+               BEGIN
+                    ALTER DATABASE {database} SET OFFLINE WITH ROLLBACK IMMEDIATE;
+                    ALTER DATABASE {database} SET ONLINE;
+                    DROP DATABASE {database};
+                END";
 
-        command.ExecuteScalar();
+        await using var command = new SqlCommand(cmd, connection);
+        command.Parameters.AddWithValue("@DatabaseName", database);
+
+        await command.ExecuteScalarAsync();
 
         return true;
     }
-    
-    public static bool SeedDatabase(SeedDatabaseInput input)
+
+    public static void SeedDatabaseWithFile(SqlConnection connection, string file)
     {
-        using var host = DatabaseUtilityHost.BuildDatabaseUtilityHost(input.ConfigFile);
-
-        var connectionString = host.Services.GetService<IConfiguration>().GetConnectionString(ConnectionStringName);
-        var preSeedFiles = Directory.EnumerateFiles(Path.Combine(input.SeedDataPath, "PreSeed"));
-        var seedFiles = Directory.EnumerateFiles(input.SeedDataPath);
-
-        var conStr = new SqlConnectionStringBuilder(connectionString) { InitialCatalog = "master" };
-        using var connection = new SqlConnection(conStr.ConnectionString);
-        connection.Open();
-
-        AnsiConsole.MarkupLine($"Beginning pre-seeding...");
-        // foreach (var seedFile in preSeedFiles)
-        // {
-        //     AnsiConsole.MarkupLine($"Pre-seeding [white]{seedFile}[/]");
-        //     Seed(seedFile, connection);
-        // }
-        AnsiConsole.MarkupLine($":check_mark: Pre-seeding complete");
-        AnsiConsole.MarkupLine($"Beginning seeding...");
-        
-        foreach (var seedFile in seedFiles)
-        {
-            AnsiConsole.MarkupLine($"Seeding [white]{seedFile}[/]");
-            Seed(seedFile, connection);
-        }
-        
-        return true;
-
-        void Seed(string file, SqlConnection con)
+        try
         {
             var script = File.ReadAllText(file);
-            foreach (var cmd in script.Split(["GO", "go"], StringSplitOptions.RemoveEmptyEntries))
+            var commandStrings = Regex.Split(
+                script,
+                @"^\s*GO\s*$",
+                RegexOptions.Multiline | RegexOptions.IgnoreCase,
+                TimeSpan.FromSeconds(5)
+            );
+            var chunks = commandStrings.Length;
+
+            AnsiConsole.MarkupLine($"Seeding [b]{file}[/] ({chunks} chunk{(chunks > 1 ? "s" : "")})");
+
+            foreach (var cmd in commandStrings.Where(s => !s.IsNullOrEmpty()))
             {
-                using var command = new SqlCommand(cmd, con);
+                var command = new SqlCommand(cmd, connection);
                 command.ExecuteNonQuery();
             }
+
+            AnsiConsole.MarkupLine($"Seeding [b]{file}[/] [green]completed[/]");
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[red]Failed seeding[/] [b]{file}[/]:");
+            AnsiConsole.WriteException(ex);
         }
     }
-    
-    public static bool MigrateUp(DatabaseInput input)
+
+    public static async Task<DatabaseStatus> CheckDatabaseStatus(IServiceProvider services, string database)
     {
-        using var host = DatabaseUtilityHost.BuildDatabaseUtilityHost(input.ConfigFile, (ctx, services) =>
+        try
         {
-            services.AddFluentMigratorCore()
-                .ConfigureRunner(rb =>
-                {
-                    rb.AddSqlServer2016()
-                        .WithGlobalConnectionString(
-                            ctx.Configuration.GetConnectionString(ConnectionStringName))
-                        .ScanIn(typeof(AddChatRooms).Assembly).For.Migrations();
-                })
-                .AddLogging(lb => lb.Services.AddSingleton<ILoggerProvider, FluentMigratorAnsiConsoleLoggerProvider>())
-                .BuildServiceProvider(false);
-        });
+            var connectionString = services.GetConnectionString();
+            if (connectionString.IsNullOrEmpty())
+                return new DatabaseStatus(true);
 
-        var runner = host.Services.GetService<IMigrationRunner>();
-        if (runner == null)
-            return false;
+            await using var connection = CreateConnection(connectionString);
+            await using var existsCmd = new SqlCommand($"SELECT database_id FROM sys.databases WHERE Name = '{database}';", connection);
+            await using var isPreSeededCmd = new SqlCommand($"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Players'", connection);
+            await using var isSeededCmd = new SqlCommand(@"
+            USE Stats;
+            IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AspNetUserRoles')
+                BEGIN
+                    SELECT COUNT(*) FROM AspNetUserRoles
+                END
+            ELSE
+                BEGIN
+                    SELECT -1
+                END;
+            ", connection);
 
-        runner.MigrateUp();
-        return true;
+            var exists = await existsCmd.ExecuteScalarAsync() != null;
+            if (!exists)
+                return new DatabaseStatus(true, true);
+
+            var preSeedResult = (int)await isPreSeededCmd.ExecuteScalarAsync();
+            if (preSeedResult > 0)
+                return new DatabaseStatus(true, true, true);
+
+            var runner = services.GetService<IMigrationRunner>();
+            var hasMigrationsPending = runner.HasMigrationsToApplyUp();
+            var seededResult = await isSeededCmd.ExecuteScalarAsync();
+            var isSeeded = seededResult != null && (int)seededResult > 0;
+
+            return new DatabaseStatus(true, true, true, true, !hasMigrationsPending, isSeeded);
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[red]Failed to check DB status[/]");
+            AnsiConsole.WriteException(ex);
+            return new DatabaseStatus(false);
+        }
     }
 }

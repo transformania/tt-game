@@ -17,17 +17,17 @@ public class FluentMigratorAnsiConsoleLoggerProvider(IOptions<FluentMigratorLogg
 
 public class FluentMigratorAnsiConsoleLogger(FluentMigratorLoggerOptions options) : FluentMigratorLogger(options)
 {
-    protected override void WriteError(string message) => AnsiConsole.MarkupLineInterpolated($"[red]${message}[/]");
+    protected override void WriteError(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [red]${message}[/]");
     protected override void WriteError(Exception exception) => AnsiConsole.WriteException(exception, ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods);
-    protected override void WriteHeading(string message) => AnsiConsole.MarkupLineInterpolated($"[yellow]${message}[/]");
-    protected override void WriteEmphasize(string message) => AnsiConsole.MarkupLineInterpolated($"[bold aqua]${message}[/");
-    protected override void WriteEmptySql() => AnsiConsole.MarkupLine("[grey]No SQL statement executed.[/]");
-    protected override void WriteElapsedTime(TimeSpan timeSpan) => AnsiConsole.MarkupLineInterpolated($"[grey]=> {timeSpan.TotalSeconds}s");
-    protected override void WriteSay(string message) => AnsiConsole.MarkupLineInterpolated($"[white]{message}[/]");
+    protected override void WriteHeading(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [yellow]${message}[/]");
+    protected override void WriteEmphasize(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [bold aqua]${message}[/");
+    protected override void WriteEmptySql() => AnsiConsole.MarkupLine("[b]Migrator[/]: [black]No SQL statement executed.[/]");
+    protected override void WriteElapsedTime(TimeSpan timeSpan) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [grey]=> {timeSpan.TotalSeconds}s");
+    protected override void WriteSay(string message) => AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [black]{message}[/]");
 
     protected override void WriteSql(string sql)
     {
         var message = !string.IsNullOrEmpty(sql) ? sql : "No SQL statement executed.";
-        AnsiConsole.MarkupLine($"[grey]{message}[/]");
+        AnsiConsole.MarkupLineInterpolated($"[b]Migrator[/]: [black]{message}[/]");
     }
 }

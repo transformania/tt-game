@@ -42,7 +42,7 @@ namespace TT.Domain.Items.Queries.Leaderboard
                     },
                     FormerPlayer = i.FormerPlayer.MapToLeaderboardPlayerDto(),
                     ItemSource = i.ItemSource.MapToLeaderboardItemSourceDetail(),
-                    ItemXP = new ItemLeaderboardInanimateXPDetail
+                    ItemXP = i.FormerPlayer.ItemXP == null ? null : new ItemLeaderboardInanimateXPDetail
                     {
                         Id = i.FormerPlayer.ItemXP.Id,
                         Amount = i.FormerPlayer.ItemXP.Amount

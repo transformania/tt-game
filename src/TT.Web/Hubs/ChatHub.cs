@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using TT.Domain;
 using TT.Domain.Abstract;
+using TT.Domain.Chat;
 using TT.Domain.Chat.Commands;
 using TT.Domain.Concrete;
 using TT.Domain.Legacy.Procedures.JokeShop;
@@ -128,7 +130,7 @@ namespace TT.Web.Hubs
             }
 
             // Performs message processing to correctly format any special text
-            var output = ChatMessageProcessor.ProcessMessage(new MessageData(name, message));
+            var output = ChatMessageProcessor.ProcessMessage(new MessageData(HttpContext.Current.User, name, message));
 
             if (!string.IsNullOrWhiteSpace(output.Text))
             {

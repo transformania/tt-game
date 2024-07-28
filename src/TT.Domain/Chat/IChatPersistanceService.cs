@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TT.Domain.Models;
 
-namespace TT.Web.Services
+namespace TT.Domain.Chat
 {
     public interface IChatPersistanceService
     {

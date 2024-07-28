@@ -58,6 +58,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PreSeed", "PreSeed", "{D09F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Console", "src\TT.Console\TT.Console.csproj", "{1B04E9C9-67BA-439D-BFB2-BA756288726D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcs", "StoredProcs", "{BE59CD9C-F3A4-4CAC-A139-146854C3EE05}"
+	ProjectSection(SolutionItems) = preProject
+		src\SeedData\StoredProcs\GetPlayerBuffs.sql = src\SeedData\StoredProcs\GetPlayerBuffs.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,5 +102,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D09FC8AC-9F06-4EB8-9B71-50308C4153BD} = {16337D92-0B56-40B9-AE5B-2D12D446DE03}
+		{BE59CD9C-F3A4-4CAC-A139-146854C3EE05} = {16337D92-0B56-40B9-AE5B-2D12D446DE03}
 	EndGlobalSection
 EndGlobal

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using TT.Domain.Chat;
 using TT.Domain.Models;
-using TT.Web.Services;
 
 namespace TT.Tests.Services
 {

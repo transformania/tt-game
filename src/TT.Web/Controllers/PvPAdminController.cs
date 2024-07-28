@@ -2320,11 +2320,13 @@ namespace TT.Web.Controllers
             if (!string.IsNullOrEmpty(input.NewFirstName) && input.NewFirstName != player.FirstName)
             {
                 player.FirstName = input.NewFirstName;
+                player.OriginalFirstName = input.NewFirstName;
             }
 
             if (!string.IsNullOrEmpty(input.NewLastName) && input.NewLastName != player.LastName)
             {
                 player.LastName = input.NewLastName;
+                player.OriginalLastName = input.NewLastName;
             }
 
             if (!ModelState.IsValid)

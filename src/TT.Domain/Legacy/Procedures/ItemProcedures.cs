@@ -637,6 +637,9 @@ namespace TT.Domain.Procedures
 
         public static LogBox PlayerBecomesItem(Player victim, DbStaticForm targetForm, Player attacker, bool dropItems = true)
         {
+            if (victim.InHardmode) {
+                DomainRegistry.Repository.Execute(new RemoveSoulbindingOnPlayerItems { PlayerId = victim.Id} );
+            }
             var output = DomainRegistry.Repository.Execute(new PlayerBecomesItem { AttackerId = attacker?.Id, VictimId = victim.Id, NewFormId = targetForm.Id, DropItems = dropItems });
 
             IItemRepository itemRepo = new EFItemRepository();

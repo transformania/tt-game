@@ -906,7 +906,15 @@
     },
     {
       "number": 114,
-      "name": "Alpha 113 (The Beach Episode!)",
+      "name": "Alpha 114 (The Beach Episode!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 115,
+      "name": "Alpha 115 (Omnibus Petmaker!)",
       "pvp": true,
       "item": true,
       "xp": true,

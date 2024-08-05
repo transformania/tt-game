@@ -394,6 +394,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_112 = "Alpha_112";
                         public readonly string Alpha_113 = "Alpha_113";
                         public readonly string Alpha_114 = "Alpha_114";
+                        public readonly string Alpha_115 = "Alpha_115";
                         public readonly string Alpha_17 = "Alpha_17";
                         public readonly string Alpha_18 = "Alpha_18";
                         public readonly string Alpha_19 = "Alpha_19";
@@ -493,6 +494,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_112 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_112.cshtml";
                     public readonly string Alpha_113 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_113.cshtml";
                     public readonly string Alpha_114 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_114.cshtml";
+                    public readonly string Alpha_115 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_115.cshtml";
                     public readonly string Alpha_17 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_17.cshtml";
                     public readonly string Alpha_18 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_18.cshtml";
                     public readonly string Alpha_19 = "~/Views/Leaderboard/RoundLeaderboards/Statistics/Alpha_19.cshtml";

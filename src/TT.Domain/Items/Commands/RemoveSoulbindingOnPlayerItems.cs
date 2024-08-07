@@ -53,7 +53,7 @@ namespace TT.Domain.Items.Commands
                         item.SetSoulbindingConsent(false);
                     }
 
-                    if (item.Owner.BotId == AIStatics.SoulbinderBotId)
+                    if (item.Owner?.BotId == AIStatics.SoulbinderBotId)
                     {
                         if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                         {

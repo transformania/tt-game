@@ -249,6 +249,22 @@
                     </p>
                 </div>
             }
+            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId) { 
+                <div>
+                    <p>
+                        This pet currently belongs to someone else. If they're not around, why not give them a friendly pat?
+                        <ul class="=inanimateActionList">
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.FeralAction("pat", (int)ViewBag.ItemId))" class="check inanimateAction">Gently pat the @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.FeralAction("shoo", (int)ViewBag.ItemId))" class="check inanimateAction">Agitatedly shoo the @Model.PlayerForm.Form.FriendlyName away (Dishearten chance)</a>
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            
+            }
         </div>
     </center>
 </div>

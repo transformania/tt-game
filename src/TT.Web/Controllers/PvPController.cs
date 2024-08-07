@@ -3308,7 +3308,7 @@ namespace TT.Web.Controllers
             }
 
             // assert pet is unowned or on a vendor
-            if (pet.Owner != null && pet.Owner.BotId != AIStatics.WuffieBotId && pet.Owner.BotId != AIStatics.SoulbinderBotId)
+            if (pet.Owner != null && pet.Owner.BotId != AIStatics.WuffieBotId && pet.Owner.BotId != AIStatics.SoulbinderBotId && actionName == "tranquilize")
             {
                 TempData["Error"] = "This pet is currently owned by another player.";
                 return RedirectToAction(MVC.PvP.Play());

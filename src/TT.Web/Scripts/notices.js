@@ -369,8 +369,8 @@ function setupWASDKeys() {
     }
 
     document.onkeypress = function (e) {
-        if (document.getElementById('attack-search-box') !== document.activeElement && codes[e.key]) {
-            var cell = document.getElementById(codes[e.key]);
+        if (document.getElementById('attack-search-box') !== document.activeElement && codes[e.key.toLowerCase()]) {
+            var cell = document.getElementById(codes[e.key.toLowerCase()]);
             if (cell) {
                 var link = cell.getAttribute("href");
                 window.location.replace(link);

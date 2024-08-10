@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{28476165
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		cake.config = cake.config
+		build-ci.sh = build-ci.sh
+		build-ci.ps1 = build-ci.ps1
+		console.ps1 = console.ps1
+		console.sh = console.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{8A8E95B1-DAE5-457A-BE1E-0BF05C771043}"

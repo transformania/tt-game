@@ -2,9 +2,23 @@
 
 This rather unofficial document is meant to help any new developers get up to speed with what's going on in the source code.
 
-First off, here is the stack of technologies being used:
+## UPGRADE IN PROGRESS
+
+Please be aware that we are in the process of migrating from .NET Framework 4.8 to .NET 8.
+
+__.NET 8 is now required in addition to .NET Framework 4.8__
+
+This is a significant undertaking and many of the technologies that Transformania Time is built on have evolved, been discontinued 
+or are no-longer required. As a result, there will be a lot of change taking place around how to run and develop the code locally 
+as well as, down the line, changes to how parts of the system work.
+
+Tempest will try and keep this README up to date with any major impacts on contributors so please keep your forks up to date!
+
+## Technologies
+Here is the stack of technologies being used:
 
 * ASP.Net MVC5
+  * Migration to ASP.NET Core MVC 8 is underway but not complete
 * C# as backend code
 * Entity Framework 6
 * SQL Server / LocalDB
@@ -12,6 +26,7 @@ First off, here is the stack of technologies being used:
 * Git for source control
 * SignalR for chat / realtime notifications
 * T4MVC for strong typing in MVC
+  * This will be retired once migration to .NET 8 is complete
 
 ## Interested in contributing code to Transformania Time?
 
@@ -29,8 +44,20 @@ Below are some tools I keep in my developer environment used daily:
 
 ## Setting up your development environment
 
-Thanks to Tempest, TT now has an automated build system which uses Cake, a Make/Rake like build system built on the Roslyn compiler. To set up your development environment you will need to run the build script which will:
+### Database Configuration
 
+As TT uses SQL Server as a database, there are a number of ways to set this up and connect locally. 
+
+By default, TT is configured to use LocalDB which is available as part of [SQL Server Express editions](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) 
+except SQL Server Express Core. LocalDB is a minimal version of the SQL Server engine which covers the vast majority of requirements for local development.
+
+TT Can be run against a SQL Server instance (usually Express) running on the local machine, a remote machine (if correctly configured) or inside a Docker container. 
+A later section will demonstrate how to set up your environment in this way.
+
+### Running Builds
+
+The easiest way to get your environment setup is to simply run the `build.ps1` or `build.sh` scripts in the root folder which will
+* Install any required tools and packages
 * Build TT
 * Create your DB
 * Seed your DB with initial data
@@ -48,89 +75,137 @@ To run the default build, kick off the following from PowerShell within the TT d
 ./build.ps1
 ```
 
-By default, the build will attempt to use SQL Server 2014 LocalDB (or newer) however if you are using SQL Server 2012 you will want to use
+### Running the Game
 
-```powershell
-./build.ps1 --dbType="localdb_v1"
+Get the game started, you'll need to create a few configuration files, although you only need to do this once. 
+
+__All of the following are for `src/TT.Web`__
+
+1. Copy the `AppSettings.sample.config` file and make a new file called `AppSettings.config` with the contents.
+2. Copy the `ConnectionStrings.sample.config` file and make a new file called `ConnectionStrings.config` with the contents
+3. Copy the `MachineKey.sample.config` file and make a new file called `MachineKey.config` with the contents
+4. Copy the `Rewrite.sample.config` file and make a new file called `Rewrite.config` with the contents
+5. Open the `TT.sln` file in your IDE of choice (Most likely Visual Studio) and run `TT.Web` with the IIS Express configuration
+6. Open http://localhost:52223/
+7. Login with the username `developer` and password `password`
+
+### Custom Configuration
+
+If you want to use a database connection that isn't for LocalDB, you'll need to follow 2 steps:
+
+1. In `src/TT.Server`, create a new file called `localsettings.json` with the following code. You'll need to replace `SERVER_HOSTNAME`, `SERVER_USER_NAME` and `SERVER_PASSWORD` 
+as appropriate.
+```json
+{
+  "ConnectionStrings": {
+    "StatsWebConnection": "Data Source={SERVER_HOSTNAME}; Initial Catalog=Stats; User ID={SERVER_USER_NAME}; Password={SERVER_PASSWORD}; TrustServerCertificate=True;"
+  }
+}
+```
+2. In `src/TT.Web/ConnectionStrings.config`. Change the connection string to the same one as you used in the previous step.
+
+## TT.Console Utility
+A utility console app lives alongside the rest of the code which facilitates working with the DB during dev and other functions such as 
+local turn updates.
+
+It can be run from the root using 
+```
+dotnet run --project src\TT.Console --
+```
+Running without any arguments will give you usage information on how to interact with it. There are also `console.ps` and `console.sh` scripts for shortcuts.
+
+### Database Command
+```
+database - Performs operations on the database
+└── Performs operations on the database
+    └── dotnet run -- database status|up|migrate|rollback|recreate
+        ├── [-c, --config-file <configfile>]
+        ├── [-s, --seed-data <seeddatapath>]
+        ├── [-d, --db-name <database>]
+        ├── [-Y, --skip-confirmation]
+        └── [-r, --rollback-steps <rollbacksteps>]
+
+
+                                   Usage   Description
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                              subcommand   The operation to perform on the database
+        [-c, --config-file <configfile>]   Path to JSON file containing connection string to be used
+        [-s, --seed-data <seeddatapath>]   Seeds database with files in the provided path and performs migrations
+              [-d, --db-name <database>]   The name of the target database
+               [-Y, --skip-confirmation]   Skip confirmation prompts such as when dropping/recreating the database
+  [-r, --rollback-steps <rollbacksteps>]   Number of steps to rollback when used with rollback sub-command
 ```
 
-If you are running a full SQL Express instance (any version) and have localhost set as an alias you can use
+This command is used for checking the status of your local dev DB, migrating your DB, rolling back migrations or recreating it entirely.
 
-```powershell
-./build.ps1 --dbType="server"
+The additional arguments the command take allow overriding various assumed defaults such as where to find the connection string and seed data, 
+the name of the DB, whether to skip confirmation on recreating and how many steps to roll back on a rollback operation.
+
+#### Check the status of your DB
+```
+console.ps1` database status
+```
+This will 
+- Check the connection string works
+- That pre-seed data is applied
+- That all migrations are applied
+- That all seed data is applied
+
+A table detailing the status of each item above will be displayed
+
+#### Standing up a new DB from scratch
+```
+console.ps1` database up
+```
+This will
+- Check it can connect to the DB with the connection string
+- Create the DB if it doesn't already exist
+- Pre-seed any data required prior to migrations
+- Run the migrations
+- Apply the seed data
+
+#### Applying a Migration
+```
+console.ps1` database migrate
+```
+This will run any migrations not yet applied to the target DB. 
+
+#### Rolling back a Migration
+```
+console.ps1` database rollback
+```
+This will rollback the last migration applied ___IF___ it can be rolled back. Not all migrations will support this, it depends what they change and how they are written.
+
+The `-r` flag or `--rollback-steps` argument can be used to specify the number of steps to rollback.
+
+#### Recreating the DB
+```
+console.ps1` database recreate
+```
+This will __DROP__ the existing target DB and recreate it from nothing. It is the same as `database up` except in addition it will first destroy the target DB.
+
+The `-Y` flag or `--skip-confirmation` argument can be used to skip the confirmation prompt.
+
+### Update Turn Command
+```
+update-turn - Performs the turn update against a target server
+└── Performs the turn update against a target server
+    └── dotnet run -- update-turn
+        └── [-t, --target-server <targetserver>]
+
+
+                                 Usage   Description
+─────────────────────────────────────────────────────────────────────────────────────────────
+  [-t, --target-server <targetserver>]   The server, including port, to run the turn update
 ```
 
-If you are running a remote SQL server (any version) you can use
+This will run all the end end-of-turn actions and advance onto the next turn. 
 
-```powershell
-./build.ps1 --dbType="remoteserver" --dbServer="server.domain.com" --dbUserId="username" --dbName="Stats"
-```
-
-If you don't want to specify the database settings every time you run the build script, you may set environment variables which have the parameters preconfigured. The parameter names are TT_VARNAME.
-For example, if you want to change dbType, set a variable named TT_DBTYPE.
-
-### Migrating Database
-
-When schema changes have been made, you can use the build system to update your development database simply by running the default build. If you only specifically want to run migrations and nothing else, use:
-
-```powershell
-./build.ps1 --target="Migrate"
-```
-
-If you need to force a specific migration to retrigger, you can delete the row created by the migration you wish to rerun in the table dbo.VersionInfo .
-
-Again, you can use the `--dbType=` argument suitable for your environment.
-
-### Re-creating Database
-
-To re-create your DB from scratch you can do the following
-
-```powershell
-./build.ps1 --target="Recreate-DB"
-```
-
-This will drop your existing database, recreate from migrations and apply the seed data.  For convenience's sake, a default user with username "Developer" and password "password" is automatically seeded with full permissions.
-
-### Running turn updates in dev environment
-
-To run turn updates in a dev environment, you can do the following
-
-```powershell
-./build.ps1 --target="Turn-Update"
-```
-
-### Feature Toggles
-
-We are starting to use a concept known as Feature Toggles to allow us to work on new functionality but wrap it up behind boolen switches so we can publish code to production but not show any of
-the new work. We use a library called `FeatureSwitch` to do this.
-
-All of the feature toggles should be defined in both `AppSettings.config` (if you add new toggles, please also add them to `AppSettings.sample.config` and notify the team!) and `TT.Domain\Features.cs`.
-Toggles defined in the sample config should always default to disabled.
-
-The toggles can be tested using `FeatureContext.IsEnabled<ToggleClass>()`.
-
-## Random things to know
-
-This repo has a few different projects in it, having evolved from a simple server that hosted the singleplayer Transformania Time game (the gameshow one) to also including some experiments with AngularJS (Fashion Wars) and HTML5 canvas (Bombie).  These have nothing to do with the core multiplayer TT game so they should be left alone for the time being unless you're just curious.  (As June 24, a different repo was created and all future code in those projects will go there.  TT gameshow code will stay here.)
+The `-t` flag or `--target-server` argument can be used to proivde an alternative base URL to call the turn update on.
 
 ## Guts / Project Organization
 
 There are few conventions I've tried to follow to keep organized.  The big ones are:
-
-### Commands & Queries
-
-We're in the process of moving away from the Procedures detailed below and instead towards Domain Driven Design. As part of this, we are borrowing the concept of Commands and Queries to update and query
-the domain. The general principle is that instead of lots of procedures that modify the underlying DB, we have a Domain which is responsible for managing all business rules inside it. That Domain can
-be queried, which will return Data Transfer Objects. These DTOs are flattened objects that simply contain the data required to fulfil the query, nothing more. On the update side, we use Commands which
-don't return any data from the Domain, but instead allow us to modify it but manipulating the entities inside.
-
-Using this approach, there should be no direct manipulation of any Domain Entities except through a `DomainCommand` object. There should be no direct reading of the domain or database except through the use
-of a `DomainQuery` or `DomainQuerySingle` object.
-
-`DomainCommand`, `DomainQuery` and `DomainQuerySingle` all follow a common convention. To use them, create an object which extends the `Dommain*` object you need and then override the `Execute(IDataContext context)`
-method. Inside of that method, Use the setter on ContextQuery and pass it a lambda with your query inside. Examples can be found in `CreateChatRoom`, `UpdateTome`, `GetTomes` and `GetTomeFromItem`.
-
-Commands and Queries can have any input passed into them validated before executing the query to ensure the input is valid. Override the `Validate()` method and throw a `DomainException` for any validation failures.
 
 ### Used Controllers
 

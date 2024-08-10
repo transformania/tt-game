@@ -286,6 +286,8 @@ coverage/
 src/TT.Web/lib/
 src/TT.Server/wwwroot/lib/
 localsettings.json
+TestReports/
+Cobertura.xml
 
 # Cake
 /tools/

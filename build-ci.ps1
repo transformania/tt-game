@@ -12,8 +12,11 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 dotnet cake @args
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-dotnet run --project src\TT.Console database up
+dotnet run --project src\TT.Console database recreate -Y
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-dotnet test
+dotnet test --collect:"XPlat Code Coverage"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+dotnet reportgenerator -reports:src\TT.Tests\TestResults\**\coverage.cobertura.xml -targetdir:.\coverage -reporttypes:cobertura
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

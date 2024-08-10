@@ -4,15 +4,12 @@ before_script:
 ps_build:
   stage: build
   script:
-    - .\build.ps1 --target="CI-Build"
+    - .\build-ci.ps1
+  coverage: '/##teamcity\[buildStatisticValue key=''CodeCoverageS'' value=''(\d+\.?\d*)''\]/'
   artifacts:
     paths:
-      - ./*-test-result.xml
-    reports:
-      junit: 
-        - ./*-test-result.xml
+      - '.\coverage'
     expire_in: 30 days
-  coverage: '/Unit line coverage: (\d+\.\d+\%)/'
   tags:
     - powershell
     - windows

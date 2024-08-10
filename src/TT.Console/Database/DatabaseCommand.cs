@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +10,7 @@ using Spectre.Console.Rendering;
 
 namespace TT.Console.Database;
 
-[Description("Performs operations on the databse")]
+[Description("Performs operations on the database")]
 public class DatabaseCommand : OaktonAsyncCommand<DatabaseInput>
 {
     public override async Task<bool> Execute(DatabaseInput input)

@@ -249,7 +249,7 @@
                     </p>
                 </div>
             }
-            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId) { 
+            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId) { 
                 <div>
                     <p>
                         This pet currently belongs to someone else. If they're not around, why not give them a friendly pat?

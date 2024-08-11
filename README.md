@@ -198,7 +198,9 @@ update-turn - Performs the turn update against a target server
 ─────────────────────────────────────────────────────────────────────────────────────────────
   [-t, --target-server <targetserver>]   The server, including port, to run the turn update
 ```
-
+```
+console.ps1` update-turn
+```
 This will run all the end end-of-turn actions and advance onto the next turn. 
 
 The `-t` flag or `--target-server` argument can be used to proivde an alternative base URL to call the turn update on.

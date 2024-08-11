@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{28476165
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		cake.config = cake.config
+		build-ci.sh = build-ci.sh
+		build-ci.ps1 = build-ci.ps1
+		console.ps1 = console.ps1
+		console.sh = console.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{8A8E95B1-DAE5-457A-BE1E-0BF05C771043}"
@@ -56,6 +60,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PreSeed", "PreSeed", "{D09F
 		src\SeedData\PreSeed\InitialRoles.sql = src\SeedData\PreSeed\InitialRoles.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Console", "src\TT.Console\TT.Console.csproj", "{1B04E9C9-67BA-439D-BFB2-BA756288726D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StoredProcs", "StoredProcs", "{BE59CD9C-F3A4-4CAC-A139-146854C3EE05}"
+	ProjectSection(SolutionItems) = preProject
+		src\SeedData\StoredProcs\GetPlayerBuffs.sql = src\SeedData\StoredProcs\GetPlayerBuffs.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +93,10 @@ Global
 		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B766284C-A8A1-40CE-B425-312D6D8524BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B04E9C9-67BA-439D-BFB2-BA756288726D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B04E9C9-67BA-439D-BFB2-BA756288726D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B04E9C9-67BA-439D-BFB2-BA756288726D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B04E9C9-67BA-439D-BFB2-BA756288726D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +106,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D09FC8AC-9F06-4EB8-9B71-50308C4153BD} = {16337D92-0B56-40B9-AE5B-2D12D446DE03}
+		{BE59CD9C-F3A4-4CAC-A139-146854C3EE05} = {16337D92-0B56-40B9-AE5B-2D12D446DE03}
 	EndGlobalSection
 EndGlobal

@@ -16,7 +16,7 @@ namespace TT.Tests.Players.Queries
                 .BuildAndSave();
 
             var cmd = new GetUserFromMembershipId { UserId = user.Id };
-            Assert.IsNotNull(DomainRegistry.Repository.FindSingle(cmd));
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.Not.Null);
         }
     }
 }

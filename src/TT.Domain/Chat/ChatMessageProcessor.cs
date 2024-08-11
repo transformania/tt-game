@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using TT.Domain.Chat.Queries;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
-namespace TT.Web.Services
+namespace TT.Domain.Chat
 {
     public static class ChatMessageProcessor
     {
@@ -37,14 +37,16 @@ namespace TT.Web.Services
 
     public class MessageData
     {
+        public IPrincipal User { get; private set; }
         public string Name { get; private set; }
         public string Message { get; private set; }
         public bool Processed { get; private set; }
 
         public MessageOutput Output { get; set; }
         
-        public MessageData(string name, string message)
+        public MessageData(IPrincipal user, string name, string message)
         {
+            User = user;
             Name = name;
             Message = message;
         }
@@ -121,7 +123,7 @@ namespace TT.Web.Services
 
         protected override void ProcessInternal(MessageData data)
         {
-            if (allowedRoles.Any(allowedRole => HttpContext.Current.User.IsInRole(allowedRole)))
+            if (allowedRoles.Any(allowedRole => data.User.IsInRole(allowedRole)))
             {
                 data.Output = new MessageOutput(data.Message, MessageType.ReservedText);
                 data.MarkAsProcessed();

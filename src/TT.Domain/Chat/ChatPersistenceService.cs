@@ -2,7 +2,7 @@
 using System.Linq;
 using TT.Domain.Models;
 
-namespace TT.Web.Services
+namespace TT.Domain.Chat
 {
     public class ChatPersistenceService : IChatPersistanceService
     {

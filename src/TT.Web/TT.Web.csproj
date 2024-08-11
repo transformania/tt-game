@@ -178,11 +178,8 @@
     <Compile Include="Services\IHubContextAccessor.cs" />
     <Compile Include="Services\OwinContextAccessor.cs" />
     <Compile Include="Services\PrincipalAccessor.cs" />
-    <Compile Include="Services\ChatMessageProcessor.cs" />
-    <Compile Include="Services\ChatPersistenceService.cs" />
     <Compile Include="Services\HubConnectionIdAccessor.cs" />
     <Compile Include="Services\HubRequestAccessor.cs" />
-    <Compile Include="Services\IChatPersistanceService.cs" />
     <Compile Include="Services\IHubConnectionIdAccessor.cs" />
     <Compile Include="Services\IHubRequestAccessor.cs" />
     <Compile Include="Services\IOwinContextAccesor.cs" />
@@ -281,7 +278,6 @@
     <Content Include="lib\vis\vis.js" />
     <Content Include="lib\vis\vis.min.css" />
     <Content Include="lib\vis\vis.min.js" />
-    <Content Include="Schema\GetPlayerBuffs.sql" />
     <Content Include="Schema\PopulateBotId.sql" />
     <Content Include="Schema\RemoveOldIndexes.sql" />
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />

@@ -187,7 +187,7 @@ namespace TT.Tests.Players.Commands
             }
             catch (Exception ex)
             {
-                Assert.Inconclusive($"Mode change unsuccessful due to exception - cannot validate items: {ex.Message}", ex);
+                Assert.Inconclusive($"Mode change unsuccessful due to exception - cannot validate items: {ex.Message}");
             }
 
             if (player.GameMode != playerEndMode)

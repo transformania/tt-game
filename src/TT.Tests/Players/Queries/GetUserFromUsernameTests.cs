@@ -16,7 +16,7 @@ namespace TT.Tests.Players.Queries
                 .BuildAndSave();
 
             var cmd = new GetUserFromUsername { Username = user.UserName };
-            Assert.IsNotNull(DomainRegistry.Repository.FindSingle(cmd));
+            Assert.That(DomainRegistry.Repository.FindSingle(cmd), Is.Not.Null);
         }
     }
 }

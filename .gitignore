@@ -285,6 +285,8 @@ coverage.*.json
 coverage/
 src/TT.Web/lib/
 src/TT.Server/wwwroot/lib/
+appsettings.*.json
+!appsettings.Development.json
 localsettings.json
 TestReports/
 Cobertura.xml

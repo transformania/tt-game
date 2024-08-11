@@ -8,7 +8,11 @@ ps_build:
   coverage: '/##teamcity\[buildStatisticValue key=''CodeCoverageS'' value=''(\d+\.?\d*)''\]/'
   artifacts:
     paths:
-      - '.\coverage'
+      - './coverage'
+      - './src/TT.Tests/TestResults/TestResults.xml'
+    reports:
+      junit:
+         - './src/TT.Tests/TestResults/TestResults.xml'
     expire_in: 30 days
   tags:
     - powershell

@@ -15,8 +15,8 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 dotnet run --project src\TT.Console database recreate -Y
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-dotnet test --collect:"XPlat Code Coverage"
+dotnet test --collect:"XPlat Code Coverage" --logger:junit
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-dotnet reportgenerator -reports:src\TT.Tests\TestResults\**\coverage.cobertura.xml -targetdir:.\coverage -reporttypes:cobertura
+dotnet reportgenerator -reports:src\TT.Tests\TestResults\**\coverage.cobertura.xml -targetdir:.\coverage -reporttypes:"Html;TeamCitySummary" -verbosity:Info
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

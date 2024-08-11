@@ -9,4 +9,4 @@ dotnet tool restore
 dotnet cake "$@"
 dotnet run --project src/TT.Console database recreate -Y
 dotnet test --collect:"XPlat Code Coverage"
-dotnet reportgenerator -reports:src/TT.Tests/TestResults/**/coverage.cobertura.xml -targetdir:./coverage -reporttypes:cobertura
+dotnet reportgenerator -reports:src/TT.Tests/TestResults/**/coverage.cobertura.xml -targetdir:./coverage -reporttypes:"Html;TeamCitySummary" -verbosity:Info

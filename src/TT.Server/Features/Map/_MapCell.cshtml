@@ -1,0 +1,29 @@
+@model TT.Server.Features.Map.MapCell
+
+<div class="mapcell" style="
+    left: @(Model.PosX)px; 
+    top: @(Model.PosY)px;
+    @(Model.HasRightBorder ? "border-right: 1px solid black;" : "")
+    @(Model.HasTopBorder ? "border-top: 1px solid black;" : "")
+    @(Model.HasLeftBorder ? "border-left: 1px solid black;" : "")
+    @(Model.HasBottomBorder ? "border-bottom: 1px solid black;" : "")
+    background: @Model.Background
+">
+    @if (Model.ShowEnchantment)
+    {
+        @if (Model.Covenant != null)
+        {
+            <div class="mapcelltext" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://images.transformaniatime.com/CovenantFlags/@Model.Covenant.FlagUrl); background-size: 100% 100%; ">
+                <div class="mapcellinner">
+                    <span>@Model.Covenant.Name</span>
+                    <span>(@Model.TakeOverAmount)</span>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="mapcelltext">@Model.LocationName</div>
+    }
+</div>
+

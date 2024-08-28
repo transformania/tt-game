@@ -1,0 +1,62 @@
+@model TT.Domain.ViewModels.MapViewModel
+@using TT.Server.Features.Map
+@using TT.Server.Features.Play
+@{
+    ViewBag.Title = "World Map";
+}
+
+@section head
+{
+    <style>
+        .mapcell {
+            height: 100px;
+            width: 100px;
+            position: absolute;
+            padding: 3px;
+        }
+        
+        .mapWrapper {
+            width: 100%;
+            min-height: 800px;
+            position: relative;
+            resize: vertical;
+            overflow: scroll;
+        }
+
+        .mapcelltext {
+            display: inline-block;
+            position: relative;
+            font-size: 12px;
+            text-align: center;
+            height:100%;
+            width:100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .mapcellinner{
+            color:white;
+            display:flex;
+            flex-direction:column;
+        }
+    </style>
+}
+
+@section menu
+{
+    <li><a asp-action="@nameof(PlayController.Play)" asp-controller="Play">Back to game</a></li>
+    <li><a asp-action="@nameof(MapController.WorldMap)" asp-route-showEnchant="false">Map</a></li>
+    <li><a asp-action="@nameof(MapController.WorldMap)" asp-route-showEnchant="true">Show Enchantments</a></li>
+}
+
+<div class="mapWrapper snowflakes">
+    @foreach (var location in Model.Locations)
+    {
+        var enchantmentInfo = Model.LocationInfo?.FirstOrDefault(c => c.dbName == location.dbName);
+        <partial name="_MapCell" model='new MapCell(location, enchantmentInfo, (Model.MinX, Model.MaxY), (Model.PlayerX, Model.PlayerY))' />
+    }
+</div>
+@if (Model.IsInDungeon)
+{
+    <span class="bad">The shifting labyrinth that makes up the dungeon makes keeping a map impossible!</span>
+}

@@ -7,5 +7,10 @@ namespace TT.Domain.ViewModels
     {
         public IEnumerable<Location> Locations { get; set; }
         public IEnumerable<LocationInfo> LocationInfo { get; set; }
+        public decimal MinX { get; set; }
+        public decimal MaxY { get; set; }
+        public int PlayerX { get; set; }
+        public int PlayerY { get; set; }
+        public bool IsInDungeon { get; set; }
     }
 }

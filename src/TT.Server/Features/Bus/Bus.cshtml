@@ -1,0 +1,74 @@
+﻿@using TT.Server.Features.Bus
+@using TT.Server.Features.Map
+@using TT.Server.Features.Play
+@model TT.Domain.ViewModels.BusStopsViewModel
+@{
+    ViewBag.Title = "Bus";
+}
+
+@section menu
+{
+    <li><a asp-action="@nameof(PlayController.Play)" asp-controller="Play">Back to game</a></li>
+    <li><a asp-action="@nameof(MapController.WorldMap)" asp-controller="Map" target="_blank">Open Map in new Tab</a></li>
+}
+
+<div class="containerInner">
+    <h1>Sunnyglade Bus</h1>
+    <p>Feet tired? Whether you have two, four, eight, none, or any number inbetween, you can hop on the bus to get around town a little faster, provided you have the Arpeyjis. Safety regulation do require that riders have not been in recent combat.</p>
+    <p>You have <span title="Arpeyjis" class="icon icon-money"></span> <b>@(Math.Floor(Model.Player.Money))</b> Arpeyjis.</p>
+
+    <ul>
+        @{
+            if (Model.InCombatTooRecently())
+            {
+                <li class="bad">You must stay out of combat another @Model.GetMinutesUntilOutOfCombat() minutes before being allowed on a bus.</li>
+            }
+            if (Model.Player.ActionPoints < 3)
+            {
+                <li class="bad">You need at least 3 AP in order to take the bus.</li>
+            }
+        }
+    </ul>
+
+    <table>
+        <thead>
+        <th>Destination</th>
+        <th>Ticket Price</th>
+        <th>Go</th>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (var b in Model.Stops)
+                {
+                    <tr>
+                        <td>@b.Name</td>
+                        <td><span title="Arpeyjis" class="icon icon-money"></span> @b.Cost</td>
+                        <td>
+                            @{
+                                if (Model.Player.Money >= b.Cost)
+                                {
+                                    <a asp-action="@nameof(BusController.TakeBus)" asp-route-destination="@b.dbName">Go</a>
+                                }
+                                else
+                                {
+                                    <span class='bad'>Insufficient Arpeyjis</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                 }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    tr, td {
+        border: 1px solid black;
+        margin: 10px;
+        padding: 10px;
+    }
+</style>

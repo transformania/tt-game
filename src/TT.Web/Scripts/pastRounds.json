@@ -919,6 +919,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 116,
+      "name": "Alpha 115 (Stay at home? Stay in bed!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

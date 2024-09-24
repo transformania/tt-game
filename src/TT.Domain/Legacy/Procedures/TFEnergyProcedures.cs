@@ -353,7 +353,7 @@ namespace TT.Domain.Procedures
                             healthDamage *= 2;
                         }
 
-                        output.VictimLog += $"<br />You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
+                        output.VictimLog += $"<br />Your body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra {healthDamage:#} willpower damage.";
                         output.AttackerLog += $"<br />Your victim has a very high amount of transformation energy built up and takes an extra {healthDamage:#} willpower damage.";
                     }
                     else if (energyAccumulated > energyRequired * 1M)

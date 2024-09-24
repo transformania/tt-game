@@ -301,8 +301,8 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
 
                 }
-
-                if (input.MessageText.Length > 1000)
+                var messageContentNormalizedNewlines = input.MessageText.Replace("\r\n", "\n");
+                if (messageContentNormalizedNewlines.Length > 1000)
                 {
                     TempData["ErrorMessage"] = "Your message is too long.";
                     TempData["MessageText"] = input.MessageText;

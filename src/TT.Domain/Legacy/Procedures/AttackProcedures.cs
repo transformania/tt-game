@@ -177,7 +177,7 @@ namespace TT.Domain.Procedures
                     else
                     {
                         logs.AttackerLog += victimFullName + " managed to leap out of the way of your spell.";
-                        logs.VictimLog += "You managed to leap out of the way " + attackerFullName + "'s spell.";
+                        logs.VictimLog += "You managed to leap out of the way of " + attackerFullName + "'s spell.";
                         result = logs.AttackerLog;
                         failedAttack = true;
                     }

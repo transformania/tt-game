@@ -327,6 +327,47 @@ namespace TT.Domain.Procedures
 
                 serverLogRepo.SaveServerLog(log);
 
+                #region 24 hour chat auto unlock on new players
+
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started removing player chat lock after 24 hours of account existence");
+
+                //We want to unlock the chat of players who specifically are locked via the default CreatePlayer function, identified by the lockout message, and
+                //who have made their Player at least 24 hours ago. See PlayerProcedures.SaveNewPlayer for where this message is set. 
+                using (var context = new StatsContext())
+                {
+                    try
+                    {
+                        var lockoutMessageToCheck = "New account detected. Please wait 24 hours or contact the moderation team on Discord to remove this lock.";
+                        var idQuery = "SELECT Id FROM [dbo].[AspNetUsers] WHERE DATEDIFF_BIG(DAY, CreateDate, SYSUTCDATETIME()) >= 1 INTERSECT "
+
+                        + "SELECT MembershipId from [dbo].[Players] WHERE IsBannedFromGlobalChat = 1 AND ChatLockoutMessage LIKE '" + lockoutMessageToCheck + "'";
+
+                        var idList = context.Database.SqlQuery<String>(idQuery).ToList();
+                        var playersToUnlock = playerRepo.Players
+                            .Where(p => idList.Contains(p.MembershipId))
+                            .ToList();
+                        
+                        foreach (var player in playersToUnlock)
+                        {
+                            player.IsBannedFromGlobalChat = false;
+                            playerRepo.SavePlayer(player);
+                            PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>Your starting player chat lock has been removed. Thank you for your patience!</b>", true);
+
+                        }
+
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished removing player chat lock after 24 hours of account existence. Removed " + playersToUnlock.Count() + " chat locks.");
+                        serverLogRepo.SaveServerLog(log);
+                    }
+                    //Something happened. Log the error
+                    catch (Exception e)
+                    {
+                        log.Errors++;
+                        log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "24 HOUR CHAT UNBAN UPDATES FAILED", e));
+                    }
+                }
+
+                #endregion 24 hour chat auto unlock on new players
+
                 #region decrement mind control timers
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started mind control cooldown.");
 

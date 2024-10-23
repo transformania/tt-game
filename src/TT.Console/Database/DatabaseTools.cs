@@ -134,17 +134,19 @@ public static class DatabaseTools
             await using var connection = CreateConnection(connectionString);
             await using var existsCmd = new SqlCommand($"SELECT database_id FROM sys.databases WHERE Name = '{database}';", connection);
             await using var isPreSeededCmd = new SqlCommand($"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Players'", connection);
-            await using var isSeededCmd = new SqlCommand(@"
-            USE Stats;
-            IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AspNetUserRoles')
-                BEGIN
-                    SELECT COUNT(*) FROM AspNetUserRoles
-                END
-            ELSE
-                BEGIN
-                    SELECT -1
-                END;
-            ", connection);
+            await using var isSeededCmd = new SqlCommand($"""
+                                                          
+                                                                      USE "{database}";
+                                                                      IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AspNetUserRoles')
+                                                                          BEGIN
+                                                                              SELECT COUNT(*) FROM AspNetUserRoles
+                                                                          END
+                                                                      ELSE
+                                                                          BEGIN
+                                                                              SELECT -1
+                                                                          END;
+                                                                      
+                                                          """, connection);
 
             var exists = await existsCmd.ExecuteScalarAsync() != null;
             if (!exists)

@@ -17,6 +17,7 @@ namespace TT.Web.Models
         public DateTime? PasswordChangedDate { get; set; }
         public string PasswordVerificationToken { get; set; }
         public DateTime? PasswordVerificationTokenExpirationDate { get; set; }
+        public bool? Approved { get; set; }
 
         public async Task<System.Security.Claims.ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {

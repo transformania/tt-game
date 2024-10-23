@@ -34,6 +34,8 @@ namespace TT.Domain.Identity.Entities
         public bool AllowChaosChanges { get; protected set; }
         public bool PvPLock { get; protected set; }
         public bool OnlineToggle { get; protected set; }
+        public bool? Approved { get; protected set; }
+        public DateTime? CreateDate { get; protected set; }
 
         private User() { }
 
@@ -79,6 +81,11 @@ namespace TT.Domain.Identity.Entities
             this.OnlineToggle = SetOnlineToggle;
         }
 
+        public void SetApprovedChanges(bool SetApproved)
+        {
+            this.Approved = SetApproved;
+        }
+
         public void SetLockoutEndDateUtc(DateTime dateTime)
         {
             LockoutEndDateUtc = dateTime;
@@ -102,6 +109,8 @@ namespace TT.Domain.Identity.Entities
                 UserName = UserName,
                 Email = Email,
                 AllowChaosChanges = AllowChaosChanges,
+                Approved = Approved,
+                CreateDate = CreateDate,
             };
         }
 

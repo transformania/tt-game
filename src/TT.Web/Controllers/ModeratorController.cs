@@ -61,6 +61,27 @@ namespace TT.Web.Controllers
 
         }
 
+        public virtual ActionResult Approve(string userId, bool setApproved)
+        {
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new SetApproved
+                {
+                    UserId = userId,
+                    Approved = setApproved
+                });
+                TempData["Result"] = $"User's approval has been successfully set to: {setApproved}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to change user's approval status.";
+            }
+
+            return RedirectToAction(MVC.Moderator.ViewApprovals());
+
+        }
+
         public virtual ActionResult LockPvP(SuspendTimeoutViewModel suspendTimeoutViewModel)
         {
 
@@ -81,6 +102,16 @@ namespace TT.Web.Controllers
 
             return RedirectToAction(MVC.PvP.Play());
 
+        }
+        public virtual ActionResult ViewApprovals()
+        {
+            var output = DomainRegistry.Repository.Find(new GetAllApprovals());
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(MVC.Moderator.Views.ViewApprovals, output);
         }
 
         public virtual ActionResult ViewReports()

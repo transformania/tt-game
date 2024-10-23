@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TT.Domain.Identity.DTOs.UserDetail>
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Moderator.Index())">Back to moderation</a></li>
+}
+
+<div class="containerInner">
+
+    <h1>View Account Approvals</h1>
+
+    <table class="table table-hover messageTable">
+        <thead>
+            <tr>
+                <th style="width: 20%;">User Name</th>
+                <th style="width: 20%;">Date Created</th>
+                <th style="width: 20%;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var approvals in Model.Where(a => a.Approved == null))
+                {
+                    <tr>
+                        <td>@approvals.UserName</td>
+                        <td>@approvals.CreateDate</td>
+                        <td><a href="@Url.Action(MVC.Moderator.Approve(approvals.Id, true))">Approve</a> | <a href="@Url.Action(MVC.Moderator.Approve(approvals.Id, false))">Deny</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+        $('.messageTable').dataTable({
+            "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+            "order": [[0, "desc"]]
+        });
+    });
+
+    </script>
+}

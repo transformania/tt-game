@@ -19,7 +19,6 @@ using TT.Domain.ViewModels;
 using TT.Domain.World.Queries;
 using System.Text.RegularExpressions;
 using TT.Domain.Items.Services;
-using System.Data.Entity;
 
 namespace TT.Domain.Procedures
 {
@@ -751,28 +750,6 @@ namespace TT.Domain.Procedures
 
             cmd.Location = LocationsStatics.GetRandomLocationNotInDungeon();
 
-            //Set the locked chat value based on an existing reserved name on the membershipId
-            //Do this to avoid new accounts/players from immediately harassing people (bad actors/"you know who")
-            //Early check for null oldPlayer to avoid always hitting an exception on new account and new rounds
-            using (var context = new StatsContext())
-            {
-                try
-                {
-                    var creationDate = context.Database.SqlQuery<DateTime>("SELECT CreateDate FROM [dbo].[AspNetUsers] WHERE Id = {0}", membershipId).FirstOrDefault();
-                    if (DateTime.UtcNow.Subtract(creationDate).TotalDays < 1)
-                    {
-                        cmd.IsBannedFromGlobalChat = true;
-                        cmd.ChatLockoutMessage = "New account detected. Please wait 24 hours or contact the moderation team on Discord to remove this lock.";
-                    }
-                }
-                //Likely a database query error
-                catch (Exception)
-                {
-                    cmd.IsBannedFromGlobalChat = true;
-                    cmd.ChatLockoutMessage = "New account detected. Please wait 24 hours or contact the moderation team on Discord to remove this lock.";
-                }
-            }
-
             var newPlayerId = DomainRegistry.Repository.Execute(cmd);
             RerollProcedures.AddRerollGeneration(cmd.UserId);
 
@@ -833,13 +810,8 @@ namespace TT.Domain.Procedures
                 ItemProcedures.PlayerBecomesItem(newplayer, startform, vendor);
                 ItemProcedures.LockItem(newplayer);
             }
-
-            if (cmd.IsBannedFromGlobalChat)
-            {
-                PlayerLogProcedures.AddPlayerLog(newPlayerId, $"<b>Welcome to Transformania Time! You have either recently created your account or do not have a reserved name set, so your chat capabilities have been limited for 24 hours while you get acclimated with the game. Please reserve a name to avoid this on future created players and message the moderation team on Discord if you'd like this lock removed sooner. Thanks for playing!</b>", true);
-            }
-
             return "saved";
+
         }
 
         public static void SetCustomBase(Player player, int newFormSourceId)

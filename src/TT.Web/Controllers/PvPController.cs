@@ -466,9 +466,25 @@ namespace TT.Web.Controllers
             ViewBag.IsRerolling = false;
 
             var myMembershipId = User.Identity.GetUserId();
+            var IsApproved = DomainRegistry.Repository.FindSingle(new IsApproved { UserId = myMembershipId });
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ErrorMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long.";
+                return View(MVC.PvP.Views.MakeNewCharacter);
+            }
+
+            if (IsApproved == null)
+            {
+                ViewBag.ErrorMessage = "Your character was not created.  Please wait to be approved by a moderator.";
+                ViewBag.SubErrorMessage = "If you need to contact a moderator, you can do so from our Discord server.";
+                return View(MVC.PvP.Views.MakeNewCharacter);
+            }
+            
+            if (IsApproved == false)
+            {
+                ViewBag.ErrorMessage = "Your character was not created.  Your account has been denied by a moderator.";
+                ViewBag.SubErrorMessage = "If you need to contact a moderator, you can do so from our Discord server.";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
 

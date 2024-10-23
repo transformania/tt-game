@@ -67,6 +67,12 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Approve()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Approve);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult LockPvP()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LockPvP);
@@ -138,7 +144,9 @@ namespace TT.Web.Controllers
             public readonly string Index = ("Index").ToLowerInvariant();
             public readonly string ViewAbusiveMessages = ("ViewAbusiveMessages").ToLowerInvariant();
             public readonly string AddStrike = ("AddStrike").ToLowerInvariant();
+            public readonly string Approve = ("Approve").ToLowerInvariant();
             public readonly string LockPvP = ("LockPvP").ToLowerInvariant();
+            public readonly string ViewApprovals = ("ViewApprovals").ToLowerInvariant();
             public readonly string ViewReports = ("ViewReports").ToLowerInvariant();
             public readonly string HandleReport = ("HandleReport").ToLowerInvariant();
             public readonly string HandleReportSend = ("HandleReportSend").ToLowerInvariant();
@@ -160,6 +168,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_AddStrike
         {
             public readonly string input = ("input").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_Approve s_params_Approve = new ActionParamsClass_Approve();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Approve ApproveParams { get { return s_params_Approve; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Approve
+        {
+            public readonly string userId = ("userId").ToLowerInvariant();
+            public readonly string setApproved = ("setApproved").ToLowerInvariant();
         }
         static readonly ActionParamsClass_LockPvP s_params_LockPvP = new ActionParamsClass_LockPvP();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -258,6 +275,7 @@ namespace TT.Web.Controllers
                 public readonly string ListNewsPosts = "ListNewsPosts";
                 public readonly string SetAccountLockoutDate = "SetAccountLockoutDate";
                 public readonly string ViewAbusiveMessages = "ViewAbusiveMessages";
+                public readonly string ViewApprovals = "ViewApprovals";
                 public readonly string ViewReports = "ViewReports";
             }
             public readonly string EditNewsPost = "~/Views/Moderator/EditNewsPost.cshtml";
@@ -266,6 +284,7 @@ namespace TT.Web.Controllers
             public readonly string ListNewsPosts = "~/Views/Moderator/ListNewsPosts.cshtml";
             public readonly string SetAccountLockoutDate = "~/Views/Moderator/SetAccountLockoutDate.cshtml";
             public readonly string ViewAbusiveMessages = "~/Views/Moderator/ViewAbusiveMessages.cshtml";
+            public readonly string ViewApprovals = "~/Views/Moderator/ViewApprovals.cshtml";
             public readonly string ViewReports = "~/Views/Moderator/ViewReports.cshtml";
         }
     }
@@ -310,6 +329,19 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
+        partial void ApproveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, bool setApproved);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Approve(string userId, bool setApproved)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Approve);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setApproved", setApproved);
+            ApproveOverride(callInfo, userId, setApproved);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void LockPvPOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.SuspendTimeoutViewModel suspendTimeoutViewModel);
 
         [NonAction]
@@ -318,6 +350,17 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LockPvP);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "suspendTimeoutViewModel", suspendTimeoutViewModel);
             LockPvPOverride(callInfo, suspendTimeoutViewModel);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ViewApprovalsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ViewApprovals()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ViewApprovals);
+            ViewApprovalsOverride(callInfo);
             return callInfo;
         }
 

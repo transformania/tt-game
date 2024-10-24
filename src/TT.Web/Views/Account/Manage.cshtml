@@ -17,7 +17,21 @@
 
     <h1>Manage Account</h1>
 
+
     <p class="message-success">@ViewBag.StatusMessage</p>
+
+    @if (ViewBag.Email != null)
+    {
+        if (ViewBag.Approved != true)
+        { 
+            <a href="@Url.Action(MVC.Account.SendVerificationEmail())">Click here to send an email with your verification code.</a><br><br>
+        }
+    }
+    else
+    {
+        <b>In order to verify your account, you will need to set an email.</b>
+    }
+
 
     <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 

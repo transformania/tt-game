@@ -101,6 +101,8 @@ namespace TT.Web.Controllers
             public readonly string TermsOfService = ("TermsOfService").ToLowerInvariant();
             public readonly string PrivacyPolicy = ("PrivacyPolicy").ToLowerInvariant();
             public readonly string SubmitCaptcha = ("SubmitCaptcha").ToLowerInvariant();
+            public readonly string SendTestEmail = ("SendTestEmail").ToLowerInvariant();
+            public readonly string SendVerificationEmail = ("SendVerificationEmail").ToLowerInvariant();
         }
 
 
@@ -356,6 +358,28 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SubmitCaptcha);
             SubmitCaptchaOverride(callInfo);
             return callInfo;
+        }
+
+        [NonAction]
+        partial void SendTestEmailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> SendTestEmail()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendTestEmail);
+            SendTestEmailOverride(callInfo);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+
+        [NonAction]
+        partial void SendVerificationEmailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> SendVerificationEmail()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendVerificationEmail);
+            SendVerificationEmailOverride(callInfo);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
     }

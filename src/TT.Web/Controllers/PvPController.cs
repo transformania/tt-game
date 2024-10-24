@@ -476,8 +476,9 @@ namespace TT.Web.Controllers
 
             if (IsApproved == null)
             {
-                ViewBag.ErrorMessage = "Your character was not created.  Please wait to be approved by a moderator.";
-                ViewBag.SubErrorMessage = "If you need to contact a moderator, you can do so from our Discord server.";
+                ViewBag.Result = "Your character was not created. Please verify your email address or wait to be approved by a moderator.";
+                ViewBag.ErrorMessage = "To verify your account, click on your account name in the top-right corner where you can do so.";
+                ViewBag.SubErrorMessage = "You can also reach out to a moderator in our Discord to get approved.";
                 return View(MVC.PvP.Views.MakeNewCharacter);
             }
             

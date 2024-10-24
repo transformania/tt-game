@@ -15,6 +15,11 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Players.Queries;
 using TT.Web.Services;
+using TT.Domain.Statics;
+using Amazon.SimpleEmail.Model;
+using Amazon.SimpleEmail;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TT.Web.Controllers
 {
@@ -191,6 +196,11 @@ namespace TT.Web.Controllers
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action(MVC.Account.Manage());
+
+            // Fucking viewbags.
+            ViewBag.Email = GetUser().Email;
+            ViewBag.Approved = GetUser().Approved;
+            
             return View(MVC.Account.Views.Manage);
         }
 
@@ -218,6 +228,20 @@ namespace TT.Web.Controllers
             {
                 if (userManager.CheckPassword(user, model.OldPassword))
                 {
+
+                    if (!model.Verify.IsNullOrEmpty() && userManager.ConfirmEmail(user.Id, model.Verify).Succeeded)
+                    {
+                        DomainRegistry.Repository.Execute(new SetApproved
+                        {
+                            UserId = user.Id,
+                            Approved = true
+                        });
+
+                        TempData["Result"] = $"You have successfully verified your account.";
+                        TempData["SubError"] = $"You should now be able to create a character.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+
                     var result = userManager.SetEmail(User.Identity.GetUserId(), model.Email?.Trim());
                     if (result.Succeeded)
                     {
@@ -380,6 +404,73 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
+        [Authorize]
+        public virtual async Task<ActionResult> SendTestEmail()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var recipient = GetUser().Email;
+
+            if (recipient == null) 
+            {
+                TempData["Error"] = "It doesn't look like you have an email set up for your account.";
+                TempData["SubError"] = "Please, for everyone's sanity, set that.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
+
+            var data = @"{""username"": ""Admin Debug""}";
+
+            var sendRequest = new SendTemplatedEmailRequest
+            {
+                Source = "support@transformaniatime.com",
+                Destination = new Destination { ToAddresses = new List<string> { recipient } },
+                Template = "my-email-template",
+                TemplateData = data,
+            };
+
+            await client.SendTemplatedEmailAsync(sendRequest);
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        [Authorize]
+        public virtual async Task<ActionResult> SendVerificationEmail()
+        {
+            var recipient = GetUser()?.Email;
+
+            if (recipient == null)
+            {
+                TempData["Error"] = "To verify your account, please set your email.";
+                TempData["SubError"] = "Click on your account name in the top-right corner to access account-wide settings.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
+
+            var data = @"{
+                        ""username"": """ + GetUser().UserName + @""",
+                        ""verifycode"": """ + userManager.GenerateEmailConfirmationToken(GetUser().Id) + @"""
+                        }";
+
+            var sendRequest = new SendTemplatedEmailRequest
+            {
+                Source = "support@transformaniatime.com",
+                Destination = new Destination { ToAddresses = new List<string> { recipient } },
+                Template = "my-email-template",
+                TemplateData = data,
+            };
+
+            await client.SendTemplatedEmailAsync(sendRequest);
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

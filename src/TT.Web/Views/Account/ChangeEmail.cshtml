@@ -1,11 +1,12 @@
 ﻿@model TT.Web.Models.LocalEmailModel
 
-@using (Html.BeginForm(MVC.Account.ChangeEmail())) {
+@using (Html.BeginForm(MVC.Account.ChangeEmail()))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
     <fieldset>
-        <legend>Change E-mail</legend>
+        <legend>Update E-mail</legend>
         <ol>
             <li>
                 @Html.LabelFor(m => m.Email)
@@ -15,7 +16,12 @@
                 @Html.LabelFor(m => m.OldPassword)
                 @Html.PasswordFor(m => m.OldPassword)
             </li>
+            <li>
+                @Html.LabelFor(m => m.Verify)
+                @Html.TextBoxFor(m => m.Verify)
+            </li>
         </ol>
-        <input type="submit" value="Change E-mail">
+        <input type="submit" value="Update e-mail settings.">
     </fieldset>
 }
+

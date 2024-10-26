@@ -268,8 +268,8 @@ namespace TT.Web.Controllers
                 }
             }
 
-            // if there are 500 bot items, time to delete the oldest one
-            if (listNpc.Count >= 500)
+            // if there are 100 bot items, time to delete the oldest one
+            if (listNpc.Count >= 100)
             {
                 var oldestItem = vendorItems.OrderBy(o => o.LastSold).FirstOrDefault();
 

@@ -23,7 +23,6 @@ using TT.Domain.ViewModels.NPCs;
 using TT.Domain.Identity.DTOs;
 using TT.Domain.World.Queries;
 using TT.Domain.Players.Commands;
-using System.Data.Entity;
 
 namespace TT.Web.Controllers
 {
@@ -250,42 +249,6 @@ namespace TT.Web.Controllers
             ItemProcedures.GiveItemToPlayer(itemBeingSold.Id, merchant.Id);
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
-
-            // which items does Lindella have that used to be players?
-            var vendorItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id })
-                .Where(i => i.FormerPlayer != null);
-
-            // get those player items which are bots
-            var listNpc = new List<int>();
-
-            foreach (var item in vendorItems)
-            {
-                var player = PlayerProcedures.GetPlayer(item.FormerPlayer.Id);
-                if (player.BotId == AIStatics.PsychopathBotId)
-                {
-                    var npcItem = DomainRegistry.Repository.FindSingle(new GetItemByFormerPlayer { PlayerId = player.Id });
-                    listNpc.Add(npcItem.Id);
-                }
-            }
-
-            // if there are 100 bot items, time to delete the oldest one
-            if (listNpc.Count >= 100)
-            {
-                var oldestItem = vendorItems.OrderBy(o => o.LastSold).FirstOrDefault();
-
-                // if item has rune, umembed it
-                // this is a bug fix, I'm going dirty
-                IItemRepository itemRepo = new EFItemRepository();
-                var getRune = itemRepo.Items.FirstOrDefault(i => i.EmbeddedOnItemId == oldestItem.Id);
-
-                if (getRune != null)
-                {
-                    DomainRegistry.Repository.Execute(new UnembedRune { PlayerId = merchant.Id, ItemId = getRune.Id });
-                }
-
-                //delete the item
-                ItemProcedures.DeleteItem(oldestItem.Id);
-            }
 
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost);
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost);

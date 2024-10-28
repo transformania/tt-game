@@ -250,6 +250,32 @@ namespace TT.Web.Controllers
             var cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
+            // which items does Lindella have that used to be players?
+            var vendorItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id })
+                .Where(i => i.FormerPlayer != null &&
+                i.FormerPlayer.BotId == AIStatics.PsychopathBotId);
+
+            // if there are 100 bot items, time to delete the oldest one
+            if (vendorItems.Count() >= 100)
+            {
+                var oldestItem = vendorItems.OrderBy(o => o.LastSold).Take(10);
+
+                foreach(var item in oldestItem){
+                    // if item has rune, umembed it
+                    // this is a bug fix, I'm going dirty
+                    IItemRepository itemRepo = new EFItemRepository();
+                    var getRune = itemRepo.Items.FirstOrDefault(i => i.EmbeddedOnItemId == item.Id);
+
+                    if (getRune != null)
+                    {
+                        DomainRegistry.Repository.Execute(new UnembedRune { PlayerId = merchant.Id, ItemId = getRune.Id });
+                    }
+
+                    //delete the item
+                    ItemProcedures.DeleteItem(item.Id);
+                }
+            }
+
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost);
             StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost);
 

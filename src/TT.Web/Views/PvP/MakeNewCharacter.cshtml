@@ -20,7 +20,7 @@
             {
                 <br>
                 <br>
-                <span class="tldr">You currently have an character named @ViewBag.OldFirstName @ViewBag.OldLastName.  If you start over you will no longer be able to perform any actions with them anymore.</span>
+                <span class="tldr">You currently have a character named @ViewBag.OldFirstName @ViewBag.OldLastName.  If you start over you will no longer be able to perform any actions with them anymore.</span>
             }
 
 
@@ -56,6 +56,15 @@
         <input id="oldFirstName" type="hidden" value="@ViewBag.OldFirstName">
         <input id="oldLastName" type="hidden" value="@ViewBag.OldLastName">
         <input id="oldFormSourceId" type="hidden" value="@ViewBag.OldFormSourceId">
+
+        if (ViewBag.Approved != true)
+        {
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <strong>You still need to <a href="@Url.Action(MVC.Account.ChangeEmail())">verify your e-mail address</a> to be able to play. You won't be able to create a character until your e-mail address is verified.</strong>
+            </div>
+        }
 
         <text>First name:  </text>
         @Html.EditorFor(x => x.FirstName)

@@ -6,7 +6,7 @@
 @section menu
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
-    <li><a href="@Url.Action(MVC.Account.ChangeEmail())">Change e-mail address</a></li>
+    <li><a href="@Url.Action(MVC.Account.ChangeEmail())">Change or Verify E-mail Address</a></li>
     <li><a href="@Url.Action(MVC.Account.TermsOfService())">View Terms of Service</a></li>
     <li><a href="@Url.Action(MVC.Account.PrivacyPolicy())">View Privacy Policy</a></li>
     <li><a href="@Url.Action(MVC.Account.DeleteAccount())"><span class="bad">Delete Account</span></a></li>
@@ -23,13 +23,23 @@
     @if (ViewBag.Email != null)
     {
         if (ViewBag.Approved != true)
-        { 
-            <a href="@Url.Action(MVC.Account.SendVerificationEmail())">Click here to send an email with your verification code.</a><br><br>
+        {
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                You still need to <a href="@Url.Action(MVC.Account.ChangeEmail())">verify your account</a> to be able to play.
+            </div>
+
         }
     }
     else
     {
-        <b>In order to verify your account, you will need to set an email.</b>
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <b>Please <a href="@Url.Action(MVC.Account.ChangeEmail())">set an e-mail address</a> to complete your account verification. You won't be able to play until your e-mail address has been verified.'</b>
+
+        </div>
     }
 
 

@@ -1,27 +1,48 @@
 ﻿@model TT.Web.Models.LocalEmailModel
 
-@using (Html.BeginForm(MVC.Account.ChangeEmail()))
+@section menu
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
-
-    <fieldset>
-        <legend>Update E-mail</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.OldPassword)
-                @Html.PasswordFor(m => m.OldPassword)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Verify)
-                @Html.TextBoxFor(m => m.Verify)
-            </li>
-        </ol>
-        <input type="submit" value="Update e-mail settings.">
-    </fieldset>
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Account.Manage())">Manage Account</a></li>
+    <li><a href="@Url.Action(MVC.Account.TermsOfService())">View Terms of Service</a></li>
+    <li><a href="@Url.Action(MVC.Account.PrivacyPolicy())">View Privacy Policy</a></li>
+    <li><a href="@Url.Action(MVC.Account.DeleteAccount())"><span class="bad">Delete Account</span></a></li>
 }
 
+
+
+<div class="containerInner">
+    <h1>Change or Verify E-mail</h1>
+    @using (Html.BeginForm(MVC.Account.ChangeEmail()))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        if (ViewBag.Approved != true)
+        {
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>If you don't have a verification code yet, click <a href="@Url.Action(MVC.Account.SendVerificationEmail())">here</a> to send a verification code to your e-mail.
+            </div>
+        }
+
+        <fieldset>
+            <legend>Update E-mail</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.Email)*
+                    @Html.TextBoxFor(m => m.Email)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.OldPassword)*
+                    @Html.PasswordFor(m => m.OldPassword)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Verify)
+                    @Html.TextBoxFor(m => m.Verify)
+                </li>
+            </ol>
+            <input type="submit" value="Update e-mail settings.">
+        </fieldset>
+    }
+</div>

@@ -48,6 +48,7 @@ namespace TT.Web.Models
     {
         [Required]
         [Display(Name = "E-mail")]
+        [DataType(DataType.EmailAddress)]
         [RegularExpression(@"^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "That may not be a valid email address.")]
         public string Email { get; set; }
 
@@ -55,6 +56,8 @@ namespace TT.Web.Models
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }
+        
+        [Display(Name = "Verification Code")]
         public string Verify {  get; set; }
     }
 

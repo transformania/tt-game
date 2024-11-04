@@ -586,6 +586,7 @@ namespace TT.Web.Controllers
             ViewBag.OldFirstName = "";
             ViewBag.OldLastName = "";
             ViewBag.OldFormSourceId = 2;
+            ViewBag.Approved = DomainRegistry.Repository.FindSingle(new IsApproved { UserId = myMembershipId });
 
             if (me != null)
             {

@@ -255,8 +255,7 @@
                     </p>
                 </div>
             }
-            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
-            {
+            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId) { 
                 <div>
                     <p>
                         This pet currently belongs to someone else. If they're not around, why not give them a friendly pat?
@@ -270,6 +269,7 @@
                         </ul>
                     </p>
                 </div>
+            
 
             }
         </div>
@@ -307,10 +307,8 @@
                                             mode = "pvp-mode";
                                         }
 
-                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">
-                                            |<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
-                                            {<b class="bad glyphicon glyphicon-erase"></b>}|
-                                        </a>
+                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                            {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
                                     }
                                 }
                             </text>

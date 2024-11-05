@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Abstract;
@@ -2873,7 +2874,7 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.PlayerLookup, results);
         }
 
-        public virtual ActionResult InanimateAction(string actionName)
+        public virtual ActionResult InanimateAction(string actionName, string message)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2945,6 +2946,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // Message stuff.
+            if (message != null && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, PlayerProcedures.GetPlayerFromMembership(wearer.Player.MembershipId), "any"))
+            {
+                if (message.Length <= 150)
+                {
+                    thirdP = thirdP + "<br><b>" + me.GetFullName() + " " + message + "</b>";
+                    firstP = "You sent an emote to your owner: <b>" + me.GetFullName() + " " + message + "</b><br>" + firstP;
+                }
+            }
+
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
             var leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
@@ -2958,7 +2969,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult AnimalAction(string actionName, int targetId)
+        public virtual ActionResult AnimalAction(string actionName, int targetId, string message)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -3056,7 +3067,7 @@ namespace TT.Web.Controllers
             // all of our checks have passed, so now let's actually do the action
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-            var result = AnimalProcedures.DoAnimalAction(actionName, me.Id, targeted.Id);
+            var result = AnimalProcedures.DoAnimalAction(actionName, me.Id, targeted.Id, message);
             var leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
             TempData["Result"] = result + leveluptext;
@@ -3066,7 +3077,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult OwnerAction(string actionName, int itemId)
+        public virtual ActionResult OwnerAction(string actionName, int itemId, string message)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -3272,6 +3283,16 @@ namespace TT.Web.Controllers
 
             // Bring player online
             PlayerProcedures.SetTimestampToNow(me);
+
+            // Message stuff.
+            if (message != null && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, itemPlayer, "any"))
+            {
+                if (message.Length <= 150)
+                {
+                    secondP = secondP + "<br><b>" + me.GetFullName() + " " + message + "</b>";
+                    firstP = "You sent this emote: <b>" + me.GetFullName() + " " + message + "</b><br>" + firstP;
+                }
+            }
 
             TempData["Result"] = firstP;
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, false);

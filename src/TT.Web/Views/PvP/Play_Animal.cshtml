@@ -243,16 +243,31 @@
                     <p>
                         <ul class="inanimateActionList">
                             <li>
-                                <a href="@Url.Action(MVC.PvP.AnimalAction("lick", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Lick your owner (+WP)</a>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("lick", @Model.OwnedBy.Player.Id, null))" class="check inanimateAction">Lick your owner (+WP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Nuzzle your owner (+MP)</a>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", @Model.OwnedBy.Player.Id, null))" class="check inanimateAction">Nuzzle your owner (+MP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Headbutt your owner (-WP)</a>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", @Model.OwnedBy.Player.Id, null))" class="check inanimateAction">Headbutt your owner (-WP)</a>
                             </li>
                             <li>
-                                <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", @Model.OwnedBy.Player.Id))" class="check inanimateAction">Snarl at your owner (-MP)</a>
+                                <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", @Model.OwnedBy.Player.Id, null))" class="check inanimateAction">Snarl at your owner (-MP)</a>
+                                </li>
+                            <li>
+                                <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to your owner.</a>
+                                <div id="emoteDiv" style="display: none;" class="center-block">
+                                    <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
+                                    <span id="textRemaining"></span><br>
+                                    <b>Action Type:</b>
+                                    <select id="action" class="actionLinkChange">
+                                        <option value="lick">Lick (+WP)</option>
+                                        <option value="nuzzle">Nuzzle (+MP)</option>
+                                        <option value="headbutt">Headbutt (-WP)</option>
+                                        <option value="snarl">Snarl (-MP)</option>
+                                    </select><br>
+                                    <a href="/pvp/animalaction?actionName=&targetId=@Model.OwnedBy.Player.Id&message=" id="actionLink" class="check inanimateAction">Send your emote!</a><br>
+                                </div>
                             </li>
                         </ul>
                     </p>
@@ -436,11 +451,11 @@
                 <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
             </div>
             <div class="modal-body">
-                <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0))" class="btn petActionLink">Lick (+WP)</a>
-                <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0))" class="btn petActionLink">Nuzzle (+MP)</a>
+                <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0, null))" class="btn petActionLink">Lick (+WP)</a>
+                <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0, null))" class="btn petActionLink">Nuzzle (+MP)</a>
                 <hr>
-                <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0))" class="btn petActionLink">Headbutt (-WP)</a>
-                <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0))" class="btn petActionLink">Snarl (-MP)</a>
+                <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0, null))" class="btn petActionLink">Headbutt (-WP)</a>
+                <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0, null))" class="btn petActionLink">Snarl (-MP)</a>
             </div>
         </div>
     </div>
@@ -520,6 +535,14 @@
         }
     });
 
+    $("#showEmote").click(function () {
+        if ($("#emoteDiv").is(":visible") === false) {
+            $("#emoteDiv").show();
+        } else {
+            $("#emoteDiv").hide();
+        }
+    });
+
     $(document).ready(function () {
         $("#showInstantLock").click(function () {
             if ($("#instantlockDiv").is(":visible") === false) {
@@ -527,6 +550,33 @@
             } else {
                 $("#instantlockDiv").hide();
             }
+        });
+    });
+
+    // Using https://jsfiddle.net/t8kAS/
+    $(document).ready(function () {
+        var linkTemplate = "/pvp/animalaction?actionName={0}&targetId=@Model.OwnedBy.Player.Id&message={1}",
+            $input1 = $("#action"),
+            $input2 = $("#message"),
+            $actionLink = $("#actionLink")
+
+        $(".actionLinkChange").on("change", function () {
+            var customLink = linkTemplate
+                .replace("{0}", $input1.val())
+                .replace("{1}", $input2.val())
+            $actionLink.attr("href", customLink);
+        });
+    });
+
+    $(document).ready(function () {
+        var max = 150;
+        $('#textRemaining').html(max + ' characters remaining');
+
+        $('#message').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = max - length;
+
+            $('#textRemaining').html(remaining + ' characters remaining');
         });
     });
 

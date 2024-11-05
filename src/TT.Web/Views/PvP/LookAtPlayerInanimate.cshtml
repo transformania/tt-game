@@ -206,25 +206,53 @@
                                 @if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityInanimate)
                                 {
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("flaunt", (int)ViewBag.ItemId))" class="check inanimateAction">Proudly flaunt your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("flaunt", (int)ViewBag.ItemId, null))" class="check inanimateAction">Proudly flaunt your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("shun",  (int)ViewBag.ItemId, null))" class="check inanimateAction">Disappointedly shun your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("hush",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Sternly hush your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("hush",  (int)ViewBag.ItemId, null))" class="check itemCheck inanimateAction">Sternly hush your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to this item.</a>
+                                        <div id="emoteDiv" style="display: none;" class="center-block">
+                                            <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
+                                            <span id="textRemaining"></span><br>
+                                            <b>Action Type:</b>
+                                            <select id="action" class="actionLinkChange">
+                                                <option value="flaunt">Flaunt</option>
+                                                <option value="shun">Shun</option>
+                                                <option value="hush">Hush</option>
+                                            </select><br>
+                                            <a href="/pvp/owneraction?actionName=&itemId=@((int)ViewBag.ItemId)&message=" id="actionLink" class="check inanimateAction">Send your emote!</a><br>
+                                        </div>
                                     </li>
                                 }
                                 else if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
                                 {
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("praise", (int)ViewBag.ItemId, null))" class="check inanimateAction">Heap praise upon your @Model.PlayerForm.Form.FriendlyName (Boost chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold", (int)ViewBag.ItemId))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("scold", (int)ViewBag.ItemId, null))" class="check inanimateAction">Bitterly scold your @Model.PlayerForm.Form.FriendlyName (Dishearten chance)</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action(MVC.PvP.OwnerAction("restrain",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Forcibly restrain your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                                        <a href="@Url.Action(MVC.PvP.OwnerAction("restrain",  (int)ViewBag.ItemId, null))" class="check itemCheck inanimateAction">Forcibly restrain your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to this pet.</a>
+                                        <div id="emoteDiv" style="display: none;" class="center-block">
+                                            <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
+                                            <span id="textRemaining"></span><br>
+                                            <b>Action Type:</b>
+                                            <select id="action" class="actionLinkChange">
+                                                <option value="praise">Praise</option>
+                                                <option value="scold">Scold</option>
+                                                <option value="restrain">Restrain</option>
+                                            </select><br>
+                                            <a href="/pvp/owneraction?actionName=&itemId=@((int)ViewBag.ItemId)&message=" id="actionLink" class="check inanimateAction">Send your emote!</a><br>
+                                        </div>
                                     </li>
                                 }
                             </ul>
@@ -429,7 +457,7 @@
         var playUpdateSound = false;
         </script>
     }
-    <script>
+<script>
     var playerCanInteract = @((ViewBag.PlayerInteractionsRemain != null && ViewBag.PlayerInteractionsRemain) ? "true" : "false");
     var itemCanInteract = @((ViewBag.ItemInteractionsRemain != null && ViewBag.ItemInteractionsRemain) ? "true" : "false");
 
@@ -520,7 +548,42 @@
         });
 
     });
-    </script>
+
+    $("#showEmote").click(function () {
+        if ($("#emoteDiv").is(":visible") === false) {
+            $("#emoteDiv").show();
+        } else {
+            $("#emoteDiv").hide();
+        }
+    });
+
+     // Using https://jsfiddle.net/t8kAS/
+     $(document).ready(function () {
+         var linkTemplate = "/pvp/owneraction?actionName={0}&itemId=@((int)ViewBag.ItemId)&&message={1}",
+             $input1 = $("#action"),
+             $input2 = $("#message"),
+             $actionLink = $("#actionLink")
+
+         $(".actionLinkChange").on("change", function () {
+             var customLink = linkTemplate
+                 .replace("{0}", $input1.val())
+                 .replace("{1}", $input2.val())
+             $actionLink.attr("href", customLink);
+         });
+     });
+
+     $(document).ready(function () {
+         var max = 150;
+         $('#textRemaining').html(max + ' characters remaining');
+
+         $('#message').on('input', function () {
+             var length = $(this).val().length;
+             var remaining = max - length;
+
+             $('#textRemaining').html(remaining + ' characters remaining');
+         });
+     });
+</script>
 }
 @section head
 {

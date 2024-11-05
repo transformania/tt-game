@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
@@ -9,7 +10,7 @@ namespace TT.Domain.Procedures
 {
     public static class AnimalProcedures
     {
-        public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId)
+        public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId, string message = "")
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
@@ -144,8 +145,16 @@ namespace TT.Domain.Procedures
 
             }
 
+            // Message stuff
+            if (!message.IsNullOrEmpty() && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(animalPlayer, victim, "any"))
+            {
+                if (message.Length <= 150)
+                {
+                    victimMessage = victimMessage + "<br><b>" + animalPlayer.GetFullName() + " " + message + "</b>";
+                    attackerMessage = "You sent an emote to your owner: <b>" + animalPlayer.GetFullName() + " " + message + "</b><br>" + attackerMessage;
+                }
+            }
 
-       
             PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
             PlayerLogProcedures.AddPlayerLog(animalPlayer.Id, attackerMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationMessage);

@@ -268,6 +268,21 @@
                             <li>
                                 <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner (-MP)</a>
                             </li>
+                            <li>
+                                <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to your owner.</a>
+                                <div id="emoteDiv" style="display: none;" class="center-block">
+                                    <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
+                                    <span id="textRemaining"></span><br>
+                                    <b>Action Type:</b>
+                                    <select id="action" class="actionLinkChange">
+                                        <option value="rub">Rub (+WP)</option>
+                                        <option value="pinch">Pinch (-WP)</option>
+                                        <option value="soothe">Soothe (+MP)</option>
+                                        <option value="zap">Zap (-MP)</option>
+                                    </select><br>
+                                    <a href="/pvp/inanimateaction?actionName=&message=" id="actionLink" class="check inanimateAction">Send your emote!</a><br>
+                                </div>
+                            </li>
 
                             @{
                                 if (InanimateXPProcedures.CanShowTFCurseButton(Model.Item))
@@ -473,6 +488,14 @@
         }
     });
 
+    $("#showEmote").click(function () {
+        if ($("#emoteDiv").is(":visible") === false) {
+            $("#emoteDiv").show();
+        } else {
+            $("#emoteDiv").hide();
+        }
+    });
+
     $(document).ready(function () {
         $("#showInstantLock").click(function () {
             if ($("#instantlockDiv").is(":visible") === false) {
@@ -480,6 +503,33 @@
             } else {
                 $("#instantlockDiv").hide();
             }
+        });
+    });
+
+    // Using https://jsfiddle.net/t8kAS/
+    $(document).ready(function () {
+        var linkTemplate = "/pvp/inanimateaction?actionName={0}&message={1}",
+            $input1 = $("#action"),
+            $input2 = $("#message"),
+            $actionLink = $("#actionLink")
+
+        $(".actionLinkChange").on("change", function () {
+            var customLink = linkTemplate
+                .replace("{0}", $input1.val())
+                .replace("{1}", $input2.val())
+            $actionLink.attr("href", customLink);
+        });
+    });
+
+    $(document).ready(function () {
+        var max = 150;
+        $('#textRemaining').html(max + ' characters remaining');
+
+        $('#message').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = max - length;
+
+            $('#textRemaining').html(remaining + ' characters remaining');
         });
     });
 

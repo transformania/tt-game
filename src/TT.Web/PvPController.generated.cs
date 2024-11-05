@@ -400,6 +400,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_InanimateAction
         {
             public readonly string actionName = ("actionName").ToLowerInvariant();
+            public readonly string message = ("message").ToLowerInvariant();
         }
         static readonly ActionParamsClass_AnimalAction s_params_AnimalAction = new ActionParamsClass_AnimalAction();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -409,6 +410,7 @@ namespace TT.Web.Controllers
         {
             public readonly string actionName = ("actionName").ToLowerInvariant();
             public readonly string targetId = ("targetId").ToLowerInvariant();
+            public readonly string message = ("message").ToLowerInvariant();
         }
         static readonly ActionParamsClass_OwnerAction s_params_OwnerAction = new ActionParamsClass_OwnerAction();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -418,6 +420,7 @@ namespace TT.Web.Controllers
         {
             public readonly string actionName = ("actionName").ToLowerInvariant();
             public readonly string itemId = ("itemId").ToLowerInvariant();
+            public readonly string message = ("message").ToLowerInvariant();
         }
         static readonly ActionParamsClass_FeralAction s_params_FeralAction = new ActionParamsClass_FeralAction();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -905,40 +908,43 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void InanimateActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName);
+        partial void InanimateActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, string message);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult InanimateAction(string actionName)
+        public override System.Web.Mvc.ActionResult InanimateAction(string actionName, string message)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InanimateAction);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
-            InanimateActionOverride(callInfo, actionName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "message", message);
+            InanimateActionOverride(callInfo, actionName, message);
             return callInfo;
         }
 
         [NonAction]
-        partial void AnimalActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int targetId);
+        partial void AnimalActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int targetId, string message);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AnimalAction(string actionName, int targetId)
+        public override System.Web.Mvc.ActionResult AnimalAction(string actionName, int targetId, string message)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AnimalAction);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
-            AnimalActionOverride(callInfo, actionName, targetId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "message", message);
+            AnimalActionOverride(callInfo, actionName, targetId, message);
             return callInfo;
         }
 
         [NonAction]
-        partial void OwnerActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int itemId);
+        partial void OwnerActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string actionName, int itemId, string message);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult OwnerAction(string actionName, int itemId)
+        public override System.Web.Mvc.ActionResult OwnerAction(string actionName, int itemId, string message)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OwnerAction);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "actionName", actionName);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
-            OwnerActionOverride(callInfo, actionName, itemId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "message", message);
+            OwnerActionOverride(callInfo, actionName, itemId, message);
             return callInfo;
         }
 

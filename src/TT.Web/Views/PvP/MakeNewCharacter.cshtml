@@ -8,6 +8,15 @@
 {
     <script src="@Links.Scripts.randomFirstLastNames_js"></script>
     <script src="@Links.Scripts.newCharacter_js"></script>
+    <script>
+    $("#showHard").click(function () {
+        if ($("#hardDiv").is(":visible") === false) {
+            $("#hardDiv").show();
+        } else {
+            $("#hardDiv").hide();
+        }
+    });
+    </script>
 }
 
 <div class="specialBox textSpaced">
@@ -99,10 +108,24 @@
         <br>
         <br>
 
-        <p class="bad"><strong>Start in Hard mode? (PREVENTS STRUGGLING)</strong></p>
-        @Html.CheckBoxFor(x => x.StartInHardmode)
+        <a href="#showHard" id="showHard" class="bad">Enable Hard Mode?</a><br /><br />
+        <div id="hardDiv" style="display: none;">
+            <p class="bg-warning">
+                If you choose to enter hard mode, you will not be able to struggle free from ANY inanimate or pet forms during a normal round.
+                Regardless of the form, regardless of being dropped, you <strong>cannot be turned back by anyone</strong> until Chaos Mode.
+                This decision can only be undone by rerolling otherwise. Click on the link below to enter hard mode.<br><br>
 
-        <br>
+                <ul class="list-group list-group-item-warning">
+                    <li>Once this is set, you cannot opt-out without resetting your character.</li>
+                    <li>When any player set in this mode is turned into a pet or item, there will be no option to struggle.</li>
+                    <li>In Hard Mode, there is an increased difficulty to meditating and cleansing where failure is more likely as the round progresses.</li>
+                    <li>In Hard Mode, dodging some splash orbs is harder to achieve, making it more likely for the player to be hit.</li>
+                </ul>
+                    <p class="bad"><strong>Check the box below to enable Hard Mode.</strong></p>
+                    @Html.CheckBoxFor(x => x.StartInHardmode)
+            </p>
+        </div>
+
         <br>
 
         <p class="good">Migrate any old messages to this character?  <br>(Note:This will not work inbetween rounds.)</p>

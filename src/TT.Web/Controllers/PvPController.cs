@@ -2873,7 +2873,7 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.PlayerLookup, results);
         }
 
-        public virtual ActionResult InanimateAction(string actionName, string message)
+        public virtual ActionResult InanimateAction(string actionName, string message = "")
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2946,7 +2946,7 @@ namespace TT.Web.Controllers
             }
 
             // Message stuff.
-            if (message != null && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, PlayerProcedures.GetPlayerFromMembership(wearer.Player.MembershipId), "any"))
+            if (!message.IsNullOrEmpty() && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, PlayerProcedures.GetPlayerFromMembership(wearer.Player.MembershipId), "any"))
             {
                 if (message.Length <= 150)
                 {
@@ -2968,7 +2968,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult AnimalAction(string actionName, int targetId, string message)
+        public virtual ActionResult AnimalAction(string actionName, int targetId, string message = "")
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -3076,7 +3076,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        public virtual ActionResult OwnerAction(string actionName, int itemId, string message)
+        public virtual ActionResult OwnerAction(string actionName, int itemId, string message = "")
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -3284,7 +3284,7 @@ namespace TT.Web.Controllers
             PlayerProcedures.SetTimestampToNow(me);
 
             // Message stuff.
-            if (message != null && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, itemPlayer, "any"))
+            if (!message.IsNullOrEmpty() && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, itemPlayer, "any"))
             {
                 if (message.Length <= 150)
                 {

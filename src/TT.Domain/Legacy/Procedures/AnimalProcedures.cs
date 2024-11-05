@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Items.Queries;
@@ -9,7 +10,7 @@ namespace TT.Domain.Procedures
 {
     public static class AnimalProcedures
     {
-        public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId, string message)
+        public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId, string message = "")
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
@@ -145,7 +146,7 @@ namespace TT.Domain.Procedures
             }
 
             // Message stuff
-            if (message != null && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(animalPlayer, victim, "any"))
+            if (!message.IsNullOrEmpty() && !BlacklistProcedures.PlayersHaveBlacklistedEachOther(animalPlayer, victim, "any"))
             {
                 if (message.Length <= 150)
                 {

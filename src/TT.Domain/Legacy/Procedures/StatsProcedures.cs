@@ -617,8 +617,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="You Aren't the Boss of Me!",
                     Description="Times attacking boss NPCs",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -628,8 +627,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="I Am the Law!",
                     Description="Times attacking the Seekshadow thieves",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -639,8 +637,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="A.B.S Agent-In-Training",
                     Description="Times attacking the Lady Lovebringer, PHD",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -650,8 +647,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="Down With Donna!",
                     Description="Times attacking 'Aunt' Donna Milton",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -661,8 +657,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="Fae-Away",
                     Description="Times attacking Narcissa the Corrupted Lunar Fae",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -672,8 +667,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="Brisby Battler",
                     Description="Times attacking either of the Brisby twins",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 
@@ -683,8 +677,7 @@ namespace TT.Domain.Procedures
                     FriendlyName="This Town Ain't Big Enough",
                     Description="Times attacking Harley the Road Queen",
                     ImageUrl="trophy.jpg",
-                    Active = true,
-                    ResetsOnReroll = true
+                    Active = true
                 }
             },
 

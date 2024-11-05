@@ -1,4 +1,5 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@using TT.Web.CustomHtmlHelpers
 @using TT.Domain
 @using TT.Domain.Models
 @using TT.Domain.Statics
@@ -89,8 +90,8 @@
                                                 {
                                                     <span>They are not blacklisted.</span>
                                                     <br /><br />
-                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))" >No attacking.</a></li>
-                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))" >No attacking or messaging.</a></li>
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 0))">No attacking.</a></li>
+                                                    <li class="outline-text"><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id, 1))">No attacking or messaging.</a></li>
                                                 }
                                             }
                                         </p>
@@ -119,6 +120,11 @@
     <center>
         <div class="leftDisplay" style="background-image: url(https://images.transformaniatime.com/@ViewBag.ImgUrl);">
             <span class="icon icon-level"><b>@ViewBag.ItemLevel</b></span>
+            <span class="iconPortrait" style="float:right;">
+                @HtmlHelpers.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
+                @HtmlHelpers.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
+            </span>
             @if (Model.PlayerForm.Player.InHardmode)
             {
                 <span class="icon icon-hard" title="This player is in Hard Mode."></span>
@@ -249,7 +255,8 @@
                     </p>
                 </div>
             }
-            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId) { 
+            @if (!ViewBag.Unowned && !ViewBag.OwnedByMe && Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+            {
                 <div>
                     <p>
                         This pet currently belongs to someone else. If they're not around, why not give them a friendly pat?
@@ -263,7 +270,7 @@
                         </ul>
                     </p>
                 </div>
-            
+
             }
         </div>
     </center>
@@ -300,8 +307,10 @@
                                             mode = "pvp-mode";
                                         }
 
-                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">|<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
-                                            {<b class="bad glyphicon glyphicon-erase"></b>}|</a>
+                                        <a href="@Url.Action(MVC.PvP.LookAtPlayer(user.Id))" class="pagination">
+                                            |<span class="@mode"> @user.FirstName @user.LastName </span>@if (user.MembershipId == null)
+                                            {<b class="bad glyphicon glyphicon-erase"></b>}|
+                                        </a>
                                     }
                                 }
                             </text>

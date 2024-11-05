@@ -4164,6 +4164,27 @@ namespace TT.Web.Controllers
                     return RedirectToAction(MVC.PvP.Play());
                 }
             }
+            else if (new int[] {
+            AIStatics.MinibossMaleThiefId,
+            AIStatics.MinibossFemaleThiefId,
+            AIStatics.MinibossRoadQueenId,
+            AIStatics.MinibossBimbossId,
+            AIStatics.MinibossDonnaId,
+            AIStatics.MinibossNarcissaId,
+            AIStatics.MinibossNerdMouseId,
+            AIStatics.MinibossBimboMouseId}
+            .Contains(owner.BotId))
+            {
+                // how long has the item been on the boss respawn
+                var hoursSinceSouled = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSouledTimestamp).TotalHours);
+
+                if (hoursSinceSouled < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+                {
+                    TempData["Error"] = "You cannot escape from your owner right now.";
+                    TempData["SubError"] = "You must remain in the NPC's inventory for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceSouled) + " more hours before you can slip free.";
+                    return RedirectToAction(MVC.PvP.Play());
+                }
+            }
             else
             {
                 // assert that the owner has been sufficiently inactive only if player is not a vendor
@@ -4177,7 +4198,7 @@ namespace TT.Web.Controllers
             }
 
             // don't allow items or pets to struggle while their owner is online in the dungeon
-            if (owner.IsInDungeon() && !PlayerProcedures.PlayerIsOffline(owner))
+            if (owner.IsInDungeon() && !PlayerProcedures.PlayerIsOffline(owner) && owner.BotId == AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "The dark powers of the dungeon prevent you from being able to slip free while your owner is in the dungeon and online.";
                 return RedirectToAction(MVC.PvP.Play());

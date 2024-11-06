@@ -484,11 +484,19 @@ namespace TT.Web.Controllers
         public virtual async Task<ActionResult> UsernameRequest(string email)
         {
 
+            // Is no email, return to page
+            if (email == null)
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
+
+            // find all users with email
             var users = DomainRegistry.Repository.Find(new GetAllUsers())
                 .Where(e => e.Email == email)
                 .OrderBy(u => u.UserName)
                 .ToArray();
 
+            // add those users to a list
             var userList = new List<string>();
 
             foreach (var userEmail in users)
@@ -498,6 +506,7 @@ namespace TT.Web.Controllers
 
             var results = String.Join(", ", userList);
 
+            //build and send email
             var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
 
             var data = @"{
@@ -514,9 +523,55 @@ namespace TT.Web.Controllers
 
             await client.SendTemplatedEmailAsync(sendRequest);
 
-            ViewBag.Result = $"If there are any accounts associated with that address, we will send a reminder email.";
             return RedirectToAction(MVC.Account.Requests());
         }
+
+        [AllowAnonymous]
+        public virtual async Task<ActionResult> PasswordResetRequest(string username)
+        {
+
+            // if no username, return to page
+            if (username == null)
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
+
+            // find user from username
+            var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = username });
+
+            // if no email, return to page
+            if (user.Email.IsNullOrEmpty())
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
+
+            // build and send email
+            var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
+            var verifyCode = userManager.GenerateEmailConfirmationToken(user.Id);
+            string baseUrl = Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
+
+            var url = "https://" + baseUrl + "/account/resetpassword?username=" + user.UserName + "&code=" + verifyCode;
+
+            var data = @"{
+                        ""username"": """ + user.UserName + @""",
+                        ""verifycode"": """ + verifyCode + @""",
+                        ""url"": """ + url + @"""
+                        }";
+
+            var sendRequest = new SendTemplatedEmailRequest
+            {
+                Source = "support@transformaniatime.com",
+                Destination = new Destination { ToAddresses = new List<string> { user.Email } },
+                Template = "reset-template",
+                TemplateData = data,
+            };
+
+            await client.SendTemplatedEmailAsync(sendRequest);
+
+            return RedirectToAction(MVC.Account.Requests());
+        }
+
+
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

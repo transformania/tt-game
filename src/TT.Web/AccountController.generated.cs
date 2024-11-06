@@ -74,6 +74,13 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Manage);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> UsernameRequest()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsernameRequest);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AccountController Actions { get { return MVC.Account; } }
@@ -100,9 +107,11 @@ namespace TT.Web.Controllers
             public readonly string DeleteAccountConfirm = ("DeleteAccountConfirm").ToLowerInvariant();
             public readonly string TermsOfService = ("TermsOfService").ToLowerInvariant();
             public readonly string PrivacyPolicy = ("PrivacyPolicy").ToLowerInvariant();
+            public readonly string Requests = ("Requests").ToLowerInvariant();
             public readonly string SubmitCaptcha = ("SubmitCaptcha").ToLowerInvariant();
             public readonly string SendTestEmail = ("SendTestEmail").ToLowerInvariant();
             public readonly string SendVerificationEmail = ("SendVerificationEmail").ToLowerInvariant();
+            public readonly string UsernameRequest = ("UsernameRequest").ToLowerInvariant();
         }
 
 
@@ -149,6 +158,14 @@ namespace TT.Web.Controllers
         {
             public readonly string model = ("model").ToLowerInvariant();
         }
+        static readonly ActionParamsClass_UsernameRequest s_params_UsernameRequest = new ActionParamsClass_UsernameRequest();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UsernameRequest UsernameRequestParams { get { return s_params_UsernameRequest; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UsernameRequest
+        {
+            public readonly string email = ("email").ToLowerInvariant();
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -167,6 +184,7 @@ namespace TT.Web.Controllers
                 public readonly string Manage = "Manage";
                 public readonly string PrivacyPolicy = "PrivacyPolicy";
                 public readonly string Register = "Register";
+                public readonly string Requests = "Requests";
                 public readonly string TermsOfService = "TermsOfService";
             }
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
@@ -177,6 +195,7 @@ namespace TT.Web.Controllers
             public readonly string Manage = "~/Views/Account/Manage.cshtml";
             public readonly string PrivacyPolicy = "~/Views/Account/PrivacyPolicy.cshtml";
             public readonly string Register = "~/Views/Account/Register.cshtml";
+            public readonly string Requests = "~/Views/Account/Requests.cshtml";
             public readonly string TermsOfService = "~/Views/Account/TermsOfService.cshtml";
         }
     }
@@ -338,6 +357,17 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
+        partial void RequestsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Requests()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Requests);
+            RequestsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void ManageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Web.Models.LocalPasswordModel model);
 
         [NonAction]
@@ -379,6 +409,18 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendVerificationEmail);
             SendVerificationEmailOverride(callInfo);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+
+        [NonAction]
+        partial void UsernameRequestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string email);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> UsernameRequest(string email)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsernameRequest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "email", email);
+            UsernameRequestOverride(callInfo, email);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 

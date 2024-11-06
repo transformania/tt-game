@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Account Requests";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+    <li><a href="@Url.Action(MVC.Account.TermsOfService())">Back to Account</a></li>
+    <li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li>
+    <li><a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a></li>
+}
+
+<div class="containerInner">
+    <p class="center-block">
+
+        <a href="#showUsername" id="showUsername" class="h3">Request Username</a><br /><br />
+        <div id="usernameDiv" style="display: none;">
+            <div class="text-center center-block" style="width: 50%">
+                If you believe you have an account with Transformania Time, but are not sure what your username might be, you can request it here should you have an email address set on it.
+                Should the email address provided match any accounts, we will send you an email to the provided email address.
+                <br><br>
+                <input type="text" id="email" class="actionLinkChange" maxlength="50">
+                <br><br>
+                <a href="/account/usernamerequest?email=" id="actionLink" class="check inanimateAction">Click here to submit this request.</a>
+            </div>
+        </div>
+
+    </p>
+</div>
+
+@section scripts
+{
+    <script>
+    $("#showUsername").click(function () {
+        if ($("#usernameDiv").is(":visible") === false) {
+            $("#usernameDiv").show();
+        } else {
+            $("#usernameDiv").hide();
+        }
+    });
+
+    // Using https://jsfiddle.net/t8kAS/
+    $(document).ready(function () {
+        var linkTemplate = "/account/usernamerequest?email={0}",
+            $input1 = $("#email"),
+            $actionLink = $("#actionLink")
+
+        $(".actionLinkChange").on("change", function () {
+            var customLink = linkTemplate
+                .replace("{0}", $input1.val())
+            $actionLink.attr("href", customLink);
+        });
+    });
+    </script>
+}

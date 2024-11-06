@@ -20,6 +20,8 @@ using Amazon.SimpleEmail.Model;
 using Amazon.SimpleEmail;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq.Dynamic;
+using System.Linq;
 
 namespace TT.Web.Controllers
 {
@@ -303,6 +305,12 @@ namespace TT.Web.Controllers
             return View(MVC.Account.Views.PrivacyPolicy);
         }
 
+        [AllowAnonymous]
+        public virtual ActionResult Requests()
+        {
+            return View(MVC.Account.Views.Requests);
+        }
+
         //
         // POST: /Account/Manage
 
@@ -470,6 +478,44 @@ namespace TT.Web.Controllers
             await client.SendTemplatedEmailAsync(sendRequest);
 
             return RedirectToAction(MVC.PvP.Play());
+        }
+
+        [AllowAnonymous]
+        public virtual async Task<ActionResult> UsernameRequest(string email)
+        {
+
+            var users = DomainRegistry.Repository.Find(new GetAllUsers())
+                .Where(e => e.Email == email)
+                .OrderBy(u => u.UserName)
+                .ToArray();
+
+            var userList = new List<string>();
+
+            foreach (var userEmail in users)
+            {
+                userList.Add(userEmail.UserName);
+            }
+
+            var results = String.Join(", ", userList);
+
+            var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
+
+            var data = @"{
+                        ""username"": """ + results + @"""
+                        }";
+
+            var sendRequest = new SendTemplatedEmailRequest
+            {
+                Source = "support@transformaniatime.com",
+                Destination = new Destination { ToAddresses = new List<string> { email } },
+                Template = "username-template",
+                TemplateData = data,
+            };
+
+            await client.SendTemplatedEmailAsync(sendRequest);
+
+            ViewBag.Result = $"If there are any accounts associated with that address, we will send a reminder email.";
+            return RedirectToAction(MVC.Account.Requests());
         }
 
         #region Helpers

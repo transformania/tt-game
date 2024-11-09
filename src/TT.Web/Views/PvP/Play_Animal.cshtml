@@ -553,21 +553,6 @@
         });
     });
 
-    // Using https://jsfiddle.net/t8kAS/
-    $(document).ready(function () {
-        var linkTemplate = "/pvp/animalaction?actionName={0}&targetId=@Model.OwnedBy.Player.Id&message={1}",
-            $input1 = $("#action"),
-            $input2 = $("#message"),
-            $actionLink = $("#actionLink")
-
-        $(".actionLinkChange").on("change", function () {
-            var customLink = linkTemplate
-                .replace("{0}", $input1.val())
-                .replace("{1}", $input2.val())
-            $actionLink.attr("href", customLink);
-        });
-    });
-
     $(document).ready(function () {
         var max = 150;
         $('#textRemaining').html(max + ' characters remaining');
@@ -581,4 +566,24 @@
     });
 
     </script>
+
+    @if (Model.OwnedBy?.Player.Id != null)
+    {
+        <script>
+        // Using https://jsfiddle.net/t8kAS/
+        $(document).ready(function() {
+            var linkTemplate = "/pvp/animalaction?actionName={0}&targetId=@Model.OwnedBy.Player.Id&message={1}",
+                $input1 = $("#action"),
+                $input2 = $("#message"),
+                $actionLink = $("#actionLink")
+
+            $(".actionLinkChange").on("change", function() {
+                var customLink = linkTemplate
+                    .replace("{0}", $input1.val())
+                    .replace("{1}", $input2.val())
+                $actionLink.attr("href", customLink);
+            });
+        });
+        </script>
+    }
 }

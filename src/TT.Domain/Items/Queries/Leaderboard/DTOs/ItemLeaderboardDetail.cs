@@ -28,7 +28,14 @@ namespace TT.Domain.Items.Queries.Leaderboard.DTOs
                     Gender = FormerPlayer.Gender,
                     DonatorLevel = FormerPlayer.DonatorLevel,
                     Mobility = FormerPlayer.Mobility,
-                    BotId = FormerPlayer.BotId
+                    BotId = FormerPlayer.BotId,
+                    ItemXP = ItemXP == null
+                        ? null
+                        : new InanimateXPDetail
+                        {
+                            Id = ItemXP.Id,
+                            Amount = ItemXP.Amount,
+                        }
                 },
                 ItemSource = new ItemSourceDetail
                 {

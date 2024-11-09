@@ -922,7 +922,15 @@
     },
     {
       "number": 116,
-      "name": "Alpha 115 (Stay at home? Stay in bed!)",
+      "name": "Alpha 116 (Stay at home? Stay in bed!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 117,
+      "name": "Alpha 117 (Milking the Psycho Achievement!)",
       "pvp": true,
       "item": true,
       "xp": true,

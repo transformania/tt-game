@@ -155,6 +155,10 @@ namespace TT.Domain.Procedures
                 }
             }
 
+            // Notify a victim when a pet interacts with them.
+            DomainRegistry.AttackNotificationBroker.Notify(victim.Id, victimMessage);
+            DomainRegistry.AttackNotificationBroker.Notify(victim.Id, "A pet, <a href='/pvp/lookatplayer/" + animalPlayer.Id + "'>" + animalPlayer.GetFullName() + "</a>, just interacted with you!");
+
             PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
             PlayerLogProcedures.AddPlayerLog(animalPlayer.Id, attackerMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationMessage);

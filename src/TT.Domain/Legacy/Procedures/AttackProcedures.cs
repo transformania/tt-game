@@ -283,6 +283,9 @@ namespace TT.Domain.Procedures
 
             DomainRegistry.AttackNotificationBroker.Notify(victim.Id, logs.VictimLog);
 
+            // Provide victim with a link to their aggressor, without saving it in logs.
+            DomainRegistry.AttackNotificationBroker.Notify(victim.Id, "You were just attacked by <a href='/pvp/lookatplayer/" + attacker.Id + "'>" + attackerFullName + "</a>!");
+
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
             if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
             {

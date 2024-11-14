@@ -435,6 +435,11 @@ namespace TT.Domain.Procedures
                 }
             }
 
+            if (PvPStatics.ChaosMode)
+            {
+                dbItem.TurnsUntilUse = 1;
+            }
+
             itemRepo.SaveItem(dbItem);
         }
 

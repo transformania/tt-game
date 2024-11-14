@@ -4196,7 +4196,7 @@ namespace TT.Web.Controllers
             .Contains(owner.BotId))
             {
                 // how long has the item been on the boss respawn
-                var hoursSinceSouled = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSouledTimestamp).TotalHours);
+                var hoursSinceSouled = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSold).TotalHours);
 
                 if (hoursSinceSouled < PvPStatics.HoursBeforeInanimatesCanSlipFree)
                 {

@@ -573,14 +573,51 @@ namespace TT.Web.Controllers
         }
 
         [AllowAnonymous]
-        public virtual ActionResult ResetPassword(string username, string code)
+        public virtual async Task<ActionResult> ResetPassword(string username, string code)
         {
+            // if no username, return to page
+            if (username == null)
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
+
             // find user from username
             var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = username });
+
+            // if no email, return to page
+            if (user.Email.IsNullOrEmpty())
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
 
             // confirm code is valid
             if (!user.Id.IsNullOrEmpty() && userManager.ConfirmEmail(user.Id, code).Succeeded)
             {
+                // create new password 
+                var newPassword = Membership.GeneratePassword(32, 0);
+
+                // update password
+                userManager.RemovePassword(user.Id);
+                userManager.AddPassword(user.Id, newPassword);
+
+                // send email with new password
+                var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
+
+                var data = @"{
+                        ""username"": """ + username + @""",
+                        ""password"": """ + newPassword + @"""
+                        }";
+
+                var sendRequest = new SendTemplatedEmailRequest
+                {
+                    Source = "support@transformaniatime.com",
+                    Destination = new Destination { ToAddresses = new List<string> { user.Email } },
+                    Template = "password-template",
+                    TemplateData = data,
+                };
+
+                await client.SendTemplatedEmailAsync(sendRequest);
+
                 return RedirectToAction(MVC.Account.Requests());
             }
 

@@ -90,9 +90,10 @@ namespace TT.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ResetPassword()
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -472,13 +473,13 @@ namespace TT.Web.Controllers
         partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string username, string code);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ResetPassword(string username, string code)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword(string username, string code)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "username", username);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
             ResetPasswordOverride(callInfo, username, code);
-            return callInfo;
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
     }

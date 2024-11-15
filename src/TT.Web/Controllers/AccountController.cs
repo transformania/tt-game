@@ -486,7 +486,7 @@ namespace TT.Web.Controllers
         {
 
             // Is no email, return to page
-            if (email.IsNullOrWhiteSpace()
+            if (email.IsNullOrWhiteSpace())
             {
                 return RedirectToAction(MVC.Account.Requests());
             }

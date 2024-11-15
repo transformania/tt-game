@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
@@ -486,7 +486,7 @@ namespace TT.Web.Controllers
         {
 
             // Is no email, return to page
-            if (email == null)
+            if (email.IsNullOrWhiteSpace()
             {
                 return RedirectToAction(MVC.Account.Requests());
             }
@@ -532,7 +532,7 @@ namespace TT.Web.Controllers
         {
 
             // if no username, return to page
-            if (username == null)
+            if (username.IsNullOrWhiteSpace())
             {
                 return RedirectToAction(MVC.Account.Requests());
             }
@@ -576,7 +576,7 @@ namespace TT.Web.Controllers
         public virtual async Task<ActionResult> ResetPassword(string username, string code)
         {
             // if no username, return to page
-            if (username == null)
+            if (username.IsNullOrWhiteSpace())
             {
                 return RedirectToAction(MVC.Account.Requests());
             }

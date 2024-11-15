@@ -88,6 +88,12 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PasswordResetRequest);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ResetPassword()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AccountController Actions { get { return MVC.Account; } }
@@ -120,6 +126,7 @@ namespace TT.Web.Controllers
             public readonly string SendVerificationEmail = ("SendVerificationEmail").ToLowerInvariant();
             public readonly string UsernameRequest = ("UsernameRequest").ToLowerInvariant();
             public readonly string PasswordResetRequest = ("PasswordResetRequest").ToLowerInvariant();
+            public readonly string ResetPassword = ("ResetPassword").ToLowerInvariant();
         }
 
 
@@ -181,6 +188,15 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_PasswordResetRequest
         {
             public readonly string username = ("username").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ResetPassword s_params_ResetPassword = new ActionParamsClass_ResetPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ResetPassword ResetPasswordParams { get { return s_params_ResetPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ResetPassword
+        {
+            public readonly string username = ("username").ToLowerInvariant();
+            public readonly string code = ("code").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -450,6 +466,19 @@ namespace TT.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "username", username);
             PasswordResetRequestOverride(callInfo, username);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+
+        [NonAction]
+        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string username, string code);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ResetPassword(string username, string code)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "username", username);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
+            ResetPasswordOverride(callInfo, username, code);
+            return callInfo;
         }
 
     }

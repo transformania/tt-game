@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Dynamic;
 using System.Linq;
+using System.Web;
 
 namespace TT.Web.Controllers
 {
@@ -439,7 +440,7 @@ namespace TT.Web.Controllers
             {
                 Source = "support@transformaniatime.com",
                 Destination = new Destination { ToAddresses = new List<string> { recipient } },
-                Template = "my-email-template",
+                Template = "username-template",
                 TemplateData = data,
             };
 
@@ -548,13 +549,13 @@ namespace TT.Web.Controllers
             // build and send email
             var client = new AmazonSimpleEmailServiceClient(Amazon.RegionEndpoint.USWest1);
             var verifyCode = userManager.GenerateEmailConfirmationToken(user.Id);
+            var formatCode = HttpUtility.UrlEncode(verifyCode);
             string baseUrl = Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
 
-            var url = "https://" + baseUrl + "/account/resetpassword?username=" + user.UserName + "&code=" + verifyCode;
+            var url = "https://" + baseUrl + "/account/resetpassword?username=" + user.UserName + "&code=" + formatCode;
 
             var data = @"{
                         ""username"": """ + user.UserName + @""",
-                        ""verifycode"": """ + verifyCode + @""",
                         ""url"": """ + url + @"""
                         }";
 
@@ -571,7 +572,20 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Account.Requests());
         }
 
+        [AllowAnonymous]
+        public virtual ActionResult ResetPassword(string username, string code)
+        {
+            // find user from username
+            var user = DomainRegistry.Repository.FindSingle(new GetUserFromUsername { Username = username });
 
+            // confirm code is valid
+            if (!user.Id.IsNullOrEmpty() && userManager.ConfirmEmail(user.Id, code).Succeeded)
+            {
+                return RedirectToAction(MVC.Account.Requests());
+            }
+
+            return RedirectToAction(MVC.Account.Login());
+        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Account Requests";
+}
+
+@section menu
+{
+    <li><a href="@Url.Action(MVC.Account.Login())">Back to Login</a></li>
+    <li><a href="@Url.Action(MVC.Account.TermsOfService())">Terms of Service</a></li>
+    <li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li>
+    <li><a href="@Url.Action(MVC.Account.PrivacyPolicy())">Privacy Policy</a></li>
+}
+
+<div class="containerInner">
+    <p>
+        <div class="center-block" style="width: 50%">From this page, you can request either your username or to reset your password. In order to request either of these, an email will need to be associated with your account. Without an email, we are unable to assist you.</div><br>
+        <a href="#showUsername" id="showUsername" class="h4 center-block">Request Username</a><br><br>
+        <div id="usernameDiv" style="display: none;">
+            <div class="text-center center-block" style="width: 50%">
+                If you believe you have an account with Transformania Time, but are not sure what your username might be, you can request it here should you have an email address set on it.
+                Should the email address provided match any accounts, we will send you an email to the provided email address.
+                <br><br>
+                <input type="text" id="email" class="actionLinkChange" maxlength="50">
+                <br><br>
+                <a href="/account/usernamerequest?email=" id="actionLink" class="check inanimateAction">Click here to submit this request.</a>
+            </div>
+        </div>
+
+        <a href="#showRequest" id="showRequest" class="h4 center-block">Password Reset</a><br><br>
+        <div id="requestDiv" style="display: none;">
+            <div class="text-center center-block" style="width: 50%">
+                You can use this option to request a password reset. This will send a link to whatever email is associated with the requested account which can be used to reset its password.
+                The account will need to have an email address set on it for thie email to be sent. If there is no email address associated with the requested account, this will not work.
+                <br><br>
+                <input type="text" id="username" class="requestLinkChange" maxlength="50">
+                <br><br>
+                <a href="/account/passwordresetrequest?username=" id="requestLink" class="check inanimateAction">Click here to submit this request.</a>
+            </div>
+        </div>
+
+    </p>
+</div>
+
+@section scripts
+{
+    <script>
+    $("#showUsername").click(function () {
+        if ($("#usernameDiv").is(":visible") === false) {
+            $("#usernameDiv").show();
+        } else {
+            $("#usernameDiv").hide();
+        }
+    });
+
+    // Using https://jsfiddle.net/t8kAS/
+    $(document).ready(function () {
+        var linkTemplate = "/account/usernamerequest?email={0}",
+            $input1 = $("#email"),
+            $actionLink = $("#actionLink")
+
+        $(".actionLinkChange").on("change", function () {
+            var customLink = linkTemplate
+                .replace("{0}", $input1.val())
+            $actionLink.attr("href", customLink);
+        });
+    });
+
+    $("#showRequest").click(function () {
+        if ($("#requestDiv").is(":visible") === false) {
+            $("#requestDiv").show();
+        } else {
+            $("#requestDiv").hide();
+        }
+    });
+
+    // Using https://jsfiddle.net/t8kAS/
+    $(document).ready(function () {
+        var linkTemplate = "/account/passwordresetrequest?username={0}",
+            $input1 = $("#username"),
+            $actionLink = $("#requestLink")
+
+        $(".requestLinkChange").on("change", function () {
+            var customLink = linkTemplate
+                .replace("{0}", $input1.val())
+            $actionLink.attr("href", customLink);
+        });
+    });
+    </script>
+}

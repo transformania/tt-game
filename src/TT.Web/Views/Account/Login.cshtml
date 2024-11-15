@@ -50,7 +50,7 @@
                 </fieldset>
 
                 <p style="margin-top: 50px;">
-                    <a href="@Url.Action(MVC.Account.Register())">Register</a> <br>if you don't have an account.
+                    [ <a href="@Url.Action(MVC.Account.Register())">Register Account</a> ][ <a href="@Url.Action(MVC.Account.Requests())">Account Help</a> ]
                 </p>
             }
             @if (ViewBag.ReturnUrl == "/" || String.IsNullOrEmpty(ViewBag.ReturnUrl))

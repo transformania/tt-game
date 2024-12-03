@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain
 @using TT.Domain.Models
@@ -387,6 +387,7 @@
                 }
             }
 
+            <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
             <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerLog(Model.PlayerForm.Player.Id))">Check player log</a></li>
             @if (ViewBag.Owner?.Player != null)
             {

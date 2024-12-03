@@ -437,6 +437,7 @@
     <Content Include="Views\Moderator\ViewApprovals.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_117.cshtml" />
     <Content Include="Views\Account\Requests.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_118.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

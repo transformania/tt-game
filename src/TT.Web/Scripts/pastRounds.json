@@ -935,6 +935,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 118,
+      "name": "Alpha 118 (What Was I Doing?)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

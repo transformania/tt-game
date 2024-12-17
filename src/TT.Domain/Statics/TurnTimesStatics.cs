@@ -51,7 +51,7 @@ namespace TT.Domain.Statics
                         ActionPointLimit = 200,
                         ActionPointReserveLimit = 600,
                         DonnaMinSpawnTurn = 2600,
-                        ValentineMinSpawnTurn = 99999,
+                        ValentineMinSpawnTurn = 200,
                         BimboBossMinSpawnTurn = 2000,
                         RatThievesMinSpawnTurn = 200,
                         MouseSistersMinSpawnTurn = 6000,

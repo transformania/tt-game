@@ -4444,6 +4444,14 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
+            // assertt the target is online
+            if (PlayerProcedures.PlayerIsOffline(target))
+            {
+                TempData["Error"] = "That person appears to be distracted.";
+                TempData["SubError"] = "You can only headpat players that are currently online.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
             TempData["Result"] = "You have given praise to " + target.FirstName + " " + target.LastName + "!";
 
             // log the results for the players

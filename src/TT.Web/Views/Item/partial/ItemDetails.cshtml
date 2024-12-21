@@ -37,8 +37,18 @@
     <br>
 </b>
 
-
-@Model.Item.ItemSource.Description <br>
+<p>
+    @{
+        if (Model.Item.ItemSource.Description.Length > 1500)
+        {
+        <p>@Model.Item.ItemSource.Description.Substring(0, 1500)…</p>
+        }
+        else
+        {
+            <p>@Model.Item.ItemSource.Description</p>
+        }
+    }
+</p>
 
 <div class="bonuses">
 
@@ -60,7 +70,7 @@
     @{
         if (Model.Item.ItemSource.ItemType == PvPStatics.ItemType_Rune)
         {
-            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail{ ItemSource = Model.Item.ItemSource}, false))
+            @Html.Partial(MVC.Item.Views.partial.RuneStats, new ItemRuneDetailViewModel(new ItemRuneDetail { ItemSource = Model.Item.ItemSource }, false))
         }
 
         foreach (var rune in Model.Item.Runes)

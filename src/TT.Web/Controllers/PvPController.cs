@@ -4444,7 +4444,18 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // assertt the target is online
+            // It was reported on 17-12-24 that, while it is not a game-breaking bug, there was a potential for the following to be exploited for its associated achievement.
+            // As this check was not present, you could alter a URL directly by updating the player ID to that of an offline player. As there was no check, it would activate this function.
+            // The below fix should assist in so far as to remove this functionality, as it was not intended. Hopefully, this additional check will make exploits like this harder in the future.
+            // Following a player's use of the HeadPat() function, this check will call the PlayerIsOffline() function from the PlayerProcedures found in the legacy Domain procedures.
+            // Once this check has determined the target player being headpat is actually offline, it will send two errors to the client of the interacting player.
+            // Each error is sent via the information alert functionality, with these alert notifications including both the 'Error' and 'SubError' notification types.
+            // The first notification, 'Error,' informs the player with an amusing quip about their intended target being offline, though in this context it may also mean that their intended target has not recently spent any action points.
+            // Should the target of the headpat have used any action points or other such commands to bring them online, this 'Error' notification would not have been sent as the initial check for offline status would have failed.
+            // The second notification, called a 'SubError' in this context, alerts the player of the failed check with additional details. It typically describes the first 'fanciful' notification with a more exact reason.
+            // Sometimes the 'SubError' notification can also be used to inform the player what they should do based on the failed action. This message is meant to be helpful to assist the player and guide them to the correct course of action.
+            // Lastly, the two errors are returned with the redirect action, which directs the player's client to reload the main Play page again.
+            // Once the player has been sent back to the Play page, the two alert notifications for 'Error' and 'SubError' are then displayed in their appropriate information boxes.
             if (PlayerProcedures.PlayerIsOffline(target))
             {
                 TempData["Error"] = "That person appears to be distracted.";

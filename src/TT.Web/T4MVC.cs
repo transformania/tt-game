@@ -108,6 +108,7 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         public static readonly string boxesResize_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/boxesResize.min.js") ? Url("boxesResize.min.js") : Url("boxesResize.js");
         public static readonly string buffsTableColoring_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/buffsTableColoring.min.js") ? Url("buffsTableColoring.min.js") : Url("buffsTableColoring.js");
+        public static readonly string custom_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/custom.min.js") ? Url("custom.min.js") : Url("custom.js");
         public static readonly string itemDetailModal_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/itemDetailModal.min.js") ? Url("itemDetailModal.min.js") : Url("itemDetailModal.js");
         public static readonly string leaderboardDropdown_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/leaderboardDropdown.min.js") ? Url("leaderboardDropdown.min.js") : Url("leaderboardDropdown.js");
         public static readonly string newCharacter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/newCharacter.min.js") ? Url("newCharacter.min.js") : Url("newCharacter.js");
@@ -373,6 +374,7 @@ namespace Links
             {
                 public static readonly string boxesResize_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/boxesResize.js"); 
                 public static readonly string buffsTableColoring_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/buffsTableColoring.js"); 
+                public static readonly string custom_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/custom.js"); 
                 public static readonly string itemDetailModal_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/itemDetailModal.js"); 
                 public static readonly string leaderboardDropdown_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/leaderboardDropdown.js"); 
                 public static readonly string newCharacter_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/newCharacter.js"); 

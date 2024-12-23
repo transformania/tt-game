@@ -63,6 +63,7 @@ namespace TT.Domain.Items.Entities
         public decimal ReuseableManaRestore { get; protected set; }
 
         public int? RuneLevel { get; protected set; }
+        public int? ConsumableSubItemType { get; protected set; }
 
         private ItemSource()
         {
@@ -130,7 +131,8 @@ namespace TT.Domain.Items.Entities
                 InstantManaRestore = InstantManaRestore,
                 ReuseableHealthRestore = ReuseableHealthRestore,
                 ReuseableManaRestore = ReuseableManaRestore,
-                RuneLevel = RuneLevel
+                RuneLevel = RuneLevel,
+                ConsumableSubItemType = ConsumableSubItemType
             };
         }
 
@@ -156,7 +158,8 @@ namespace TT.Domain.Items.Entities
                 Magicka = Magicka,
                 Succour = Succour,
                 Luck = Luck,
-                RuneLevel = RuneLevel
+                RuneLevel = RuneLevel,
+                ConsumableSubItemType = ConsumableSubItemType,
             };
         }
     }

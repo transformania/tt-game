@@ -59,5 +59,6 @@ namespace TT.Domain.Items.DTOs
         public decimal ReuseableManaRestore { get; set; }
 
         public int? RuneLevel { get; set; }
+        public int? ConsumableSubItemType { get; set; }
     }
 }

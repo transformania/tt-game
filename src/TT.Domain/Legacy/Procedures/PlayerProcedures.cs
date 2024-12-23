@@ -682,6 +682,10 @@ namespace TT.Domain.Procedures
                     // If item rerolls and is soulbound to owner, give former owner small refund
                     if (oldItemMe.SoulboundToPlayerId != null)
                     {
+                        // Remove soulbinding from the item.
+                        DomainRegistry.Repository.Execute(new RemoveSoulbindingOnItem { ItemId = oldItemMe.Id });
+
+                        // Refund the owner.
                         var getOwner = GetPlayer(oldItemMe.SoulboundToPlayerId);
                         var itemSoulboundCount = DomainRegistry.Repository.Find(new GetItemsSoulboundToPlayer { OwnerId = getOwner.Id }).Count();
                         var price = PriceCalculator.GetPriceToSoulbindNextItem(itemSoulboundCount) / 3;

@@ -283,6 +283,7 @@
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="libman.json" />
+    <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\buffsTableColoring.js" />
     <Content Include="Scripts\itemDetailModal.js" />
     <Content Include="Scripts\leaderboardDropdown.js" />

@@ -1,4 +1,6 @@
 ﻿@model TT.Domain.ViewModels.NPCs.LorekeeperBookListViewModel
+@using TT.Domain.Procedures;
+@using TT.Domain.Statics
 @{
     ViewBag.Title = "Purchase Book";
 }
@@ -16,11 +18,11 @@
 
 <div class="containerInner">
     <h1>Purchase from Skaldrlyr</h1>
-    
+
     <p>"Ah, booksss... ssso full of magicsss and wisssdom.  Try not to get lossst ine one... and yesss, I do mean that literally."</p>
 
     <p>You currently have <b>@Model.MyMoney</b> <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</p>
-    
+
     <hr>
 
     <div id="fullDetails">
@@ -31,8 +33,25 @@
         @{
             foreach (var i in Model.Items.OrderBy(i => i.dbName).ThenByDescending(i => i.Level))
             {
-                @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
+                if ((i.ItemSource.ItemType == PvPStatics.ItemType_Consumable && i.ItemSource.ConsumableSubItemType == (int)ItemStatics.ConsumableSubItemTypes.Tome) && (ItemProcedures.PlayerHasReadBook(Model.Player, i.ItemSource.Id)))
+                {
+                    <div id="readTome">
+                        @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
+                    </div>
+                }
+                else
+                {
+                    @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
+                }
             }
         }
     </div>
 </div>
+
+<style>
+    #readTome::before {
+        content: "¶";
+        height: 100px;
+        color: darkred;
+    }
+</style>

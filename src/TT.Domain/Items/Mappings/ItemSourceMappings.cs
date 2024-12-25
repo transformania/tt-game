@@ -127,7 +127,8 @@ namespace TT.Domain.Items.Mappings
                 ReuseableHealthRestore = itemSource.ReuseableHealthRestore,
                 ReuseableManaRestore = itemSource.ReuseableManaRestore,
 
-                RuneLevel = itemSource.RuneLevel
+                RuneLevel = itemSource.RuneLevel,
+                ConsumableSubItemType = itemSource.ConsumableSubItemType
             };
         }
 

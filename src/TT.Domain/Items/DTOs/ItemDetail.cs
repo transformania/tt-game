@@ -52,7 +52,7 @@ namespace TT.Domain.Items.DTOs
         public float Luck { get; set; }
 
         public int? RuneLevel { get; set; }
-
+        public int? ConsumableSubItemType { get; set; }
     }
 
 }

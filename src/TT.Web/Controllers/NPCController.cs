@@ -1216,7 +1216,8 @@ namespace TT.Web.Controllers
             var output = new LorekeeperBookListViewModel
             {
                 Items = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = loremaster.Id }),
-                MyMoney = Math.Floor(me.Money)
+                MyMoney = Math.Floor(me.Money),
+                Player = me
             };
 
             ViewBag.Lorekeeper = true; // has to stay Viewbag to give access to partial view

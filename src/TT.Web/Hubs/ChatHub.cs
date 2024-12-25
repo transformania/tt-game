@@ -118,8 +118,6 @@ namespace TT.Web.Hubs
                     {
                         case "d465db1c-ba4f-4347-b666-4dfd1c9a5e33": //Because Martha wants to be a filthy casual.
                             break;
-                        case "08b476c3-d262-45b6-9e6a-7d94b472fefe":
-                            break; //So is this one.
                         case "99690ee2-9b6a-4b7e-990f-cc8a2a5a28f2": //Kyri is also probably a filthy casual.
                             break;
                         default:
@@ -151,6 +149,7 @@ namespace TT.Web.Hubs
                     Message = WebUtility.HtmlEncode(output.Text),
                     MessageType = Enum.GetName(output.MessageType.GetType(), output.MessageType),
                     Timestamp = DateTime.UtcNow.ToUnixTime(),
+                    PlayerId = me.Player.Id,
                 };
 
                 if (me.Player.BotId == AIStatics.ActivePlayerBotId && _chatPersistenceService.HasNameChanged(me.Player.MembershipId, name))

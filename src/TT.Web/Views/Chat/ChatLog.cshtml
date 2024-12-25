@@ -60,8 +60,10 @@
             foreach (var l in Model.ChatLog)
             {
                 <li>
-                    <img src="@l.PortraitUrl">
-                    <strong style="color: @l.Color">@l.Name:</strong>
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(l.UserId))">
+                        <img src="@l.PortraitUrl">
+                        <strong style="color: @l.Color">@l.Name:</strong>
+                    </a>
                     @l.Message
                     <span class="timeago">@HtmlHelpers.DatetimeToTimeago(l.Timestamp)</span>
                 </li>

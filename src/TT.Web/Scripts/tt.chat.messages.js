@@ -78,7 +78,7 @@
             text.css('color', model.Color);
 
         return $('<li></li>').append(
-            $('<strong></strong>').prepend(renderImage(model.Pic)).append(text)
+			$('<strong></strong>').prepend(renderImage(model.Pic).wrap('<a href="/pvp/lookatplayer/' + model.PlayerId + '" target="_blank"></a>').parent()).append(text)
         ).append(renderTimestamp(model.Timestamp));
     }
 
@@ -157,7 +157,7 @@
 
 	    return $('<li></li>')
 	        .prepend(userName)
-            .prepend(renderImage(model.Pic))
+			.prepend(renderImage(model.Pic).wrap('<a href="/pvp/lookatplayer/' + model.PlayerId + '" target="_blank"></a>').parent())
             .append(applyHighlightToMessage(message) + ' ')
             .append(renderTimestamp(model.Timestamp));
     }

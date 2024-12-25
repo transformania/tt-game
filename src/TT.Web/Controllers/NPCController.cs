@@ -1833,7 +1833,7 @@ namespace TT.Web.Controllers
             return View(MVC.NPC.Views.SoulbindItemList, output);
         }
 
-        public virtual ActionResult SoulbindItem(int itemId)
+        public virtual ActionResult SoulbindItem(int itemId, bool soulbind)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1851,7 +1851,15 @@ namespace TT.Web.Controllers
 
             try
             {
-                TempData["Result"] = DomainRegistry.Repository.Execute(new SoulbindItemToPlayer { ItemId = itemId, OwnerId = me.Id });
+                if (soulbind)
+                {
+                    TempData["Result"] = DomainRegistry.Repository.Execute(new SoulbindItemToPlayer { ItemId = itemId, OwnerId = me.Id });
+                }
+                else
+                {
+                    DomainRegistry.Repository.Execute(new RemoveSoulbindingOnItem { ItemId = itemId });
+                    TempData["Result"] = "Soulbinding removed from item.";
+                }
             }
             catch (DomainException e)
             {

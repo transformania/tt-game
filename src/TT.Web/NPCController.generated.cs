@@ -307,6 +307,7 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_SoulbindItem
         {
             public readonly string itemId = ("itemId").ToLowerInvariant();
+            public readonly string soulbind = ("soulbind").ToLowerInvariant();
         }
         static readonly ActionParamsClass_SoulboundRename s_params_SoulboundRename = new ActionParamsClass_SoulboundRename();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -656,14 +657,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SoulbindItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId);
+        partial void SoulbindItemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int itemId, bool soulbind);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SoulbindItem(int itemId)
+        public override System.Web.Mvc.ActionResult SoulbindItem(int itemId, bool soulbind)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SoulbindItem);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "itemId", itemId);
-            SoulbindItemOverride(callInfo, itemId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "soulbind", soulbind);
+            SoulbindItemOverride(callInfo, itemId, soulbind);
             return callInfo;
         }
 

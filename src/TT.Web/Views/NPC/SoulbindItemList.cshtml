@@ -57,11 +57,21 @@
                             <td>
                                 @if (Model.CanSoulbind(item))
                                 {
-                                    <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id))">Soulbind</a>
+                                    <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id, true))">Soulbind</a>
                                 }
                                 else
                                 {
                                     <b class="bad">@Model.GetReason(item)</b>
+                                    <br><br>
+                                    if(Model.GetReason(item) == "Already soulbound") 
+                                    {
+                                        <a href="#showSell" id="showSell">Remove soulbinding? </a>
+                                        <div id="sellDiv" style="display: none;">
+                                            <p>
+                                                <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id, false))" class="btn btn-xs">Click to confirm.</a>
+                                            </p>
+                                        </div>
+                                    }
                                 }
                             </td>
                             <td>@(Model.CanSoulbind(item) ? 0 : 1)</td>
@@ -86,5 +96,17 @@
                 "searchable": false
             }]
     });
+
+    $(document).ready(function () {
+        $("#showSell").click(function () {
+            if ($("#sellDiv").is(":visible") === false) {
+                $("#sellDiv").show();
+                $("#showSell").hide();
+            } else {
+                $("#sellDiv").hide();
+            }
+        });
+    });
+
     </script>
 }

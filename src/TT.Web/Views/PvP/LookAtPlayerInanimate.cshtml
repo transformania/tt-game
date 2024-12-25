@@ -215,8 +215,8 @@
                                         <a href="@Url.Action(MVC.PvP.OwnerAction("hush",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Sternly hush your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
                                     </li>
                                     <li>
-                                        <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to this item.</a>
-                                        <div id="emoteDiv" style="display: none;" class="center-block">
+                                        <a href="#" id="showEmote" class="confirmLink inanimateAction" data-target="#emoteDiv">Emote to this item.</a>
+                                        <div id="emoteDiv" style="display: none;" class="confirmContent center-block">
                                             <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
                                             <span id="textRemaining"></span><br>
                                             <b>Action Type:</b>
@@ -241,8 +241,8 @@
                                         <a href="@Url.Action(MVC.PvP.OwnerAction("restrain",  (int)ViewBag.ItemId))" class="check itemCheck inanimateAction">Forcibly restrain your @Model.PlayerForm.Form.FriendlyName (Block action)</a>
                                     </li>
                                     <li>
-                                        <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to this pet.</a>
-                                        <div id="emoteDiv" style="display: none;" class="center-block">
+                                        <a href="#" class="confirmLink inanimateAction" data-target="#emoteDiv">Emote to this pet.</a>
+                                        <div id="emoteDiv" style="display: none;" class="confirmContent center-block">
                                             <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
                                             <span id="textRemaining"></span><br>
                                             <b>Action Type:</b>
@@ -313,7 +313,7 @@
         {
             @{ if (Model.PlayerForm.Player.MembershipId != null)
                 {
-                    <div id="altsDiv" style="display: none;">
+                    <div id="altsDiv" class="confirmContent" style="display: none;">
                         <p class="small center-block">
                             <text>
                                 @{
@@ -406,7 +406,7 @@
                 <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Lock on Account</a></li>
             }
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
-            <li><a href="#showAlts" id="showAlts">Show Potential Alts</a></li>
+            <li><a href="#" class="confirmLink" data-target="#altsDiv">Show Potential Alts</a></li>
 
         }
     }
@@ -472,15 +472,6 @@
         else if (!itemCanInteract) {
             $(".itemCheck").attr("href", "#").addClass("disabled");
         }
-
-        $("#showAlts").click(function () {
-            if ($("#altsDiv").is(":visible") === false) {
-                $("#altsDiv").show();
-            } else {
-                $("#altsDiv").hide();
-            }
-        });
-
 
         $("#ForceUserLogout").on("click", function () {
             $.ajax({
@@ -548,14 +539,6 @@
             return false;
         });
 
-    });
-
-    $("#showEmote").click(function () {
-        if ($("#emoteDiv").is(":visible") === false) {
-            $("#emoteDiv").show();
-        } else {
-            $("#emoteDiv").hide();
-        }
     });
 
      // Using https://jsfiddle.net/t8kAS/

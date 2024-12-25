@@ -8,15 +8,6 @@
 {
     <script src="@Links.Scripts.randomFirstLastNames_js"></script>
     <script src="@Links.Scripts.newCharacter_js"></script>
-    <script>
-    $("#showHard").click(function () {
-        if ($("#hardDiv").is(":visible") === false) {
-            $("#hardDiv").show();
-        } else {
-            $("#hardDiv").hide();
-        }
-    });
-    </script>
 }
 
 <div class="specialBox textSpaced">
@@ -108,8 +99,8 @@
         <br>
         <br>
 
-        <a href="#showHard" id="showHard" class="bad">Enable Hard Mode?</a><br /><br />
-        <div id="hardDiv" style="display: none;">
+        <a href="#" class="confirmLink bad" data-target="#hardDiv">Enable Hard Mode?</a><br /><br />
+        <div id="hardDiv" class="confirmContent" style="display: none;">
             <p class="bg-warning">
                 If you choose to enter hard mode, you will not be able to struggle free from ANY inanimate or pet forms during a normal round.
                 Regardless of the form, regardless of being dropped, you <strong>cannot be turned back by anyone</strong> until Chaos Mode.

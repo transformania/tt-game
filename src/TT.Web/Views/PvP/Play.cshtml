@@ -258,8 +258,8 @@
                         if (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north")
                         {
                             <br /><br />
-                            <a href="#showDungeon" id="showDungeon">Enter the PvP Dungeon (10 AP)</a><br /><br />
-                            <div id="dungeonDiv" style="display: none;">
+                            <a href="#" class="confirmLink" data-target="#dungeonDiv">Enter the PvP Dungeon (10 AP)</a><br /><br />
+                            <div id="dungeonDiv" class="confirmContent" style="display: none;">
                                 <p class="bg-warning small">
                                     By entering the dungeon, you consent to being a target of any spell cast upon you. Another player does not have to respect your preferences. If you do not consent to such restriction or the play that Player versus Player entails, do not enter the dungeon.
                                     <br />
@@ -580,14 +580,6 @@
             if ((evt.key && (evt.key == "Escape" || evt.key == "Esc")) ||
                 (evt.keyCode && evt.keyCode == 27)) {
                 closeAttackModal();
-            }
-        });
-
-        $("#showDungeon").click(function () {
-            if ($("#dungeonDiv").is(":visible") === false) {
-                $("#dungeonDiv").show();
-            } else {
-                $("#dungeonDiv").hide();
             }
         });
 

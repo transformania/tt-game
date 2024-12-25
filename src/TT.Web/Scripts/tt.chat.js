@@ -342,22 +342,6 @@
         alert(alertText[newMode]);
     });
 
-    $("#showSettings").click(function () {
-        if ($("#settingsDiv").is(":visible") === false) {
-            $("#settingsDiv").show();
-        } else {
-            $("#settingsDiv").hide();
-        }
-    });
-
-    $("#showIgnore").click(function () {
-        if ($("#ignoreDiv").is(":visible") === false) {
-            $("#ignoreDiv").show();
-        } else {
-            $("#ignoreDiv").hide();
-        }
-    });
-
     $("#ignoreAdd").click(function () {
         onNewIgnoreAdded($("#ignore").val());
     });

@@ -9,11 +9,11 @@
 {
     <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
     <li><a href="@Url.Action(MVC.PvP.PlayerLookup())">Search for player by name</a></li>
-    <li><a href="javascript:void(0)" id="deleteAll" style="color: #734752 !important; font-weight: bold;">Delete All Messages</a></li>
+    <li><a href="#" class="confirmLink" data-target="#realLink">Delete All Messages</a></li>
     <li><a href="@Url.Action(MVC.Info.Rules())" target="_blank">Rules</a></li>
 }
 
-<div id="realLink" class="specialBox specialBox2" style="display: none;">
+<div id="realLink" class="confirmContent specialBox specialBox2" style="display: none;">
     <span style="color:red;">Do you really want to delete all the messages? If yes then please click link below:</span><br>
     @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
     {
@@ -25,13 +25,13 @@
     }
 </div>
 
-@{ 
+@{
     if (Model.FriendOnlyMessages)
     {
         <div class="specialBox">
             <div class="small">
-                <p>You are currently only allowing messages from friends. <a href="#showToggle" id="showToggle">Toggle it to allow messages from all users.</a></p>
-                <p id="toggleDiv" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Allow messages from all users.</a></p>
+                <p>You are currently only allowing messages from friends. <a href="#" class="confirmLink"  data-target="#toggleDiv">Toggle it to allow messages from all users.</a></p>
+                <p id="toggleDiv" class="confirmContent" style="display: none;"><br><a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Allow messages from all users.</a></p>
             </div>
         </div>
     }
@@ -87,18 +87,18 @@
 
                     <tr>
 
-                    <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Sender.Id))">@msg.Sender.GetFullName()</a></td>
+                        <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Sender.Id))">@msg.Sender.GetFullName()</a></td>
 
-                    @{
-                        if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
-                        {
-                            <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
+                        @{
+                            if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
+                            {
+                                <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
+                            }
+                            else
+                            {
+                                <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
+                            }
                         }
-                        else
-                        {
-                            <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.MessageId))">@messageTeaser</a></td>
-                        }
-                    }
 
                         <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
                         <td>
@@ -113,7 +113,7 @@
 
                             @if (msg.ReadStatus == MessageStatics.Read)
                             {
-                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
+                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new { id = "markForm" }))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input name="messageId" type="hidden" value="@msg.MessageId">
@@ -124,7 +124,7 @@
                             }
                             else
                             {
-                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
+                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new { id = "markForm" }))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input name="messageId" type="hidden" value="@msg.MessageId">
@@ -179,14 +179,14 @@
         <tbody>
 
             @{foreach (var msg in Model.SentMessages)
-            {
-                <tr>
-                    <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Receiver.Id))">@msg.Receiver.GetFullName()</a></td>
-                    <td>@msg.MessageText</td>
-                    <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
-                    <td>@HtmlHelpers.PrintMessageReadStatus(msg)</td>
-                </tr>
-            }
+                {
+                    <tr>
+                        <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Receiver.Id))">@msg.Receiver.GetFullName()</a></td>
+                        <td>@msg.MessageText</td>
+                        <td class="timeSent"><span style="font-size: 10px">@HtmlHelpers.DatetimeToTimeago(msg.Timestamp)</span></td>
+                        <td>@HtmlHelpers.PrintMessageReadStatus(msg)</td>
+                    </tr>
+                }
             }
 
 
@@ -202,31 +202,3 @@
         }
     }
 </div>
-
-@section scripts
-{
-    <script>
-        $("#deleteAll").on('click', function () {
-            if ($("#realLink").is(":visible") === false) {
-                $("#realLink").show();
-            } else {
-                $("#realLink").hide();
-            }
-        });
-
-        $(document).ready(function () {
-            $('#DeleteLink').on('click', function () {
-                document.getElementById('realLink').style.display = "block";
-            });
-        });
-
-        $("#showToggle").click(function () {
-            if ($("#toggleDiv").is(":visible") === false) {
-                $("#toggleDiv").show();
-            } else {
-                $("#toggleDiv").hide();
-            }
-        });
-    </script>
-}
-

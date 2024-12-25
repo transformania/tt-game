@@ -37,8 +37,8 @@
 
             if (Model.playerIsCovenantLeader || Model.IAmCaptain)
             {
-                <a href="#showSell" id="showSell">Sell</a>
-                <div id="sellDiv" style="display: none;">
+                <a href="#" class="confirmLink" data-target="#sellDiv">Sell</a>
+                <div id="sellDiv" class="confirmContent" style="display: none;">
                     <p>
                         Are you sure you want to sell this piece of furniture?
                         <br />
@@ -52,18 +52,3 @@
 
     }
 </div>
-
-@section scripts
-{
-    <script>
-        $(document).ready(function () {
-            $("#showSell").click(function () {
-                if ($("#sellDiv").is(":visible") === false) {
-                    $("#sellDiv").show();
-                } else {
-                    $("#sellDiv").hide();
-                }
-            });
-        });
-    </script>
-}

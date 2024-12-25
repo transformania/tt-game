@@ -269,8 +269,8 @@
                                 <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner (-MP)</a>
                             </li>
                             <li>
-                                <a href="#showEmote" id="showEmote" class="inanimateAction">Emote to your owner.</a>
-                                <div id="emoteDiv" style="display: none;" class="center-block">
+                                <a href="#" class="confirmLink inanimateAction" data-target="#emoteDiv">Emote to your owner.</a>
+                                <div id="emoteDiv" style="display: none;" class="confirmContent center-block">
                                     <b class="good">/me</b> <input type="text" id="message" class="actionLinkChange" maxlength="150"><br>
                                     <span id="textRemaining"></span><br>
                                     <b>Action Type:</b>
@@ -295,8 +295,8 @@
                                 if (Model.WornBy != null)
                                 {
                                     <li>
-                                        <a href="#showEscape" id="showEscape" class="inanimateAction">Attempt to slip free!</a>
-                                        <div id="escapeDiv" style="display: none;">
+                                        <a href="#" class="confirmLink inanimateAction" data-target="#escapeDiv">Attempt to slip free!</a>
+                                        <div id="escapeDiv" class="confirmContent" style="display: none;">
                                             <p class="bg-warning small">
                                                 <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="btn-sm btn-warning center-block">Yes, I want slip free from the person holding me.</a>
                                                 <br>
@@ -340,8 +340,8 @@
                         <p class="center-block">
                             <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
                             <br>
-                            <a href="#showInstantLock" id="showInstantLock" class="check inanimateAction">Submit to your transformation and lock as this form</a>
-                            <div id="instantlockDiv" style="display: none;">
+                            <a href="#" class="confirmLink check inanimateAction" data-target="#instantlockDiv">Submit to your transformation and lock as this form</a>
+                            <div id="instantlockDiv" class="confirmContent" style="display: none;">
                                 <p class="small">
                                     <a href="@Url.Action(MVC.PvP.InstantLock())" class="check inanimateAction">Yes, I wish to accept my fate.</a>
                                 </p>
@@ -479,32 +479,6 @@
     function fail() {
         // alert("fail");
     }
-
-    $("#showEscape").click(function () {
-        if ($("#escapeDiv").is(":visible") === false) {
-            $("#escapeDiv").show();
-        } else {
-            $("#escapeDiv").hide();
-        }
-    });
-
-    $("#showEmote").click(function () {
-        if ($("#emoteDiv").is(":visible") === false) {
-            $("#emoteDiv").show();
-        } else {
-            $("#emoteDiv").hide();
-        }
-    });
-
-    $(document).ready(function () {
-        $("#showInstantLock").click(function () {
-            if ($("#instantlockDiv").is(":visible") === false) {
-                $("#instantlockDiv").show();
-            } else {
-                $("#instantlockDiv").hide();
-            }
-        });
-    });
 
     // Using https://jsfiddle.net/t8kAS/
     $(document).ready(function () {

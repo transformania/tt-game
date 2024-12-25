@@ -219,7 +219,7 @@
         {
             @{ if (Model.PlayerForm.Player.MembershipId != null)
                {
-                   <div id="altsDiv" style="display: none;">
+                   <div id="altsDiv" class="confirmContent" style="display: none;">
                        <p class="small center-block">
                            <text>
                                @{
@@ -308,7 +308,7 @@
                 <li><a href="@Url.Action(MVC.Moderator.SetAccountLockoutDate(Model.PlayerForm.Player.MembershipId))">Set Lock on Account</a></li>
             }
             <li><a id="ForceUserLogout" href="javascript:void(0)">Force User Logout</a></li>
-            <li><a href="#showAlts" id="showAlts">Show Potential Alts</a></li>
+            <li><a href="#" class="confirmLink" data-target="#altsDiv">Show Potential Alts</a></li>
         }
     }
     else if (PvPStatics.ChaosMode && User.IsInRole(PvPStatics.Permissions_Chaoslord))
@@ -369,14 +369,6 @@
     $(document).ready(function () {
         // get current url that the page is on
         var currentUrl = new URL(window.location);
-
-        $("#showAlts").click(function () {
-            if ($("#altsDiv").is(":visible") === false) {
-                $("#altsDiv").show();
-            } else {
-                $("#altsDiv").hide();
-            }
-        });
 
         $("#ForceUserLogout").on("click", function () {
             $.ajax({

@@ -209,9 +209,9 @@
             {
                 <p><span class="good">You are not in hard mode.  Click <a href="#showHardmode" id="showHardmode" data-toggle="modal" data-target="#hardmodeModal">HERE</a> to turn it on.</span>
                 <br>
-                If you are just looking to instantly lock into your inanimate form, you can <a href="#showInstantLock" id="showInstantLock">click here</a>.
+                If you are just looking to instantly lock into your inanimate form, you can <a href="#" class="confirmLink" data-target="#instantlockDiv">click here</a>.
                 </p>
-                <div id="instantlockDiv" style="display: none;">
+                <div id="instantlockDiv" class="confirmContent" style="display: none;">
                     <p class="bg-danger small">
                         <a href="@Url.Action(MVC.PvP.InstantLock())" class="btn-sm btn-danger center-block">Yes, I wish to accept my instantly lock.</a>
                         <br>
@@ -495,16 +495,6 @@
             alert(message + " DISABLED");
         }
         }
-
-    $(document).ready(function () {
-        $("#showInstantLock").click(function () {
-            if ($("#instantlockDiv").is(":visible") === false) {
-                $("#instantlockDiv").show();
-            } else {
-                $("#instantlockDiv").hide();
-            }
-        });
-    });
     </script>
 }
 

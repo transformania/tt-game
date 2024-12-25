@@ -65,8 +65,8 @@
                                     <br><br>
                                     if(Model.GetReason(item) == "Already soulbound") 
                                     {
-                                        <a href="#showSell" id="showSell">Remove soulbinding? </a>
-                                        <div id="sellDiv" style="display: none;">
+                                        <a href="#" class="confirmLink" data-target="#soulDiv">Remove soulbinding? </a>
+                                        <div id="soulDiv" class="confirmContent" style="display: none;">
                                             <p>
                                                 <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id, false))" class="btn btn-xs">Click to confirm.</a>
                                             </p>
@@ -96,17 +96,5 @@
                 "searchable": false
             }]
     });
-
-    $(document).ready(function () {
-        $("#showSell").click(function () {
-            if ($("#sellDiv").is(":visible") === false) {
-                $("#sellDiv").show();
-                $("#showSell").hide();
-            } else {
-                $("#sellDiv").hide();
-            }
-        });
-    });
-
     </script>
 }

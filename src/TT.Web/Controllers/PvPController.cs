@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Abstract;
@@ -753,7 +755,68 @@ namespace TT.Web.Controllers
 
             try
             {
+                // check for spell map cookie
+                HttpCookie getMap = Request.Cookies["spellMap"];
+
+                // get location of player
+                var getLoc = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == me.dbLocationName);
+                var locName = getLoc.Name;
+
+                // check number of spells not known from location
+                var AllLocalSpells = PlayerProcedures.GetNumberOfLocalSpells(me.dbLocationName);
+                var LocalKnownSpells = PlayerProcedures.GetLocalKnownSpells(me);
+                var spellTotal = AllLocalSpells - LocalKnownSpells;
+
+                // if it doesn't exist, create it
+                if (getMap == null)
+                {
+
+                    // store result into decodable format
+                    var startMap = "," + locName + "[" + spellTotal + "]";
+                    var byteMap = System.Text.Encoding.UTF8.GetBytes(startMap);
+                    var encodeMap = Convert.ToBase64String(byteMap);
+
+                    HttpCookie spellMap = new HttpCookie("spellMap");
+                    spellMap["spellMap"] = encodeMap;
+                    spellMap.Path = "/";
+                    spellMap.Secure = false;
+
+                    Response.Cookies.Add(spellMap);
+                }
+                else
+                {
+                    // get current spell map from cookie
+                    var currentMap = Request.Cookies["spellMap"].Value;
+                    var remKey = currentMap.Replace("spellMap=", "");
+
+                    // decode map
+                    var decodeMap = Convert.FromBase64String(remKey);
+                    var textMap = System.Text.Encoding.UTF8.GetString(decodeMap);
+
+                    // add location or update old location
+                    var newLoc = "," + locName + "[" + spellTotal + "]";
+                    var updateLoc = textMap.Replace(locName, "");
+                    var newMap = updateLoc + newLoc;
+
+                    // remove spell count
+                    var regPattern = ",\\s*\\[[0-9]+\\]";
+                    newMap = Regex.Replace(newMap, regPattern, "");
+
+                    // re-encode map
+                    var byteMap = System.Text.Encoding.UTF8.GetBytes(newMap);
+                    var encodeMap = Convert.ToBase64String(byteMap);
+
+                    // update cookie
+                    HttpCookie spellMap = new HttpCookie("spellMap");
+                    spellMap["spellMap"] = encodeMap;
+                    spellMap.Path = "/";
+                    spellMap.Secure = false;
+
+                    Response.Cookies.Add(spellMap);
+                }
+
                 TempData["Result"] = DomainRegistry.Repository.Execute(new Move { PlayerId = me.Id, destination = locname, Direction = direction });
+
             }
             catch (DomainException e)
             {
@@ -3771,9 +3834,27 @@ namespace TT.Web.Controllers
                 ownerInfo = CovenantProcedures.GetLocationInfos();
             }
 
+            // get player's spell map from available cookie
+            List<string> spellMap = new List<string>();
+            HttpCookie getMap = Request.Cookies["spellMap"];
+
+            if (!getMap.Value.IsNullOrWhiteSpace())
+            {
+                // get current spell map from cookie
+                var currentMap = getMap.Value;
+                var remKey = currentMap.Replace("spellMap=", "");
+
+                // decode map
+                var decodeMap = Convert.FromBase64String(remKey);
+                var textMap = System.Text.Encoding.UTF8.GetString(decodeMap);
+
+                spellMap = textMap.Split(',').ToList();
+            }
+
             var output = new MapViewModel
             {
                 LocationInfo = ownerInfo,
+                SpellMap = spellMap,
             };
 
             if (me.IsInDungeon() && showEnchant == "false")

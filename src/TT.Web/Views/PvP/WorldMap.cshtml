@@ -54,7 +54,28 @@
             @{
             if (Model.LocationInfo == null)
             {
-                <div class="mapcelltext">@loc.Name</div>
+                                
+                var findLoc = Model.SpellMap.Where(s => s.Contains(loc.Name));
+                
+                if (findLoc.Any())
+                {
+                    foreach (var result in findLoc)
+                    {
+                        var countPattern = @"\[(.*?)\]";
+                        var countResult = System.Text.RegularExpressions.Regex.Match(result,countPattern).Groups[1].Value;
+                        int countInt = Convert.ToInt32(countResult);
+                        var countHue = 100 - (countInt * 4);
+                        <div class="mapcelltext">
+                            <span style="position: absolute; top: 0; left: 0; background-color: hsl(@countHue, 100%, 50%);border-radius: 50%;" class="glyphicon glyphicon-record">
+                            </span>
+                            @loc.Name
+                        </div>
+                    }
+                }
+                else
+                {
+                        <div class="mapcelltext">@loc.Name</div>
+                }
             }
             else
             {

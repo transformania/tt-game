@@ -12,5 +12,6 @@ namespace TT.Domain.ViewModels
         public int PlayerX { get; set; }
         public int PlayerY { get; set; }
         public bool IsInDungeon { get; set; }
+        public List<string> SpellMap { get; set; }
     }
 }

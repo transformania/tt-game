@@ -92,8 +92,26 @@ namespace TT.Domain.Procedures
                 // Determine spawn location for psychos.
                 if (strength >= 11)
                 {
-                    // Ruthless and Eternal for the dungeons.
-                    spawnLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                    if (!PvPStatics.ChaosMode) 
+                    {
+                        // Ruthless and Eternal for the dungeons.
+                        spawnLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                    }
+                    else
+                    {
+                        // Flip a coin.
+                        int coinFlip = rand.Next(1, 3);
+                        if (coinFlip == 1)
+                        {
+                            // Heads, into the dungeon.
+                            spawnLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                        }
+                        else
+                        {
+                            // Tails, into the streets.
+                            spawnLocation = LocationsStatics.GetRandomLocationNotInDungeon();
+                        }
+                    }
                 }
                 else
                 {
@@ -791,7 +809,38 @@ namespace TT.Domain.Procedures
             var rand = new Random(Guid.NewGuid().GetHashCode());
             var roll = rand.NextDouble();
 
-            if (turnNumber >= 300 && turnNumber < 600)
+            if (PvPStatics.ChaosMode)
+            {
+                if (roll < .15D) // 15% Eternal
+                {
+                    return 13;
+                }
+                else if (roll < .40D) // 25% Ruthless
+                {
+                    return 11;
+                }
+                else if (roll < .52D) // 12% Soulless
+                {
+                    return 9;
+                }
+                else if (roll < .64D) // 12% Loathful
+                {
+                    return 7;
+                }
+                else if (roll < .76D) // 12% Wrathful
+                {
+                    return 5;
+                }
+                else if (roll < .88D) // 12% Fierce
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 300 && turnNumber < 600)
             {
                 // 15% chance to roll a fierce (lvl 3)
                 if (roll < .15D)

@@ -439,6 +439,7 @@
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_117.cshtml" />
     <Content Include="Views\Account\Requests.cshtml" />
     <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_118.cshtml" />
+    <Content Include="Views\Leaderboard\RoundLeaderboards\Statistics\Alpha_119.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PvP.css" />

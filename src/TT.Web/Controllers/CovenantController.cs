@@ -626,7 +626,8 @@ namespace TT.Web.Controllers
             }
 
             // assert that the amount is valid
-            if (amount != 20 && amount != 100 && amount != 500)
+            List<int> amountList = new List<int>(new int[] { 20, 100, 500, 1000, 1500, 2000 });
+            if (!amountList.Contains(amount))
             {
                 TempData["Error"] = "That is not a valid amount of Arpeyjis to send.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());

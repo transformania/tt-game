@@ -57,7 +57,7 @@ namespace TT.Domain.Procedures
                 {
                     ReceiverId = p.Id,
                     SenderId = covLeader.Id,
-                    Text = input,
+                    Text = "COVEN MESSAGE: " + input,
                     ReplyingToThisMessage = null
                 });
             }

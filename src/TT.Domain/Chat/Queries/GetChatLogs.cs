@@ -41,6 +41,10 @@ namespace TT.Domain.Chat.Queries
             {
                 cutoff = DateTime.UtcNow.AddDays(-3);
             }
+            else if (Filter == "last10m")
+            {
+                cutoff = DateTime.UtcNow.AddMinutes(-10);
+            }
             else
             {
                 cutoff = DateTime.UtcNow.AddHours(-1);

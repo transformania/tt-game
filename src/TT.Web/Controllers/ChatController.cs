@@ -67,6 +67,7 @@ namespace TT.Web.Controllers
                 ChatUser = me.Player.GetDescriptor().Item1,
                 ChatColor = me.Player.ChatColor,
                 ChatV2 = false,
+                ChatLog = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = "last10m" }),
             };
 
             ViewBag.Result = TempData["Result"];

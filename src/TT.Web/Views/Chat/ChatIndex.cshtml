@@ -1,4 +1,5 @@
 ﻿@model TT.Domain.ViewModels.ChatViewModel
+@using TT.Web.CustomHtmlHelpers
 @{
     ViewBag.Title = Model.RoomName;
 }
@@ -45,7 +46,23 @@
 
     <div class="row chat-container">
         <div class="col-md-10 col-sm-12">
-            <ul id="discussion"></ul>
+                <ul id="discussion">
+
+                    @{
+                        foreach (var l in Model.ChatLog)
+                        {
+                            <li>
+                                <a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(l.UserId))">
+                                    <img src="@l.PortraitUrl">
+                                    <strong style="color: @l.Color">@l.Name:</strong>
+                                </a>
+                                @l.Message
+                                <span class="timeago">@HtmlHelpers.DatetimeToTimeago(l.Timestamp)</span>
+                            </li>
+                        }
+                    }
+
+                </ul>
         </div>
         <div class="col-md-2 hidden-sm hidden-xs">
             <div class="userlist-chat"></div>

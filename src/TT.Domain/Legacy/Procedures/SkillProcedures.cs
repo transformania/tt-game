@@ -377,7 +377,7 @@ namespace TT.Domain.Procedures
 
             // delete all of the old form specific skills
             IEnumerable<SkillViewModel> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
-            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.StaticSkill.ExclusiveToFormSourceId != newFormSourceId).Select(s => s.dbSkill.Id).ToList();
+            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.StaticSkill.ExclusiveToFormSourceId != null && s.StaticSkill.ExclusiveToFormSourceId != newFormSourceId).Select(s => s.dbSkill.Id).ToList();
 
             foreach (var id in formSpecificSkillIds)
             {

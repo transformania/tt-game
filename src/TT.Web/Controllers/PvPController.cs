@@ -3133,7 +3133,8 @@ namespace TT.Web.Controllers
             var leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
             TempData["Result"] = result + leveluptext;
-
+            
+            PlayerProcedures.AddAttackCount(me);
             ItemProcedures.UpdateSouledItem(me);
 
             return RedirectToAction(MVC.PvP.Play());

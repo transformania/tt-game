@@ -780,6 +780,7 @@ namespace TT.Web.Controllers
                     spellMap["spellMap"] = encodeMap;
                     spellMap.Path = "/";
                     spellMap.Secure = false;
+                    spellMap.Expires = DateTime.Now.AddDays(7d);
 
                     Response.Cookies.Add(spellMap);
                 }
@@ -811,7 +812,8 @@ namespace TT.Web.Controllers
                     spellMap["spellMap"] = encodeMap;
                     spellMap.Path = "/";
                     spellMap.Secure = false;
-
+                    spellMap.Expires = DateTime.Now.AddDays(7d);
+    
                     Response.Cookies.Add(spellMap);
                 }
 

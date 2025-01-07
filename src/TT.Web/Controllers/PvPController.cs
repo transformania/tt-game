@@ -3839,7 +3839,7 @@ namespace TT.Web.Controllers
             List<string> spellMap = new List<string>();
             HttpCookie getMap = Request.Cookies["spellMap"];
 
-            if (!getMap.Value.IsNullOrWhiteSpace())
+            if (getMap != null)
             {
                 // get current spell map from cookie
                 var currentMap = getMap.Value;

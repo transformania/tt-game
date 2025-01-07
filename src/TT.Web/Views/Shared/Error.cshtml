@@ -11,7 +11,7 @@
         <p><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Global Chat</a></p>
         <p><a href="@Url.Action(MVC.Messages.Index())">Inbox</a></p>
         <p><a href="@Url.Action(MVC.Contribution.Contribute())">Submit Content</a></p>
-        
+
         <p>The following information can be used by developers to resolve this issue. Please repost this on <a href="https://discord.gg/z66CYzX">Discord</a> or <a href="https://gitlab.com/transformania/tt-game/-/issues">GitLab</a> so we may better assess the problem.</p>
 
         <h3>Error message</h3>
@@ -23,7 +23,8 @@
         <br/>
 
         <h3>Stack trace</h3>
-        <pre>@Model.Exception.StackTrace</pre>
+        <button class="btn btn-xs" onclick="copyText()">Copy stack trace</button>
+        <pre id="traceText">@Model.Exception.StackTrace</pre>
 
         @try
         {
@@ -38,3 +39,17 @@
         }
     </hgroup>
 </div>
+
+@section scripts
+{
+    <script>
+
+    // Get StackTrace text on click
+    function copyText()
+    {
+        var getText = document.getElementById("traceText");
+        navigator.clipboard.writeText(getText.textContent);
+    }
+
+    </script>
+}

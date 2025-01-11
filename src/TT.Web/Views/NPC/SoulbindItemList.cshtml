@@ -65,8 +65,8 @@
                                     <br><br>
                                     if(Model.GetReason(item) == "Already soulbound") 
                                     {
-                                        <a href="#" class="confirmLink" data-target="#soulDiv">Remove soulbinding? </a>
-                                        <div id="soulDiv" class="confirmContent" style="display: none;">
+                                        <a href="#" class="confirmLink" data-target="#soulDiv-@item.Id">Remove soulbinding? </a>
+                                        <div id="soulDiv-@item.Id" class="confirmContent" style="display: none;">
                                             <p>
                                                 <a href="@Url.Action(MVC.NPC.SoulbindItem(item.Id, false))" class="btn btn-xs">Click to confirm.</a>
                                             </p>

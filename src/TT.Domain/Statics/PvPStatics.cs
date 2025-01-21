@@ -219,7 +219,7 @@ namespace TT.Domain.Statics
                 {
                     "2047", new PlayerDescriptorDTO // Alyx
                     {
-                        Name = "Alyx",
+                        Name = "portalz",
                         TagBehaviorEnum = TagEnum.ReplaceFullName,
                     }
                 },

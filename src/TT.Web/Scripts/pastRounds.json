@@ -951,6 +951,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 120,
+      "name": "Alpha 119 (Runaway Bride!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

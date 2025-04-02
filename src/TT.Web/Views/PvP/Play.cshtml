@@ -519,7 +519,7 @@
     var attackCostAP = @PvPStatics.AttackCost;
     var attackCap = @PvPStatics.MaxAttacksPerUpdate;
 
-    var name = "@Model.You.Player.GetFullName()";
+    var name = "@Html.Encode(Model.You.Player.GetFullName())";
     var playerMana = @Model.You.Player.Mana;
     var maxLogSize = @ViewBag.MaxLogSize;
 

@@ -327,6 +327,10 @@
                                             {
                                                 <a href="@Url.Action(MVC.MindControl.MindControlList())" class="attackLink">Mind Control</a>
                                             }
+                                            if (FriendProcedures.MemberIsMyFriend(Model.You.Player.MembershipId, p.Player.MembershipId))
+                                            {
+                                                <a href="@Url.Action(MVC.Messages.Write(p.Player.Id, -1))" class="attackLink">Message</a>
+                                            }
                                             if (p.Player.BotId == AIStatics.LindellaBotId)
                                             {
                                                 <a href="@Url.Action(MVC.NPC.TradeWithMerchant("shirt"))" class="attackLink">Trade</a>

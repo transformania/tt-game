@@ -954,7 +954,15 @@
     },
     {
       "number": 120,
-      "name": "Alpha 119 (Runaway Bride!)",
+      "name": "Alpha 120 (Runaway Bride!)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
+    },
+    {
+      "number": 121,
+      "name": "Alpha 121 (Doggonit!)",
       "pvp": true,
       "item": true,
       "xp": true,

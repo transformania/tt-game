@@ -1937,8 +1937,8 @@ namespace TT.Web.Controllers
             TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName, mybuffs.FindSpellsOnly);
 
             // write to logs
-            var locationLogMessage = "<span class='playerSearchingNotification'>" + me.GetFullName() + " searched here.</span>";
-            LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage);
+            var locationLogMessage = me.GetFullName() + " searched here.";
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage, LogStatics.LOG_TYPE_SEARCH);
             var here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             var playerLogMessage = "You searched at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
@@ -2116,7 +2116,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " picked up a " + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + " here.";
             }
             // item is an animal, equip it automatically
             else if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Pet)
@@ -2126,7 +2126,7 @@ namespace TT.Web.Controllers
                 var name = (pickup.FormerPlayer == null) ? "a " + pickup.ItemSource.FriendlyName
                                                          : pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName;
                 playerLogMessage = "You tamed <b>" + name + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + name + HtmlHelpers.PrintPvPIcon(pickup) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " tamed " + name + HtmlHelpers.PrintPvPIcon(pickup) + " here.";
 
                 if (pickup.FormerPlayer != null)
                 {
@@ -2138,7 +2138,7 @@ namespace TT.Web.Controllers
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
-            LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
+            LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage, LogStatics.LOG_TYPE_BOLD);
 
 
             return RedirectToAction(MVC.PvP.Play());
@@ -2226,7 +2226,7 @@ namespace TT.Web.Controllers
             if (dropme.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " released a " + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + " here.";
 
                 if (dropme.FormerPlayer != null)
                 {
@@ -2240,12 +2240,12 @@ namespace TT.Web.Controllers
             else
             {
                 playerLogMessage = "You dropped a " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a " + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + " here.";
             }
 
             PlayerProcedures.SetTimestampToNow(me);
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
-            LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
+            LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage, LogStatics.LOG_TYPE_BOLD);
 
             return RedirectToAction(MVC.Item.MyInventory());
 

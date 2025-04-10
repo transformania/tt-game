@@ -9,5 +9,6 @@ namespace TT.Domain.World.DTOs
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }
         public int ConcealmentLevel { get; set; }
+        public int? LogType { get; set; }
     }
 }

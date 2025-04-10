@@ -580,7 +580,7 @@ namespace TT.Domain.Procedures
                     playerMessage = "Your subtle transformation curse overwhelms your owner, transforming them into a " + newForm.FriendlyName + "!";
 
                     PlayerLogProcedures.AddPlayerLog(playerItem.Owner.Id, ownerSuccessMessage, true);
-                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.FormerPlayer.FullName + " the " + playerItem.ItemSource.FriendlyName + ", one of their belongings!</b>");
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.GetFullName() + " is suddenly transformed by " + playerItem.FormerPlayer.FullName + " the " + playerItem.ItemSource.FriendlyName + ", one of their belongings!", LogStatics.LOG_TYPE_BOLD);
                 }
             }
 

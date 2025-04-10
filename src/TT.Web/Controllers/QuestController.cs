@@ -94,7 +94,7 @@ namespace TT.Web.Controllers
 
             // all checks have passed; start the player on this quest
             QuestProcedures.PlayerBeginQuest(me, questStart);
-            LocationLogProcedures.AddLocationLog(me.dbLocationName, "<span class='playerMediatingNotification'><b>" + me.GetFullName() + "</b> began the quest <b>" + questStart.Name + "</b> here.</span>");
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " began the quest " + questStart.Name + " here.", LogStatics.LOG_TYPE_GOOD);
 
             TempData["Result"] = "You started the quest " + questStart.Name + ".";
             return RedirectToAction(MVC.Quest.Questing());

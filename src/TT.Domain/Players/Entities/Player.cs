@@ -851,7 +851,7 @@ namespace TT.Domain.Players.Entities
 
             logbox.AttackerLog = $"<br><b>You fully transformed {this.GetFullName()} into a {itemSource.FriendlyName}</b>!";
             logbox.VictimLog = $"<br><b>You have been fully transformed into a {itemSource.FriendlyName}!</b>!";
-            logbox.LocationLog = $"<br><b>{this.GetFullName()} was completely transformed into a {itemSource.FriendlyName}</b> here.";
+            logbox.LocationLog = $"{this.GetFullName()} was completely transformed into a {itemSource.FriendlyName} here.";
 
             return logbox;
         }

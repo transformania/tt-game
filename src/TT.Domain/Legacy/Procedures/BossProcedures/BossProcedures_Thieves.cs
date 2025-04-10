@@ -217,9 +217,9 @@ namespace TT.Domain.Procedures.BossProcedures
                         AIProcedures.DealBossDamage(femalethief, target, false, 1);
 
                         var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis. " ;
-                        var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
+                        var locationMessage = malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.";
                         PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
-                        LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
+                        LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage, LogStatics.LOG_TYPE_BOLD);
 
                         maleAI.Var1++;
 
@@ -300,7 +300,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     else if (target.BotId == AIStatics.LindellaBotId)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + " from Lindella.</b>");
+                        LocationLogProcedures.AddLocationLog(target.dbLocationName, attackingThief.GetFullName() + " stole " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + " from Lindella.", LogStatics.LOG_TYPE_BOLD);
                     }
 
                     // A player disabled boss interactions at some point, steal item back.
@@ -326,7 +326,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         if (target.Mobility != PvPStatics.MobilityFull)
                         {
                             ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                            LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".</b>");
+                            LocationLogProcedures.AddLocationLog(target.dbLocationName, attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".", LogStatics.LOG_TYPE_BOLD);
                         }
                     }
 
@@ -344,7 +344,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     attackingThief.dbLocationName = victimThiefItem.dbLocationName;
                     playerRepo.SavePlayer(attackingThief);
                     ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".</b>");
+                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, attackingThief.GetFullName() + " recovered " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + ".", LogStatics.LOG_TYPE_BOLD);
                 }
             }
             #endregion
@@ -406,8 +406,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     AttackProcedures.Attack(femalethief, attacker, StunSpellSourceId);
                     AIProcedures.DealBossDamage(femalethief, attacker, false, 1);
-                    var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.</b>";
-                    LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage);
+                    var locationMessage = malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
+                    LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage, LogStatics.LOG_TYPE_BOLD);
                     var newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                     malethief.dbLocationName = newlocation;
                     femalethief.dbLocationName = newlocation;

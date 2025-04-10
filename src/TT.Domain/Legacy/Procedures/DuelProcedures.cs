@@ -5,6 +5,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.ViewModels;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures
 {
@@ -110,7 +111,7 @@ namespace TT.Domain.Procedures
                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, playerMessage, true);
             }
 
-            LocationLogProcedures.AddLocationLog(members.First().Player.dbLocationName, "<b class='playerAttackNotification'>A duel started here.</b>");
+            LocationLogProcedures.AddLocationLog(members.First().Player.dbLocationName, "A duel started here.", LogStatics.LOG_TYPE_ATTACK);
 
             duelRepo.SaveDuel(duel);
 

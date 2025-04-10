@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<TT.Domain.World.DTOs.LocationLogDetail>
 @using TT.Web.CustomHtmlHelpers
-
+@using TT.Domain.Statics
 
 <div style="clear:both;"></div>
 
@@ -9,17 +9,46 @@
         foreach (var log in Model)
         {
             <li>
-                @Html.Encode(log.Message)
 
-            @{
-            if (log.ConcealmentLevel > 0)
-            {
-                <span class="playerMediatingNotification">[@log.ConcealmentLevel]</span>
-            }
-            }
+                @{ 
+                    switch (log.LogType)
+                    {
+                        case LogStatics.LOG_TYPE_BOLD: // Bold
+                            <b>@Html.Encode(log.Message)</b>
+                            break;
+                        case LogStatics.LOG_TYPE_BAD: // Bad
+                            <span class='bad'>@Html.Encode(log.Message)</span>
+                            break;
+                        case LogStatics.LOG_TYPE_GOOD: // Good
+                            <span class='good'>@Html.Encode(log.Message)</span>
+                            break;
+                        case LogStatics.LOG_TYPE_ATTACK: // Attack
+                            <span class='playerAttackNotification'>@Html.Encode(log.Message)</span>
+                            break;
+                        case LogStatics.LOG_TYPE_CLEANSE: // Cleanse
+                            <span class='playerCleansingNotification'>@Html.Encode(log.Message)</span>
+                            break;
+                        case LogStatics.LOG_TYPE_MEDITATE: // Meditate
+                            <span class='playerMediatingNotification'>@Html.Encode(log.Message)</span>
+                            break;
+                        case LogStatics.LOG_TYPE_SEARCH: // Search
+                            <span class='playerSearchingNotification'>@Html.Encode(log.Message)</span>
+                            break;
+                        default:
+                            @Html.Encode(log.Message)
+                            break;
+                    }
+                }
 
-            <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span>
-        </li>
+                @{
+                    if (log.ConcealmentLevel > 0)
+                    {
+                        <span class="playerMediatingNotification">[@log.ConcealmentLevel]</span>
+                    }
+                }
+
+                <span class="timeago">@HtmlHelpers.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
         }
     }
 </ul>

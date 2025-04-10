@@ -640,8 +640,8 @@ namespace TT.Domain.Procedures
                 location.TakeoverAmount = info.TakeoverAmount;
                 var myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
-                var locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
+                var locationLogMessage = player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!";
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage, LogStatics.LOG_TYPE_ATTACK);
 
 
                 var covLogWinner = player.GetFullName() + " enchanted " + location.Name + " and has claimed it for this covenant.";
@@ -700,8 +700,8 @@ namespace TT.Domain.Procedures
 
                 }
 
-                var locationLogMessage = "<span class='playerAttackNotification'>" + player.GetFullName() + " cast an enchantment on this location.</span>";
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
+                var locationLogMessage = player.GetFullName() + " cast an enchantment on this location.";
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage, LogStatics.LOG_TYPE_ATTACK);
 
             }
 

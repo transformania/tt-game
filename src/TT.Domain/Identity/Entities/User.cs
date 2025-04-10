@@ -36,6 +36,7 @@ namespace TT.Domain.Identity.Entities
         public bool OnlineToggle { get; protected set; }
         public bool? Approved { get; protected set; }
         public DateTime? CreateDate { get; protected set; }
+        public bool BossDisable { get; protected set; }
 
         private User() { }
 
@@ -112,6 +113,11 @@ namespace TT.Domain.Identity.Entities
                 Approved = Approved,
                 CreateDate = CreateDate,
             };
+        }
+
+        public void SetBossDisableChanges(bool SetBossDisable)
+        {
+            this.BossDisable = SetBossDisable;
         }
 
         public UserDonatorDetail MapToDonatorDto()

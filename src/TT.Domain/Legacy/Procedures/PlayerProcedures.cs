@@ -1120,88 +1120,93 @@ namespace TT.Domain.Procedures
                 if (!PvPWorldStatProcedures.IsAnyBossActive())
                 {
                     var world = DomainRegistry.Repository.FindSingle(new GetWorld());
-                    if (roll < 1 && dbLocationName == "ranch_bedroom")
-                    {
-                        if (world.IsDonnaAvailable())
-                        {
-                            BossProcedures_Donna.SpawnDonna();
-                            PvPWorldStatProcedures.Boss_StartDonna();
-                            var summontext = BossSummonDictionary.GetActivationText("Donna");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
-                        }
 
-                    }
-                    else if (roll < 1 && dbLocationName == "forest_pinecove") //Normally castle_armory
+                    // Check to see if boss interactions are turned on.
+                    if (!GetPlayerBossDisable(player.MembershipId))
                     {
-                        if (world.IsValentineAvailable())
+                        if (roll < 1 && dbLocationName == "ranch_bedroom")
                         {
-                            BossProcedures_Valentine.SpawnValentine();
-                            /* To stop the prevention of other bosses from spawning,
-                             * opting to comment this out. I'm not removing it because
-                             * this is still a reskin in my mind and the boss may be
-                             * returned at some point in some similar capacity.
-                             * 
-                             * PvPWorldStatProcedures.Boss_StartValentine();
-                            */
-                            var summontext = BossSummonDictionary.GetActivationText("Valentine");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsDonnaAvailable())
+                            {
+                                BossProcedures_Donna.SpawnDonna();
+                                PvPWorldStatProcedures.Boss_StartDonna();
+                                var summontext = BossSummonDictionary.GetActivationText("Donna");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
+
                         }
-                    }
-                    else if (roll < 1 && dbLocationName == "stripclub_bar_seats")
-                    {
-                        if (world.IsBimboAvailable())
+                        else if (roll < 1 && dbLocationName == "forest_pinecove") //Normally castle_armory
                         {
-                            BossProcedures_BimboBoss.SpawnBimboBoss();
-                            PvPWorldStatProcedures.Boss_StartBimbo();
-                            var summontext = BossSummonDictionary.GetActivationText("BimboBoss");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsValentineAvailable())
+                            {
+                                BossProcedures_Valentine.SpawnValentine();
+                                /* To stop the prevention of other bosses from spawning,
+                                 * opting to comment this out. I'm not removing it because
+                                 * this is still a reskin in my mind and the boss may be
+                                 * returned at some point in some similar capacity.
+                                 * 
+                                 * PvPWorldStatProcedures.Boss_StartValentine();
+                                */
+                                var summontext = BossSummonDictionary.GetActivationText("Valentine");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
                         }
-                    }
-                    else if (roll < 1 && dbLocationName == "tavern_pool")
-                    {
-                        if (world.IsTheifAvailable())
+                        else if (roll < 1 && dbLocationName == "stripclub_bar_seats")
                         {
-                            BossProcedures_Thieves.SpawnThieves();
-                            PvPWorldStatProcedures.Boss_StartThieves();
-                            var summontext = BossSummonDictionary.GetActivationText("Thieves");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsBimboAvailable())
+                            {
+                                BossProcedures_BimboBoss.SpawnBimboBoss();
+                                PvPWorldStatProcedures.Boss_StartBimbo();
+                                var summontext = BossSummonDictionary.GetActivationText("BimboBoss");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
                         }
-                    }
-                    else if (roll < 1 && dbLocationName == "college_foyer")
-                    {
-                        if (world.IsSistersAvailable())
+                        else if (roll < 1 && dbLocationName == "tavern_pool")
                         {
-                            BossProcedures_Sisters.SpawnSisters();
-                            PvPWorldStatProcedures.Boss_StartSisters();
-                            var summontext = BossSummonDictionary.GetActivationText("Sisters");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsTheifAvailable())
+                            {
+                                BossProcedures_Thieves.SpawnThieves();
+                                PvPWorldStatProcedures.Boss_StartThieves();
+                                var summontext = BossSummonDictionary.GetActivationText("Thieves");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
                         }
-                    }
-                    else if (roll < 1 && dbLocationName == BossProcedures_FaeBoss.SpawnLocation)
-                    {
-                        if (world.IsFaeBossAvailable())
+                        else if (roll < 1 && dbLocationName == "college_foyer")
                         {
-                            BossProcedures_FaeBoss.SpawnFaeBoss();
-                            PvPWorldStatProcedures.Boss_StartFaeBoss();
-                            var summontext = BossSummonDictionary.GetActivationText("FaeBoss");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsSistersAvailable())
+                            {
+                                BossProcedures_Sisters.SpawnSisters();
+                                PvPWorldStatProcedures.Boss_StartSisters();
+                                var summontext = BossSummonDictionary.GetActivationText("Sisters");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
                         }
-                    }
-                    else if (roll < 1 && dbLocationName == BossProcedures_MotorcycleGang.SpawnLocation)
-                    {
-                        if (world.IsMotorCycleGangBossAvailable())
+                        else if (roll < 1 && dbLocationName == BossProcedures_FaeBoss.SpawnLocation)
                         {
-                            BossProcedures_MotorcycleGang.Spawn();
-                            PvPWorldStatProcedures.Boss_StartMotorcycleGang();
-                            var summontext = BossSummonDictionary.GetActivationText("RoadQueen");
-                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
-                            return summontext;
+                            if (world.IsFaeBossAvailable())
+                            {
+                                BossProcedures_FaeBoss.SpawnFaeBoss();
+                                PvPWorldStatProcedures.Boss_StartFaeBoss();
+                                var summontext = BossSummonDictionary.GetActivationText("FaeBoss");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
+                        }
+                        else if (roll < 1 && dbLocationName == BossProcedures_MotorcycleGang.SpawnLocation)
+                        {
+                            if (world.IsMotorCycleGangBossAvailable())
+                            {
+                                BossProcedures_MotorcycleGang.Spawn();
+                                PvPWorldStatProcedures.Boss_StartMotorcycleGang();
+                                var summontext = BossSummonDictionary.GetActivationText("RoadQueen");
+                                PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                                return summontext;
+                            }
                         }
                     }
                 }
@@ -1939,6 +1944,17 @@ namespace TT.Domain.Procedures
             var dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
             return dbplayer.OnlineActivityTimestamp;
+        }
+
+        public static bool GetPlayerBossDisable(string membershipId)
+        {
+            if (membershipId.IsNullOrEmpty())
+            {
+                return false;
+            }
+            
+            var IsBossDisabled = DomainRegistry.Repository.FindSingle(new IsBossDisabled { UserId = membershipId });
+            return IsBossDisabled;
         }
     }
 }

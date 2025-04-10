@@ -825,7 +825,12 @@ namespace TT.Domain.Procedures
                         return (false,"Since you are not infected with the bimbonic virus there's no need for you to use this right now.");
                     }
 
-                    PlayerProcedures.InstantRestoreToBase(owner);
+                    // Should only return a user to their base form if they are currently an infected bimbo.
+                    if (owner.FormSourceId == BossProcedures.BossProcedures_BimboBoss.RegularBimboFormSourceId)
+                    {
+                        PlayerProcedures.InstantRestoreToBase(owner);
+                    }
+
                     EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectSourceId, owner);
                     EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectSourceId, owner);
                     ResetUseCooldown(itemPlus);
@@ -834,7 +839,7 @@ namespace TT.Domain.Procedures
                     newOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(newOwner));
                     playerRepo.SavePlayer(newOwner);
 
-                    return (true,"You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...");
+                    return (true,"You inject yourself with the vaccine, purging the virus out of your body and freeing you from its influence.  Careful though, it may later mutate and be able to infect you once again...");
                 }
 
                 if (itemPlus.dbItem.ItemSourceId == ItemStatics.CovenantCrystalItemSourceId)

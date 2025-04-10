@@ -281,6 +281,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleOnline);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ToggleBoss()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleBoss);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SettingsController Actions { get { return MVC.Settings; } }
@@ -348,6 +354,8 @@ namespace TT.Web.Controllers
             public readonly string LearnPetSpells = ("LearnPetSpells").ToLowerInvariant();
             public readonly string ForgetAllSpells = ("ForgetAllSpells").ToLowerInvariant();
             public readonly string ToggleOnline = ("ToggleOnline").ToLowerInvariant();
+            public readonly string ToggleBoss = ("ToggleBoss").ToLowerInvariant();
+            public readonly string BossDisableRestoreBase = ("BossDisableRestoreBase").ToLowerInvariant();
         }
 
 
@@ -659,6 +667,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ToggleOnline
         {
             public readonly string setOnlineToggle = ("setOnlineToggle").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ToggleBoss s_params_ToggleBoss = new ActionParamsClass_ToggleBoss();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ToggleBoss ToggleBossParams { get { return s_params_ToggleBoss; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ToggleBoss
+        {
+            public readonly string setBossDisable = ("setBossDisable").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1417,6 +1433,29 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleOnline);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setOnlineToggle", setOnlineToggle);
             ToggleOnlineOverride(callInfo, setOnlineToggle);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ToggleBossOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool setBossDisable);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ToggleBoss(bool setBossDisable)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleBoss);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setBossDisable", setBossDisable);
+            ToggleBossOverride(callInfo, setBossDisable);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BossDisableRestoreBaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BossDisableRestoreBase()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BossDisableRestoreBase);
+            BossDisableRestoreBaseOverride(callInfo);
             return callInfo;
         }
 

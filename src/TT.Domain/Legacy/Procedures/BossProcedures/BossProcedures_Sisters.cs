@@ -209,10 +209,14 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 foreach (var p in playersByNerd)
                 {
-                    AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
-                    AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
-                    AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
-                    AIProcedures.DealBossDamage(nerdBoss, p, false, 3);
+                    var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                    if (!BossDisabled)
+                    {
+                        AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
+                        AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
+                        AttackProcedures.Attack(nerdBoss, p, NerdSpellSourceId);
+                        AIProcedures.DealBossDamage(nerdBoss, p, false, 3);
+                    }
                 }
 
 
@@ -228,10 +232,14 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 foreach (var p in playersByBimbo)
                 {
-                    AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
-                    AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
-                    AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
-                    AIProcedures.DealBossDamage(bimboBoss, p, false, 3);
+                    var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                    if (!BossDisabled)
+                    {
+                        AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
+                        AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
+                        AttackProcedures.Attack(bimboBoss, p, BimboSpellSourceId);
+                        AIProcedures.DealBossDamage(bimboBoss, p, false, 3);
+                    }
                 }
 
             }
@@ -278,35 +286,40 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (i * 50);
-                victor.XP += reward;
-                i++;
 
-                if (winner == "bimbo")
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + nerdBoss.GetFullName() + ", " + bimboBoss.GetFullName() + " gifts you with " + reward + " XP from her powerful magic of seduction!</b>", true);
+                    var reward = maxReward - (i * 50);
+                    victor.XP += reward;
+                    i++;
 
-                    // top three get runes
-                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    if (winner == "bimbo")
                     {
-                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.HEADMISTRESS_RUNE, PlayerId = victor.Id });
+                        PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + nerdBoss.GetFullName() + ", " + bimboBoss.GetFullName() + " gifts you with " + reward + " XP from her powerful magic of seduction!</b>", true);
+
+                        // top three get runes
+                        if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                        {
+                            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.HEADMISTRESS_RUNE, PlayerId = victor.Id });
+                        }
+
+                    }
+                    else
+                    {
+                        PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + bimboBoss.GetFullName() + ", " + nerdBoss.GetFullName() + " gifts you with " + reward + " XP from her unchallenged mastery of the natural world!</b>", true);
+
+                        // top three get runes
+                        if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                        {
+                            DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
+                        }
+
                     }
 
+                    playerRepo.SavePlayer(victor);
                 }
-                else
-                {
-                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + bimboBoss.GetFullName() + ", " + nerdBoss.GetFullName() + " gifts you with " + reward + " XP from her unchallenged mastery of the natural world!</b>", true);
-
-                    // top three get runes
-                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
-                    {
-                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
-                    }
-
-                }
-
-                playerRepo.SavePlayer(victor);
-                
             }
 
             DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = nerdBoss.Id});

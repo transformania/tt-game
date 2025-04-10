@@ -16,5 +16,7 @@ namespace TT.Domain.ViewModels
         public bool IsOnlineToggled { get; set; }
         public bool FriendOnlyMessages { get; set; }
         public string ReservedName { get; set; }
+        public bool IsBossDisabled { get; set; }
+        public List<int> GivenBossForms { get; set; }
     }
 }

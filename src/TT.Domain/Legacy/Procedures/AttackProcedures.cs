@@ -20,32 +20,35 @@ namespace TT.Domain.Procedures
             // record into statistics
             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__SpellsCast, 1);
 
-            if (AIStatics.IsABoss(victim.BotId))
+            // Ignore those with boss interactions disabled.
+            var BossDisabled = PlayerProcedures.GetPlayerBossDisable(attacker.MembershipId);
+
+            if (AIStatics.IsABoss(victim.BotId) && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossAllAttacks, 1);
             }
 
-            if (victim.BotId == AIStatics.FemaleRatBotId || victim.BotId == AIStatics.MaleRatBotId)
+            if ((victim.BotId == AIStatics.FemaleRatBotId || victim.BotId == AIStatics.MaleRatBotId) && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossRatThiefAttacks, 1);
             }
-            else if (victim.BotId == AIStatics.BimboBossBotId)
+            else if (victim.BotId == AIStatics.BimboBossBotId && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossLovebringerAttacks, 1);
             }
-            else if (victim.BotId == AIStatics.DonnaBotId)
+            else if (victim.BotId == AIStatics.DonnaBotId && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__BossDonnaAttacks, 1);
             }
-            else if (victim.BotId == AIStatics.FaebossBotId)
+            else if (victim.BotId == AIStatics.FaebossBotId && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__FaebossAttacks, 1);
             }
-            else if (victim.BotId == AIStatics.MouseNerdBotId || victim.BotId == AIStatics.MouseBimboBotId)
+            else if ((victim.BotId == AIStatics.MouseNerdBotId || victim.BotId == AIStatics.MouseBimboBotId) && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MouseSisterAttacks, 1);
             }
-            else if (victim.BotId == AIStatics.MotorcycleGangLeaderBotId)
+            else if (victim.BotId == AIStatics.MotorcycleGangLeaderBotId && !BossDisabled)
             {
                 StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__MotorcycleGangAttacks, 1);
             }

@@ -110,32 +110,37 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             // move all followers to the new location
             foreach (var follower in followers)
             {
-                Player followerEF = playerRepo.Players.First(p => p.Id == follower.Id);
-                var followerNewLocation = AIProcedures.MoveTo(follower, newlocation, 100000);
-
-                // leave location log and penalize some 5 AP
-                if (followerEF.dbLocationName != followerNewLocation)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(follower.MembershipId);
+                if (!BossDisabled)
                 {
-                    var newlocationFriendlyName = LocationsStatics.LocationList.GetLocation
-                        .First(l => l.dbName == followerNewLocation).Name;
+                    Player followerEF = playerRepo.Players.First(p => p.Id == follower.Id);
+                    var followerNewLocation = AIProcedures.MoveTo(follower, newlocation, 100000);
 
-                    LocationLogProcedures.AddLocationLog(followerNewLocation, $"{followerEF.GetFullName()} rode off to <b>{newlocationFriendlyName}</b> to help protect {boss.GetFullName()}.");
-                    followerEF.ActionPoints = Math.Max(0, followerEF.ActionPoints - SummonToBossAPPenalty);
-                }
+                    // leave location log and penalize some 5 AP
+                    if (followerEF.dbLocationName != followerNewLocation)
+                    {
+                        var newlocationFriendlyName = LocationsStatics.LocationList.GetLocation
+                            .First(l => l.dbName == followerNewLocation).Name;
 
-                followerEF.dbLocationName = followerNewLocation;
+                        LocationLogProcedures.AddLocationLog(followerNewLocation, $"{followerEF.GetFullName()} rode off to <b>{newlocationFriendlyName}</b> to help protect {boss.GetFullName()}.");
+                        followerEF.ActionPoints = Math.Max(0, followerEF.ActionPoints - SummonToBossAPPenalty);
+                    }
+
+                    followerEF.dbLocationName = followerNewLocation;
                 
-                if (follower.BotId == AIStatics.ActivePlayerBotId)
-                {
-                    PlayerLogProcedures.AddPlayerLog(follower.Id, $"<b>The leader of your gang, {boss.GetFullName()}, beckons for you to follow!  You have no choice but to comply.</b>", true);
+                    if (follower.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        PlayerLogProcedures.AddPlayerLog(follower.Id, $"<b>The leader of your gang, {boss.GetFullName()}, beckons for you to follow!  You have no choice but to comply.</b>", true);
+                    }
+                    else if (follower.BotId == AIStatics.PsychopathBotId)
+                    {
+                        followerEF.Health += 25;
+                        followerEF.Health = followerEF.Health > followerEF.MaxHealth ? followerEF.MaxHealth : followerEF.Health;
+                        followerEF.LastActionTimestamp = DateTime.UtcNow;
+                    }
+                    playerRepo.SavePlayer(followerEF);
                 }
-                else if (follower.BotId == AIStatics.PsychopathBotId)
-                {
-                    followerEF.Health += 25;
-                    followerEF.Health = followerEF.Health > followerEF.MaxHealth ? followerEF.MaxHealth : followerEF.Health;
-                    followerEF.LastActionTimestamp = DateTime.UtcNow;
-                }
-                playerRepo.SavePlayer(followerEF);
             }
 
             // Step 2:  Give the boss the appropriate effect, determined by how many followers she has.
@@ -147,9 +152,14 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
             // try and turn everyone there into biker gang followers
             foreach (var victim in victims)
             {
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
-                AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victim.MembershipId);
+                if (!BossDisabled)
+                {
+                    AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                    AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                    AttackProcedures.Attack(boss, victim, BikerFollowerSpellSourceId);
+                }
             }
 
         }
@@ -248,14 +258,19 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 var follower = GetRandomFollower(followersHere);
                 if (follower != null)
                 {
-                    AttackProcedures.Attack(follower, victim, ChooseSpell(victim));
-                    PlayerLogProcedures.AddPlayerLog(follower.Id, $"<b>{BossFirstName} {BossLastName} orders you to attack {victim.GetFullName()}!</b>", true);
+                    // Ignore those with boss interactions disabled.
+                    var BossDisabled = PlayerProcedures.GetPlayerBossDisable(follower.MembershipId);
+                    if (!BossDisabled)
+                    {
+                        AttackProcedures.Attack(follower, victim, ChooseSpell(victim));
+                        PlayerLogProcedures.AddPlayerLog(follower.Id, $"<b>{BossFirstName} {BossLastName} orders you to attack {victim.GetFullName()}!</b>", true);
 
-                    // reset the last attack and online timestamp to before the attack, otherwise she bumps her followers online indefinitely...
-                    var player = playerRepo.Players.First(p => p.Id == follower.Id);
-                    player.LastActionTimestamp = follower.LastActionTimestamp;
-                    player.LastCombatTimestamp = follower.LastCombatTimestamp;
-                    playerRepo.SavePlayer(player);
+                        // reset the last attack and online timestamp to before the attack, otherwise she bumps her followers online indefinitely...
+                        var player = playerRepo.Players.First(p => p.Id == follower.Id);
+                        player.LastActionTimestamp = follower.LastActionTimestamp;
+                        player.LastCombatTimestamp = follower.LastCombatTimestamp;
+                        playerRepo.SavePlayer(player);
+                    }
 
                     // remove this person from the list of eligible attackers so they don't do it more than once
                     followersHere = followersHere.Where(f => f.Id != follower.Id).ToList();
@@ -302,19 +317,24 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (l * 35);
-                victor.XP += reward;
-                l++;
 
-                playerRepo.SavePlayer(victor);
-                PlayerLogProcedures.AddPlayerLog(victor.Id, $"<b>For your contribution in defeating {BossFirstName} {BossLastName}, you earn {reward} XP from your spells cast against her</b>", true);
-
-                // top three get runes
-                if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.MOTORCYCLE_RUNE, PlayerId = victor.Id }); // TODO:  Make new rune for this boss
-                }
+                    var reward = maxReward - (l * 35);
+                    victor.XP += reward;
+                    l++;
 
+                    playerRepo.SavePlayer(victor);
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, $"<b>For your contribution in defeating {BossFirstName} {BossLastName}, you earn {reward} XP from your spells cast against her</b>", true);
+
+                    // top three get runes
+                    if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.MOTORCYCLE_RUNE, PlayerId = victor.Id }); // TODO:  Make new rune for this boss
+                    }
+                }
             }
 
         }

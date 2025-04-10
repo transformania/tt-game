@@ -5,6 +5,8 @@ using TT.Domain.Concrete;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
+using TT.Domain.Items.Queries;
+using System;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -120,6 +122,44 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     DomainRegistry.Repository.Execute(new RestockNPC { BotId = AIStatics.LindellaBotId });
                     DomainRegistry.Repository.Execute(new RestockNPC { BotId = AIStatics.LoremasterBotId });
+                }
+
+                if (turnNumber % 12 == 0)
+                {
+                    // Get a list of all items held that are former players.
+                    var lindellaItems = DomainRegistry.Repository.Find(new GetItemsOwnedByPlayer { OwnerId = merchant.Id }).Where(i => i.FormerPlayer != null).ToList();
+
+                    var rand = new Random();
+                    int chance = 0;
+
+                    foreach (var p in lindellaItems)
+                    {
+                        var player = PlayerProcedures.GetPlayer(p.FormerPlayer.Id);
+
+                        if (!player.MembershipId.IsNullOrEmpty())
+                        {
+                            // Roll the dice.
+                            chance = rand.Next(0, 100);
+
+                            // About 1/4 of a chance every 12 turns to be interacted with.
+                            if (chance <= 24)
+                            {
+                                // Depending on the roll determines the interaction.
+                                if (chance <= 8) // Flaunt
+                                {
+                                    PlayerLogProcedures.AddPlayerLog(player.Id, "Lindella briefly flaunts you, confident she can sell you soon!", true);
+                                }
+                                else if (chance <= 16) // Shun
+                                {
+                                    PlayerLogProcedures.AddPlayerLog(player.Id, "Lindella sighs and seems to shun you, disappointed she might never be able to sell you.", true);
+                                }
+                                else // Hush
+                                {
+                                    PlayerLogProcedures.AddPlayerLog(player.Id, "Lindella hushes you, seemingly tired of still carrying you.", true);
+                                }
+                            }
+                        }                      
+                    }
                 }
             }
         }

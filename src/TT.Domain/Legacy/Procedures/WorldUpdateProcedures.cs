@@ -641,6 +641,19 @@ namespace TT.Domain.Procedures
                 } 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
 
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Karin actions");
+                serverLogRepo.SaveServerLog(log);
+                try
+                {
+                    BossProcedures_Soulbinder.RunSoulbinderActions(turnNo);
+                }
+                catch (Exception e)
+                {
+                    log.Errors++;
+                    log.AddLog(FormatExceptionLog(updateTimer.ElapsedMilliseconds, "ERROR running Karin actions", e));
+                }
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Karin actions");
+
                 //Holiday Spirit will not always spawn. Only log her if she's around
                 if (holidaySpirit != null)
                 {

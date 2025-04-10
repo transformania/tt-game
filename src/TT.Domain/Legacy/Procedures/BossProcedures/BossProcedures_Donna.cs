@@ -90,9 +90,10 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     var target = playerRepo.Players.FirstOrDefault(p => p.Id == directive.TargetPlayerId);
 
-                    // if Donna's target goes offline, is inanimate, or in the dungeon, have her teleport back to the ranch
+                    // if Donna's target goes offline, has boss interactions disabled, is inanimate, or in the dungeon, have her teleport back to the ranch
                     if (target == null || 
                         target.Mobility != PvPStatics.MobilityFull ||
+                        PlayerProcedures.GetPlayerBossDisable(target.MembershipId) ||
                         PlayerProcedures.PlayerIsOffline(target) || 
                         target.IsInDungeon() ||
                         target.InDuel > 0 ||
@@ -200,6 +201,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         p.Level > 3 && 
                         p.Mobility == PvPStatics.MobilityFull && 
                         !PlayerProcedures.PlayerIsOffline(p) &&
+                        !PlayerProcedures.GetPlayerBossDisable(p.MembershipId) &&
                         p.Id != personAttacking.Id &&
                         p.InDuel <= 0 &&
                         p.InQuest <= 0)
@@ -247,20 +249,25 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (i * 40);
-                victor.XP += reward;
-                i++;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + donna.GetFullName() + ", you earn " + reward + " XP from your spells cast against the mythical sorceress.</b>", true);
-
-                playerRepo.SavePlayer(victor);
-
-                // top three get runes
-                if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = maxReward - (i * 40);
+                    victor.XP += reward;
+                    i++;
 
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + donna.GetFullName() + ", you earn " + reward + " XP from your spells cast against the mythical sorceress.</b>", true);
+
+                    playerRepo.SavePlayer(victor);
+
+                    // top three get runes
+                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
         }
 

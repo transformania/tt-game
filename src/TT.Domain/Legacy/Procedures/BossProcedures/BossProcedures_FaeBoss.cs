@@ -179,7 +179,9 @@ namespace TT.Domain.Procedures.BossProcedures
                 faeboss.dbLocationName = newActualLocation;
                 playerRepo.SavePlayer(faeboss);
 
-                if (faeboss.dbLocationName == target.dbLocationName)
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(target.MembershipId);
+
+                if (faeboss.dbLocationName == target.dbLocationName && !BossDisabled)
                 {
                     var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
 
@@ -188,7 +190,13 @@ namespace TT.Domain.Procedures.BossProcedures
                         AttackProcedures.Attack(faeboss, target, spell);
                     }
                 }
-                else {
+                else if (BossDisabled)
+                {
+                    // Reset target if they have boss interactions disabled.
+                    ResetTarget(directive);
+                }
+                else 
+                {
                     CastAnimateSpellsAtLocation(faeboss);
                 }
             }
@@ -277,19 +285,24 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (l * 35);
-                victor.XP += reward;
-                l++;
 
-                playerRepo.SavePlayer(victor);
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
-
-                // top three get runes
-                if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.NARCISSA_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = maxReward - (l * 35);
+                    victor.XP += reward;
+                    l++;
 
+                    playerRepo.SavePlayer(victor);
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
+
+                    // top three get runes
+                    if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.NARCISSA_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
 
         }
@@ -392,9 +405,14 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (var p in playersHere)
             {
-                var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
-                AttackProcedures.Attack(faeboss, p, spell);
-                AIProcedures.DealBossDamage(faeboss, p, false, 1); // log attack for human on boss
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                if (!BossDisabled)
+                {
+                    var spell = ChooseSpell(PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
+                    AttackProcedures.Attack(faeboss, p, spell);
+                    AIProcedures.DealBossDamage(faeboss, p, false, 1); // log attack for human on boss
+                }
             }
         }
 

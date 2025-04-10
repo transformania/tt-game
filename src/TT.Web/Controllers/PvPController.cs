@@ -1158,8 +1158,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // if the spell is a curse, check that the target doesn't already have the effect
-            if (skillBeingUsed.StaticSkill.GivesEffectSourceId != null)
+            // assert that player can interact with boss
+            if (AIStatics.IsABoss(targeted.BotId) && PlayerProcedures.GetPlayerBossDisable(me.MembershipId))
+            {
+                TempData["Error"] = "You cannot attack that boss.";
+                TempData["SubError"] = "You currently have boss interactions turned off.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+                // if the spell is a curse, check that the target doesn't already have the effect
+                if (skillBeingUsed.StaticSkill.GivesEffectSourceId != null)
             {
                 if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.StaticSkill.GivesEffectSourceId.Value))
                 {

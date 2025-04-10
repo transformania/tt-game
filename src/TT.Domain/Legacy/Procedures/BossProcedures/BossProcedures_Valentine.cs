@@ -259,6 +259,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
             playersHere = playersHere.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                 !PlayerProcedures.PlayerIsOffline(p) &&
+                !PlayerProcedures.GetPlayerBossDisable(p.MembershipId) &&
                 p.Level >= 3 &&
                 p.BotId == AIStatics.ActivePlayerBotId &&
                 p.Id != valentine.Id &&
@@ -276,21 +277,24 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (var p in playersHere)
             {
-
-                // give this player the vampire curse if they do not yet have it
-                if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffectSourceId))
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                if (!BossDisabled)
                 {
-                    AttackProcedures.Attack(valentine, p, BloodyCurseSpellSourceId);
-                    AIProcedures.DealBossDamage(valentine, p, false, 1);
-                }
+                    // give this player the vampire curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, p, BloodyCurseSpellSourceId);
+                        AIProcedures.DealBossDamage(valentine, p, false, 1);
+                    }
 
-                // give this player the immobility curse if they do not yet have it
-                if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffectSourceId))
-                {
-                    AttackProcedures.Attack(valentine, p, ValentinesPresenceSpellSourceId);
-                    AIProcedures.DealBossDamage(valentine, p, false, 1);
+                    // give this player the immobility curse if they do not yet have it
+                    if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffectSourceId))
+                    {
+                        AttackProcedures.Attack(valentine, p, ValentinesPresenceSpellSourceId);
+                        AIProcedures.DealBossDamage(valentine, p, false, 1);
+                    }
                 }
-
             }
 
             // have Valentine equip his two strongest swords
@@ -391,20 +395,25 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (l * 30);
-                victor.XP += reward;
-                l++;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging " + valentine.GetFullName() + " you receieve " + reward + " XP from your risky struggle!</b>", true);
-
-                playerRepo.SavePlayer(victor);
-
-                // top three get runes
-                if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.VAMPIRE_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = maxReward - (l * 30);
+                    victor.XP += reward;
+                    l++;
 
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging " + valentine.GetFullName() + " you receieve " + reward + " XP from your risky struggle!</b>", true);
+
+                    playerRepo.SavePlayer(victor);
+
+                    // top three get runes
+                    if (r <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.VAMPIRE_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
 
         }

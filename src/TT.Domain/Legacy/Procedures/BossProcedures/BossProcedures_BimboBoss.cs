@@ -183,19 +183,24 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (var p in playersHere)
             {
-                // if the player doesn't currently have it, give them the infection kiss
-                if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId))
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                if (!BossDisabled)
                 {
-                    AttackProcedures.Attack(bimboBoss, p, KissSkillSourceId);
-                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
-                }
+                    // if the player doesn't currently have it, give them the infection kiss
+                    if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId))
+                    {
+                        AttackProcedures.Attack(bimboBoss, p, KissSkillSourceId);
+                        AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
+                    }
 
 
-                // otherwise run the regular trasformation
-                else if (p.FormSourceId != RegularBimboFormSourceId)
-                {
-                    AttackProcedures.Attack(bimboBoss, p, RegularTFSpellSourceId);
-                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
+                    // otherwise run the regular trasformation
+                    else if (p.FormSourceId != RegularBimboFormSourceId)
+                    {
+                        AttackProcedures.Attack(bimboBoss, p, RegularTFSpellSourceId);
+                        AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
+                    }
                 }
             }
 
@@ -255,15 +260,20 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     foreach (var p in eligibleTargets)
                     {
-                        if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId) && attacksMadeCount < 3)
+                        // Ignore those with boss interactions disabled.
+                        var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
+                        if (!BossDisabled)
                         {
-                            attacksMadeCount++;
-                            AttackProcedures.Attack(infectee, p, KissSkillSourceId);
-                        }
-                        else if (attacksMadeCount < 3)
-                        {
-                            AttackProcedures.Attack(infectee, p, RegularTFSpellSourceId);
-                            attacksMadeCount++;
+                            if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId) && attacksMadeCount < 3)
+                            {
+                                attacksMadeCount++;
+                                AttackProcedures.Attack(infectee, p, KissSkillSourceId);
+                            }
+                            else if (attacksMadeCount < 3)
+                            {
+                                AttackProcedures.Attack(infectee, p, RegularTFSpellSourceId);
+                                attacksMadeCount++;
+                            }
                         }
                     }
 
@@ -374,20 +384,25 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = maxReward - (l * 35);
-                victor.XP += reward;
-                l++;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + BossFirstName + " " + BossLastName + ", you earn " + reward + " XP from your spells cast against the plague mother.</b>", true);
-
-                playerRepo.SavePlayer(victor);
-
-                // top three get runes
-                if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = maxReward - (l * 35);
+                    victor.XP += reward;
+                    l++;
 
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + BossFirstName + " " + BossLastName + ", you earn " + reward + " XP from your spells cast against the plague mother.</b>", true);
+
+                    playerRepo.SavePlayer(victor);
+
+                    // top three get runes
+                    if (i <= 2 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.BIMBO_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
 
         }

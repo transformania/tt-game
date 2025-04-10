@@ -26,11 +26,11 @@
         <p><a href="@Url.Action(MVC.Settings.ToggleOnline(false))">Use Activity Timer for friends.</a></p>
     }
 
-        <p>
-            Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
-            <br />
-            You may view your strike history <a href="@Url.Action(MVC.Settings.ViewStrikes(Model.Player.MembershipId))">here</a>.
-        </p>
+    <p>
+        Your account currently has <b>@Model.Strikes.Count(s => s.Round == round)/@PvPStatics.MaxStrikesPerRound</b> strikes against it this round and a total of @Model.Strikes.Count() throughout your account lifetime.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
+        <br />
+        You may view your strike history <a href="@Url.Action(MVC.Settings.ViewStrikes(Model.Player.MembershipId))">here</a>.
+    </p>
 
     @{
         if (Model.TimeUntilLogout >= 60)
@@ -121,7 +121,29 @@
         {
             <p class="good">You are on the chaoslord list.</p>
         }
-
+        if (!Model.IsBossDisabled)
+        {
+            <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
+            <a  class="bad" href="@Url.Action(MVC.Settings.ToggleBoss(true))">Click here to disable boss interactions.</a>
+            
+            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId) && Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                <br><br>
+                <b class="mark">To return to your base form, please disable boss interactions.</b>
+            }
+            </p>
+        }
+        else
+        {
+            <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
+            <a  class="good" href="@Url.Action(MVC.Settings.ToggleBoss(false))">Click here to enable boss interactions.</a>
+            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId) && Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            {
+                <br><br>
+                <a class="mark" href="@Url.Action(MVC.Settings.BossDisableRestoreBase())">Revert to your base form</a><br>
+            }
+            </p>
+        }
     }
 
     <h2>View Statistics</h2>
@@ -141,10 +163,10 @@
         <br>
         <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br>
         <br>
-            @if(!string.IsNullOrEmpty(Model.ReservedName))
-            {
-                <mark class="small" title="This name is the one you will start a new round with.">Your <i>reserved</i> name is <b>@Model.ReservedName</b></mark><br />
-            }
+        @if (!string.IsNullOrEmpty(Model.ReservedName))
+        {
+            <mark class="small" title="This name is the one you will start a new round with.">Your <i>reserved</i> name is <b>@Model.ReservedName</b></mark><br />
+        }
         <mark class="small" title="This name is the one you will start additional new characters with.">Your <u>original</u> name is <b>@Model.Player.OriginalFirstName @Model.Player.OriginalLastName</b></mark><br />
         <mark class="small" title="This name is the one you are currently displaying.">Your <b>current</b> name is <b>@Model.Player.FirstName @Model.Player.LastName</b></mark>
         <br>
@@ -196,266 +218,268 @@
         @{
             if (PvPStatics.ChaosMode)
             {
-                <p>You currently are <b>@(Model.Player.InHardmode ? "in" : "not in")</b> hard mode. As it is Chaos Mode, you may toggle this option on and off.
+            <p>
+                You currently are <b>@(Model.Player.InHardmode ? "in" : "not in")</b> hard mode. As it is Chaos Mode, you may toggle this option on and off.
                 <br><br>
                 Click <a href="#showHardmode" id="showHardmode" data-toggle="modal" data-target="#hardmodeModal">HERE</a> to toggle this mode.
-                </p>
-            }
-            else if (Model.Player.InHardmode)
-            {
-                <span class="bad">You are in hard mode.</span>
-            }
-            else
-            {
-                <p><span class="good">You are not in hard mode.  Click <a href="#showHardmode" id="showHardmode" data-toggle="modal" data-target="#hardmodeModal">HERE</a> to turn it on.</span>
+            </p>
+        }
+        else if (Model.Player.InHardmode)
+        {
+            <span class="bad">You are in hard mode.</span>
+        }
+        else
+        {
+            <p>
+                <span class="good">You are not in hard mode.  Click <a href="#showHardmode" id="showHardmode" data-toggle="modal" data-target="#hardmodeModal">HERE</a> to turn it on.</span>
                 <br>
                 If you are just looking to instantly lock into your inanimate form, you can <a href="#" class="confirmLink" data-target="#instantlockDiv">click here</a>.
+            </p>
+            <div id="instantlockDiv" class="confirmContent" style="display: none;">
+                <p class="bg-danger small">
+                    <a href="@Url.Action(MVC.PvP.InstantLock())" class="btn-sm btn-danger center-block">Yes, I wish to accept my instantly lock.</a>
+                    <br>
+                    By selecting this option, you will lock yourself in your inanimate form.
                 </p>
-                <div id="instantlockDiv" class="confirmContent" style="display: none;">
-                    <p class="bg-danger small">
-                        <a href="@Url.Action(MVC.PvP.InstantLock())" class="btn-sm btn-danger center-block">Yes, I wish to accept my instantly lock.</a>
-                        <br>
-                        By selecting this option, you will lock yourself in your inanimate form.
-                    </p>
-                </div>  
-            }
+            </div>
+        }
 
         }
-    </p>
+        </p>
 
-    <div class="modal fade" id="hardmodeModal" role="dialog">
-        <div class="modal-dialog modal-sm bg-warning">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close outline-text" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Activate Hard Mode</h4>
-                </div>
-                <div class="modal-body">
-                    <p class="small">
-                        <span>Are you sure? This decision can't be undone during a normal round. Not by ANYONE. If you change your mind, you <strong>MUST REROLL</strong></span>
-                        <br /><br />
-                        @{
-                            using (Html.BeginForm(MVC.Settings.ChangeHardmode(), FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="submit" value="Toggle Hard Mode.">
+        <div class="modal fade" id="hardmodeModal" role="dialog">
+            <div class="modal-dialog modal-sm bg-warning">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close outline-text" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Activate Hard Mode</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="small">
+                            <span>Are you sure? This decision can't be undone during a normal round. Not by ANYONE. If you change your mind, you <strong>MUST REROLL</strong></span>
+                            <br /><br />
+                            @{
+                                using (Html.BeginForm(MVC.Settings.ChangeHardmode(), FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="submit" value="Toggle Hard Mode.">
+                                }
                             }
-                        }
-                    </p>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <h2>Ownership Visibility</h2>
+        <h2>Ownership Visibility</h2>
 
-    <p>
-        If you choose to turn on your ownership visibility, your items will be tagged with a link to your profile.
-        This means that players may be able to see all the items in your inventory even if you aren't wearing them.
-        Click on the link below to toggle.<br><br>
+        <p>
+            If you choose to turn on your ownership visibility, your items will be tagged with a link to your profile.
+            This means that players may be able to see all the items in your inventory even if you aren't wearing them.
+            Click on the link below to toggle.<br><br>
 
-        @{
-            if (Model.OwnershipVisibilityEnabled)
-            {
-                <span class="good">You have Ownership Visibility enabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(false))">HERE</a> to turn it off.</span>
-            }
-            else
-            {
-                <span class="bad">You have Ownership Visibility disabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(true))">HERE</a> to turn it on.</span>
-            }
-        }
-    </p>
-
-    @{
-        if (PvPStatics.ChaosMode)
-        {
-            <p>
-                <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-                @using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+            @{
+                if (Model.OwnershipVisibilityEnabled)
                 {
-                    var SP = (int)GameModeStatics.GameModes.Superprotection;
-                    var P = (int)GameModeStatics.GameModes.Protection;
-                    var PVP = (int)GameModeStatics.GameModes.PvP;
-
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("Mode", "")
-                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@SP';this.closest('form').submit();return false;">Enter SuperProtection Mode</a><br>
-                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
-                    <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
+                    <span class="good">You have Ownership Visibility enabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(false))">HERE</a> to turn it off.</span>
                 }
-                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(0))">Revert to your base form</a><br>
-                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(1))">Revert to your original name</a><br>
-
-                <a href="@Url.Action(MVC.Settings.LearnAnimateSpells())">Learn all animate spells</a><br>
-                <a href="@Url.Action(MVC.Settings.LearnInanimateSpells())">Learn all inanimate spells</a><br>
-                <a href="@Url.Action(MVC.Settings.LearnPetSpells())">Learn all pet spells</a><br>
-                <a href="@Url.Action(MVC.Settings.ForgetAllSpells())">Forget all spells</a><br>
-                @{
-                    if (Model.ChaosChangesEnabled)
-                    {
-                        <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br>
-                    }
+                else
+                {
+                    <span class="bad">You have Ownership Visibility disabled.  Click <a href="@Url.Action(MVC.Settings.AllowOwnershipVisibility(true))">HERE</a> to turn it on.</span>
                 }
-
-                <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br>
-            </p>
-        }
-    }
-
-
-    <h2>Protection Mode</h2>
-
-    <p>
-        Transformania Time currently functions with three different modes; Super Protection, Protection, and Player v. Player. In <b>Super Protection</b>, all spells are disabled from being cast against you by other players. <b>Protection</b> mode is used for those players who do not wish to have inanimate, pet, or mind-control spells cast upon them by other players. Lastly, while in <b>Player v. Player (or PvP)</b> mode, the game is much more competitive and all spells can be cast upon you by other PvP players. Barring Super Protection mode, you may only cast the appropriate spells on players sharing your mode. The rules of these modes are exempt by AI players (psychopaths and bosses), as well as those you add to your friend's list. Being friends with another playing enables them to cast any type of spell on you, regardless of the game mode either of you are currently in.<br><br><span class="bad">While in PvP, you consent to being a target of any spell cast upon you. Another player does not have to respect your preferences. If you do not consent to such restriction or the play that Player versus Player entails, you may opt to set your mode to Super Protection. Once you have opted to set yourself to Protection or Super Protection, you may not switch your mode for the rest of the normal round. Neither moderators nor admins will assist in getting you back into PvP if you have opted for Protection in one way or another. Changing your mode to Protection will also remove any dungeon points you may have accumulated</span><br><br>
+            }
+        </p>
 
         @{
-            switch (Model.Player.GameMode)
+            if (PvPStatics.ChaosMode)
             {
-                case (int)GameModeStatics.GameModes.Protection:
-                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                <p>
+                    <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
+                    @using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
                     {
+                        var SP = (int)GameModeStatics.GameModes.Superprotection;
+                        var P = (int)GameModeStatics.GameModes.Protection;
+                        var PVP = (int)GameModeStatics.GameModes.PvP;
+
                         @Html.AntiForgeryToken()
-                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
-                        <input type="submit" value="Enter Super Protection Mode">
+                        @Html.Hidden("Mode", "")
+                        <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@SP';this.closest('form').submit();return false;">Enter SuperProtection Mode</a><br>
+                        <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@P';this.closest('form').submit();return false;">Enter Protection Mode</a><br>
+                        <a style="cursor:pointer;" onclick="document.getElementById('Mode').value='@PVP';this.closest('form').submit();return false;">Enter PvP Mode</a><br>
                     }
-                    break;
-                case (int)GameModeStatics.GameModes.Superprotection:
-                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Protection)
-                        <input type="submit" value="Enter Protection Mode">
+                    <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(0))">Revert to your base form</a><br>
+                    <a href="@Url.Action(MVC.Settings.ChaosRestoreBase(1))">Revert to your original name</a><br>
+
+                    <a href="@Url.Action(MVC.Settings.LearnAnimateSpells())">Learn all animate spells</a><br>
+                    <a href="@Url.Action(MVC.Settings.LearnInanimateSpells())">Learn all inanimate spells</a><br>
+                    <a href="@Url.Action(MVC.Settings.LearnPetSpells())">Learn all pet spells</a><br>
+                    <a href="@Url.Action(MVC.Settings.ForgetAllSpells())">Forget all spells</a><br>
+                    @{
+                        if (Model.ChaosChangesEnabled)
+                        {
+                            <a href="@Url.Action(MVC.Settings.AllowChaosChanges(false))">Disallow chaos mode changes to your account</a><br>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action(MVC.Settings.AllowChaosChanges(true))">Allow chaos mode changes to your account</a><br>
+                        }
                     }
-                    break;
-                case (int)GameModeStatics.GameModes.PvP when Math.Abs(Math.Floor(Model.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes)) > 30:
-                    using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
-                        <input type="submit" value="Enter Super Protection Mode">
-                    }
-                    break;
-                case (int)GameModeStatics.GameModes.PvP:
-                    <span class="bad">You cannot leave PvP mode until you have been out of combat for thirty (30) minutes.</span>
-                    break;
+
+                    <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br>
+                </p>
             }
         }
-    </p>
-    @{
 
-        if (Model.Player.GameMode == 0 || Model.Player.GameMode == 1)
-        {
-            <h2>Lower your WP (Protection Mode only)</h2>
 
-            <p>
-                You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br><br>
+        <h2>Protection Mode</h2>
 
-                <a href="@Url.Action(MVC.Settings.DumpWillpower("half"))">Decrease Willpower to Half</a><br><br>
-                <a href="@Url.Action(MVC.Settings.DumpWillpower("full"))">Decrease Willpower to Zero</a>
-            </p>
+        <p>
+            Transformania Time currently functions with three different modes; Super Protection, Protection, and Player v. Player. In <b>Super Protection</b>, all spells are disabled from being cast against you by other players. <b>Protection</b> mode is used for those players who do not wish to have inanimate, pet, or mind-control spells cast upon them by other players. Lastly, while in <b>Player v. Player (or PvP)</b> mode, the game is much more competitive and all spells can be cast upon you by other PvP players. Barring Super Protection mode, you may only cast the appropriate spells on players sharing your mode. The rules of these modes are exempt by AI players (psychopaths and bosses), as well as those you add to your friend's list. Being friends with another playing enables them to cast any type of spell on you, regardless of the game mode either of you are currently in.<br><br><span class="bad">While in PvP, you consent to being a target of any spell cast upon you. Another player does not have to respect your preferences. If you do not consent to such restriction or the play that Player versus Player entails, you may opt to set your mode to Super Protection. Once you have opted to set yourself to Protection or Super Protection, you may not switch your mode for the rest of the normal round. Neither moderators nor admins will assist in getting you back into PvP if you have opted for Protection in one way or another. Changing your mode to Protection will also remove any dungeon points you may have accumulated</span><br><br>
 
-        }
-
-    }
-
-    <h2>Change your Chat Color</h2>
-
-    <p>
-        You can change the color that your name appears in the game's chats below.<br><br>
-        <b>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("black"))"><span style="background-color:black;color:#e1e1e1;">[ #000000 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("indianred"))"><span style="background-color:indianred;color:#e1e1e1;">[ #CD5C5C ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("crimson"))"><span style="background-color:crimson;color:#e1e1e1;">[ #DC143C ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("firebrick"))"><span style="background-color:firebrick;color:#e1e1e1;">[ #B22222 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("mediumorchid"))"><span style="background-color:mediumorchid;color:#e1e1e1;">[ #BA55D3 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("blueviolet"))"><span style="background-color:blueviolet;color:#e1e1e1;">[ #8A2BE2 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkviolet"))"><span style="background-color:darkviolet;color:#e1e1e1;">[ #9400D3 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkorchid"))"><span style="background-color:darkorchid;color:#e1e1e1;">[ #9932CC ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkmagenta"))"><span style="background-color:darkmagenta;color:#e1e1e1;">[ #8B008B ]</span></a><br>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("purple"))"><span style="background-color:purple;color:#e1e1e1;">[ #800080 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("rebeccapurple"))"><span style="background-color:rebeccapurple;color:#e1e1e1;">[ #663399 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("indigo"))"><span style="background-color:indigo;color:#e1e1e1;">[ #4B0082 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("mediumslateblue"))"><span style="background-color:mediumslateblue;color:#e1e1e1;">[ #7B68EE ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("slateblue"))"><span style="background-color:slateblue;color:#e1e1e1;">[ #6A5ACD ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkslateblue"))"><span style="background-color:darkslateblue;color:#e1e1e1;">[ #483D8B ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("seagreen"))"><span style="background-color:seagreen;color:#e1e1e1;">[ #2E8B57 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("forestgreen"))"><span style="background-color:forestgreen;color:#e1e1e1;">[ #228B22 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("green"))"><span style="background-color:green;color:#e1e1e1;">[ #008000 ]</span></a><br>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkgreen"))"><span style="background-color:darkgreen;color:#e1e1e1;">[ #006400 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("olive"))"><span style="background-color:olive;color:#e1e1e1;">[ #808000 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkolivegreen"))"><span style="background-color:darkolivegreen;color:#e1e1e1;">[ #556B2F ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkcyan"))"><span style="background-color:darkcyan;color:#e1e1e1;">[ #008B8B ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("teal"))"><span style="background-color:teal;color:#e1e1e1;">[ #008080 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("steelblue"))"><span style="background-color:steelblue;color:#e1e1e1;">[ #4682B4 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("royalblue"))"><span style="background-color:royalblue;color:#e1e1e1;">[ #4169E1 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("blue"))"><span style="background-color:blue;color:#e1e1e1;">[ #0000FF ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("mediumblue"))"><span style="background-color:mediumblue;color:#e1e1e1;">[ #0000CD ]</span></a><br>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkblue"))"><span style="background-color:darkblue;color:#e1e1e1;">[ #00008B ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("navy"))"><span style="background-color:navy;color:#e1e1e1;">[ #000080 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("midnightblue"))"><span style="background-color:midnightblue;color:#e1e1e1;">[ #191970 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("saddlebrown"))"><span style="background-color:saddlebrown;color:#e1e1e1;">[ #8B4513 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("sienna"))"><span style="background-color:sienna;color:#e1e1e1;">[ #A0522D ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("brown"))"><span style="background-color:brown;color:#e1e1e1;">[ #A52A2A ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("dimgray"))"><span style="background-color:dimgray;color:#e1e1e1;">[ #696969 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("slategray"))"><span style="background-color:slategray;color:#e1e1e1;">[ #708090 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("darkslategrey"))"><span style="background-color:darkslategrey;color:#e1e1e1;">[ #2F4F4F ]</span></a><br>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#A1770F"))"><span style="background-color:#A1770F;color:#e1e1e1;">[ #A1770F ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#747474"))"><span style="background-color:#747474;color:#e1e1e1;">[ #747474 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#5B67C5"))"><span style="background-color:#5B67C5;color:#e1e1e1;">[ #5B67C5 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#8B5DA2"))"><span style="background-color:#8B5DA2;color:#e1e1e1;">[ #8B5DA2 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#337158"))"><span style="background-color:#337158;color:#e1e1e1;">[ #337158 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#716E33"))"><span style="background-color:#716E33;color:#e1e1e1;">[ #716E33 ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#986AAA"))"><span style="background-color:#986AAA;color:#e1e1e1;">[ #986AAA ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#87249B"))"><span style="background-color:#87249B;color:#e1e1e1;">[ #87249B ]</span></a>
-            <a href="@Url.Action(MVC.Settings.SetChatColor("#4D5277"))"><span style="background-color:#4D5277;color:#e1e1e1;">[ #4D5277 ]</span></a><br>
-        </b>
-    </p>
-
-    <h2>Set your Nickname (Donation Feature)</h2>
-    <p>
-        Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br><br>
-
-        <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br><br>
-    </p>
-
-    <h2>Player Blacklist & Messaging</h2>
-    <p>
-        View and update any blacklist entries you have set. <a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My Blacklist Entries</a><br><br>
-        You can update your friend message privacy settings here. 
+            @{
+                switch (Model.Player.GameMode)
+                {
+                    case (int)GameModeStatics.GameModes.Protection:
+                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
+                            <input type="submit" value="Enter Super Protection Mode">
+                        }
+                        break;
+                    case (int)GameModeStatics.GameModes.Superprotection:
+                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Protection)
+                            <input type="submit" value="Enter Protection Mode">
+                        }
+                        break;
+                    case (int)GameModeStatics.GameModes.PvP when Math.Abs(Math.Floor(Model.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes)) > 30:
+                        using (Html.BeginForm(MVC.Settings.ChangeGameMode(), FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("Mode", (int)GameModeStatics.GameModes.Superprotection)
+                            <input type="submit" value="Enter Super Protection Mode">
+                        }
+                        break;
+                    case (int)GameModeStatics.GameModes.PvP:
+                        <span class="bad">You cannot leave PvP mode until you have been out of combat for thirty (30) minutes.</span>
+                        break;
+                }
+            }
+        </p>
         @{
-            if (Model.FriendOnlyMessages)
+
+            if (Model.Player.GameMode == 0 || Model.Player.GameMode == 1)
             {
-                <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Click here to turn OFF friend only messages</a><br>
-            }
-            else
-            {
-                <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Click here to turn ON friend only messages</a><br>
+                <h2>Lower your WP (Protection Mode only)</h2>
+
+                <p>
+                    You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br><br>
+
+                    <a href="@Url.Action(MVC.Settings.DumpWillpower("half"))">Decrease Willpower to Half</a><br><br>
+                    <a href="@Url.Action(MVC.Settings.DumpWillpower("full"))">Decrease Willpower to Zero</a>
+                </p>
+
             }
 
         }
-    </p>
 
-    <h2>Audio Notifications</h2>
+        <h2>Change your Chat Color</h2>
 
-    <p>You can toggle audio notifications here.  Audio notifications will play short, sometimes repeating sounds when certain events happen in game.  (This does not work across all browers, particularly mobile OSes.)</p>
+        <p>
+            You can change the color that your name appears in the game's chats below.<br><br>
+            <b>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("black"))"><span style="background-color:black;color:#e1e1e1;">[ #000000 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("indianred"))"><span style="background-color:indianred;color:#e1e1e1;">[ #CD5C5C ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("crimson"))"><span style="background-color:crimson;color:#e1e1e1;">[ #DC143C ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("firebrick"))"><span style="background-color:firebrick;color:#e1e1e1;">[ #B22222 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("mediumorchid"))"><span style="background-color:mediumorchid;color:#e1e1e1;">[ #BA55D3 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("blueviolet"))"><span style="background-color:blueviolet;color:#e1e1e1;">[ #8A2BE2 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkviolet"))"><span style="background-color:darkviolet;color:#e1e1e1;">[ #9400D3 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkorchid"))"><span style="background-color:darkorchid;color:#e1e1e1;">[ #9932CC ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkmagenta"))"><span style="background-color:darkmagenta;color:#e1e1e1;">[ #8B008B ]</span></a><br>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("purple"))"><span style="background-color:purple;color:#e1e1e1;">[ #800080 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("rebeccapurple"))"><span style="background-color:rebeccapurple;color:#e1e1e1;">[ #663399 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("indigo"))"><span style="background-color:indigo;color:#e1e1e1;">[ #4B0082 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("mediumslateblue"))"><span style="background-color:mediumslateblue;color:#e1e1e1;">[ #7B68EE ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("slateblue"))"><span style="background-color:slateblue;color:#e1e1e1;">[ #6A5ACD ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkslateblue"))"><span style="background-color:darkslateblue;color:#e1e1e1;">[ #483D8B ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("seagreen"))"><span style="background-color:seagreen;color:#e1e1e1;">[ #2E8B57 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("forestgreen"))"><span style="background-color:forestgreen;color:#e1e1e1;">[ #228B22 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("green"))"><span style="background-color:green;color:#e1e1e1;">[ #008000 ]</span></a><br>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkgreen"))"><span style="background-color:darkgreen;color:#e1e1e1;">[ #006400 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("olive"))"><span style="background-color:olive;color:#e1e1e1;">[ #808000 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkolivegreen"))"><span style="background-color:darkolivegreen;color:#e1e1e1;">[ #556B2F ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkcyan"))"><span style="background-color:darkcyan;color:#e1e1e1;">[ #008B8B ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("teal"))"><span style="background-color:teal;color:#e1e1e1;">[ #008080 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("steelblue"))"><span style="background-color:steelblue;color:#e1e1e1;">[ #4682B4 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("royalblue"))"><span style="background-color:royalblue;color:#e1e1e1;">[ #4169E1 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("blue"))"><span style="background-color:blue;color:#e1e1e1;">[ #0000FF ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("mediumblue"))"><span style="background-color:mediumblue;color:#e1e1e1;">[ #0000CD ]</span></a><br>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkblue"))"><span style="background-color:darkblue;color:#e1e1e1;">[ #00008B ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("navy"))"><span style="background-color:navy;color:#e1e1e1;">[ #000080 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("midnightblue"))"><span style="background-color:midnightblue;color:#e1e1e1;">[ #191970 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("saddlebrown"))"><span style="background-color:saddlebrown;color:#e1e1e1;">[ #8B4513 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("sienna"))"><span style="background-color:sienna;color:#e1e1e1;">[ #A0522D ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("brown"))"><span style="background-color:brown;color:#e1e1e1;">[ #A52A2A ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("dimgray"))"><span style="background-color:dimgray;color:#e1e1e1;">[ #696969 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("slategray"))"><span style="background-color:slategray;color:#e1e1e1;">[ #708090 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("darkslategrey"))"><span style="background-color:darkslategrey;color:#e1e1e1;">[ #2F4F4F ]</span></a><br>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#A1770F"))"><span style="background-color:#A1770F;color:#e1e1e1;">[ #A1770F ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#747474"))"><span style="background-color:#747474;color:#e1e1e1;">[ #747474 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#5B67C5"))"><span style="background-color:#5B67C5;color:#e1e1e1;">[ #5B67C5 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#8B5DA2"))"><span style="background-color:#8B5DA2;color:#e1e1e1;">[ #8B5DA2 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#337158"))"><span style="background-color:#337158;color:#e1e1e1;">[ #337158 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#716E33"))"><span style="background-color:#716E33;color:#e1e1e1;">[ #716E33 ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#986AAA"))"><span style="background-color:#986AAA;color:#e1e1e1;">[ #986AAA ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#87249B"))"><span style="background-color:#87249B;color:#e1e1e1;">[ #87249B ]</span></a>
+                <a href="@Url.Action(MVC.Settings.SetChatColor("#4D5277"))"><span style="background-color:#4D5277;color:#e1e1e1;">[ #4D5277 ]</span></a><br>
+            </b>
+        </p>
 
-    <p id="toggleAudio_update"><a>Click here to toggle update audio notifications for turn updates.</a>  This will play a chiming sound when a turn has ended.</p>
+        <h2>Set your Nickname (Donation Feature)</h2>
+        <p>
+            Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br><br>
 
-    <p id="toggleAudio_attack"><a>Click here to toggle attack notifications.</a>  This will play a short when you are attacked ingame.</p>
+            <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br><br>
+        </p>
 
-    <p id="toggleAudio_message"><a>Click here to toggle message audio notifications.</a>  This will play a short sound when you receive a new message from another player.</p>
+        <h2>Player Blacklist & Messaging</h2>
+        <p>
+            View and update any blacklist entries you have set. <a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My Blacklist Entries</a><br><br>
+            You can update your friend message privacy settings here.
+            @{
+                if (Model.FriendOnlyMessages)
+                {
+                    <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(false))">Click here to turn OFF friend only messages</a><br>
+                }
+                else
+                {
+                    <a href="@Url.Action(MVC.Settings.UpdateFriendOnlyMessages(true))">Click here to turn ON friend only messages</a><br>
+                }
 
-    <h2>Chrome/Firefox Notifications</h2>
-    <p id="togglePush"><a>Click here to toggle Chrome/Firefox notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receive a notice, even if the browser is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+            }
+        </p>
 
-    <h2>Move with WASD Keys</h2>
-    <p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</a></p>
+        <h2>Audio Notifications</h2>
 
-</div>
+        <p>You can toggle audio notifications here.  Audio notifications will play short, sometimes repeating sounds when certain events happen in game.  (This does not work across all browers, particularly mobile OSes.)</p>
+
+        <p id="toggleAudio_update"><a>Click here to toggle update audio notifications for turn updates.</a>  This will play a chiming sound when a turn has ended.</p>
+
+        <p id="toggleAudio_attack"><a>Click here to toggle attack notifications.</a>  This will play a short when you are attacked ingame.</p>
+
+        <p id="toggleAudio_message"><a>Click here to toggle message audio notifications.</a>  This will play a short sound when you receive a new message from another player.</p>
+
+        <h2>Chrome/Firefox Notifications</h2>
+        <p id="togglePush"><a>Click here to toggle Chrome/Firefox notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receive a notice, even if the browser is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+
+        <h2>Move with WASD Keys</h2>
+        <p id="keyMovement"><a>Click here to toggle whether or not the WASD keys are configured to move your character north, west, south, or east on the main play page.</a></p>
+
+    </div>
 
 @section scripts
 {

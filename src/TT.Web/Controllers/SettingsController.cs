@@ -25,6 +25,7 @@ using TT.Web.ViewModels;
 using TT.Domain.Skills.Queries;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Players.Queries;
+using TT.Domain.Legacy.Procedures.BossProcedures;
 
 namespace TT.Web.Controllers
 {
@@ -49,6 +50,8 @@ namespace TT.Web.Controllers
                 IsOnlineToggled = DomainRegistry.Repository.FindSingle(new IsOnlineToggled { UserId = myMembershipId }),
                 FriendOnlyMessages = me.FriendOnlyMessages,
                 ReservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId)?.FullName,
+                IsBossDisabled = DomainRegistry.Repository.FindSingle(new IsBossDisabled { UserId = myMembershipId }),
+                GivenBossForms = new List<int> { BossProcedures_MotorcycleGang.BikerFollowerFormSourceId, BossProcedures_BimboBoss.RegularBimboFormSourceId },
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -1474,6 +1477,74 @@ namespace TT.Web.Controllers
 
             return RedirectToAction(MVC.PvP.Play());
 
+        }
+
+        public virtual ActionResult ToggleBoss(bool setBossDisable)
+        {
+            var userId = User.Identity.GetUserId();
+
+            if (PvPWorldStatProcedures.IsAnyBossActive() && PlayerProcedures.GetPlayerBossDisable(userId))
+            {
+                TempData["Error"] = "Failed to change the boss toggle to enabled/disabled. A boss is currently active.";
+            }
+            else
+            {
+                try
+                {
+                    DomainRegistry.Repository.Execute(new SetBossDisable
+                    {
+                        UserId = userId,
+                        BossDisable = setBossDisable
+                    });
+                    TempData["Result"] = $"Disable boss interactions: {setBossDisable}.";
+                }
+                catch (DomainException)
+                {
+                    TempData["Error"] = "Failed to change the boss toggle to enabled/disabled.";
+                }
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult BossDisableRestoreBase()
+        {
+            // Get the player's membershipID
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // Check to make sure boss interactions are disabled.
+            var BossDisabled = PlayerProcedures.GetPlayerBossDisable(myMembershipId);
+            if (!BossDisabled)
+            {
+                TempData["Error"] = "You can only do this if you disable boss interactions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Check to make sure user is in Super Protection.
+            if (me.GameMode != (int)GameModeStatics.GameModes.Superprotection)
+            {
+                TempData["Error"] = "You can only do this if you are in SP mode.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+            // Check to make sure only the appropriate forms can use this.
+            var BossForms = new List<int> { 
+                BossProcedures_MotorcycleGang.BikerFollowerFormSourceId, 
+                BossProcedures_BimboBoss.RegularBimboFormSourceId,
+            };
+
+            if (BossForms.Contains(me.FormSourceId))
+            {
+                PlayerProcedures.InstantRestoreToBase(me);
+                TempData["Result"] = "You have chosen to restore parts of yourself to normal.";
+            }
+            else
+            {
+                TempData["Error"] = "You are not in an appropriate form to use this feature.";
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
         }
     }
 }

@@ -195,9 +195,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     // Sometimes the rats will still teleport to a person in the dungeon if they move after being targetted.
                     // Check target location again.
                     var player = PlayerProcedures.GetPlayer(target.Id);
-                    
+                    var BossDisabled = PlayerProcedures.GetPlayerBossDisable(target.MembershipId); // Ignore those with boss interactions disabled.
+
                     // This check should prevent that at the cost of the rats losing their turn, which seems alright to me.
-                    if (!player.dbLocationName.Contains("dungeon_"))
+                    if (!player.dbLocationName.Contains("dungeon_") && !BossDisabled)
                     {
                         malethief.dbLocationName = target.dbLocationName;
                         femalethief.dbLocationName = target.dbLocationName;
@@ -215,7 +216,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         AttackProcedures.Attack(femalethief, target, StunSpellSourceId);
                         AIProcedures.DealBossDamage(femalethief, target, false, 1);
 
-                        var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
+                        var message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis. " ;
                         var locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
                         PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
                         LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
@@ -300,6 +301,13 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                         LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + " from Lindella.</b>");
+                    }
+
+                    // A player disabled boss interactions at some point, steal item back.
+                    else if (target.MembershipId != null && PlayerProcedures.GetPlayerBossDisable(target.MembershipId))
+                    {
+                        ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
+                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.FormerPlayer.FullName + " the " + victimThiefItem.ItemSource.FriendlyName + " from " + target.FirstName + " " + target.LastName + ".</b>");
                     }
 
                     // target is a human and they are not offline
@@ -459,40 +467,50 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     continue;
                 }
-                var reward = Math.Floor(maxReward_Male);
-                victor.Money += maxReward_Male;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + MaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on him.</b>", true);
-
-                playerRepo.SavePlayer(victor);
-                maxReward_Male *= .75M;
-
-                // top two get runes
-                if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = Math.Floor(maxReward_Male);
+                    victor.Money += maxReward_Male;
 
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + MaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on him.</b>", true);
+
+                    playerRepo.SavePlayer(victor);
+                    maxReward_Male *= .75M;
+
+                    // top two get runes
+                    if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
 
             for (var i = 0; i < damages_female.Count; i++)
             {
                 var damage = damages_female.ElementAt(i);
                 var victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
-                var reward = Math.Floor(maxReward_Female);
-                victor.Money += maxReward_Female;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FemaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on her.</b>", true);
-
-                playerRepo.SavePlayer(victor);
-                maxReward_Female *= .75M;
-
-                // top two get runes
-                if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(victor.MembershipId);
+                if (!BossDisabled)
                 {
-                    DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
-                }
+                    var reward = Math.Floor(maxReward_Female);
+                    victor.Money += maxReward_Female;
 
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FemaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on her.</b>", true);
+
+                    playerRepo.SavePlayer(victor);
+                    maxReward_Female *= .75M;
+
+                    // top two get runes
+                    if (i <= 1 && victor.Mobility == PvPStatics.MobilityFull)
+                    {
+                        DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.RAT_THIEF_RUNE, PlayerId = victor.Id });
+                    }
+                }
             }
 
         }

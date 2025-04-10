@@ -1368,7 +1368,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            try
+            // Boss interactions should not be disabled.
+            var BossDisabled = PlayerProcedures.GetPlayerBossDisable(myMembershipId);
+            if (BossDisabled)
+            {
+                TempData["Error"] = "The Krampus appears to be ignoring you for the moment.";
+                TempData["SubError"] = "Perhaps you should enable boss interactions.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
+
+                try
             {
                 DomainRegistry.Repository.FindSingle(
                     new CanInteractWith { BotId = AIStatics.ValentineBotId, PlayerId = me.Id });

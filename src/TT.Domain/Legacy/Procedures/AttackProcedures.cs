@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures
                     logs.AttackerLog += "<br><br>";
                 }
 
-                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".</span>";
+                logs.LocationLog = attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".";
                 logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.StaticSkill.FriendlyName + ".";
                 logs.AttackerLog += "  (+1 XP)  ";
                 logs.AttackerLog += PlayerProcedures.GiveXP(attacker, 1);
@@ -128,7 +128,7 @@ namespace TT.Domain.Procedures
             // the spell is a regular attack
             else
             {
-                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".</span>";
+                logs.LocationLog = attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".";
                 logs.AttackerLog = "You cast " + skillBeingUsed.StaticSkill.FriendlyName + " against " + victimFullName + ".  ";
                 logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.StaticSkill.FriendlyName + " against you.</span>  ";
 
@@ -280,7 +280,7 @@ namespace TT.Domain.Procedures
 
             }
 
-            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logs.LocationLog);
+            LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logs.LocationLog, LogStatics.LOG_TYPE_ATTACK);
             PlayerLogProcedures.AddPlayerLog(attacker.Id, logs.AttackerLog, false);
             PlayerLogProcedures.AddPlayerLog(victim.Id, logs.VictimLog, true);
 

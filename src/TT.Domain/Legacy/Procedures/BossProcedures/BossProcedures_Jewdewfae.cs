@@ -106,12 +106,12 @@ namespace TT.Domain.Procedures.BossProcedures
            
             aiRepo.SaveAIDirective(directive);
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae got bored and flew away from here.</b>");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae got bored and flew away from here.",LogStatics.LOG_TYPE_BOLD);
 
             fae.dbLocationName = newLocation;
             playerRepo.SavePlayer(fae);
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae flew here.  She looks bored and wants to play with someone.</b>");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae flew here.  She looks bored and wants to play with someone.",LogStatics.LOG_TYPE_BOLD);
 
             
 
@@ -154,7 +154,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 MoveToNewLocation();
             }
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae played with " + player.FirstName + " " + player.LastName + " here.</b>");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae played with " + player.FirstName + " " + player.LastName + " here.",LogStatics.LOG_TYPE_BOLD);
 
             return xpGain;
 

@@ -700,7 +700,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 }
 
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have become a clone of {victim.GetFullName()}", false);
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> became a clone of <b>{victim.GetFullName()}</b>.");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} became a clone of {victim.GetFullName()}.", LogStatics.LOG_TYPE_BOLD);
 
                 return $"You spot {victim.GetFullName()}.  Don't they look stunning?  Wouldn't you like to be like them?  \"As you wish,\" echoes an ephereal voice, seemingly hearing your innermost thoughts...";
             }
@@ -736,7 +736,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                 PlayerLogProcedures.AddPlayerLog(victim.Id, $"You have swapped bodies with {player.GetFullName()}!", true);
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You have swapped bodies with {victim.GetFullName()}!", false);
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> swapped bodies with <b>{victim.GetFullName()}</b>.");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()}</b> swapped bodies with <b>{victim.GetFullName()}.", LogStatics.LOG_TYPE_BOLD);
 
                 return $"A contraption whirs up and the next thing you know your head is being sucked into some sort of funnel while your body finds itself bound in iron shackles and leather straps.  In no time you are being held firm against a wall, and the same seems to be happening to {victim.GetFullName()}!  You both start to shake violently as your bodies bulge, flatten and contort, the tubes connecting you pumping full of magical energies.  The whirring dies down and you are able to wriggle free.  You check to see whether {victim.GetFullName()} is OK, but both of you are shocked as you each come face-to-face with yourself!";
             }
@@ -1336,7 +1336,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             {
                 var form = FormStatics.GetForm(formSourceId);
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a {form.FriendlyName}", LogStatics.LOG_TYPE_BOLD);
             }
 
             return true;
@@ -1369,7 +1369,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
             if (logChanges)
             {
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"You spontaneously turned into a {form.FriendlyName}.", false);
-                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a <b>{form.FriendlyName}</b>");
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} spontaneously turned into a {form.FriendlyName}", LogStatics.LOG_TYPE_BOLD);
             }
 
             return true;

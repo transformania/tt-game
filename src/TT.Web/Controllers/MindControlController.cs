@@ -111,8 +111,8 @@ namespace TT.Web.Controllers
 
                 ItemProcedures.DropItem(itemToDrop.dbItem.Id);
 
-                var locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
-                LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage);
+                var locationLogMessage = victim.GetFullName() + " was forced to drop their " + itemToDrop.Item.FriendlyName + " by someone mind controlling them.";
+                LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage, LogStatics.LOG_TYPE_BOLD);
 
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__MindControlCommandsIssued, 1);
             }

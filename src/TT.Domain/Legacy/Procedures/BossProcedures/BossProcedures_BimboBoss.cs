@@ -242,10 +242,10 @@ namespace TT.Domain.Procedures.BossProcedures
                         infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                         var message = "You gasp, your body shifting as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";
-                        var loclogMessage = "<b style='color: red'>" + infectee.GetFullName() + " succumbed to the bimbonic virus, spontaneously transforming into one of Lady Lovebringer's bimbos.</b>";
+                        var loclogMessage = infectee.GetFullName() + " succumbed to the bimbonic virus, spontaneously transforming into one of Lady Lovebringer's bimbos.";
 
                         PlayerLogProcedures.AddPlayerLog(infectee.Id, message, true);
-                        LocationLogProcedures.AddLocationLog(infectee.dbLocationName, loclogMessage);
+                        LocationLogProcedures.AddLocationLog(infectee.dbLocationName, loclogMessage,LogStatics.LOG_TYPE_BAD);
                     }
                 }
 
@@ -307,8 +307,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 activeCurses = activeCurses > 130 ? 130 : activeCurses;
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);
-                var message = "<b>" + bimboBoss.GetFullName() + " draws energy from her bimbo horde, regenerating her own willpower by " + activeCurses + ".</b>";
-                LocationLogProcedures.AddLocationLog(newlocation, message);
+                var message = bimboBoss.GetFullName() + " draws energy from her bimbo horde, regenerating her own willpower by " + activeCurses + ".";
+                LocationLogProcedures.AddLocationLog(newlocation, message,LogStatics.LOG_TYPE_BOLD);
             }
 
             // drop a cure

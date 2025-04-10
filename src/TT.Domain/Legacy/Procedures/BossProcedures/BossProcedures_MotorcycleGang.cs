@@ -123,7 +123,7 @@ namespace TT.Domain.Legacy.Procedures.BossProcedures
                         var newlocationFriendlyName = LocationsStatics.LocationList.GetLocation
                             .First(l => l.dbName == followerNewLocation).Name;
 
-                        LocationLogProcedures.AddLocationLog(followerNewLocation, $"{followerEF.GetFullName()} rode off to <b>{newlocationFriendlyName}</b> to help protect {boss.GetFullName()}.");
+                        LocationLogProcedures.AddLocationLog(followerNewLocation, $"{followerEF.GetFullName()} rode off to {newlocationFriendlyName} to help protect {boss.GetFullName()}.",LogStatics.LOG_TYPE_BOLD);
                         followerEF.ActionPoints = Math.Max(0, followerEF.ActionPoints - SummonToBossAPPenalty);
                     }
 

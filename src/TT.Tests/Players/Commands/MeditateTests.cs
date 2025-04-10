@@ -61,7 +61,7 @@ namespace TT.Tests.Players.Commands
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
             Assert.That(locationLog.dbLocationName, Is.EqualTo(player.Location));
             Assert.That(locationLog.Message,
-                Is.EqualTo("<span class='playerMediatingNotification'>John Doe meditated here.</span>"));
+                Is.EqualTo("John Doe meditated here."));
 
             var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMeditated);
             Assert.That(stat, Is.Not.Null);

@@ -72,7 +72,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     {
                         if (rand.Next(3) == 0)
                         {
-                            LocationLogProcedures.AddLocationLog(loc, $"{p.GetFullName()} bleated here:  <b>Baaaaa!</b>");
+                            LocationLogProcedures.AddLocationLog(loc, $"{p.GetFullName()} bleated here:  Baaaaa!", LogStatics.LOG_TYPE_BOLD);
                         }
                     });
 
@@ -83,7 +83,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                             PlayerLogProcedures.AddPlayerLog(flockToPlayer, $"{sheepPlayer.GetFullName()} bleated at you:  <b>Baaaaa!</b>", true);
                         }
 
-                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{sheepPlayer.GetFullName()} bleated here:  <b>Baaaaa!</b>");
+                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{sheepPlayer.GetFullName()} bleated here:  Baaaaa!", LogStatics.LOG_TYPE_BOLD);
                     }
 
                     if (stoppedAt != null)
@@ -159,11 +159,11 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         var roll = rand.Next(4);
                         if (roll == 0)
                         {
-                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} barked here as they catch the scent of a cat, {catPlayer.GetFullName()}:  <b>Woof woof!</b>");
+                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} barked here as they catch the scent of a cat, {catPlayer.GetFullName()}:  Woof woof!", LogStatics.LOG_TYPE_BOLD);
                         }
                         else if (roll == 1)
                         {
-                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} growled here as they get closer to {catPlayer.GetFullName()}, the cat:  <b>Grrrrrrrrr!</b>");
+                            LocationLogProcedures.AddLocationLog(loc, $"{dogPlayer.GetFullName()} growled here as they get closer to {catPlayer.GetFullName()}, the cat:  Grrrrrrrrr!", LogStatics.LOG_TYPE_BOLD);
                         }
                     });
 
@@ -171,7 +171,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     if (stoppedAt == catLoc)
                     {
                         var here = LocationsStatics.GetConnectionName(stoppedAt);
-                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{dogPlayer.GetFullName()} barked at {catPlayer.GetFullName()}:  <b>Woof woof!</b>");
+                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{dogPlayer.GetFullName()} barked at {catPlayer.GetFullName()}:  Woof woof!", LogStatics.LOG_TYPE_BOLD);
 
                         // If cat is mind controlled we can send them up a tree
                         if (catIsMindControlled)
@@ -193,7 +193,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                                 var roll = rand.Next(3);
                                 if (roll == 0)
                                 {
-                                    LocationLogProcedures.AddLocationLog(loc, $"<b>Meoooww!</b> yowls {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.");
+                                    LocationLogProcedures.AddLocationLog(loc, $"\'Meoooww!\' yowls {catPlayer.GetFullName()} as they quickly flee from {dogPlayer.GetFullName()}, the dog who is chasing them.", LogStatics.LOG_TYPE_BOLD);
                                 }
                             });
 
@@ -297,7 +297,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     if (stoppedAt == rodentLoc)
                     {
                         var here = LocationsStatics.GetConnectionName(stoppedAt);
-                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{catPlayer.GetFullName()} lunges at a rodent, but {rodentPlayer.GetFullName()} is too quick and evades the cat's attack!</b>");
+                        LocationLogProcedures.AddLocationLog(stoppedAt, $"{catPlayer.GetFullName()} lunges at a rodent, but {rodentPlayer.GetFullName()} is too quick and evades the cat's attack!", LogStatics.LOG_TYPE_BOLD);
 
                         PlayerLogProcedures.AddPlayerLog(rodentId, $"{catPlayer.GetFullName()} jumps out at you, but you leap from their paws and deprive them of an easy snack!", true);
                         PlayerLogProcedures.AddPlayerLog(catPlayer.Id, $"You prowl to <b>{here}</b>, creep up on {rodentPlayer.GetFullName()} and pounce!  But they're too quick and evade your clutches!", true);
@@ -352,7 +352,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                         var activity = activities[rand.Next(activities.Count())];
 
                         PlayerLogProcedures.AddPlayerLog(maidPlayer.Id, $"{newContract}You arrive at <b>{here}</b> and start {activity}!", true);
-                        LocationLogProcedures.AddLocationLog(nextLoc, $"{maidPlayer.GetFullName()} arrives here and starts <b>{activity}</b>.");
+                        LocationLogProcedures.AddLocationLog(nextLoc, $"{maidPlayer.GetFullName()} arrives here and starts {activity}.", LogStatics.LOG_TYPE_BOLD);
                     }
                     else if (stoppedAt != null)
                     {
@@ -387,7 +387,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     var itemToDrop = stripperItems[rand.Next(stripperItems.Count())];
 
                     PlayerLogProcedures.AddPlayerLog(stripper.Id, $"You {adverb} remove your <b>{itemToDrop.Item.FriendlyName}</b>!", true);
-                    LocationLogProcedures.AddLocationLog(stripper.dbLocationName, $"{stripperPlayer.GetFullName()} {adverb} removes their <b>{itemToDrop.Item.FriendlyName}</b>!");
+                    LocationLogProcedures.AddLocationLog(stripper.dbLocationName, $"{stripperPlayer.GetFullName()} {adverb} removes their {itemToDrop.Item.FriendlyName}!", LogStatics.LOG_TYPE_BOLD);
                     ItemProcedures.DropItem(itemToDrop.dbItem.Id);
                 }
 
@@ -455,7 +455,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
                             PlayerLogProcedures.AddPlayerLog(ghostPlayer.Id, $"After entering {here} you tap {victim.GetFullName()} on the shoulder and shout <b>\"{call}\"</b>!", true);
                             PlayerLogProcedures.AddPlayerLog(victim.Id, $"{ghostPlayer.GetFullName()} taps you on the shoulder and shouts <b>\"{call}\"</b>!", true);
-                            LocationLogProcedures.AddLocationLog(nextLoc, $"{ghostPlayer.GetFullName()} shouts <b>\"{call}\"</b> at {victim.GetFullName()}.");
+                            LocationLogProcedures.AddLocationLog(nextLoc, $"{ghostPlayer.GetFullName()} shouts \"{call}\" at {victim.GetFullName()}.", LogStatics.LOG_TYPE_BOLD);
                         }
                         else
                         {
@@ -463,7 +463,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                             var activity = activities[rand.Next(activities.Count())];
 
                             PlayerLogProcedures.AddPlayerLog(ghostPlayer.Id, $"You begin haunting {here}!", true);
-                            LocationLogProcedures.AddLocationLog(nextLoc, $"<b>{ghostPlayer.GetFullName()} {activity}</b>.");
+                            LocationLogProcedures.AddLocationLog(nextLoc, $"{ghostPlayer.GetFullName()} {activity}.", LogStatics.LOG_TYPE_BOLD);
                         }
                     }
                     else if (stoppedAt != null)

@@ -31,7 +31,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             StatsProcedures.AddStat(player.MembershipId, StatsProcedures.Stat__DiceGameScore, score);
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} rolls {die1}, {die2}, {die3} and {die4}, giving a total of {total}.", LogStatics.LOG_TYPE_BOLD);
 
             return $"You pick up four 20-sided dice and roll {die1}, {die2}, {die3} and {die4}, giving a total of <b>{total}</b>.  Your score is <b>{score}</b>.";
         }
@@ -114,12 +114,12 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
 
             // Put up some wanted posters
             var locations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
-            var locationMessage = $"<b>Wanted:</b>  A reward is on offer to whoever turns <b>{player.GetFullName()}</b> into a <b>{details.Form?.FriendlyName}</b>!";
+            var locationMessage = $"Wanted:  A reward is on offer to whoever turns {player.GetFullName()} into a {details.Form?.FriendlyName}!";
 
             for (var i = 0; i < 10; i++)
             {
                 var loc = locations[rand.Next(locations.Count())];
-                LocationLogProcedures.AddLocationLog(loc, locationMessage);
+                LocationLogProcedures.AddLocationLog(loc, locationMessage, LogStatics.LOG_TYPE_BOLD);
                 locations.Remove(loc);
             }
 
@@ -322,7 +322,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 PlayerLogProcedures.AddPlayerLog(player.Id, $"<b>You have summoned {firstName} {lastName}!</b>  Beware!  They are not friendly!!", true);
             }
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned <b>{firstName} {lastName}</b>!");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} has summoned {firstName} {lastName}!", LogStatics.LOG_TYPE_BOLD);
 
             return "Near the counter is an altar with a leather-bound book resting open upon it.  You take a look and try to read one of the jokes aloud.  It seems to be some consonant-heavy tongue twister that soon leaves you faltering.  You're not quite sure what the set up means, but hope the punchline will be worth it.  As you spurt out the last syllable a puff of red smoke explodes out from the book with an audible bang.  You're not laughing, and that remains the case when you close the book to see a large pentagram seared into the cover.  As the smoke subsides there seems to be a strange neon flicker to the light and a crackling to the air.  You turn sharply to see the psychopath you just summoned readying their attack against you!";
         }
@@ -712,7 +712,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} shouted <b>\"{meme}\"</b> here.");
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} shouted \"{meme}\" here.", LogStatics.LOG_TYPE_BOLD);
 
             return $"You shouted \"{meme}\"";
         }

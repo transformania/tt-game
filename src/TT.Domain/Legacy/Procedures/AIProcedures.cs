@@ -326,12 +326,12 @@ namespace TT.Domain.Procedures
                                     if (i.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                     {
                                         LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                            "<b>" + bot.GetFullName() + "</b> released " + name + " pet <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                            bot.GetFullName() + " released " + name + " pet " + i.ItemSource.FriendlyName + " here.", LogStatics.LOG_TYPE_BOLD);
                                     }
                                     else
                                     {
                                         LocationLogProcedures.AddLocationLog(bot.dbLocationName,
-                                            "<b>" + bot.GetFullName() + "</b> dropped " + name + " <b>" + i.ItemSource.FriendlyName + "</b> here.");
+                                            bot.GetFullName() + " dropped " + name + " " + i.ItemSource.FriendlyName + " here.", LogStatics.LOG_TYPE_BOLD);
                                     }
                                 }
 

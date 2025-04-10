@@ -62,14 +62,14 @@ namespace TT.Domain.Procedures.BossProcedures
                     if (petMerchant.Health < petMerchant.MaxHealth)
                     {
                         petMerchant.Health += 200;
-                        var logmessage = "<span class='playerCleansingNotification'>" + petMerchant.GetFullName() + " cleansed here.</span>";
-                        LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
+                        var logmessage = petMerchant.GetFullName() + " cleansed here.";
+                        LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage, LogStatics.LOG_TYPE_CLEANSE);
                     }
                     if (petMerchant.Mana < petMerchant.MaxMana)
                     {
                         petMerchant.Mana += 200;
-                        var logmessage = "<span class='playerMediatingNotification'>" + petMerchant.GetFullName() + " meditated here.</span>";
-                        LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
+                        var logmessage = petMerchant.GetFullName() + " meditated here.";
+                        LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage, LogStatics.LOG_TYPE_MEDITATE);
                     }
 
                     petMerchant.NormalizeHealthMana();

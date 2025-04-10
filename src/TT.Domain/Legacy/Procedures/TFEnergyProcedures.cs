@@ -444,7 +444,7 @@ namespace TT.Domain.Procedures
 
             playerRepo.SavePlayer(dbVictim);
 
-            output.LocationLog += $"<br><b>{dbVictim.GetFullName()} was completely transformed into a {targetForm.FriendlyName} here.</b>";
+            output.LocationLog += $"{dbVictim.GetFullName()} was completely transformed into a {targetForm.FriendlyName} here.";
             output.AttackerLog += $"<br><b>You fully transformed {dbVictim.GetFullName()} into a {targetForm.FriendlyName}</b>!";
             output.VictimLog += $"<br><b>You have been fully transformed into a {targetForm.FriendlyName}!</b>";
 

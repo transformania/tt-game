@@ -279,7 +279,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                     if(CharacterPrankProcedures.TryInanimateTransform(player, player.FormSourceId, dropInventory: false, severe: false, logChanges: false))
                     {
                         PlayerLogProcedures.AddPlayerLog(player.Id, $"As the Joke Shop drains more of your willpower you find you no longer have the strength of mind to remain fully mobile!", true);
-                        LocationLogProcedures.AddLocationLog(player.dbLocationName, $"<b>{player.GetFullName()}</b> succumbs to the effects of the Joke Shop after losing the will to remain fully mobile!");
+                        LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} succumbs to the effects of the Joke Shop after losing the will to remain fully mobile!", LogStatics.LOG_TYPE_BOLD);
 
                         numInanimated++;
                     }

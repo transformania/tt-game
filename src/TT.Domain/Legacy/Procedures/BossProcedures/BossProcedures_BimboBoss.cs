@@ -213,8 +213,11 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 var infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
-                // if the infectee is no longer animate or is another boss, skip them
-                if (infectee.Mobility != PvPStatics.MobilityFull || infectee.BotId < AIStatics.PsychopathBotId)
+                // Ignore those with boss interactions disabled.
+                var BossDisabled = PlayerProcedures.GetPlayerBossDisable(infectee.MembershipId);
+
+                // if the infectee has interactions disabled, is no longer animate or is another boss, skip them
+                if (infectee.Mobility != PvPStatics.MobilityFull || infectee.BotId < AIStatics.PsychopathBotId || BossDisabled)
                 {
                     continue;
                 }
@@ -222,7 +225,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 var roll = rand.NextDouble();
 
                 // random chance of spontaneously transforming
-                if (infectee.FormSourceId != RegularBimboFormSourceId && !PlayerProcedures.PlayerIsOffline(infectee))
+                if (infectee.FormSourceId != RegularBimboFormSourceId && !PlayerProcedures.PlayerIsOffline(infectee) && !BossDisabled)
                 {
                     if (roll < .16 && infectee.InDuel <= 0 && infectee.InQuest <= 0)
                     {
@@ -260,9 +263,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     foreach (var p in eligibleTargets)
                     {
-                        // Ignore those with boss interactions disabled.
-                        var BossDisabled = PlayerProcedures.GetPlayerBossDisable(p.MembershipId);
-                        if (!BossDisabled)
+                        // Check if the target is disabled, too.
+                        if (!PlayerProcedures.GetPlayerBossDisable(p.MembershipId))
                         {
                             if (!EffectProcedures.PlayerHasEffect(p, KissEffectSourceId) && !EffectProcedures.PlayerHasEffect(p, CureEffectSourceId) && attacksMadeCount < 3)
                             {

@@ -359,6 +359,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 !p.dbLocationName.Contains("dungeon_") &&
+                !PlayerProcedures.GetPlayerBossDisable(p.MembershipId) &&
+                !PlayerProcedures.PlayerIsOffline(p) &&
                 p.InDuel <= 0 &&
                 p.InQuest <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 

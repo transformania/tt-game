@@ -120,6 +120,7 @@ namespace TT.Domain.Forms.Entities
         {
             return new FormNameDescriptionDetail
             {
+                Id = Id,
                 FriendlyName = FriendlyName,
                 Description = Description,
                 PortraitUrl = PortraitUrl,

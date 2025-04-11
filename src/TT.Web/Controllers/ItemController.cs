@@ -14,6 +14,7 @@ using TT.Domain.Legacy.Procedures.JokeShop;
 using TT.Domain.Legacy.Services;
 using TT.Domain.Players.Queries;
 using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -342,13 +343,31 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            var model = new SelfCastViewModel
+            if (me.FormSourceId == BossProcedures_BimboBoss.RegularBimboFormSourceId)
             {
-                ItemId = itemId,
-                Skills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull)
-            };
+                // It's not a bug, it's a feature.
+                var bimboFormIds = JokeShopProcedures.BIMBOS;
 
-            return View(MVC.Item.Views.SelfCast, model);
+                var model = new SelfCastViewModel
+                {
+                    ItemId = itemId,
+                    Skills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id })
+                    .Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull)
+                    .Where(b => bimboFormIds.Contains(b.SkillSource.FormSource.Id))
+                };
+
+                return View(MVC.Item.Views.SelfCast, model);
+            }
+            else
+            {
+                var model = new SelfCastViewModel
+                {
+                    ItemId = itemId,
+                    Skills = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer { playerId = me.Id }).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull)
+                };
+
+                return View(MVC.Item.Views.SelfCast, model);
+            }
         }
 
         public virtual ActionResult SelfCastSend(int itemId, int skillSourceId)

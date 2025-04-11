@@ -8,6 +8,7 @@ namespace TT.Domain.Forms.DTOs
         public string Description { get; set; }
         public string PortraitUrl { get; set; }
         public string Gender { get; set; }
+        public int Id { get; set; }
 
         public ItemSourceNameDescription ItemSource { get; set; }
     }

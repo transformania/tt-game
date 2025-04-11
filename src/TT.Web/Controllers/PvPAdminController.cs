@@ -2034,7 +2034,7 @@ namespace TT.Web.Controllers
                 EquippedThisTurn = false,
                 LastSouledTimestamp = DateTime.UtcNow,
                 Level = 0,
-                ItemSourceId = ItemStatics.GetStaticItem(ItemStatics.TeleportationScrollItemSourceId).Id
+                ItemSourceId = ItemStatics.GetStaticItem(ItemStatics.AutoTransmogItemSourceId).Id
             };
 
             DomainRegistry.Repository.Execute(cmd);

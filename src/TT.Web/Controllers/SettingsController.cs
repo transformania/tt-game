@@ -1521,13 +1521,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            // Check to make sure user is in Super Protection.
-            if (me.GameMode != (int)GameModeStatics.GameModes.Superprotection)
-            {
-                TempData["Error"] = "You can only do this if you are in SP mode.";
-                return RedirectToAction(MVC.PvP.Play());
-            }
-
             // Check to make sure only the appropriate forms can use this.
             var BossForms = new List<int> { 
                 BossProcedures_MotorcycleGang.BikerFollowerFormSourceId, 
@@ -1536,6 +1529,11 @@ namespace TT.Web.Controllers
 
             if (BossForms.Contains(me.FormSourceId))
             {
+                if (me.FormSourceId == BossProcedures_BimboBoss.RegularBimboFormSourceId)
+                {
+                    EffectProcedures.RemovePerkFromPlayer(BossProcedures_BimboBoss.KissEffectSourceId, me);
+                }
+
                 PlayerProcedures.InstantRestoreToBase(me);
                 TempData["Result"] = "You have chosen to restore parts of yourself to normal.";
             }

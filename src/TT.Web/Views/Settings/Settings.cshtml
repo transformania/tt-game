@@ -126,7 +126,7 @@
             <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
             <a  class="bad" href="@Url.Action(MVC.Settings.ToggleBoss(true))">Click here to disable boss interactions.</a>
             
-            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId) && Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId))
             {
                 <br><br>
                 <b class="mark">To return to your base form, please disable boss interactions.</b>
@@ -137,7 +137,7 @@
         {
             <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
             <a  class="good" href="@Url.Action(MVC.Settings.ToggleBoss(false))">Click here to enable boss interactions.</a>
-            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId) && Model.Player.GameMode == (int)GameModeStatics.GameModes.Superprotection)
+            @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId))
             {
                 <br><br>
                 <a class="mark" href="@Url.Action(MVC.Settings.BossDisableRestoreBase())">Revert to your base form</a><br>

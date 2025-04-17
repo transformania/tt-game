@@ -14,6 +14,27 @@ namespace TT.Web.CustomHtmlHelpers
 {
     public static class HtmlHelpers
     {
+        public static MvcHtmlString PrintLocationLogs(string locationLog)
+        {
+            var output = locationLog
+                .Replace("&#39;", "'")
+                .Replace("&quot;", "\"")
+                .Replace("&amp;", "&")
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                .Replace("&#252;", "ü")
+                .Replace("&#235;", "ë")
+                .Replace("&#233;", "é")
+                .Replace("&#232;", "è")
+                .Replace("&#223;", "ß")
+                .Replace("&#230;", "æ")
+                .Replace("&#198;", "Æ")
+                .Replace("&#254;", "þ")
+                .Replace("&#229;", "å")
+                .Replace("&#240;", "ð");
+
+            return new MvcHtmlString(output);
+        }
 
         public static MvcHtmlString PrintMCIcon(Player player)
         {

@@ -2116,7 +2116,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " picked up a " + pickup.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(pickup) + " here.";
+                locationLogMessage = me.GetFullName() + " picked up a " + pickup.ItemSource.FriendlyName + " here.";
             }
             // item is an animal, equip it automatically
             else if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Pet)
@@ -2126,7 +2126,7 @@ namespace TT.Web.Controllers
                 var name = (pickup.FormerPlayer == null) ? "a " + pickup.ItemSource.FriendlyName
                                                          : pickup.FormerPlayer.FullName + " the " + pickup.ItemSource.FriendlyName;
                 playerLogMessage = "You tamed <b>" + name + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed " + name + HtmlHelpers.PrintPvPIcon(pickup) + " here.";
+                locationLogMessage = me.GetFullName() + " tamed " + name + " here.";
 
                 if (pickup.FormerPlayer != null)
                 {
@@ -2226,7 +2226,7 @@ namespace TT.Web.Controllers
             if (dropme.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.GetFullName() + " released a " + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + " here.";
+                locationLogMessage = me.GetFullName() + " released a " + dropme.ItemSource.FriendlyName + " here.";
 
                 if (dropme.FormerPlayer != null)
                 {
@@ -2240,7 +2240,7 @@ namespace TT.Web.Controllers
             else
             {
                 playerLogMessage = "You dropped a " + dropme.ItemSource.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a " + dropme.ItemSource.FriendlyName + HtmlHelpers.PrintPvPIcon(dropme) + " here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a " + dropme.ItemSource.FriendlyName + " here.";
             }
 
             PlayerProcedures.SetTimestampToNow(me);

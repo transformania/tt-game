@@ -47,7 +47,7 @@ namespace TT.Domain.Players.Commands
 
                 Message = Message.Replace("<", "&lt;").Replace(">", "&gt;"); // remove suspicious characters
 
-                var log = LocationLog.Create(player.Location, $"<span class='playerShoutNotification'>{player.GetFullName()} shouted <b>\"{Message}\"</b> here.</span>");
+                var log = LocationLog.Create(player.Location, $"{player.GetFullName()} shouted \"{Message}\" here.",-999,7);
 
                 player.Shout(Message);
                 ctx.Update(player);

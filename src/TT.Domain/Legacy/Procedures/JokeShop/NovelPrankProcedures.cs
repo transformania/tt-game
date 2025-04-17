@@ -712,7 +712,7 @@ namespace TT.Domain.Legacy.Procedures.JokeShop
                 return null;
             }
 
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} shouted \"{meme}\" here.", LogStatics.LOG_TYPE_BOLD);
+            LocationLogProcedures.AddLocationLog(player.dbLocationName, $"{player.GetFullName()} shouted \"{meme}\" here.", LogStatics.LOG_TYPE_SHOUT);
 
             return $"You shouted \"{meme}\"";
         }

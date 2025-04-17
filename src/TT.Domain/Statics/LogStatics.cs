@@ -9,5 +9,6 @@
         public const int LOG_TYPE_CLEANSE = 4;
         public const int LOG_TYPE_MEDITATE = 5;
         public const int LOG_TYPE_SEARCH = 6;
+        public const int LOG_TYPE_SHOUT = 7;
     }
 }

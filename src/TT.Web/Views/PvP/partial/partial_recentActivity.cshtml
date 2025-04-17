@@ -14,28 +14,31 @@
                     switch (log.LogType)
                     {
                         case LogStatics.LOG_TYPE_BOLD: // Bold
-                            <b>@Html.Encode(log.Message)</b>
+                            <b>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</b>
                             break;
                         case LogStatics.LOG_TYPE_BAD: // Bad
-                            <span class='bad'>@Html.Encode(log.Message)</span>
+                            <span class='bad'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         case LogStatics.LOG_TYPE_GOOD: // Good
-                            <span class='good'>@Html.Encode(log.Message)</span>
+                            <span class='good'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         case LogStatics.LOG_TYPE_ATTACK: // Attack
-                            <span class='playerAttackNotification'>@Html.Encode(log.Message)</span>
+                            <span class='playerAttackNotification'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         case LogStatics.LOG_TYPE_CLEANSE: // Cleanse
-                            <span class='playerCleansingNotification'>@Html.Encode(log.Message)</span>
+                            <span class='playerCleansingNotification'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         case LogStatics.LOG_TYPE_MEDITATE: // Meditate
-                            <span class='playerMediatingNotification'>@Html.Encode(log.Message)</span>
+                            <span class='playerMediatingNotification'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         case LogStatics.LOG_TYPE_SEARCH: // Search
-                            <span class='playerSearchingNotification'>@Html.Encode(log.Message)</span>
+                            <span class='playerSearchingNotification'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
+                            break;
+                        case LogStatics.LOG_TYPE_SHOUT: // SHOUT!
+                            <span class='playerShoutNotification'>@HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))</span>
                             break;
                         default:
-                            @Html.Encode(log.Message)
+                            @HtmlHelpers.PrintLocationLogs(Html.Encode(log.Message))
                             break;
                     }
                 }

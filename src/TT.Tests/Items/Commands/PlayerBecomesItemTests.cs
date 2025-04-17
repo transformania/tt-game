@@ -88,7 +88,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a A new Item! here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a A new Item! here."));
 
             var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
             Assert.That(victimPostTF, Is.Not.Null);
@@ -127,7 +127,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a A new Item! here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a A new Item! here."));
 
             var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
             Assert.That(victimPostTF, Is.Not.Null);
@@ -175,7 +175,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Psychopath Panties was completely transformed into a A new Item! here."));
+                    .EqualTo(" Psychopath Panties was completely transformed into a A new Item! here."));
 
             var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == botVictim.Id);
             Assert.That(victimPostTF, Is.Not.Null);
@@ -226,7 +226,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim McGee was completely transformed into a A new Item! here."));
+                    .EqualTo(" Victim McGee was completely transformed into a A new Item! here."));
 
             var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == botVictim.Id);
             Assert.That(victimPostTF, Is.Not.Null);
@@ -263,7 +263,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a A new Item! here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a A new Item! here."));
 
             var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
             Assert.That(newItem, Is.Not.Null);
@@ -295,7 +295,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a Squeaky Pet!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a Squeaky Pet here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a Squeaky Pet here."));
 
             var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
             Assert.That(newItem, Is.Not.Null);
@@ -347,7 +347,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a Squeaky Pet!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a Squeaky Pet here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a Squeaky Pet here."));
 
             var newItem = DataContext.AsQueryable<Item>().FirstOrDefault(i => i.FormerPlayer != null && i.FormerPlayer.Id == victim.Id);
             Assert.That(newItem, Is.Not.Null);
@@ -366,7 +366,7 @@ namespace TT.Tests.Items.Commands
                     .And.Property("VictimLog")
                     .EqualTo("<br><b>You have been fully transformed into a A new Item!!</b>!")
                     .And.Property("LocationLog")
-                    .EqualTo("Victim MgGee was completely transformed into a A new Item! here."));
+                    .EqualTo(" Victim MgGee was completely transformed into a A new Item! here."));
 
             var victimPostTF = DataContext.AsQueryable<Player>().FirstOrDefault(p => p.Id == victim.Id);
             Assert.That(victimPostTF, Is.Not.Null);

@@ -37,7 +37,7 @@ namespace TT.Tests.Players.Commands
 
             Assert.That(DataContext.AsQueryable<LocationLog>().First().Message,
                 Is.EqualTo(
-                    "<span class='playerShoutNotification'>John Doe shouted <b>\"Hello world!\"</b> here.</span>"));
+                    "John Doe shouted \"Hello world!\" here."));
         }
 
         public void should_not_shout_if_hushed()

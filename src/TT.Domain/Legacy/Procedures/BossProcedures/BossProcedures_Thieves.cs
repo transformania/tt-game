@@ -8,6 +8,7 @@ using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
+using TT.Domain.Identity.Commands;
 
 namespace TT.Domain.Procedures.BossProcedures
 {
@@ -359,15 +360,18 @@ namespace TT.Domain.Procedures.BossProcedures
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 !p.dbLocationName.Contains("dungeon_") &&
-                !PlayerProcedures.GetPlayerBossDisable(p.MembershipId) &&
-                !PlayerProcedures.PlayerIsOffline(p) &&
                 p.InDuel <= 0 &&
                 p.InQuest <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 
             var output = "";
             foreach (var s in ids)
             {
-                output += s.ToString() + ";";
+                // Add in a boss interactions and offline check.
+                var player = PlayerProcedures.GetPlayer(s);
+                if (!PlayerProcedures.GetPlayerBossDisable(player.MembershipId) && !PlayerProcedures.PlayerIsOffline(player))
+                {
+                    output += s.ToString() + ";";
+                }
             }
 
             return output;
@@ -515,6 +519,14 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
             }
 
+            // Re-enable boss interactions for users who have toggled it.
+            var reenablePlayers = playerRepo.Players.Where(p => p.BossEnableAfterDefeat == true);
+
+            foreach (var p in reenablePlayers) 
+            {
+                DomainRegistry.Repository.Execute(new SetBossDisable { UserId = p.MembershipId, BossDisable = false });
+                DomainRegistry.Repository.Execute(new ChangeBossEnableAfterDefeat { MembershipId = p.MembershipId, BossEnableAfterDefeat = false });
+            }
         }
 
     }

@@ -125,7 +125,7 @@
         {
             <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
             <a  class="bad" href="@Url.Action(MVC.Settings.ToggleBoss(true))">Click here to disable boss interactions.</a>
-            
+
             @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId))
             {
                 <br><br>
@@ -136,7 +136,30 @@
         else
         {
             <p>You can use the following option to toggle boss interactions. Note that turning off boss interactions means that you will be unable to participate with them in any capacity, inclucing attacks, achievements, boss events, spawns, etc. While you can disable this at any time, boss interactions cannot be turned back on while a boss is currently active!<br>
-            <a  class="good" href="@Url.Action(MVC.Settings.ToggleBoss(false))">Click here to enable boss interactions.</a>
+
+            @if (Model.BossActive)
+            {
+                <br>
+                <span class="bad">Uh oh! It looks like a boss is currently active.</span> 
+                if (!Model.BossEnableAfterDefeat)
+                {
+                    <br>
+                    <b>Would you like to re-enable boss interactions after the next boss is defeated?</b><br><br>
+                    <a class="bg-success" href="@Url.Action(MVC.Settings.ChangeBossEnableAfterDefeat(true))">Yes, turn them back on when the boss is defeated.</a>
+                }
+                else 
+                {
+                    <br>
+                    <b>You can click the following link to keep boss interactions disabled following a boss defeat.</b><br><br>
+                    <a class="bg-info" href="@Url.Action(MVC.Settings.ChangeBossEnableAfterDefeat(false))">No, keep boss interactions disabled.</a>
+                }
+            }
+            else
+            { 
+                <a  class="good" href="@Url.Action(MVC.Settings.ToggleBoss(false))">Click here to enable boss interactions.</a>
+            }
+
+
             @if (Model.GivenBossForms.Contains(Model.Player.FormSourceId))
             {
                 <br><br>

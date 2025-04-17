@@ -52,6 +52,8 @@ namespace TT.Web.Controllers
                 ReservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId)?.FullName,
                 IsBossDisabled = DomainRegistry.Repository.FindSingle(new IsBossDisabled { UserId = myMembershipId }),
                 GivenBossForms = new List<int> { BossProcedures_MotorcycleGang.BikerFollowerFormSourceId, BossProcedures_BimboBoss.RegularBimboFormSourceId },
+                BossEnableAfterDefeat = me.BossEnableAfterDefeat,
+                BossActive = PvPWorldStatProcedures.IsAnyBossActive(),
             };
 
             return View(MVC.Settings.Views.Settings, output);
@@ -1543,6 +1545,28 @@ namespace TT.Web.Controllers
             }
 
             return RedirectToAction(MVC.PvP.Play());
+        }
+
+        public virtual ActionResult ChangeBossEnableAfterDefeat(bool changeBossEnableAfterDefeat)
+        {
+            var myMembershipId = User.Identity.GetUserId();
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeBossEnableAfterDefeat
+                {
+                    MembershipId = myMembershipId,
+                    BossEnableAfterDefeat = changeBossEnableAfterDefeat
+                });
+                TempData["Result"] = $"Reenable boss interactions after boss defeat has been successfully set to: {changeBossEnableAfterDefeat}.";
+            }
+            catch (DomainException)
+            {
+                TempData["Error"] = "Failed to update player setting.";
+            }
+
+            return RedirectToAction(MVC.PvP.Play());
+
         }
     }
 }

@@ -86,6 +86,7 @@ namespace TT.Domain.Procedures
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                               AbuseLockoutMessage = player.AbuseLockoutMessage,
                                                               ChatLockoutMessage = player.ChatLockoutMessage,
+                                                              BossEnableAfterDefeat = player.BossEnableAfterDefeat,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -204,6 +205,7 @@ namespace TT.Domain.Procedures
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                               AbuseLockoutMessage = player.AbuseLockoutMessage,
                                                               ChatLockoutMessage = player.ChatLockoutMessage,
+                                                              BossEnableAfterDefeat = player.BossEnableAfterDefeat,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -321,6 +323,7 @@ namespace TT.Domain.Procedures
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                               AbuseLockoutMessage = player.AbuseLockoutMessage,
                                                               ChatLockoutMessage = player.ChatLockoutMessage,
+                                                              BossEnableAfterDefeat = player.BossEnableAfterDefeat,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form
@@ -439,6 +442,7 @@ namespace TT.Domain.Procedures
                                                               LastHolidaySpiritInteraction = player.LastHolidaySpiritInteraction,
                                                               AbuseLockoutMessage = player.AbuseLockoutMessage,
                                                               ChatLockoutMessage = player.ChatLockoutMessage,
+                                                              BossEnableAfterDefeat = player.BossEnableAfterDefeat,
                                                           },
 
                                                           Form = new TT.Domain.ViewModels.Form

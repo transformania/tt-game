@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Identity.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -268,6 +269,15 @@ namespace TT.Domain.Procedures.BossProcedures
                         DomainRegistry.Repository.Execute(new GiveRune { ItemSourceId = RuneStatics.DONNA_RUNE, PlayerId = victor.Id });
                     }
                 }
+            }
+
+            // Re-enable boss interactions for users who have toggled it.
+            var reenablePlayers = playerRepo.Players.Where(p => p.BossEnableAfterDefeat == true);
+
+            foreach (var p in reenablePlayers)
+            {
+                DomainRegistry.Repository.Execute(new SetBossDisable { UserId = p.MembershipId, BossDisable = false });
+                DomainRegistry.Repository.Execute(new ChangeBossEnableAfterDefeat { MembershipId = p.MembershipId, BossEnableAfterDefeat = false });
             }
         }
 

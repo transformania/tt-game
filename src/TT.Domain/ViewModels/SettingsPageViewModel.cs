@@ -18,5 +18,7 @@ namespace TT.Domain.ViewModels
         public string ReservedName { get; set; }
         public bool IsBossDisabled { get; set; }
         public List<int> GivenBossForms { get; set; }
+        public bool BossEnableAfterDefeat { get; set; }
+        public bool BossActive { get; set; }
     }
 }

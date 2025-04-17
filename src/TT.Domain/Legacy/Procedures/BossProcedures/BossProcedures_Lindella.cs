@@ -135,6 +135,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     foreach (var p in lindellaItems)
                     {
                         var player = PlayerProcedures.GetPlayer(p.FormerPlayer.Id);
+                        var item = ItemProcedures.GetItemViewModel(p.Id);
 
                         if (!player.MembershipId.IsNullOrEmpty())
                         {
@@ -152,6 +153,20 @@ namespace TT.Domain.Procedures.BossProcedures
                                 else if (chance <= 16) // Shun
                                 {
                                     PlayerLogProcedures.AddPlayerLog(player.Id, "Lindella sighs and seems to shun you, disappointed she might never be able to sell you.", true);
+                                }
+                                else if (!item.Item.UsageMessage_Item.IsNullOrEmpty())
+                                {
+                                    var itemMessage = item.Item.UsageMessage_Item;
+                                    var context = "Lindella just used you!";
+                                    itemMessage = string.IsNullOrEmpty(itemMessage) ? context : $"{itemMessage}<br />{context}";
+                                    PlayerLogProcedures.AddPlayerLog(player.Id, itemMessage, true);
+                                }
+                                else if (p.ItemSource.Id == ItemStatics.ButtPlugItemSourceId) // A buttplug? OMG... *blushes*
+                                {
+                                    var itemMessage = item.Item.UsageMessage_Item;
+                                    var context = $"Lindella just used you to help remove a curse from a stanger! Doesn't that make you feel all warm and tingly?";
+                                    itemMessage = string.IsNullOrEmpty(itemMessage) ? context : $"{itemMessage}<br />{context}";
+                                    PlayerLogProcedures.AddPlayerLog(player.Id, itemMessage, true);
                                 }
                                 else // Hush
                                 {

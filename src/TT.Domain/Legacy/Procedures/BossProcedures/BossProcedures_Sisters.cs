@@ -2,6 +2,7 @@
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Identity.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
 using TT.Domain.Players.Queries;
@@ -320,6 +321,15 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     playerRepo.SavePlayer(victor);
                 }
+            }
+
+            // Re-enable boss interactions for users who have toggled it.
+            var reenablePlayers = playerRepo.Players.Where(p => p.BossEnableAfterDefeat == true);
+
+            foreach (var p in reenablePlayers)
+            {
+                DomainRegistry.Repository.Execute(new SetBossDisable { UserId = p.MembershipId, BossDisable = false });
+                DomainRegistry.Repository.Execute(new ChangeBossEnableAfterDefeat { MembershipId = p.MembershipId, BossEnableAfterDefeat = false });
             }
 
             DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = nerdBoss.Id});

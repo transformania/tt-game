@@ -287,6 +287,12 @@ namespace TT.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ToggleBoss);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ChangeBossEnableAfterDefeat()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBossEnableAfterDefeat);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SettingsController Actions { get { return MVC.Settings; } }
@@ -356,6 +362,7 @@ namespace TT.Web.Controllers
             public readonly string ToggleOnline = ("ToggleOnline").ToLowerInvariant();
             public readonly string ToggleBoss = ("ToggleBoss").ToLowerInvariant();
             public readonly string BossDisableRestoreBase = ("BossDisableRestoreBase").ToLowerInvariant();
+            public readonly string ChangeBossEnableAfterDefeat = ("ChangeBossEnableAfterDefeat").ToLowerInvariant();
         }
 
 
@@ -675,6 +682,14 @@ namespace TT.Web.Controllers
         public class ActionParamsClass_ToggleBoss
         {
             public readonly string setBossDisable = ("setBossDisable").ToLowerInvariant();
+        }
+        static readonly ActionParamsClass_ChangeBossEnableAfterDefeat s_params_ChangeBossEnableAfterDefeat = new ActionParamsClass_ChangeBossEnableAfterDefeat();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeBossEnableAfterDefeat ChangeBossEnableAfterDefeatParams { get { return s_params_ChangeBossEnableAfterDefeat; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeBossEnableAfterDefeat
+        {
+            public readonly string changeBossEnableAfterDefeat = ("changeBossEnableAfterDefeat").ToLowerInvariant();
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1456,6 +1471,18 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BossDisableRestoreBase);
             BossDisableRestoreBaseOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangeBossEnableAfterDefeatOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool changeBossEnableAfterDefeat);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangeBossEnableAfterDefeat(bool changeBossEnableAfterDefeat)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeBossEnableAfterDefeat);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "changeBossEnableAfterDefeat", changeBossEnableAfterDefeat);
+            ChangeBossEnableAfterDefeatOverride(callInfo, changeBossEnableAfterDefeat);
             return callInfo;
         }
 

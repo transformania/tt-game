@@ -74,6 +74,7 @@ namespace TT.Domain.Models
         public int LastHolidaySpiritInteraction { get; set; }
         public string AbuseLockoutMessage { get; set; }
         public string ChatLockoutMessage { get; set; }
+        public bool BossEnableAfterDefeat { get; set; }
 
         public string GetFullName()
         {
@@ -257,6 +258,7 @@ namespace TT.Domain.Models
         public string ChatLockoutMessage { get; set; }
 
         public int LastHolidaySpiritInteraction { get; set; }
+        public bool BossEnableAfterDefeat { get; set; }
 
         public string GetFullName()
         {

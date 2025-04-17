@@ -110,6 +110,7 @@ namespace TT.Domain.Players.Entities
         public Covenant CovenantLed { get; protected set; }
 
         public InanimateXP ItemXP { get; protected set; }
+        public bool BossEnableAfterDefeat { get; protected set; }
 
         private Player()
         {
@@ -495,6 +496,11 @@ namespace TT.Domain.Players.Entities
         public void ChangeChatLockoutMessage(string message)
         {
             ChatLockoutMessage = message;
+        }
+
+        public void ChangeBossEnableAfterDefeat(bool changeBossEnableAfterDefeat)
+        {
+            BossEnableAfterDefeat = changeBossEnableAfterDefeat;
         }
 
 

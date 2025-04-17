@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Identity.Commands;
 using TT.Domain.Items.Commands;
 using TT.Domain.Items.Queries;
 using TT.Domain.Models;
@@ -407,6 +408,14 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
             }
 
+            // Re-enable boss interactions for users who have toggled it.
+            var reenablePlayers = playerRepo.Players.Where(p => p.BossEnableAfterDefeat == true);
+
+            foreach (var p in reenablePlayers)
+            {
+                DomainRegistry.Repository.Execute(new SetBossDisable { UserId = p.MembershipId, BossDisable = false });
+                DomainRegistry.Repository.Execute(new ChangeBossEnableAfterDefeat { MembershipId = p.MembershipId, BossEnableAfterDefeat = false });
+            }
         }
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
